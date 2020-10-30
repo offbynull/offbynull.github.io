@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+  min-height: 100vh;
+  background-color: #282c34;
+  font-family: 'Roboto', sans-serif;
+  font-size: min(calc(10px + 2vmin), 18px);
+  color: white;
+}
+
+.logo {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.name {
+  text-align: center;
+  font-size: min(calc(18px + 2vmin), 32px);
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.info {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.info .item {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.nav {
+  text-align: center;
+  margin-top: 3em;
+  margin-bottom: 4em;
+}
+
+.nav .item {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+a {
+  color: #61dafb;
+}
+
+li {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+@media only screen and (min-width: 400px) {
+  body {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  .info .item {
+    display: inline-block;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .nav .item {
+    display: inline-block;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .App {
+    margin: 0 auto;
+    max-width: 960px;
+  }
+}
