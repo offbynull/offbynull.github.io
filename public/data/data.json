@@ -2,139 +2,139 @@
     "finishedStudyList": [
         {
             "name": "Bioinformatics Algorithms 3rd Edition: An Active Learning Approach",
-            "notesUrl": "https://htmlpreview.github.io/?https://github.com/offbynull/learn/blob/master/Bioinformatics/output/output.html",
+            "notesUrl": "data/learn/Bioinformatics/output/output.html",
             "sourceUrl": "https://www.bioinformaticsalgorithms.org/",
             "sourceType": "book"
         },
         {
             "name": "OpenStax Prealgebra",
-            "notesUrl": "https://htmlpreview.github.io/?https://github.com/offbynull/learn/blob/master/Math/output/output.html",
+            "notesUrl": "data/learn/Math/output/output.html",
             "sourceUrl": "https://openstax.org/details/books/prealgebra-2e",
             "sourceType": "book"
         },
         {
             "year": 2018,
             "name": "The Definitive ANTLR 4 Reference",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/ANTLR%204.pdf",
+            "notesUrl": "data/learn/ANTLR%204.pdf",
             "sourceUrl": "https://pragprog.com/titles/tpantlr2/the-definitive-antlr-4-reference/",
             "sourceType": "book"
         },
         {
             "year": 2018,
             "name": "Numerical Computing with IEEE Floating Point Arithmetic",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Floating%20Point%20Arithmetic.pdf",
+            "notesUrl": "data/learn/Floating%20Point%20Arithmetic.pdf",
             "sourceUrl": "https://www.amazon.com/Numerical-Computing-Floating-Point-Arithmetic/dp/0898714826",
             "sourceType": "book"
         },
         {
             "year": 2018,
             "name": "Your First Day of Rotoscoping in NUKE",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Nuke%2011%20Rotoscoping.pdf",
+            "notesUrl": "data/learn/Nuke%2011%20Rotoscoping.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/your-first-day-rotoscoping-nuke-1217",
             "sourceType": "course"
         },
         {
             "year": 2018,
             "name": "Your First Day of Tracking in NUKE",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Nuke%2011%20Tracking.pdf",
+            "notesUrl": "data/learn/Nuke%2011%20Tracking.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/your-first-day-tracking-nuke-1206",
             "sourceType": "course"
         },
         {
             "year": 2018,
             "name": "NUKE Channel Fundamentals",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Nuke%2011%20Channels%20and%20Layers.pdf",
+            "notesUrl": "data/learn/Nuke%2011%20Channels%20and%20Layers.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/nuke-channel-fundamentals",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Parallel Programming CUDA",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/CUDA.pdf",
+            "notesUrl": "data/learn/CUDA.pdf",
             "sourceUrl": "https://developer.nvidia.com/udacity-cs344-intro-parallel-programming",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "NUKE Fundamentals",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Nuke%2011.pdf",
+            "notesUrl": "data/learn/Nuke%2011.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/nuke-fundamentals",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Houdini 15",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Houdini%2016.pdf",
+            "notesUrl": "data/learn/Houdini%2016.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/introduction-houdini-15-2334",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Collision in Houdini",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Houdini%2016%20Objects%20and%20Collisions.pdf",
+            "notesUrl": "data/learn/Houdini%2016%20Objects%20and%20Collisions.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/introduction-collisions-houdini-2006",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Fluid Simulations in Houdini",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Houdini%2016%20Fluids.pdf",
+            "notesUrl": "data/learn/Houdini%2016%20Fluids.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/introduction-fluid-simulations-houdini-2078",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Dynamic Oceans in Houdini",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Houdini%2016%20Oceans.pdf",
+            "notesUrl": "data/learn/Houdini%2016%20Oceans.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/intro-dynamic-oceans-houdini-2116",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Particles in Houdini",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Houdini%2016%20Particles.pdf",
+            "notesUrl": "data/learn/Houdini%2016%20Particles.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/introduction-particles-houdini-900",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Hair and Fur in Houdini",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Houdini%2016%20Hair%20and%20Fur.pdf",
+            "notesUrl": "data/learn/Houdini%2016%20Hair%20and%20Fur.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/houdini-15-hair-fur-introduction",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Maya 2015: Interface and Modeling",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Maya%202015.pdf",
+            "notesUrl": "data/learn/Maya%202015.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/intro-maya-2015-1572",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Maya 2015: Materials",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Maya%202015%20Materials.pdf",
+            "notesUrl": "data/learn/Maya%202015%20Materials.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/intro-maya-2015-1572",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Maya 2015: Rigging",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Maya%202015%20Rigging.pdf",
+            "notesUrl": "data/learn/Maya%202015%20Rigging.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/intro-maya-2015-1572",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Maya 2015: Animation",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Maya%202015%20Animation.pdf",
+            "notesUrl": "data/learn/Maya%202015%20Animation.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/intro-maya-2015-1572",
             "sourceType": "course"
         },
         {
             "year": 2017,
             "name": "Introduction to Maya 2015: Rendering",
-            "notesUrl": "https://github.com/offbynull/learn/blob/master/Maya%202015%20Rendering.pdf",
+            "notesUrl": "data/learn/Maya%202015%20Rendering.pdf",
             "sourceUrl": "https://www.pluralsight.com/courses/intro-maya-2015-1572",
             "sourceType": "course"
         }
