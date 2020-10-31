@@ -1,0 +1,3 @@
+this data doesn't get moved to /docs
+
+/build.sh makes sure the data that's already in /docs stays in /docs
