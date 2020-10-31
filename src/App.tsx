@@ -29,7 +29,7 @@ export class App extends React.Component<AppProps, AppState> {
 
   public componentDidMount() {
     (async () => {
-      const resp = await fetch('data/data.json');
+      const resp = await fetch('data/data.json', { cache: 'no-cache' });
       const obj = await resp.json();
       const ret = pipe(
         AppDataV.decode(obj),
