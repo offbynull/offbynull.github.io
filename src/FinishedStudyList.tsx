@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 import * as t from "io-ts";
+import { BookV, CourseV, DocumentV } from "./StudyTypes";
 
 
 
@@ -63,12 +64,33 @@ export class FinishedStudyItem extends React.Component<FinishedStudyItemProps, F
     }
 
     public render() {
-        const src = (this.props.entry.sourceType === undefined ? 'no source material' : <span>source material <a href={this.props.entry.sourceUrl}>book</a></span>);
-        return (
-            <li>
-                <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({src})
-            </li>
-        );
+        switch (this.props.entry.source.type) {
+            case 'book': {
+                return (
+                    <li>
+                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> (book <a href={'https://openlibrary.org/isbn/' + this.props.entry.source.isbn}>ISBN</a>
+                        {this.props.entry.source.url === undefined ? null : <span> and <a href={this.props.entry.source.url}>website</a></span>})
+                    </li>
+                );
+            }
+            case 'course': {
+                return (
+                    <li>
+                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> (course <a href={this.props.entry.source.url}>website</a>)
+                    </li>
+                );
+            }
+            case 'document': {
+                return (
+                    <li>
+                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> (document <a href={this.props.entry.source.url}>website</a>)
+                    </li>
+                );
+            }
+            default:
+                throw new Error('This should never happen');
+        }
+
     }
 }
 
@@ -84,12 +106,7 @@ export const FinishedStudyEntryV =
             ]),
             name: t.string,
             notesUrl: t.string,
-            sourceUrl: t.string,
-            sourceType: t.union([
-                t.literal('book'),
-                t.literal('course'),
-                t.undefined
-            ])
+            source: t.union([BookV, CourseV, DocumentV])
         })
     );
 

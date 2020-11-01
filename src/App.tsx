@@ -11,6 +11,7 @@ import { FinishedStudyList, FinishedStudyEntryV } from './FinishedStudyList';
 import { PendingStudyEntryV, PendingStudyList } from './PendingStudyList';
 import { fold } from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
+import { Console } from 'console';
 
 export interface AppProps {
 }
@@ -34,7 +35,10 @@ export class App extends React.Component<AppProps, AppState> {
       const ret = pipe(
         AppDataV.decode(obj),
         fold(
-          errors => { throw new Error(errors.toString()); },
+          errors => { 
+            console.log(errors)
+            throw new Error(JSON.stringify(errors));
+          },
           value => value,
         ),
       );
@@ -61,13 +65,13 @@ export class App extends React.Component<AppProps, AppState> {
         </div>
         <div className="nav">
           <span className="item"><a href="#study_notes">study notes</a></span>
-          <span className="item"><a href="#study_queue">study queue</a></span>
+          <span className="item"><a href="#study_backlog">study backlog</a></span>
         </div>
         <h1 id="study_notes">study notes</h1>
         <div>Personal notes from past and current books / online courses / self-studies.</div>
         {this.state.data === undefined ? <div>Loading...</div> : <FinishedStudyList notes={Immutable.List(this.state.data.finishedStudyList)} />}
-        <h1 id="study_queue">study queue</h1>
-        <span>Personal backlog of books / online courses.</span>
+        <h1 id="study_backlog">study backlog</h1>
+        <span>Personal backlog of books / courses / etc..</span>
         {this.state.data === undefined ? <div>Loading...</div> : <PendingStudyList notes={Immutable.List(this.state.data.pendingStudyList)} />}
       </div>
     );

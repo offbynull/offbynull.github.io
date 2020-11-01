@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Immutable from "immutable";
 import * as t from "io-ts";
+import { BookV, CourseV, DocumentV } from "./StudyTypes";
 
 
 
@@ -46,11 +47,32 @@ export class PendingStudyItem extends React.Component<PendingStudyItemProps, Pen
     }
 
     public render() {
-        return (
-            <li>
-                <a href={this.props.entry.sourceUrl}>{this.props.entry.name}</a>
-            </li>
-        );
+        switch (this.props.entry.source.type) {
+            case 'book': {
+                return (
+                    <li>
+                        <a href={'https://openlibrary.org/isbn/' + this.props.entry.source.isbn}>{this.props.entry.name}</a> (book)
+                        {/* {this.props.entry.source.url === undefined ? null : <span> (<a href={this.props.entry.source.url}>website</a>)</span>} */}
+                    </li>
+                );
+            }
+            case 'course': {
+                return (
+                    <li>
+                        <a href={this.props.entry.source.url}>{this.props.entry.name}</a> (course)
+                    </li>
+                );
+            }
+            case 'document': {
+                return (
+                    <li>
+                        <a href={this.props.entry.source.url}>{this.props.entry.name}</a> (document)
+                    </li>
+                );
+            }
+            default:
+                throw new Error('This should never happen');
+        }
     }
 }
 
@@ -60,7 +82,7 @@ export const PendingStudyEntryV =
     t.readonly(
         t.type({
             name: t.string,
-            sourceUrl: t.string
+            source: t.union([BookV, CourseV, DocumentV])
         })
     );
 
