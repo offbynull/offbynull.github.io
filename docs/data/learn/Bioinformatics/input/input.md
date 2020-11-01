@@ -3375,7 +3375,7 @@ PracticalMotifFindingExample
 
    Most, not all, peptides are synthesized as described above. Non-ribosomal peptides are synthesized outside of the transcription and translation.
 
- * `{bm} non-ribosomal peptide` `{bm} /\b(NRP)\b/i` - A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthethase builds peptides one amino acid at a time without relying on transcription or translation.
+ * `{bm} non-ribosomal peptide` `{bm} /\b(NRP)\b/i` - A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.
 
    Non-ribosomal peptides may be cyclic. Common use-cases for non-ribosomal peptides:
 
