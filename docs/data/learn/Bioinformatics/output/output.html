@@ -1,8 +1,8 @@
 <!DOCTYPE html><html><head>
             <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
             <meta content="utf-8" http-equiv="encoding">
-          <title>Bioinformatics
-</title><link href="/.datadir_41ea41b754fd117b7f5cded2e9ed2e8f/katex.min.css" rel="stylesheet"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="/.temp_githib_css/github-markdown.css" rel="stylesheet"><link href="/.temp_highlightjs_css/default.css" rel="stylesheet"></head>
+          <link href="katex/katex.min.css" rel="stylesheet"><title>Bioinformatics
+</title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
           <body class="markdown-body"><div class="toc">
 <ul>
 <li><a href="#H_Introduction">Introduction</a></li>
@@ -153,7 +153,9 @@
             <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">'Unexpected base: '</span> + base)
 
         ret += base
-    <span class="hljs-keyword">return</span> ret[::<span class="hljs-number">-1</span>]</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret[::<span class="hljs-number">-1</span>]
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Original: TAATCCG</p>
 <p>Reverse Complement: CGGATTA</p>
@@ -171,7 +173,9 @@
         <span class="hljs-keyword">if</span> ch1 != ch2:
             mismatch += <span class="hljs-number">1</span>
 
-    <span class="hljs-keyword">return</span> mismatch</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> mismatch
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Kmer1: ACTTTGTT</p>
 <p>Kmer2: AGTTTCTT</p>
@@ -203,9 +207,11 @@
     output = set()
     recurse(kmer, hamming_dist, output)
 
-    <span class="hljs-keyword">return</span> output</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> output
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'ATAA', 'CAAA', 'AATA', 'TAAA', 'AAGA', 'AAAT', 'ACAA', 'AACA', 'AAAG', 'AAAC', 'AAAA', 'AGAA', 'GAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -246,7 +252,9 @@
     <span class="hljs-keyword">for</span> seq_kmer, i <span class="hljs-keyword">in</span> slide_window(sequence, k):
         <span class="hljs-keyword">if</span> seq_kmer <span class="hljs-keyword">in</span> test_kmers:
             idxes.append(i)
-    <span class="hljs-keyword">return</span> idxes</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> idxes
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Found AAAA in AAAAGAACCTAATCTTAAAGGAGATGATGATTCTAA at index [0, 1, 2, 3, 12, 15, 16, 30]</p>
 </div>
@@ -278,7 +286,9 @@
             start_i = end_i
             occurrence_count = <span class="hljs-number">1</span>
 
-    <span class="hljs-keyword">return</span> cluster_locs</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> cluster_locs
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Found clusters of GGG (at least 3 occurrences in window of 13) in GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT at index [19, 37]</p>
 </div>
@@ -324,16 +334,18 @@
     <span class="hljs-keyword">for</span> kmer, count <span class="hljs-keyword">in</span> counts.items():
         <span class="hljs-keyword">if</span> count == top_count:
             top_kmers.add((kmer, count))
-    <span class="hljs-keyword">return</span> top_kmers</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> top_kmers
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>TGATC = 6 occurrences</li>
-<li>GATCA = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
-<li>AAGGG = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
+<li>GATCA = 6 occurrences</li>
+<li>AAGGG = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -400,22 +412,24 @@
         <span class="hljs-comment"># Find clusters within window -- tuple is k-mer, start_idx, occurrence_count</span>
         [clustered_kmers.add(KmerCluster(k, min(v), len(v))) <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> kmer_counter.items() <span class="hljs-keyword">if</span> len(v) &gt;= min_occurrence_in_cluster]
 
-    <span class="hljs-keyword">return</span> clustered_kmers</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> clustered_kmers
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -490,7 +504,9 @@
 
     walk(<span class="hljs-number">0</span>)
 
-    <span class="hljs-keyword">return</span> found, found_max</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> found, found_max
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Brute-forcing probability of ACTG in arbitrary sequence of length 8</p>
 <p>Probability: 0.0195159912109375 (1279/65536)</p>
@@ -550,7 +566,9 @@ SSSII
 
     k = len(search_for)
     n = (searchspace_len - min_occurrence * k)
-    <span class="hljs-keyword">return</span> bc(n + min_occurrence, min_occurrence) * (searchspace_symbol_count ** n) / searchspace_symbol_count ** searchspace_len</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> bc(n + min_occurrence, min_occurrence) * (searchspace_symbol_count ** n) / searchspace_symbol_count ** searchspace_len
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Estimating probability of ACTG in arbitrary sequence of length 8</p>
 <p>Probability: 0.01953125</p>
@@ -588,7 +606,9 @@ SSSII
             skew.append(counter)
         <span class="hljs-keyword">else</span>:
             skew.append(counter)
-    <span class="hljs-keyword">return</span> skew</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> skew
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Calculating skew for: ...</p>
 <p>Result: [0, -1, -1,...</p>
@@ -710,7 +730,9 @@ SSSII
             c[kmer[i]] += <span class="hljs-number">1</span>
         ch = c.most_common(<span class="hljs-number">1</span>)
         out += ch[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
-    <span class="hljs-keyword">return</span> out</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> out
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Consensus is TTTCC in <br><br> ATTGC<br>ATTCC<br>TTTGC<br>TTTCC<br>TTTCA</p>
 </div>
@@ -733,7 +755,9 @@ SSSII
             item = motif_matrix[r][c]
             ret[item][c] += <span class="hljs-number">1</span>
             
-    <span class="hljs-keyword">return</span> ret</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Counting nucleotides at each column of the motif matrix...</p>
 <p>ATTGC<br>TTTGC<br>TTTGG<br>ATTGC</p>
@@ -813,7 +837,9 @@ SSSII
         <span class="hljs-keyword">for</span> elem <span class="hljs-keyword">in</span> motif_matrix_counts.keys():
             ret[elem][i] = motif_matrix_counts[elem][i] / total
 
-    <span class="hljs-keyword">return</span> ret</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Profiling nucleotides at each column of the motif matrix...</p>
 <p>ATTCG<br>CTTCG<br>TTTCG<br>TTTTG</p>
@@ -850,7 +876,9 @@ SSSII
         unpopular_sum = sum(counter.values())
         unpopular_sums.append(unpopular_sum)
 
-    <span class="hljs-keyword">return</span> sum(unpopular_sums)</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> sum(unpopular_sums)
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Scoring...</p>
 <p>ATTGC<br>TTTGC<br>TTTGG<br>ATTGC</p>
@@ -899,7 +927,9 @@ SSSII
         entropy_per_col.append(entropy)
 
     <span class="hljs-comment"># sum up entropies to get entropy of motif</span>
-    <span class="hljs-keyword">return</span> sum(entropy_per_col)</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> sum(entropy_per_col)
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Scoring...</p>
 <p>ATTGC<br>TTTGC<br>TTTGG<br>ATTGC</p>
@@ -1053,7 +1083,9 @@ SSSII
     <span class="hljs-comment"># All of the other score_motif algorithms try to MINIMIZE score. In the case of relative entropy (this algorithm),</span>
     <span class="hljs-comment"># the greater the score is the better of a match it is. As such, negate this score so the existing algorithms can</span>
     <span class="hljs-comment"># still try to minimize.</span>
-    <span class="hljs-keyword">return</span> -ret</code></pre><div style="margin:2em; background-color: #e0e0e0;">
+    <span class="hljs-keyword">return</span> -ret
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>In the outputs below, the score in the second output should be less than (better) the score in the first output.</p>
 </div>
@@ -1110,7 +1142,9 @@ SSSII
     logo = lm.Logo(df)
     logo.ax.set_ylabel(<span class="hljs-string">'information (bits)'</span>)
     logo.ax.set_xlim([<span class="hljs-number">-1</span>, len(df)])
-    <span class="hljs-keyword">return</span> logo</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> logo
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Generating logo for the following motif matrix...</p>
 <p>TCGGGGGTTTTT<br>CCGGTGACTTAC<br>ACGGGGATTTTC<br>TTGGGGACTTTT<br>AAGGGGACTTCC<br>TTGGGGACTTCC<br>TCGGGGATTCAT<br>TCGGGGATTCCT<br>TAGGGGAACTAC<br>TCGGGTATAACC</p>
@@ -1440,7 +1474,9 @@ SSSII
         <span class="hljs-keyword">if</span> most_probable <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> prob &gt; most_probable[<span class="hljs-number">1</span>]:
             most_probable = (kmer, prob)
 
-    <span class="hljs-keyword">return</span> most_probable</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> most_probable
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Motif matrix...</p>
 <p>ATGCAC<br>ATGCAC<br>ATCCAC</p>
@@ -1507,12 +1543,14 @@ SSSII
         <span class="hljs-keyword">if</span> best_motif_matrix <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> score_motif(next_motif_matrix) &lt; score_motif(best_motif_matrix):
             best_motif_matrix = next_motif_matrix
 
-    <span class="hljs-keyword">return</span> best_motif_matrix</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> best_motif_matrix
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>TAAAT<br>TAAAT<br>TAAAT</p>
+<p>AAAGA<br>AAAGA<br>AAAGA</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -1755,7 +1793,9 @@ SSSII
         score = distance_between_pattern_and_strings(kmer, dnas)  <span class="hljs-comment"># find score of best motif matrix where consensus str is kmer</span>
         <span class="hljs-keyword">if</span> last_best <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> score &lt; last_best[<span class="hljs-number">1</span>]:
             last_best = kmer, score
-    <span class="hljs-keyword">return</span> last_best</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> last_best
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Searching for motif of k=3 in the following...</p>
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
@@ -1800,7 +1840,9 @@ SSSII
         <span class="hljs-keyword">if</span> score_motif(motif_matrix) &lt; score_motif(best_motif_matrix):
             best_motif_matrix = motif_matrix
 
-    <span class="hljs-keyword">return</span> best_motif_matrix</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> best_motif_matrix
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Searching for motif of k=3 in the following...</p>
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
@@ -1946,13 +1988,15 @@ SSSII
             <span class="hljs-keyword">if</span> score_motif(motif_matrix) &lt; score_motif(best_motif_matrix):
                 best_motif_matrix = motif_matrix
             <span class="hljs-keyword">else</span>:
-                <span class="hljs-keyword">return</span> best_motif_matrix</code></pre><div style="border:1px solid black;">
+                <span class="hljs-keyword">return</span> best_motif_matrix
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Searching for motif of k=3 in the following...</p>
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GTC<br>GAG<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Gibbs%20Sampling%20Algorithm"></a><h4>Gibbs Sampling Algorithm</h4>
@@ -2017,13 +2061,15 @@ SSSII
         <span class="hljs-keyword">if</span> score_motif(motif_matrix) &lt; score_motif(best_motif_matrix):
             best_motif_matrix = motif_matrix[:]  <span class="hljs-comment"># create a copy, otherwise you'll be modifying both motif and best_motif</span>
 
-    <span class="hljs-keyword">return</span> best_motif_matrix</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> best_motif_matrix
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Searching for motif of k=3 in the following...</p>
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2074,14 +2120,16 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
                 motif_member = motif_member[:c] + hybrid_alphabet[distinct_nucs_at_c] + motif_member[c+<span class="hljs-number">1</span>:]
                 motif_matrix[r] = motif_member
 
-    <span class="hljs-keyword">return</span> motif_matrix</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> motif_matrix
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Converted...</p>
 <p>CATCCG<br>CTTCCT<br>CATCTT</p>
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'T', 'A'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_Assembly"></a><h2>Assembly</h2>
@@ -2208,7 +2256,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
     ret = items[<span class="hljs-number">0</span>]
     <span class="hljs-keyword">for</span> other <span class="hljs-keyword">in</span> items[<span class="hljs-number">1</span>:]:
         ret = ret.append_overlap(other, skip)
-    <span class="hljs-keyword">return</span> ret.data</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret.data
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Stitched [GAAA, AAAT, AATC] to GAAATC</p>
 </div>
@@ -2421,7 +2471,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
         ret = ret.append_overlap(other, skip)
     <span class="hljs-keyword">assert</span> ret.d &lt;= <span class="hljs-number">0</span>, <span class="hljs-string">"Gap still exists -- not enough to stitch"</span>
     overlap_count = -ret.d
-    <span class="hljs-keyword">return</span> ret.data.head + ret.data.tail[overlap_count:]</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret.data.head + ret.data.tail[overlap_count:]
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Stitched [ATG---CCG, TGT---CGT, GTT---GTT, TTA---TTC] to ATGTTACCGTTC</p>
 </div>
@@ -2438,7 +2490,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
     <span class="hljs-keyword">for</span> kmer, _ <span class="hljs-keyword">in</span> slide_window(self.data, k):
         r = Read(kmer, source=(<span class="hljs-string">'shatter'</span>, [self]))
         ret.append(r)
-    <span class="hljs-keyword">return</span> ret</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Broke ACTAAGAACC to [ACTAA, CTAAG, TAAGA, AAGAA, AGAAC, GAACC]</p>
 </div>
@@ -2465,7 +2519,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
         kdmer = Kdmer(kmer_head, kmer_tail, d)
         rp = ReadPair(kdmer, source=(<span class="hljs-string">'shatter'</span>, [self]))
         ret.append(rp)
-    <span class="hljs-keyword">return</span> ret</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Broke ACTA--AACC to [AC----AA, CT----AC, TA----CC]</p>
 </div>
@@ -2588,7 +2644,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
         most_occurring_count, times_counted = Counter(rounded_counter.values()).most_common(<span class="hljs-number">1</span>)[<span class="hljs-number">0</span>]
         <span class="hljs-keyword">if</span> times_counted &gt;= len(rounded_counter) * <span class="hljs-number">0.5</span>:
             <span class="hljs-keyword">return</span> dict([(key, value / most_occurring_count) <span class="hljs-keyword">for</span> key, value <span class="hljs-keyword">in</span> rounded_counter.items()])
-    <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f'Failed to find a common count: <span class="hljs-subst">{counter}</span>'</span>)</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f'Failed to find a common count: <span class="hljs-subst">{counter}</span>'</span>)
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Sequenced fragments:</p>
 <ul>
@@ -2698,7 +2756,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
                     <span class="hljs-keyword">continue</span>
                 other_item = items[j]
                 ret.insert_edge(item, other_item)
-    <span class="hljs-keyword">return</span> ret</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Given the fragments ['TTA', 'TTA', 'TAG', 'AGT', 'GTT', 'TAC', 'ACT', 'CTT'], the overlap graph is...</p>
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
@@ -2729,27 +2789,29 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 
 <span class="hljs-comment"># walk each node exactly once</span>
 <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk_hamiltonian_paths</span>(<span class="hljs-params">graph: Graph[T], from_node: T</span>) -&gt; List[List[T]]:</span>
-    <span class="hljs-keyword">return</span> exhaustively_walk_until_all_nodes_touched_exactly_one(graph, from_node, [])</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> exhaustively_walk_until_all_nodes_touched_exactly_one(graph, from_node, [])
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Given the fragments ['TTA', 'TTA', 'TAG', 'AGT', 'GTT', 'TAC', 'ACT', 'CTT'], the overlap graph is...</p>
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
 <li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 </ul>
 </div>
@@ -2818,7 +2880,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
         from_node = read.prefix(skip)
         to_node = read.suffix(skip)
         graph.insert_edge(from_node, to_node)
-    <span class="hljs-keyword">return</span> graph</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> graph
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Given the fragments ['TTAG', 'TAGT', 'AGTT', 'GTTA', 'TTAC', 'TACT', 'ACTT', 'CTTA'], the de Bruijn graph is...</p>
 <p><img src="dot_fc6c4f4bf004838f81f7a6343b7d2e19.svg" alt="Dot diagram"></p>
@@ -2857,7 +2921,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
     <span class="hljs-keyword">for</span> n_need_in, n_need_out <span class="hljs-keyword">in</span> zip(n_per_need_in, n_per_need_out):
         graph.insert_edge(n_need_out, n_need_in)
 
-    <span class="hljs-keyword">return</span> graph, set(n_per_need_in), set(n_per_need_out)  <span class="hljs-comment"># return graph with cycle, orig root nodes, orig tail nodes</span></code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> graph, set(n_per_need_in), set(n_per_need_out)  <span class="hljs-comment"># return graph with cycle, orig root nodes, orig tail nodes</span>
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Given the fragments ['TTAC', 'TACC', 'ACCC', 'CCCT'], the artificially balanced de Bruijn graph is...</p>
 <p><img src="dot_060b6d958ad63bcbb55a116f699b26f5.svg" alt="Dot diagram"></p>
@@ -2914,7 +2980,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
         <span class="hljs-keyword">assert</span> new_node_cycle <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>
         node_cycle = new_node_cycle
 
-    <span class="hljs-keyword">return</span> node_cycle</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> node_cycle
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Given the fragments ['TTA', 'TAT', 'ATT', 'TTC', 'TCT', 'CTT'], the de Bruijn graph is...</p>
 <p><img src="dot_3a93e1cbe061465a28efa39eadb1f973.svg" alt="Dot diagram"></p>
@@ -3036,7 +3104,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
             path = (diverging_node, branch_path, converging_node)
             <span class="hljs-keyword">if</span> len(branch_path) &lt;= branch_len:
                 ret.append(path)
-    <span class="hljs-keyword">return</span> ret</code></pre><div style="border:1px solid black;">
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
 <p></p>
 <p>Fragments from sequencer:</p>
 <ul>
@@ -3194,7 +3264,9 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
         paths.append(path)
         skip_nodes |= set(path)
 
-    <span class="hljs-keyword">return</span> paths</code></pre><a name="H_Stories"></a><h1>Stories</h1>
+    <span class="hljs-keyword">return</span> paths
+</code></pre>
+<a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacteria%20Replication"></a><h2>Bacteria Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
 <p><img src="svgbob_308a4af4e5d6864abeb06f6652581aec0ff50fb1.svg" alt="Kroki diagram output"></p>
@@ -3291,8 +3363,8 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGGCGGTTC', start_index=160, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGCT', start_index=161, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGCGGAT', start_index=161, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGGT', start_index=161, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGCGGAT', start_index=161, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=161, occurrence_count=4)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=162, occurrence_count=4)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=163, occurrence_count=4)</li>
@@ -3307,15 +3379,15 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -3324,12 +3396,12 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li>KmerCluster(kmer='ATCACCATT', start_index=500, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCCTTTTTA', start_index=513, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCCTTTTT', start_index=514, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
@@ -3393,8 +3465,8 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>AAAGAAAAAGGAAGGAAA<br>AAAAAAAAAGGAAAAAAA<br>AAAGAAAAAGAAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>TAGGATCAATGAATATAA<br>TAGGATCAATGAATATAA</p>
-<p>Score is: 21</p>
+<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 18</p>
 </div>
 <p></p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
