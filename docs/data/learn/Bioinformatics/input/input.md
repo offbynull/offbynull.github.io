@@ -1204,19 +1204,17 @@ Assembly has many practical complications that prevent full genome reconstructio
 
    ```{svgbob}
           "DNA reads"          "Stitched DNA reads"
-      
-       +-------+                               
-    T A|A A A T| ------+        A A A T T T A             
-       +-------+       |                                   
-   +-------+           +------> A A A T      
-   |A T T T|T A  -----------------> A T T T  
-   +-------+           +------------> T T T A
-       +-------+       |      
-    A T|T T T A| ------+                   
-       +-------+                               
+                                                          
+   +-------+                   A T T T T            
+   |A T T T|T A ------+
+   +-------+          +------> A T T T  
+     +-------+       +---------> T T T T       
+    A|T T T T|A -----+                   
+     +-------+                               
 
-   "* 1st is the reverse complement of the 2nd and 3rd."
-   "* Reconstructed genome has an extra T prepended."
+    A T T C T A ------>?
+
+   "* Reconstructed genome is missing the final A."
    ```
 
  * The fragment_SEQs for repetitive parts of the genome (e.g. transposons) likely can't be accurately assembled.
@@ -1690,7 +1688,7 @@ The example graph above is balanced_GRAPH. But, depending on the fragment_SEQs u
 
 A path in a de Bruijn graph that walks over each edge exactly once is one possibility for the original single stranded DNA that the fragment_SEQs came from: it starts and ends at the same node (a cycle), and walks over every edge in the graph.
 
-In contrast to finding a Hamiltonian path in an overlap graph, it's much faster to find an Eulerian cycle in an de Bruijn graph.
+In contrast to finding a Hamiltonian path in an overlap graph, it's much faster to find an Eulerian cycle in a de Bruijn graph.
 
 De Bruijn graphs were originally invented to solve the k-universal string problem, which is effectively the same concept as assembly.
 
@@ -1705,7 +1703,7 @@ Sequencers produce fragment_SEQs, but fragment_SEQs by themselves typically aren
  * Fragment_SEQs may be stitch-able in more than one way (multiple guesses).
  * Fragment_SEQs may take a long time to stitch (computationally intensive).
 
-Never the less, in an ideal world where most of these problems don't exist, an de Bruijn graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. A de Bruijn graph assumes that the fragment_SEQs it's operating on ...
+Never the less, in an ideal world where most of these problems don't exist, a de Bruijn graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. A de Bruijn graph assumes that the fragment_SEQs it's operating on ...
 
  * are from a single-strand of DNA,
  * have correct occurrence counts (no missing or extra),
@@ -3375,7 +3373,7 @@ PracticalMotifFindingExample
 
    Most, not all, peptides are synthesized as described above. Non-ribosomal peptides are synthesized outside of the transcription and translation.
 
- * `{bm} non-ribosomal peptide` `{bm} /\b(NRP)\b/i` - A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthethase builds peptides one amino acid at a time without relying on transcription or translation.
+ * `{bm} non-ribosomal peptide` `{bm} /\b(NRP)\b/i` - A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.
 
    Non-ribosomal peptides may be cyclic. Common use-cases for non-ribosomal peptides:
 
