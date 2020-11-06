@@ -1,6 +1,6 @@
 import lzma
 
-from FindMaximalNonBranchingPaths import find_maximal_non_branching_paths
+from FindContigs import find_maximal_non_branching_paths
 from Kdmer import Kdmer
 from Read import Read
 from ReadPair import ReadPair

@@ -1935,55 +1935,90 @@ Algorithms/Assembly/De Bruijn Graph_TOPIC
 Algorithms/Assembly/Find Bubbles_TOPIC
 ```
 
-TODO: CONTINUE HERE
+**WHAT**: Given an overlap graph or de Bruijn graph, find the longest possible stretches of non-branching nodes. Each stretch will be a path that's either  ...
 
-TODO: CONTINUE HERE
+ * a line: each node has an indegree and outdegree of 1.
 
-TODO: CONTINUE HERE
+   ```{svgbob}
+   GT --> TG --> GG
+   ```
 
-TODO: CONTINUE HERE
+ * a cycle: each node has an indegree and outdegree of 1 and it loops.
 
-TODO: CONTINUE HERE
+   ```{svgbob}
+   CA ---> AC ---> CC 
+   ^                |
+   |                |
+   `----------------'
+   ```
 
-TODO: CONTINUE HERE
+ * a line sandwiched between branching nodes: nodes in between have an indegree and outdegree of 1 but either...
+   * starts at a node where indegree != 1 but outdegree == 1 (incoming branch),
+   * or ends at a node where indegree == 1 but outdegree != 1 (outgoing branch),
+   * or both.
 
-TODO: CONTINUE HERE
+   ```{svgbob}
+   -.                 
+    |              .->
+    v              |
+    GT --> TG --> GG
+    ^              |
+    |              `->
+   -'
+   ```
 
-TODO: CONTINUE HERE
+Each found path is called a contig: a contiguous piece of the graph. For example, ...
 
-TODO: CONTINUE HERE
+```{svgbob}
+    "Original"            "Contig 1: GTGG"      "Contig 2: GGT"     "Contig 3: GGT"    "Contig 4: CACCA"
 
-TODO: CONTINUE HERE
+        GTG                      GTG                                          
++----------------+       +----------------+                                   
+|                |       |                |                                   
+|        +------+|       |                |        +------+                   
+|        | GGT  ||       |                |        | GGT  |                   
+v  TGG   |      v|       v  TGG           |        |      v                   
+TG ---> GG      GT       TG ---> GG      GT       GG      GT        GG      GT
+         |      ^                                                    |      ^  
+         | GGT  |                                                    | GGT  |  
+         +------+                                                    +------+  
 
-TODO: CONTINUE HERE
+    CAC     ACC                                                                          CAC     ACC    
+ CA ---> AC ---> CC                                                                   CA ---> AC ---> CC 
+ ^                |                                                                   ^                |
+ |      CCA       |                                                                   |      CCA       |
+ +----------------+                                                                   +----------------+
+```
 
-TODO: CONTINUE HERE
+**WHY**: An overlap graph / de Bruijn graph represents all the possible ways a set of fragment_SEQs may be stitched together to infer the full genome. However, real-world complications make it impractical to guess the full genome:
 
-TODO: CONTINUE HERE
+ * Fragment_SEQs are for both strands (strand of double-stranded DNA a fragment_SEQ's from isn't known).
+ * Fragment_SEQs may be missing (sequencer didn't capture it).
+ * Fragment_SEQs may have incorrect occurrence counts (sequencer captured it too many/few times).
+ * Fragment_SEQs may have errors (sequencer produced sequencing errors).
+ * Fragment_SEQs may be stitch-able in more than one way (multiple guesses).
+ * Fragment_SEQs may take a long time to stitch (computationally intensive).
 
-TODO: CONTINUE HERE
+These complications result in graphs that are too tangled, disconnected, etc... As such, the best someone can do is to pull out the contigs in the graph: unambiguous stretches of contiguous DNA.
 
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
+**ALGORITHM**:
 
 ```{output}
-ch3_code/src/FindMaximalNonBranchingPaths.py
+ch3_code/src/FindContigs.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch3}
+FindContigs
+reads
+TGG
+GGT
+GGT
+GTG
+CAC
+ACC
+CCA
 ```
 
 # Stories
@@ -3294,16 +3329,43 @@ PracticalMotifFindingExample
    What purpose does this actually serve? Mimicking 1 long read-pair as n shorter read-pairs isn't equivalent to actually having sequenced those n shorter read-pairs. For example, what if the longer read-pair being broken up has an error? That error replicates when breaking into n shorter read-pairs, which gives a false sense of having good coverage_SEQ and makes it seems as if it wasn't an error.
    ```
 
- * `{bm} contig/(contig)s?\b/i/true/true` - A long continuous piece of DNA. Derived by searching a directed graph for paths that are the longest possible stretches of nodes with 1 indegree and 1 outdegree. That is, a path must either ...
-
-   * be a cycle where each node has an indegree and outdegree of 1.
-   * start and end at a node that doesn't have an indegree and outdegree of 1.
-
-   For example, in the following de Bruijn graph, the contigs are: GTGG, GGT, and GGT:
-
+ * `{bm} contig/(contig)s?\b/i/true/true` - A piece of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1). Each stretch will be a path that's either  ...
+  
+    * a line: each node has an indegree and outdegree of 1.
+   
+      ```{svgbob}
+      GT --> TG --> GG
+      ```
+   
+    * a cycle: each node has an indegree and outdegree of 1 and it loops.
+   
+      ```{svgbob}
+      CA ---> AC ---> CC 
+      ^                |
+      |                |
+      `----------------'
+      ```
+   
+    * a line sandwiched between branching nodes: nodes in between have an indegree and outdegree of 1 but either...
+      * starts at a node where indegree != 1 but outdegree == 1 (incoming branch),
+      * or ends at a node where indegree == 1 but outdegree != 1 (outgoing branch),
+      * or both.
+   
+      ```{svgbob}
+      -.                 
+       |              .->
+       v              |
+       GT --> TG --> GG
+       ^              |
+       |              `->
+      -'
+      ```
+   
+   Real-world complications with DNA sequencing make de Bruijn / overlap graphs too tangled to guess a full genome: both strands of double-stranded DNA are sequenced and mixed into the graph, sequencing errors make into the graph, repeats regions of the genome can't be reliably handled by the graph, poor coverage_SEQ, etc.. As such, biologists / bioinformaticians have no choice but to settle on contigs.
+   
    ```{svgbob}
-       "Original"            "Contig 1: GTGG"      "Contig 2: GGT"     "Contig 3: GGT"    "Contig 4: CACCA"
-
+       "Original"                "1: GTGG"             "2: GGT"          "3: GGT"             "4: CACCA"
+   
            GTG                      GTG                                          
    +----------------+       +----------------+                                   
    |                |       |                |                                   
@@ -3314,20 +3376,13 @@ PracticalMotifFindingExample
             |      ^                                                    |      ^  
             | GGT  |                                                    | GGT  |  
             +------+                                                    +------+  
-
+   
        CAC     ACC                                                                          CAC     ACC    
-    CA ---> AC ---> CC                                                                   CA ---> AC ---> CC
+    CA ---> AC ---> CC                                                                   CA ---> AC ---> CC 
     ^                |                                                                   ^                |
     |      CCA       |                                                                   |      CCA       |
     +----------------+                                                                   +----------------+
    ```
- 
-   Assemblies often have gaps due to...
-   
-    * repeats in the genome, which make it impossible to fully assemble.
-    * poor coverage_SEQ, which may be cost prohibitive to fix (more read_SEQs required).
-    
-   As such, biologists / bioinformaticians have no choice but to settle on contigs.
 
  * `{bm} ribonucleotide` - Elements that make up RNA, similar to how nucleotides are the elements that make up DNA.
 

@@ -5,7 +5,6 @@ from Graph import Graph
 from Kdmer import Kdmer
 from Read import Read
 from ReadPair import ReadPair
-from Utils import slide_window
 
 T = TypeVar('T')
 

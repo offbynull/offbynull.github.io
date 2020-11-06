@@ -1,4 +1,4 @@
-from FindMaximalNonBranchingPaths import find_maximal_non_branching_paths
+from FindContigs import find_maximal_non_branching_paths
 from Read import Read
 from ToDeBruijnGraph import to_debruijn_graph
 

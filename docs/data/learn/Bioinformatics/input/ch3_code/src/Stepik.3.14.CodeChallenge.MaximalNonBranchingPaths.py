@@ -1,4 +1,4 @@
-from FindMaximalNonBranchingPaths import find_maximal_non_branching_paths
+from FindContigs import find_maximal_non_branching_paths
 from Graph import Graph
 
 with open('/home/user/Downloads/dataset_240267_2(3).txt', mode='r', encoding='utf-8') as f:
