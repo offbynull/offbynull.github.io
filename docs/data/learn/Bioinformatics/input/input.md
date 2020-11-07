@@ -2909,7 +2909,7 @@ I found raw sequencer outputs for e coli but it's too large to use in the reposi
    |k-mer 5  |A|T|T|C|G|
    |consensus|A|T|T|C|C|
 
-   The generate k-mer may also use a hybrid alphabet. The consensus string for the same matrix above using IUPAC nucleotide codes: `WTTSS`.
+   The generated k-mer may also use a hybrid alphabet. The consensus string for the same matrix above using IUPAC nucleotide codes: `WTTSS`.
   
  * `{bm} entropy` - The uncertainty associated with a random variable. Given some set of outcomes for a variable, it's calculated as `{kt} -\sum_{i=1}^{n} P(x_i) log P(x_i)`.
 
