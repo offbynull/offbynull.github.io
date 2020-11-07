@@ -74,6 +74,7 @@
 <li><a href="#H_Genome%20Sequencing">Genome Sequencing</a></li>
 <ul>
 <li><a href="#H1_Find%20Contigs">Find Contigs</a></li>
+<li><a href="#H_Find%20Errors">Find Errors</a></li>
 </ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
@@ -3043,16 +3044,10 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="svgbob_3cc83e04b59a481951a59a2edd92cab8b200b193.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>Note that just because these structures exist doesn't mean that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s they represent definitively have a <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. These structures could have been caused by other problems / may not be problems at all:</p>
+<p>Note that just because these structures exist doesn't mean that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s they represent definitively have <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. These structures could have been caused by other problems / may not be problems at all:</p>
 <ul>
-<li>
-<p>Bubbles may be caused by repetitive regions of DNA.</p>
-<p><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s from different parts of the <a href="#BM_(genome)%2Fi">genome</a> that are the same except for a few positions will show up as bubbles.</p>
-</li>
-<li>
-<p>Bubbles / forks may be caused when <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>.</p>
-<p>When both strands of DNA get tangled into the same graph, it's possible that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s from different strands may form bubbles or forks.</p>
-</li>
+<li>Bubbles may be caused by repetitive regions of DNA: <a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s from different parts of the <a href="#BM_(genome)%2Fi">genome</a> that are the same except for a few positions will show up as bubbles.</li>
+<li>Bubbles / forks may be caused when <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>: When both strands of DNA get tangled into the same graph, it's possible that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s from different strands form bubbles or forks.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -3499,7 +3494,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 </div>
 <p></p>
 <a name="H_Genome%20Sequencing"></a><h2>Genome Sequencing</h2>
-<p><a href="#BM_(genome)%2Fi">Genome</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> is the process of determining which nucleotides are assigned to which positions in a strand of DNA. A machine called a <a href="#BM_(sequencer)%2Fi">sequencer</a> takes multiple copies of the same <a href="#BM_(genome)%2Fi">genome</a>, breaks those copies up into smaller fragments, and scans in those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s. Each <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> is typically the same size but has a unique starting offset. the original larger DNA <a href="#BM_(sequence)%2Fi">sequence</a> can be constructed by finding <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> with overlapping regions and stitching them together.</p>
+<p>A <a href="#BM_(sequencer)%2Fi">sequencer</a> is a machine that takes multiple copies of the same <a href="#BM_(genome)%2Fi">genome</a>, breaks those copies up into smaller fragments, and scans in those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s. Each <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> is typically the same length but has a unique starting offset. The original <a href="#BM_(genome)%2Fi">genome</a> <a href="#BM_(sequence)%2Fi">sequence</a> can be guessed by finding <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s with overlapping regions and stitching them together.</p>
 <table>
 <thead>
 <tr>
@@ -3597,15 +3592,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 </tr>
 </tbody>
 </table>
-<p>The process of stitching together the original <a href="#BM_(genome)%2Fi">genome</a> from its <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s is called <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a>.</p>
-<a name="H1_Find%20Contigs"></a><h3>Find Contigs</h3>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FAssembly%2FFind%20Contigs)_TOPIC%2F">Algorithms/Assembly/Find Contigs</a></li>
-</ul>
-</div>
-<p>In the real-world, <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> has many practical complications that prevent full <a href="#BM_(genome)%2Fi">genome</a> reconstruction:</p>
+<p>This process is called <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a>. In the real-world, <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> has many practical complications that prevent full <a href="#BM_(genome)%2Fi">genome</a> reconstruction:</p>
 <ul>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be missing (<a href="#BM_(sequencer)%2Fi">sequencer</a> didn't capture it).</li>
@@ -3615,11 +3602,56 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be stitch-able in more than one way (multiple <a href="#BM_(genome)%2Fi">genome</a> reconstruction guesses).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may take a long time to stitch (computationally intensive).</li>
 </ul>
-<p>In a perfect world where these problems didn't exist, an <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a> or <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a> may be used to stitch together a <a href="#BM_(genome)%2Fi">genome</a>. The graphs identify different ways the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s overlap, and as such the different ways that a <a href="#BM_(genome)%2Fi">genome</a> could be stitched together.</p>
-<p>In the real-world, the complications described above would make these graphs too tangled and / or <a href="#BM_(disconnected)%2Fi">disconnected</a> to guess a <a href="#BM_(genome)%2Fi">genome</a>. As such, the graphs would still be used but <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s would be pulled be instead: Unambiguous stretch of DNA derived by searching an <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a> / <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a> for paths that are the longest possible stretches of non-branching nodes (<a href="#BM_(indegree)%2Fi">indegree</a> and <a href="#BM_(outdegree)%2Fi">outdegree</a> of 1).</p>
+<p>In a perfect world where most of the practical complications with <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> didn't exist, a graph may be used to stitch together a <a href="#BM_(genome)%2Fi">genome</a>. A graph identifies different ways that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s overlap, and as such the different ways that a <a href="#BM_(genome)%2Fi">genome</a> could be stitched together.</p>
+<p><img src="svgbob_ffd561cf4050e9de3241728977c3ed3955340b8f.svg" alt="Kroki diagram output"></p>
+<a name="H1_Find%20Contigs"></a><h3>Find Contigs</h3>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FAssembly%2FFind%20Contigs)_TOPIC%2F">Algorithms/Assembly/Find Contigs</a></li>
+</ul>
+</div>
+<p>In a perfect world where most of the practical complications with <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> didn't exist, a graph may be used to stitch together a <a href="#BM_(genome)%2Fi">genome</a>. Given a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s, a graph identifies different ways those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s overlap, and as such the different ways that a <a href="#BM_(genome)%2Fi">genome</a> could be stitched together.</p>
+<p><img src="svgbob_ffd561cf4050e9de3241728977c3ed3955340b8f.svg" alt="Kroki diagram output"></p>
+<p>In the real-world, practical complications would make such a graph too tangled and / or <a href="#BM_(disconnected)%2Fi">disconnected</a> to guess a <a href="#BM_(genome)%2Fi">genome</a>. As such, a graph would still be used, but instead of using that graph to <a href="#BM_(assembly%7Cassemble)%2Fi">assemble</a> the entire <a href="#BM_(genome)%2Fi">genome</a>, linear node chains are pulled out instead. These chains are called <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s, and they represent unambiguous stretches of DNA (<a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s where only a single overlap exists).</p>
+<p><img src="svgbob_fe95f02906e6e9e2bbab25e3986bb5a1f23ab318.svg" alt="Kroki diagram output"></p>
+<p>In the example below, the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s for E. coli bacteria are constructed into a graph and <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s are extracted.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>I found raw <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs for bacterial organisms but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be be too resource intensive to run. As such, this story has no practical example.</p>
+<p>I found raw <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.</p>
+</div>
+<a name="H_Find%20Errors"></a><h3>Find Errors</h3>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FAssembly%2FFind%20Bubbles)_TOPIC%2F">Algorithms/Assembly/Find Bubbles</a></li>
+</ul>
+</div>
+<p>In the real-world, <a href="#BM_(sequencer)%2Fi">sequencer</a>s introduce <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s in the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s they scan. As such, any graph would very likely contain invalid parts. These invalid parts typically manifest as bubbles and forks in the graph.</p>
+<p>For example, imagine that the <a href="#BM_(sequencer)%2Fi">sequencer</a> captures that same part of the <a href="#BM_(genome)%2Fi">genome</a> twice, but the second time the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> contains a <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>. Depending on where the incorrect nucleotide is, one of the 3 structures will get introduced into the graph:</p>
+<ul>
+<li>
+<p>ATTGG vs A<strong>C</strong>TGG (within first 2 elements)</p>
+<p><img src="svgbob_0c0a09e604164ee4ffcdc4f3fcfa420c2035cdd5.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>ATTGG vs ATT<strong>C</strong>G (within last 2 elements)</p>
+<p><img src="svgbob_8749bd635048fbfa4bd483e9c5425e73ff41a8d1.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>ATTGG vs AT<strong>C</strong>GG (sandwiched after first 2 elements and before last 2 elements)</p>
+<p><img src="svgbob_3cc83e04b59a481951a59a2edd92cab8b200b193.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>Note that just because these structures exist doesn't mean that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s they represent definitively have <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. These structures could have been caused by other problems / may not be problems at all:</p>
+<ul>
+<li>Bubbles may be caused by repetitive regions of DNA: <a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s from different parts of the <a href="#BM_(genome)%2Fi">genome</a> that are the same except for a few positions will show up as bubbles.</li>
+<li>Bubbles / forks may be caused when <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>: When both strands of DNA get tangled into the same graph, it's possible that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s from different strands form bubbles or forks.</li>
+</ul>
+<p>In the example below, the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s for E. coli bacteria are constructed into a graph and bubbles / forks are removed.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I found raw <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.</p>
 </div>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
@@ -3985,7 +4017,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 </li>
 <li>
 <p><a name="BM_(sequencing%7Csequenced)%2Fi"></a><strong>sequencing</strong> - The process of determining which nucleotides are assigned to which positions in a strand of DNA or RNA.</p>
-<p>The machinery used for DNA <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> is called a <a href="#BM_(sequencer)%2Fi">sequencer</a>. A <a href="#BM_(sequencer)%2Fi">sequencer</a> takes multiple copies of the same DNA, breaks that DNA up into smaller fragments, and scans in those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s. Each <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> is typically the same size but has a unique starting offset. Because the starting offsets are all different, the original larger DNA <a href="#BM_(sequence)%2Fi">sequence</a> can be constructed by finding <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> with overlapping regions and stitching them together.</p>
+<p>The machinery used for DNA <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> is called a <a href="#BM_(sequencer)%2Fi">sequencer</a>. A <a href="#BM_(sequencer)%2Fi">sequencer</a> takes multiple copies of the same DNA, breaks that DNA up into smaller fragments, and scans in those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s. Each <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> is typically the same length but has a unique starting offset. Because the starting offsets are all different, the original larger DNA <a href="#BM_(sequence)%2Fi">sequence</a> can be guessed at by finding <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> with overlapping regions and stitching them together.</p>
 <table>
 <thead>
 <tr>
@@ -4102,7 +4134,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><a name="BM_(fragment)_SEQ%2Fi"></a><strong>fragment</strong> - A scanned <a href="#BM_(sequence)%2Fi">sequence</a> returned by a <a href="#BM_(sequencer)%2Fi">sequencer</a>. Represented as either a <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> or a <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>.</p>
 </li>
 <li>
-<p><a name="BM_(assembly%7Cassemble)%2Fi"></a><strong>assembly</strong> - The process of stitching together overlapping <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s to construct the <a href="#BM_(sequence)%2Fi">sequence</a> of the original larger DNA that those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s came from.</p>
+<p><a name="BM_(assembly%7Cassemble)%2Fi"></a><strong>assembly</strong> - The process of stitching together overlapping <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s to guess the <a href="#BM_(sequence)%2Fi">sequence</a> of the original larger DNA <a href="#BM_(sequence)%2Fi">sequence</a> that those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s came from.</p>
 </li>
 <li>
 <p><a name="BM_(hybrid%20alphabet%7Calternate%20alphabet%7Calternative%20alphabet)%2Fi"></a><strong>hybrid alphabet</strong> - When representing a <a href="#BM_(sequence)%2Fi">sequence</a> that isn't fully conserved, it may be more appropriate to use an alphabet where each letter can represent more than 1 nucleotide. For example, the <a href="#BM_(IUPAC%20nucleotide%20code)%2Fi">IUPAC nucleotide code</a>s provides the following alphabet:</p>
