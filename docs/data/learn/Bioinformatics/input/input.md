@@ -1564,9 +1564,10 @@ Sequencers produce fragment_SEQs, but fragment_SEQs by themselves typically aren
 
  * Fragment_SEQs are for both strands (strand of double-stranded DNA a fragment_SEQ's from isn't known).
  * Fragment_SEQs may be missing (sequencer didn't capture it).
- * Fragment_SEQs may have incorrect occurrence counts (sequencer captured it too many/few times).
+ * Fragment_SEQs may have inconsistent coverage_SEQ (sequencer captured it too many/few times).
+ * Fragment_SEQs may be repeated (regions of the genome may repeat).
  * Fragment_SEQs may have errors (sequencer produced sequencing errors).
- * Fragment_SEQs may be stitch-able in more than one way (multiple guesses).
+ * Fragment_SEQs may be stitch-able in more than one way (multiple genome reconstruction guesses).
  * Fragment_SEQs may take a long time to stitch (computationally intensive).
 
 Never the less, in an ideal world where most of these problems don't exist, an overlap graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. An overlap graph assumes that the fragment_SEQs it's operating on ...
@@ -1698,9 +1699,10 @@ Sequencers produce fragment_SEQs, but fragment_SEQs by themselves typically aren
 
  * Fragment_SEQs are for both strands (strand of double-stranded DNA a fragment_SEQ's from isn't known).
  * Fragment_SEQs may be missing (sequencer didn't capture it).
- * Fragment_SEQs may have incorrect occurrence counts (sequencer captured it too many/few times).
+ * Fragment_SEQs may have inconsistent coverage_SEQ (sequencer captured it too many/few times).
+ * Fragment_SEQs may be repeated (regions of the genome may repeat).
  * Fragment_SEQs may have errors (sequencer produced sequencing errors).
- * Fragment_SEQs may be stitch-able in more than one way (multiple guesses).
+ * Fragment_SEQs may be stitch-able in more than one way (multiple genome reconstruction guesses).
  * Fragment_SEQs may take a long time to stitch (computationally intensive).
 
 Never the less, in an ideal world where most of these problems don't exist, a de Bruijn graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. A de Bruijn graph assumes that the fragment_SEQs it's operating on ...
@@ -1994,12 +1996,13 @@ TG ---> GG      GT       TG ---> GG      GT       GG      GT        GG      GT
 
  * Fragment_SEQs are for both strands (strand of double-stranded DNA a fragment_SEQ's from isn't known).
  * Fragment_SEQs may be missing (sequencer didn't capture it).
- * Fragment_SEQs may have incorrect occurrence counts (sequencer captured it too many/few times).
+ * Fragment_SEQs may have inconsistent coverage_SEQ (sequencer captured it too many/few times).
+ * Fragment_SEQs may be repeated (regions of the genome may repeat).
  * Fragment_SEQs may have errors (sequencer produced sequencing errors).
- * Fragment_SEQs may be stitch-able in more than one way (multiple guesses).
+ * Fragment_SEQs may be stitch-able in more than one way (multiple genome reconstruction guesses).
  * Fragment_SEQs may take a long time to stitch (computationally intensive).
 
-These complications result in graphs that are too tangled, disconnected, etc... As such, the best someone can do is to pull out the contigs in the graph: unambiguous stretches of contiguous DNA.
+These complications result in graphs that are too tangled, disconnected, etc... As such, the best someone can do is to pull out the contigs in the graph: unambiguous stretches of DNA.
 
 **ALGORITHM**:
 
@@ -2023,7 +2026,7 @@ CCA
 
 # Stories
 
-## Bacteria Replication
+## Bacterial Genome Replication
 
 Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the replication origin (ori) is the region in which DNA replication starts, while the replication terminus (ter) is where it ends. The ori and ter and usually placed on opposite ends of each other.
 
@@ -2423,6 +2426,45 @@ The example below hard codes k to 18, but you typically don't know what k should
 PracticalMotifFindingExample
 ```
 
+## Genome Sequencing
+
+Genome sequencing is the process of determining which nucleotides are assigned to which positions in a strand of DNA. A machine called a sequencer takes multiple copies of the same genome, breaks those copies up into smaller fragment_NORMs, and scans in those fragment_SEQs. Each fragment_SEQ is typically the same size but has a unique starting offset. the original larger DNA sequence can be constructed by finding fragment_SEQ with overlapping regions and stitching them together.
+
+   |             |0|1|2|3|4|5|6|7|8|9|
+   |-------------|-|-|-|-|-|-|-|-|-|-|
+   |read_SEQ 1   | | | | |C|T|T|C|T|T|
+   |read_SEQ 2   | | | |G|C|T|T|C|T| |
+   |read_SEQ 3   | | |T|G|C|T|T|C| | |
+   |read_SEQ 4   | |T|T|G|C|T|T| | | |
+   |read_SEQ 5   |A|T|T|G|C|T| | | | |
+   |reconstructed|A|T|T|G|C|T|T|C|T|T|
+
+The process of stitching together the original genome from its fragment_SEQs is called assembly.
+
+### Find Contigs
+
+```{prereq}
+Algorithms/Assembly/Find Contigs_TOPIC
+```
+
+In the real-world, assembly has many practical complications that prevent full genome reconstruction:
+
+ * Fragment_SEQs are for both strands (strand of double-stranded DNA a fragment_SEQ's from isn't known).
+ * Fragment_SEQs may be missing (sequencer didn't capture it).
+ * Fragment_SEQs may have inconsistent coverage_SEQ (sequencer captured it too many/few times).
+ * Fragment_SEQs may be repeated (regions of the genome may repeat).
+ * Fragment_SEQs may have errors (sequencer produced sequencing errors).
+ * Fragment_SEQs may be stitch-able in more than one way (multiple genome reconstruction guesses).
+ * Fragment_SEQs may take a long time to stitch (computationally intensive).
+
+In a perfect world where these problems didn't exist, an overlap graph or de Bruijn graph may be used to stitch together a genome. The graphs identify different ways the fragment_SEQs overlap, and as such the different ways that a genome could be stitched together.
+
+In the real-world, the complications described above would make these graphs too tangled and / or disconnected to guess a genome. As such, the graphs would still be used but contigs would be pulled be instead: Unambiguous stretch of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1).
+
+````{note}
+I found raw sequencer outputs for bacterial organisms but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be be too resource intensive to run. As such, this story has no practical example.
+````
+
 # Terminology
 
  * `{bm} k-mer/(\d+-mer|k-mer|kmer)/i` - A subsequence of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:
@@ -2779,7 +2821,7 @@ PracticalMotifFindingExample
 
  * `{bm} sequencing/(sequencing|sequenced)/i` - The process of determining which nucleotides are assigned to which positions in a strand of DNA or RNA.
 
-   The machinery used for DNA sequencing is called a sequencer. A sequencer takes multiple copies of the same DNA, breaks that DNA up into smaller fragment_NORMs, and scans in those fragment_SEQs. Each fragment_SEQ is typically the same size but has a unique starting offset. Because the starting offsets are all different, the original larger DNA sequence that can be constructed by finding fragment_SEQ with overlapping regions and stitching them together.
+   The machinery used for DNA sequencing is called a sequencer. A sequencer takes multiple copies of the same DNA, breaks that DNA up into smaller fragment_NORMs, and scans in those fragment_SEQs. Each fragment_SEQ is typically the same size but has a unique starting offset. Because the starting offsets are all different, the original larger DNA sequence can be constructed by finding fragment_SEQ with overlapping regions and stitching them together.
 
    |             |0|1|2|3|4|5|6|7|8|9|
    |-------------|-|-|-|-|-|-|-|-|-|-|
@@ -3329,7 +3371,7 @@ PracticalMotifFindingExample
    What purpose does this actually serve? Mimicking 1 long read-pair as n shorter read-pairs isn't equivalent to actually having sequenced those n shorter read-pairs. For example, what if the longer read-pair being broken up has an error? That error replicates when breaking into n shorter read-pairs, which gives a false sense of having good coverage_SEQ and makes it seems as if it wasn't an error.
    ```
 
- * `{bm} contig/(contig)s?\b/i/true/true` - A piece of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1). Each stretch will be a path that's either  ...
+ * `{bm} contig/(contig)s?\b/i/true/true` - An unambiguous stretch of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1). Each stretch will be a path that's either  ...
   
     * a line: each node has an indegree and outdegree of 1.
    
