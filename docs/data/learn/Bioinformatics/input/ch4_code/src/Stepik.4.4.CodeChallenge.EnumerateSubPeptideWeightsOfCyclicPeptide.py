@@ -1,10 +1,11 @@
+from Utils import get_amino_acid_to_mass_table
+
 with open('/home/user/Downloads/dataset_240279_4.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 
 data = data.strip()
 
-mass_table = {'G': 57, 'A': 71, 'S': 87, 'P': 97, 'V': 99, 'T': 101, 'C': 103, 'I': 113, 'L': 113, 'N': 114, 'D': 115,
-              'K': 128, 'Q': 128, 'E': 129, 'M': 131, 'H': 137, 'F': 147, 'R': 156, 'Y': 163, 'W': 186}
+mass_table = get_amino_acid_to_mass_table()
 
 # THIS IS THE BRUTEFORCE METHOD. IT WORKS JUST FINE.
 # # prepopulate with weight for subpeptide of length 0 and subpeptide of length n (the entire the peptide)
