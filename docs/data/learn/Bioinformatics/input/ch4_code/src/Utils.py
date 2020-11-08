@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import Counter
 from random import Random
 from typing import Tuple, Optional, List, TypeVar, Dict
 
@@ -226,3 +227,68 @@ def mass_sequence_to_amino_acid_sequence_possibilities(mass_chain: List[int]) ->
                 new_ret.append(r)
         ret = new_ret
     return ret
+
+
+class HashableCounter(Counter):
+    def __init__(self, v=None):
+        if v is None:
+            super().__init__()
+        else:
+            super().__init__(v)
+
+    def __hash__(self):
+        return hash(tuple(sorted(self.items())))
+
+
+class HashableList(list):
+    def __init__(self, v=None):
+        if v is None:
+            super().__init__()
+        else:
+            super().__init__(v)
+
+    def __hash__(self):
+        return hash(tuple(self))
+
+
+class HashableSet(set):
+    def __init__(self, v=None):
+        if v is None:
+            super().__init__()
+        else:
+            super().__init__(v)
+
+    def __hash__(self):
+        return hash(tuple(self))
+
+
+class HashableDict(dict):
+    def __init__(self, v=None):
+        if v is None:
+            super().__init__()
+        else:
+            super().__init__(v)
+
+    def __hash__(self):
+        return hash(tuple(sorted(self.items())))
+
+
+T = TypeVar('T')
+
+
+# This method checks to make sure that all elements of sorted_this are contained in sorted_other. Both lists must be
+# sorted smallest to largest.
+def contains_all_sorted(sorted_this: List[T], sorted_other: List[T]) -> bool:
+    this_idx = 0
+    other_idx = 0
+    for i in range(0, len(sorted_this)):
+        this_elem = sorted_this[this_idx]
+        other_elem = sorted_other[other_idx]
+        while other_elem < this_elem:
+            other_idx += 1
+            other_elem = sorted_other[other_idx]
+        if other_elem > this_elem:
+            return False
+        this_idx += 1
+        other_idx += 1
+    return True

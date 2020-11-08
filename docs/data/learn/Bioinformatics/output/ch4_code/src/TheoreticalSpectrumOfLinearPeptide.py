@@ -1,12 +1,12 @@
 from itertools import accumulate
-from typing import List, TypeVar
+from typing import List, TypeVar, Union
 
 from Utils import get_amino_acid_to_mass_table
 
 T = TypeVar('T')
 
 
-def theoretical_spectrum_of_linear_peptide(peptide: str, mass_table=None) -> List[int]:
+def theoretical_spectrum_of_linear_peptide(peptide: Union[str, List[T]], mass_table=None) -> List[int]:
     if mass_table is None:
         mass_table = get_amino_acid_to_mass_table()
 
