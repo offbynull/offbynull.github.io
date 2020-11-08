@@ -1544,7 +1544,7 @@ Algorithms/Assembly/Probability of Fragment Occurrence_TOPIC
 
 This is called an overlap graph.
 
-**WHY**: An overlap graph shows the different ways that fragment_SEQs can be stitched together. A path in in an overlap graph that touches each node exactly once is one possibility for the original single stranded DNA that the fragment_SEQs came from. For example...
+**WHY**: An overlap graph shows the different ways that fragment_SEQs can be stitched together. A path in an overlap graph that touches each node exactly once is one possibility for the original single stranded DNA that the fragment_SEQs came from. For example...
 
   * \[TTA, TAG, AGT, GTT, TTA, TAC, ACT, CTT\] ⟶ TTAGTTACTT
   * \[TTA, TAC, ACT, CTT, TTA, TAG, AGT, GTT\] ⟶ TTACTTAGTT
@@ -2496,7 +2496,7 @@ In the real-world, practical complications would make such a graph too tangled a
 In the example below, the fragment_SEQs for E. coli bacteria are constructed into a graph and contigs are extracted.
 
 ````{note}
-I found raw sequencer outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.
+I found raw sequencer outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.
 ````
 
 ### Find Errors
@@ -2562,7 +2562,7 @@ Note that just because these structures exist doesn't mean that the fragment_SEQ
 In the example below, the fragment_SEQs for E. coli bacteria are constructed into a graph and bubbles / forks are removed.
 
 ````{note}
-I found raw sequencer outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.
+I found raw sequencer outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.
 ````
 
 # Terminology
@@ -2876,7 +2876,7 @@ I found raw sequencer outputs for e coli but it's too large to use in the reposi
    * never seen an even occur in the past, it doesn't mean that there's a 0.0 probability of it occurring next.
    * always seen an event occur in the past, it doesn't mean that there's a 1.0 probability of it occurring next.
  
-   Unless you're dealing with hard logical statements where prior occurrences don't come in to play (e.g. 1+1=2), you should include a small chance that some extremely unlikely event may happen. The example tossed around is "the probability that the sun will not rise tomorrow." Prior recorded observations show that that sun has always risen, but that doesn't mean that there's a 1.0 probability of the sun rising tomorrow (e.g. some extremely unlikely cataclysmic event may prevent the sun from rising).
+   Unless you're dealing with hard logical statements where prior occurrences don't come in to play (e.g. 1+1=2), you should include a small chance that some extremely unlikely event may happen. The example tossed around is "the probability that the sun will not rise tomorrow." Prior recorded observations show that sun has always risen, but that doesn't mean that there's a 1.0 probability of the sun rising tomorrow (e.g. some extremely unlikely cataclysmic event may prevent the sun from rising).
 
  * `{bm} Laplace's rule of succession/(Laplace's rule of succession|Laplace's rule)/i` - If some independent true/false event occurs n times, and s of those n times were successes, it's natural for people to assume the probability of success is `{kt} \frac{s}{n}`. However, if the number of successes is 0, the probability would be 0.0. Cromwell's rule states that when a probability is based off past events, 0.0 and 1.0 shouldn't be used. As such, a more appropriate / meaningful measure of probability is `{kt} \frac{s+1}{n+2}`.
 
@@ -3646,7 +3646,7 @@ I found raw sequencer outputs for e coli but it's too large to use in the reposi
     * You can start dividing at index 0, 1, or 2.
     * You can divide either the DNA string itself or the reverse complementing DNA string.
  
-   For example, given the the string ATGTTCCATTAA, the the following codon division are possible:
+   For example, given the string ATGTTCCATTAA, the following codon division are possible:
 
     | DNA          | Start Index | Discard Prefix | Codons             | Discard Suffix |
     |--------------|-------------|----------------|--------------------|----------------|
