@@ -1,5 +1,4 @@
 from LeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
-from Utils import get_unique_amino_acid_masses_as_dict
 
 with open('/home/user/Downloads/dataset_240283_2.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
