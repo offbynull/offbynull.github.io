@@ -273,6 +273,7 @@ class HashableDict(dict):
         return hash(tuple(sorted(self.items())))
 
 
+N = TypeVar('N', int, float)
 T = TypeVar('T')
 
 
