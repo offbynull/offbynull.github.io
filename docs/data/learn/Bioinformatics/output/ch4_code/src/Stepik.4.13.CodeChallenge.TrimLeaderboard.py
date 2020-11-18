@@ -1,4 +1,4 @@
-from ScoreSpectrums import top_n_peptides_including_last_place_ties
+from NaiveScoreSpectrums import top_n_peptides_including_last_place_ties
 
 with open('/home/user/Downloads/dataset_240288_3(2).txt', mode='r', encoding='utf-8') as f:
     data = f.read()

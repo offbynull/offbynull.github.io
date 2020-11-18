@@ -12,6 +12,7 @@ def spectrum_convolution(experimental_spectrum: List[int], min_mass=57, max_mass
             mass_diff = row_mass - col_mass
             if min_mass <= mass_diff <= max_mass:
                 diffs.append(mass_diff)
+    diffs.sort()
     return diffs
 
 

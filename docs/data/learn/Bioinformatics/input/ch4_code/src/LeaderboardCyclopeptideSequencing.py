@@ -1,6 +1,6 @@
 from typing import List, Optional, Dict, Set, TypeVar
 
-from ScoreSpectrums import score_spectrums, top_n_peptides_including_last_place_ties
+from NaiveScoreSpectrums import score_spectrums, top_n_peptides_including_last_place_ties
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
 from Utils import HashableList, contains_all_sorted, get_amino_acid_to_mass_table

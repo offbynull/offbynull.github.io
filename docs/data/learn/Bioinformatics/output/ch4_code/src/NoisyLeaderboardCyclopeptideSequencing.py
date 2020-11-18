@@ -1,7 +1,7 @@
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Tuple
 
-from FuzzyScoreSpectrums2 import score_spectrums
-from Leaderboard import Leaderboard
+from NoisyScoreSpectrums import score_spectrums
+from NoisyLeaderboard import Leaderboard
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 from Utils import get_amino_acid_to_mass_table, T, N
 
@@ -40,25 +40,25 @@ def sequence_cyclic_peptide(
         n: int,
         mass_table: Dict[T, N],
         score_func: Callable[[List[N], List[N]], int],
-        final_mass_tolerance: N,
+        mass_ranges: List[Tuple[N, N]],
         top_peptides_max_backlog: int
-) -> Dict[int, List[List[T]]]:
+) -> Dict[Tuple[N, N], Dict[int, List[List[T]]]]:
     cyclopeptide_experimental_spectrum.sort()  # Just in case -- it should already be sorted
-    cyclopeptide_experimental_mass = cyclopeptide_experimental_spectrum[-1]
-    upper_allowable_mass = cyclopeptide_experimental_mass + final_mass_tolerance
-    lower_allowable_mass = cyclopeptide_experimental_mass - final_mass_tolerance
 
     leaderboard = Leaderboard(cyclopeptide_experimental_spectrum, mass_table, score_func)
-    top_peptides = TopPeptidesTracker(cyclopeptide_experimental_spectrum, mass_table, score_func, top_peptides_max_backlog)
+    top_peptide_bins = dict([(mr, TopPeptidesTracker(cyclopeptide_experimental_spectrum, mass_table, score_func, top_peptides_max_backlog)) for mr in mass_ranges])
     while len(leaderboard) > 0:
         # Branch
         leaderboard.expand()
         # Bound
-        filtered = leaderboard.filter_based_on_mass(lower_allowable_mass, upper_allowable_mass)
-        [top_peptides.add(p) for p in filtered]
+        filtered = leaderboard.filter_based_on_mass(mass_ranges)
+        for mr, peptides in filtered.items():
+            top_peptides = top_peptide_bins[mr]
+            for p in peptides:
+                top_peptides.add(p)
         leaderboard.trim(n)
 
-    return top_peptides.dump()
+    return dict([(mr, top_peptides.dump()) for mr, top_peptides in top_peptide_bins.items()])
 
 
 if __name__ == '__main__':

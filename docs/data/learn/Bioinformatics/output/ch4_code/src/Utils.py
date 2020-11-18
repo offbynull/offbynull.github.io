@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 from random import Random
-from typing import Tuple, Optional, List, TypeVar, Dict
+from typing import Tuple, Optional, List, TypeVar, Dict, Generator
 
 
 def count_kmers(data_len: int, k: int) -> int:
@@ -293,3 +293,8 @@ def contains_all_sorted(sorted_this: List[T], sorted_other: List[T]) -> bool:
         this_idx += 1
         other_idx += 1
     return True
+
+
+def rotate(l: List[T]) -> Generator[T]:
+    for i in range(0, len(l)):
+        yield l[i:] + l[:i]

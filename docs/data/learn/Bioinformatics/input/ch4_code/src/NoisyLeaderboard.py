@@ -1,4 +1,4 @@
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Tuple
 
 from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
 from Utils import T, N
@@ -41,16 +41,19 @@ class Leaderboard:
         self.peptides = [p for p, _ in sorted_peptide_scores]
 
     # Filter out peptides that have a mass in some range
-    def filter_based_on_mass(self, min_mass: N, max_mass: N) -> List[List[T]]:
-        filtered = []
+    def filter_based_on_mass(self, mass_ranges: List[Tuple[N, N]]) -> Dict[Tuple[N, N], List[List[T]]]:
+        max_mass = max([mass_range[1] for mass_range in mass_ranges])
+        filtered = dict([(mass_range, []) for mass_range in mass_ranges])
         new_peptides = []
         for i in range(len(self.peptides) - 1, -1, -1):  # walk indices backwards
             p = self.peptides.pop(i)
             p_mass = sum([self.mass_table[aa] for aa in p])
             if p_mass > max_mass:
                 continue
-            elif min_mass <= p_mass <= max_mass:
-                filtered.append(p)
+            for filter_mass_range, filter_peptides in filtered.items():
+                range_min_mass, range_max_mass = filter_mass_range
+                if range_min_mass <= p_mass <= range_max_mass:
+                    filter_peptides.append(p)
             new_peptides.append(p)
         self.peptides = new_peptides
         return filtered
