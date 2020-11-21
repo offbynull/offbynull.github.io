@@ -1,9 +1,11 @@
-from typing import List, Counter
+import typing
+from collections import Counter
+from typing import List
 
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 
 
-def group_fuzzy_convolution_matches(masses: List[float], tolerance: float):
+def group_fuzzy_convolution_matches(masses: List[float], tolerance: float) -> typing.Counter[float]:
     masses = sorted(masses)
     length = len(masses)
     ret = Counter()
@@ -29,7 +31,7 @@ def group_fuzzy_convolution_matches(masses: List[float], tolerance: float):
     return ret
 
 
-def spectrum_convolution(experimental_spectrum: List[float], tolerance: float, min_mass=57.0, max_mass=200.0) -> Counter[float]:
+def spectrum_convolution(experimental_spectrum: List[float], tolerance: float, min_mass=57.0, max_mass=200.0, round_digits=-1) -> typing.Counter[float]:
     min_mass -= tolerance
     max_mass += tolerance
 
@@ -38,6 +40,8 @@ def spectrum_convolution(experimental_spectrum: List[float], tolerance: float, m
     for row_idx, row_mass in enumerate(experimental_spectrum):
         for col_idx, col_mass in enumerate(experimental_spectrum):
             mass_diff = row_mass - col_mass
+            if round_digits != -1:
+                mass_diff = round(mass_diff, round_digits)
             if min_mass <= mass_diff <= max_mass:
                 diffs.append(mass_diff)
 
