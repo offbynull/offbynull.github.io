@@ -2,14 +2,17 @@ from __future__ import annotations
 
 from collections import Counter
 from random import Random
-from typing import Tuple, Optional, List, TypeVar, Dict, Generator
+from typing import Tuple, Optional, List, TypeVar, Dict, Generator, Union
 
 
 def count_kmers(data_len: int, k: int) -> int:
     return data_len - k + 1
 
 
-def slide_window(data: str, k: int, cyclic: bool = False) -> Tuple[str, int]:
+S = TypeVar('S', str, List)
+
+
+def slide_window(data: S, k: int, cyclic: bool = False) -> Tuple[S, int]:
     for i in range(0, len(data) - k + 1):
         yield data[i:i+k], i
     if not cyclic:
