@@ -1,11 +1,35 @@
-from typing import List, Optional, Dict, Set, TypeVar
+from typing import List, Optional, Dict, TypeVar
 
-from NaiveScoreSpectrums import score_spectrums, top_n_peptides_including_last_place_ties
+from NaiveScoreSpectrums import score_spectrums
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
-from Utils import HashableList, contains_all_sorted, get_amino_acid_to_mass_table
+from Utils import get_amino_acid_to_mass_table
 
 T = TypeVar('T')
+
+
+# Score a set of peptides against a reference spectrum and return the top n (including ties at the end, so it may be end
+# up being more than n).
+def top_n_peptides_including_last_place_ties(
+        peptides: List[List[T]],
+        reference_spectrum: List[int],
+        n: int,
+        mass_table=None
+) -> List[List[T]]:
+    if len(peptides) == 0:
+        return peptides
+
+    spectrums = [theoretical_spectrum_of_linear_peptide(p, mass_table) for p in peptides]
+    scores = [score_spectrums(s, reference_spectrum) for s in spectrums]
+    sorted_peptide_scores = list(sorted(zip(peptides, scores), key=lambda x: x[1], reverse=True))  # big to small
+
+    # Return first n elements from sorted_peptide_scores, but since we're including ending ties we need to check if the
+    # element at n repeats. If it does, include the repeats (the result wil be larger than n).
+    for j in range(n + 1, len(sorted_peptide_scores)):
+        if sorted_peptide_scores[n][1] > sorted_peptide_scores[j][1]:
+            return [p for p, _ in sorted_peptide_scores[:j-1]]
+    return [p for p, _ in sorted_peptide_scores]
+
 
 
 def sequence_cyclic_peptide(

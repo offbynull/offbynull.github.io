@@ -1,23 +1,23 @@
-
-from collections import Counter
-from random import Random
 from typing import List
 
-from NoisyGroupPeptides import group_peptides_within_tolerance
 from NoisyMassesLeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
 from NoisyMassesScoreSpectrums import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
 from NoisySpectrumConvolution import spectrum_convolution
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-from Utils import HashableList, rotate, get_unique_amino_acid_masses_as_dict
+from Utils import rotate
+
 
 with open('real_spectrum.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 cyclopeptide_exp_spec = [float(w) for w in data.strip().split()]
 cyclopeptide_exp_spec.sort()  # should be sorted already, but just in case
 
-m = 100
+m = 30
 n = 1000
+noise_tolerance = 0.3  # max amount of noise per spectrum entry
+guessed_len = 10  # how long you think the peptide is
+allowable_trailing = 25  # for peptides to be returned, they need to be within x of the top score
+possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[:-11]  # suspected final cyclopeptide mass is in here
 
 
 # r = Random(1)
@@ -43,12 +43,13 @@ n = 1000
 # # sort
 # cyclopeptide_exp_spec.sort()
 #
-# m = 250
-# n = 3000
+# m = 30
+# n = 1000
+# noise_tolerance = 0.3  # max amount of noise per spectrum entry
+# guessed_len = 10  # how long you think the peptide is
+# allowable_trailing = 25  # for peptides to be returned, they need to be within x of the top score
+# possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[:-11]  # suspected final cyclopeptide mass is in here
 
-
-noise_tolerance = 0.3  # max amount of noise per spectrum entry
-guessed_len = 10  # how long you think the peptide is
 
 # remove mass for +1 charge and round
 cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]
@@ -60,8 +61,9 @@ cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]
 #     (+0.3 noise), then the convolution would return 1057.3-999.7=57.6 vs the non-noisy convolution 1057-1000=57.
 #     There's 0.6 difference, which is noisy_tolerance * 2.
 #   - Each returned mass is mapped to the number of masses in range m -/+ (noisy_tolerance * 2) where m is the mass.
-amino_acid_masses = spectrum_convolution(cyclopeptide_exp_spec, noise_tolerance * 2, round_digits=1)
-mass_table = {mass: mass for mass, _ in amino_acid_masses.most_common(m)}
+aa_mass_tolerance = noise_tolerance * 2
+aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round_digits=0)
+mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 
 # run leader board spectrum
 #   - Since the spectrum has false masses. Any of last x elements could be mass of peptide. I used x=11, but it could
@@ -74,20 +76,20 @@ mass_table = {mass: mass for mass, _ in amino_acid_masses.most_common(m)}
 #     the noise in the theoretical spectrum compounds. So, the range used encompasses everything from where all amino
 #     acids have -(noisy_tolerance * 2) to all amino acids have +(noisy_tolerance * 2) for some guessed peptide length
 #     (I guessed a length of 10).
-mass_ranges = [(m - ((noise_tolerance * 2) * guessed_len), m + ((noise_tolerance * 2) * guessed_len)) for m in cyclopeptide_exp_spec[-11:]]
+mass_ranges = [(m - (aa_mass_tolerance * guessed_len), m + (aa_mass_tolerance * guessed_len)) for m in possible_total_cyclopeptide_masses]
 res = sequence_cyclic_peptide(
     cyclopeptide_exp_spec,
     n,
     mass_table,
     mass_ranges,
     noise_tolerance * 2,
-    30)
+    allowable_trailing
+)
 
 # The found peptides are grouped by the mass ranges they were for. Shove everything into a single list.
 all_peptides = []
-for mass_range, leader_peptides in res.items():
-    for score, peptides in leader_peptides.items():
-        all_peptides.extend(peptides)
+for mass_range, peptides in res.items():
+    all_peptides.extend(peptides)
 
 
 # Print out the list -- if this were for fake_peptide, the function below can be used as a heuristic to determine how
@@ -100,10 +102,11 @@ def max_position_distance(p1: List[float], p2: List[float]) -> float:
     return min(max_idx_dists)
 
 
-all_peptides_smoothed = Counter([HashableList([round(aa, 0) for aa in p]) for p in all_peptides])
-peptide_matches = group_peptides_within_tolerance(all_peptides_smoothed, 2.0)
-for p, count in sorted(peptide_matches.items(), key=lambda x: x[1], reverse=True):
+import sys
+sys.stdout = open('output.log', 'w')
+
+for p in all_peptides:
     p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, noise_tolerance * 2)
     score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
-    print(f'{p} len={len(p)} matches={count} score={score}')
-    # print(f'{p} len={len(p)} matches={count} closeness={max_position_distance(p, fake_peptide)} score={score}')
+    print(f'{p} len={len(p)} score={score}')
+    # print(f'{p} len={len(p)} closeness={max_position_distance(p, fake_peptide)} score={score}')

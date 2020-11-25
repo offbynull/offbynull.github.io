@@ -298,6 +298,6 @@ def contains_all_sorted(sorted_this: List[T], sorted_other: List[T]) -> bool:
     return True
 
 
-def rotate(l: List[T]) -> Generator[T]:
+def rotate(l: List[T]) -> Generator[List[T]]:
     for i in range(0, len(l)):
         yield l[i:] + l[:i]
