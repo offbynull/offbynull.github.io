@@ -1,58 +1,64 @@
+from random import Random
 from typing import List
 
 from NoisyMassesLeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
 from NoisyMassesScoreSpectrums import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
 from NoisySpectrumConvolution import spectrum_convolution
-from Utils import rotate
+from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
+from Utils import rotate, get_unique_amino_acid_masses_as_dict
+
+# with open('real_spectrum.txt', mode='r', encoding='utf-8') as f:
+#     data = f.read()
+# cyclopeptide_exp_spec = [float(w) for w in data.strip().split()]
+# cyclopeptide_exp_spec.sort()  # should be sorted already, but just in case
+#
+# m = 30
+# n = 3000
+# noise_tolerance = 0.3  # max amount of noise per spectrum entry
+# guessed_len = 10  # how long you think the peptide is
+# score_backlog = 10  # for peptides to be returned, they need to be within x of the top score
+# possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[-5:]  # suspected final cyclopeptide mass is in here
+#
+# cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]  # remove mass for +1 charge and round
+#
+# aa_mass_tolerance = noise_tolerance * 2
+# aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round_digits=0)
+# mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 
 
-with open('real_spectrum.txt', mode='r', encoding='utf-8') as f:
-    data = f.read()
-cyclopeptide_exp_spec = [float(w) for w in data.strip().split()]
-cyclopeptide_exp_spec.sort()  # should be sorted already, but just in case
+r = Random(1)
+fake_peptide = [147, 97, 147, 147, 114, 128, 163, 99, 71, 156]
+cyclopeptide_exp_spec = theoretical_spectrum_of_cyclic_peptide(fake_peptide, get_unique_amino_acid_masses_as_dict())
+cyclopeptide_exp_spec = [float(w) for w in cyclopeptide_exp_spec]
+# remove 0.2x randomly (but re-add the final mass if it was removed)
+fake_peptide_mass = cyclopeptide_exp_spec[-1]
+r.shuffle(cyclopeptide_exp_spec)
+cyclopeptide_exp_spec = cyclopeptide_exp_spec[:int(len(cyclopeptide_exp_spec) * 0.8)]
+cyclopeptide_exp_spec.sort()
+if cyclopeptide_exp_spec[-1] != fake_peptide_mass:
+    cyclopeptide_exp_spec += [fake_peptide_mass]
+# add noise
+cyclopeptide_exp_spec = [w + r.uniform(-0.3, 0.3) for w in cyclopeptide_exp_spec]
+# add weight of +1 charge (a single proton)
+cyclopeptide_exp_spec = [w + 1.007 for w in cyclopeptide_exp_spec]
+# add 2.0x junk masses
+for i in range(0, int(len(cyclopeptide_exp_spec) * 0.75)):
+    idx = r.randrange(0, len(cyclopeptide_exp_spec))
+    junk_val = cyclopeptide_exp_spec[idx] + r.uniform(0, 50)
+    cyclopeptide_exp_spec.append(junk_val)
+# sort
+cyclopeptide_exp_spec.sort()
 
 m = 30
 n = 1000
 noise_tolerance = 0.3  # max amount of noise per spectrum entry
 guessed_len = 10  # how long you think the peptide is
-allowable_trailing = 25  # for peptides to be returned, they need to be within x of the top score
-possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[:-11]  # suspected final cyclopeptide mass is in here
+score_backlog = 25  # for peptides to be returned, they need to be within x of the top score
+possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[-11:]  # suspected final cyclopeptide mass is in here
 
+cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]  # remove mass for +1 charge and round
 
-# r = Random(1)
-# fake_peptide = [147, 97, 147, 147, 114, 128, 163, 99, 71, 156]
-# cyclopeptide_exp_spec = theoretical_spectrum_of_cyclic_peptide(fake_peptide, mass_table=get_unique_amino_acid_masses_as_dict())
-# cyclopeptide_exp_spec = [float(w) for w in cyclopeptide_exp_spec]
-# # remove 0.2x randomly (but re-add the final mass if it was removed)
-# fake_peptide_mass = cyclopeptide_exp_spec[-1]
-# r.shuffle(cyclopeptide_exp_spec)
-# cyclopeptide_exp_spec = cyclopeptide_exp_spec[:int(len(cyclopeptide_exp_spec) * 0.8)]
-# cyclopeptide_exp_spec.sort()
-# if cyclopeptide_exp_spec[-1] != fake_peptide_mass:
-#     cyclopeptide_exp_spec += [fake_peptide_mass]
-# # add noise
-# cyclopeptide_exp_spec = [w + r.uniform(-0.3, 0.3) for w in cyclopeptide_exp_spec]
-# # add weight of +1 charge (a single proton)
-# cyclopeptide_exp_spec = [w + 1.007 for w in cyclopeptide_exp_spec]
-# # add 2.0x junk masses
-# for i in range(0, int(len(cyclopeptide_exp_spec) * 0.75)):
-#     idx = r.randrange(0, len(cyclopeptide_exp_spec))
-#     junk_val = cyclopeptide_exp_spec[idx] + r.uniform(0, 50)
-#     cyclopeptide_exp_spec.append(junk_val)
-# # sort
-# cyclopeptide_exp_spec.sort()
-#
-# m = 30
-# n = 1000
-# noise_tolerance = 0.3  # max amount of noise per spectrum entry
-# guessed_len = 10  # how long you think the peptide is
-# allowable_trailing = 25  # for peptides to be returned, they need to be within x of the top score
-# possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[:-11]  # suspected final cyclopeptide mass is in here
-
-
-# remove mass for +1 charge and round
-cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]
 
 # run convolution to get possible masses
 #   - Why noisy_tolerance * 2? because each mass in the noisy spectrum is +/-rand(0, noisy_tolerance). Imagine you have
@@ -82,8 +88,8 @@ res = sequence_cyclic_peptide(
     n,
     mass_table,
     mass_ranges,
-    noise_tolerance * 2,
-    allowable_trailing
+    aa_mass_tolerance,
+    score_backlog
 )
 
 # The found peptides are grouped by the mass ranges they were for. Shove everything into a single list.
@@ -106,7 +112,7 @@ import sys
 sys.stdout = open('output.log', 'w')
 
 for p in all_peptides:
-    p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, noise_tolerance * 2)
+    p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
     score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
     print(f'{p} len={len(p)} score={score}')
     # print(f'{p} len={len(p)} closeness={max_position_distance(p, fake_peptide)} score={score}')

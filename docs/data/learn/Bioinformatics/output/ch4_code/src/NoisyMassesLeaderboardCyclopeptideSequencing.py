@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 
 from NoisyMassesScoreSpectrums import score_spectrums, \
     theoretical_spectrum_of_linear_peptide_with_noisy_aminoacid_masses
@@ -9,7 +9,12 @@ from Utils import T
 # Score a set of peptides against an experimental spectrum and return the top n (including ties at the end, so it may be
 # end up being more than n).
 class Leaderboard:
-    def __init__(self, exp_spec: List[float], mass_table: Dict[T, float], amino_acid_mass_tolerance: float):
+    def __init__(
+            self,
+            exp_spec: List[float],
+            mass_table: Dict[T, float],
+            amino_acid_mass_tolerance: float
+    ):
         self.exp_spec = exp_spec
         self.mass_table = mass_table
         self.amino_acid_mass_tolerance = amino_acid_mass_tolerance
@@ -111,7 +116,7 @@ class TopPeptides:
         leaders.append(peptide)
         if peptide_score > self.leader_peptides_top_score:
             self.leader_peptides_top_score = peptide_score
-            if len(self.leader_peptides) > self.max_backlog:
+            if len(self.leader_peptides) >= self.max_backlog:
                 smallest_leader_score = min(self.leader_peptides.keys())
                 self.leader_peptides.pop(smallest_leader_score)
 
@@ -129,7 +134,11 @@ def sequence_cyclic_peptide(
 ) -> Dict[Tuple[float, float], List[List[T]]]:
     cyclopeptide_experimental_spectrum.sort()  # Just in case -- it should already be sorted
 
-    leaderboard = Leaderboard(cyclopeptide_experimental_spectrum, mass_table, amino_acid_mass_tolerance)
+    leaderboard = Leaderboard(
+        cyclopeptide_experimental_spectrum,
+        mass_table,
+        amino_acid_mass_tolerance
+    )
     top_peptide_bins = {mr: TopPeptides(cyclopeptide_experimental_spectrum, mass_table, amino_acid_mass_tolerance, allowable_trailing) for mr in mass_ranges}
     while len(leaderboard) > 0:
         # Branch
