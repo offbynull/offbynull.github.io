@@ -1,8 +1,8 @@
 from typing import List, Dict, Tuple, Optional
 
-from NoisyMassesScoreSpectrums import score_spectrums, \
+from NoisyScoreSpectrums import score_spectrums, \
     theoretical_spectrum_of_linear_peptide_with_noisy_aminoacid_masses
-from NoisyMassesScoreSpectrums import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses
+from NoisyScoreSpectrums import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses
 from Utils import T
 
 
