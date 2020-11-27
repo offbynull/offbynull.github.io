@@ -8,6 +8,32 @@ from NoisySpectrumConvolution import spectrum_convolution
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 from Utils import rotate, get_unique_amino_acid_masses_as_dict
 
+# There are 2 blocks below. The 1st block attempt to sequence a peptide from a real noisy spectrum while the 2nd peptide
+# attempt to sequence a peptide from a generated noisy spectrum. The 1st one (real) gets close to sequencing the real
+# peptide while the 2nd one (generated) can sequence the peptide pretty convincingly. My belief is that the 1st one
+# fails to sequence because it isn't a noisy spectrum in the sense of random noise, but rather it's either...
+#
+#  * parts of multiple spectrums from multiple different but similar peptides blended together.
+#  * a noisy spectrum with specific parts of replaced so as to make the leaderboard algorithm converge in an incorrect
+#    direction for a couple of iterations, causing the peptides for the correct direction to go missing.
+#
+# In either case, the leaderboard algorithm starts getting pushed towards bad subpeptides by the time it expands to the
+# ~5-8th position. So much so that the good subpeptides sink to rank > 200000. At that rank, there's no way a subpeptide
+# makes it past the leaderboard's trim.
+#
+# So how do you deal with this problem? My guess is that you need to either ...
+#
+# * expand the trim limit to capture sub-peptides that fall behind. Doing so adds a lot of computational burden and
+#   returns way too many peptides.
+# * come up with a new scoring/triming mechanism for leaderboard. I tried to measure both how many masses match between
+#   the theoretical spectrum and the experimental spectrum and how closely those matches align (because this is noisy
+#   data). That didn't help too much.
+# * try expanding more than 1 amino acid at a time (I have yet to try this)..
+
+
+# **************************
+# *      REAL SPECTRUM     *
+# **************************
 with open('real_spectrum.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 cyclopeptide_exp_spec = [float(w) for w in data.strip().split()]
@@ -27,6 +53,9 @@ aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round
 mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 
 
+# **************************
+# *   GENERATED SPECTRUM   *
+# **************************
 # r = Random(1)
 # fake_peptide = [147, 97, 147, 147, 114, 128, 163, 99, 71, 156]
 # cyclopeptide_exp_spec = theoretical_spectrum_of_cyclic_peptide(fake_peptide, get_unique_amino_acid_masses_as_dict())
@@ -62,8 +91,7 @@ mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 # For the settings above, the peptide is found. It's one of the best scoring peptides / closest peptides within
 # tolerances...
 # [147.0, 147.0, 114.0, 128.0, 163.0, 99.0, 71.0, 156.0, 147.0, 97.0] len=10 score=(68, 62.11230158730157, 0.9134161998132584)
-
-
+#
 # run convolution to get possible masses
 #   - Why noisy_tolerance * 2? because each mass in the noisy spectrum is +/-rand(0, noisy_tolerance). Imagine you have
 #     a mass spec device adds up to 0.3 in noise to the spectrum. That means that each mass in the spectrum has
@@ -75,6 +103,10 @@ mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 # aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round_digits=0)
 # mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 
+
+# **************************
+# *      SHARED CODE       *
+# **************************
 # run leader board spectrum
 #   - Since the spectrum has false masses. Any of last x elements could be mass of peptide. I used x=11, but it could
 #     even be more than 11.
@@ -101,7 +133,6 @@ all_peptides = []
 for mass_range, peptides in res.items():
     all_peptides.extend(peptides)
 
-
 # Print out the list -- if this were for fake_peptide, the function below can be used as a heuristic to determine how
 # close each returned peptide is to fake_peptide. Showing closeness was useful for debugging the algorithms.
 def max_position_distance(p1: List[float], p2: List[float]) -> float:
@@ -110,7 +141,6 @@ def max_position_distance(p1: List[float], p2: List[float]) -> float:
         max_idx_dist = max(abs(aa2 - aa1) for aa1, aa2 in zip(p1, p2_rotated))
         max_idx_dists.append(max_idx_dist)
     return min(max_idx_dists)
-
 
 import sys
 sys.stdout = open('output.log', 'w')
