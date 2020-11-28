@@ -13,12 +13,16 @@ class Leaderboard:
             self,
             exp_spec: List[float],
             mass_table: Dict[T, float],
-            amino_acid_mass_tolerance: float
+            amino_acid_mass_tolerance: float,
+            initial_peptides: Optional[List[List[T]]] = None
     ):
         self.exp_spec = exp_spec
         self.mass_table = mass_table
         self.amino_acid_mass_tolerance = amino_acid_mass_tolerance
-        self.peptides = [[]]
+        if initial_peptides is None:
+            self.peptides = [[]]
+        else:
+            self.peptides = initial_peptides[:]
 
     def expand(self):
         expanded_peptides = []
@@ -130,14 +134,16 @@ def sequence_cyclic_peptide(
         mass_table: Dict[T, float],
         mass_ranges: List[Tuple[float, float]],
         amino_acid_mass_tolerance: float,
-        allowable_trailing: int
+        allowable_trailing: int,
+        initial_peptides: Optional[List[List[T]]] = None
 ) -> Dict[Tuple[float, float], List[List[T]]]:
     cyclopeptide_experimental_spectrum.sort()  # Just in case -- it should already be sorted
 
     leaderboard = Leaderboard(
         cyclopeptide_experimental_spectrum,
         mass_table,
-        amino_acid_mass_tolerance
+        amino_acid_mass_tolerance,
+        initial_peptides
     )
     top_peptide_bins = {mr: TopPeptides(cyclopeptide_experimental_spectrum, mass_table, amino_acid_mass_tolerance, allowable_trailing) for mr in mass_ranges}
     while len(leaderboard) > 0:
