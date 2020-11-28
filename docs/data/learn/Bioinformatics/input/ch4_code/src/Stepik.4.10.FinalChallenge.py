@@ -8,17 +8,17 @@ from NoisySpectrumConvolution import spectrum_convolution
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 from Utils import rotate, get_unique_amino_acid_masses_as_dict
 
-# There are 2 blocks below. The 1st block attempt to sequence a peptide from a real noisy spectrum while the 2nd peptide
-# attempt to sequence a peptide from a generated noisy spectrum. The 1st one (real) gets close to sequencing the real
+# There are 2 blocks below. The 1st block attempts to sequence a peptide from a real noisy spectrum while the 2nd block
+# attempts to sequence a peptide from a generated noisy spectrum. The 1st one (real) gets close to sequencing the real
 # peptide while the 2nd one (generated) can sequence the peptide pretty convincingly. My belief is that the 1st one
 # fails to sequence because it isn't a noisy spectrum in the sense of random noise, but rather it's either...
 #
 #  * parts of multiple spectrums from multiple different but similar peptides blended together.
 #  * a noisy spectrum with specific parts of replaced so as to make the leaderboard algorithm converge in an incorrect
-#    direction for a couple of iterations, causing the peptides for the correct direction to go missing.
+#    direction for a fewf iterations, causing the subpeptides for the correct direction to get trimmed out.
 #
 # In either case, the leaderboard algorithm starts getting pushed towards bad subpeptides by the time it expands to the
-# ~5-8th position. So much so that the good subpeptides sink to rank > 200000. At that rank, there's no way a subpeptide
+# ~5-6th position. So much so that the good subpeptides sink to rank > 200000. At that rank, there's no way a subpeptide
 # makes it past the leaderboard's trim.
 #
 # So how do you deal with this problem? My guess is that you need to either ...
@@ -28,7 +28,27 @@ from Utils import rotate, get_unique_amino_acid_masses_as_dict
 # * come up with a new scoring/triming mechanism for leaderboard. I tried to measure both how many masses match between
 #   the theoretical spectrum and the experimental spectrum and how closely those matches align (because this is noisy
 #   data). That didn't help too much.
-# * try expanding more than 1 amino acid at a time (I have yet to try this)..
+# * try expanding more than 1 amino acid at a time (I have yet to try this).
+# * at each expand/trim step, try searching for subpeptides in the leaderboard that may be stitchable together and if
+#   they score well on stitching then keep them around or use them to influence your next expansion (I have yet to try
+#   this).
+#
+# THE LAST ONE MAY BE A GOOD ONE TO TRY.
+#
+#
+# FOR THE REAL SPECTRUM:
+# During one of my previous iterations of this problem, I solved the peptide for the real noisy spectrum by happenstance
+# + knowing that the peptide was similar to the other tyrocidines solved earlier in this chapter. The algorithm below
+# returns lots of peptides, one of which gets very very close to the answer (one position has an incorrect amino acid).
+# I've been trying to reverse engineer what it is that's causing the real spectrum to be so problematic vs the generated
+# spectrum (which this algorithm solves no problem) and my thoughts are that it isn't a real spectrum but a spectrum
+# that's been intentionally engineered to throw off the leaderboard algorithm (because causing the student grief forces
+# them to try new things / learn more vs easily solving the problem).
+#
+# The peptide for the real spectrum is 99 128 113 147 97 147 147 114 128 163. I've invested as much time as I can into
+# reverse engineering an algorithm for the real spectrum. I can't justify spending much more.
+
+
 
 
 # **************************
@@ -51,6 +71,8 @@ cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]  # 
 aa_mass_tolerance = noise_tolerance * 2
 aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round_digits=0)
 mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
+
+
 
 
 # **************************
@@ -102,6 +124,8 @@ mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 # aa_mass_tolerance = noise_tolerance * 2
 # aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round_digits=0)
 # mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
+
+
 
 
 # **************************
