@@ -6,9 +6,11 @@ from NoisyScoreSpectrums import theoretical_spectrum_of_cyclic_peptide_with_nois
     score_spectrums
 from NoisySpectrumConvolution import spectrum_convolution
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-from Utils import rotate, get_unique_amino_acid_masses_as_dict
 
 # Generate a noisy spectrum for a fake peptide
+from helpers.AminoAcidUtils import get_unique_amino_acid_masses_as_dict
+from helpers.Utils import rotate_left
+
 r = Random(1)
 fake_peptide = [147, 97, 147, 147, 114, 128, 163, 99, 71, 156]
 cyclopeptide_exp_spec = theoretical_spectrum_of_cyclic_peptide(fake_peptide, get_unique_amino_acid_masses_as_dict())
@@ -78,21 +80,16 @@ res = sequence_cyclic_peptide(
     score_backlog
 )
 
-# The found peptides are grouped by the mass ranges they were for. Shove everything into a single list.
-all_peptides = []
-for mass_range, peptides in res.items():
-    all_peptides.extend(peptides)
-
-# Print out the list -- if this were for fake_peptide, the function below can be used as a heuristic to determine how
-# close each returned peptide is to fake_peptide. Showing closeness was useful for debugging the algorithms.
+# The found peptides are grouped by the mass ranges they were for.
 def max_position_distance(p1: List[float], p2: List[float]) -> float:
     max_idx_dists = []
-    for p2_rotated in rotate(p2):
+    for p2_rotated in rotate_left(p2):
         max_idx_dist = max(abs(aa2 - aa1) for aa1, aa2 in zip(p1, p2_rotated))
         max_idx_dists.append(max_idx_dist)
     return min(max_idx_dists)
 
-for p in all_peptides:
-    p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
-    score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
-    print(f'{p} len={len(p)} closeness={max_position_distance(p, fake_peptide)} score={score}')
+for mass_range, peptides in res.items():
+    for p in peptides:
+        p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
+        score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
+        print(f'{mass_range} -> {p} len={len(p)} closeness={max_position_distance(p, fake_peptide)} mass={sum(p)} score={score}')

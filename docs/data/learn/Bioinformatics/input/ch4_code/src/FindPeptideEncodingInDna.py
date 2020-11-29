@@ -1,6 +1,8 @@
 from typing import List
 
-from Utils import slide_window, dna_to_rna, dna_reverse_complement, codon_to_amino_acid, split_to_size
+from helpers.AminoAcidUtils import codon_to_amino_acid
+from helpers.DnaUtils import dna_to_rna, dna_reverse_complement
+from helpers.Utils import slide_window, split_to_size
 
 
 def find_peptide_encodings_in_dna(dna: str, amino_acid_seq: str) -> List[str]:

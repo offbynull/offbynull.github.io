@@ -1,16 +1,14 @@
-import enum
 from bisect import bisect_left
-from enum import Enum
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, TypeVar
 
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
-from Utils import T, slide_window
+from helpers.Utils import slide_window
+
+AA = TypeVar('AA')
 
 
 def determine_mass_tolerance(
-        p: List[T],
-        mass_table: Dict[T, float],
+        p: List[AA],
+        mass_table: Dict[AA, float],
         amino_acid_mass_tolerance: float
 ) -> Tuple[float, float, float]:
     p_mass_tolerance = len(p) * amino_acid_mass_tolerance
@@ -21,8 +19,8 @@ def determine_mass_tolerance(
 
 
 def theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(
-        peptide: List[T],
-        mass_table: Dict[T, float],
+        peptide: List[AA],
+        mass_table: Dict[AA, float],
         amino_acid_mass_tolerance: float
 ) -> List[Tuple[float, float, float]]:
     # Add 0 mass
@@ -41,8 +39,8 @@ def theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(
 
 
 def theoretical_spectrum_of_linear_peptide_with_noisy_aminoacid_masses(
-        peptide: List[T],
-        mass_table: Dict[T, float],
+        peptide: List[AA],
+        mass_table: Dict[AA, float],
         amino_acid_mass_tolerance: float
 ) -> List[Tuple[float, float, float]]:
     # Add 0 mass

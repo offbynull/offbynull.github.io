@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import List, Optional
+from typing import List
 
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 

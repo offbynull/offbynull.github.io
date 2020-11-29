@@ -1,12 +1,7 @@
-from random import Random
-from typing import List
-
 from NoisyLeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
 from NoisyScoreSpectrums import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
 from NoisySpectrumConvolution import spectrum_convolution
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-from Utils import rotate, get_unique_amino_acid_masses_as_dict
 
 # This attempts to sequence the peptide for the a real noisy spectrum while the other file  attempts to sequence a
 # peptide from a generated (fake) noisy spectrum. This one (real) gets close to sequencing the real peptide while the
@@ -81,6 +76,7 @@ mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 #     acids have -(noisy_tolerance * 2) to all amino acids have +(noisy_tolerance * 2) for some guessed peptide length
 #     (I guessed a length of 10).
 mass_ranges = [(m - (aa_mass_tolerance * guessed_len), m + (aa_mass_tolerance * guessed_len)) for m in possible_total_cyclopeptide_masses]
+mass_ranges.append((mass_ranges[-1][1], mass_ranges[-1][1] + 20.0))  # add an extra mass range -- the real mass for this peptide is larger than the mass ranges derived above
 res = sequence_cyclic_peptide(
     cyclopeptide_exp_spec,
     n,
@@ -95,9 +91,9 @@ all_peptides = []
 for mass_range, peptides in res.items():
     all_peptides.extend(peptides)
 
-# Print out the list -- if this were for fake_peptide, the function below can be used as a heuristic to determine how
-# close each returned peptide is to fake_peptide. Showing closeness was useful for debugging the algorithms.
-for p in all_peptides:
-    p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
-    score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
-    print(f'{p} len={len(p)} score={score}')
+# The found peptides are grouped by the mass ranges they were for.
+for mass_range, peptides in res.items():
+    for p in peptides:
+        p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
+        score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
+        print(f'{mass_range} -> {p} len={len(p)} mass={sum(p)} score={score}')

@@ -1,5 +1,3 @@
-from collections import Counter
-
 from ScoreSpectrums import score_spectrums
 from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
 

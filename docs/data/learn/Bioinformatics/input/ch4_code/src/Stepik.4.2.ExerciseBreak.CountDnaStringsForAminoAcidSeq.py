@@ -1,4 +1,4 @@
-from Utils import amino_acid_to_codons
+from helpers.AminoAcidUtils import amino_acid_to_codons
 
 amino_acid_seq = 'VKLFPWFNQY'
 count = 1
