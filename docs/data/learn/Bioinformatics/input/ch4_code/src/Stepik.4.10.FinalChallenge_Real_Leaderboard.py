@@ -25,27 +25,16 @@ from NoisySpectrumConvolution import spectrum_convolution
 #   data). That didn't help too much.
 # * expand more than 1 amino acid at a time (I have yet to try this).
 # * bootstrap a list of items into the leadboard before starting the algorithm. Since we know that the real spectrum is
-#   for a Tyrocidine, you could bootstrap with subpeptides of the Tyrocidine you found earlier in this chapter.
+#   for a Tyrocidine, you could bootstrap with subpeptides of the Tyrocidine you found earlier in this chapter. I tried
+#   this and it works very well (see LeaderboardBootstrap version) -- with a n of 500 and the initial leaderboard
+#   bootstrapped with subpeptides from Tyrocidine B and B1 (both sequenced during previous problems for this chapter).
 # * at each expand/trim step, try searching for subpeptides in the leaderboard that may be stitchable together and if
 #   they score well on stitching then keep them around or use them to influence your next expansion (I have yet to try
 #   this). Since both subpeptides may be part of the same full peptide (because they score well), stitching them may be
 #   a viable option.
-# * try genetic algorithms instead of leaderboard (I tried this along with stitching in the GeneticAlgo file and while
-#   it does start to converge on high scoring subpeptides, it runs into the same problem is that those high-scoring
-#   subpeptides lead to bad overall peptides).
-#
-#
-# FOR THIS (REAL) SPECTRUM:
-# During one of my previous iterations of this problem, I solved the peptide for the real noisy spectrum by happenstance
-# + knowing that the peptide was similar to the other tyrocidines solved earlier in this chapter. The algorithm below
-# returns lots of peptides, one of which gets very very close to the answer (one position has an incorrect amino acid).
-# I've been trying to reverse engineer what it is that's causing the real spectrum to be so problematic vs the generated
-# spectrum (which this algorithm solves no problem) and my thoughts are that it isn't a real spectrum but a spectrum
-# that's been intentionally engineered to throw off the leaderboard algorithm (because causing the student grief forces
-# them to try new things / learn more vs easily solving the problem).
-#
-# The peptide for the real spectrum is 99 128 113 147 97 147 147 114 128 163, which is Tyrocidine A according to
-# http://bix.ucsd.edu/nrp
+# * try genetic algorithms instead of leaderboard (I tried this along with stitching and while it does start to converge
+# on high scoring subpeptides, it runs into the same problem is that those high-scoring subpeptides lead to bad overall
+# peptides and it easily gets stuck in local optima).
 with open('real_spectrum.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 cyclopeptide_exp_spec = [float(w) for w in data.strip().split()]
@@ -97,3 +86,14 @@ for mass_range, peptides in res.items():
         p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
         score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
         print(f'{mass_range} -> {p} len={len(p)} mass={sum(p)} score={score}')
+
+# During one of my previous iterations of this problem, I solved the peptide for the real noisy spectrum by happenstance
+# + knowing that the peptide was similar to the other Tyrocidines solved earlier in this chapter. The algorithm below
+# returns lots of peptides, one of which gets very very close to the answer (one position has an incorrect amino acid).
+# I've been trying to reverse engineer what it is that's causing the real spectrum to be so problematic vs the generated
+# spectrum (which this algorithm solves no problem) and my thoughts are that it isn't a real spectrum but a spectrum
+# that's been intentionally engineered to throw off the leaderboard algorithm (because causing the student grief forces
+# them to try new things / learn more vs easily solving the problem).
+#
+# The peptide for the real spectrum is 99 128 113 147 97 147 147 114 128 163, which is Tyrocidine A according to
+# http://bix.ucsd.edu/nrp

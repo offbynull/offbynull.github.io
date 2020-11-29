@@ -38,14 +38,10 @@ m = 30
 n = 1000
 noise_tolerance = 0.3  # max amount of noise per spectrum entry
 guessed_len = 10  # how long you think the peptide is
-score_backlog = 25  # for peptides to be returned, they need to be within x of the top score
+score_backlog = 10  # for peptides to be returned, they need to be within x of the top score
 possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[-11:]  # suspected final cyclopeptide mass is in here
 
 cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]  # remove mass for +1 charge and round
-
-# For the settings above, the peptide is found. It's one of the best scoring peptides / closest peptides within
-# tolerances...
-# [147.0, 147.0, 114.0, 128.0, 163.0, 99.0, 71.0, 156.0, 147.0, 97.0] len=10 score=(68, 62.11230158730157, 0.9134161998132584)
 
 # run convolution to get possible masses
 #   - Why noisy_tolerance * 2? because each mass in the noisy spectrum is +/-rand(0, noisy_tolerance). Imagine you have
@@ -93,3 +89,7 @@ for mass_range, peptides in res.items():
         p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
         score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
         print(f'{mass_range} -> {p} len={len(p)} closeness={max_position_distance(p, fake_peptide)} mass={sum(p)} score={score}')
+
+# For the settings above, the peptide is found. It's one of the best scoring peptides / closest peptides within
+# tolerances...
+# [147.0, 147.0, 114.0, 128.0, 163.0, 99.0, 71.0, 156.0, 147.0, 97.0] len=10 score=(68, 62.11230158730157, 0.9134161998132584)
