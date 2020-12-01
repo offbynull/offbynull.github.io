@@ -1,16 +1,14 @@
-import enum
 from bisect import bisect_left
-from enum import Enum
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, TypeVar
 
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
-from Utils import T, slide_window
+from helpers.Utils import slide_window
+
+AA = TypeVar('AA')
 
 
 def determine_mass_tolerance(
-        p: List[T],
-        mass_table: Dict[T, float],
+        p: List[AA],
+        mass_table: Dict[AA, float],
         amino_acid_mass_tolerance: float
 ) -> Tuple[float, float, float]:
     p_mass_tolerance = len(p) * amino_acid_mass_tolerance
@@ -21,8 +19,8 @@ def determine_mass_tolerance(
 
 
 def theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(
-        peptide: List[T],
-        mass_table: Dict[T, float],
+        peptide: List[AA],
+        mass_table: Dict[AA, float],
         amino_acid_mass_tolerance: float
 ) -> List[Tuple[float, float, float]]:
     # Add 0 mass
@@ -41,8 +39,8 @@ def theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(
 
 
 def theoretical_spectrum_of_linear_peptide_with_noisy_aminoacid_masses(
-        peptide: List[T],
-        mass_table: Dict[T, float],
+        peptide: List[AA],
+        mass_table: Dict[AA, float],
         amino_acid_mass_tolerance: float
 ) -> List[Tuple[float, float, float]]:
     # Add 0 mass
@@ -192,12 +190,11 @@ if __name__ == '__main__':
 
     p = [99.0, 128.0, 113.0, 147.0, 97.0, 147.0, 147.0, 114.0, 128.0, 163.0]
     for j in range(0, len(p) + 1):
-        for sp, _ in slide_window(p, j):
-            s = score_spectrums(
-                exp_spec,
-                theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(sp, {aa: aa for aa in sp}, 0.6)
-            )
-            print(f'{sp} = {s}')
+        print(f'{j}')
+        for sp, _ in slide_window(p, j, cyclic=True):
+            theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(sp, {aa: aa for aa in sp}, 0.6)
+            s = score_spectrums(exp_spec, theo_spec)
+            print(f'{sp} = {s}  --  {s[0]} of {len(theo_spec)} matched ({s[0] / len(theo_spec)})')
     s = score_spectrums(
         exp_spec,
         theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, 0.6)

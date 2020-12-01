@@ -2,8 +2,6 @@ import typing
 from collections import Counter
 from typing import List
 
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-
 
 def group_fuzzy_convolution_matches(masses: List[float], tolerance: float) -> typing.Counter[float]:
     masses = sorted(masses)

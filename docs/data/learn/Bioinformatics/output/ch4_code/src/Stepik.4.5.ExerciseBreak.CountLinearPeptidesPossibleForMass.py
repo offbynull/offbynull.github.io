@@ -1,4 +1,3 @@
-from time import time
 from math import factorial
 from time import time
 from typing import List

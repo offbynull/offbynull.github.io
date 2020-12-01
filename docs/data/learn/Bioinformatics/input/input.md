@@ -2019,6 +2019,135 @@ ACC
 CCA
 ```
 
+## Codon
+
+`{bm} /(Algorithms\/Codon)_TOPIC/`
+
+```{prereq}
+Algorithms/K-mer_TOPIC
+```
+
+A peptide is an amino acid chain (protein) that's anywhere between 2 to 100 amino acids in length. Most peptides are created through the central dogma of molecular biology (otherwise known as transcription and translation): DNA gets transcribed to mRNA, which in turn gets translated by the ribosome into a peptide.
+
+Each amino acid in one of these peptides is encoded by a DNA sequence of length 3, referred to as a codon. By knowing which codons map to which amino acids, the ...
+
+ * amino acid composition of some peptide can be determined by mapping from DNA to codons (you know the peptide just by looking at the DNA).
+ * amino acid composition of some peptide can be searched for in DNA by finding codons (you can see if the peptide is encoded in a genome).
+
+| 1 Letter Code | 3 Letter Code | Amino Acid                  | Codons                       |
+|---------------|---------------|-----------------------------|------------------------------|
+| A             | Ala           | Alanine                     | GCA, GCC, GCG, GCU           |
+| C             | Cys           | Cysteine                    | UGC, UGU                     |
+| D             | Asp           | Aspartic acid               | GAC, GAU                     |
+| E             | Glu           | Glutamic acid               | GAA, GAG                     |
+| F             | Phe           | Phenylalanine               | UUC, UUU                     |
+| G             | Gly           | Glycine                     | GGA, GGC, GGG, GGU           |
+| H             | His           | Histidine                   | CAC, CAU                     |
+| I             | Ile           | Isoleucine                  | AUA, AUC, AUU                |
+| K             | Lys           | Lysine                      | AAA, AAG                     |
+| L             | Leu           | Leucine                     | CUA, CUC, CUG, CUU, UUA, UUG |
+| M             | Met           | Methionine                  | AUG                          |
+| N             | Asn           | Asparagine                  | AAC, AAU                     |
+| P             | Pro           | Proline                     | CCA, CCC, CCG, CCU           |
+| Q             | Gln           | Glutamine                   | CAA, CAG                     |
+| R             | Arg           | Arginine                    | AGA, AGG, CGA, CGC, CGG, CGU |
+| S             | Ser           | Serine                      | AGC, AGU, UCA, UCC, UCG, UCU |
+| T             | Thr           | Threonine                   | ACA, ACC, ACG, ACU           |
+| V             | Val           | Valine                      | GUA, GUC, GUG, GUU           |
+| W             | Trp           | Tryptophan                  | UGG                          |
+| Y             | Tyr           | Tyrosine                    | UAC, UAU                     |
+| *             | * 	          | **STOP**                    | UAA, UAG, UGA                |
+
+```{note}
+The stop marker tells the ribosome to stop translating / the protein is complete.
+```
+
+```{note}
+The codons are listed as ribonucleotides (RNA). For nucleotides (DNA), swap U with T.
+```
+
+### DNA to Peptide
+
+**WHAT**: Given a DNA sequence, treat the DNA as codons and map those codons to the amino acids they represent.
+
+**WHY**: The composition of the peptide can be determined directly from DNA.
+
+**ALGORITHM**:
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+### Find Peptide in DNA
+
+**WHAT**: Given a peptide and a DNA sequence, find the string of codons that represent that peptide in the DNA sequence.
+
+**WHY**: Finding the codons for a peptide in a DNA sequence means that peptide belongs to the organism that DNA is from.
+
+**ALGORITHM**:
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
+TODO: FILL ME IN.
+
 # Stories
 
 ## Bacterial Genome Replication

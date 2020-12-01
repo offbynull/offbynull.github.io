@@ -1,7 +1,7 @@
 from itertools import accumulate
 from typing import List, TypeVar, Union
 
-from Utils import get_amino_acid_to_mass_table
+from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 T = TypeVar('T')
 

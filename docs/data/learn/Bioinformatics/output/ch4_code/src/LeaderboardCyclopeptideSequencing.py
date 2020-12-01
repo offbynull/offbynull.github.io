@@ -1,9 +1,9 @@
 from typing import List, Optional, Dict, TypeVar
 
-from NaiveScoreSpectrums import score_spectrums
+from ScoreSpectrums import score_spectrums
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
-from Utils import get_amino_acid_to_mass_table
+from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 T = TypeVar('T')
 

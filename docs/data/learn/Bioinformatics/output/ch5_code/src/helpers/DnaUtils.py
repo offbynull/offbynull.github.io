@@ -38,7 +38,6 @@ def dna_complement(dna: str):
     return ret
 
 
-# MARKDOWN_DNA_TO_RNA
 def dna_to_rna(dna: str):
     ret = ''
     for ch in dna:
@@ -49,7 +48,6 @@ def dna_to_rna(dna: str):
         else:
             raise
     return ret
-# MARKDOWN_DNA_TO_RNA
 
 
 def rna_to_dna(rna: str):

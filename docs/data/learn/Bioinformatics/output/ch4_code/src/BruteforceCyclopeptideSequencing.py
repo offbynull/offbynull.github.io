@@ -1,8 +1,8 @@
-from typing import List, Optional, Dict, Set, TypeVar
+from typing import List, Optional, Dict, TypeVar
 
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
-from Utils import HashableList, contains_all_sorted, get_amino_acid_to_mass_table
+from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
+from helpers.HashableCollections import HashableList
 
 T = TypeVar('T')
 
