@@ -2027,7 +2027,7 @@ CCA
 Algorithms/K-mer_TOPIC
 ```
 
-A peptide is an amino acid chain (protein) that's anywhere between 2 to 100 amino acids in length. Most peptides are created through the central dogma of molecular biology (otherwise known as transcription and translation): DNA gets transcribed to mRNA, which in turn gets translated by the ribosome into a peptide.
+A peptide is a chain of amino acids (protein) that's anywhere between 2 to 100 amino acids in length. Most peptides are created through the central dogma of molecular biology (otherwise known as transcription and translation): DNA gets transcribed to mRNA, which in turn gets translated by the ribosome into a peptide.
 
 Each amino acid in one of these peptides is encoded by a DNA sequence of length 3, referred to as a codon. By knowing which codons map to which amino acids, the ...
 
@@ -2066,47 +2066,35 @@ The stop marker tells the ribosome to stop translating / the protein is complete
 The codons are listed as ribonucleotides (RNA). For nucleotides (DNA), swap U with T.
 ```
 
-### DNA to Peptide
+### Encode Peptide
 
-**WHAT**: Given a DNA sequence, treat the DNA as codons and map those codons to the amino acids they represent.
+**WHAT**: Given a DNA sequence, map each codon to the amino acid it represents. In total, there are 6 different ways that a DNA sequence could be translated:
 
-**WHY**: The composition of the peptide can be determined directly from DNA.
+ 1. Since the length of a codon is 3, the encoding of the peptide could start from offset 0, 1, or 2 (referred to as reading frames).
+ 2. Since DNA is double stranded, either the DNA sequence or its reverse complement could represent the peptide.
+
+**WHY**: The composition of a peptide can be determined just from DNA that encodes it.
 
 **ALGORITHM**:
 
-TODO: FILL ME IN.
+```{output}
+ch4_code/src/helpers/AminoAcidUtils.py
+python
+# MARKDOWN_CODON\s*\n([\s\S]+)\n\s*# MARKDOWN_CODON
+```
 
-TODO: FILL ME IN.
+```{output}
+ch4_code/src/EncodePeptide.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: FILL ME IN.
+```{ch4}
+EncodePeptide
+AAAAGAACCTAATCTTAAAGGAGATGATGATTCTAA
+```
 
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-### Find Peptide in DNA
+### Decode Peptide
 
 **WHAT**: Given a peptide and a DNA sequence, find the string of codons that represent that peptide in the DNA sequence.
 

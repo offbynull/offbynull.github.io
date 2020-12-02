@@ -9,11 +9,20 @@ _codon_to_amino_acid = {'AAA': 'K', 'AAC': 'N', 'AAG': 'K', 'AAU': 'N', 'ACA': '
                         'GGA': 'G', 'GGC': 'G', 'GGG': 'G', 'GGU': 'G', 'GUA': 'V', 'GUC': 'V', 'GUG': 'V', 'GUU': 'V',
                         'UAA': '*', 'UAC': 'Y', 'UAG': '*', 'UAU': 'Y', 'UCA': 'S', 'UCC': 'S', 'UCG': 'S', 'UCU': 'S',
                         'UGA': '*', 'UGC': 'C', 'UGG': 'W', 'UGU': 'C', 'UUA': 'L', 'UUC': 'F', 'UUG': 'L', 'UUU': 'F'}
-# MARKDOWN_CODON
 
 _amino_acid_to_codons = dict()
 for k, v in _codon_to_amino_acid.items():
     _amino_acid_to_codons.setdefault(v, []).append(k)
+
+
+def codon_to_amino_acid(rna: str) -> Optional[str]:
+    return _codon_to_amino_acid.get(rna)
+
+
+def amino_acid_to_codons(codon: str) -> Optional[List[str]]:
+    return _amino_acid_to_codons.get(codon)
+# MARKDOWN_CODON
+
 
 _amino_acid_to_mass = {'G': 57, 'A': 71, 'S': 87, 'P': 97, 'V': 99, 'T': 101, 'C': 103, 'I': 113, 'L': 113,
                        'N': 114, 'D': 115, 'K': 128, 'Q': 128, 'E': 129, 'M': 131, 'H': 137, 'F': 147, 'R': 156,
@@ -24,15 +33,6 @@ for k, v in _amino_acid_to_mass.items():
     _mass_to_amino_acids.setdefault(v, []).append(k)
 
 _unique_amino_acid_masses_as_dict = dict([(m, m) for m in _amino_acid_to_mass.values()])
-
-
-def codon_to_amino_acid(rna: str) -> Optional[str]:
-    return _codon_to_amino_acid.get(rna)
-
-
-def amino_acid_to_codons(codon: str) -> Optional[List[str]]:
-    return _amino_acid_to_codons.get(codon)
-
 
 def get_codon_to_amino_acid_table() -> Dict[str, str]:
     return _codon_to_amino_acid.copy()

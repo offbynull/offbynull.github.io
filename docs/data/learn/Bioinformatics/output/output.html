@@ -61,8 +61,8 @@
 </ul>
 <li><a href="#H_Codon">Codon</a></li>
 <ul>
-<li><a href="#H_DNA%20to%20Peptide">DNA to Peptide</a></li>
-<li><a href="#H_Find%20Peptide%20in%20DNA">Find Peptide in DNA</a></li>
+<li><a href="#H_Encode%20Peptide">Encode Peptide</a></li>
+<li><a href="#H_Decode%20Peptide">Decode Peptide</a></li>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -3303,7 +3303,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li><a href="#BM_(Algorithms%5C%2FK-mer)_TOPIC%2F">Algorithms/K-mer</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(peptide)%2Fi">peptide</a> is an <a href="#BM_(amino%20acid)%2Fi">amino acid</a> chain (protein) that's anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length. Most <a href="#BM_(peptide)%2Fi">peptide</a>s are created through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a> (otherwise known as <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a> and <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>): DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA, which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
+<p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s (protein) that's anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length. Most <a href="#BM_(peptide)%2Fi">peptide</a>s are created through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a> (otherwise known as <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a> and <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>): DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA, which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
 <p>Each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in one of these <a href="#BM_(peptide)%2Fi">peptide</a>s is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by a DNA <a href="#BM_(sequence)%2Fi">sequence</a> of length 3, referred to as a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>. By knowing which <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s map to which <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s, the ...</p>
 <ul>
 <li><a href="#BM_(amino%20acid)%2Fi">amino acid</a> composition of some <a href="#BM_(peptide)%2Fi">peptide</a> can be determined by mapping from DNA to <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s (you know the <a href="#BM_(peptide)%2Fi">peptide</a> just by looking at the DNA).</li>
@@ -3455,27 +3455,66 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s are listed as <a href="#BM_(ribonucleotide)%2Fi">ribonucleotide</a>s (RNA). For nucleotides (DNA), swap U with T.</p>
 </div>
-<a name="H_DNA%20to%20Peptide"></a><h3>DNA to Peptide</h3>
-<p><strong>WHAT</strong>: Given a DNA <a href="#BM_(sequence)%2Fi">sequence</a>, treat the DNA as <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s and map those <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s to the <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s they represent.</p>
-<p><strong>WHY</strong>: The composition of the <a href="#BM_(peptide)%2Fi">peptide</a> can be determined directly from DNA.</p>
+<a name="H_Encode%20Peptide"></a><h3>Encode Peptide</h3>
+<p><strong>WHAT</strong>: Given a DNA <a href="#BM_(sequence)%2Fi">sequence</a>, map each <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> to the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> it represents. In total, there are 6 different ways that a DNA <a href="#BM_(sequence)%2Fi">sequence</a> could be <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a>:</p>
+<ol>
+<li>Since the length of a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> is 3, the <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encoding</a> of the <a href="#BM_(peptide)%2Fi">peptide</a> could start from offset 0, 1, or 2 (referred to as <a href="#BM_(reading%20frame)%2Fi">reading frame</a>s).</li>
+<li>Since DNA is double stranded, either the DNA <a href="#BM_(sequence)%2Fi">sequence</a> or its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> could represent the <a href="#BM_(peptide)%2Fi">peptide</a>.</li>
+</ol>
+<p><strong>WHY</strong>: The composition of a <a href="#BM_(peptide)%2Fi">peptide</a> can be determined just from DNA that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s it.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<p>TODO: FILL ME IN.</p>
-<a name="H_Find%20Peptide%20in%20DNA"></a><h3>Find Peptide in DNA</h3>
+<pre class="hljs"><code>_codon_to_amino_acid = {<span class="hljs-string">'AAA'</span>: <span class="hljs-string">'K'</span>, <span class="hljs-string">'AAC'</span>: <span class="hljs-string">'N'</span>, <span class="hljs-string">'AAG'</span>: <span class="hljs-string">'K'</span>, <span class="hljs-string">'AAU'</span>: <span class="hljs-string">'N'</span>, <span class="hljs-string">'ACA'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACC'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACG'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACU'</span>: <span class="hljs-string">'T'</span>,
+                        <span class="hljs-string">'AGA'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'AGC'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'AGG'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'AGU'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'AUA'</span>: <span class="hljs-string">'I'</span>, <span class="hljs-string">'AUC'</span>: <span class="hljs-string">'I'</span>, <span class="hljs-string">'AUG'</span>: <span class="hljs-string">'M'</span>, <span class="hljs-string">'AUU'</span>: <span class="hljs-string">'I'</span>,
+                        <span class="hljs-string">'CAA'</span>: <span class="hljs-string">'Q'</span>, <span class="hljs-string">'CAC'</span>: <span class="hljs-string">'H'</span>, <span class="hljs-string">'CAG'</span>: <span class="hljs-string">'Q'</span>, <span class="hljs-string">'CAU'</span>: <span class="hljs-string">'H'</span>, <span class="hljs-string">'CCA'</span>: <span class="hljs-string">'P'</span>, <span class="hljs-string">'CCC'</span>: <span class="hljs-string">'P'</span>, <span class="hljs-string">'CCG'</span>: <span class="hljs-string">'P'</span>, <span class="hljs-string">'CCU'</span>: <span class="hljs-string">'P'</span>,
+                        <span class="hljs-string">'CGA'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'CGC'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'CGG'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'CGU'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'CUA'</span>: <span class="hljs-string">'L'</span>, <span class="hljs-string">'CUC'</span>: <span class="hljs-string">'L'</span>, <span class="hljs-string">'CUG'</span>: <span class="hljs-string">'L'</span>, <span class="hljs-string">'CUU'</span>: <span class="hljs-string">'L'</span>,
+                        <span class="hljs-string">'GAA'</span>: <span class="hljs-string">'E'</span>, <span class="hljs-string">'GAC'</span>: <span class="hljs-string">'D'</span>, <span class="hljs-string">'GAG'</span>: <span class="hljs-string">'E'</span>, <span class="hljs-string">'GAU'</span>: <span class="hljs-string">'D'</span>, <span class="hljs-string">'GCA'</span>: <span class="hljs-string">'A'</span>, <span class="hljs-string">'GCC'</span>: <span class="hljs-string">'A'</span>, <span class="hljs-string">'GCG'</span>: <span class="hljs-string">'A'</span>, <span class="hljs-string">'GCU'</span>: <span class="hljs-string">'A'</span>,
+                        <span class="hljs-string">'GGA'</span>: <span class="hljs-string">'G'</span>, <span class="hljs-string">'GGC'</span>: <span class="hljs-string">'G'</span>, <span class="hljs-string">'GGG'</span>: <span class="hljs-string">'G'</span>, <span class="hljs-string">'GGU'</span>: <span class="hljs-string">'G'</span>, <span class="hljs-string">'GUA'</span>: <span class="hljs-string">'V'</span>, <span class="hljs-string">'GUC'</span>: <span class="hljs-string">'V'</span>, <span class="hljs-string">'GUG'</span>: <span class="hljs-string">'V'</span>, <span class="hljs-string">'GUU'</span>: <span class="hljs-string">'V'</span>,
+                        <span class="hljs-string">'UAA'</span>: <span class="hljs-string">'*'</span>, <span class="hljs-string">'UAC'</span>: <span class="hljs-string">'Y'</span>, <span class="hljs-string">'UAG'</span>: <span class="hljs-string">'*'</span>, <span class="hljs-string">'UAU'</span>: <span class="hljs-string">'Y'</span>, <span class="hljs-string">'UCA'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'UCC'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'UCG'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'UCU'</span>: <span class="hljs-string">'S'</span>,
+                        <span class="hljs-string">'UGA'</span>: <span class="hljs-string">'*'</span>, <span class="hljs-string">'UGC'</span>: <span class="hljs-string">'C'</span>, <span class="hljs-string">'UGG'</span>: <span class="hljs-string">'W'</span>, <span class="hljs-string">'UGU'</span>: <span class="hljs-string">'C'</span>, <span class="hljs-string">'UUA'</span>: <span class="hljs-string">'L'</span>, <span class="hljs-string">'UUC'</span>: <span class="hljs-string">'F'</span>, <span class="hljs-string">'UUG'</span>: <span class="hljs-string">'L'</span>, <span class="hljs-string">'UUU'</span>: <span class="hljs-string">'F'</span>}
+
+_amino_acid_to_codons = dict()
+<span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> _codon_to_amino_acid.items():
+    _amino_acid_to_codons.setdefault(v, []).append(k)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">codon_to_amino_acid</span>(<span class="hljs-params">rna: str</span>) -&gt; Optional[str]:</span>
+    <span class="hljs-keyword">return</span> _codon_to_amino_acid.get(rna)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">amino_acid_to_codons</span>(<span class="hljs-params">codon: str</span>) -&gt; Optional[List[str]]:</span>
+    <span class="hljs-keyword">return</span> _amino_acid_to_codons.get(codon)
+</code></pre>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encode_peptide</span>(<span class="hljs-params">dna: str</span>) -&gt; str:</span>
+    rna = dna.replace(<span class="hljs-string">'T'</span>, <span class="hljs-string">'U'</span>)
+    protein_seq = <span class="hljs-string">''</span>
+    <span class="hljs-keyword">for</span> codon <span class="hljs-keyword">in</span> zip(*[iter(rna)] * <span class="hljs-number">3</span>):
+        codon_str = <span class="hljs-string">''</span>.join(codon)
+        protein_seq += codon_to_amino_acid(codon_str)
+    <span class="hljs-keyword">return</span> protein_seq
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encode_all_possible_peptides</span>(<span class="hljs-params">dna: str</span>) -&gt; List[str]:</span>
+    ret = []
+    <span class="hljs-keyword">for</span> dna_ <span class="hljs-keyword">in</span> (dna, dna_reverse_complement(dna)):
+        <span class="hljs-keyword">for</span> rf_offset <span class="hljs-keyword">in</span> range(<span class="hljs-number">3</span>):
+            peptide = encode_peptide(dna_[rf_offset:])
+            ret.append(peptide)
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given AAAAGAACCTAATCTTAAAGGAGATGATGATTCTAA, the possible peptide encodings are...</p>
+<ul>
+<li>KRT*S*RR**F*</li>
+<li>KEPNLKGDDDS</li>
+<li>KNLILKEMMIL</li>
+<li>LESSSPLRLGSF</li>
+<li>*NHHLL*D*VL</li>
+<li>RIIISFKIRFF</li>
+</ul>
+</div>
+<p></p>
+<a name="H_Decode%20Peptide"></a><h3>Decode Peptide</h3>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(peptide)%2Fi">peptide</a> and a DNA <a href="#BM_(sequence)%2Fi">sequence</a>, find the string of <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s that represent that <a href="#BM_(peptide)%2Fi">peptide</a> in the DNA <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><strong>WHY</strong>: Finding the <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s for a <a href="#BM_(peptide)%2Fi">peptide</a> in a DNA <a href="#BM_(sequence)%2Fi">sequence</a> means that <a href="#BM_(peptide)%2Fi">peptide</a> belongs to the organism that DNA is from.</p>
 <p><strong>ALGORITHM</strong>:</p>
