@@ -22,27 +22,19 @@ export class FinishedStudyList extends React.Component<FinishedStudyListProps, F
     public render() {
         const notesGroupedAndSortedByYear = this.props.notes
             .filter(n => n.year !== undefined)
-            .sortBy(n => n.year)
             .groupBy(n => n.year);
         const currentNotes = this.props.notes.filter(n => n.year === undefined);
-        const prevNotes = Immutable.List(notesGroupedAndSortedByYear.keys()).sort().reverse();
+        const prevNotesYears = notesGroupedAndSortedByYear.keySeq().sort().reverse();
 
-        const currentNotesElems =
+        const currentNotesElems = <ul>{currentNotes.map(n => <FinishedStudyItem entry={n} />)}</ul>;
+        const prevNotesElems = prevNotesYears.map(y => <ul>{notesGroupedAndSortedByYear.get(y)?.map(n => <FinishedStudyItem entry={n} />)}</ul>);
+        return (
             <div>
-                <h2>current</h2>
                 <ul>
-                    {currentNotes.map(n => <FinishedStudyItem entry={n} />)}
+                    {currentNotesElems}{prevNotesElems}
                 </ul>
-            </div>;
-        const prevNotesElems = prevNotes.map(y => 
-            <div>
-                <h2>{y}</h2>
-                <ul>
-                    {notesGroupedAndSortedByYear.get(y)?.map(n => <FinishedStudyItem entry={n} />)}
-                </ul>
-            </div>);
-
-        return <div>{currentNotesElems}{prevNotesElems}</div>
+            </div>
+        );
     }
 }
 
@@ -64,11 +56,12 @@ export class FinishedStudyItem extends React.Component<FinishedStudyItemProps, F
     }
 
     public render() {
+        const year = this.props.entry.year || 'WIP';
         switch (this.props.entry.source.type) {
             case 'book': {
                 return (
                     <li>
-                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> (book <a href={'https://openlibrary.org/isbn/' + this.props.entry.source.isbn}>ISBN</a>
+                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year}, book <a href={'https://openlibrary.org/isbn/' + this.props.entry.source.isbn}>ISBN</a>
                         {this.props.entry.source.url === undefined ? null : <span> and <a href={this.props.entry.source.url}>website</a></span>})
                     </li>
                 );
@@ -76,14 +69,14 @@ export class FinishedStudyItem extends React.Component<FinishedStudyItemProps, F
             case 'course': {
                 return (
                     <li>
-                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> (course <a href={this.props.entry.source.url}>website</a>)
+                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year}, course <a href={this.props.entry.source.url}>website</a>)
                     </li>
                 );
             }
             case 'document': {
                 return (
                     <li>
-                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> (document <a href={this.props.entry.source.url}>website</a>)
+                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year}, document <a href={this.props.entry.source.url}>website</a>)
                     </li>
                 );
             }

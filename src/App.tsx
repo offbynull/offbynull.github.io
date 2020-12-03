@@ -11,7 +11,6 @@ import { FinishedStudyList, FinishedStudyEntryV } from './FinishedStudyList';
 import { PendingStudyEntryV, PendingStudyList } from './PendingStudyList';
 import { fold } from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
-import { Console } from 'console';
 
 export interface AppProps {
 }
@@ -35,7 +34,7 @@ export class App extends React.Component<AppProps, AppState> {
       const ret = pipe(
         AppDataV.decode(obj),
         fold(
-          errors => { 
+          errors => {
             console.log(errors)
             throw new Error(JSON.stringify(errors));
           },
@@ -60,7 +59,7 @@ export class App extends React.Component<AppProps, AppState> {
         </div>
         <div className="info">
           <span className="item"><FontAwesomeIcon icon={faGithub} />&nbsp;<a href="https://www.github.com/offbynull">offbynull</a></span>
-          <span className="item"><FontAwesomeIcon icon={faEnvelope} />&nbsp;offbynull__at__gmail</span>
+          <span className="item"><FontAwesomeIcon icon={faEnvelope} />&nbsp;<a href="mailto:offbynull@gmail.com">offbynull@gmail.com</a></span>
           <span className="item"><FontAwesomeIcon icon={faMapMarkerAlt} />&nbsp;Cambridge,&nbsp;MA</span>
         </div>
         <div className="nav">

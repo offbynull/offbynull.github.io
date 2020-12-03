@@ -25,7 +25,8 @@ export class PendingStudyList extends React.Component<PendingStudyListProps, Pen
                 <ul>
                     {this.props.notes.map(n => <PendingStudyItem entry={n} />)}
                 </ul>
-            </div>);
+            </div>
+        );
     }
 }
 
