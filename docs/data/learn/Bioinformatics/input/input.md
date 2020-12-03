@@ -2096,45 +2096,28 @@ AAAAGAACCTAATCTTAAAGGAGATGATGATTCTAA
 
 ### Decode Peptide
 
-**WHAT**: Given a peptide and a DNA sequence, find the string of codons that represent that peptide in the DNA sequence.
+**WHAT**: Given a peptide, map each amino acid to the DNA sequences it represents. Since each amino acid can map to multiple codons, there may be multiple DNA sequences for a single peptide.
 
-**WHY**: Finding the codons for a peptide in a DNA sequence means that peptide belongs to the organism that DNA is from.
+**WHY**: The composition of a peptide can be determined just from DNA that encodes it.
 
 **ALGORITHM**:
 
-TODO: FILL ME IN.
+```{output}
+ch4_code/src/helpers/AminoAcidUtils.py
+python
+# MARKDOWN_CODON\s*\n([\s\S]+)\n\s*# MARKDOWN_CODON
+```
 
-TODO: FILL ME IN.
+```{output}
+ch4_code/src/DecodePeptide.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
-
-TODO: FILL ME IN.
+```{ch4}
+DecodePeptide
+NQY
+```
 
 # Stories
 

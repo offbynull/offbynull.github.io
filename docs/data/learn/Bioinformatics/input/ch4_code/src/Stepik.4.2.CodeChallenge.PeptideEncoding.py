@@ -1,4 +1,4 @@
-from FindPeptideEncodingInDna import find_peptide_encodings_in_dna
+from EncodePeptide import find_peptide_encodings_in_dna
 
 with open('/home/user/Downloads/dataset_240277_7.txt', mode='r', encoding='utf-8') as f:
     data = f.read()

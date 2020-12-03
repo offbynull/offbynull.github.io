@@ -1,6 +1,6 @@
 import lzma
 
-from FindPeptideEncodingInDna import find_peptide_encodings_in_dna
+from EncodePeptide import find_peptide_encodings_in_dna
 
 tyrocodine_b1_amino_acid_seq = 'VKLFPWFNQY'
 with lzma.open('Bacillus_brevis.txt.xz', mode='rt', encoding='utf-8') as f:
