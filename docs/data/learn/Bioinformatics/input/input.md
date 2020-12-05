@@ -2129,7 +2129,7 @@ Algorithms/Codon_TOPIC
 
 A mass spectrometer is a device that breaks and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly fragment_NORMs each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
 
-The device outputs a plot of intensities, where the...
+The device outputs a plot of intensities called a spectrum. The spectrum's ...
 
  * x-axis is the mass-to-charge ratio.
  * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge show compared to the others).
@@ -2171,11 +2171,152 @@ From there, the mass-to-charge ratios are turned into potential masses based on 
 `{kt} \frac{m}{z} \cdot {z} = m`
 ```
 
-Given these potential masses, it's possible to infer the amino acid composition of the peptide (in other words, the peptide can be sequenced). However, special consideration needs to be given to the real-world practical problems with mass spectrometry: The output of a mass spectrometer ...
+Given these potential masses, it's possible to infer the amino acid composition of the peptide (in other words, the peptide can be sequenced). However, special consideration needs to be given to the real-world practical problems with mass spectrometry: The spectrum given back by a mass spectrometer ...
 
  * may miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
  * may include mass-to-charge ratios for fragment_NORMs from unintended molecules (faulty entries).
  * will have some noisy mass-to-charge ratios.
+
+The techniques and algorithms documented in the subsection below will focus on non-ribosomal peptides.
+
+```{note}
+They focus on non-ribosomal peptides because that's what the Pevzner book focuses on.
+```
+
+### Theoretical Spectrum
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
+
+**WHAT**: Given a peptide, the theoretical spectrum of that peptide is an exact list of fragment_NORM masses for that peptide. In contrast, the experimental spectrum is a noisy list of potential masses converted from a mass spectrometer output. The theoretical spectrum is what an experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
+
+For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
+
+ * `mass() = 0`
+ * `mass(N) = 114`
+ * `mass(Q) = 128`
+ * `mass(Y) = 163`
+ * `mass(NQ) = 242`
+ * `mass(QY) = 291`
+ * `mass(NQY) = 405`
+
+... while the experimental spectrum may look more like [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. In the experimental spectrum, ...
+
+ * `mass() = 0` is implied.
+ * `mass(N) = 114` is covered by 113.9 and 115.1
+ * `mass(Q) = 128` is missing.
+ * `mass(Y) = 163` is covered by 162.9.
+ * `mass(NQ) = 242` is covered by 242.0.
+ * `mass(QY) = 291` is missing.
+ * 311.1 is faulty.
+ * 346.0 is faulty.
+ * `mass(NQY) = 405` is covered by 405.2.
+
+**WHY**: A theoretical spectrum can be generated for scored against an experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either is or is closely related to the peptide for the experimental spectrum.
+
+#### Bruteforce Algorithm
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Bruteforce Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+The following algorithm generates a theoretical spectrum in the most obvious way: iterate over each subpeptide and calculate its mass.
+
+```{output}
+ch4_code/src/BruteforceTheoreticalSpectrum.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+BruteforceTheoreticalSpectrum
+NQY
+cyclic
+```
+
+#### Prefix Sum Algorithm
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Prefix Sum Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Theoretical Spectrum/Bruteforce Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+The algorithm starts by calculating the prefix sum of the mass at each position of the peptide. The prefix sum is calculated by summing all amino acid masses up until that position. For example, the peptide GASP has the following masses at the following positions...
+
+| G  | A  | S  | P  |
+|----|----|----|----|
+| 57 | 71 | 87 | 97 |
+
+As such, the prefix sum at each position is...
+
+|                    | G       | A           | S              | P                 |
+|--------------------|---------|-------------|----------------|-------------------|
+| Mass               | 57      | 71          | 87             | 97                |
+| Prefix sum of mass | 57=57   | 57+71=128   | 57+71+87=215   | 57+71+87+97=312   |
+
+```python
+prefixsum_masses[0] = mass('')     = 0             = 0   # Artificially added
+prefixsum_masses[1] = mass('G')    = 0+57          = 57
+prefixsum_masses[2] = mass('GA')   = 0+57+71       = 128
+prefixsum_masses[3] = mass('GAS')  = 0+57+71+87    = 215
+prefixsum_masses[4] = mass('GASP') = 0+57+71+87+97 = 312
+```
+
+The mass for each subpeptide can be derived from just these prefix sums. For example, ...
+
+```python
+mass('GASP') = mass('GASP') - mass('')    = prefixsum_masses[4] - prefixsum_masses[0]
+mass('ASP')  = mass('GASP') - mass('G')   = prefixsum_masses[4] - prefixsum_masses[1]
+mass('AS')   = mass('GAS')  - mass('G')   = prefixsum_masses[3] - prefixsum_masses[1]
+mass('A')    = mass('GA')   - mass('G')   = prefixsum_masses[2] - prefixsum_masses[1]
+mass('S')    = mass('GAS')  - mass('GA')  = prefixsum_masses[3] - prefixsum_masses[2]
+mass('P')    = mass('GASP') - mass('GAS') = prefixsum_masses[4] - prefixsum_masses[3]
+# etc...
+```
+   
+If the peptide is a cyclic peptide, some subpeptides will wrap around. For example, PG is a valid subpeptide if GASP is a cyclic peptide:
+
+```{svgbob}
+S ---> P
+^      |
+|      v
+A <--- G 
+```
+
+The prefix sum can be used to calculate these wrapping subpeptides as well. For example...
+
+```python
+mass('PG') = mass('GASP') - mass('AS')
+           = mass('GASP') - (mass('GAS') - mass('G'))    # SUBSTITUTE IN mass('AS') FROM ABOVE
+           = prefixsum_masses[4] - (prefixsum_masses[3] - prefixsum_masses[1])
+```
+
+This algorithm is faster than the bruteforce algorithm, but most use-cases won't notice a performance improvement unless either...
+
+ * the peptide is very large (likely won't happen since peptides by definition aren't larger than 50 to 100 amino acids)
+ * the algorithm runs often.
+
+```{output}
+ch4_code/src/PrefixSumTheoreticalSpectrum.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+PrefixSumTheoreticalSpectrum
+NQY
+cyclic
+```
+
+```{note}
+The algorithm above is serial, but it can be made parallel to get even more speed:
+
+ 1. Parallelized prefix sum (e.g. Hillis-Steele algorithm / Blelloch algorithm).
+ 2. Parallelized iteration instead of nested for-loops.
+ 3. Parallelized sorting (e.g. Parallel merge sort algorithm / Bitonic sort algorithm).
+```
 
 # Stories
 
@@ -3551,36 +3692,53 @@ PracticalMotifFindingExample
 
  * `{bm} amino acid` - The building blocks of peptides / proteins, similar to how nucleotides are the building blocks of DNA.
 
-   | 1 Letter Code | 3 Letter Code | Amino Acid                  |
-   |---------------|---------------|-----------------------------|
-   | A             | Ala           | Alanine                     |
-   | C             | Cys           | Cysteine                    |
-   | D             | Asp           | Aspartic acid               |
-   | E             | Glu           | Glutamic acid               |
-   | F             | Phe           | Phenylalanine               |
-   | G             | Gly           | Glycine                     |
-   | H             | His           | Histidine                   |
-   | I             | Ile           | Isoleucine                  |
-   | K             | Lys           | Lysine                      |
-   | L             | Leu           | Leucine                     |
-   | M             | Met           | Methionine                  |
-   | N             | Asn           | Asparagine                  |
-   | P             | Pro           | Proline                     |
-   | Q             | Gln           | Glutamine                   |
-   | R             | Arg           | Arginine                    |
-   | S             | Ser           | Serine                      |
-   | T             | Thr           | Threonine                   |
-   | V             | Val           | Valine                      |
-   | W             | Trp           | Tryptophan                  |
-   | Y             | Tyr           | Tyrosine                    |
+   | 1 Letter Code | 3 Letter Code | Amino Acid                  | Mass (daltons) |
+   |---------------|---------------|-----------------------------|----------------|
+   | A             | Ala           | Alanine                     | 71.04          |
+   | C             | Cys           | Cysteine                    | 103.01         |
+   | D             | Asp           | Aspartic acid               | 115.03         |
+   | E             | Glu           | Glutamic acid               | 129.04         |
+   | F             | Phe           | Phenylalanine               | 147.07         |
+   | G             | Gly           | Glycine                     | 57.02          |
+   | H             | His           | Histidine                   | 137.06         |
+   | I             | Ile           | Isoleucine                  | 113.08         |
+   | K             | Lys           | Lysine                      | 128.09         |
+   | L             | Leu           | Leucine                     | 113.08         |
+   | M             | Met           | Methionine                  | 131.04         |
+   | N             | Asn           | Asparagine                  | 114.04         |
+   | P             | Pro           | Proline                     | 97.05          |
+   | Q             | Gln           | Glutamine                   | 128.06         |
+   | R             | Arg           | Arginine                    | 156.1          |
+   | S             | Ser           | Serine                      | 87.03          |
+   | T             | Thr           | Threonine                   | 101.05         |
+   | V             | Val           | Valine                      | 99.07          |
+   | W             | Trp           | Tryptophan                  | 186.08         |
+   | Y             | Tyr           | Tyrosine                    | 163.06         |
+
+   ```{note}
+   The masses are monoisotopic masses.
+   ```
 
  * `{bm} peptide` - A short amino acid chain of at least size two. Peptides are considered miniature proteins, but when something should be called a peptide vs a protein is loosely defined: the cut-off is anywhere between 50 to 100 amino acids.
  
  * `{bm} polypeptide` - A peptide of at least size 10.
 
- * `{bm} cyclopeptide` - A cyclic peptide.
+ * `{bm} cyclopeptide/(cyclopeptide|cyclic peptide)/i` - A peptide that doesn't have a start / end. It loops.
 
- * `{bm} linear peptide` - A non-cyclic peptide.
+   ```{svgbob}
+   N ----> Q 
+   ^       |
+   |       |
+   `-- Y <-'
+   ```
+
+ * `{bm} linear peptide` - A peptide that has a start and an end. It doesn't loop.
+
+   ```{svgbob}
+   N --> Q --> Y 
+   ```
+
+ * `{bm} subpeptide` - A peptide derived taking some contiguous piece of a larger peptide.
 
  * `{bm} central dogma of molecular biology` - The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).
 
