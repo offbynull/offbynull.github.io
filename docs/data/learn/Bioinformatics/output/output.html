@@ -64,6 +64,7 @@
 <li><a href="#H_Encode%20Peptide">Encode Peptide</a></li>
 <li><a href="#H_Decode%20Peptide">Decode Peptide</a></li>
 </ul>
+<li><a href="#H_Mass%20Spectrometry">Mass Spectrometry</a></li>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
 <ul>
@@ -75,11 +76,6 @@
 <li><a href="#H_Transcription%20Factors">Transcription Factors</a></li>
 <ul>
 <li><a href="#H_Find%20Regulatory%20Motif">Find Regulatory Motif</a></li>
-</ul>
-<li><a href="#H_Genome%20Sequencing">Genome Sequencing</a></li>
-<ul>
-<li><a href="#H1_Find%20Contigs">Find Contigs</a></li>
-<li><a href="#H_Find%20Errors">Find Errors</a></li>
 </ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
@@ -221,7 +217,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -350,12 +346,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>TTAAA = 6 occurrences</li>
-<li>GATCA = 6 occurrences</li>
 <li>AAGGG = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>CCCTT = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>TTAAA = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>GATCA = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -428,18 +424,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1560,7 +1556,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>AAAGA<br>AAAGA<br>AAAGA</p>
+<p>ATAAT<br>ATAAT<br>ATAAT</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2079,7 +2075,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2139,7 +2135,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_Assembly"></a><h2>Assembly</h2>
@@ -2808,22 +2804,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
 </ul>
 </div>
 <p></p>
@@ -3461,7 +3457,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li>Since the length of a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> is 3, the <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encoding</a> of the <a href="#BM_(peptide)%2Fi">peptide</a> could start from offset 0, 1, or 2 (referred to as <a href="#BM_(reading%20frame)%2Fi">reading frame</a>s).</li>
 <li>Since DNA is double stranded, either the DNA <a href="#BM_(sequence)%2Fi">sequence</a> or its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> could represent the <a href="#BM_(peptide)%2Fi">peptide</a>.</li>
 </ol>
-<p><strong>WHY</strong>: The composition of a <a href="#BM_(peptide)%2Fi">peptide</a> can be determined just from DNA that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s it.</p>
+<p><strong>WHY</strong>: The composition of a <a href="#BM_(peptide)%2Fi">peptide</a> can be determined from the DNA <a href="#BM_(sequence)%2Fi">sequence</a> that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s it.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <pre class="hljs"><code>_codon_to_amino_acid = {<span class="hljs-string">'AAA'</span>: <span class="hljs-string">'K'</span>, <span class="hljs-string">'AAC'</span>: <span class="hljs-string">'N'</span>, <span class="hljs-string">'AAG'</span>: <span class="hljs-string">'K'</span>, <span class="hljs-string">'AAU'</span>: <span class="hljs-string">'N'</span>, <span class="hljs-string">'ACA'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACC'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACG'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACU'</span>: <span class="hljs-string">'T'</span>,
                         <span class="hljs-string">'AGA'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'AGC'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'AGG'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'AGU'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'AUA'</span>: <span class="hljs-string">'I'</span>, <span class="hljs-string">'AUC'</span>: <span class="hljs-string">'I'</span>, <span class="hljs-string">'AUG'</span>: <span class="hljs-string">'M'</span>, <span class="hljs-string">'AUU'</span>: <span class="hljs-string">'I'</span>,
@@ -3517,7 +3513,7 @@ _amino_acid_to_codons = dict()
 <p></p>
 <a name="H_Decode%20Peptide"></a><h3>Decode Peptide</h3>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(peptide)%2Fi">peptide</a>, map each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> to the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s it represents. Since each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> can map to multiple <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s, there may be multiple DNA <a href="#BM_(sequence)%2Fi">sequence</a>s for a single <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
-<p><strong>WHY</strong>: The composition of a <a href="#BM_(peptide)%2Fi">peptide</a> can be determined just from DNA that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s it.</p>
+<p><strong>WHY</strong>: The DNA <a href="#BM_(sequence)%2Fi">sequence</a>s that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a> a <a href="#BM_(peptide)%2Fi">peptide</a> can be determined from the <a href="#BM_(peptide)%2Fi">peptide</a> itself.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <pre class="hljs"><code>_codon_to_amino_acid = {<span class="hljs-string">'AAA'</span>: <span class="hljs-string">'K'</span>, <span class="hljs-string">'AAC'</span>: <span class="hljs-string">'N'</span>, <span class="hljs-string">'AAG'</span>: <span class="hljs-string">'K'</span>, <span class="hljs-string">'AAU'</span>: <span class="hljs-string">'N'</span>, <span class="hljs-string">'ACA'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACC'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACG'</span>: <span class="hljs-string">'T'</span>, <span class="hljs-string">'ACU'</span>: <span class="hljs-string">'T'</span>,
                         <span class="hljs-string">'AGA'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'AGC'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'AGG'</span>: <span class="hljs-string">'R'</span>, <span class="hljs-string">'AGU'</span>: <span class="hljs-string">'S'</span>, <span class="hljs-string">'AUA'</span>: <span class="hljs-string">'I'</span>, <span class="hljs-string">'AUC'</span>: <span class="hljs-string">'I'</span>, <span class="hljs-string">'AUG'</span>: <span class="hljs-string">'M'</span>, <span class="hljs-string">'AUU'</span>: <span class="hljs-string">'I'</span>,
@@ -3575,6 +3571,49 @@ _amino_acid_to_codons = dict()
 </ul>
 </div>
 <p></p>
+<a name="H_Mass%20Spectrometry"></a><h2>Mass Spectrometry</h2>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FCodon)_TOPIC%2F">Algorithms/Codon</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> is a device that breaks and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly fragments each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>m</mi><mi>z</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{m}{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>).</p>
+<p>The device outputs a plot of intensities, where the...</p>
+<ul>
+<li>x-axis is the mass-to-charge ratio.</li>
+<li>y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge show compared to the others).</li>
+</ul>
+<p><img src="svgbob_2b5ef43ae7572c2c6bf63687c53860a71830d160.svg" alt="Kroki diagram output"></p>
+<p>A typical use-case for <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a> is identifying the makeup of a molecule from its fragment masses. For example, some <a href="#BM_(peptide)%2Fi">peptide</a>s are produced outside of the ribosome (<a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s), meaning that their <a href="#BM_(amino%20acid)%2Fi">amino acid</a> composition can't be determined just by looking at the organism's DNA. Given the <a href="#BM_(linear peptide)/i">linear</a> <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> NQY, the device will measure...</p>
+<ul>
+<li><code>massCharge(N)</code></li>
+<li><code>massCharge(Q)</code></li>
+<li><code>massCharge(Y)</code></li>
+<li><code>massCharge(NQ)</code></li>
+<li><code>massCharge(QY)</code></li>
+<li><code>massCharge(NQY)</code></li>
+</ul>
+<p>From there, the mass-to-charge ratios are turned into potential masses based on how the device ionizes fragments. For example, if the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> used has a tendency to produce either +1 or +2 ions, the mass...</p>
+<ul>
+<li><code>mass(N)</code> could come from <code>massCharge(N) * +1</code> or <code>massCharge(N) * +2</code></li>
+<li><code>mass(Q)</code> could come from <code>massCharge(Q) * +1</code> or <code>massCharge(Q) * +2</code></li>
+<li><code>mass(Y)</code> could come from <code>massCharge(Y) * +1</code> or <code>massCharge(Y) * +2</code></li>
+<li><code>mass(NQ)</code> could come from <code>massCharge(NQ) * +1</code> or <code>massCharge(NQ) * +2</code></li>
+<li><code>mass(QY)</code> could come from <code>massCharge(QY) * +1</code> or <code>massCharge(QY) * +2</code></li>
+<li><code>mass(NQY)</code> could come from <code>massCharge(NQY) * +1</code> or <code>massCharge(NQY) * +2</code></li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>m</mi><mi>z</mi></mfrac><mo>⋅</mo><mi>z</mi><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">\frac{m}{z} \cdot {z} = m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span></p>
+</div>
+<p>Given these potential masses, it's possible to infer the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> composition of the <a href="#BM_(peptide)%2Fi">peptide</a> (in other words, the <a href="#BM_(peptide)%2Fi">peptide</a> can be <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a>). However, special consideration needs to be given to the real-world practical problems with <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>: The output of a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> ...</p>
+<ul>
+<li>may miss mass-to-charge ratios for some fragments of the intended molecule (missing entries).</li>
+<li>may include mass-to-charge ratios for fragments from unintended molecules (faulty entries).</li>
+<li>will have some noisy mass-to-charge ratios.</li>
+</ul>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
@@ -3665,8 +3704,8 @@ _amino_acid_to_codons = dict()
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -3684,19 +3723,19 @@ _amino_acid_to_codons = dict()
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -3708,12 +3747,12 @@ _amino_acid_to_codons = dict()
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -3774,170 +3813,10 @@ _amino_acid_to_codons = dict()
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 18</p>
+<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 21</p>
 </div>
 <p></p>
-<a name="H_Genome%20Sequencing"></a><h2>Genome Sequencing</h2>
-<p>A <a href="#BM_(sequencer)%2Fi">sequencer</a> is a machine that takes multiple copies of the same <a href="#BM_(genome)%2Fi">genome</a>, breaks those copies up into smaller fragments, and scans in those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s. Each <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> is typically the same length but has a unique starting offset. The original <a href="#BM_(genome)%2Fi">genome</a> <a href="#BM_(sequence)%2Fi">sequence</a> can be guessed by finding <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s with overlapping regions and stitching them together.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> 1</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>C</td>
-<td>T</td>
-<td>T</td>
-<td>C</td>
-<td>T</td>
-<td>T</td>
-</tr>
-<tr>
-<td><a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> 2</td>
-<td></td>
-<td></td>
-<td></td>
-<td>G</td>
-<td>C</td>
-<td>T</td>
-<td>T</td>
-<td>C</td>
-<td>T</td>
-<td></td>
-</tr>
-<tr>
-<td><a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> 3</td>
-<td></td>
-<td></td>
-<td>T</td>
-<td>G</td>
-<td>C</td>
-<td>T</td>
-<td>T</td>
-<td>C</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> 4</td>
-<td></td>
-<td>T</td>
-<td>T</td>
-<td>G</td>
-<td>C</td>
-<td>T</td>
-<td>T</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> 5</td>
-<td>A</td>
-<td>T</td>
-<td>T</td>
-<td>G</td>
-<td>C</td>
-<td>T</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>reconstructed</td>
-<td>A</td>
-<td>T</td>
-<td>T</td>
-<td>G</td>
-<td>C</td>
-<td>T</td>
-<td>T</td>
-<td>C</td>
-<td>T</td>
-<td>T</td>
-</tr>
-</tbody>
-</table>
-<p>This process is called <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a>. In the real-world, <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> has many practical complications that prevent full <a href="#BM_(genome)%2Fi">genome</a> reconstruction:</p>
-<ul>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be missing (<a href="#BM_(sequencer)%2Fi">sequencer</a> didn't capture it).</li>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may have inconsistent <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> (<a href="#BM_(sequencer)%2Fi">sequencer</a> captured it too many/few times).</li>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be repeated (regions of the <a href="#BM_(genome)%2Fi">genome</a> may repeat).</li>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may have errors (<a href="#BM_(sequencer)%2Fi">sequencer</a> produced <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s).</li>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be stitch-able in more than one way (multiple <a href="#BM_(genome)%2Fi">genome</a> reconstruction guesses).</li>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may take a long time to stitch (computationally intensive).</li>
-</ul>
-<p>In a perfect world where most of the practical complications with <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> didn't exist, a graph may be used to stitch together a <a href="#BM_(genome)%2Fi">genome</a>. A graph identifies different ways that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s overlap, and as such the different ways that a <a href="#BM_(genome)%2Fi">genome</a> could be stitched together.</p>
-<p><img src="svgbob_ffd561cf4050e9de3241728977c3ed3955340b8f.svg" alt="Kroki diagram output"></p>
-<a name="H1_Find%20Contigs"></a><h3>Find Contigs</h3>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FAssembly%2FFind%20Contigs)_TOPIC%2F">Algorithms/Assembly/Find Contigs</a></li>
-</ul>
-</div>
-<p>In a perfect world where most of the practical complications with <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> didn't exist, a graph may be used to stitch together a <a href="#BM_(genome)%2Fi">genome</a>. Given a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s, a graph identifies different ways those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s overlap, and as such the different ways that a <a href="#BM_(genome)%2Fi">genome</a> could be stitched together.</p>
-<p><img src="svgbob_ffd561cf4050e9de3241728977c3ed3955340b8f.svg" alt="Kroki diagram output"></p>
-<p>In the real-world, practical complications would make such a graph too tangled and / or <a href="#BM_(disconnected)%2Fi">disconnected</a> to guess a <a href="#BM_(genome)%2Fi">genome</a>. As such, a graph would still be used, but instead of using that graph to <a href="#BM_(assembly%7Cassemble)%2Fi">assemble</a> the entire <a href="#BM_(genome)%2Fi">genome</a>, linear node chains are pulled out instead. These chains are called <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s, and they represent unambiguous stretches of DNA (<a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s where only a single overlap exists).</p>
-<p><img src="svgbob_fe95f02906e6e9e2bbab25e3986bb5a1f23ab318.svg" alt="Kroki diagram output"></p>
-<p>In the example below, the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s for E. coli bacteria are constructed into a graph and <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s are extracted.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>I found raw <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.</p>
-</div>
-<a name="H_Find%20Errors"></a><h3>Find Errors</h3>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FAssembly%2FFind%20Bubbles)_TOPIC%2F">Algorithms/Assembly/Find Bubbles</a></li>
-</ul>
-</div>
-<p>In the real-world, <a href="#BM_(sequencer)%2Fi">sequencer</a>s introduce <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s in the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s they scan. As such, any graph would very likely contain invalid parts. These invalid parts typically manifest as bubbles and forks in the graph.</p>
-<p>For example, imagine that the <a href="#BM_(sequencer)%2Fi">sequencer</a> captures that same part of the <a href="#BM_(genome)%2Fi">genome</a> twice, but the second time the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> contains a <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>. Depending on where the incorrect nucleotide is, one of the 3 structures will get introduced into the graph:</p>
-<ul>
-<li>
-<p>ATTGG vs A<strong>C</strong>TGG (within first 2 elements)</p>
-<p><img src="svgbob_0c0a09e604164ee4ffcdc4f3fcfa420c2035cdd5.svg" alt="Kroki diagram output"></p>
-</li>
-<li>
-<p>ATTGG vs ATT<strong>C</strong>G (within last 2 elements)</p>
-<p><img src="svgbob_8749bd635048fbfa4bd483e9c5425e73ff41a8d1.svg" alt="Kroki diagram output"></p>
-</li>
-<li>
-<p>ATTGG vs AT<strong>C</strong>GG (sandwiched after first 2 elements and before last 2 elements)</p>
-<p><img src="svgbob_3cc83e04b59a481951a59a2edd92cab8b200b193.svg" alt="Kroki diagram output"></p>
-</li>
-</ul>
-<p>Note that just because these structures exist doesn't mean that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s they represent definitively have <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. These structures could have been caused by other problems / may not be problems at all:</p>
-<ul>
-<li>Bubbles may be caused by repetitive regions of DNA: <a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s from different parts of the <a href="#BM_(genome)%2Fi">genome</a> that are the same except for a few positions will show up as bubbles.</li>
-<li>Bubbles / forks may be caused when <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>: When both strands of DNA get tangled into the same graph, it's possible that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s from different strands form bubbles or forks.</li>
-</ul>
-<p>In the example below, the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s for E. coli bacteria are constructed into a graph and bubbles / forks are removed.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>I found raw <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.</p>
-</div>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -5059,6 +4938,9 @@ _amino_acid_to_codons = dict()
 </li>
 <li>
 <p><a name="BM_(cyclopeptide)%2Fi"></a><strong>cyclopeptide</strong> - A cyclic <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
+</li>
+<li>
+<p><a name="BM_(linear%20peptide)%2Fi"></a><strong>linear peptide</strong> - A non-cyclic <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
 </li>
 <li>
 <p><a name="BM_(central%20dogma%20of%20molecular%20biology)%2Fi"></a><strong>central dogma of molecular biology</strong> - The overall concept of <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a> and <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).</p>

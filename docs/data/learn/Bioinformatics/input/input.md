@@ -2073,7 +2073,7 @@ The codons are listed as ribonucleotides (RNA). For nucleotides (DNA), swap U wi
  1. Since the length of a codon is 3, the encoding of the peptide could start from offset 0, 1, or 2 (referred to as reading frames).
  2. Since DNA is double stranded, either the DNA sequence or its reverse complement could represent the peptide.
 
-**WHY**: The composition of a peptide can be determined just from DNA that encodes it.
+**WHY**: The composition of a peptide can be determined from the DNA sequence that encodes it.
 
 **ALGORITHM**:
 
@@ -2098,7 +2098,7 @@ AAAAGAACCTAATCTTAAAGGAGATGATGATTCTAA
 
 **WHAT**: Given a peptide, map each amino acid to the DNA sequences it represents. Since each amino acid can map to multiple codons, there may be multiple DNA sequences for a single peptide.
 
-**WHY**: The composition of a peptide can be determined just from DNA that encodes it.
+**WHY**: The DNA sequences that encode a peptide can be determined from the peptide itself.
 
 **ALGORITHM**:
 
@@ -2118,6 +2118,64 @@ python
 DecodePeptide
 NQY
 ```
+
+## Mass Spectrometry
+
+`{bm} /(Algorithms\/Mass Spectrometry)_TOPIC/`
+
+```{prereq}
+Algorithms/Codon_TOPIC
+```
+
+A mass spectrometer is a device that breaks and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly fragment_NORMs each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
+
+The device outputs a plot of intensities, where the...
+
+ * x-axis is the mass-to-charge ratio.
+ * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge show compared to the others).
+
+```{svgbob}
+    y
+    ^
+    |
+    |        |
+    |        |
+"%" |        |
+    |        | |           |
+    |        | |           |
+    | |      | | |         |        |
+    | | | |  | | |     |   |    | | |
+    +-+-+-+--+-+-+-----+---+----+-+-+--> x
+                     "m/z"
+```
+
+A typical use-case for mass spectrometry is identifying the makeup of a molecule from its fragment_NORM masses. For example, some peptides are produced outside of the ribosome (non-ribosomal peptides), meaning that their amino acid composition can't be determined just by looking at the organism's DNA. Given the `{bm-target} linear/(linear peptide)/i` non-ribosomal peptide NQY, the device will measure...
+
+ * `massCharge(N)`
+ * `massCharge(Q)`
+ * `massCharge(Y)`
+ * `massCharge(NQ)`
+ * `massCharge(QY)`
+ * `massCharge(NQY)`
+
+From there, the mass-to-charge ratios are turned into potential masses based on how the device ionizes fragment_NORMs. For example, if the mass spectrometer used has a tendency to produce either +1 or +2 ions, the mass...
+
+ * `mass(N)` could come from `massCharge(N) * +1` or `massCharge(N) * +2`
+ * `mass(Q)` could come from `massCharge(Q) * +1` or `massCharge(Q) * +2`
+ * `mass(Y)` could come from `massCharge(Y) * +1` or `massCharge(Y) * +2`
+ * `mass(NQ)` could come from `massCharge(NQ) * +1` or `massCharge(NQ) * +2`
+ * `mass(QY)` could come from `massCharge(QY) * +1` or `massCharge(QY) * +2`
+ * `mass(NQY)` could come from `massCharge(NQY) * +1` or `massCharge(NQY) * +2`
+
+```{note}
+`{kt} \frac{m}{z} \cdot {z} = m`
+```
+
+Given these potential masses, it's possible to infer the amino acid composition of the peptide (in other words, the peptide can be sequenced). However, special consideration needs to be given to the real-world practical problems with mass spectrometry: The output of a mass spectrometer ...
+
+ * may miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
+ * may include mass-to-charge ratios for fragment_NORMs from unintended molecules (faulty entries).
+ * will have some noisy mass-to-charge ratios.
 
 # Stories
 
@@ -2520,150 +2578,6 @@ The example below hard codes k to 18, but you typically don't know what k should
 ```{ch2}
 PracticalMotifFindingExample
 ```
-
-## Genome Sequencing
-
-A sequencer is a machine that takes multiple copies of the same genome, breaks those copies up into smaller fragment_NORMs, and scans in those fragment_SEQs. Each fragment_SEQ is typically the same length but has a unique starting offset. The original genome sequence can be guessed by finding fragment_SEQs with overlapping regions and stitching them together.
-
-|             |0|1|2|3|4|5|6|7|8|9|
-|-------------|-|-|-|-|-|-|-|-|-|-|
-|read_SEQ 1   | | | | |C|T|T|C|T|T|
-|read_SEQ 2   | | | |G|C|T|T|C|T| |
-|read_SEQ 3   | | |T|G|C|T|T|C| | |
-|read_SEQ 4   | |T|T|G|C|T|T| | | |
-|read_SEQ 5   |A|T|T|G|C|T| | | | |
-|reconstructed|A|T|T|G|C|T|T|C|T|T|
-
-This process is called assembly. In the real-world, assembly has many practical complications that prevent full genome reconstruction:
-
- * Fragment_SEQs are for both strands (strand of double-stranded DNA a fragment_SEQ's from isn't known).
- * Fragment_SEQs may be missing (sequencer didn't capture it).
- * Fragment_SEQs may have inconsistent coverage_SEQ (sequencer captured it too many/few times).
- * Fragment_SEQs may be repeated (regions of the genome may repeat).
- * Fragment_SEQs may have errors (sequencer produced sequencing errors).
- * Fragment_SEQs may be stitch-able in more than one way (multiple genome reconstruction guesses).
- * Fragment_SEQs may take a long time to stitch (computationally intensive).
-
-In a perfect world where most of the practical complications with assembly didn't exist, a graph may be used to stitch together a genome. A graph identifies different ways that fragment_SEQs overlap, and as such the different ways that a genome could be stitched together.
-
-```{svgbob}
-                      .-> GTT --> ...
-                      |
-TTA --> TAG --> AGT --+
-                      |
-                      `-> GTC --> ...
-
-" * Genome guess 1: [TTA, TAG, AGT, GTT, ...] ⟶ TTAGTT..."
-" * Genome guess 2: [TTA, TAG, AGT, GTC, ...] ⟶ TTAGTC..."
-```
-
-### Find Contigs
-
-```{prereq}
-Algorithms/Assembly/Find Contigs_TOPIC
-```
-
-In a perfect world where most of the practical complications with assembly didn't exist, a graph may be used to stitch together a genome. Given a set of fragment_SEQs, a graph identifies different ways those fragment_SEQs overlap, and as such the different ways that a genome could be stitched together.
-
-```{svgbob}
-                      .-> GTT --> ...
-                      |
-TTA --> TAG --> AGT --+
-                      |
-                      `-> GTC --> ...
-
-" * Genome guess 1: [TTA, TAG, AGT, GTT, ...] ⟶ TTAGTT..."
-" * Genome guess 2: [TTA, TAG, AGT, GTC, ...] ⟶ TTAGTC..."
-```
-
-In the real-world, practical complications would make such a graph too tangled and / or disconnected to guess a genome. As such, a graph would still be used, but instead of using that graph to assemble the entire genome, linear node chains are pulled out instead. These chains are called contigs, and they represent unambiguous stretches of DNA (fragment_SEQs where only a single overlap exists).
-
-```{svgbob}
-.----------------------------------------------------------------.
-|                                                                |
-|                                                                |
-`-> TTA --> TAG --> AGT --> GTT --> TTA --> TAC --> ACT --> CTT -'
-    ^                       |       ^                       |
-    |                       |       |                       |
-    `-----------------------'       `-----------------------'
-
-" * Contig 1: [TTA, TAG, AGT, GTT] ⟶ TTAGTT"
-" * Contig 2: [TTA, TAC, ACT, CTT] ⟶ TTACTT"
-" * Contig 3: [GTT, TTA] ⟶ GTTA"
-" * Contig 4: [CTT, TTA] ⟶ CTTA"
-```
-
-In the example below, the fragment_SEQs for E. coli bacteria are constructed into a graph and contigs are extracted.
-
-````{note}
-I found raw sequencer outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.
-````
-
-### Find Errors
-
-```{prereq}
-Algorithms/Assembly/Find Bubbles_TOPIC
-```
-
-In the real-world, sequencers introduce sequencing errors in the fragment_SEQs they scan. As such, any graph would very likely contain invalid parts. These invalid parts typically manifest as bubbles and forks in the graph.
-
-For example, imagine that the sequencer captures that same part of the genome twice, but the second time the fragment_SEQ contains a sequencing error. Depending on where the incorrect nucleotide is, one of the 3 structures will get introduced into the graph:
-
- * ATTGG vs A**C**TGG (within first 2 elements)
-
-   ```{svgbob}
-   "ATTGG = [AT, TT, TG, GG]"
-   "ACTGG = [AC, CT, TG, GG]"
-
-   AT --> TT --.
-               |
-               +--> TG --> GG 
-               |
-   AC --> CT --'
-
-   "This is a forked prefix"
-   ```
-
- * ATTGG vs ATT**C**G (within last 2 elements)
-
-   ```{svgbob}
-   "ATTGG breaks into [AT, TT, TG, GG]"
-   "ATTCG breaks into [AT, TT, TC, CG]"
-
-               .--> TG --> GG
-               |
-   AT --> TT --+
-               |
-               `--> TC --> CG
-
-   "This is a forked suffix"
-   ```
-
- * ATTGG vs AT**C**GG (sandwiched after first 2 elements and before last 2 elements)
-
-   ```{svgbob}
-   "ATTGG = [AT, TT, TG, GG]"
-   "ATCGG = [AT, TC, CG, GG]"
-
-        .--> TC --> CG --.
-        |                |
-   AT --+                +--> GG 
-        |                |
-        `--> TT --> TG --'
-    
-   "This is a bubble"
-   ```
-
-Note that just because these structures exist doesn't mean that the fragment_SEQs they represent definitively have sequencing errors. These structures could have been caused by other problems / may not be problems at all:
-
- * Bubbles may be caused by repetitive regions of DNA: Fragment_SEQs from different parts of the genome that are the same except for a few positions will show up as bubbles.
- * Bubbles / forks may be caused when sequencing double-stranded DNA: When both strands of DNA get tangled into the same graph, it's possible that fragment_SEQs from different strands form bubbles or forks.
-
-In the example below, the fragment_SEQs for E. coli bacteria are constructed into a graph and bubbles / forks are removed.
-
-````{note}
-I found raw sequencer outputs for e coli but it's too large to use in the repository (50-100gb in size). Even so, any non-trivial practical example would be too resource intensive to run. As such, this story has no practical example. See the toy examples in the algorithms section.
-````
 
 # Terminology
 
@@ -3665,6 +3579,8 @@ I found raw sequencer outputs for e coli but it's too large to use in the reposi
  * `{bm} polypeptide` - A peptide of at least size 10.
 
  * `{bm} cyclopeptide` - A cyclic peptide.
+
+ * `{bm} linear peptide` - A non-cyclic peptide.
 
  * `{bm} central dogma of molecular biology` - The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).
 
