@@ -2129,10 +2129,10 @@ Algorithms/Codon_TOPIC
 
 A mass spectrometer is a device that breaks and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly fragment_NORMs each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
 
-The device outputs a plot of intensities called a spectrum. The spectrum's ...
+The mass spectrometer outputs a plot called a spectrum_MS, where the...
 
  * x-axis is the mass-to-charge ratio.
- * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge show compared to the others).
+ * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).
 
 ```{svgbob}
     y
@@ -2149,33 +2149,45 @@ The device outputs a plot of intensities called a spectrum. The spectrum's ...
                      "m/z"
 ```
 
-A typical use-case for mass spectrometry is identifying the makeup of a molecule from its fragment_NORM masses. For example, some peptides are produced outside of the ribosome (non-ribosomal peptides), meaning that their amino acid composition can't be determined just by looking at the organism's DNA. Given the `{bm-target} linear/(linear peptide)/i` non-ribosomal peptide NQY, the device will measure...
+A typical use-case for mass spectrometry is identifying the amino acid composition of non-ribosomal peptides: peptides produced outside of the ribosome, meaning that their amino acid composition can't be determined just by looking at the organism's DNA (genetic code). For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds that hold its amino acids together:
 
- * `massCharge(N)`
- * `massCharge(Q)`
- * `massCharge(Y)`
- * `massCharge(NQ)`
- * `massCharge(QY)`
- * `massCharge(NQY)`
+```{svgbob}
+N ---- Q ---- Y   "(NQY not broken)"
 
-From there, the mass-to-charge ratios are turned into potential masses based on how the device ionizes fragment_NORMs. For example, if the mass spectrometer used has a tendency to produce either +1 or +2 ions, the mass...
+N -//- Q ---- Y   "(NQY broken to N and QY)"
 
- * `mass(N)` could come from `massCharge(N) * +1` or `massCharge(N) * +2`
- * `mass(Q)` could come from `massCharge(Q) * +1` or `massCharge(Q) * +2`
- * `mass(Y)` could come from `massCharge(Y) * +1` or `massCharge(Y) * +2`
- * `mass(NQ)` could come from `massCharge(NQ) * +1` or `massCharge(NQ) * +2`
- * `mass(QY)` could come from `massCharge(QY) * +1` or `massCharge(QY) * +2`
- * `mass(NQY)` could come from `massCharge(NQY) * +1` or `massCharge(NQY) * +2`
+N ---- Q -//- Y   "(NQY broken to NQ and Y)"
 
-```{note}
-`{kt} \frac{m}{z} \cdot {z} = m`
+N -//- Q -//- Y   "(NQY broken to N, Q, and Y)"
 ```
 
-Given these potential masses, it's possible to infer the amino acid composition of the peptide (in other words, the peptide can be sequenced). However, special consideration needs to be given to the real-world practical problems with mass spectrometry: The spectrum given back by a mass spectrometer ...
+```{note}
+How does it know to break the bonds holding amino acids together and not bonds within the amino acids themselves? My guess is that the bonds holding the amino acids together are much weaker, so it's more likely they'll be the ones that get broken.
+```
 
- * may miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
- * may include mass-to-charge ratios for fragment_NORMs from unintended molecules (faulty entries).
- * will have some noisy mass-to-charge ratios.
+Then, each subpeptide will have its mass-to-charge ratio measured. For example, if the mass spectrometer was able to break NQY into all of its subpeptides, the output will contain the mass-to-charge-ratios ...
+
+ * `mass_charge['N']`
+ * `mass_charge['Q']`
+ * `mass_charge['Y']`
+ * `mass_charge['NQ']`
+ * `mass_charge['QY']`
+ * `mass_charge['NQY']`
+
+Then, the user converts the mass-to-charge ratios into potential masses based on how the device ionizes (`{kt} \frac{m}{z} \cdot {z} = m`). For example, if the mass spectrometer used has a tendency to produce either +1 or +2 ions ...
+
+ * `potential_masses['N'] = [mass_charge['N'] * 1, mass_charge['N'] * 2]`
+ * `potential_masses['Q'] = [mass_charge['Q'] * 1, mass_charge['Q'] * 2]`
+ * `potential_masses['Y'] = [mass_charge['Y'] * 1, mass_charge['Y'] * 2]`
+ * `potential_masses['NQ'] = [mass_charge['NQ'] * 1, mass_charge['NQ'] * 2]`
+ * `potential_masses['QY'] = [mass_charge['QY'] * 1, mass_charge['QY'] * 2]`
+ * `potential_masses['NQY'] = [mass_charge['NQY'] * 1, mass_charge['NQY'] * 2]`
+
+Given these potential masses, it's possible to infer the amino acid composition of the peptide (in other words, the peptide can be sequenced). However, special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
+
+ * miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
+ * include mass-to-charge ratios for fragment_NORMs from unintended molecules (faulty entries).
+ * have noisy mass-to-charge ratios.
 
 The techniques and algorithms documented in the subsection below will focus on non-ribosomal peptides.
 
@@ -2187,31 +2199,45 @@ They focus on non-ribosomal peptides because that's what the Pevzner book focuse
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
 
-**WHAT**: Given a peptide, the theoretical spectrum of that peptide is a list of all subpeptides masses for that peptide. In contrast, the experimental spectrum is a noisy list of potential masses converted from a mass spectrometer output. The theoretical spectrum is what an experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
+**WHAT**: Given a peptide, its...
+
+ * theoretical spectrum is a list of all of its subpeptide masses. 
+ * experimental spectrum is a list of potential subpeptide masses converted from a mass spectrometer output (spectrum_MS).
+
+The theoretical spectrum is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
 
 For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
 
- * `mass() = 0`
- * `mass(N) = 114`
- * `mass(Q) = 128`
- * `mass(Y) = 163`
- * `mass(NQ) = 242`
- * `mass(QY) = 291`
- * `mass(NQY) = 405`
+```python
+mass = {
+  '': 0,
+  'N': 114,
+  'Q': 128,
+  'Y': 163,
+  'NQ': 242,
+  'QY': 291,
+  'NQY': 405
+}
+```
 
 ... while the experimental spectrum may look more like [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. In the experimental spectrum, ...
 
- * `mass() = 0` is implied.
- * `mass(N) = 114` is covered by 113.9 and 115.1
- * `mass(Q) = 128` is missing.
- * `mass(Y) = 163` is covered by 162.9.
- * `mass(NQ) = 242` is covered by 242.0.
- * `mass(QY) = 291` is missing.
- * 311.1 is faulty.
- * 346.0 is faulty.
- * `mass(NQY) = 405` is covered by 405.2.
+```python
+mass = {
+  '': 0,
+  'N': [113.9, 115.1],  # multiple
+  'Q': None,            # missing
+  '?': 136.2,           # faulty
+  'Y': 162.9,
+  'NQ': 242.0,
+  'QY': None,           # missing
+  '?': 311.1,           # faulty
+  '?': 346.0,           # faulty
+  'NQY': 405.2
+}
+```
 
-**WHY**: A theoretical spectrum can be generated and compared against an experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either is or is similar to the peptide for the experimental spectrum.
+**WHY**: A theoretical spectrum can be generated and compared against an experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either exactly matches or is similar to the peptide for the experimental spectrum.
 
 #### Bruteforce Algorithm
 
@@ -2230,7 +2256,7 @@ python
 ```{ch4}
 BruteforceTheoreticalSpectrum
 NQY
-cyclic
+linear
 G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
 ```
 
@@ -2258,22 +2284,22 @@ As such, the prefix sum at each position is...
 | Prefix sum of mass | 57=57   | 57+71=128   | 57+71+87=215   | 57+71+87+97=312   |
 
 ```python
-prefixsum_masses[0] = mass('')     = 0             = 0   # Artificially added
-prefixsum_masses[1] = mass('G')    = 0+57          = 57
-prefixsum_masses[2] = mass('GA')   = 0+57+71       = 128
-prefixsum_masses[3] = mass('GAS')  = 0+57+71+87    = 215
-prefixsum_masses[4] = mass('GASP') = 0+57+71+87+97 = 312
+prefixsum_masses[0] = mass['']     = 0             = 0   # Artificially added
+prefixsum_masses[1] = mass['G']    = 0+57          = 57
+prefixsum_masses[2] = mass['GA']   = 0+57+71       = 128
+prefixsum_masses[3] = mass['GAS']  = 0+57+71+87    = 215
+prefixsum_masses[4] = mass['GASP'] = 0+57+71+87+97 = 312
 ```
 
 The mass for each subpeptide can be derived from just these prefix sums. For example, ...
 
 ```python
-mass('GASP') = mass('GASP') - mass('')    = prefixsum_masses[4] - prefixsum_masses[0]
-mass('ASP')  = mass('GASP') - mass('G')   = prefixsum_masses[4] - prefixsum_masses[1]
-mass('AS')   = mass('GAS')  - mass('G')   = prefixsum_masses[3] - prefixsum_masses[1]
-mass('A')    = mass('GA')   - mass('G')   = prefixsum_masses[2] - prefixsum_masses[1]
-mass('S')    = mass('GAS')  - mass('GA')  = prefixsum_masses[3] - prefixsum_masses[2]
-mass('P')    = mass('GASP') - mass('GAS') = prefixsum_masses[4] - prefixsum_masses[3]
+mass['GASP'] = mass['GASP'] - mass['']    = prefixsum_masses[4] - prefixsum_masses[0]
+mass['ASP']  = mass['GASP'] - mass['G']   = prefixsum_masses[4] - prefixsum_masses[1]
+mass['AS']   = mass['GAS']  - mass['G']   = prefixsum_masses[3] - prefixsum_masses[1]
+mass['A']    = mass['GA']   - mass['G']   = prefixsum_masses[2] - prefixsum_masses[1]
+mass['S']    = mass['GAS']  - mass['GA']  = prefixsum_masses[3] - prefixsum_masses[2]
+mass['P']    = mass['GASP'] - mass['GAS'] = prefixsum_masses[4] - prefixsum_masses[3]
 # etc...
 ```
    
@@ -2289,8 +2315,8 @@ A <--- G
 The prefix sum can be used to calculate these wrapping subpeptides as well. For example...
 
 ```python
-mass('PG') = mass('GASP') - mass('AS')
-           = mass('GASP') - (mass('GAS') - mass('G'))    # SUBSTITUTE IN mass('AS') FROM ABOVE
+mass['PG'] = mass['GASP'] - mass['AS']
+           = mass['GASP'] - (mass['GAS'] - mass['G'])    # SUBSTITUTE IN mass['AS'] CALC FROM ABOVE
            = prefixsum_masses[4] - (prefixsum_masses[3] - prefixsum_masses[1])
 ```
 
@@ -2308,7 +2334,7 @@ python
 ```{ch4}
 PrefixSumTheoreticalSpectrum
 NQY
-cyclic
+linear
 G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
 ```
 
@@ -3741,6 +3767,10 @@ PracticalMotifFindingExample
    ```
 
  * `{bm} subpeptide` - A peptide derived taking some contiguous piece of a larger peptide.
+ 
+   A subpeptide can have a length == 1 where a peptide must have a length > 1. As such, in the case where the subpeptide has a length ...
+    * == 1, it isn't considered a peptide.
+    * \> 1, it is considered a peptide.
 
  * `{bm} central dogma of molecular biology` - The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).
 
@@ -3756,6 +3786,26 @@ PracticalMotifFindingExample
    * communication between bacteria (quorum sensing)
 
  * `{bm} mass spectrometer/(mass spectrometer|mass spectrometry)/i` - A device that shatters molecules into pieces and weighs the resulting pieces (measured in daltons). Mass spectrometry can be used to sequence peptides by inferring the amino acid sequence from the collection of masses.
+
+ * `{bm} spectrum/(spectrum)_MS/i` - The output of a mass spectrometer. The...
+
+    * x-axis is the mass-to-charge ratio.
+    * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).
+   
+   ```{svgbob}
+       y
+       ^
+       |
+       |        |
+       |        |
+   "%" |        |
+       |        | |           |
+       |        | |           |
+       | |      | | |         |        |
+       | | | |  | | |     |   |    | | |
+       +-+-+-+--+-+-+-----+---+----+-+-+--> x
+                        "m/z"
+   ```
 
  * `{bm} experimental spectrum` - Given a shattered molecule, a collection consisting of the each piece's mass as measured by a mass spectrometer. For example, given the peptide ACDEFG, the experimental spectrum may be...
 
@@ -3861,6 +3911,9 @@ PracticalMotifFindingExample
 
 `{bm-ignore} (Eulerian)_NORM/i`
 `{bm-error} Apply suffix _PATH, _CYCLE, _GRAPH, or _NORM/(Eulerian)/i`
+
+`{bm-ignore} (spectrum)_NORM/i`
+`{bm-error} Apply suffix _NORM, _MS/(spectrum)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`
