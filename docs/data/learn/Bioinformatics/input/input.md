@@ -2187,7 +2187,7 @@ They focus on non-ribosomal peptides because that's what the Pevzner book focuse
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
 
-**WHAT**: Given a peptide, the theoretical spectrum of that peptide is an exact list of fragment_NORM masses for that peptide. In contrast, the experimental spectrum is a noisy list of potential masses converted from a mass spectrometer output. The theoretical spectrum is what an experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
+**WHAT**: Given a peptide, the theoretical spectrum of that peptide is a list of all subpeptides masses for that peptide. In contrast, the experimental spectrum is a noisy list of potential masses converted from a mass spectrometer output. The theoretical spectrum is what an experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
 
 For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
 
@@ -2211,7 +2211,7 @@ For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 
  * 346.0 is faulty.
  * `mass(NQY) = 405` is covered by 405.2.
 
-**WHY**: A theoretical spectrum can be generated for scored against an experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either is or is closely related to the peptide for the experimental spectrum.
+**WHY**: A theoretical spectrum can be generated and compared against an experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either is or is similar to the peptide for the experimental spectrum.
 
 #### Bruteforce Algorithm
 
@@ -2231,6 +2231,7 @@ python
 BruteforceTheoreticalSpectrum
 NQY
 cyclic
+G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
 ```
 
 #### Prefix Sum Algorithm
@@ -2308,6 +2309,7 @@ python
 PrefixSumTheoreticalSpectrum
 NQY
 cyclic
+G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
 ```
 
 ```{note}

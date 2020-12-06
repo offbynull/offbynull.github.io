@@ -1,8 +1,6 @@
 from itertools import accumulate
 from typing import List, TypeVar, Dict
 
-from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
-
 AA = TypeVar('AA')
 
 
@@ -54,9 +52,10 @@ def main():
     try:
         peptide = input().strip()
         type = input().strip()
+        mass_table = {e.strip().split(':')[0]: float(e.strip().split(':')[1]) for e in input().strip().split(',')}
         spectrum = theoretical_spectrum(
             list(peptide),
-            get_amino_acid_to_mass_table(),
+            mass_table,
             {'cyclic': True, 'linear': False}[type]
         )
         print(f'The theoretical spectrum for the {type} peptide {peptide} is {spectrum}', end="\n\n")
