@@ -2165,23 +2165,27 @@ N -//- Q -//- Y   "(NQY broken to N, Q, and Y)"
 How does it know to break the bonds holding amino acids together and not bonds within the amino acids themselves? My guess is that the bonds holding the amino acids together are much weaker, so it's more likely they'll be the ones that get broken.
 ```
 
-Then, each subpeptide will have its mass-to-charge ratio measured. For example, if the mass spectrometer was able to break NQY into all of its subpeptides, the output will contain the mass-to-charge-ratios ...
+Then, each subpeptide will have its mass-to-charge ratio measured. For example, if the mass spectrometer was able to capture all possible subpeptides of NQY as well as NQY itself, the output will contain the mass-to-charge-ratios ...
 
- * `mass_charge['N']`
- * `mass_charge['Q']`
- * `mass_charge['Y']`
- * `mass_charge['NQ']`
- * `mass_charge['QY']`
- * `mass_charge['NQY']`
+```python
+mass_charge['N'] = ...
+mass_charge['Q'] = ...
+mass_charge['Y'] = ...
+mass_charge['NQ'] = ...
+mass_charge['QY'] = ...
+mass_charge['NQY'] = ...
+```
 
 Then, the user converts the mass-to-charge ratios into potential masses based on how the device ionizes (`{kt} \frac{m}{z} \cdot {z} = m`). For example, if the mass spectrometer used has a tendency to produce either +1 or +2 ions ...
 
- * `potential_masses['N'] = [mass_charge['N'] * 1, mass_charge['N'] * 2]`
- * `potential_masses['Q'] = [mass_charge['Q'] * 1, mass_charge['Q'] * 2]`
- * `potential_masses['Y'] = [mass_charge['Y'] * 1, mass_charge['Y'] * 2]`
- * `potential_masses['NQ'] = [mass_charge['NQ'] * 1, mass_charge['NQ'] * 2]`
- * `potential_masses['QY'] = [mass_charge['QY'] * 1, mass_charge['QY'] * 2]`
- * `potential_masses['NQY'] = [mass_charge['NQY'] * 1, mass_charge['NQY'] * 2]`
+```python
+potential_masses['N'] = [mass_charge['N'] * 1, mass_charge['N'] * 2]
+potential_masses['Q'] = [mass_charge['Q'] * 1, mass_charge['Q'] * 2]
+potential_masses['Y'] = [mass_charge['Y'] * 1, mass_charge['Y'] * 2]
+potential_masses['NQ'] = [mass_charge['NQ'] * 1, mass_charge['NQ'] * 2]
+potential_masses['QY'] = [mass_charge['QY'] * 1, mass_charge['QY'] * 2]
+potential_masses['NQY'] = [mass_charge['NQY'] * 1, mass_charge['NQY'] * 2]
+```
 
 Given these potential masses, it's possible to infer the amino acid composition of the peptide (in other words, the peptide can be sequenced). However, special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
 
@@ -2341,9 +2345,105 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 ```{note}
 The algorithm above is serial, but it can be made parallel to get even more speed:
 
- 1. Parallelized prefix sum (e.g. Hillis-Steele algorithm / Blelloch algorithm).
+ 1. Parallelized prefix sum (e.g. Hillis-Steele / Blelloch).
  2. Parallelized iteration instead of nested for-loops.
- 3. Parallelized sorting (e.g. Parallel merge sort algorithm / Bitonic sort algorithm).
+ 3. Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).
+```
+
+### Spectrum Convolution
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
+```
+
+**WHAT**: Given an experimental spectrum, derive amino acid masses that could be (probably are) for the peptide used to generate that experimental spectrum by subtracting experimental spectrum masses from each other.
+
+For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y.
+
+Note how the mass for Y was derived from the masses in experimental spectrum even though it's missing from the experimental spectrum itself:
+
+* Mass of N is 114. 2 masses are close to 114 in the experimental spectrum: \[113.9, 115.1\].
+* Mass of Q is 163. 1 mass is close to 163 in the experimental spectrum: \[162.9\].
+* Mass of Y is 128. 0 masses are close to 128 in the experimental spectrum: \[\].
+
+**WHY**: Determining the amino acid masses of the peptide used to generate that experimental spectrum is essential to identifying the peptide itself. The amino acid masses are used to generate theoretical spectrums, which in turn are compared against the experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either exactly matches or is similar to the peptide for the experimental spectrum.
+
+**ALGORITHM**:
+
+The steps of the algorithm are as follows:
+
+ 1. For each mass in an experimental spectrum, subtract that mass from every other mass.
+ 2. Filter the results to those between 57 and 200 (generally accepted range of amino acid masses).
+ 3. Group together results that are within some tolerance of each other.
+
+The top n most common occurrences are potential amino acid masses for the peptide that generated that experimental spectrum -- they're amino acid masses that could have been / likely are from the peptide that generated the experimental spectrum.
+
+For example, subtracting the masses in the experimental spectrum [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] results in...
+
+|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
+|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 0.0   | 0.0    | -113.9 | -115.1 | -136.2 | -162.9 | -242.0 | -311.1 | -346.0 | -405.2 |
+| 113.9 | 113.9  | 0.0    | -1.2   | -22.3  | -49.0  | -128.1 | -197.2 | -231.9 | -291.3 |
+| 115.1 | 115.1  | 1.2    | 0.0    | -21.1  | -47.8  | -126.9 | -196.0 | -230.9 | -289.3 |
+| 136.2 | 136.2  | 22.3   | 21.1   | 0.0    | -26.7  | -105.8 | -174.9 | -209.8 | -269.0 |
+| 162.9 | 162.9  | 49.0   | 47.8   | 26.7   | 0.0    | -79.1  | -142.9 | -183.1 | -242.3 |
+| 242.0 | 242.0  | 128.1  | 126.9  | 105.8  | 79.1   | 0.0    | -69.1  | -104.0 | -163.0 |
+| 311.1 | 311.1  | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   | 0.0    | -34.9  | -94.1  |
+| 346.0 | 346.0  | 231.1  | 230.9  | 209.8  | 183.1  | 104.0  | 34.9   | 0.0    | -59.2  |
+| 405.2 | 405.2  | 291.3  | 289.3  | 269.0  | 242.3  | 163.0  | 94.1   | 59.2   | 0.0    |
+
+Then, removing differences that aren't between 57 and 200 results in...
+
+|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
+|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 0.0   |        |        |        |        |        |        |        |        |        |
+| 113.9 | 113.9  |        |        |        |        |        |        |        |        |
+| 115.1 | 115.1  |        |        |        |        |        |        |        |        |
+| 136.2 | 136.2  |        |        |        |        |        |        |        |        |
+| 162.9 | 162.9  |        |        |        |        |        |        |        |        |
+| 242.0 |        | 128.1  | 126.9  | 105.8  | 79.1   |        |        |        |        |
+| 311.1 |        | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   |        |        |        |
+| 346.0 |        |        |        |        | 183.1  | 104.0  |        |        |        |
+| 405.2 |        |        |        |        |        | 163.0  | 94.1   | 59.2   |        |
+
+Then, grouping differences that are withing ±1.5 of each other results in...
+
+* `[113.9, 115.1]`
+* `[162.9, 163.0]`
+* `[128.1, 126.9]`
+* `[196.0, 197.2]`
+* `[104.0]`
+* `[105.8]`
+* `[136.2]`
+* `[174.9]`
+* `[79.1]`
+* `[142.9]`
+* `[69.1]`
+* `[94.1]`
+* `[59.2]`
+
+The experimental spectrum above was for the linear peptide NQY. Taking the groups that have at least 2 occurrences reveals that all amino acids are captured for NQY:
+
+ * `[113.9, 115.1]` (mass of N is 114)
+ * `[162.9, 163.0]` (mass of Q is 163)
+ * `[128.1, 126.9]` (mass of Y is 128)
+ * `[196.0, 197.2]` (junk)
+
+Note how the mass for Y (128) wasn't included in the experimental spectrum at all, but this operation was able to pull it out.
+
+```{output}
+ch4_code/src/NoisySpectrumConvolution.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+NoisySpectrumConvolution
+113.9 115.1 136.2 162.9 242.0 311.1 346.0 405.2
+1.5
+1
 ```
 
 # Stories
@@ -3807,29 +3907,29 @@ PracticalMotifFindingExample
                         "m/z"
    ```
 
- * `{bm} experimental spectrum` - Given a shattered molecule, a collection consisting of the each piece's mass as measured by a mass spectrometer. For example, given the peptide ACDEFG, the experimental spectrum may be...
+ * `{bm} experimental spectrum` - Potential fragment_NORM masses derived from the mass-to-charge ratios output by a real mass spectrometer. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.
+ 
+   The masses in an experimental spectrum ...
 
-   * mass(A)
-   * mass(AC)
-   * mass(ACD)
-   * mass(ACDE)
-   * mass(ACDEF)
+    * may not capture all possible fragment_NORMs for the intended molecule (missing masses).
+    * may capture fragment_NORMs from unintended molecules (faulty masses).
+    * will likely contain noise.
 
-   Experimental spectrum are the masses returned from an actual mass spectrometry experiment, while theoretical spectrum are all possible masses for a mass spectrometry experiment.
+    In the context of peptides, the mass spectrometer is expected to fragment_NORM based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses).
 
- * `{bm} theoretical spectrum` - A collection consisting of all possible masses measurable by a mass spectrometer in addition to 0 and the mass of the entire molecule being measured. For example, given the peptide ACDEFG, the theoretical spectrum would be...
+ * `{bm} theoretical spectrum` - List of all of possible fragment_NORM masses for a molecule in addition to 0 and the mass of the entire molecule being measured. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
 
-   * mass() = 0
-   * mass(A)
-   * mass(AC)
-   * mass(ACD)
-   * mass(ACDE)
-   * mass(ACDEF)
-   * mass(ACDEFG)
+   In the context of peptides, the mass spectrometer is expected to fragment_NORM based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the theoretical spectrum will include the masses for [0, N, Q, Y, NQ, QY, NQY]. It shouldn't include masses for partial amino acids. For example, it shouldn't include NQY breaking into 2 pieces by splitting Q, such that one half has N and part of Q, and the other has the remaining part of Q with Y.
 
-   Experimental spectrum are the masses returned from an actual mass spectrometry experiment, while theoretical spectrum are all possible masses for a mass spectrometry experiment.
-
- * `{bm} ideal spectrum` - When the experimental spectrum matches the theoretical spectrum.
+ * `{bm} spectrum convolution` - An operation used to derive amino acid masses that probably come from the peptide used to generate that experimental spectrum. That is, it generates a list of amino acid masses that could have been for the peptide that generated the experimental spectrum.
+ 
+   The operation derives amino acid masses by subtracting experimental spectrum masses from each other. For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y.
+   
+   Note how the mass for Y was derived from the masses in experimental spectrum even though it's missing from the experimental spectrum itself:
+   
+   * Mass of N is 114. 2 masses are close to 114 in the experimental spectrum: \[113.9, 115.1\].
+   * Mass of Q is 163. 1 mass is close to 163 in the experimental spectrum: \[162.9\].
+   * Mass of Y is 128. 0 masses are close to 128 in the experimental spectrum: \[\].
 
  * `{bm} dalton` `{bm} /\b(Da)\b/i` - A unit of measurement used in physics and chemistry. 1 Dalton is approximately the mass of a single proton / neutron, derived by taking the mass of a carbon-12 atom and dividing it by 12.
 
