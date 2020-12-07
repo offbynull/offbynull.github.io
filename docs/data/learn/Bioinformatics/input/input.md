@@ -2127,7 +2127,7 @@ NQY
 Algorithms/Codon_TOPIC
 ```
 
-A mass spectrometer is a device that breaks and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly fragment_NORMs each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
+A mass spectrometer is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
 
 The mass spectrometer outputs a plot called a spectrum_MS, where the...
 
@@ -2193,7 +2193,7 @@ Given these potential masses, it's possible to infer the amino acid composition 
  * include mass-to-charge ratios for fragment_NORMs from unintended molecules (faulty entries).
  * have noisy mass-to-charge ratios.
 
-The techniques and algorithms documented in the subsection below will focus on non-ribosomal peptides.
+The techniques and algorithms documented in the subsections below will focus on non-ribosomal peptides.
 
 ```{note}
 They focus on non-ribosomal peptides because that's what the Pevzner book focuses on.
@@ -2206,11 +2206,9 @@ They focus on non-ribosomal peptides because that's what the Pevzner book focuse
 **WHAT**: Given a peptide, its...
 
  * theoretical spectrum is a list of all of its subpeptide masses. 
- * experimental spectrum is a list of potential subpeptide masses converted from a mass spectrometer output (spectrum_MS).
+ * experimental spectrum is a list of possible subpeptide masses derived from a mass spectrometry experiment (spectrum_MS).
 
-The theoretical spectrum is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
-
-For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
+The theoretical spectrum is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio. For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
 
 ```python
 mass = {
@@ -2224,11 +2222,11 @@ mass = {
 }
 ```
 
-... while the experimental spectrum may look more like [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. In the experimental spectrum, ...
+... while the experimental spectrum may look more like [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
 
 ```python
 mass = {
-  '': 0,
+  '': 0,                # implied
   'N': [113.9, 115.1],  # multiple
   'Q': None,            # missing
   '?': 136.2,           # faulty
@@ -2241,7 +2239,9 @@ mass = {
 }
 ```
 
-**WHY**: A theoretical spectrum can be generated and compared against an experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either exactly matches or is similar to the peptide for the experimental spectrum.
+Given a peptide, generate its theoretical spectrum.
+
+**WHY**: Since the peptide used to generate a theoretical spectrum is known but the peptide for the experimental spectrum isn't known, theoretical spectrums can be compared against an experimental spectrum to see how closely they match. Close matches indicate that the peptide used to generate the theoretical spectrum either exactly matches or is similar to the peptide for the experimental spectrum.
 
 #### Bruteforce Algorithm
 
