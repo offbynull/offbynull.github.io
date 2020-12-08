@@ -2203,12 +2203,19 @@ They focus on non-ribosomal peptides because that's what the Pevzner book focuse
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
 
-**WHAT**: Given a peptide, its...
+**WHAT**: Generate the theoretical spectrum for some peptide. A peptide's...
 
- * theoretical spectrum is a list of all of its subpeptide masses. 
- * experimental spectrum is a list of possible subpeptide masses derived from a mass spectrometry experiment (spectrum_MS).
+ * experimental spectrum is a list of potential subpeptide masses derived from the output of a mass spectrometer (spectrum_MS).
+ * theoretical spectrum is a list of all subpeptide masses (including 0 and the full peptide's mass). 
 
-The theoretical spectrum is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio. For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
+The theoretical spectrum is what the experimental spectrum would be in a perfect world:
+
+ * only a single possible mass for each mass-to-charge ratio.
+ * no missing masses.
+ * no faulty masses.
+ * no noise.
+
+For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
 
 ```python
 mass = {
@@ -2222,7 +2229,7 @@ mass = {
 }
 ```
 
-... while the experimental spectrum may look more like [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
+... while an experimental spectrum for NQY may look more like [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
 
 ```python
 mass = {
@@ -2239,9 +2246,7 @@ mass = {
 }
 ```
 
-Given a peptide, generate its theoretical spectrum.
-
-**WHY**: Since the peptide used to generate a theoretical spectrum is known but the peptide for the experimental spectrum isn't known, theoretical spectrums can be compared against an experimental spectrum to see how closely they match. Close matches indicate that the peptide used to generate the theoretical spectrum either exactly matches or is similar to the peptide for the experimental spectrum.
+**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide used to generate that theoretical spectrum is related to the peptide used to produce that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by running a peptide through a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
 
 #### Bruteforce Algorithm
 
@@ -2358,23 +2363,21 @@ The algorithm above is serial, but it can be made parallel to get even more spee
 Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
 ```
 
-**WHAT**: Given an experimental spectrum, derive amino acid masses that could be (probably are) for the peptide used to generate that experimental spectrum by subtracting experimental spectrum masses from each other.
+**WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential masses for the amino acids making up the peptide that experimental spectrum is for.
 
-For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y.
+For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y -- the mass for Y was derived even though the mass isn't directly in the experimental spectrum itself:
 
-Note how the mass for Y was derived from the masses in experimental spectrum even though it's missing from the experimental spectrum itself:
+* Mass of N is 114: 2 masses close to 114 in the experimental spectrum: \[113.9, 115.1\].
+* Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
+* Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
 
-* Mass of N is 114. 2 masses are close to 114 in the experimental spectrum: \[113.9, 115.1\].
-* Mass of Q is 163. 1 mass is close to 163 in the experimental spectrum: \[162.9\].
-* Mass of Y is 128. 0 masses are close to 128 in the experimental spectrum: \[\].
-
-**WHY**: Determining the amino acid masses of the peptide used to generate that experimental spectrum is essential to identifying the peptide itself. The amino acid masses are used to generate theoretical spectrums, which in turn are compared against the experimental spectrum. Close matches indicate that the peptide for the theoretical spectrum either exactly matches or is similar to the peptide for the experimental spectrum.
+**WHY**: The amino acid masses derived from an experimental spectrum are used for generating theoretical spectrums.
 
 **ALGORITHM**:
 
-The steps of the algorithm are as follows:
+The steps of this algorithm are as follows:
 
- 1. For each mass in an experimental spectrum, subtract that mass from every other mass.
+ 1. Subtract experimental spectrum masses from each other (each mass gets subtracted from every mass).
  2. Filter the results to those between 57 and 200 (generally accepted range of amino acid masses).
  3. Group together results that are within some tolerance of each other.
 
@@ -2393,6 +2396,10 @@ For example, subtracting the masses in the experimental spectrum [113.9, 115.1, 
 | 311.1 | 311.1  | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   | 0.0    | -34.9  | -94.1  |
 | 346.0 | 346.0  | 231.1  | 230.9  | 209.8  | 183.1  | 104.0  | 34.9   | 0.0    | -59.2  |
 | 405.2 | 405.2  | 291.3  | 289.3  | 269.0  | 242.3  | 163.0  | 94.1   | 59.2   | 0.0    |
+
+```{note}
+0.0 was implied -- it isn't in the experimental spectrum.
+```
 
 Then, removing differences that aren't between 57 and 200 results in...
 
@@ -3907,7 +3914,7 @@ PracticalMotifFindingExample
                         "m/z"
    ```
 
- * `{bm} experimental spectrum` - Potential fragment_NORM masses derived from the mass-to-charge ratios output by a real mass spectrometer. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.
+ * `{bm} experimental spectrum` - List of potential fragment_NORM masses derived from the mass-to-charge ratios output by a real mass spectrometer. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.
  
    The masses in an experimental spectrum ...
 
@@ -3915,9 +3922,9 @@ PracticalMotifFindingExample
     * may capture fragment_NORMs from unintended molecules (faulty masses).
     * will likely contain noise.
 
-    In the context of peptides, the mass spectrometer is expected to fragment_NORM based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses).
+    In the context of peptides, the mass spectrometer is expected to fragment_NORM based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses, Y and NQ missing).
 
- * `{bm} theoretical spectrum` - List of all of possible fragment_NORM masses for a molecule in addition to 0 and the mass of the entire molecule being measured. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
+ * `{bm} theoretical spectrum` - List of all of possible fragment_NORM masses for a molecule in addition to 0 and the mass of the entire molecule. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
 
    In the context of peptides, the mass spectrometer is expected to fragment_NORM based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the theoretical spectrum will include the masses for [0, N, Q, Y, NQ, QY, NQY]. It shouldn't include masses for partial amino acids. For example, it shouldn't include NQY breaking into 2 pieces by splitting Q, such that one half has N and part of Q, and the other has the remaining part of Q with Y.
 
