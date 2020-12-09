@@ -2149,7 +2149,7 @@ The mass spectrometer outputs a plot called a spectrum_MS, where the...
                      "m/z"
 ```
 
-A typical use-case for mass spectrometry is identifying the amino acid composition of non-ribosomal peptides: peptides produced outside of the ribosome, meaning that their amino acid composition can't be determined just by looking at the organism's DNA (genetic code). For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds that hold its amino acids together:
+A typical use-case for mass spectrometry is non-ribosomal peptide sequencing. Since the ribosome / genetic code isn't involved in the creation of the peptide, its sequence can't be determined just by looking at the organism's DNA. For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds in the chain that holds its amino acids together:
 
 ```{svgbob}
 N ---- Q ---- Y   "(NQY not broken)"
@@ -2162,10 +2162,92 @@ N -//- Q -//- Y   "(NQY broken to N, Q, and Y)"
 ```
 
 ```{note}
-How does it know to break the bonds holding amino acids together and not bonds within the amino acids themselves? My guess is that the bonds holding the amino acids together are much weaker, so it's more likely they'll be the ones that get broken.
+How does it know to break the bonds holding amino acids together and not bonds within the amino acids themselves? My guess is that the bonds coupling one amino acid to another are much weaker than the bonds holding an individual amino acid together -- it's more likely that the weaker bonds will be broken.
 ```
 
-Then, each subpeptide will have its mass-to-charge ratio measured. For example, if the mass spectrometer was able to capture all possible subpeptides of NQY as well as NQY itself, the output will contain the mass-to-charge-ratios ...
+Each subpeptide then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the sequence of the peptide.
+
+However, special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
+
+ * miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
+ * include mass-to-charge ratios for fragment_NORMs of unintended molecules (faulty entries).
+ * have noisy mass-to-charge ratios.
+
+The techniques and algorithms in the subsections below focus on non-ribosomal peptides. As such, it's important to be aware of common amino acid masses (list is not exhaustive):
+
+| 1 Letter Code | 3 Letter Code | Amino Acid                  | Monoisotopic Mass (daltons) |
+|---------------|---------------|-----------------------------|-----------------------------|
+| A             | Ala           | Alanine                     | 71.04                       |
+| C             | Cys           | Cysteine                    | 103.01                      |
+| D             | Asp           | Aspartic acid               | 115.03                      |
+| E             | Glu           | Glutamic acid               | 129.04                      |
+| F             | Phe           | Phenylalanine               | 147.07                      |
+| G             | Gly           | Glycine                     | 57.02                       |
+| H             | His           | Histidine                   | 137.06                      |
+| I             | Ile           | Isoleucine                  | 113.08                      |
+| K             | Lys           | Lysine                      | 128.09                      |
+| L             | Leu           | Leucine                     | 113.08                      |
+| M             | Met           | Methionine                  | 131.04                      |
+| N             | Asn           | Asparagine                  | 114.04                      |
+| P             | Pro           | Proline                     | 97.05                       |
+| Q             | Gln           | Glutamine                   | 128.06                      |
+| R             | Arg           | Arginine                    | 156.1                       |
+| S             | Ser           | Serine                      | 87.03                       |
+| T             | Thr           | Threonine                   | 101.05                      |
+| V             | Val           | Valine                      | 99.07                       |
+| W             | Trp           | Tryptophan                  | 186.08                      |
+| Y             | Tyr           | Tyrosine                    | 163.06                      |
+
+```{note}
+Focus on non-ribosomal peptides is because that's what the Pevzner book focuses on.
+```
+
+### Experimental Spectrum
+
+**WHAT**:
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
+
+**WHY**:
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+SET OF MASSES REQ FOR SEQUENCING
+
+
+**ALGORITHM**:
+
+The mass-to-charge ratios are used to produce a set of potential masses ...
 
 ```python
 mass_charge['N'] = ...
@@ -2176,7 +2258,7 @@ mass_charge['QY'] = ...
 mass_charge['NQY'] = ...
 ```
 
-Then, the user converts the mass-to-charge ratios into potential masses based on how the device ionizes (`{kt} \frac{m}{z} \cdot {z} = m`). For example, if the mass spectrometer used has a tendency to produce either +1 or +2 ions ...
+Then, each mass-to-charge ratio is converted to a set of potential masses based on how the device ionizes (`{kt} \frac{m}{z} \cdot {z} = m`). For example, if the mass spectrometer used has a tendency to produce either +1 or +2 ions ...
 
 ```python
 potential_masses['N'] = [mass_charge['N'] * 1, mass_charge['N'] * 2]
@@ -2187,28 +2269,13 @@ potential_masses['QY'] = [mass_charge['QY'] * 1, mass_charge['QY'] * 2]
 potential_masses['NQY'] = [mass_charge['NQY'] * 1, mass_charge['NQY'] * 2]
 ```
 
-Given these potential masses, it's possible to infer the amino acid composition of the peptide (in other words, the peptide can be sequenced). However, special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
-
- * miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
- * include mass-to-charge ratios for fragment_NORMs from unintended molecules (faulty entries).
- * have noisy mass-to-charge ratios.
-
-The techniques and algorithms documented in the subsections below will focus on non-ribosomal peptides.
-
-```{note}
-They focus on non-ribosomal peptides because that's what the Pevzner book focuses on.
-```
-
 ### Theoretical Spectrum
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
 
-**WHAT**: Generate the theoretical spectrum for some peptide. A peptide's...
+**WHAT**: A typical use-case for mass spectrometry is non-ribosomal peptide sequencing. peptides produced outside of the ribosome, meaning that their amino acid composition can't be determined just by looking at the organism's DNA (genetic code). The mass spectrometer shatters instances of the peptide into subpeptide, measures the mass-to-charge ratios for those subpeptides, and then the user converts those mass-to-charge ratios to a set of potential masses. This set of potential masses is referred to as an experimental spectrum.
 
- * experimental spectrum is a list of potential subpeptide masses derived from the output of a mass spectrometer (spectrum_MS).
- * theoretical spectrum is a list of all subpeptide masses (including 0 and the full peptide's mass). 
-
-The theoretical spectrum is what the experimental spectrum would be in a perfect world:
+In contract, a theoretical spectrum is an algorithmically generated list of all subpeptide masses (including 0 and the full peptide's mass). The theoretical spectrum is what the experimental spectrum would be in a perfect world. It doesn't have any of the practical real-world problems of mass spectrometry:
 
  * only a single possible mass for each mass-to-charge ratio.
  * no missing masses.
@@ -2246,7 +2313,7 @@ mass = {
 }
 ```
 
-**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide used to generate that theoretical spectrum is related to the peptide used to produce that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by running a peptide through a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
+**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide used to generate that theoretical spectrum is related to the peptide that produced that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
 
 #### Bruteforce Algorithm
 
@@ -2363,7 +2430,7 @@ The algorithm above is serial, but it can be made parallel to get even more spee
 Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
 ```
 
-**WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential masses for the amino acids making up the peptide that experimental spectrum is for.
+**WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential amino acid masses for the peptide that generated that experimental spectrum.
 
 For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y -- the mass for Y was derived even though the mass isn't directly in the experimental spectrum itself:
 
@@ -2371,7 +2438,7 @@ For example, the following experimental spectrum is for the linear peptide NQY: 
 * Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
 * Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
 
-**WHY**: The amino acid masses derived from an experimental spectrum are used for generating theoretical spectrums.
+**WHY**: The amino acid masses derived from an experimental spectrum are used for generating theoretical spectrums. Generating theoretical spectrums are a key part of identifying the peptide that generated that experimental spectrum.
 
 **ALGORITHM**:
 
@@ -2381,7 +2448,7 @@ The steps of this algorithm are as follows:
  2. Filter the results to those between 57 and 200 (generally accepted range of amino acid masses).
  3. Group together results that are within some tolerance of each other.
 
-The top n most common occurrences are potential amino acid masses for the peptide that generated that experimental spectrum -- they're amino acid masses that could have been / likely are from the peptide that generated the experimental spectrum.
+The top n most common occurrences are potential amino acid masses for the peptide that generated that experimental spectrum.
 
 For example, subtracting the masses in the experimental spectrum [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] results in...
 
@@ -2431,7 +2498,7 @@ Then, grouping differences that are withing ±1.5 of each other results in...
 * `[94.1]`
 * `[59.2]`
 
-The experimental spectrum above was for the linear peptide NQY. Taking the groups that have at least 2 occurrences reveals that all amino acids are captured for NQY:
+The experimental spectrum above was for the linear peptide NQY. Taking the groups that have at least 2 occurrences reveals that all amino acid masses are captured for NQY:
 
  * `[113.9, 115.1]` (mass of N is 114)
  * `[162.9, 163.0]` (mass of Q is 163)
