@@ -3308,11 +3308,11 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li><a href="#BM_(Algorithms%5C%2FK-mer)_TOPIC%2F">Algorithms/K-mer</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s (protein) that's anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length. Most <a href="#BM_(peptide)%2Fi">peptide</a>s are created through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a> (otherwise known as <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a> and <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>): DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA, which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
+<p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a miniature protein consisting of a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s that's anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length. Most <a href="#BM_(peptide)%2Fi">peptide</a>s are created through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a>: DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA (<a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a>), which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a> (<a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>).</p>
 <p>Each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in one of these <a href="#BM_(peptide)%2Fi">peptide</a>s is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by a DNA <a href="#BM_(sequence)%2Fi">sequence</a> of length 3, referred to as a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>. By knowing which <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s map to which <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s, the ...</p>
 <ul>
-<li><a href="#BM_(amino%20acid)%2Fi">amino acid</a> composition of some <a href="#BM_(peptide)%2Fi">peptide</a> can be determined by mapping from DNA to <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s (you know the <a href="#BM_(peptide)%2Fi">peptide</a> just by looking at the DNA).</li>
-<li><a href="#BM_(amino%20acid)%2Fi">amino acid</a> composition of some <a href="#BM_(peptide)%2Fi">peptide</a> can be searched for in DNA by finding <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s (you can see if the <a href="#BM_(peptide)%2Fi">peptide</a> is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d in a <a href="#BM_(genome)%2Fi">genome</a>).</li>
+<li><a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> can be determined by mapping from DNA to <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s (you know the <a href="#BM_(peptide)%2Fi">peptide</a> just by looking at the DNA).</li>
+<li><a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> can be searched for in DNA by finding <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s (you can see if the <a href="#BM_(peptide)%2Fi">peptide</a> is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d in a <a href="#BM_(genome)%2Fi">genome</a>).</li>
 </ul>
 <table>
 <thead>
@@ -3602,7 +3602,7 @@ _amino_acid_to_codons = dict()
 <p>How does it know to break the bonds holding <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s together and not bonds within the <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s themselves? My guess is that the bonds coupling one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> to another are much weaker than the bonds holding an individual <a href="#BM_(amino%20acid)%2Fi">amino acid</a> together -- it's more likely that the weaker bonds will be broken.</p>
 </div>
 <p>Each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the <a href="#BM_(sequence)%2Fi">sequence</a> of the <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
-<p>However, special consideration needs to be given to the real-world practical problems with <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>. Specifically, the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> given back by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will very likely ...</p>
+<p>Special consideration needs to be given to the real-world practical problems with <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>. Specifically, the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> given back by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will very likely ...</p>
 <ul>
 <li>miss mass-to-charge ratios for some fragments of the intended molecule (missing entries).</li>
 <li>include mass-to-charge ratios for fragments of unintended molecules (faulty entries).</li>
@@ -3746,47 +3746,26 @@ _amino_acid_to_codons = dict()
 <p>Focus on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s is because that's what the Pevzner book focuses on.</p>
 </div>
 <a name="H_Experimental%20Spectrum"></a><h3>Experimental Spectrum</h3>
-<p><strong>WHAT</strong>:</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p>CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.</p>
-<p><strong>WHY</strong>:</p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
-<p>SET OF MASSES REQ FOR <a href="#BM_(sequencing%7Csequenced)%2Fi">SEQUENCING</a></p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> for a <a href="#BM_(peptide)%2Fi">peptide</a>, derive a set of potential masses from the mass-to-charge ratios.</p>
+<p><strong>WHY</strong>: A <a href="#BM_(peptide)%2Fi">peptide</a>'s <a href="#BM_(sequence)%2Fi">sequence</a> can be inferred from a list of its potential <a href="#BM_(subpeptide)%2Fi">subpeptide</a> masses.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The mass-to-charge ratios are used to produce a set of potential masses ...</p>
-<pre class="hljs"><code>mass_charge[<span class="hljs-string">'N'</span>] = ...
-mass_charge[<span class="hljs-string">'Q'</span>] = ...
-mass_charge[<span class="hljs-string">'Y'</span>] = ...
-mass_charge[<span class="hljs-string">'NQ'</span>] = ...
-mass_charge[<span class="hljs-string">'QY'</span>] = ...
-mass_charge[<span class="hljs-string">'NQY'</span>] = ...
-</code></pre>
-<p>Then, each mass-to-charge ratio is converted to a set of potential masses based on how the device ionizes (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>m</mi><mi>z</mi></mfrac><mo>⋅</mo><mi>z</mi><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">\frac{m}{z} \cdot {z} = m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span>). For example, if the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> used has a tendency to produce either +1 or +2 ions ...</p>
-<pre class="hljs"><code>potential_masses[<span class="hljs-string">'N'</span>] = [mass_charge[<span class="hljs-string">'N'</span>] * <span class="hljs-number">1</span>, mass_charge[<span class="hljs-string">'N'</span>] * <span class="hljs-number">2</span>]
-potential_masses[<span class="hljs-string">'Q'</span>] = [mass_charge[<span class="hljs-string">'Q'</span>] * <span class="hljs-number">1</span>, mass_charge[<span class="hljs-string">'Q'</span>] * <span class="hljs-number">2</span>]
-potential_masses[<span class="hljs-string">'Y'</span>] = [mass_charge[<span class="hljs-string">'Y'</span>] * <span class="hljs-number">1</span>, mass_charge[<span class="hljs-string">'Y'</span>] * <span class="hljs-number">2</span>]
-potential_masses[<span class="hljs-string">'NQ'</span>] = [mass_charge[<span class="hljs-string">'NQ'</span>] * <span class="hljs-number">1</span>, mass_charge[<span class="hljs-string">'NQ'</span>] * <span class="hljs-number">2</span>]
-potential_masses[<span class="hljs-string">'QY'</span>] = [mass_charge[<span class="hljs-string">'QY'</span>] * <span class="hljs-number">1</span>, mass_charge[<span class="hljs-string">'QY'</span>] * <span class="hljs-number">2</span>]
-potential_masses[<span class="hljs-string">'NQY'</span>] = [mass_charge[<span class="hljs-string">'NQY'</span>] * <span class="hljs-number">1</span>, mass_charge[<span class="hljs-string">'NQY'</span>] * <span class="hljs-number">2</span>]
-</code></pre>
+<p>Prior to deriving masses from a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a>, filter out low intensity mass-to-charge ratios. The remaining mass-to-charge ratios may be derived using <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>m</mi><mi>z</mi></mfrac><mo>⋅</mo><mi>z</mi><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">\frac{m}{z} \cdot z = m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span>.</p>
+<p>For example, the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> used on a <a href="#BM_(peptide)%2Fi">peptide</a> has a tendency to produce +1 and +2 ions. Knowing this, each mass-to-charge ratio is multiped by both +1 and +2 to produce a list of potential masses.</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
 <a name="H_Theoretical%20Spectrum"></a><h3>Theoretical Spectrum</h3>
 <p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>WHAT</strong>: A typical use-case for <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a> is <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>. <a href="#BM_(peptide)%2Fi">peptide</a>s produced outside of the ribosome, meaning that their <a href="#BM_(amino%20acid)%2Fi">amino acid</a> composition can't be determined just by looking at the organism's DNA (<a href="#BM_(codon%7Cgenetic%20code)%2Fi">genetic code</a>). The <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> shatters instances of the <a href="#BM_(peptide)%2Fi">peptide</a> into <a href="#BM_(subpeptide)%2Fi">subpeptide</a>, measures the mass-to-charge ratios for those <a href="#BM_(subpeptide)%2Fi">subpeptide</a>s, and then the user converts those mass-to-charge ratios to a set of potential masses. This set of potential masses is referred to as an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
-<p>In contract, a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is an algorithmically generated list of all <a href="#BM_(subpeptide)%2Fi">subpeptide</a> masses (including 0 and the full <a href="#BM_(peptide)%2Fi">peptide</a>'s mass). The <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is what the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> would be in a perfect world. It doesn't have any of the practical real-world problems of <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>:</p>
+<p><strong>WHAT</strong>: A <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is an algorithmically generated list of all <a href="#BM_(subpeptide)%2Fi">subpeptide</a> masses (including 0 and the full <a href="#BM_(peptide)%2Fi">peptide</a>'s mass). The <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is what the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> would be in a perfect world...</p>
 <ul>
 <li>only a single possible mass for each mass-to-charge ratio.</li>
 <li>no missing masses.</li>
@@ -4897,7 +4876,11 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><a name="BM_(genome)%2Fi"></a><strong>genome</strong> - All of the DNA for some organism.</p>
 </li>
 <li>
-<p><a name="BM_(sequence)%2Fi"></a><strong>sequence</strong> - The ordered elements that make up some biological entity. For example, a DNA <a href="#BM_(sequence)%2Fi">sequence</a> contains the set of nucleotides and their positions for that DNA strand.</p>
+<p><a name="BM_(sequence)%2Fi"></a><strong>sequence</strong> - The ordered elements that make up some biological entity. For example, a ...</p>
+<ul>
+<li>DNA <a href="#BM_(sequence)%2Fi">sequence</a> contains the set of nucleotides and their positions for that DNA strand.</li>
+<li><a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> contains the set of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s and their positions for that <a href="#BM_(peptide)%2Fi">peptide</a>.</li>
+</ul>
 </li>
 <li>
 <p><a name="BM_(sequencing%7Csequenced)%2Fi"></a><strong>sequencing</strong> - The process of determining which nucleotides are assigned to which positions in a strand of DNA or RNA.</p>

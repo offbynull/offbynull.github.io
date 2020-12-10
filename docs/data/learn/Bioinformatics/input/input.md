@@ -2027,12 +2027,12 @@ CCA
 Algorithms/K-mer_TOPIC
 ```
 
-A peptide is a chain of amino acids (protein) that's anywhere between 2 to 100 amino acids in length. Most peptides are created through the central dogma of molecular biology (otherwise known as transcription and translation): DNA gets transcribed to mRNA, which in turn gets translated by the ribosome into a peptide.
+A peptide is a miniature protein consisting of a chain of amino acids that's anywhere between 2 to 100 amino acids in length. Most peptides are created through the central dogma of molecular biology: DNA gets transcribed to mRNA (transcription), which in turn gets translated by the ribosome into a peptide (translation).
 
 Each amino acid in one of these peptides is encoded by a DNA sequence of length 3, referred to as a codon. By knowing which codons map to which amino acids, the ...
 
- * amino acid composition of some peptide can be determined by mapping from DNA to codons (you know the peptide just by looking at the DNA).
- * amino acid composition of some peptide can be searched for in DNA by finding codons (you can see if the peptide is encoded in a genome).
+ * peptide sequence can be determined by mapping from DNA to codons (you know the peptide just by looking at the DNA).
+ * peptide sequence can be searched for in DNA by finding codons (you can see if the peptide is encoded in a genome).
 
 | 1 Letter Code | 3 Letter Code | Amino Acid                  | Codons                       |
 |---------------|---------------|-----------------------------|------------------------------|
@@ -2167,7 +2167,7 @@ How does it know to break the bonds holding amino acids together and not bonds w
 
 Each subpeptide then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the sequence of the peptide.
 
-However, special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
+Special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
 
  * miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
  * include mass-to-charge ratios for fragment_NORMs of unintended molecules (faulty entries).
@@ -2204,78 +2204,45 @@ Focus on non-ribosomal peptides is because that's what the Pevzner book focuses 
 
 ### Experimental Spectrum
 
-**WHAT**:
+**WHAT**: Given a spectrum_MS for a peptide, derive a set of potential masses from the mass-to-charge ratios.
 
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-CONVERT MASS-TO-CHARGE RATIOS TO SET OF MASSES.
-
-**WHY**:
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
-SET OF MASSES REQ FOR SEQUENCING
-
+**WHY**: A peptide's sequence can be inferred from a list of its potential subpeptide masses.
 
 **ALGORITHM**:
 
-The mass-to-charge ratios are used to produce a set of potential masses ...
+Prior to deriving masses from a spectrum_MS, filter out low intensity mass-to-charge ratios. The remaining mass-to-charge ratios may be derived using `{kt} \frac{m}{z} \cdot z = m`.
 
-```python
-mass_charge['N'] = ...
-mass_charge['Q'] = ...
-mass_charge['Y'] = ...
-mass_charge['NQ'] = ...
-mass_charge['QY'] = ...
-mass_charge['NQY'] = ...
-```
+For example, the mass spectrometer used on a peptide has a tendency to produce +1 and +2 ions. Knowing this, each mass-to-charge ratio is multiped by both +1 and +2 to produce a list of potential masses.
 
-Then, each mass-to-charge ratio is converted to a set of potential masses based on how the device ionizes (`{kt} \frac{m}{z} \cdot {z} = m`). For example, if the mass spectrometer used has a tendency to produce either +1 or +2 ions ...
+INSERT CODE HERE
 
-```python
-potential_masses['N'] = [mass_charge['N'] * 1, mass_charge['N'] * 2]
-potential_masses['Q'] = [mass_charge['Q'] * 1, mass_charge['Q'] * 2]
-potential_masses['Y'] = [mass_charge['Y'] * 1, mass_charge['Y'] * 2]
-potential_masses['NQ'] = [mass_charge['NQ'] * 1, mass_charge['NQ'] * 2]
-potential_masses['QY'] = [mass_charge['QY'] * 1, mass_charge['QY'] * 2]
-potential_masses['NQY'] = [mass_charge['NQY'] * 1, mass_charge['NQY'] * 2]
-```
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
 
 ### Theoretical Spectrum
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
 
-**WHAT**: A typical use-case for mass spectrometry is non-ribosomal peptide sequencing. peptides produced outside of the ribosome, meaning that their amino acid composition can't be determined just by looking at the organism's DNA (genetic code). The mass spectrometer shatters instances of the peptide into subpeptide, measures the mass-to-charge ratios for those subpeptides, and then the user converts those mass-to-charge ratios to a set of potential masses. This set of potential masses is referred to as an experimental spectrum.
-
-In contract, a theoretical spectrum is an algorithmically generated list of all subpeptide masses (including 0 and the full peptide's mass). The theoretical spectrum is what the experimental spectrum would be in a perfect world. It doesn't have any of the practical real-world problems of mass spectrometry:
+**WHAT**: A theoretical spectrum is an algorithmically generated list of all subpeptide masses (including 0 and the full peptide's mass). The theoretical spectrum is what the experimental spectrum would be in a perfect world...
 
  * only a single possible mass for each mass-to-charge ratio.
  * no missing masses.
@@ -3274,7 +3241,10 @@ PracticalMotifFindingExample
 
  * `{bm} genome` - All of the DNA for some organism.
 
- * `{bm} sequence` - The ordered elements that make up some biological entity. For example, a DNA sequence contains the set of nucleotides and their positions for that DNA strand.
+ * `{bm} sequence` - The ordered elements that make up some biological entity. For example, a ...
+
+   * DNA sequence contains the set of nucleotides and their positions for that DNA strand.
+   * peptide sequence contains the set of amino acids and their positions for that peptide.
 
  * `{bm} sequencing/(sequencing|sequenced)/i` - The process of determining which nucleotides are assigned to which positions in a strand of DNA or RNA.
 
