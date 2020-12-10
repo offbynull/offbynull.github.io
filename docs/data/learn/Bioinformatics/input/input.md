@@ -2204,7 +2204,7 @@ Focus on non-ribosomal peptides is because that's what the Pevzner book focuses 
 
 ### Experimental Spectrum
 
-**WHAT**: Given a spectrum_MS for a peptide, derive a set of potential masses from the mass-to-charge ratios.
+**WHAT**: Given a spectrum_MS for a peptide, derive a set of potential masses from the mass-to-charge ratios. These potential masses are referred to as an experimental spectrum.
 
 **WHY**: A peptide's sequence can be inferred from a list of its potential subpeptide masses.
 
@@ -2214,29 +2214,17 @@ Prior to deriving masses from a spectrum_MS, filter out low intensity mass-to-ch
 
 For example, the mass spectrometer used on a peptide has a tendency to produce +1 and +2 ions. Knowing this, each mass-to-charge ratio is multiped by both +1 and +2 to produce a list of potential masses.
 
-INSERT CODE HERE
+```{output}
+ch4_code/src/ExperimentalSpectrum.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
+```{ch4}
+ExperimentalSpectrum
+5.5 7.5 10.1 15.6
++1 +2
+```
 
 ### Theoretical Spectrum
 
@@ -2263,11 +2251,11 @@ mass = {
 }
 ```
 
-... while an experimental spectrum for NQY may look more like [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
+... while an experimental spectrum for NQY may look something like [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
 
 ```python
 mass = {
-  '': 0,                # implied
+  '': 0.0,              # implied
   'N': [113.9, 115.1],  # multiple
   'Q': None,            # missing
   '?': 136.2,           # faulty
