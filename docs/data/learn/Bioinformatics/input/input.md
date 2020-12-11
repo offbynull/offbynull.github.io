@@ -2206,6 +2206,8 @@ Focus on non-ribosomal peptides is because that's what the Pevzner book focuses 
 
 ### Experimental Spectrum
 
+`{bm} /(Algorithms\/Mass Spectrometry\/Experimental Spectrum)_TOPIC/`
+
 **WHAT**: Given a spectrum_MS for a peptide, derive a set of potential masses from the mass-to-charge ratios. These potential masses are referred to as an experimental spectrum.
 
 **WHY**: A peptide's sequence can be inferred from a list of its potential subpeptide masses.
@@ -2231,6 +2233,10 @@ ExperimentalSpectrum
 ### Theoretical Spectrum
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
+```
 
 **WHAT**: A theoretical spectrum is an algorithmically generated list of all subpeptide masses for a known peptide sequence (including 0 and the full peptide's mass).
 
@@ -2474,6 +2480,87 @@ NoisySpectrumConvolution
 1.5
 1
 ```
+
+### Spectrum Score
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Score)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
+Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
+```
+
+**WHAT**: Given an experimental spectrum and a theoretical spectrum, score them against each other by checking how many masses match between them.
+
+**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
+
+**ALGORITHM**:
+
+To score an experimental spectrum against a theoretical spectrum, the parameters of the mass spectrometer that produced that experimental spectrum need to be known. Specifically, the ...
+
+ * maximum amount of noise per mass-to-charge ratio produced by the mass spectrometer.
+ * set of possible charges produced by the mass spectrometer.
+
+For example, if the mass spectrometer produces up to ±0.5 noise per mass-to-charge and has a tendency to produce charges +1 and +2, a mass-to-charge ratio of 38.1 may be for the mass ranges...
+
+ * (38.1 - 0.5) \* 1 to (38.1 + 0.5) \* 1
+ * (38.1 - 0.5) \* 2 to (38.1 + 0.5) \* 2
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
+
+### Sequencing
+
+**WHAT**:
+
+**WHY**:
+
+#### Bruteforce Algorithm
+
+**ALGORITHM**:
+
+#### Branch-and-bound Algorithm
+
+**ALGORITHM**:
+
+#### Leaderboard Algorithm
+
+**ALGORITHM**:
 
 # Stories
 

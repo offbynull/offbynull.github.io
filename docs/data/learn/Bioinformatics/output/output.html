@@ -73,6 +73,13 @@
 <li><a href="#H_Prefix%20Sum%20Algorithm">Prefix Sum Algorithm</a></li>
 </ul>
 <li><a href="#H_Spectrum%20Convolution">Spectrum Convolution</a></li>
+<li><a href="#H_Spectrum%20Score">Spectrum Score</a></li>
+<li><a href="#H_Sequencing">Sequencing</a></li>
+<ul>
+<li><a href="#H3_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
+<li><a href="#H_Branch-and-bound%20Algorithm">Branch-and-bound Algorithm</a></li>
+<li><a href="#H_Leaderboard%20Algorithm">Leaderboard Algorithm</a></li>
+</ul>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -3747,6 +3754,7 @@ _amino_acid_to_codons = dict()
 <p>Focus on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s is because that's what the Pevzner book focuses on.</p>
 </div>
 <a name="H_Experimental%20Spectrum"></a><h3>Experimental Spectrum</h3>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> for a <a href="#BM_(peptide)%2Fi">peptide</a>, derive a set of potential masses from the mass-to-charge ratios. These potential masses are referred to as an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
 <p><strong>WHY</strong>: A <a href="#BM_(peptide)%2Fi">peptide</a>'s <a href="#BM_(sequence)%2Fi">sequence</a> can be inferred from a list of its potential <a href="#BM_(subpeptide)%2Fi">subpeptide</a> masses.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -3772,6 +3780,12 @@ _amino_acid_to_codons = dict()
 <p></p>
 <a name="H_Theoretical%20Spectrum"></a><h3>Theoretical Spectrum</h3>
 <p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Experimental Spectrum</a></li>
+</ul>
+</div>
 <p><strong>WHAT</strong>: A <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is an algorithmically generated list of all <a href="#BM_(subpeptide)%2Fi">subpeptide</a> masses for a known <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> (including 0 and the full <a href="#BM_(peptide)%2Fi">peptide</a>'s mass).</p>
 <p>For example, <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> [0, 114, 128, 163, 242, 291, 405] ...</p>
 <pre class="hljs"><code>theo_spec = {
@@ -4317,6 +4331,56 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 </div>
 <p></p>
+<a name="H_Spectrum%20Score"></a><h3>Spectrum Score</h3>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Score)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Experimental Spectrum</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Theoretical Spectrum</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, score them against each other by checking how many masses match between them.</p>
+<p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This is the basis for how <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a>: an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is produced by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>, then that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is compared against a set of <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>To score an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> against a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, the parameters of the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> need to be known. Specifically, the ...</p>
+<ul>
+<li>maximum amount of noise per mass-to-charge ratio produced by the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>.</li>
+<li>set of possible charges produced by the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>.</li>
+</ul>
+<p>For example, if the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> produces up to ±0.5 noise per mass-to-charge and has a tendency to produce charges +1 and +2, a mass-to-charge ratio of 38.1 may be for the mass ranges...</p>
+<ul>
+<li>(38.1 - 0.5) * 1 to (38.1 + 0.5) * 1</li>
+<li>(38.1 - 0.5) * 2 to (38.1 + 0.5) * 2</li>
+</ul>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<p>CONTINUE FROM HERE</p>
+<a name="H_Sequencing"></a><h3>Sequencing</h3>
+<p><strong>WHAT</strong>:</p>
+<p><strong>WHY</strong>:</p>
+<a name="H3_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
+<p><strong>ALGORITHM</strong>:</p>
+<a name="H_Branch-and-bound%20Algorithm"></a><h4>Branch-and-bound Algorithm</h4>
+<p><strong>ALGORITHM</strong>:</p>
+<a name="H_Leaderboard%20Algorithm"></a><h4>Leaderboard Algorithm</h4>
+<p><strong>ALGORITHM</strong>:</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
