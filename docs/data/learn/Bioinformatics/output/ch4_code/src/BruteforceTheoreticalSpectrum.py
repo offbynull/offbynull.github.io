@@ -6,9 +6,9 @@ AA = TypeVar('AA')
 
 
 # MARKDOWN
-def theoretical_spectrum(peptide: List[AA], mass_table: Dict[AA, float], cyclic: bool) -> List[int]:
+def theoretical_spectrum(peptide: List[AA], mass_table: Dict[AA, float], cyclic: bool) -> List[float]:
     # add subpeptide of length 0's mass
-    ret = [0]
+    ret = [0.0]
     # add subpeptide of length 1 to k-1's mass
     for k in range(1, len(peptide)):
         for subpeptide, _ in slide_window(peptide, k, cyclic=cyclic):

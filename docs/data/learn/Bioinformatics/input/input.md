@@ -2129,7 +2129,7 @@ Algorithms/Codon_TOPIC
 
 A mass spectrometer is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
 
-The mass spectrometer outputs a plot called a spectrum_MS, where the...
+The output of a mass spectrometer is a plot called a spectrum_MS. The plot's ...
 
  * x-axis is the mass-to-charge ratio.
  * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).
@@ -2149,7 +2149,9 @@ The mass spectrometer outputs a plot called a spectrum_MS, where the...
                      "m/z"
 ```
 
-A typical use-case for mass spectrometry is non-ribosomal peptide sequencing. Since the ribosome / genetic code isn't involved in the creation of the peptide, its sequence can't be determined just by looking at the organism's DNA. For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds in the chain that holds its amino acids together:
+A typical use-case for mass spectrometry is non-ribosomal peptide sequencing. Since the ribosome / genetic code isn't involved in the creation of non-ribosomal peptides, a non-ribosomal peptide's sequence can't be determined just by looking at the organism's DNA.
+
+For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds between its amino acids:
 
 ```{svgbob}
 N ---- Q ---- Y   "(NQY not broken)"
@@ -2210,9 +2212,9 @@ Focus on non-ribosomal peptides is because that's what the Pevzner book focuses 
 
 **ALGORITHM**:
 
-Prior to deriving masses from a spectrum_MS, filter out low intensity mass-to-charge ratios. The remaining mass-to-charge ratios may be derived using `{kt} \frac{m}{z} \cdot z = m`.
+Prior to deriving masses from a spectrum_MS, filter out low intensity mass-to-charge ratios. The remaining mass-to-charge ratios are converted to potential masses using `{kt} \frac{m}{z} \cdot z = m`.
 
-For example, the mass spectrometer used on a peptide has a tendency to produce +1 and +2 ions. Knowing this, each mass-to-charge ratio is multiped by both +1 and +2 to produce a list of potential masses.
+For example, the mass spectrometer used on a peptide has a tendency to produce +1 and +2 ions. As such, each mass-to-charge ratio is converted to two possible masses (multiped by both +1 and +2). Even though only one of masses for that mass-to-charge ratio is correct, because it's impossible to know which one is correct both masses are included in the experimental spectrum.
 
 ```{output}
 ch4_code/src/ExperimentalSpectrum.py
@@ -2230,17 +2232,12 @@ ExperimentalSpectrum
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
 
-**WHAT**: A theoretical spectrum is an algorithmically generated list of all subpeptide masses (including 0 and the full peptide's mass). The theoretical spectrum is what the experimental spectrum would be in a perfect world...
-
- * only a single possible mass for each mass-to-charge ratio.
- * no missing masses.
- * no faulty masses.
- * no noise.
+**WHAT**: A theoretical spectrum is an algorithmically generated list of all subpeptide masses for a known peptide sequence (including 0 and the full peptide's mass).
 
 For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
 
 ```python
-mass = {
+theo_spec = {
   '': 0,
   'N': 114,
   'Q': 128,
@@ -2251,10 +2248,10 @@ mass = {
 }
 ```
 
-... while an experimental spectrum for NQY may look something like [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
+... while experimental spectrum produced by feeding NQY to a mass spectrometer may look something like [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
 
 ```python
-mass = {
+exp_spec = {
   '': 0.0,              # implied
   'N': [113.9, 115.1],  # multiple
   'Q': None,            # missing
@@ -2268,7 +2265,14 @@ mass = {
 }
 ```
 
-**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide used to generate that theoretical spectrum is related to the peptide that produced that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
+The theoretical spectrum is what the experimental spectrum would be in a perfect world...
+
+ * only a single possible mass for each mass-to-charge ratio.
+ * no missing masses.
+ * no faulty masses.
+ * no noise.
+
+**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
 
 #### Bruteforce Algorithm
 
@@ -2387,13 +2391,13 @@ Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
 
 **WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential amino acid masses for the peptide that generated that experimental spectrum.
 
-For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y -- the mass for Y was derived even though the mass isn't directly in the experimental spectrum itself:
+For example, the following experimental spectrum is for the linear peptide NQY: [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y -- the mass for Y was derived even though Y's mass isn't directly in the experimental spectrum itself:
 
 * Mass of N is 114: 2 masses close to 114 in the experimental spectrum: \[113.9, 115.1\].
 * Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
 * Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
 
-**WHY**: The amino acid masses derived from an experimental spectrum are used for generating theoretical spectrums. Generating theoretical spectrums are a key part of identifying the peptide that generated that experimental spectrum.
+**WHY**: The amino acid masses derived from an experimental spectrum are used for generating theoretical spectrums. Generating theoretical spectrums are a key part of peptide sequencing.
 
 **ALGORITHM**:
 
@@ -2418,10 +2422,6 @@ For example, subtracting the masses in the experimental spectrum [113.9, 115.1, 
 | 311.1 | 311.1  | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   | 0.0    | -34.9  | -94.1  |
 | 346.0 | 346.0  | 231.1  | 230.9  | 209.8  | 183.1  | 104.0  | 34.9   | 0.0    | -59.2  |
 | 405.2 | 405.2  | 291.3  | 289.3  | 269.0  | 242.3  | 163.0  | 94.1   | 59.2   | 0.0    |
-
-```{note}
-0.0 was implied -- it isn't in the experimental spectrum.
-```
 
 Then, removing differences that aren't between 57 and 200 results in...
 
@@ -2460,7 +2460,7 @@ The experimental spectrum above was for the linear peptide NQY. Taking the group
  * `[128.1, 126.9]` (mass of Y is 128)
  * `[196.0, 197.2]` (junk)
 
-Note how the mass for Y (128) wasn't included in the experimental spectrum at all, but this operation was able to pull it out.
+Note how the mass for Y (128) wasn't included in the experimental spectrum at all, but this operation was able to derive it from the other masses.
 
 ```{output}
 ch4_code/src/NoisySpectrumConvolution.py

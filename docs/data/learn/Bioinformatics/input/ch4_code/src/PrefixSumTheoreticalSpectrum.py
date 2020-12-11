@@ -33,7 +33,7 @@ AA = TypeVar('AA')
 # MARKDOWN
 def theoretical_spectrum(peptide: List[AA], mass_table: Dict[AA, float], cyclic: bool) -> List[int]:
     prefixsum_masses = list(accumulate([mass_table[aa] for aa in peptide], initial=0.0))
-    ret = [0]
+    ret = [0.0]
     for end_idx in range(0, len(prefixsum_masses)):
         for start_idx in range(0, end_idx):
             min_mass = prefixsum_masses[start_idx]
