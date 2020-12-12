@@ -2216,7 +2216,13 @@ Focus on non-ribosomal peptides is because that's what the Pevzner book focuses 
 
 Prior to deriving masses from a spectrum_MS, filter out low intensity mass-to-charge ratios. The remaining mass-to-charge ratios are converted to potential masses using `{kt} \frac{m}{z} \cdot z = m`.
 
-For example, the mass spectrometer used on a peptide has a tendency to produce +1 and +2 ions. As such, each mass-to-charge ratio is converted to two possible masses (multiped by both +1 and +2). Even though only one of masses for that mass-to-charge ratio is correct, because it's impossible to know which one is correct both masses are included in the experimental spectrum.
+For example, consider a mass spectrometer that has a tendency to produce +1 and +2 ions. This mass spectrometer produces the following mass-to-charge ratios: \[100, 150, 250\]. Each mass-to-charge ratio from this mass spectrometer will be converted to two possible masses:
+
+ * 100 ⟶ \[100Da, 200Da\]
+ * 150 ⟶ \[150Da, 300Da\]
+ * 250 ⟶ \[250Da, 500Da\]
+
+It's impossible to know which mass is correct, so all masses are included in the experimental spectrum: \[100Da, 150Da, 200Da, 250Da, 300Da, 500Da\].
 
 ```{output}
 ch4_code/src/ExperimentalSpectrum.py
@@ -2226,9 +2232,154 @@ python
 
 ```{ch4}
 ExperimentalSpectrum
-5.5 7.5 10.1 15.6
+100 150 250
 +1 +2
 ```
+
+Note that just as a spectrum_MS is noisy, the experimental spectrum derived from a spectrum_MS is also noisy. For example, consider a mass spectrometer that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce charges of +1 and +2. A subpeptide with a real mass of 100Da may end up in the spectrum_MS as a mass-to-charge ratio of either...
+
+ * for +1 charge, anywhere between `{kt} \frac{100}{+1} - 0.5` to `{kt} \frac{100}{+1} + 0.5` = 99.5 to 100.5
+ * for +2 charge, anywhere between `{kt} \frac{100}{+2} - 0.5` to `{kt} \frac{100}{+2} + 0.5` = 49.5 to 50.5
+
+Given these mass-to-charge ratio ranges, if you didn't know they were derived from a real mass of 100Da and were to convert them to potential masses, they would be...
+
+ * `{kt} 99.5 \cdot +1` to `{kt} 100.5 \cdot +1` = 99.5Da to 100.5Da
+ * `{kt} 49.5 \cdot +1` to `{kt} 50.5 \cdot +1` = 49.5Da to 50.5Da
+ * `{kt} 99.5 \cdot +2` to `{kt} 100.5 \cdot +2` = 199Da to 201Da
+ * `{kt} 49.5 \cdot +2` to `{kt} 50.5 \cdot +2` = 99Da to 101Da
+
+Note how the conversions for +2 charge produce the widest range: ±1Da. Assume that a real mass that makes it into the experimental spectrum has up to this much noise added: `{kt} max(n) \cdot max(c)` where max(n) is the maximum noise per mass-to-charge ratio (±0.5 in this case) and max(c) is the maximum charge tendency (+2 in this case). 
+
+Given the mass noise range calculated above, a real mass of ...
+
+ * 99Da will map to an experimental spectrum anywhere between 98Da and 100Da.
+ * 100Da will map to an experimental spectrum anywhere between 99Da to 101Da.
+ * 101Da will map to an experimental spectrum anywhere between 100Da to 102Da.
+
+```{svgbob}
+"exp spec mass range for real mass of 99:"  98 ---- 99 ---- 100
+"exp spec mass range for real mass of 100:"         99 ---- 100 --- 101
+"exp spec mass range for real mass of 101:"                 100 --- 101 --- 102
+```
+
+If you were to flip around the list above, an experimental spectrum mass of 100Da could come from an real mass of 99Da to 101Da. At a real mass of ...
+
+ * 99Da, the experimental spectrum mass range's maximum is 100Da (98Da to 100Da).
+ * 100Da, the experimental spectrum mass range's middle is 100Da (99Da to 101Da).
+ * 101Da, the experimental spectrum mass range's minimum is 100Da: (100Da to 102Da).
+
+```{svgbob}
+                                                        "exp spec mass"
+                                                             |
+                                                           ,-+-.
+"exp spec mass range for real mass of 99:"  98 ---- 99 ---- 100
+"exp spec mass range for real mass of 100:"         99 ---- 100 --- 101
+"exp spec mass range for real mass of 101:"                 100 --- 101 --- 102
+                                                           '---'
+```
+
+As such, that same formula can be used to define the maximum amount of noise per experimental mass: ±1Da.
+
+### Spectrum Convolution
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
+```
+
+**WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential amino acid masses for the peptide that generated that experimental spectrum.
+
+For example, the following experimental spectrum is for the linear peptide NQY: [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y. The mass for Y was derived even though Y's mass isn't directly in the experimental spectrum itself:
+
+* Mass of N is 114: 2 masses close to 114 in the experimental spectrum: \[113.9, 115.1\].
+* Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
+* Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
+
+**WHY**: Knowing the amino acid masses of the peptide that an experimental spectrum is for is critical to determining that peptide's sequence.
+
+**ALGORITHM**:
+
+The steps of this algorithm are as follows:
+
+ 1. Subtract experimental spectrum masses from each other (each mass gets subtracted from every mass).
+ 2. Filter differences to those between 57 and 200 (generally accepted range of amino acid masses).
+ 3. Group together results that are within some tolerance of each other.
+
+The top n most common occurrences are potential amino acid masses for the peptide that generated that experimental spectrum.
+
+For example, subtracting the masses in the experimental spectrum [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] results in...
+
+|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
+|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 0.0   | 0.0    | -113.9 | -115.1 | -136.2 | -162.9 | -242.0 | -311.1 | -346.0 | -405.2 |
+| 113.9 | 113.9  | 0.0    | -1.2   | -22.3  | -49.0  | -128.1 | -197.2 | -231.9 | -291.3 |
+| 115.1 | 115.1  | 1.2    | 0.0    | -21.1  | -47.8  | -126.9 | -196.0 | -230.9 | -289.3 |
+| 136.2 | 136.2  | 22.3   | 21.1   | 0.0    | -26.7  | -105.8 | -174.9 | -209.8 | -269.0 |
+| 162.9 | 162.9  | 49.0   | 47.8   | 26.7   | 0.0    | -79.1  | -142.9 | -183.1 | -242.3 |
+| 242.0 | 242.0  | 128.1  | 126.9  | 105.8  | 79.1   | 0.0    | -69.1  | -104.0 | -163.0 |
+| 311.1 | 311.1  | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   | 0.0    | -34.9  | -94.1  |
+| 346.0 | 346.0  | 231.1  | 230.9  | 209.8  | 183.1  | 104.0  | 34.9   | 0.0    | -59.2  |
+| 405.2 | 405.2  | 291.3  | 289.3  | 269.0  | 242.3  | 163.0  | 94.1   | 59.2   | 0.0    |
+
+Then, removing differences that aren't between 57 and 200 results in...
+
+|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
+|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 0.0   |        |        |        |        |        |        |        |        |        |
+| 113.9 | 113.9  |        |        |        |        |        |        |        |        |
+| 115.1 | 115.1  |        |        |        |        |        |        |        |        |
+| 136.2 | 136.2  |        |        |        |        |        |        |        |        |
+| 162.9 | 162.9  |        |        |        |        |        |        |        |        |
+| 242.0 |        | 128.1  | 126.9  | 105.8  | 79.1   |        |        |        |        |
+| 311.1 |        | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   |        |        |        |
+| 346.0 |        |        |        |        | 183.1  | 104.0  |        |        |        |
+| 405.2 |        |        |        |        |        | 163.0  | 94.1   | 59.2   |        |
+
+Then, grouping differences that are withing ±1.5 of each other results in...
+
+* `[113.9, 115.1]`
+* `[162.9, 163.0]`
+* `[128.1, 126.9]`
+* `[196.0, 197.2]`
+* `[104.0]`
+* `[105.8]`
+* `[136.2]`
+* `[174.9]`
+* `[79.1]`
+* `[142.9]`
+* `[69.1]`
+* `[94.1]`
+* `[59.2]`
+
+The experimental spectrum above was for the linear peptide NQY. Taking the groups that have at least 2 occurrences reveals that all amino acid masses are captured for NQY:
+
+ * `[113.9, 115.1]` (mass of N is 114)
+ * `[162.9, 163.0]` (mass of Q is 163)
+ * `[128.1, 126.9]` (mass of Y is 128)
+ * `[196.0, 197.2]` (junk)
+
+Note how the mass for Y (128) wasn't included in the experimental spectrum at all, but this operation was able to derive it from the other masses.
+
+```{output}
+ch4_code/src/NoisySpectrumConvolution.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+NoisySpectrumConvolution
+113.9 115.1 136.2 162.9 242.0 311.1 346.0 405.2
+1.5
+1
+```
+
+Note that just as an experimental spectrum is noisy, the amino acid masses derived from an experimental spectrum are also noisy. For example, consider a experimental spectrum that has up to ±1Da noise per mass. An actual mass of
+
+ * 100Da will manifest in the experimental spectrum as a mass between 99Da to 101Da.
+ * 150Da will manifest in the experimental spectrum as a mass between 149Da to 151Da.
+
+Consider subtracting the opposite extremes from these two ranges: 151Da - 99Da = 52Da. That's 2Da away from the actual mass difference: 50Da. As such, the maximum noise per amino acid mass is 2 times the maximum noise for the experimental spectrum that it was derived from.
 
 ### Theoretical Spectrum
 
@@ -2387,100 +2538,6 @@ The algorithm above is serial, but it can be made parallel to get even more spee
  3. Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).
 ```
 
-### Spectrum Convolution
-
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution)_TOPIC/`
-
-```{prereq}
-Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
-```
-
-**WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential amino acid masses for the peptide that generated that experimental spectrum.
-
-For example, the following experimental spectrum is for the linear peptide NQY: [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y -- the mass for Y was derived even though Y's mass isn't directly in the experimental spectrum itself:
-
-* Mass of N is 114: 2 masses close to 114 in the experimental spectrum: \[113.9, 115.1\].
-* Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
-* Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
-
-**WHY**: The amino acid masses derived from an experimental spectrum are used for generating theoretical spectrums. Generating theoretical spectrums are a key part of peptide sequencing.
-
-**ALGORITHM**:
-
-The steps of this algorithm are as follows:
-
- 1. Subtract experimental spectrum masses from each other (each mass gets subtracted from every mass).
- 2. Filter the results to those between 57 and 200 (generally accepted range of amino acid masses).
- 3. Group together results that are within some tolerance of each other.
-
-The top n most common occurrences are potential amino acid masses for the peptide that generated that experimental spectrum.
-
-For example, subtracting the masses in the experimental spectrum [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] results in...
-
-|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
-|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
-| 0.0   | 0.0    | -113.9 | -115.1 | -136.2 | -162.9 | -242.0 | -311.1 | -346.0 | -405.2 |
-| 113.9 | 113.9  | 0.0    | -1.2   | -22.3  | -49.0  | -128.1 | -197.2 | -231.9 | -291.3 |
-| 115.1 | 115.1  | 1.2    | 0.0    | -21.1  | -47.8  | -126.9 | -196.0 | -230.9 | -289.3 |
-| 136.2 | 136.2  | 22.3   | 21.1   | 0.0    | -26.7  | -105.8 | -174.9 | -209.8 | -269.0 |
-| 162.9 | 162.9  | 49.0   | 47.8   | 26.7   | 0.0    | -79.1  | -142.9 | -183.1 | -242.3 |
-| 242.0 | 242.0  | 128.1  | 126.9  | 105.8  | 79.1   | 0.0    | -69.1  | -104.0 | -163.0 |
-| 311.1 | 311.1  | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   | 0.0    | -34.9  | -94.1  |
-| 346.0 | 346.0  | 231.1  | 230.9  | 209.8  | 183.1  | 104.0  | 34.9   | 0.0    | -59.2  |
-| 405.2 | 405.2  | 291.3  | 289.3  | 269.0  | 242.3  | 163.0  | 94.1   | 59.2   | 0.0    |
-
-Then, removing differences that aren't between 57 and 200 results in...
-
-|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
-|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
-| 0.0   |        |        |        |        |        |        |        |        |        |
-| 113.9 | 113.9  |        |        |        |        |        |        |        |        |
-| 115.1 | 115.1  |        |        |        |        |        |        |        |        |
-| 136.2 | 136.2  |        |        |        |        |        |        |        |        |
-| 162.9 | 162.9  |        |        |        |        |        |        |        |        |
-| 242.0 |        | 128.1  | 126.9  | 105.8  | 79.1   |        |        |        |        |
-| 311.1 |        | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   |        |        |        |
-| 346.0 |        |        |        |        | 183.1  | 104.0  |        |        |        |
-| 405.2 |        |        |        |        |        | 163.0  | 94.1   | 59.2   |        |
-
-Then, grouping differences that are withing ±1.5 of each other results in...
-
-* `[113.9, 115.1]`
-* `[162.9, 163.0]`
-* `[128.1, 126.9]`
-* `[196.0, 197.2]`
-* `[104.0]`
-* `[105.8]`
-* `[136.2]`
-* `[174.9]`
-* `[79.1]`
-* `[142.9]`
-* `[69.1]`
-* `[94.1]`
-* `[59.2]`
-
-The experimental spectrum above was for the linear peptide NQY. Taking the groups that have at least 2 occurrences reveals that all amino acid masses are captured for NQY:
-
- * `[113.9, 115.1]` (mass of N is 114)
- * `[162.9, 163.0]` (mass of Q is 163)
- * `[128.1, 126.9]` (mass of Y is 128)
- * `[196.0, 197.2]` (junk)
-
-Note how the mass for Y (128) wasn't included in the experimental spectrum at all, but this operation was able to derive it from the other masses.
-
-```{output}
-ch4_code/src/NoisySpectrumConvolution.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-```
-
-```{ch4}
-NoisySpectrumConvolution
-113.9 115.1 136.2 162.9 242.0 311.1 346.0 405.2
-1.5
-1
-```
-
 ### Spectrum Score
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Score)_TOPIC/`
@@ -2488,6 +2545,7 @@ NoisySpectrumConvolution
 ```{prereq}
 Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
 Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
+Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
 ```
 
 **WHAT**: Given an experimental spectrum and a theoretical spectrum, score them against each other by checking how many masses match between them.
@@ -2496,53 +2554,46 @@ Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
 
 **ALGORITHM**:
 
-To score an experimental spectrum against a theoretical spectrum, the parameters of the mass spectrometer that produced that experimental spectrum need to be known. Specifically, the ...
+The basic idea behind scoring an experimental spectrum against a theoretical spectrum is to count the number of matching masses between the two. What constitutes a match is the tricky part. The practical problems with experimental spectrums (noise, missing masses, faulty masses, etc..) require the parameters of the mass spectrometer that produced that experimental spectrum be taken into account when identifying matches. Specifically, the ...
 
  * maximum amount of noise per mass-to-charge ratio produced by the mass spectrometer.
  * set of possible charges produced by the mass spectrometer.
 
-For example, if the mass spectrometer produces up to ±0.5 noise per mass-to-charge and has a tendency to produce charges +1 and +2, a mass-to-charge ratio of 38.1 may be for the mass ranges...
+ 1. Determine the tolerance for experimental spectrum masses.
+ 2. Determine the tolerance for amino acid masses.
+ 3. Use 
 
- * (38.1 - 0.5) \* 1 to (38.1 + 0.5) \* 1
- * (38.1 - 0.5) \* 2 to (38.1 + 0.5) \* 2
+Consider a mass spectrometer that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce charges of +1 and +2. A mass of 100 Da may end up as a mass-to-charge ratio anywhere between either...
 
-CONTINUE FROM HERE
+ * `{kt} \frac{100}{+1} - 0.5` to `{kt} \frac{100}{+1} + 0.5` ⟶ 99.5 to 100.5
+ * `{kt} \frac{100}{+2} - 0.5` to `{kt} \frac{100}{+2} + 0.5` ⟶ 49.5 to 50.5
 
-CONTINUE FROM HERE
+Producing an experimental spectrum mass ranges for those mass-to-charge ratio ranges...
 
-CONTINUE FROM HERE
+ * `{kt} 99.5 \cdot +1` to `{kt} 100.5 \cdot +1` ⟶ 99.5 Da to 100.5 Da
+ * `{kt} 49.5 \cdot +2` to `{kt} 50.5 \cdot +2` ⟶ 99 Da to 101 Da
 
-CONTINUE FROM HERE
+The mass range from charge +2 produce the widest range: ±1.0 Da. This means that an actual mass of 100 Da may end up in the experimental spectrum as a mass of anywhere between 99 Da to 101 Da.
 
-CONTINUE FROM HERE
+Knowing this, running a spectrum convolution. For example, lets say that the experimental spectrum mass for 100 
 
-CONTINUE FROM HERE
+Similarly, a mass of 175 Da may end up as a mass-to-charge ratio anywhere between either...
 
-CONTINUE FROM HERE
+ * `{kt} \frac{175}{+1} - 0.5` to `{kt} \frac{175}{+1} + 0.5` ⟶ 174.5 to 175.5
+ * `{kt} \frac{175}{+2} - 0.5` to `{kt} \frac{175}{+2} + 0.5` ⟶ 87 to 88
 
-CONTINUE FROM HERE
+Working backwards, converting the mass-to-charge ratio ranges above to potential mass ranges:
 
-CONTINUE FROM HERE
+ * `{kt} 174.5 \cdot +1` to `{kt} 175.5 \cdot +1` ⟶ 174.5 Da to 175.5 Da
+ * `{kt} 87 \cdot +2` to `{kt} 88 \cdot +2` ⟶ 174 Da to 175 Da
 
-CONTINUE FROM HERE
+The masses from charge +2 produce the widest range: ±1.0 Da. As such, the amount of tolerance that should be allowed for what constitutes a matching mass should be 2 times that: ±2.0 Da. For the example, an experimental spectrum mass of 100 Da could be a match for a theoretical spectrum mass of 98, 99, 100, or 101, 102:
 
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
+```{svgbob}
+98 ---- 99 --- 100
+        99 --- 100 --- 101
+               100 --- 101 --- 102
+```
 
 ### Sequencing
 
@@ -4050,7 +4101,7 @@ PracticalMotifFindingExample
    * Mass of Q is 163. 1 mass is close to 163 in the experimental spectrum: \[162.9\].
    * Mass of Y is 128. 0 masses are close to 128 in the experimental spectrum: \[\].
 
- * `{bm} dalton` `{bm} /\b(Da)\b/i` - A unit of measurement used in physics and chemistry. 1 Dalton is approximately the mass of a single proton / neutron, derived by taking the mass of a carbon-12 atom and dividing it by 12.
+ * `{bm} dalton` `{bm} /\b\d+(?:\.\d+)?(Da)\b/i/true/false` - A unit of measurement used in physics and chemistry. 1 Dalton is approximately the mass of a single proton / neutron, derived by taking the mass of a carbon-12 atom and dividing it by 12.
 
  * `{bm} codon/(codon|genetic code)/i` - A sequence of 3 ribonucleotides that maps to an amino acid or a stop marker. During translation, the ribosome translates the RNA to a protein 3 ribonucleotides at a time:
 
