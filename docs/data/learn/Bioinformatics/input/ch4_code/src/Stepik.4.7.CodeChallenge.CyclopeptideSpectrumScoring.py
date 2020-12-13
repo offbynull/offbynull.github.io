@@ -1,4 +1,4 @@
-from ScoreSpectrums import score_spectrums
+from NaiveSpectrumScore import score_spectrums
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
 
 with open('/home/user/Downloads/dataset_240282_3.txt', mode='r', encoding='utf-8') as f:

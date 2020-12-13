@@ -2590,6 +2590,11 @@ Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
 
 The basic idea behind scoring an experimental spectrum against a theoretical spectrum is to count the number of matching masses between the two. What constitutes a match is the tricky part. Because experimental spectrums are noisy, that noise needs to be considered when identifying matches.
 
+Before being able to generate a theoretical spectrum, you first need to determine a list of possible amino acids by running spectrum convolution on the experimental spectrum. Each amino acid captured by the spectrum convolution can have up to some amount of noise. This noise is what defines the tolerance for matches between the experimental spectrum and the theoretical spectrum.
+
+Start by running a 
+An experimental spectrum mass matches a theoretical spectrum mass if it's within some tolerance of that theoretical spectrum mass. The tolerance is calculated by accounting for the subpeptide sequence of that theoretical spectrum mass and the amino acid noise calculated during spectrum convolution.
+
 CONTINUE FROM HERE
 
 CONTINUE FROM HERE

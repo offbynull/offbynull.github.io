@@ -1,8 +1,8 @@
 from random import Random
 from typing import List
 
-from NoisyLeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
-from NoisyScoreSpectrums import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
+from NoisyLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
+from NoisySpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
 from NoisySpectrumConvolution import spectrum_convolution
 from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
