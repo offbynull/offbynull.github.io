@@ -2572,6 +2572,40 @@ The algorithm above is serial, but it can be made parallel to get even more spee
  3. Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).
 ```
 
+#### Tolerant Prefix Sum Algorithm
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Tolerant Prefix Sum Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Theoretical Spectrum/Prefix Sum Algorithm_TOPIC
+Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
+```
+
+**ALGORITHM**:
+
+Recall that each amino acid captured by a spectrum convolution has up to some amount of noise. This algorithm extends the others to include noise tolerances for each mass in the theoretical spectrum. For example, imagine a case where it's determined that the noise tolerance for each captured amino acid mass is ±2Da. Given the theoretical spectrum for linear peptide NQY, the tolerances would be as follows:
+
+|           |     |   N   |   Q   |   Y   |  NQ   |  QY   |  NQY  |
+|-----------|-----|-------|-------|-------|-------|-------|-------|
+| Mass      | 0Da | 114Da | 128Da | 163Da | 242Da | 291Da | 405Da |
+| Tolerance | 0Da | ±2Da  | ±2Da  | ±2Da  | ±4Da  | ±4Da  | ±6Da  |
+
+The maximum amount of noise (±2Da) is multiplied by the amino acid count of the subpeptide to determine the tolerance. For example, anything between 238 and 246 will match the theoretical spectrum mass for NQ (242Da). These tolerances are an important part of sequencing a peptide from a noisy experimental spectrum (covered in later sections).
+
+```{output}
+ch4_code/src/TolerantTheoreticalSpectrum.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+TolerantTheoreticalSpectrum
+NQY
+linear
+2
+G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
+```
+
 ### Spectrum Score
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Score)_TOPIC/`
@@ -2582,7 +2616,7 @@ Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
 Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
 ```
 
-**WHAT**: Given an experimental spectrum and a theoretical spectrum, score them against each other by checking how many masses match between them.
+**WHAT**: Given an experimental spectrum and a theoretical spectrum, score them against each other by counting how many masses match between them.
 
 **WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
 
@@ -2590,40 +2624,22 @@ Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
 
 The basic idea behind scoring an experimental spectrum against a theoretical spectrum is to count the number of matching masses between the two. What constitutes a match is the tricky part. Because experimental spectrums are noisy, that noise needs to be considered when identifying matches.
 
-Before being able to generate a theoretical spectrum, you first need to determine a list of possible amino acids by running spectrum convolution on the experimental spectrum. Each amino acid captured by the spectrum convolution can have up to some amount of noise. This noise is what defines the tolerance for matches between the experimental spectrum and the theoretical spectrum.
+Recall that each amino acid captured by a spectrum convolution has up to some amount of noise. This noise is what defines the tolerance for a matching mass between the experimental spectrum and the theoretical. For example, imagine a case where it's determined that the noise tolerance for each captured amino acid mass is ±2Da. Given the theoretical spectrum for linear peptide NQY, the tolerances would be as follows:
 
-Start by running a 
-An experimental spectrum mass matches a theoretical spectrum mass if it's within some tolerance of that theoretical spectrum mass. The tolerance is calculated by accounting for the subpeptide sequence of that theoretical spectrum mass and the amino acid noise calculated during spectrum convolution.
+|           |     |   N   |   Q   |   Y   |  NQ   |  QY   |  NQY  |
+|-----------|-----|-------|-------|-------|-------|-------|-------|
+| Mass      | 0Da | 114Da | 128Da | 163Da | 242Da | 291Da | 405Da |
+| Tolerance | 0Da | ±2Da  | ±2Da  | ±2Da  | ±4Da  | ±4Da  | ±6Da  |
 
-CONTINUE FROM HERE
+The maximum amount of noise (±2Da) is multiplied by the amino acid count of the subpeptide to determine the tolerance. For example, anything between 238 and 246 will match the theoretical spectrum mass for NQ (242Da).
 
-CONTINUE FROM HERE
+Another important factor that effects scoring is that a theoretical spectrum may have multiple masses with the same mass while an experimental spectrum won't. For example, the theoretical spectrum for GAK is ...
 
-CONTINUE FROM HERE
+|           |     |   G   |   A   |   K   |  GA   |  AK   |  GAK  |
+|-----------|-----|-------|-------|-------|-------|-------|-------|
+| Mass      | 0Da | 57D a | 71Da  | 128Da | 128Da | 199Da | 256Da |
 
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
-
-CONTINUE FROM HERE
+Note how K and GA both have a mass of 128Da. Since, experimental spectrums don't distinguish between where masses come from, the experimental spectrum for this linear peptide will only have 1 entry for 128Da -- even though the theoretical spectrum has 7 entries, the maximum number of matching masses is 6.
 
 ### Sequencing
 

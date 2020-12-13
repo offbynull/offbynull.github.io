@@ -72,6 +72,7 @@
 <ul>
 <li><a href="#H2_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
 <li><a href="#H_Prefix%20Sum%20Algorithm">Prefix Sum Algorithm</a></li>
+<li><a href="#H_Tolerant%20Prefix%20Sum%20Algorithm">Tolerant Prefix Sum Algorithm</a></li>
 </ul>
 <li><a href="#H_Spectrum%20Score">Spectrum Score</a></li>
 <li><a href="#H_Sequencing">Sequencing</a></li>
@@ -4207,7 +4208,7 @@ _amino_acid_to_codons = dict()
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given a max mass-to-charge ratio noise of ±0.5 and charge tendencies {1.0, 2.0}, the maximum noise per amino acid derived from an experimental spectrum is ±1.0</p>
+<p>Given a max mass-to-charge ratio noise of ±0.5 and charge tendencies {1.0, 2.0}, the maximum noise per amino acid derived from an experimental spectrum is ±2.0</p>
 </div>
 <p></p>
 <a name="H_Theoretical%20Spectrum"></a><h3>Theoretical Spectrum</h3>
@@ -4392,6 +4393,102 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).</li>
 </ol>
 </div>
+<a name="H_Tolerant%20Prefix%20Sum%20Algorithm"></a><h4>Tolerant Prefix Sum Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FTolerant%20Prefix%20Sum%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FPrefix%20Sum%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Theoretical Spectrum/Prefix Sum Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Convolution</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Recall that each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> captured by a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> has up to some amount of noise. This algorithm extends the others to include noise tolerances for each mass in the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>. For example, imagine a case where it's determined that the noise tolerance for each captured <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Given the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the tolerances would be as follows:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>N</th>
+<th>Q</th>
+<th>Y</th>
+<th>NQ</th>
+<th>QY</th>
+<th>NQY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mass</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>291<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>405<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+<tr>
+<td>Tolerance</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±6<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+</tbody>
+</table>
+<p>The maximum amount of noise (±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) is multiplied by the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> count of the <a href="#BM_(subpeptide)%2Fi">subpeptide</a> to determine the tolerance. For example, anything between 238 and 246 will match the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass for NQ (242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>). These tolerances are an important part of <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> a <a href="#BM_(peptide)%2Fi">peptide</a> from a noisy <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> (covered in later sections).</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">to_mass_range</span>(<span class="hljs-params">
+        subpeptide_len: int,
+        subpeptide_mass: int,
+        amino_acid_mass_tolerance: float
+</span>) -&gt; Tuple[float, float, float]:</span>
+    max_noise = subpeptide_len * amino_acid_mass_tolerance
+    min_subpeptide_mass = subpeptide_mass - max_noise
+    max_subpeptide_mass = subpeptide_mass + max_noise
+    <span class="hljs-keyword">return</span> subpeptide_mass, min_subpeptide_mass, max_subpeptide_mass
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
+        peptide: List[AA],
+        peptide_type: PeptideType,
+        amino_acid_mass_tolerance: float,
+        mass_table: Dict[AA, float]
+</span>) -&gt; List[Tuple[float, float, float]]:</span>
+    prefixsum_masses = list(accumulate([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide], initial=<span class="hljs-number">0.0</span>))
+    ret = [(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)]
+    <span class="hljs-keyword">for</span> end_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(prefixsum_masses)):
+        <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, end_idx):
+            length = end_idx - start_idx
+            min_mass = prefixsum_masses[start_idx]
+            max_mass = prefixsum_masses[end_idx]
+            mass = max_mass - min_mass
+            mass_range = to_mass_range(length, mass, amino_acid_mass_tolerance)
+            ret.append(mass_range)
+            <span class="hljs-keyword">if</span> peptide_type == PeptideType.CYCLIC <span class="hljs-keyword">and</span> start_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> end_idx &lt; len(peptide):
+                mass = prefixsum_masses[<span class="hljs-number">-1</span>] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx])
+                mass_range = to_mass_range(length, mass, amino_acid_mass_tolerance)
+                ret.append(mass_range)
+    ret.sort()
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The theoretical spectrum for the linear peptide NQY is ...</p>
+<ul>
+<li>(0.0, 0.0, 0.0)</li>
+<li>(114.0, 112.0, 116.0)</li>
+<li>(128.0, 126.0, 130.0)</li>
+<li>(163.0, 161.0, 165.0)</li>
+<li>(242.0, 238.0, 246.0)</li>
+<li>(291.0, 287.0, 295.0)</li>
+<li>(405.0, 399.0, 411.0)</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Spectrum%20Score"></a><h3>Spectrum Score</h3>
 <p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Score)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -4402,28 +4499,76 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Convolution</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, score them against each other by checking how many masses match between them.</p>
+<p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, score them against each other by counting how many masses match between them.</p>
 <p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This is the basis for how <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a>: an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is produced by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>, then that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is compared against a set of <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The basic idea behind scoring an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> against a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to count the number of matching masses between the two. What constitutes a match is the tricky part. Because <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s are noisy, that noise needs to be considered when identifying matches.</p>
-<p>Before being able to generate a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, you first need to determine a list of possible <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s by running <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> on the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. Each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> captured by the <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> can have up to some amount of noise. This noise is what defines the tolerance for matches between the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>.</p>
-<p>Start by running a
-An <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> mass matches a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass if it's within some tolerance of that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass. The tolerance is calculated by accounting for the <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> of that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass and the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> noise calculated during <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a>.</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
-<p>CONTINUE FROM HERE</p>
+<p>Recall that each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> captured by a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> has up to some amount of noise. This noise is what defines the tolerance for a matching mass between the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and the theoretical. For example, imagine a case where it's determined that the noise tolerance for each captured <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Given the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the tolerances would be as follows:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>N</th>
+<th>Q</th>
+<th>Y</th>
+<th>NQ</th>
+<th>QY</th>
+<th>NQY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mass</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>291<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>405<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+<tr>
+<td>Tolerance</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±6<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+</tbody>
+</table>
+<p>The maximum amount of noise (±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) is multiplied by the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> count of the <a href="#BM_(subpeptide)%2Fi">subpeptide</a> to determine the tolerance. For example, anything between 238 and 246 will match the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass for NQ (242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>).</p>
+<p>Another important factor that effects scoring is that a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> may have multiple masses with the same mass while an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> won't. For example, the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for GAK is ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>G</th>
+<th>A</th>
+<th>K</th>
+<th>GA</th>
+<th>AK</th>
+<th>GAK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mass</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>57D a</td>
+<td>71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>199<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>256<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+</tbody>
+</table>
+<p>Note how K and GA both have a mass of 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Since, <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s don't distinguish between where masses come from, the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for this <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> will only have 1 entry for 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> -- even though the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> has 7 entries, the maximum number of matching masses is 6.</p>
 <a name="H_Sequencing"></a><h3>Sequencing</h3>
 <p><strong>WHAT</strong>:</p>
 <p><strong>WHY</strong>:</p>

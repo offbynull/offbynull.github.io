@@ -15,7 +15,7 @@ def main():
     try:
         max_mass_charge_ratio_noise = float(input().strip())
         charge_tendencies = {float(c) for c in input().strip().split()}
-        exp_spec_noise = experimental_spectrum_noise(
+        exp_spec_noise = spectrum_convolution_noise(
             max_mass_charge_ratio_noise,
             charge_tendencies,
         )
