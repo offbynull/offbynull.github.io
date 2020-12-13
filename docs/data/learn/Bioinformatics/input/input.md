@@ -2236,59 +2236,71 @@ ExperimentalSpectrum
 +1 +2
 ```
 
-Note that just as a spectrum_MS is noisy, the experimental spectrum derived from a spectrum_MS is also noisy. For example, consider a mass spectrometer that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce charges of +1 and +2. A subpeptide with a real mass of 100Da may end up in the spectrum_MS as a mass-to-charge ratio of either...
+Just as a spectrum_MS is noisy, the experimental spectrum derived from a spectrum_MS is also noisy. For example, consider a mass spectrometer that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce +1 and +2 charges. A real mass of 100Da measured by this mass spectrometer will end up in the spectrum_MS as a mass-to-charge ratio of either...
 
- * for +1 charge, anywhere between `{kt} \frac{100}{1} - 0.5` to `{kt} \frac{100}{1} + 0.5` = 99.5 to 100.5
- * for +2 charge, anywhere between `{kt} \frac{100}{2} - 0.5` to `{kt} \frac{100}{2} + 0.5` = 49.5 to 50.5
+ * for +1 charge, anywhere between 99.5 to 100.5 (calculated as `{kt} \frac{100}{1} - 0.5` to `{kt} \frac{100}{1} + 0.5`).
+ * for +2 charge, anywhere between 49.5 to 50.5 (calculated as `{kt} \frac{100}{2} - 0.5` to `{kt} \frac{100}{2} + 0.5`).
 
 Converting these mass-to-charge ratio ranges to mass ranges...
 
- * for +1 charge, anywhere between `{kt} 99.5 \cdot 1` to `{kt} 100.5 \cdot 1` = 99.5Da to 100.5Da
- * for +2 charge, anywhere between `{kt} 49.5 \cdot 2` to `{kt} 50.5 \cdot 2` = 99Da to 101Da
+ * for +1 charge, anywhere between 99.5Da to 100.5Da (calculated as `{kt} 99.5 \cdot 1` to `{kt} 100.5 \cdot 1`).
+ * for +2 charge, anywhere between 99Da to 101Da (calculated as `{kt} 49.5 \cdot 2` to `{kt} 50.5 \cdot 2`).
 
-Note how the +2 charge conversion produces the widest range: 100Da ± 1Da. That is, any real mass measured by this mass spectrometer will end up in the experimental spectrum mass with up to ±1Da noise. For example, a real mass of ...
+Note how the +2 charge conversion produces the widest range: 100Da ± 1Da. Any real mass measured by this mass spectrometer will end up in the experimental spectrum with up to ±1Da noise. For example, a real mass of ...
 
- * 99Da will map to an experimental spectrum anywhere between 98Da and 100Da.
- * 100Da will map to an experimental spectrum anywhere between 99Da to 101Da.
- * 101Da will map to an experimental spectrum anywhere between 100Da to 102Da.
+ * 99Da will show up in the experimental spectrum anywhere between 98Da and 100Da.
+ * 100Da will show up in the experimental spectrum anywhere between 99Da to 101Da.
+ * 101Da will show up in the experimental spectrum anywhere between 100Da to 102Da.
 
 ```{svgbob}
 r     |
-e 101 |                 *------*------*
+e 101 |                 *-------------*
 a     |
 l     |
-  100 |          *------*------*
+  100 |          *-------------*
 m     |
 a     |
-s 99  |   *------*------*
+s 99  |   *-------------*
 s     |
       +---+------+------+------+------+
          98     99     100    101    102
                     "exp mass"
 ```
 
-Similarly, any experimental spectrum mass could have come from a real mass anywhere between ±1Da. For example, an experimental spectrum mass of 100Da could have come from a real mass of anywhere between 99Da to 101Da: At a real mass of ...
+Similarly, any mass in the experimental spectrum could have come from a real mass within ±1Da of it. For example, an experimental spectrum mass of 100Da could have come from a real mass of anywhere between 99Da to 101Da: At a real mass of ...
 
- * 99Da, the experimental spectrum mass range's maximum is 100Da (98Da to 100Da).
- * 100Da, the experimental spectrum mass range's middle is 100Da (99Da to 101Da).
- * 101Da, the experimental spectrum mass range's minimum is 100Da: (100Da to 102Da).
+ * 99Da, the corresponding experimental spectrum mass range's maximum is 100Da (98Da to 100Da).
+ * 100Da, the corresponding experimental spectrum mass range's middle is 100Da (99Da to 101Da).
+ * 101Da, the corresponding experimental spectrum mass range's minimum is 100Da: (100Da to 102Da).
 
 ```{svgbob}                
-r     |                 :
-e 101 |                 *------*------*
+r     |                  
+e 101 |                 *-------------*
 a     |                 :
 l     |                 :
-  100 |          *------*------*
+  100 |          *------+------*
 m     |                 :
 a     |                 :
-s 99  |   *------*------*
-s     |                 :
-      +---+------+-------------+------+
+s 99  |   *-------------*
+s     |                  
+      +---+------+------+------+------+
          98     99     100    101    102
                     "exp mass"
 ```
 
-The formula to calculate maximum noise is `{kt} max(n) \cdot max(c)`, where max(n) is the maximum noise per mass-to-charge ratio (±0.5 in this case) and max(c) is the maximum charge tendency (+2 in this case).
+As such, the maximum amount of noise for a real mass that made its way into the experimental spectrum is the same as the tolerance required for mapping an experimental spectrum mass back to the real mass it came from. This tolerance can also be considered noise: the experimental spectrum mass is offset from the real mass that it came from.
+
+```{output}
+ch4_code/src/ExperimentalSpectrumNoise.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+ExperimentalSpectrumNoise
+0.5
++1 +2
+```
 
 ### Spectrum Convolution
 
@@ -2302,9 +2314,9 @@ Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
 
 For example, the following experimental spectrum is for the linear peptide NQY: [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y. The mass for Y was derived even though Y's mass isn't directly in the experimental spectrum itself:
 
-* Mass of N is 114: 2 masses close to 114 in the experimental spectrum: \[113.9, 115.1\].
-* Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
-* Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
+ * Mass of N is 114: 2 masses close to 114 in the experimental spectrum: \[113.9, 115.1\].
+ * Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
+ * Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
 
 **WHY**: Knowing the amino acid masses of the peptide that an experimental spectrum is for is critical to determining that peptide's sequence.
 
@@ -2384,12 +2396,24 @@ NoisySpectrumConvolution
 1
 ```
 
-Note that just as an experimental spectrum is noisy, the amino acid masses derived from an experimental spectrum are also noisy. For example, consider a experimental spectrum that has up to ±1Da noise per mass. An actual mass of
+Note that just as an experimental spectrum is noisy, the amino acid masses derived from an experimental spectrum are also noisy. For example, consider a experimental spectrum that has up to ±1Da noise per mass. An real mass of...
 
- * 100Da will manifest in the experimental spectrum as a mass between 99Da to 101Da.
- * 150Da will manifest in the experimental spectrum as a mass between 149Da to 151Da.
+ * 100Da will show up in the experimental spectrum anywhere between 99Da to 101Da.
+ * 150Da will show up in the experimental spectrum anywhere between 149Da to 151Da.
 
 Consider subtracting the opposite extremes from these two ranges: 151Da - 99Da = 52Da. That's 2Da away from the actual mass difference: 50Da. As such, the maximum noise per amino acid mass is 2 times the maximum noise for the experimental spectrum that it was derived from.
+
+```{output}
+ch4_code/src/NoisySpectrumConvolutionNoise.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+NoisySpectrumConvolutionNoise
+0.5
++1 +2
+```
 
 ### Theoretical Spectrum
 
@@ -2401,35 +2425,35 @@ Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
 
 **WHAT**: A theoretical spectrum is an algorithmically generated list of all subpeptide masses for a known peptide sequence (including 0 and the full peptide's mass).
 
-For example, linear peptide NQY has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405] ...
+For example, linear peptide NQY has the theoretical spectrum...
 
 ```python
-theo_spec = {
-  '': 0,
-  'N': 114,
-  'Q': 128,
-  'Y': 163,
-  'NQ': 242,
-  'QY': 291,
-  'NQY': 405
-}
+theo_spec = [
+  0,    # <empty>
+  114,  # N
+  128,  # Q
+  163,  # Y
+  242,  # NQ
+  291,  # QY
+  405   # NQY
+]
 ```
 
-... while experimental spectrum produced by feeding NQY to a mass spectrometer may look something like [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]...
+... while experimental spectrum produced by feeding NQY to a mass spectrometer may look something like...
 
 ```python
-exp_spec = {
-  '': 0.0,              # implied
-  'N': [113.9, 115.1],  # multiple
-  'Q': None,            # missing
-  '?': 136.2,           # faulty
-  'Y': 162.9,
-  'NQ': 242.0,
-  'QY': None,           # missing
-  '?': 311.1,           # faulty
-  '?': 346.0,           # faulty
-  'NQY': 405.2
-}
+exp_spec = [
+  0.0,    # <empty> (implied)
+  113.9,  # N
+  115.1,  # N
+  136.2,  # faulty
+  162.9,  # Y
+  242.0,  # NQ
+  311.1,  # faulty
+  346.0,  # faulty
+  405.2   # NQY
+]
+# Q and QY are missing
 ```
 
 The theoretical spectrum is what the experimental spectrum would be in a perfect world...
@@ -2564,46 +2588,37 @@ Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
 
 **ALGORITHM**:
 
-The basic idea behind scoring an experimental spectrum against a theoretical spectrum is to count the number of matching masses between the two. What constitutes a match is the tricky part. The practical problems with experimental spectrums (noise, missing masses, faulty masses, etc..) require the parameters of the mass spectrometer that produced that experimental spectrum be taken into account when identifying matches. Specifically, the ...
+The basic idea behind scoring an experimental spectrum against a theoretical spectrum is to count the number of matching masses between the two. What constitutes a match is the tricky part. Because experimental spectrums are noisy, that noise needs to be considered when identifying matches.
 
- * maximum amount of noise per mass-to-charge ratio produced by the mass spectrometer.
- * set of possible charges produced by the mass spectrometer.
+CONTINUE FROM HERE
 
- 1. Determine the tolerance for experimental spectrum masses.
- 2. Determine the tolerance for amino acid masses.
- 3. Use 
+CONTINUE FROM HERE
 
-Consider a mass spectrometer that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce charges of +1 and +2. A mass of 100 Da may end up as a mass-to-charge ratio anywhere between either...
+CONTINUE FROM HERE
 
- * `{kt} \frac{100}{+1} - 0.5` to `{kt} \frac{100}{+1} + 0.5` ⟶ 99.5 to 100.5
- * `{kt} \frac{100}{+2} - 0.5` to `{kt} \frac{100}{+2} + 0.5` ⟶ 49.5 to 50.5
+CONTINUE FROM HERE
 
-Producing an experimental spectrum mass ranges for those mass-to-charge ratio ranges...
+CONTINUE FROM HERE
 
- * `{kt} 99.5 \cdot +1` to `{kt} 100.5 \cdot +1` ⟶ 99.5 Da to 100.5 Da
- * `{kt} 49.5 \cdot +2` to `{kt} 50.5 \cdot +2` ⟶ 99 Da to 101 Da
+CONTINUE FROM HERE
 
-The mass range from charge +2 produce the widest range: ±1.0 Da. This means that an actual mass of 100 Da may end up in the experimental spectrum as a mass of anywhere between 99 Da to 101 Da.
+CONTINUE FROM HERE
 
-Knowing this, running a spectrum convolution. For example, lets say that the experimental spectrum mass for 100 
+CONTINUE FROM HERE
 
-Similarly, a mass of 175 Da may end up as a mass-to-charge ratio anywhere between either...
+CONTINUE FROM HERE
 
- * `{kt} \frac{175}{+1} - 0.5` to `{kt} \frac{175}{+1} + 0.5` ⟶ 174.5 to 175.5
- * `{kt} \frac{175}{+2} - 0.5` to `{kt} \frac{175}{+2} + 0.5` ⟶ 87 to 88
+CONTINUE FROM HERE
 
-Working backwards, converting the mass-to-charge ratio ranges above to potential mass ranges:
+CONTINUE FROM HERE
 
- * `{kt} 174.5 \cdot +1` to `{kt} 175.5 \cdot +1` ⟶ 174.5 Da to 175.5 Da
- * `{kt} 87 \cdot +2` to `{kt} 88 \cdot +2` ⟶ 174 Da to 175 Da
+CONTINUE FROM HERE
 
-The masses from charge +2 produce the widest range: ±1.0 Da. As such, the amount of tolerance that should be allowed for what constitutes a matching mass should be 2 times that: ±2.0 Da. For the example, an experimental spectrum mass of 100 Da could be a match for a theoretical spectrum mass of 98, 99, 100, or 101, 102:
+CONTINUE FROM HERE
 
-```{svgbob}
-98 ---- 99 --- 100
-        99 --- 100 --- 101
-               100 --- 101 --- 102
-```
+CONTINUE FROM HERE
+
+CONTINUE FROM HERE
 
 ### Sequencing
 
@@ -4065,7 +4080,13 @@ PracticalMotifFindingExample
    * immunosuppressors
    * communication between bacteria (quorum sensing)
 
- * `{bm} mass spectrometer/(mass spectrometer|mass spectrometry)/i` - A device that shatters molecules into pieces and weighs the resulting pieces (measured in daltons). Mass spectrometry can be used to sequence peptides by inferring the amino acid sequence from the collection of masses.
+ * `{bm} mass spectrometer/(mass spectrometer|mass spectrometry)/i` - A device that randomly shatters molecules into pieces and measures the mass-to-charge of those pieces. The output of the device is a plot called a spectrum_MS.
+
+   Note that mass spectrometers have various real-world practical problems. Specifically, they ...
+
+    * may not capture all possible pieces from the intended molecules (missing mass-to-charge ratios).
+    * may capture pieces from unintended molecules (faulty mass-to-charge ratios).
+    * will likely introduce noise into the pieces they capture.
 
  * `{bm} spectrum/(spectrum)_MS/i` - The output of a mass spectrometer. The...
 
@@ -4087,7 +4108,15 @@ PracticalMotifFindingExample
                         "m/z"
    ```
 
- * `{bm} experimental spectrum` - List of potential fragment_NORM masses derived from the mass-to-charge ratios output by a real mass spectrometer. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.
+   Note that mass spectrometers have various real-world practical problems. Specifically, they ...
+
+    * may not capture all possible pieces from the intended molecules (missing mass-to-charge ratios).
+    * may capture pieces from unintended molecules (faulty mass-to-charge ratios).
+    * will likely introduce noise into the pieces they capture.
+
+   As such, these plots aren't exact.
+
+ * `{bm} experimental spectrum` - List of potential fragment_NORM masses derived from a spectrum_MS. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.
  
    The masses in an experimental spectrum ...
 

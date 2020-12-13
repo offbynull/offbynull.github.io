@@ -79,30 +79,25 @@ tspan.head{
 <line x1="52" x2="52" y1="0" y2="152"/>
 <line x1="52" x2="84" y1="152" y2="152"/>
 <line x1="84" x2="140" y1="152" y2="152"/>
-<line x1="140" x2="252" y1="152" y2="152"/>
+<line x1="140" x2="196" y1="152" y2="152"/>
+<line x1="196" x2="252" y1="152" y2="152"/>
 <line x1="252" x2="308" y1="152" y2="152"/>
 </g>
 <g>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="84" x2="140" y1="120" y2="120"/>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="140" x2="196" y1="120" y2="120"/>
+<line marker-end="url(#circle)" marker-start="url(#circle)" x1="84" x2="196" y1="120" y2="120"/>
 <line marker-start="url(#circle)" x1="196" x2="196" y1="120" y2="112"/>
-<line marker-start="url(#circle)" x1="196" x2="196" y1="120" y2="128"/>
 <line class="dashed" x1="196" x2="196" y1="80" y2="112"/>
-<line class="dashed" x1="196" x2="196" y1="128" y2="144"/>
 </g>
 <g>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="140" x2="196" y1="72" y2="72"/>
-<line marker-start="url(#circle)" x1="196" x2="196" y1="72" y2="64"/>
-<line marker-start="url(#circle)" x1="196" x2="196" y1="72" y2="80"/>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="196" x2="252" y1="72" y2="72"/>
+<line marker-start="url(#circle)" x1="140" x2="196" y1="72" y2="72"/>
+<line x1="196" x2="196" y1="72" y2="64"/>
+<line x1="196" x2="196" y1="72" y2="80"/>
+<line marker-end="url(#circle)" x1="196" x2="252" y1="72" y2="72"/>
 <line class="dashed" x1="196" x2="196" y1="32" y2="64"/>
 </g>
 <g>
-<line marker-start="url(#circle)" x1="196" x2="196" y1="24" y2="16"/>
 <line marker-start="url(#circle)" x1="196" x2="196" y1="24" y2="32"/>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="196" x2="252" y1="24" y2="24"/>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="252" x2="308" y1="24" y2="24"/>
-<line class="dashed" x1="196" x2="196" y1="0" y2="16"/>
+<line marker-end="url(#circle)" marker-start="url(#circle)" x1="196" x2="308" y1="24" y2="24"/>
 </g>
 <g>
 <text x="1" y="12">

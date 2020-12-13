@@ -84,16 +84,13 @@ tspan.head{
 <line x1="252" x2="308" y1="152" y2="152"/>
 </g>
 <g>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="84" x2="140" y1="120" y2="120"/>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="140" x2="196" y1="120" y2="120"/>
+<line marker-end="url(#circle)" marker-start="url(#circle)" x1="84" x2="196" y1="120" y2="120"/>
 </g>
 <g>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="140" x2="196" y1="72" y2="72"/>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="196" x2="252" y1="72" y2="72"/>
+<line marker-end="url(#circle)" marker-start="url(#circle)" x1="140" x2="252" y1="72" y2="72"/>
 </g>
 <g>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="196" x2="252" y1="24" y2="24"/>
-<line marker-end="url(#circle)" marker-start="url(#circle)" x1="252" x2="308" y1="24" y2="24"/>
+<line marker-end="url(#circle)" marker-start="url(#circle)" x1="196" x2="308" y1="24" y2="24"/>
 </g>
 <g>
 <text x="1" y="12">
