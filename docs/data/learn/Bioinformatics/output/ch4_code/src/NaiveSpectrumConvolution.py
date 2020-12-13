@@ -1,7 +1,8 @@
 from collections import Counter
 from typing import List
 
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
+from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
+from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 
 def spectrum_convolution(experimental_spectrum: List[int], min_mass=57, max_mass=200) -> List[int]:
@@ -17,7 +18,7 @@ def spectrum_convolution(experimental_spectrum: List[int], min_mass=57, max_mass
 
 
 if __name__ == '__main__':
-    spectrum = theoretical_spectrum_of_cyclic_peptide('NQEL')
+    spectrum = theoretical_spectrum(list('NQEL'), PeptideType.CYCLIC, get_amino_acid_to_mass_table())
     differences = spectrum_convolution(spectrum)
 
     count = Counter(differences)

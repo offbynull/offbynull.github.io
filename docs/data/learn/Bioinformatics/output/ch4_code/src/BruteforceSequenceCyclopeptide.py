@@ -1,6 +1,6 @@
 from typing import List, Optional, Dict, TypeVar
 
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
+from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 from helpers.HashableCollections import HashableList
 
@@ -27,7 +27,7 @@ def sequence_cyclic_peptide(
                 new_p.append(m)
                 new_p_mass = sum([mass_table[aa] for aa in new_p])
                 if new_p_mass == cyclopeptide_experimental_mass \
-                        and theoretical_spectrum_of_cyclic_peptide(new_p) == cyclopeptide_experimental_spectrum:
+                        and theoretical_spectrum(new_p, PeptideType.CYCLIC, mass_table) == cyclopeptide_experimental_spectrum:
                     final_peptides.append(new_p)
                 elif new_p_mass < cyclopeptide_experimental_mass:
                     new_candidate_peptides.add(new_p)
@@ -39,7 +39,7 @@ def sequence_cyclic_peptide(
 if __name__ == '__main__':
     mass_table = get_amino_acid_to_mass_table()
     actual_seq = sequence_cyclic_peptide(
-        theoretical_spectrum_of_cyclic_peptide('NQE', mass_table=mass_table),
+        theoretical_spectrum(list('NQE'), PeptideType.CYCLIC, mass_table),
         mass_table=mass_table
     )
     print(f'{actual_seq}')

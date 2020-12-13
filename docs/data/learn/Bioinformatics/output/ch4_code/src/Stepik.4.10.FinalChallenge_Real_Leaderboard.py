@@ -1,4 +1,4 @@
-from NoisyLeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
+from NoisyLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
 from NoisySpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
 from NoisySpectrumConvolution import spectrum_convolution

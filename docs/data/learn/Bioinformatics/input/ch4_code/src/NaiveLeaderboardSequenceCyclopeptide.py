@@ -1,8 +1,7 @@
 from typing import List, Optional, Dict, TypeVar
 
 from NaiveSpectrumScore import score_spectrums
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-from TheoreticalSpectrumOfLinearPeptide import theoretical_spectrum_of_linear_peptide
+from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 T = TypeVar('T')
@@ -19,7 +18,7 @@ def top_n_peptides_including_last_place_ties(
     if len(peptides) == 0:
         return peptides
 
-    spectrums = [theoretical_spectrum_of_linear_peptide(p, mass_table) for p in peptides]
+    spectrums = [theoretical_spectrum(p, PeptideType.LINEAR, mass_table) for p in peptides]
     scores = [score_spectrums(s, reference_spectrum) for s in spectrums]
     sorted_peptide_scores = list(sorted(zip(peptides, scores), key=lambda x: x[1], reverse=True))  # big to small
 
@@ -62,10 +61,9 @@ def sequence_cyclic_peptide(
             if p_mass > cyclopeptide_experimental_mass:
                 continue
             elif p_mass == cyclopeptide_experimental_mass:
-                p_theoretical_spectrum = theoretical_spectrum_of_cyclic_peptide(p, mass_table=mass_table)
+                p_theoretical_spectrum = theoretical_spectrum(p, PeptideType.CYCLIC, mass_table)
                 p_score = score_spectrums(p_theoretical_spectrum, cyclopeptide_experimental_spectrum)
-                leader_theoretical_spectrum = theoretical_spectrum_of_cyclic_peptide(leader_peptide,
-                                                                                     mass_table=mass_table)
+                leader_theoretical_spectrum = theoretical_spectrum(leader_peptide, PeptideType.CYCLIC, mass_table)
                 leader_score = score_spectrums(leader_theoretical_spectrum, cyclopeptide_experimental_spectrum)
                 if p_score > leader_score:
                     leader_peptide = p
@@ -86,7 +84,7 @@ def sequence_cyclic_peptide(
 if __name__ == '__main__':
     mass_table = get_amino_acid_to_mass_table()
     actual_seq = sequence_cyclic_peptide(
-        theoretical_spectrum_of_cyclic_peptide('NQEL', mass_table=mass_table),
+        theoretical_spectrum(list('NQEL'), PeptideType.CYCLIC, mass_table),
         10,
         mass_table=mass_table
     )

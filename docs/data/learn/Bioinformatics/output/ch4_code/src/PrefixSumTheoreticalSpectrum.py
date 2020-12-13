@@ -1,3 +1,4 @@
+from enum import Enum
 from itertools import accumulate
 from typing import List, TypeVar, Dict
 
@@ -30,8 +31,18 @@ AA = TypeVar('AA')
 #                 = mass('GASP') - (mass('GAS') - mass('G'))    # SUBSTITUTE IN mass('AS') EXAMPLE FROM ABOVE
 #                 = prefixsum_masses[4] - (prefixsum_masses[3] - prefixsum_masses[1])
 
+
+class PeptideType(Enum):
+    LINEAR = 0
+    CYCLIC = 1
+
+
 # MARKDOWN
-def theoretical_spectrum(peptide: List[AA], mass_table: Dict[AA, float], cyclic: bool) -> List[int]:
+def theoretical_spectrum(
+        peptide: List[AA],
+        peptide_type: PeptideType,
+        mass_table: Dict[AA, float]
+) -> List[int]:
     prefixsum_masses = list(accumulate([mass_table[aa] for aa in peptide], initial=0.0))
     ret = [0.0]
     for end_idx in range(0, len(prefixsum_masses)):
@@ -39,7 +50,7 @@ def theoretical_spectrum(peptide: List[AA], mass_table: Dict[AA, float], cyclic:
             min_mass = prefixsum_masses[start_idx]
             max_mass = prefixsum_masses[end_idx]
             ret.append(max_mass - min_mass)
-            if cyclic and start_idx > 0 and end_idx < len(peptide):
+            if peptide_type == PeptideType.CYCLIC and start_idx > 0 and end_idx < len(peptide):
                 ret.append(prefixsum_masses[-1] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx]))
     ret.sort()
     return ret
@@ -55,8 +66,8 @@ def main():
         mass_table = {e.strip().split(':')[0]: float(e.strip().split(':')[1]) for e in input().strip().split(',')}
         spectrum = theoretical_spectrum(
             list(peptide),
-            mass_table,
-            {'cyclic': True, 'linear': False}[type]
+            {'cyclic': PeptideType.CYCLIC, 'linear': PeptideType.LINEAR}[type],
+            mass_table
         )
         print(f'The theoretical spectrum for the {type} peptide {peptide} is {spectrum}', end="\n\n")
     finally:

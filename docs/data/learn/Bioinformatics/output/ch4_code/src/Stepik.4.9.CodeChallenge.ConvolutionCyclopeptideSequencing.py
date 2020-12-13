@@ -1,6 +1,6 @@
 from collections import Counter
 
-from NaiveLeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
+from NaiveLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
 from NaiveSpectrumConvolution import spectrum_convolution
 
 with open('/home/user/Downloads/dataset_240284_7.txt', mode='r', encoding='utf-8') as f:

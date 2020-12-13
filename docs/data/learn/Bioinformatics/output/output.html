@@ -4256,12 +4256,16 @@ _amino_acid_to_codons = dict()
 <p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FBruteforce%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following algorithm generates a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> in the most obvious way: iterate over each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> and calculate its mass.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">peptide: List[AA], mass_table: Dict[AA, float], cyclic: bool</span>) -&gt; List[float]:</span>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
+        peptide: List[AA],
+        peptide_type: PeptideType,
+        mass_table: Dict[AA, float]
+</span>) -&gt; List[int]:</span>
     <span class="hljs-comment"># add subpeptide of length 0's mass</span>
     ret = [<span class="hljs-number">0.0</span>]
     <span class="hljs-comment"># add subpeptide of length 1 to k-1's mass</span>
     <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, len(peptide)):
-        <span class="hljs-keyword">for</span> subpeptide, _ <span class="hljs-keyword">in</span> slide_window(peptide, k, cyclic=cyclic):
+        <span class="hljs-keyword">for</span> subpeptide, _ <span class="hljs-keyword">in</span> slide_window(peptide, k, cyclic=peptide_type == PeptideType.CYCLIC):
             ret.append(sum([mass_table[ch] <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> subpeptide]))
     <span class="hljs-comment"># add subpeptide of length k's mass</span>
     ret.append(sum([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide]))
@@ -4357,7 +4361,11 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>the <a href="#BM_(peptide)%2Fi">peptide</a> is very large (likely won't happen since <a href="#BM_(peptide)%2Fi">peptide</a>s by definition aren't larger than 50 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s)</li>
 <li>the algorithm runs often.</li>
 </ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">peptide: List[AA], mass_table: Dict[AA, float], cyclic: bool</span>) -&gt; List[int]:</span>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
+        peptide: List[AA],
+        peptide_type: PeptideType,
+        mass_table: Dict[AA, float]
+</span>) -&gt; List[int]:</span>
     prefixsum_masses = list(accumulate([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide], initial=<span class="hljs-number">0.0</span>))
     ret = [<span class="hljs-number">0.0</span>]
     <span class="hljs-keyword">for</span> end_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(prefixsum_masses)):
@@ -4365,7 +4373,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
             min_mass = prefixsum_masses[start_idx]
             max_mass = prefixsum_masses[end_idx]
             ret.append(max_mass - min_mass)
-            <span class="hljs-keyword">if</span> cyclic <span class="hljs-keyword">and</span> start_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> end_idx &lt; len(peptide):
+            <span class="hljs-keyword">if</span> peptide_type == PeptideType.CYCLIC <span class="hljs-keyword">and</span> start_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> end_idx &lt; len(peptide):
                 ret.append(prefixsum_masses[<span class="hljs-number">-1</span>] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx]))
     ret.sort()
     <span class="hljs-keyword">return</span> ret

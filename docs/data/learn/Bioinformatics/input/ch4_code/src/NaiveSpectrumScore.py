@@ -1,5 +1,4 @@
 from typing import List
-from NaiveLeaderboardSequenceCyclopeptide import top_n_peptides_including_last_place_ties
 
 
 # Count the number of intersections (an item must be in BOTH lists to be included). For example...
@@ -22,12 +21,3 @@ def score_spectrums(s1: List[int], s2: List[int]) -> int:
             idx_s2 += 1
             score += 1
     return score
-
-
-if __name__ == '__main__':
-    leaderboard = ['LAST', 'ALST', 'TLLT', 'TQAS']
-    leaderboard = top_n_peptides_including_last_place_ties(
-        leaderboard,
-        [0, 71, 87, 101, 113, 158, 184, 188, 259, 271, 372],
-        2)
-    print(f'{leaderboard}')

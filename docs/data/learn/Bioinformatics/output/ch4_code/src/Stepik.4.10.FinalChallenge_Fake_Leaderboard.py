@@ -1,19 +1,18 @@
 from random import Random
 from typing import List
 
-from NoisyLeaderboardCyclopeptideSequencing import sequence_cyclic_peptide
+from NoisyLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
+from NoisySpectrumConvolution import spectrum_convolution
 from NoisySpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
-from NoisySpectrumConvolution import spectrum_convolution
-from TheoreticalSpectrumOfCyclicPeptide import theoretical_spectrum_of_cyclic_peptide
-
-# Generate a noisy spectrum for a fake peptide
+from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_unique_amino_acid_masses_as_dict
 from helpers.Utils import rotate_left
 
+# Generate a noisy spectrum for a fake peptide
 r = Random(1)
 fake_peptide = [147, 97, 147, 147, 114, 128, 163, 99, 71, 156]
-cyclopeptide_exp_spec = theoretical_spectrum_of_cyclic_peptide(fake_peptide, get_unique_amino_acid_masses_as_dict())
+cyclopeptide_exp_spec = theoretical_spectrum(fake_peptide, PeptideType.CYCLIC, get_unique_amino_acid_masses_as_dict())
 cyclopeptide_exp_spec = [float(w) for w in cyclopeptide_exp_spec]
 # remove 0.2x randomly (but re-add the final mass if it was removed)
 fake_peptide_mass = cyclopeptide_exp_spec[-1]
