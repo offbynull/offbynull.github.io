@@ -2238,47 +2238,57 @@ ExperimentalSpectrum
 
 Note that just as a spectrum_MS is noisy, the experimental spectrum derived from a spectrum_MS is also noisy. For example, consider a mass spectrometer that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce charges of +1 and +2. A subpeptide with a real mass of 100Da may end up in the spectrum_MS as a mass-to-charge ratio of either...
 
- * for +1 charge, anywhere between `{kt} \frac{100}{+1} - 0.5` to `{kt} \frac{100}{+1} + 0.5` = 99.5 to 100.5
- * for +2 charge, anywhere between `{kt} \frac{100}{+2} - 0.5` to `{kt} \frac{100}{+2} + 0.5` = 49.5 to 50.5
+ * for +1 charge, anywhere between `{kt} \frac{100}{1} - 0.5` to `{kt} \frac{100}{1} + 0.5` = 99.5 to 100.5
+ * for +2 charge, anywhere between `{kt} \frac{100}{2} - 0.5` to `{kt} \frac{100}{2} + 0.5` = 49.5 to 50.5
 
-Given these mass-to-charge ratio ranges, if you didn't know they were derived from a real mass of 100Da and were to convert them to potential masses, they would be...
+Converting these mass-to-charge ratio ranges to mass ranges...
 
- * `{kt} 99.5 \cdot +1` to `{kt} 100.5 \cdot +1` = 99.5Da to 100.5Da
- * `{kt} 49.5 \cdot +1` to `{kt} 50.5 \cdot +1` = 49.5Da to 50.5Da
- * `{kt} 99.5 \cdot +2` to `{kt} 100.5 \cdot +2` = 199Da to 201Da
- * `{kt} 49.5 \cdot +2` to `{kt} 50.5 \cdot +2` = 99Da to 101Da
+ * for +1 charge, anywhere between `{kt} 99.5 \cdot 1` to `{kt} 100.5 \cdot 1` = 99.5Da to 100.5Da
+ * for +2 charge, anywhere between `{kt} 49.5 \cdot 2` to `{kt} 50.5 \cdot 2` = 99Da to 101Da
 
-Note how the conversions for +2 charge produce the widest range: ±1Da. Assume that a real mass that makes it into the experimental spectrum has up to this much noise added: `{kt} max(n) \cdot max(c)` where max(n) is the maximum noise per mass-to-charge ratio (±0.5 in this case) and max(c) is the maximum charge tendency (+2 in this case). 
-
-Given the mass noise range calculated above, a real mass of ...
+Note how the +2 charge conversion produces the widest range: 100Da ± 1Da. That is, any real mass measured by this mass spectrometer will end up in the experimental spectrum mass with up to ±1Da noise. For example, a real mass of ...
 
  * 99Da will map to an experimental spectrum anywhere between 98Da and 100Da.
  * 100Da will map to an experimental spectrum anywhere between 99Da to 101Da.
  * 101Da will map to an experimental spectrum anywhere between 100Da to 102Da.
 
 ```{svgbob}
-"exp spec mass range for real mass of 99:"  98 ---- 99 ---- 100
-"exp spec mass range for real mass of 100:"         99 ---- 100 --- 101
-"exp spec mass range for real mass of 101:"                 100 --- 101 --- 102
+r     |
+e 101 |                 *------*------*
+a     |
+l     |
+  100 |          *------*------*
+m     |
+a     |
+s 99  |   *------*------*
+s     |
+      +---+------+------+------+------+
+         98     99     100    101    102
+                    "exp mass"
 ```
 
-If you were to flip around the list above, an experimental spectrum mass of 100Da could come from an real mass of 99Da to 101Da. At a real mass of ...
+Similarly, any experimental spectrum mass could have come from a real mass anywhere between ±1Da. For example, an experimental spectrum mass of 100Da could have come from a real mass of anywhere between 99Da to 101Da: At a real mass of ...
 
  * 99Da, the experimental spectrum mass range's maximum is 100Da (98Da to 100Da).
  * 100Da, the experimental spectrum mass range's middle is 100Da (99Da to 101Da).
  * 101Da, the experimental spectrum mass range's minimum is 100Da: (100Da to 102Da).
 
-```{svgbob}
-                                                        "exp spec mass"
-                                                             |
-                                                           ,-+-.
-"exp spec mass range for real mass of 99:"  98 ---- 99 ---- 100
-"exp spec mass range for real mass of 100:"         99 ---- 100 --- 101
-"exp spec mass range for real mass of 101:"                 100 --- 101 --- 102
-                                                           '---'
+```{svgbob}                
+r     |                 :
+e 101 |                 *------*------*
+a     |                 :
+l     |                 :
+  100 |          *------*------*
+m     |                 :
+a     |                 :
+s 99  |   *------*------*
+s     |                 :
+      +---+------+-------------+------+
+         98     99     100    101    102
+                    "exp mass"
 ```
 
-As such, that same formula can be used to define the maximum amount of noise per experimental mass: ±1Da.
+The formula to calculate maximum noise is `{kt} max(n) \cdot max(c)`, where max(n) is the maximum noise per mass-to-charge ratio (±0.5 in this case) and max(c) is the maximum charge tendency (+2 in this case).
 
 ### Spectrum Convolution
 
