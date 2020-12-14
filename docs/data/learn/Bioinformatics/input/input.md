@@ -2320,6 +2320,120 @@ For example, the following experimental spectrum is for the linear peptide NQY: 
 
 **WHY**: Knowing the amino acid masses of the peptide that an experimental spectrum is for is critical to determining that peptide's sequence.
 
+#### Non-noisy Algorithm
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution\/Non-noisy Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+This algorithm is here for illustrative purposes. It assumes that the experimental spectrum can be missing masses and have faulty masses, but any masses it does have are free from noise.
+
+The steps of this algorithm are as follows:
+
+ 1. Subtract experimental spectrum masses from each other (each mass gets subtracted from every mass).
+ 2. Filter differences to those between 57Da and 200Da (generally accepted range for the mass of an amino acid).
+ 3. Filter differences to that don't occur at least n times, where n is user-defined.
+
+The result is a list of potential amino acid masses for the peptide that produced that experimental spectrum For example, consider the following experimental spectrum for the linear peptide NQY: [114, 136, 163, 242, 311, 346, 405]. The masses...
+
+ * [163, 291] are missing.
+ * [136, 311, 346] are faulty.
+ * [114, 163, 242, 405] are correct and free of noise.
+
+Subtract the experimental spectrum masses:
+
+|     | 0   | 114  | 136  | 163  | 242  | 311  | 346  | 405  |
+|-----|-----|------|------|------|------|------|------|------|
+| 0   | 0   | -114 | -136 | -163 | -242 | -311 | -346 | -405 |
+| 114 | 114 | 0    | -22  | -49  | -128 | -197 | -231 | -291 |
+| 136 | 136 | 22   | 0    | -27  | -106 | -175 | -210 | -269 |
+| 163 | 163 | 49   | 27   | 0    | -79  | -148 | -183 | -242 |
+| 242 | 242 | 128  | 106  | 79   | 0    | -69  | -104 | -163 |
+| 311 | 311 | 197  | 175  | 148  | 69   | 0    | -35  | -94  |
+| 346 | 346 | 232  | 210  | 183  | 104  | 35   | 0    | -59  |
+| 405 | 405 | 291  | 269  | 242  | 163  | 94   | 59   | 0    |
+
+Then, remove differences that aren't between 57Da and 200Da:
+
+|     | 0   | 114  | 136  | 163  | 242  | 311  | 346  | 405  |
+|-----|-----|------|------|------|------|------|------|------|
+| 0   |     |      |      |      |      |      |      |      |
+| 114 | 114 |      |      |      |      |      |      |      |
+| 136 | 136 |      |      |      |      |      |      |      |
+| 163 | 163 |      |      |      |      |      |      |      |
+| 242 |     | 128  | 106  | 79   |      |      |      |      |
+| 311 |     | 197  | 175  | 148  | 69   |      |      |      |
+| 346 |     |      |      | 183  | 104  |      |      |      |
+| 405 |     |      |      |      | 163  | 94   | 59   |      |
+
+Then, filter out any differences occurring less than than n times. In this case, the only difference that occurs more than once is 163, so set n=1 to prevent any further filtering:
+
+[59, 69, 79, 94, 104, 106, 114, 128, 136, 148, 163, 175, 183, 197]
+
+The resulting differences are potential amino acid masses for the peptide that produced the experimental spectrum. Note that the experimental spectrum contained the amino acid masses for N (114Da) and Y (163Da), but not Q (128Da). This operation was able to pull out the mass for Q: 128 is in the final list of differences.
+
+```{output}
+ch4_code/src/NaiveSpectrumConvolution.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+NaiveSpectrumConvolution
+0.5
++1 +2
+```
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
+
+#### Noise Tolerant Algorithm
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution\/Noise Tolerant Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Spectrum Convolution/Non-noisy Algorithm_TOPIC
+```
+
 **ALGORITHM**:
 
 The steps of this algorithm are as follows:
@@ -2572,9 +2686,9 @@ The algorithm above is serial, but it can be made parallel to get even more spee
  3. Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).
 ```
 
-#### Tolerant Prefix Sum Algorithm
+#### Noise Tolerant Algorithm
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Tolerant Prefix Sum Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Noise Tolerant Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Mass Spectrometry/Theoretical Spectrum/Prefix Sum Algorithm_TOPIC

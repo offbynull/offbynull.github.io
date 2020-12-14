@@ -68,11 +68,15 @@
 <ul>
 <li><a href="#H_Experimental%20Spectrum">Experimental Spectrum</a></li>
 <li><a href="#H_Spectrum%20Convolution">Spectrum Convolution</a></li>
+<ul>
+<li><a href="#H_Non-noisy%20Algorithm">Non-noisy Algorithm</a></li>
+<li><a href="#H_Noise%20Tolerant%20Algorithm">Noise Tolerant Algorithm</a></li>
+</ul>
 <li><a href="#H_Theoretical%20Spectrum">Theoretical Spectrum</a></li>
 <ul>
 <li><a href="#H2_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
 <li><a href="#H_Prefix%20Sum%20Algorithm">Prefix Sum Algorithm</a></li>
-<li><a href="#H_Tolerant%20Prefix%20Sum%20Algorithm">Tolerant Prefix Sum Algorithm</a></li>
+<li><a href="#H1_Noise%20Tolerant%20Algorithm">Noise Tolerant Algorithm</a></li>
 </ul>
 <li><a href="#H_Spectrum%20Score">Spectrum Score</a></li>
 <li><a href="#H_Sequencing">Sequencing</a></li>
@@ -3834,6 +3838,256 @@ _amino_acid_to_codons = dict()
 <li>Mass of Y is 128: 0 masses close to 128 in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>: [].</li>
 </ul>
 <p><strong>WHY</strong>: Knowing the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses of the <a href="#BM_(peptide)%2Fi">peptide</a> that an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for is critical to determining that <a href="#BM_(peptide)%2Fi">peptide</a>'s <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<a name="H_Non-noisy%20Algorithm"></a><h4>Non-noisy Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution%2FNon-noisy%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>This algorithm is here for illustrative purposes. It assumes that the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> can be missing masses and have faulty masses, but any masses it does have are free from noise.</p>
+<p>The steps of this algorithm are as follows:</p>
+<ol>
+<li>Subtract <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses from each other (each mass gets subtracted from every mass).</li>
+<li>Filter differences to those between 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> and 200<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> (generally accepted range for the mass of an <a href="#BM_(amino%20acid)%2Fi">amino acid</a>).</li>
+<li>Filter differences to that don't occur at least n times, where n is user-defined.</li>
+</ol>
+<p>The result is a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> For example, consider the following <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY: [114, 136, 163, 242, 311, 346, 405]. The masses...</p>
+<ul>
+<li>[163, 291] are missing.</li>
+<li>[136, 311, 346] are faulty.</li>
+<li>[114, 163, 242, 405] are correct and free of noise.</li>
+</ul>
+<p>Subtract the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>114</th>
+<th>136</th>
+<th>163</th>
+<th>242</th>
+<th>311</th>
+<th>346</th>
+<th>405</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>-114</td>
+<td>-136</td>
+<td>-163</td>
+<td>-242</td>
+<td>-311</td>
+<td>-346</td>
+<td>-405</td>
+</tr>
+<tr>
+<td>114</td>
+<td>114</td>
+<td>0</td>
+<td>-22</td>
+<td>-49</td>
+<td>-128</td>
+<td>-197</td>
+<td>-231</td>
+<td>-291</td>
+</tr>
+<tr>
+<td>136</td>
+<td>136</td>
+<td>22</td>
+<td>0</td>
+<td>-27</td>
+<td>-106</td>
+<td>-175</td>
+<td>-210</td>
+<td>-269</td>
+</tr>
+<tr>
+<td>163</td>
+<td>163</td>
+<td>49</td>
+<td>27</td>
+<td>0</td>
+<td>-79</td>
+<td>-148</td>
+<td>-183</td>
+<td>-242</td>
+</tr>
+<tr>
+<td>242</td>
+<td>242</td>
+<td>128</td>
+<td>106</td>
+<td>79</td>
+<td>0</td>
+<td>-69</td>
+<td>-104</td>
+<td>-163</td>
+</tr>
+<tr>
+<td>311</td>
+<td>311</td>
+<td>197</td>
+<td>175</td>
+<td>148</td>
+<td>69</td>
+<td>0</td>
+<td>-35</td>
+<td>-94</td>
+</tr>
+<tr>
+<td>346</td>
+<td>346</td>
+<td>232</td>
+<td>210</td>
+<td>183</td>
+<td>104</td>
+<td>35</td>
+<td>0</td>
+<td>-59</td>
+</tr>
+<tr>
+<td>405</td>
+<td>405</td>
+<td>291</td>
+<td>269</td>
+<td>242</td>
+<td>163</td>
+<td>94</td>
+<td>59</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Then, remove differences that aren't between 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> and 200<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>114</th>
+<th>136</th>
+<th>163</th>
+<th>242</th>
+<th>311</th>
+<th>346</th>
+<th>405</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>114</td>
+<td>114</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>136</td>
+<td>136</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>163</td>
+<td>163</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>242</td>
+<td></td>
+<td>128</td>
+<td>106</td>
+<td>79</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>311</td>
+<td></td>
+<td>197</td>
+<td>175</td>
+<td>148</td>
+<td>69</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>346</td>
+<td></td>
+<td></td>
+<td></td>
+<td>183</td>
+<td>104</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>405</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>163</td>
+<td>94</td>
+<td>59</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Then, filter out any differences occurring less than than n times. In this case, the only difference that occurs more than once is 163, so set n=1 to prevent any further filtering:</p>
+<p>[59, 69, 79, 94, 104, 106, 114, 128, 136, 148, 163, 175, 183, 197]</p>
+<p>The resulting differences are potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that produced the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. Note that the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> contained the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for N (114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) and Y (163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), but not Q (128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>). This operation was able to pull out the mass for Q: 128 is in the final list of differences.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spectrum_convolution</span>(<span class="hljs-params">experimental_spectrum: List[float], min_mass=<span class="hljs-number">57.0</span>, max_mass=<span class="hljs-number">200.0</span></span>) -&gt; List[float]:</span>
+    <span class="hljs-comment"># it's expected that experimental_spectrum is sorted smallest to largest</span>
+    diffs = []
+    <span class="hljs-keyword">for</span> row_idx, row_mass <span class="hljs-keyword">in</span> enumerate(experimental_spectrum):
+        <span class="hljs-keyword">for</span> col_idx, col_mass <span class="hljs-keyword">in</span> enumerate(experimental_spectrum):
+            mass_diff = row_mass - col_mass
+            <span class="hljs-keyword">if</span> min_mass &lt;= mass_diff &lt;= max_mass:
+                diffs.append(mass_diff)
+    diffs.sort()
+    <span class="hljs-keyword">return</span> diffs
+</code></pre>
+<a name="H_Noise%20Tolerant%20Algorithm"></a><h4>Noise Tolerant Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution%2FNoise%20Tolerant%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution%2FNon-noisy%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Convolution/Non-noisy Algorithm</a></li>
+</ul>
+</div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The steps of this algorithm are as follows:</p>
 <ol>
@@ -4393,8 +4647,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).</li>
 </ol>
 </div>
-<a name="H_Tolerant%20Prefix%20Sum%20Algorithm"></a><h4>Tolerant Prefix Sum Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FTolerant%20Prefix%20Sum%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<a name="H1_Noise%20Tolerant%20Algorithm"></a><h4>Noise Tolerant Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FNoise%20Tolerant%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
