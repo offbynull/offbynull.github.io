@@ -1,9 +1,8 @@
 from typing import List, Optional, Dict, TypeVar
 
-from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
+from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 from helpers.HashableCollections import HashableList
-from helpers.Utils import contains_all_sorted
 
 T = TypeVar('T')
 
@@ -18,30 +17,21 @@ def sequence_cyclic_peptide(
     cyclopeptide_experimental_spectrum.sort()  # Just in case -- it should already be sorted
     cyclopeptide_experimental_mass = cyclopeptide_experimental_spectrum[-1]
 
-    candidate_peptides = [[]]
+    candidate_peptides = {HashableList()}
     final_peptides = []
     while len(candidate_peptides) > 0:
-        # Branch
         new_candidate_peptides = set()
         for p in candidate_peptides:
-            for m in mass_table:
+            for m in mass_table.keys():
                 new_p = HashableList(p)
                 new_p.append(m)
-                new_candidate_peptides.add(new_p)
+                new_p_mass = sum([mass_table[aa] for aa in new_p])
+                if new_p_mass == cyclopeptide_experimental_mass \
+                        and theoretical_spectrum(new_p, PeptideType.CYCLIC, mass_table) == cyclopeptide_experimental_spectrum:
+                    final_peptides.append(new_p)
+                elif new_p_mass < cyclopeptide_experimental_mass:
+                    new_candidate_peptides.add(new_p)
         candidate_peptides = new_candidate_peptides
-        # Bound
-        removal_set = set()
-        for p in candidate_peptides:
-            p_mass = sum([mass_table[aa] for aa in p])
-            if p_mass == cyclopeptide_experimental_mass:
-                if theoretical_spectrum(p, PeptideType.CYCLIC, mass_table) == cyclopeptide_experimental_spectrum:
-                    final_peptides.append(p)
-                removal_set.add(p)
-            elif not contains_all_sorted(
-                    theoretical_spectrum(p, PeptideType.LINEAR, mass_table),
-                    cyclopeptide_experimental_spectrum):
-                removal_set.add(p)
-        candidate_peptides -= removal_set
 
     return final_peptides
 
@@ -49,7 +39,7 @@ def sequence_cyclic_peptide(
 if __name__ == '__main__':
     mass_table = get_amino_acid_to_mass_table()
     actual_seq = sequence_cyclic_peptide(
-        theoretical_spectrum(list('NQELNQEA'), PeptideType.CYCLIC, mass_table),
+        theoretical_spectrum(list('NQE'), PeptideType.CYCLIC, mass_table),
         mass_table=mass_table
     )
     print(f'{actual_seq}')

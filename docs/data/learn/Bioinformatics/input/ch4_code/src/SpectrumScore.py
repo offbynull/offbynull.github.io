@@ -130,7 +130,7 @@ def find_closest_within_tolerance(
 
 def score_spectrums(
         exp_spec: List[float],
-        theo_spec_with_tolerances: List[Tuple[float, float, float]]
+        theo_spec_with_tolerances: List[Tuple[float, float, float]]  # (expected mass, min mass, max mass)
 ) -> Tuple[int, float, float]:
     dist_score = 0.0
     within_score = 0

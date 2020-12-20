@@ -1,7 +1,7 @@
 from typing import List, Optional, Dict, TypeVar
 
-from NaiveSpectrumScore import score_spectrums
-from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
+from SpectrumScore_NoNoise import score_spectrums
+from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 T = TypeVar('T')

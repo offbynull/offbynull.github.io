@@ -2222,7 +2222,9 @@ For example, consider a mass spectrometer that has a tendency to produce +1 and 
  * 150 ⟶ \[150Da, 300Da\]
  * 250 ⟶ \[250Da, 500Da\]
 
-It's impossible to know which mass is correct, so all masses are included in the experimental spectrum: \[100Da, 150Da, 200Da, 250Da, 300Da, 500Da\].
+It's impossible to know which mass is correct, so all masses are included in the experimental spectrum:
+
+\[100Da, 150Da, 200Da, 250Da, 300Da, 500Da\].
 
 ```{output}
 ch4_code/src/ExperimentalSpectrum.py
@@ -2234,6 +2236,10 @@ python
 ExperimentalSpectrum
 100 150 250
 +1 +2
+```
+
+```{note}
+The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
 ```
 
 Just as a spectrum_MS is noisy, the experimental spectrum derived from a spectrum_MS is also noisy. For example, consider a mass spectrometer that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce +1 and +2 charges. A real mass of 100Da measured by this mass spectrometer will end up in the spectrum_MS as a mass-to-charge ratio of either...
@@ -2302,233 +2308,6 @@ ExperimentalSpectrumNoise
 +1 +2
 ```
 
-### Spectrum Convolution
-
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution)_TOPIC/`
-
-```{prereq}
-Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
-```
-
-**WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential amino acid masses for the peptide that generated that experimental spectrum.
-
-For example, the following experimental spectrum is for the linear peptide NQY: [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y. The mass for Y was derived even though Y's mass isn't directly in the experimental spectrum itself:
-
- * Mass of N is 114: 2 masses close to 114 in the experimental spectrum: \[113.9, 115.1\].
- * Mass of Q is 163: 1 mass close to 163 in the experimental spectrum: \[162.9\].
- * Mass of Y is 128: 0 masses close to 128 in the experimental spectrum: \[\].
-
-**WHY**: Knowing the amino acid masses of the peptide that an experimental spectrum is for is critical to determining that peptide's sequence.
-
-#### Non-noisy Algorithm
-
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution\/Non-noisy Algorithm)_TOPIC/`
-
-**ALGORITHM**:
-
-This algorithm is here for illustrative purposes. It assumes that the experimental spectrum can be missing masses and have faulty masses, but any masses it does have are free from noise.
-
-The steps of this algorithm are as follows:
-
- 1. Subtract experimental spectrum masses from each other (each mass gets subtracted from every mass).
- 2. Filter differences to those between 57Da and 200Da (generally accepted range for the mass of an amino acid).
- 3. Filter differences to that don't occur at least n times, where n is user-defined.
-
-The result is a list of potential amino acid masses for the peptide that produced that experimental spectrum For example, consider the following experimental spectrum for the linear peptide NQY: [114, 136, 163, 242, 311, 346, 405]. The masses...
-
- * [163, 291] are missing.
- * [136, 311, 346] are faulty.
- * [114, 163, 242, 405] are correct and free of noise.
-
-Subtract the experimental spectrum masses:
-
-|     | 0   | 114  | 136  | 163  | 242  | 311  | 346  | 405  |
-|-----|-----|------|------|------|------|------|------|------|
-| 0   | 0   | -114 | -136 | -163 | -242 | -311 | -346 | -405 |
-| 114 | 114 | 0    | -22  | -49  | -128 | -197 | -231 | -291 |
-| 136 | 136 | 22   | 0    | -27  | -106 | -175 | -210 | -269 |
-| 163 | 163 | 49   | 27   | 0    | -79  | -148 | -183 | -242 |
-| 242 | 242 | 128  | 106  | 79   | 0    | -69  | -104 | -163 |
-| 311 | 311 | 197  | 175  | 148  | 69   | 0    | -35  | -94  |
-| 346 | 346 | 232  | 210  | 183  | 104  | 35   | 0    | -59  |
-| 405 | 405 | 291  | 269  | 242  | 163  | 94   | 59   | 0    |
-
-Then, remove differences that aren't between 57Da and 200Da:
-
-|     | 0   | 114  | 136  | 163  | 242  | 311  | 346  | 405  |
-|-----|-----|------|------|------|------|------|------|------|
-| 0   |     |      |      |      |      |      |      |      |
-| 114 | 114 |      |      |      |      |      |      |      |
-| 136 | 136 |      |      |      |      |      |      |      |
-| 163 | 163 |      |      |      |      |      |      |      |
-| 242 |     | 128  | 106  | 79   |      |      |      |      |
-| 311 |     | 197  | 175  | 148  | 69   |      |      |      |
-| 346 |     |      |      | 183  | 104  |      |      |      |
-| 405 |     |      |      |      | 163  | 94   | 59   |      |
-
-Then, filter out any differences occurring less than than n times. In this case, the only difference that occurs more than once is 163, so set n=1 to prevent any further filtering:
-
-[59, 69, 79, 94, 104, 106, 114, 128, 136, 148, 163, 175, 183, 197]
-
-The resulting differences are potential amino acid masses for the peptide that produced the experimental spectrum. Note that the experimental spectrum contained the amino acid masses for N (114Da) and Y (163Da), but not Q (128Da). This operation was able to pull out the mass for Q: 128 is in the final list of differences.
-
-```{output}
-ch4_code/src/NaiveSpectrumConvolution.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-```
-
-```{ch4}
-NaiveSpectrumConvolution
-0.5
-+1 +2
-```
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-FIX ME AND THEN FIX THE TEXT IN THE NOISE TOLERANT VERSION TO REFERENCE THIS VERSION
-
-#### Noise Tolerant Algorithm
-
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution\/Noise Tolerant Algorithm)_TOPIC/`
-
-```{prereq}
-Algorithms/Mass Spectrometry/Spectrum Convolution/Non-noisy Algorithm_TOPIC
-```
-
-**ALGORITHM**:
-
-The steps of this algorithm are as follows:
-
- 1. Subtract experimental spectrum masses from each other (each mass gets subtracted from every mass).
- 2. Filter differences to those between 57 and 200 (generally accepted range of amino acid masses).
- 3. Group together results that are within some tolerance of each other.
-
-The top n most common occurrences are potential amino acid masses for the peptide that generated that experimental spectrum.
-
-For example, subtracting the masses in the experimental spectrum [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] results in...
-
-|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
-|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
-| 0.0   | 0.0    | -113.9 | -115.1 | -136.2 | -162.9 | -242.0 | -311.1 | -346.0 | -405.2 |
-| 113.9 | 113.9  | 0.0    | -1.2   | -22.3  | -49.0  | -128.1 | -197.2 | -231.9 | -291.3 |
-| 115.1 | 115.1  | 1.2    | 0.0    | -21.1  | -47.8  | -126.9 | -196.0 | -230.9 | -289.3 |
-| 136.2 | 136.2  | 22.3   | 21.1   | 0.0    | -26.7  | -105.8 | -174.9 | -209.8 | -269.0 |
-| 162.9 | 162.9  | 49.0   | 47.8   | 26.7   | 0.0    | -79.1  | -142.9 | -183.1 | -242.3 |
-| 242.0 | 242.0  | 128.1  | 126.9  | 105.8  | 79.1   | 0.0    | -69.1  | -104.0 | -163.0 |
-| 311.1 | 311.1  | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   | 0.0    | -34.9  | -94.1  |
-| 346.0 | 346.0  | 231.1  | 230.9  | 209.8  | 183.1  | 104.0  | 34.9   | 0.0    | -59.2  |
-| 405.2 | 405.2  | 291.3  | 289.3  | 269.0  | 242.3  | 163.0  | 94.1   | 59.2   | 0.0    |
-
-Then, removing differences that aren't between 57 and 200 results in...
-
-|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
-|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
-| 0.0   |        |        |        |        |        |        |        |        |        |
-| 113.9 | 113.9  |        |        |        |        |        |        |        |        |
-| 115.1 | 115.1  |        |        |        |        |        |        |        |        |
-| 136.2 | 136.2  |        |        |        |        |        |        |        |        |
-| 162.9 | 162.9  |        |        |        |        |        |        |        |        |
-| 242.0 |        | 128.1  | 126.9  | 105.8  | 79.1   |        |        |        |        |
-| 311.1 |        | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   |        |        |        |
-| 346.0 |        |        |        |        | 183.1  | 104.0  |        |        |        |
-| 405.2 |        |        |        |        |        | 163.0  | 94.1   | 59.2   |        |
-
-Then, grouping differences that are withing ±1.5 of each other results in...
-
-* `[113.9, 115.1]`
-* `[162.9, 163.0]`
-* `[128.1, 126.9]`
-* `[196.0, 197.2]`
-* `[104.0]`
-* `[105.8]`
-* `[136.2]`
-* `[174.9]`
-* `[79.1]`
-* `[142.9]`
-* `[69.1]`
-* `[94.1]`
-* `[59.2]`
-
-The experimental spectrum above was for the linear peptide NQY. Taking the groups that have at least 2 occurrences reveals that all amino acid masses are captured for NQY:
-
- * `[113.9, 115.1]` (mass of N is 114)
- * `[162.9, 163.0]` (mass of Q is 163)
- * `[128.1, 126.9]` (mass of Y is 128)
- * `[196.0, 197.2]` (junk)
-
-Note how the mass for Y (128) wasn't included in the experimental spectrum at all, but this operation was able to derive it from the other masses.
-
-```{output}
-ch4_code/src/NoisySpectrumConvolution.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-```
-
-```{ch4}
-NoisySpectrumConvolution
-113.9 115.1 136.2 162.9 242.0 311.1 346.0 405.2
-1.5
-1
-```
-
-Note that just as an experimental spectrum is noisy, the amino acid masses derived from an experimental spectrum are also noisy. For example, consider a experimental spectrum that has up to ±1Da noise per mass. An real mass of...
-
- * 100Da will show up in the experimental spectrum anywhere between 99Da to 101Da.
- * 150Da will show up in the experimental spectrum anywhere between 149Da to 151Da.
-
-Consider subtracting the opposite extremes from these two ranges: 151Da - 99Da = 52Da. That's 2Da away from the actual mass difference: 50Da. As such, the maximum noise per amino acid mass is 2 times the maximum noise for the experimental spectrum that it was derived from.
-
-```{output}
-ch4_code/src/NoisySpectrumConvolutionNoise.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-```
-
-```{ch4}
-NoisySpectrumConvolutionNoise
-0.5
-+1 +2
-```
-
 ### Theoretical Spectrum
 
 `{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
@@ -2560,14 +2339,15 @@ exp_spec = [
   0.0,    # <empty> (implied)
   113.9,  # N
   115.1,  # N
+          # Q missing
   136.2,  # faulty
   162.9,  # Y
   242.0,  # NQ
+          # QY missing
   311.1,  # faulty
   346.0,  # faulty
   405.2   # NQY
 ]
-# Q and QY are missing
 ```
 
 The theoretical spectrum is what the experimental spectrum would be in a perfect world...
@@ -2588,13 +2368,13 @@ The theoretical spectrum is what the experimental spectrum would be in a perfect
 The following algorithm generates a theoretical spectrum in the most obvious way: iterate over each subpeptide and calculate its mass.
 
 ```{output}
-ch4_code/src/BruteforceTheoreticalSpectrum.py
+ch4_code/src/TheoreticalSpectrum_Bruteforce.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch4}
-BruteforceTheoreticalSpectrum
+TheoreticalSpectrum_Bruteforce
 NQY
 linear
 G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
@@ -2666,13 +2446,13 @@ This algorithm is faster than the bruteforce algorithm, but most use-cases won't
  * the algorithm runs often.
 
 ```{output}
-ch4_code/src/PrefixSumTheoreticalSpectrum.py
+ch4_code/src/TheoreticalSpectrum_PrefixSum.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch4}
-PrefixSumTheoreticalSpectrum
+TheoreticalSpectrum_PrefixSum
 NQY
 linear
 G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
@@ -2686,38 +2466,169 @@ The algorithm above is serial, but it can be made parallel to get even more spee
  3. Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).
 ```
 
-#### Noise Tolerant Algorithm
+### Spectrum Convolution
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Noise Tolerant Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Theoretical Spectrum/Prefix Sum Algorithm_TOPIC
-Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
+Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
+Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
 ```
+
+**WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential amino acid masses for the peptide that generated that experimental spectrum.
+
+For example, the following experimental spectrum is for the linear peptide NQY:
+
+[0.0Da, 113.9Da, 115.1Da, 136.2Da, 162.9Da, 242.0Da, 311.1Da, 346.0Da, 405.2Da]
+
+Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Q. The mass for Q was derived even though no experimental spectrum masses are near Q's mass:
+
+ * Mass of N is 114Da, 2 experimental spectrum masses are near: \[113.9, 115.1\]
+ * Mass of Q is 128Da, 0 experimental spectrum masses are near: \[\]
+ * Mass of Y is 163Da, 1 experimental spectrum mass is near: \[162.9\]
+
+**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. However, before being able to build a theoretical spectrum, a list of potential amino acids need to be inferred from the experimental spectrum. This operation infers a list of potential amino acid masses, which can be mapped to amino acids themselves (e.g. 114 maps to N).
 
 **ALGORITHM**:
 
-Recall that each amino acid captured by a spectrum convolution has up to some amount of noise. This algorithm extends the others to include noise tolerances for each mass in the theoretical spectrum. For example, imagine a case where it's determined that the noise tolerance for each captured amino acid mass is ±2Da. Given the theoretical spectrum for linear peptide NQY, the tolerances would be as follows:
+Consider an experimental spectrum with masses that don't contain any noise. That is, the experimental spectrum may have faulty masses and may be missing masses, but any correct masses it does have are exact / noise-free. To derive a list of potential amino acid masses for this experimental spectrum:
 
-|           |     |   N   |   Q   |   Y   |  NQ   |  QY   |  NQY  |
-|-----------|-----|-------|-------|-------|-------|-------|-------|
-| Mass      | 0Da | 114Da | 128Da | 163Da | 242Da | 291Da | 405Da |
-| Tolerance | 0Da | ±2Da  | ±2Da  | ±2Da  | ±4Da  | ±4Da  | ±6Da  |
+ 1. Subtract experimental spectrum masses from each other (each mass gets subtracted from every mass).
+ 2. Filter differences to those between 57Da and 200Da (generally accepted range for the mass of an amino acid).
+ 3. Filter differences to that don't occur at least n times (n is user-defined).
 
-The maximum amount of noise (±2Da) is multiplied by the amino acid count of the subpeptide to determine the tolerance. For example, anything between 238 and 246 will match the theoretical spectrum mass for NQ (242Da). These tolerances are an important part of sequencing a peptide from a noisy experimental spectrum (covered in later sections).
+The result is a list of potential amino acid masses for the peptide that produced that experimental spectrum. For example, consider the following experimental spectrum for the linear peptide NQY:
+
+[0Da, 114Da, 136Da, 163Da, 242Da, 311Da, 346Da, 405Da]
+
+The experimental spectrum masses...
+
+ * [163Da, 291Da] are missing.
+ * [136Da, 311Da, 346Da] are faulty.
+ * [114Da, 163Da, 242Da, 405Da] are correct and free of noise.
+
+Subtract the experimental spectrum masses:
+
+|     | 0   | 114  | 136  | 163  | 242  | 311  | 346  | 405  |
+|-----|-----|------|------|------|------|------|------|------|
+| 0   | 0   | -114 | -136 | -163 | -242 | -311 | -346 | -405 |
+| 114 | 114 | 0    | -22  | -49  | -128 | -197 | -231 | -291 |
+| 136 | 136 | 22   | 0    | -27  | -106 | -175 | -210 | -269 |
+| 163 | 163 | 49   | 27   | 0    | -79  | -148 | -183 | -242 |
+| 242 | 242 | 128  | 106  | 79   | 0    | -69  | -104 | -163 |
+| 311 | 311 | 197  | 175  | 148  | 69   | 0    | -35  | -94  |
+| 346 | 346 | 232  | 210  | 183  | 104  | 35   | 0    | -59  |
+| 405 | 405 | 291  | 269  | 242  | 163  | 94   | 59   | 0    |
+
+Then, remove differences that aren't between 57Da and 200Da:
+
+|     | 0   | 114  | 136  | 163  | 242  | 311  | 346  | 405  |
+|-----|-----|------|------|------|------|------|------|------|
+| 0   |     |      |      |      |      |      |      |      |
+| 114 | 114 |      |      |      |      |      |      |      |
+| 136 | 136 |      |      |      |      |      |      |      |
+| 163 | 163 |      |      |      |      |      |      |      |
+| 242 |     | 128  | 106  | 79   |      |      |      |      |
+| 311 |     | 197  | 175  | 148  | 69   |      |      |      |
+| 346 |     |      |      | 183  | 104  |      |      |      |
+| 405 |     |      |      |      | 163  | 94   | 59   |      |
+
+Then, filter out any differences occurring less than than n times. In this case, it makes sense to set n to 1 because almost all of the differences occur only once.
+
+The final result is a list of potential amino acid masses for the peptide that produced the experimental spectrum:
+
+[59Da, 69Da, 79Da, 94Da, 104Da, 106Da, 114Da, 128Da, 136Da, 148Da, 163Da, 175Da, 183Da, 197Da]
+
+Note that the experimental spectrum is for the linear peptide NQY. The experimental spectrum contained the masses for N (114Da) and Y (163Da), but not Q (128Da). This operation was able to pull out the mass for Q: 128Da is in the final list of differences.
 
 ```{output}
-ch4_code/src/TolerantTheoreticalSpectrum.py
+ch4_code/src/SpectrumConvolution_NoNoise.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch4}
-TolerantTheoreticalSpectrum
-NQY
-linear
+SpectrumConvolution_NoNoise
+0 114 136 163 242 311 346 405
+```
+
+```{note}
+The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
+```
+
+The algorithm described above is for experimental spectrums that have exact masses (no noise). However, real experimental spectrums will have noisy masses. Since a real experimental spectrum has noisy masses, the amino acid masses derived from it will also be noisy. For example, consider an experimental spectrum that has ±1Da noise per mass. A real mass of...
+
+ * 242Da will show up in the experimental spectrum anywhere between 241Da to 243Da.
+ * 114Da will show up in the experimental spectrum anywhere between 113Da to 115Da.
+
+Subtract the opposite extremes from these two ranges: 243Da - 113Da = 130Da. That's 2Da away from the real mass difference: 128Da. As such, the maximum noise per amino acid mass is 2 times the maximum noise for the experimental spectrum that it was derived from: ±2Da for this example.
+
+```{output}
+ch4_code/src/SpectrumConvolutionNoise.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+SpectrumConvolutionNoise
+0.5
++1 +2
+```
+
+Extending the algorithm to handle noisy experimental spectrum masses requires one extra step: group together differences that are within some tolerance of each other, where this tolerance is the maximum amino acid mass noise calculation described above. For example, consider the following experimental spectrum for linear peptide NQY that has up to ±1Da noise per mass:
+
+[0.0Da, 113.9Da, 115.1Da, 136.2Da, 162.9Da, 242.0Da, 311.1Da, 346.0Da, 405.2Da]
+
+Just as before, subtract the experimental spectrum masses and differences that aren't between 57Da and 200Da:
+
+|       | 0.0    | 113.9  | 115.1  | 136.2  | 162.9  | 242.0  | 311.1  | 346.0  | 405.2  |
+|-------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 0.0   |        |        |        |        |        |        |        |        |        |
+| 113.9 | 113.9  |        |        |        |        |        |        |        |        |
+| 115.1 | 115.1  |        |        |        |        |        |        |        |        |
+| 136.2 | 136.2  |        |        |        |        |        |        |        |        |
+| 162.9 | 162.9  |        |        |        |        |        |        |        |        |
+| 242.0 |        | 128.1  | 126.9  | 105.8  | 79.1   |        |        |        |        |
+| 311.1 |        | 197.2  | 196.0  | 174.9  | 142.9  | 69.1   |        |        |        |
+| 346.0 |        |        |        |        | 183.1  | 104.0  |        |        |        |
+| 405.2 |        |        |        |        |        | 163.0  | 94.1   | 59.2   |        |
+
+Then, group differences that are within ±2Da of each other (2 times the experimental spectrum's maximum mass noise):
+
+* \[104.0, 105.8\]
+* \[113.9, 115.1\]
+* \[128.1, 126.9\]
+* \[162.9, 163.0\]
+* \[196.0, 197.2\]
+* \[59.2\]
+* \[69.1\]
+* \[79.1\]
+* \[94.1\]
+* \[136.2\]
+* \[142.9\]
+* \[174.9\]
+
+Then, filter out any groups that have less than n occurrences. In this case, filtering to n=2 occurrences reveals that all amino acid masses are captured for NQY:
+
+ * \[104.0, 105.8\] (junk)
+ * \[113.9, 115.1\] (mass of N is 114)
+ * \[128.1, 126.9\] (mass of Q is 128)
+ * \[162.9, 163.0\] (mass of Y is 163)
+ * \[196.0, 197.2\] (junk)
+
+Note that the experimental spectrum is for the linear peptide NQY. The experimental spectrum contained the masses near N (113.Da and 115.1Da) and Y (162.9Da), but not Q. This operation was able to pull out masses near Q: \[128.1, 126.9\] is in the final list of differences.
+
+```{output}
+ch4_code/src/SpectrumConvolution.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+SpectrumConvolution
+113.9 115.1 136.2 162.9 242.0 311.1 346.0 405.2
 2
-G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
+1
 ```
 
 ### Spectrum Score
@@ -2732,28 +2643,59 @@ Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
 
 **WHAT**: Given an experimental spectrum and a theoretical spectrum, score them against each other by counting how many masses match between them.
 
-**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
+**WHY**: The more matching masses between a theoretical spectrum and an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. This is the basis for how non-ribosomal peptides are sequenced: an experimental spectrum is produced by a mass spectrometer, then that experimental spectrum is compared against a set of theoretical spectrums.
 
 **ALGORITHM**:
 
-The basic idea behind scoring an experimental spectrum against a theoretical spectrum is to count the number of matching masses between the two. What constitutes a match is the tricky part. Because experimental spectrums are noisy, that noise needs to be considered when identifying matches.
+Consider an experimental spectrum with masses that don't contain any noise. That is, the experimental spectrum may have faulty masses and may be missing masses, but any correct masses it does have are exact / noise-free. Scoring this experimental spectrum against a theoretical spectrum is simple: count the number of matching masses.
 
-Recall that each amino acid captured by a spectrum convolution has up to some amount of noise. This noise is what defines the tolerance for a matching mass between the experimental spectrum and the theoretical. For example, imagine a case where it's determined that the noise tolerance for each captured amino acid mass is ±2Da. Given the theoretical spectrum for linear peptide NQY, the tolerances would be as follows:
+```{output}
+ch4_code/src/SpectrumScore_NoNoise.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+SpectrumScore_NoNoise
+0 57 71 128 199 256 
+0 57 71 128 128 199 256
+```
+
+Note that a theoretical spectrum may have multiple masses with the same value but an experimental spectrum won't. For example, the theoretical spectrum for GAK is ...
+
+|           |     |   G   |   A   |   K   |  GA   |  AK   |  GAK  |
+|-----------|-----|-------|-------|-------|-------|-------|-------|
+| Mass      | 0Da | 57D a | 71Da  | 128Da | 128Da | 199Da | 256Da |
+
+K and GA both have a mass of 128Da. Since, experimental spectrums don't distinguish between where masses come from, an experimental spectrum for this linear peptide will only have 1 entry for 128Da.
+
+```{note}
+The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
+```
+
+The algorithm described above is for experimental spectrums that have exact masses (no noise). However, real experimental spectrums have noisy masses. That noise needs to be accounted for when identifying matches.
+
+Recall that each amino acid mass captured by a spectrum convolution has up to some amount of noise. This is what defines the tolerance for a matching mass between the experimental spectrum and the theoretical spectrum. Specifically, the maximum amount of noise for a captured amino acid mass is multiplied by the amino acid count of the subpeptide to determine the tolerance.
+
+For example, imagine a case where it's determined that the noise tolerance for each captured amino acid mass is ±2Da. Given the theoretical spectrum for linear peptide NQY, the tolerances would be as follows:
 
 |           |     |   N   |   Q   |   Y   |  NQ   |  QY   |  NQY  |
 |-----------|-----|-------|-------|-------|-------|-------|-------|
 | Mass      | 0Da | 114Da | 128Da | 163Da | 242Da | 291Da | 405Da |
 | Tolerance | 0Da | ±2Da  | ±2Da  | ±2Da  | ±4Da  | ±4Da  | ±6Da  |
 
-The maximum amount of noise (±2Da) is multiplied by the amino acid count of the subpeptide to determine the tolerance. For example, anything between 238 and 246 will match the theoretical spectrum mass for NQ (242Da).
+```{output}
+ch4_code/src/TheoreticalSpectrumTolerances.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-Another important factor that effects scoring is that a theoretical spectrum may have multiple masses with the same mass while an experimental spectrum won't. For example, the theoretical spectrum for GAK is ...
-
-|           |     |   G   |   A   |   K   |  GA   |  AK   |  GAK  |
-|-----------|-----|-------|-------|-------|-------|-------|-------|
-| Mass      | 0Da | 57D a | 71Da  | 128Da | 128Da | 199Da | 256Da |
-
-Note how K and GA both have a mass of 128Da. Since, experimental spectrums don't distinguish between where masses come from, the experimental spectrum for this linear peptide will only have 1 entry for 128Da -- even though the theoretical spectrum has 7 entries, the maximum number of matching masses is 6.
+```{ch4}
+TheoreticalSpectrumTolerances
+NQY
+linear
+2
+```
 
 ### Sequencing
 
@@ -3548,6 +3490,12 @@ PracticalMotifFindingExample
  * `{bm} sequencer` - A machine that performs DNA or RNA sequencing.
 
  * `{bm} sequencing error` - An error caused by a sequencer returning a fragment_SEQ where a nucleotide was misinterpreted at one or more positions (e.g. offset 3 was actually a C but it got scanned in as a G).
+
+    ```{note}
+    This term may also be used in reference to homopolymer errors, known to happen with nanopore technology. From [here](https://news.ycombinator.com/item?id=25459670)...
+
+    > A homopolymer is when you have stretches of the same nucleotide, and the error is miscounting the number of them. e.g: GAAAC could be called as "GAAC" or "GAAAAC" or even "GAAAAAAAC".
+    ```
 
  * `{bm} read/\b(read)_SEQ/i` - A segment of genome scanned in during the process of sequencing.
 

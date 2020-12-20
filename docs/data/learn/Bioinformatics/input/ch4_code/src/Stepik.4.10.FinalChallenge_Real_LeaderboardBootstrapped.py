@@ -1,7 +1,7 @@
-from NoisyLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
-from NoisySpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
+from SequenceCyclopeptide_LeaderboardNoisy import sequence_cyclic_peptide
+from SpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
-from NoisySpectrumConvolution import spectrum_convolution
+from SpectrumConvolution import spectrum_convolution
 from helpers.Utils import slide_window
 
 with open('real_spectrum.txt', mode='r', encoding='utf-8') as f:

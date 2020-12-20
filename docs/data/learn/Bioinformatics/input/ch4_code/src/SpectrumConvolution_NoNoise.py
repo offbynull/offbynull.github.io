@@ -1,9 +1,6 @@
 from collections import Counter
 from typing import List
 
-from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
-from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
-
 
 # MARKDOWN
 def spectrum_convolution(experimental_spectrum: List[float], min_mass=57.0, max_mass=200.0) -> List[float]:
@@ -19,9 +16,20 @@ def spectrum_convolution(experimental_spectrum: List[float], min_mass=57.0, max_
 # MARKDOWN
 
 
-if __name__ == '__main__':
-    spectrum = theoretical_spectrum(list('NQEL'), PeptideType.CYCLIC, get_amino_acid_to_mass_table())
-    differences = spectrum_convolution(spectrum)
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        exp_spec = [float(m) for m in input().strip().split()]
+        spectrum = spectrum_convolution(exp_spec)
+        spectrum.sort()
+        print(f'The spectrum convolution for {exp_spec} is ...', end="\n\n")
+        for mass, count in Counter(spectrum).most_common():
+            print(f' * {count}x{mass}', end="\n")
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
 
-    count = Counter(differences)
-    print(f'{count}')
+
+if __name__ == '__main__':
+    main()

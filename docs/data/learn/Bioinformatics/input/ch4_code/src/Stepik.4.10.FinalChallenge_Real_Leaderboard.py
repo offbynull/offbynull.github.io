@@ -1,7 +1,7 @@
-from NoisyLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
-from NoisySpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
+from SequenceCyclopeptide_LeaderboardNoisy import sequence_cyclic_peptide
+from SpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
-from NoisySpectrumConvolution import spectrum_convolution
+from SpectrumConvolution import spectrum_convolution
 
 # This attempts to sequence the peptide for the a real noisy spectrum while the other file  attempts to sequence a
 # peptide from a generated (fake) noisy spectrum. This one (real) gets close to sequencing the real peptide while the

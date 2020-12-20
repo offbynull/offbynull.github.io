@@ -1,5 +1,5 @@
-from NaiveSpectrumScore import score_spectrums
-from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
+from SpectrumScore_NoNoise import score_spectrums
+from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 with open('/home/user/Downloads/dataset_240282_3.txt', mode='r', encoding='utf-8') as f:

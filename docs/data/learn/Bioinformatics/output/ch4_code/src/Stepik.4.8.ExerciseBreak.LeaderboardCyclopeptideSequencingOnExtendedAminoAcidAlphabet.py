@@ -1,4 +1,4 @@
-from NaiveLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
+from SequenceCyclopeptide_LeaderboardNaive import sequence_cyclic_peptide
 
 with open('/home/user/Downloads/dataset_240283_2.txt', mode='r', encoding='utf-8') as f:
     data = f.read()

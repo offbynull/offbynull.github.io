@@ -1,11 +1,11 @@
 from random import Random
 from typing import List
 
-from NoisyLeaderboardSequenceCyclopeptide import sequence_cyclic_peptide
-from NoisySpectrumConvolution import spectrum_convolution
-from NoisySpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
+from SequenceCyclopeptide_LeaderboardNoisy import sequence_cyclic_peptide
+from SpectrumConvolution import spectrum_convolution
+from SpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
     score_spectrums
-from PrefixSumTheoreticalSpectrum import theoretical_spectrum, PeptideType
+from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_unique_amino_acid_masses_as_dict
 from helpers.Utils import rotate_left
 

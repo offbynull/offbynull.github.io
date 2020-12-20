@@ -67,17 +67,12 @@
 <li><a href="#H_Mass%20Spectrometry">Mass Spectrometry</a></li>
 <ul>
 <li><a href="#H_Experimental%20Spectrum">Experimental Spectrum</a></li>
-<li><a href="#H_Spectrum%20Convolution">Spectrum Convolution</a></li>
-<ul>
-<li><a href="#H_Non-noisy%20Algorithm">Non-noisy Algorithm</a></li>
-<li><a href="#H_Noise%20Tolerant%20Algorithm">Noise Tolerant Algorithm</a></li>
-</ul>
 <li><a href="#H_Theoretical%20Spectrum">Theoretical Spectrum</a></li>
 <ul>
 <li><a href="#H2_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
 <li><a href="#H_Prefix%20Sum%20Algorithm">Prefix Sum Algorithm</a></li>
-<li><a href="#H1_Noise%20Tolerant%20Algorithm">Noise Tolerant Algorithm</a></li>
 </ul>
+<li><a href="#H_Spectrum%20Convolution">Spectrum Convolution</a></li>
 <li><a href="#H_Spectrum%20Score">Spectrum Score</a></li>
 <li><a href="#H_Sequencing">Sequencing</a></li>
 <ul>
@@ -3770,7 +3765,8 @@ _amino_acid_to_codons = dict()
 <li>150 ⟶ [150<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 300<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]</li>
 <li>250 ⟶ [250<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 500<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]</li>
 </ul>
-<p>It's impossible to know which mass is correct, so all masses are included in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>: [100<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 150<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 200<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 250<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 300<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 500<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>].</p>
+<p>It's impossible to know which mass is correct, so all masses are included in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>:</p>
+<p>[100<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 150<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 200<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 250<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 300<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 500<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>].</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">experimental_spectrum</span>(<span class="hljs-params">mass_charge_ratios: List[float], charge_tendencies: Set[float]</span>) -&gt; List[float]:</span>
     ret = [<span class="hljs-number">0.0</span>]  <span class="hljs-comment"># implied -- subpeptide of length 0</span>
     <span class="hljs-keyword">for</span> mcr <span class="hljs-keyword">in</span> mass_charge_ratios:
@@ -3789,6 +3785,10 @@ _amino_acid_to_codons = dict()
 <p>[0.0, 100.0, 150.0, 200.0, 250.0, 300.0, 500.0]</p>
 </div>
 <p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
+</div>
 <p>Just as a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> is noisy, the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> derived from a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> is also noisy. For example, consider a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> that produces up to ±0.5 noise per mass-to-charge ratio and has a tendency to produce +1 and +2 charges. A real mass of 100<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> measured by this <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will end up in the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> as a mass-to-charge ratio of either...</p>
 <ul>
 <li>for +1 charge, anywhere between 99.5 to 100.5 (calculated as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>100</mn><mn>1</mn></mfrac><mo>−</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\frac{100}{1} - 0.5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span></span></span></span> to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>100</mn><mn>1</mn></mfrac><mo>+</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\frac{100}{1} + 0.5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span></span></span></span>).</li>
@@ -3822,37 +3822,222 @@ _amino_acid_to_codons = dict()
 <p>Given a max mass-to-charge ratio noise of ±0.5 and charge tendencies {1.0, 2.0}, the maximum noise per experimental spectrum mass is ±1.0</p>
 </div>
 <p></p>
-<a name="H_Spectrum%20Convolution"></a><h3>Spectrum Convolution</h3>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Theoretical%20Spectrum"></a><h3>Theoretical Spectrum</h3>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Experimental Spectrum</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, subtract its masses from each other. The differences are a set of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that generated that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
-<p>For example, the following <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY: [0.0, 113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for <a href="#BM_(amino%20acid)%2Fi">amino acid</a> Y. The mass for Y was derived even though Y's mass isn't directly in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> itself:</p>
+<p><strong>WHAT</strong>: A <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is an algorithmically generated list of all <a href="#BM_(subpeptide)%2Fi">subpeptide</a> masses for a known <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> (including 0 and the full <a href="#BM_(peptide)%2Fi">peptide</a>'s mass).</p>
+<p>For example, <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>...</p>
+<pre class="hljs"><code>theo_spec = [
+  <span class="hljs-number">0</span>,    <span class="hljs-comment"># &lt;empty&gt;</span>
+  <span class="hljs-number">114</span>,  <span class="hljs-comment"># N</span>
+  <span class="hljs-number">128</span>,  <span class="hljs-comment"># Q</span>
+  <span class="hljs-number">163</span>,  <span class="hljs-comment"># Y</span>
+  <span class="hljs-number">242</span>,  <span class="hljs-comment"># NQ</span>
+  <span class="hljs-number">291</span>,  <span class="hljs-comment"># QY</span>
+  <span class="hljs-number">405</span>   <span class="hljs-comment"># NQY</span>
+]
+</code></pre>
+<p>... while <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> produced by feeding NQY to a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> may look something like...</p>
+<pre class="hljs"><code>exp_spec = [
+  <span class="hljs-number">0.0</span>,    <span class="hljs-comment"># &lt;empty&gt; (implied)</span>
+  <span class="hljs-number">113.9</span>,  <span class="hljs-comment"># N</span>
+  <span class="hljs-number">115.1</span>,  <span class="hljs-comment"># N</span>
+          <span class="hljs-comment"># Q missing</span>
+  <span class="hljs-number">136.2</span>,  <span class="hljs-comment"># faulty</span>
+  <span class="hljs-number">162.9</span>,  <span class="hljs-comment"># Y</span>
+  <span class="hljs-number">242.0</span>,  <span class="hljs-comment"># NQ</span>
+          <span class="hljs-comment"># QY missing</span>
+  <span class="hljs-number">311.1</span>,  <span class="hljs-comment"># faulty</span>
+  <span class="hljs-number">346.0</span>,  <span class="hljs-comment"># faulty</span>
+  <span class="hljs-number">405.2</span>   <span class="hljs-comment"># NQY</span>
+]
+</code></pre>
+<p>The <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is what the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> would be in a perfect world...</p>
 <ul>
-<li>Mass of N is 114: 2 masses close to 114 in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>: [113.9, 115.1].</li>
-<li>Mass of Q is 163: 1 mass close to 163 in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>: [162.9].</li>
-<li>Mass of Y is 128: 0 masses close to 128 in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>: [].</li>
+<li>only a single possible mass for each mass-to-charge ratio.</li>
+<li>no missing masses.</li>
+<li>no faulty masses.</li>
+<li>no noise.</li>
 </ul>
-<p><strong>WHY</strong>: Knowing the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses of the <a href="#BM_(peptide)%2Fi">peptide</a> that an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for is critical to determining that <a href="#BM_(peptide)%2Fi">peptide</a>'s <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<a name="H_Non-noisy%20Algorithm"></a><h4>Non-noisy Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution%2FNon-noisy%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This is the basis for how <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a>: an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is produced by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>, then that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is compared against a set of <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s.</p>
+<a name="H2_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FBruteforce%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm is here for illustrative purposes. It assumes that the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> can be missing masses and have faulty masses, but any masses it does have are free from noise.</p>
-<p>The steps of this algorithm are as follows:</p>
+<p>The following algorithm generates a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> in the most obvious way: iterate over each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> and calculate its mass.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
+        peptide: List[AA],
+        peptide_type: PeptideType,
+        mass_table: Dict[AA, float]
+</span>) -&gt; List[int]:</span>
+    <span class="hljs-comment"># add subpeptide of length 0's mass</span>
+    ret = [<span class="hljs-number">0.0</span>]
+    <span class="hljs-comment"># add subpeptide of length 1 to k-1's mass</span>
+    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, len(peptide)):
+        <span class="hljs-keyword">for</span> subpeptide, _ <span class="hljs-keyword">in</span> slide_window(peptide, k, cyclic=peptide_type == PeptideType.CYCLIC):
+            ret.append(sum([mass_table[ch] <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> subpeptide]))
+    <span class="hljs-comment"># add subpeptide of length k's mass</span>
+    ret.append(sum([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide]))
+    <span class="hljs-comment"># sort and return</span>
+    ret.sort()
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The theoretical spectrum for the linear peptide NQY is [0.0, 114.0, 128.0, 163.0, 242.0, 291.0, 405.0]</p>
+</div>
+<p></p>
+<a name="H_Prefix%20Sum%20Algorithm"></a><h4>Prefix Sum Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FPrefix%20Sum%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FBruteforce%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Theoretical Spectrum/Bruteforce Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The algorithm starts by calculating the prefix sum of the mass at each position of the <a href="#BM_(peptide)%2Fi">peptide</a>. The prefix sum is calculated by summing all <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses up until that position. For example, the <a href="#BM_(peptide)%2Fi">peptide</a> GASP has the following masses at the following positions...</p>
+<table>
+<thead>
+<tr>
+<th>G</th>
+<th>A</th>
+<th>S</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>57</td>
+<td>71</td>
+<td>87</td>
+<td>97</td>
+</tr>
+</tbody>
+</table>
+<p>As such, the prefix sum at each position is...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>G</th>
+<th>A</th>
+<th>S</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mass</td>
+<td>57</td>
+<td>71</td>
+<td>87</td>
+<td>97</td>
+</tr>
+<tr>
+<td>Prefix sum of mass</td>
+<td>57=57</td>
+<td>57+71=128</td>
+<td>57+71+87=215</td>
+<td>57+71+87+97=312</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>prefixsum_masses[<span class="hljs-number">0</span>] = mass[<span class="hljs-string">''</span>]     = <span class="hljs-number">0</span>             = <span class="hljs-number">0</span>   <span class="hljs-comment"># Artificially added</span>
+prefixsum_masses[<span class="hljs-number">1</span>] = mass[<span class="hljs-string">'G'</span>]    = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>          = <span class="hljs-number">57</span>
+prefixsum_masses[<span class="hljs-number">2</span>] = mass[<span class="hljs-string">'GA'</span>]   = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>+<span class="hljs-number">71</span>       = <span class="hljs-number">128</span>
+prefixsum_masses[<span class="hljs-number">3</span>] = mass[<span class="hljs-string">'GAS'</span>]  = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>+<span class="hljs-number">71</span>+<span class="hljs-number">87</span>    = <span class="hljs-number">215</span>
+prefixsum_masses[<span class="hljs-number">4</span>] = mass[<span class="hljs-string">'GASP'</span>] = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>+<span class="hljs-number">71</span>+<span class="hljs-number">87</span>+<span class="hljs-number">97</span> = <span class="hljs-number">312</span>
+</code></pre>
+<p>The mass for each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> can be derived from just these prefix sums. For example, ...</p>
+<pre class="hljs"><code>mass[<span class="hljs-string">'GASP'</span>] = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">''</span>]    = prefixsum_masses[<span class="hljs-number">4</span>] - prefixsum_masses[<span class="hljs-number">0</span>]
+mass[<span class="hljs-string">'ASP'</span>]  = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">'G'</span>]   = prefixsum_masses[<span class="hljs-number">4</span>] - prefixsum_masses[<span class="hljs-number">1</span>]
+mass[<span class="hljs-string">'AS'</span>]   = mass[<span class="hljs-string">'GAS'</span>]  - mass[<span class="hljs-string">'G'</span>]   = prefixsum_masses[<span class="hljs-number">3</span>] - prefixsum_masses[<span class="hljs-number">1</span>]
+mass[<span class="hljs-string">'A'</span>]    = mass[<span class="hljs-string">'GA'</span>]   - mass[<span class="hljs-string">'G'</span>]   = prefixsum_masses[<span class="hljs-number">2</span>] - prefixsum_masses[<span class="hljs-number">1</span>]
+mass[<span class="hljs-string">'S'</span>]    = mass[<span class="hljs-string">'GAS'</span>]  - mass[<span class="hljs-string">'GA'</span>]  = prefixsum_masses[<span class="hljs-number">3</span>] - prefixsum_masses[<span class="hljs-number">2</span>]
+mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">'GAS'</span>] = prefixsum_masses[<span class="hljs-number">4</span>] - prefixsum_masses[<span class="hljs-number">3</span>]
+<span class="hljs-comment"># etc...</span>
+</code></pre>
+<p>If the <a href="#BM_(peptide)%2Fi">peptide</a> is a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a>, some <a href="#BM_(subpeptide)%2Fi">subpeptide</a>s will wrap around. For example, PG is a valid <a href="#BM_(subpeptide)%2Fi">subpeptide</a> if GASP is a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a>:</p>
+<p><img src="svgbob_d514f964b7cded0cda5a87cba46c1b551682073d.svg" alt="Kroki diagram output"></p>
+<p>The prefix sum can be used to calculate these wrapping <a href="#BM_(subpeptide)%2Fi">subpeptide</a>s as well. For example...</p>
+<pre class="hljs"><code>mass[<span class="hljs-string">'PG'</span>] = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">'AS'</span>]
+           = mass[<span class="hljs-string">'GASP'</span>] - (mass[<span class="hljs-string">'GAS'</span>] - mass[<span class="hljs-string">'G'</span>])    <span class="hljs-comment"># SUBSTITUTE IN mass['AS'] CALC FROM ABOVE</span>
+           = prefixsum_masses[<span class="hljs-number">4</span>] - (prefixsum_masses[<span class="hljs-number">3</span>] - prefixsum_masses[<span class="hljs-number">1</span>])
+</code></pre>
+<p>This algorithm is faster than the bruteforce algorithm, but most use-cases won't notice a performance improvement unless either...</p>
+<ul>
+<li>the <a href="#BM_(peptide)%2Fi">peptide</a> is very large (likely won't happen since <a href="#BM_(peptide)%2Fi">peptide</a>s by definition aren't larger than 50 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s)</li>
+<li>the algorithm runs often.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
+        peptide: List[AA],
+        peptide_type: PeptideType,
+        mass_table: Dict[AA, float]
+</span>) -&gt; List[int]:</span>
+    prefixsum_masses = list(accumulate([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide], initial=<span class="hljs-number">0.0</span>))
+    ret = [<span class="hljs-number">0.0</span>]
+    <span class="hljs-keyword">for</span> end_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(prefixsum_masses)):
+        <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, end_idx):
+            min_mass = prefixsum_masses[start_idx]
+            max_mass = prefixsum_masses[end_idx]
+            ret.append(max_mass - min_mass)
+            <span class="hljs-keyword">if</span> peptide_type == PeptideType.CYCLIC <span class="hljs-keyword">and</span> start_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> end_idx &lt; len(peptide):
+                ret.append(prefixsum_masses[<span class="hljs-number">-1</span>] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx]))
+    ret.sort()
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The theoretical spectrum for the linear peptide NQY is [0.0, 114.0, 128.0, 163.0, 242.0, 291.0, 405.0]</p>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The algorithm above is serial, but it can be made parallel to get even more speed:</p>
+<ol>
+<li>Parallelized prefix sum (e.g. Hillis-Steele / Blelloch).</li>
+<li>Parallelized iteration instead of nested for-loops.</li>
+<li>Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).</li>
+</ol>
+</div>
+<a name="H_Spectrum%20Convolution"></a><h3>Spectrum Convolution</h3>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Experimental Spectrum</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Theoretical Spectrum</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, subtract its masses from each other. The differences are a set of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that generated that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
+<p>For example, the following <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY:</p>
+<p>[0.0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 113.9<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 115.1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 136.2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 162.9<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 242.0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 311.1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 346.0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 405.2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]</p>
+<p>Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for <a href="#BM_(amino%20acid)%2Fi">amino acid</a> Q. The mass for Q was derived even though no <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses are near Q's mass:</p>
+<ul>
+<li>Mass of N is 114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 2 <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses are near: [113.9, 115.1]</li>
+<li>Mass of Q is 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 0 <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses are near: []</li>
+<li>Mass of Y is 163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 1 <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> mass is near: [162.9]</li>
+</ul>
+<p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. However, before being able to build a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s need to be inferred from the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This operation infers a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses, which can be mapped to <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s themselves (e.g. 114 maps to N).</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Consider an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> with masses that don't contain any noise. That is, the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> may have faulty masses and may be missing masses, but any correct masses it does have are exact / noise-free. To derive a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for this <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>:</p>
 <ol>
 <li>Subtract <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses from each other (each mass gets subtracted from every mass).</li>
 <li>Filter differences to those between 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> and 200<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> (generally accepted range for the mass of an <a href="#BM_(amino%20acid)%2Fi">amino acid</a>).</li>
-<li>Filter differences to that don't occur at least n times, where n is user-defined.</li>
+<li>Filter differences to that don't occur at least n times (n is user-defined).</li>
 </ol>
-<p>The result is a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> For example, consider the following <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY: [114, 136, 163, 242, 311, 346, 405]. The masses...</p>
+<p>The result is a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For example, consider the following <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY:</p>
+<p>[0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 136<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 311<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 346<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 405<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]</p>
+<p>The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses...</p>
 <ul>
-<li>[163, 291] are missing.</li>
-<li>[136, 311, 346] are faulty.</li>
-<li>[114, 163, 242, 405] are correct and free of noise.</li>
+<li>[163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 291<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>] are missing.</li>
+<li>[136<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 311<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 346<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>] are faulty.</li>
+<li>[114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 405<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>] are correct and free of noise.</li>
 </ul>
 <p>Subtract the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses:</p>
 <table>
@@ -4066,9 +4251,10 @@ _amino_acid_to_codons = dict()
 </tr>
 </tbody>
 </table>
-<p>Then, filter out any differences occurring less than than n times. In this case, the only difference that occurs more than once is 163, so set n=1 to prevent any further filtering:</p>
-<p>[59, 69, 79, 94, 104, 106, 114, 128, 136, 148, 163, 175, 183, 197]</p>
-<p>The resulting differences are potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that produced the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. Note that the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> contained the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for N (114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) and Y (163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), but not Q (128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>). This operation was able to pull out the mass for Q: 128 is in the final list of differences.</p>
+<p>Then, filter out any differences occurring less than than n times. In this case, it makes sense to set n to 1 because almost all of the differences occur only once.</p>
+<p>The final result is a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that produced the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>:</p>
+<p>[59<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 69<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 79<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 94<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 104<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 106<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 136<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 148<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 175<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 183<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 197<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]</p>
+<p>Note that the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY. The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> contained the masses for N (114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) and Y (163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), but not Q (128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>). This operation was able to pull out the mass for Q: 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> is in the final list of differences.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spectrum_convolution</span>(<span class="hljs-params">experimental_spectrum: List[float], min_mass=<span class="hljs-number">57.0</span>, max_mass=<span class="hljs-number">200.0</span></span>) -&gt; List[float]:</span>
     <span class="hljs-comment"># it's expected that experimental_spectrum is sorted smallest to largest</span>
     diffs = []
@@ -4080,150 +4266,48 @@ _amino_acid_to_codons = dict()
     diffs.sort()
     <span class="hljs-keyword">return</span> diffs
 </code></pre>
-<a name="H_Noise%20Tolerant%20Algorithm"></a><h4>Noise Tolerant Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution%2FNoise%20Tolerant%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
+<div style="border:1px solid black;">
+<p></p>
+<p>The spectrum convolution for [0.0, 114.0, 136.0, 163.0, 242.0, 311.0, 346.0, 405.0] is ...</p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution%2FNon-noisy%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Convolution/Non-noisy Algorithm</a></li>
+<li>2x163.0</li>
+<li>1x59.0</li>
+<li>1x69.0</li>
+<li>1x79.0</li>
+<li>1x94.0</li>
+<li>1x104.0</li>
+<li>1x106.0</li>
+<li>1x114.0</li>
+<li>1x128.0</li>
+<li>1x136.0</li>
+<li>1x148.0</li>
+<li>1x175.0</li>
+<li>1x183.0</li>
+<li>1x197.0</li>
 </ul>
 </div>
-<p><strong>ALGORITHM</strong>:</p>
-<p>The steps of this algorithm are as follows:</p>
-<ol>
-<li>Subtract <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses from each other (each mass gets subtracted from every mass).</li>
-<li>Filter differences to those between 57 and 200 (generally accepted range of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses).</li>
-<li>Group together results that are within some tolerance of each other.</li>
-</ol>
-<p>The top n most common occurrences are potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for the <a href="#BM_(peptide)%2Fi">peptide</a> that generated that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
-<p>For example, subtracting the masses in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] results in...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0.0</th>
-<th>113.9</th>
-<th>115.1</th>
-<th>136.2</th>
-<th>162.9</th>
-<th>242.0</th>
-<th>311.1</th>
-<th>346.0</th>
-<th>405.2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0.0</td>
-<td>0.0</td>
-<td>-113.9</td>
-<td>-115.1</td>
-<td>-136.2</td>
-<td>-162.9</td>
-<td>-242.0</td>
-<td>-311.1</td>
-<td>-346.0</td>
-<td>-405.2</td>
-</tr>
-<tr>
-<td>113.9</td>
-<td>113.9</td>
-<td>0.0</td>
-<td>-1.2</td>
-<td>-22.3</td>
-<td>-49.0</td>
-<td>-128.1</td>
-<td>-197.2</td>
-<td>-231.9</td>
-<td>-291.3</td>
-</tr>
-<tr>
-<td>115.1</td>
-<td>115.1</td>
-<td>1.2</td>
-<td>0.0</td>
-<td>-21.1</td>
-<td>-47.8</td>
-<td>-126.9</td>
-<td>-196.0</td>
-<td>-230.9</td>
-<td>-289.3</td>
-</tr>
-<tr>
-<td>136.2</td>
-<td>136.2</td>
-<td>22.3</td>
-<td>21.1</td>
-<td>0.0</td>
-<td>-26.7</td>
-<td>-105.8</td>
-<td>-174.9</td>
-<td>-209.8</td>
-<td>-269.0</td>
-</tr>
-<tr>
-<td>162.9</td>
-<td>162.9</td>
-<td>49.0</td>
-<td>47.8</td>
-<td>26.7</td>
-<td>0.0</td>
-<td>-79.1</td>
-<td>-142.9</td>
-<td>-183.1</td>
-<td>-242.3</td>
-</tr>
-<tr>
-<td>242.0</td>
-<td>242.0</td>
-<td>128.1</td>
-<td>126.9</td>
-<td>105.8</td>
-<td>79.1</td>
-<td>0.0</td>
-<td>-69.1</td>
-<td>-104.0</td>
-<td>-163.0</td>
-</tr>
-<tr>
-<td>311.1</td>
-<td>311.1</td>
-<td>197.2</td>
-<td>196.0</td>
-<td>174.9</td>
-<td>142.9</td>
-<td>69.1</td>
-<td>0.0</td>
-<td>-34.9</td>
-<td>-94.1</td>
-</tr>
-<tr>
-<td>346.0</td>
-<td>346.0</td>
-<td>231.1</td>
-<td>230.9</td>
-<td>209.8</td>
-<td>183.1</td>
-<td>104.0</td>
-<td>34.9</td>
-<td>0.0</td>
-<td>-59.2</td>
-</tr>
-<tr>
-<td>405.2</td>
-<td>405.2</td>
-<td>291.3</td>
-<td>289.3</td>
-<td>269.0</td>
-<td>242.3</td>
-<td>163.0</td>
-<td>94.1</td>
-<td>59.2</td>
-<td>0.0</td>
-</tr>
-</tbody>
-</table>
-<p>Then, removing differences that aren't between 57 and 200 results in...</p>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
+</div>
+<p>The algorithm described above is for <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s that have exact masses (no noise). However, real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s will have noisy masses. Since a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> has noisy masses, the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses derived from it will also be noisy. For example, consider an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> that has ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise per mass. A real mass of...</p>
+<ul>
+<li>242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> will show up in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> anywhere between 241<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 243<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</li>
+<li>114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> will show up in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> anywhere between 113<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</li>
+</ul>
+<p>Subtract the opposite extremes from these two ranges: 243<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> - 113<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> = 130<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. That's 2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> away from the real mass difference: 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. As such, the maximum noise per <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is 2 times the maximum noise for the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> that it was derived from: ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> for this example.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spectrum_convolution_noise</span>(<span class="hljs-params">max_mass_charge_ratio_noise: float, charge_tendencies: Set[float]</span>) -&gt; float:</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">2.0</span> * experimental_spectrum_noise(max_mass_charge_ratio_noise, charge_tendencies)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given a max mass-to-charge ratio noise of ±0.5 and charge tendencies {1.0, 2.0}, the maximum noise per amino acid derived from an experimental spectrum is ±2.0</p>
+</div>
+<p></p>
+<p>Extending the algorithm to handle noisy <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses requires one extra step: group together differences that are within some tolerance of each other, where this tolerance is the maximum <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass noise calculation described above. For example, consider the following <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY that has up to ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise per mass:</p>
+<p>[0.0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 113.9<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 115.1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 136.2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 162.9<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 242.0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 311.1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 346.0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 405.2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]</p>
+<p>Just as before, subtract the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses and differences that aren't between 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> and 200<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>:</p>
 <table>
 <thead>
 <tr>
@@ -4350,30 +4434,30 @@ _amino_acid_to_codons = dict()
 </tr>
 </tbody>
 </table>
-<p>Then, grouping differences that are withing ±1.5 of each other results in...</p>
+<p>Then, group differences that are within ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> of each other (2 times the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>'s maximum mass noise):</p>
 <ul>
-<li><code>[113.9, 115.1]</code></li>
-<li><code>[162.9, 163.0]</code></li>
-<li><code>[128.1, 126.9]</code></li>
-<li><code>[196.0, 197.2]</code></li>
-<li><code>[104.0]</code></li>
-<li><code>[105.8]</code></li>
-<li><code>[136.2]</code></li>
-<li><code>[174.9]</code></li>
-<li><code>[79.1]</code></li>
-<li><code>[142.9]</code></li>
-<li><code>[69.1]</code></li>
-<li><code>[94.1]</code></li>
-<li><code>[59.2]</code></li>
+<li>[104.0, 105.8]</li>
+<li>[113.9, 115.1]</li>
+<li>[128.1, 126.9]</li>
+<li>[162.9, 163.0]</li>
+<li>[196.0, 197.2]</li>
+<li>[59.2]</li>
+<li>[69.1]</li>
+<li>[79.1]</li>
+<li>[94.1]</li>
+<li>[136.2]</li>
+<li>[142.9]</li>
+<li>[174.9]</li>
 </ul>
-<p>The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> above was for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY. Taking the groups that have at least 2 occurrences reveals that all <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses are captured for NQY:</p>
+<p>Then, filter out any groups that have less than n occurrences. In this case, filtering to n=2 occurrences reveals that all <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses are captured for NQY:</p>
 <ul>
-<li><code>[113.9, 115.1]</code> (mass of N is 114)</li>
-<li><code>[162.9, 163.0]</code> (mass of Q is 163)</li>
-<li><code>[128.1, 126.9]</code> (mass of Y is 128)</li>
-<li><code>[196.0, 197.2]</code> (junk)</li>
+<li>[104.0, 105.8] (junk)</li>
+<li>[113.9, 115.1] (mass of N is 114)</li>
+<li>[128.1, 126.9] (mass of Q is 128)</li>
+<li>[162.9, 163.0] (mass of Y is 163)</li>
+<li>[196.0, 197.2] (junk)</li>
 </ul>
-<p>Note how the mass for Y (128) wasn't included in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> at all, but this operation was able to derive it from the other masses.</p>
+<p>Note that the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY. The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> contained the masses near N (113.Da and 115.1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) and Y (162.9<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), but not Q. This operation was able to pull out masses near Q: [128.1, 126.9] is in the final list of differences.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">group_masses_by_tolerance</span>(<span class="hljs-params">masses: List[float], tolerance: float</span>) -&gt; typing.Counter[float]:</span>
     masses = sorted(masses)
     length = len(masses)
@@ -4428,318 +4512,26 @@ _amino_acid_to_codons = dict()
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>The experimental spectrum [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] has the following potential masses:</p>
+<p>The spectrum convolution for [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2] is ...</p>
 <ul>
-<li>113.9 (2 occurrences)</li>
-<li>115.1 (2 occurrences)</li>
-<li>126.9 (2 occurrences)</li>
-<li>128.1 (2 occurrences)</li>
-<li>162.9 (2 occurrences)</li>
-<li>163.2 (2 occurrences)</li>
-<li>196.0 (2 occurrences)</li>
-<li>197.2 (2 occurrences)</li>
-<li>59.2 (1 occurrences)</li>
-<li>69.1 (1 occurrences)</li>
-<li>79.1 (1 occurrences)</li>
-<li>94.1 (1 occurrences)</li>
-<li>104.0 (1 occurrences)</li>
-<li>105.8 (1 occurrences)</li>
-<li>136.2 (1 occurrences)</li>
-<li>148.2 (1 occurrences)</li>
-<li>174.9 (1 occurrences)</li>
-<li>183.1 (1 occurrences)</li>
-</ul>
-</div>
-<p></p>
-<p>Note that just as an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is noisy, the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses derived from an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> are also noisy. For example, consider a <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> that has up to ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise per mass. An real mass of...</p>
-<ul>
-<li>100<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> will show up in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> anywhere between 99<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 101<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</li>
-<li>150<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> will show up in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> anywhere between 149<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 151<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</li>
-</ul>
-<p>Consider subtracting the opposite extremes from these two ranges: 151<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> - 99<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> = 52<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. That's 2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> away from the actual mass difference: 50<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. As such, the maximum noise per <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is 2 times the maximum noise for the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> that it was derived from.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spectrum_convolution_noise</span>(<span class="hljs-params">max_mass_charge_ratio_noise: float, charge_tendencies: Set[float]</span>) -&gt; float:</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-number">2.0</span> * experimental_spectrum_noise(max_mass_charge_ratio_noise, charge_tendencies)
-</code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>Given a max mass-to-charge ratio noise of ±0.5 and charge tendencies {1.0, 2.0}, the maximum noise per amino acid derived from an experimental spectrum is ±2.0</p>
-</div>
-<p></p>
-<a name="H_Theoretical%20Spectrum"></a><h3>Theoretical Spectrum</h3>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Experimental Spectrum</a></li>
-</ul>
-</div>
-<p><strong>WHAT</strong>: A <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is an algorithmically generated list of all <a href="#BM_(subpeptide)%2Fi">subpeptide</a> masses for a known <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> (including 0 and the full <a href="#BM_(peptide)%2Fi">peptide</a>'s mass).</p>
-<p>For example, <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>...</p>
-<pre class="hljs"><code>theo_spec = [
-  <span class="hljs-number">0</span>,    <span class="hljs-comment"># &lt;empty&gt;</span>
-  <span class="hljs-number">114</span>,  <span class="hljs-comment"># N</span>
-  <span class="hljs-number">128</span>,  <span class="hljs-comment"># Q</span>
-  <span class="hljs-number">163</span>,  <span class="hljs-comment"># Y</span>
-  <span class="hljs-number">242</span>,  <span class="hljs-comment"># NQ</span>
-  <span class="hljs-number">291</span>,  <span class="hljs-comment"># QY</span>
-  <span class="hljs-number">405</span>   <span class="hljs-comment"># NQY</span>
-]
-</code></pre>
-<p>... while <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> produced by feeding NQY to a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> may look something like...</p>
-<pre class="hljs"><code>exp_spec = [
-  <span class="hljs-number">0.0</span>,    <span class="hljs-comment"># &lt;empty&gt; (implied)</span>
-  <span class="hljs-number">113.9</span>,  <span class="hljs-comment"># N</span>
-  <span class="hljs-number">115.1</span>,  <span class="hljs-comment"># N</span>
-  <span class="hljs-number">136.2</span>,  <span class="hljs-comment"># faulty</span>
-  <span class="hljs-number">162.9</span>,  <span class="hljs-comment"># Y</span>
-  <span class="hljs-number">242.0</span>,  <span class="hljs-comment"># NQ</span>
-  <span class="hljs-number">311.1</span>,  <span class="hljs-comment"># faulty</span>
-  <span class="hljs-number">346.0</span>,  <span class="hljs-comment"># faulty</span>
-  <span class="hljs-number">405.2</span>   <span class="hljs-comment"># NQY</span>
-]
-<span class="hljs-comment"># Q and QY are missing</span>
-</code></pre>
-<p>The <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is what the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> would be in a perfect world...</p>
-<ul>
-<li>only a single possible mass for each mass-to-charge ratio.</li>
-<li>no missing masses.</li>
-<li>no faulty masses.</li>
-<li>no noise.</li>
-</ul>
-<p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This is the basis for how <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a>: an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is produced by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>, then that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is compared against a set of <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s.</p>
-<a name="H2_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FBruteforce%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm generates a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> in the most obvious way: iterate over each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> and calculate its mass.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
-        peptide: List[AA],
-        peptide_type: PeptideType,
-        mass_table: Dict[AA, float]
-</span>) -&gt; List[int]:</span>
-    <span class="hljs-comment"># add subpeptide of length 0's mass</span>
-    ret = [<span class="hljs-number">0.0</span>]
-    <span class="hljs-comment"># add subpeptide of length 1 to k-1's mass</span>
-    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, len(peptide)):
-        <span class="hljs-keyword">for</span> subpeptide, _ <span class="hljs-keyword">in</span> slide_window(peptide, k, cyclic=peptide_type == PeptideType.CYCLIC):
-            ret.append(sum([mass_table[ch] <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> subpeptide]))
-    <span class="hljs-comment"># add subpeptide of length k's mass</span>
-    ret.append(sum([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide]))
-    <span class="hljs-comment"># sort and return</span>
-    ret.sort()
-    <span class="hljs-keyword">return</span> ret
-</code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>The theoretical spectrum for the linear peptide NQY is [0.0, 114.0, 128.0, 163.0, 242.0, 291.0, 405.0]</p>
-</div>
-<p></p>
-<a name="H_Prefix%20Sum%20Algorithm"></a><h4>Prefix Sum Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FPrefix%20Sum%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FBruteforce%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Theoretical Spectrum/Bruteforce Algorithm</a></li>
-</ul>
-</div>
-<p><strong>ALGORITHM</strong>:</p>
-<p>The algorithm starts by calculating the prefix sum of the mass at each position of the <a href="#BM_(peptide)%2Fi">peptide</a>. The prefix sum is calculated by summing all <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses up until that position. For example, the <a href="#BM_(peptide)%2Fi">peptide</a> GASP has the following masses at the following positions...</p>
-<table>
-<thead>
-<tr>
-<th>G</th>
-<th>A</th>
-<th>S</th>
-<th>P</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>57</td>
-<td>71</td>
-<td>87</td>
-<td>97</td>
-</tr>
-</tbody>
-</table>
-<p>As such, the prefix sum at each position is...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>G</th>
-<th>A</th>
-<th>S</th>
-<th>P</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Mass</td>
-<td>57</td>
-<td>71</td>
-<td>87</td>
-<td>97</td>
-</tr>
-<tr>
-<td>Prefix sum of mass</td>
-<td>57=57</td>
-<td>57+71=128</td>
-<td>57+71+87=215</td>
-<td>57+71+87+97=312</td>
-</tr>
-</tbody>
-</table>
-<pre class="hljs"><code>prefixsum_masses[<span class="hljs-number">0</span>] = mass[<span class="hljs-string">''</span>]     = <span class="hljs-number">0</span>             = <span class="hljs-number">0</span>   <span class="hljs-comment"># Artificially added</span>
-prefixsum_masses[<span class="hljs-number">1</span>] = mass[<span class="hljs-string">'G'</span>]    = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>          = <span class="hljs-number">57</span>
-prefixsum_masses[<span class="hljs-number">2</span>] = mass[<span class="hljs-string">'GA'</span>]   = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>+<span class="hljs-number">71</span>       = <span class="hljs-number">128</span>
-prefixsum_masses[<span class="hljs-number">3</span>] = mass[<span class="hljs-string">'GAS'</span>]  = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>+<span class="hljs-number">71</span>+<span class="hljs-number">87</span>    = <span class="hljs-number">215</span>
-prefixsum_masses[<span class="hljs-number">4</span>] = mass[<span class="hljs-string">'GASP'</span>] = <span class="hljs-number">0</span>+<span class="hljs-number">57</span>+<span class="hljs-number">71</span>+<span class="hljs-number">87</span>+<span class="hljs-number">97</span> = <span class="hljs-number">312</span>
-</code></pre>
-<p>The mass for each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> can be derived from just these prefix sums. For example, ...</p>
-<pre class="hljs"><code>mass[<span class="hljs-string">'GASP'</span>] = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">''</span>]    = prefixsum_masses[<span class="hljs-number">4</span>] - prefixsum_masses[<span class="hljs-number">0</span>]
-mass[<span class="hljs-string">'ASP'</span>]  = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">'G'</span>]   = prefixsum_masses[<span class="hljs-number">4</span>] - prefixsum_masses[<span class="hljs-number">1</span>]
-mass[<span class="hljs-string">'AS'</span>]   = mass[<span class="hljs-string">'GAS'</span>]  - mass[<span class="hljs-string">'G'</span>]   = prefixsum_masses[<span class="hljs-number">3</span>] - prefixsum_masses[<span class="hljs-number">1</span>]
-mass[<span class="hljs-string">'A'</span>]    = mass[<span class="hljs-string">'GA'</span>]   - mass[<span class="hljs-string">'G'</span>]   = prefixsum_masses[<span class="hljs-number">2</span>] - prefixsum_masses[<span class="hljs-number">1</span>]
-mass[<span class="hljs-string">'S'</span>]    = mass[<span class="hljs-string">'GAS'</span>]  - mass[<span class="hljs-string">'GA'</span>]  = prefixsum_masses[<span class="hljs-number">3</span>] - prefixsum_masses[<span class="hljs-number">2</span>]
-mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">'GAS'</span>] = prefixsum_masses[<span class="hljs-number">4</span>] - prefixsum_masses[<span class="hljs-number">3</span>]
-<span class="hljs-comment"># etc...</span>
-</code></pre>
-<p>If the <a href="#BM_(peptide)%2Fi">peptide</a> is a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a>, some <a href="#BM_(subpeptide)%2Fi">subpeptide</a>s will wrap around. For example, PG is a valid <a href="#BM_(subpeptide)%2Fi">subpeptide</a> if GASP is a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a>:</p>
-<p><img src="svgbob_d514f964b7cded0cda5a87cba46c1b551682073d.svg" alt="Kroki diagram output"></p>
-<p>The prefix sum can be used to calculate these wrapping <a href="#BM_(subpeptide)%2Fi">subpeptide</a>s as well. For example...</p>
-<pre class="hljs"><code>mass[<span class="hljs-string">'PG'</span>] = mass[<span class="hljs-string">'GASP'</span>] - mass[<span class="hljs-string">'AS'</span>]
-           = mass[<span class="hljs-string">'GASP'</span>] - (mass[<span class="hljs-string">'GAS'</span>] - mass[<span class="hljs-string">'G'</span>])    <span class="hljs-comment"># SUBSTITUTE IN mass['AS'] CALC FROM ABOVE</span>
-           = prefixsum_masses[<span class="hljs-number">4</span>] - (prefixsum_masses[<span class="hljs-number">3</span>] - prefixsum_masses[<span class="hljs-number">1</span>])
-</code></pre>
-<p>This algorithm is faster than the bruteforce algorithm, but most use-cases won't notice a performance improvement unless either...</p>
-<ul>
-<li>the <a href="#BM_(peptide)%2Fi">peptide</a> is very large (likely won't happen since <a href="#BM_(peptide)%2Fi">peptide</a>s by definition aren't larger than 50 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s)</li>
-<li>the algorithm runs often.</li>
-</ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
-        peptide: List[AA],
-        peptide_type: PeptideType,
-        mass_table: Dict[AA, float]
-</span>) -&gt; List[int]:</span>
-    prefixsum_masses = list(accumulate([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide], initial=<span class="hljs-number">0.0</span>))
-    ret = [<span class="hljs-number">0.0</span>]
-    <span class="hljs-keyword">for</span> end_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(prefixsum_masses)):
-        <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, end_idx):
-            min_mass = prefixsum_masses[start_idx]
-            max_mass = prefixsum_masses[end_idx]
-            ret.append(max_mass - min_mass)
-            <span class="hljs-keyword">if</span> peptide_type == PeptideType.CYCLIC <span class="hljs-keyword">and</span> start_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> end_idx &lt; len(peptide):
-                ret.append(prefixsum_masses[<span class="hljs-number">-1</span>] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx]))
-    ret.sort()
-    <span class="hljs-keyword">return</span> ret
-</code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>The theoretical spectrum for the linear peptide NQY is [0.0, 114.0, 128.0, 163.0, 242.0, 291.0, 405.0]</p>
-</div>
-<p></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The algorithm above is serial, but it can be made parallel to get even more speed:</p>
-<ol>
-<li>Parallelized prefix sum (e.g. Hillis-Steele / Blelloch).</li>
-<li>Parallelized iteration instead of nested for-loops.</li>
-<li>Parallelized sorting (e.g. Parallel merge sort / Parallel brick sort / Bitonic sort).</li>
-</ol>
-</div>
-<a name="H1_Noise%20Tolerant%20Algorithm"></a><h4>Noise Tolerant Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FNoise%20Tolerant%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum%2FPrefix%20Sum%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Theoretical Spectrum/Prefix Sum Algorithm</a></li>
-<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Convolution</a></li>
-</ul>
-</div>
-<p><strong>ALGORITHM</strong>:</p>
-<p>Recall that each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> captured by a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> has up to some amount of noise. This algorithm extends the others to include noise tolerances for each mass in the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>. For example, imagine a case where it's determined that the noise tolerance for each captured <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Given the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the tolerances would be as follows:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th>N</th>
-<th>Q</th>
-<th>Y</th>
-<th>NQ</th>
-<th>QY</th>
-<th>NQY</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Mass</td>
-<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>291<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>405<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-</tr>
-<tr>
-<td>Tolerance</td>
-<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±6<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-</tr>
-</tbody>
-</table>
-<p>The maximum amount of noise (±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) is multiplied by the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> count of the <a href="#BM_(subpeptide)%2Fi">subpeptide</a> to determine the tolerance. For example, anything between 238 and 246 will match the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass for NQ (242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>). These tolerances are an important part of <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> a <a href="#BM_(peptide)%2Fi">peptide</a> from a noisy <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> (covered in later sections).</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">to_mass_range</span>(<span class="hljs-params">
-        subpeptide_len: int,
-        subpeptide_mass: int,
-        amino_acid_mass_tolerance: float
-</span>) -&gt; Tuple[float, float, float]:</span>
-    max_noise = subpeptide_len * amino_acid_mass_tolerance
-    min_subpeptide_mass = subpeptide_mass - max_noise
-    max_subpeptide_mass = subpeptide_mass + max_noise
-    <span class="hljs-keyword">return</span> subpeptide_mass, min_subpeptide_mass, max_subpeptide_mass
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
-        peptide: List[AA],
-        peptide_type: PeptideType,
-        amino_acid_mass_tolerance: float,
-        mass_table: Dict[AA, float]
-</span>) -&gt; List[Tuple[float, float, float]]:</span>
-    prefixsum_masses = list(accumulate([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide], initial=<span class="hljs-number">0.0</span>))
-    ret = [(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)]
-    <span class="hljs-keyword">for</span> end_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(prefixsum_masses)):
-        <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, end_idx):
-            length = end_idx - start_idx
-            min_mass = prefixsum_masses[start_idx]
-            max_mass = prefixsum_masses[end_idx]
-            mass = max_mass - min_mass
-            mass_range = to_mass_range(length, mass, amino_acid_mass_tolerance)
-            ret.append(mass_range)
-            <span class="hljs-keyword">if</span> peptide_type == PeptideType.CYCLIC <span class="hljs-keyword">and</span> start_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> end_idx &lt; len(peptide):
-                mass = prefixsum_masses[<span class="hljs-number">-1</span>] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx])
-                mass_range = to_mass_range(length, mass, amino_acid_mass_tolerance)
-                ret.append(mass_range)
-    ret.sort()
-    <span class="hljs-keyword">return</span> ret
-</code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>The theoretical spectrum for the linear peptide NQY is ...</p>
-<ul>
-<li>(0.0, 0.0, 0.0)</li>
-<li>(114.0, 112.0, 116.0)</li>
-<li>(128.0, 126.0, 130.0)</li>
-<li>(163.0, 161.0, 165.0)</li>
-<li>(242.0, 238.0, 246.0)</li>
-<li>(291.0, 287.0, 295.0)</li>
-<li>(405.0, 399.0, 411.0)</li>
+<li>2x104.0</li>
+<li>2x105.8</li>
+<li>2x113.9</li>
+<li>2x115.1</li>
+<li>2x126.9</li>
+<li>2x128.1</li>
+<li>2x162.9</li>
+<li>2x163.2</li>
+<li>2x196.0</li>
+<li>2x197.2</li>
+<li>1x59.2</li>
+<li>1x69.1</li>
+<li>1x79.1</li>
+<li>1x94.1</li>
+<li>1x136.2</li>
+<li>1x148.2</li>
+<li>1x174.9</li>
+<li>1x183.1</li>
 </ul>
 </div>
 <p></p>
@@ -4754,48 +4546,39 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, score them against each other by counting how many masses match between them.</p>
-<p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This is the basis for how <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a>: an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is produced by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>, then that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is compared against a set of <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s.</p>
+<p><strong>WHY</strong>: The more matching masses between a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> and an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This is the basis for how <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a>: an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is produced by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>, then that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is compared against a set of <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The basic idea behind scoring an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> against a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to count the number of matching masses between the two. What constitutes a match is the tricky part. Because <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s are noisy, that noise needs to be considered when identifying matches.</p>
-<p>Recall that each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> captured by a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> has up to some amount of noise. This noise is what defines the tolerance for a matching mass between the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and the theoretical. For example, imagine a case where it's determined that the noise tolerance for each captured <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Given the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the tolerances would be as follows:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th>N</th>
-<th>Q</th>
-<th>Y</th>
-<th>NQ</th>
-<th>QY</th>
-<th>NQY</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Mass</td>
-<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>291<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>405<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-</tr>
-<tr>
-<td>Tolerance</td>
-<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>±6<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-</tr>
-</tbody>
-</table>
-<p>The maximum amount of noise (±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>) is multiplied by the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> count of the <a href="#BM_(subpeptide)%2Fi">subpeptide</a> to determine the tolerance. For example, anything between 238 and 246 will match the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass for NQ (242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>).</p>
-<p>Another important factor that effects scoring is that a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> may have multiple masses with the same mass while an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> won't. For example, the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for GAK is ...</p>
+<p>Consider an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> with masses that don't contain any noise. That is, the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> may have faulty masses and may be missing masses, but any correct masses it does have are exact / noise-free. Scoring this <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> against a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is simple: count the number of matching masses.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_spectrums</span>(<span class="hljs-params">
+        s1: List[float],  <span class="hljs-comment"># must be sorted ascending</span>
+        s2: List[float]   <span class="hljs-comment"># must be sorted ascending</span>
+</span>) -&gt; int:</span>
+    idx_s1 = <span class="hljs-number">0</span>
+    idx_s2 = <span class="hljs-number">0</span>
+    score = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> idx_s1 &lt; len(s1) <span class="hljs-keyword">and</span> idx_s2 &lt; len(s2):
+        s1_mass = s1[idx_s1]
+        s2_mass = s2[idx_s2]
+        <span class="hljs-keyword">if</span> s1_mass &lt; s2_mass:
+            idx_s1 += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> s1_mass &gt; s2_mass:
+            idx_s2 += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            idx_s1 += <span class="hljs-number">1</span>
+            idx_s2 += <span class="hljs-number">1</span>
+            score += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> score
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The spectrum score for...</p>
+<p>[0.0, 57.0, 71.0, 128.0, 199.0, 256.0]</p>
+<p>... vs ...</p>
+<p>[0.0, 57.0, 71.0, 128.0, 128.0, 199.0, 256.0]</p>
+<p>... is 6</p>
+</div>
+<p></p>
+<p>Note that a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> may have multiple masses with the same value but an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> won't. For example, the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for GAK is ...</p>
 <table>
 <thead>
 <tr>
@@ -4822,7 +4605,76 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </tr>
 </tbody>
 </table>
-<p>Note how K and GA both have a mass of 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Since, <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s don't distinguish between where masses come from, the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for this <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> will only have 1 entry for 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> -- even though the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> has 7 entries, the maximum number of matching masses is 6.</p>
+<p>K and GA both have a mass of 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Since, <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s don't distinguish between where masses come from, an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for this <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> will only have 1 entry for 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
+</div>
+<p>The algorithm described above is for <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s that have exact masses (no noise). However, real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s have noisy masses. That noise needs to be accounted for when identifying matches.</p>
+<p>Recall that each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass captured by a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> has up to some amount of noise. This is what defines the tolerance for a matching mass between the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>. Specifically, the maximum amount of noise for a captured <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is multiplied by the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> count of the <a href="#BM_(subpeptide)%2Fi">subpeptide</a> to determine the tolerance.</p>
+<p>For example, imagine a case where it's determined that the noise tolerance for each captured <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Given the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the tolerances would be as follows:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>N</th>
+<th>Q</th>
+<th>Y</th>
+<th>NQ</th>
+<th>QY</th>
+<th>NQY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mass</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>242<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>291<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>405<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+<tr>
+<td>Tolerance</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±4<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>±6<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum_tolerances</span>(<span class="hljs-params">
+        peptide_len: int,
+        peptide_type: PeptideType,
+        amino_acid_mass_tolerance: float
+</span>) -&gt; List[float]:</span>
+    ret = [<span class="hljs-number">0.0</span>]
+    <span class="hljs-keyword">if</span> peptide_type == PeptideType.LINEAR:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(peptide_len):
+            tolerance = (i + <span class="hljs-number">1</span>) * amino_acid_mass_tolerance
+            ret += [tolerance] * (peptide_len - i)
+    <span class="hljs-keyword">elif</span> peptide_type == PeptideType.CYCLIC:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(peptide_len - <span class="hljs-number">1</span>):
+            tolerance = (i + <span class="hljs-number">1</span>) * amino_acid_mass_tolerance
+            ret += [tolerance] * peptide_len
+        <span class="hljs-keyword">if</span> peptide_len != <span class="hljs-number">0</span>:
+            ret.append(peptide_len * amino_acid_mass_tolerance)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">raise</span> ValueError()
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The theoretical spectrum for linear peptide NQY with amino acid mass tolerance of 2.0...</p>
+<p>[0.0, 2.0, 2.0, 2.0, 4.0, 4.0, 6.0]</p>
+</div>
+<p></p>
 <a name="H_Sequencing"></a><h3>Sequencing</h3>
 <p><strong>WHAT</strong>:</p>
 <p><strong>WHY</strong>:</p>
@@ -5507,6 +5359,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </li>
 <li>
 <p><a name="BM_(sequencing%20error)%2Fi"></a><strong>sequencing error</strong> - An error caused by a <a href="#BM_(sequencer)%2Fi">sequencer</a> returning a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> where a nucleotide was misinterpreted at one or more positions (e.g. offset 3 was actually a C but it got scanned in as a G).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This term may also be used in reference to homopolymer errors, known to happen with nanopore technology. From <a href="https://news.ycombinator.com/item?id=25459670">here</a>...</p>
+<blockquote>
+<p>A homopolymer is when you have stretches of the same nucleotide, and the error is miscounting the number of them. e.g: GAAAC could be called as "GAAC" or "GAAAAC" or even "GAAAAAAAC".</p>
+</blockquote>
+</div>
 </li>
 <li>
 <p><a name="BM_%5Cb(read)_SEQ%2Fi"></a><strong>read</strong> - A segment of <a href="#BM_(genome)%2Fi">genome</a> scanned in during the process of <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>.</p>

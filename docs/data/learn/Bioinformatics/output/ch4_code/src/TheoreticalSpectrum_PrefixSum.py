@@ -1,6 +1,8 @@
 from enum import Enum
 from itertools import accumulate
-from typing import List, TypeVar, Dict, Tuple
+from typing import List, TypeVar, Dict
+
+from PeptideType import PeptideType
 
 AA = TypeVar('AA')
 
@@ -32,43 +34,21 @@ AA = TypeVar('AA')
 #                 = prefixsum_masses[4] - (prefixsum_masses[3] - prefixsum_masses[1])
 
 
-class PeptideType(Enum):
-    LINEAR = 0
-    CYCLIC = 1
-
-
 # MARKDOWN
-def to_mass_range(
-        subpeptide_len: int,
-        subpeptide_mass: int,
-        amino_acid_mass_tolerance: float
-) -> Tuple[float, float, float]:
-    max_noise = subpeptide_len * amino_acid_mass_tolerance
-    min_subpeptide_mass = subpeptide_mass - max_noise
-    max_subpeptide_mass = subpeptide_mass + max_noise
-    return subpeptide_mass, min_subpeptide_mass, max_subpeptide_mass
-
-
 def theoretical_spectrum(
         peptide: List[AA],
         peptide_type: PeptideType,
-        amino_acid_mass_tolerance: float,
         mass_table: Dict[AA, float]
-) -> List[Tuple[float, float, float]]:
+) -> List[int]:
     prefixsum_masses = list(accumulate([mass_table[aa] for aa in peptide], initial=0.0))
-    ret = [(0.0, 0.0, 0.0)]
+    ret = [0.0]
     for end_idx in range(0, len(prefixsum_masses)):
         for start_idx in range(0, end_idx):
-            length = end_idx - start_idx
             min_mass = prefixsum_masses[start_idx]
             max_mass = prefixsum_masses[end_idx]
-            mass = max_mass - min_mass
-            mass_range = to_mass_range(length, mass, amino_acid_mass_tolerance)
-            ret.append(mass_range)
+            ret.append(max_mass - min_mass)
             if peptide_type == PeptideType.CYCLIC and start_idx > 0 and end_idx < len(peptide):
-                mass = prefixsum_masses[-1] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx])
-                mass_range = to_mass_range(length, mass, amino_acid_mass_tolerance)
-                ret.append(mass_range)
+                ret.append(prefixsum_masses[-1] - (prefixsum_masses[end_idx] - prefixsum_masses[start_idx]))
     ret.sort()
     return ret
 # MARKDOWN
@@ -80,17 +60,13 @@ def main():
     try:
         peptide = input().strip()
         type = input().strip()
-        max_noise = float(input().strip())
         mass_table = {e.strip().split(':')[0]: float(e.strip().split(':')[1]) for e in input().strip().split(',')}
         spectrum = theoretical_spectrum(
             list(peptide),
             {'cyclic': PeptideType.CYCLIC, 'linear': PeptideType.LINEAR}[type],
-            max_noise,
             mass_table
         )
-        print(f'The theoretical spectrum for the {type} peptide {peptide} is ...', end="\n\n")
-        for m in spectrum:
-            print(f' * {m}', end="\n")
+        print(f'The theoretical spectrum for the {type} peptide {peptide} is {spectrum}', end="\n\n")
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

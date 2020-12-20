@@ -1,14 +1,10 @@
 from enum import Enum
 from typing import List, TypeVar, Dict
 
+from PeptideType import PeptideType
 from helpers.Utils import slide_window
 
 AA = TypeVar('AA')
-
-
-class PeptideType(Enum):
-    LINEAR = 0
-    CYCLIC = 1
 
 
 # MARKDOWN

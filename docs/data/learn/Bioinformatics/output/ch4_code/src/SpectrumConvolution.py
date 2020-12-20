@@ -67,9 +67,9 @@ def main():
         tolerance = float(input().strip())
         round_digits = int(input().strip())
         potential_aa_masses = spectrum_convolution(exp_spec, tolerance, round_digits=round_digits, implied_zero=True)
-        print(f'The experimental spectrum {exp_spec} has the following potential masses:', end="\n\n")
-        for aa_mass, count in sorted(potential_aa_masses.items(), key=lambda x: x[1], reverse=True):
-            print(f' * {aa_mass} ({count} occurrences)')
+        print(f'The spectrum convolution for {exp_spec} is ...', end="\n\n")
+        for aa_mass, count in potential_aa_masses.most_common():
+            print(f' * {count}x{aa_mass}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
