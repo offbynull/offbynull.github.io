@@ -2440,10 +2440,10 @@ mass['PG'] = mass['GASP'] - mass['AS']
            = prefixsum_masses[4] - (prefixsum_masses[3] - prefixsum_masses[1])
 ```
 
-This algorithm is faster than the bruteforce algorithm, but most use-cases won't notice a performance improvement unless either...
+This algorithm is faster than the bruteforce algorithm, but most use-cases won't notice a performance improvement unless either the...
 
- * the peptide is very large (likely won't happen since peptides by definition aren't larger than 50 to 100 amino acids)
- * the algorithm runs often.
+ * peptide is very long (likely won't happen since peptides by definition aren't larger than 50 to 100 amino acids)
+ * algorithm runs often.
 
 ```{output}
 ch4_code/src/TheoreticalSpectrum_PrefixSum.py
@@ -2694,6 +2694,23 @@ python
 TheoreticalSpectrumTolerances
 NQY
 linear
+2
+```
+
+Given a theoretical spectrum with tolerances, each experimental spectrum mass is checked to see if it fits within a theoretical spectrum mass tolerance. If it fits, it's considered a match. The score includes both the number of matches and how closely each match was to the ideal theoretical spectrum mass.
+
+```{output}
+ch4_code/src/SpectrumScore.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+SpectrumScore
+0 56.1 71.9 126.8 200.6 250.9
+GAK
+linear
+G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
 2
 ```
 

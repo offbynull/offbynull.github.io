@@ -3767,7 +3767,8 @@ _amino_acid_to_codons = dict()
 </ul>
 <p>It's impossible to know which mass is correct, so all masses are included in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>:</p>
 <p>[100<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 150<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 200<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 250<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 300<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 500<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>].</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">experimental_spectrum</span>(<span class="hljs-params">mass_charge_ratios: List[float], charge_tendencies: Set[float]</span>) -&gt; List[float]:</span>
+<pre class="hljs"><code><span class="hljs-comment"># Its expected that low intensity mass_charge_ratios have already been filtered out prior to invoking this func.</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">experimental_spectrum</span>(<span class="hljs-params">mass_charge_ratios: List[float], charge_tendencies: Set[float]</span>) -&gt; List[float]:</span>
     ret = [<span class="hljs-number">0.0</span>]  <span class="hljs-comment"># implied -- subpeptide of length 0</span>
     <span class="hljs-keyword">for</span> mcr <span class="hljs-keyword">in</span> mass_charge_ratios:
         <span class="hljs-keyword">for</span> charge <span class="hljs-keyword">in</span> charge_tendencies:
@@ -3969,10 +3970,10 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
            = mass[<span class="hljs-string">'GASP'</span>] - (mass[<span class="hljs-string">'GAS'</span>] - mass[<span class="hljs-string">'G'</span>])    <span class="hljs-comment"># SUBSTITUTE IN mass['AS'] CALC FROM ABOVE</span>
            = prefixsum_masses[<span class="hljs-number">4</span>] - (prefixsum_masses[<span class="hljs-number">3</span>] - prefixsum_masses[<span class="hljs-number">1</span>])
 </code></pre>
-<p>This algorithm is faster than the bruteforce algorithm, but most use-cases won't notice a performance improvement unless either...</p>
+<p>This algorithm is faster than the bruteforce algorithm, but most use-cases won't notice a performance improvement unless either the...</p>
 <ul>
-<li>the <a href="#BM_(peptide)%2Fi">peptide</a> is very large (likely won't happen since <a href="#BM_(peptide)%2Fi">peptide</a>s by definition aren't larger than 50 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s)</li>
-<li>the algorithm runs often.</li>
+<li><a href="#BM_(peptide)%2Fi">peptide</a> is very long (likely won't happen since <a href="#BM_(peptide)%2Fi">peptide</a>s by definition aren't larger than 50 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s)</li>
+<li>algorithm runs often.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">theoretical_spectrum</span>(<span class="hljs-params">
         peptide: List[AA],
@@ -4673,6 +4674,137 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p></p>
 <p>The theoretical spectrum for linear peptide NQY with amino acid mass tolerance of 2.0...</p>
 <p>[0.0, 2.0, 2.0, 2.0, 4.0, 4.0, 6.0]</p>
+</div>
+<p></p>
+<p>Given a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> with tolerances, each <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> mass is checked to see if it fits within a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass tolerance. If it fits, it's considered a match. The score includes both the number of matches and how closely each match was to the ideal <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> mass.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scan_left</span>(<span class="hljs-params">
+        exp_spec: List[float],
+        exp_spec_lo_idx: int,
+        exp_spec_start_idx: int,
+        theo_mid_mass: float,
+        theo_min_mass: float
+</span>) -&gt; Optional[int]:</span>
+    found_dist = <span class="hljs-literal">None</span>
+    found_idx = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> range(exp_spec_start_idx, exp_spec_lo_idx - <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>):
+        exp_mass = exp_spec[idx]
+        <span class="hljs-keyword">if</span> exp_mass &lt; theo_min_mass:
+            <span class="hljs-keyword">break</span>
+        dist_to_theo_mid_mass = abs(exp_mass - theo_mid_mass)
+        <span class="hljs-keyword">if</span> found_dist <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> dist_to_theo_mid_mass &lt; found_dist:
+            found_idx = idx
+            found_dist = dist_to_theo_mid_mass
+    <span class="hljs-keyword">return</span> found_idx
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scan_right</span>(<span class="hljs-params">
+        exp_spec: List[float],
+        exp_spec_hi_idx: int,
+        exp_spec_start_idx: int,
+        theo_mid_mass: float,
+        theo_max_mass: float
+</span>) -&gt; Optional[int]:</span>
+    found_dist = <span class="hljs-literal">None</span>
+    found_idx = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> range(exp_spec_start_idx, exp_spec_hi_idx):
+        exp_mass = exp_spec[idx]
+        <span class="hljs-keyword">if</span> exp_mass &gt; theo_max_mass:
+            <span class="hljs-keyword">break</span>
+        dist_to_theo_mid_mass = abs(exp_mass - theo_mid_mass)
+        <span class="hljs-keyword">if</span> found_dist <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> dist_to_theo_mid_mass &lt; found_dist:
+            found_idx = idx
+            found_dist = dist_to_theo_mid_mass
+    <span class="hljs-keyword">return</span> found_idx
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_closest_within_tolerance</span>(<span class="hljs-params">
+        exp_spec: List[float],
+        exp_spec_lo_idx: int,
+        exp_spec_hi_idx: int,
+        theo_exact_mass: float,
+        theo_min_mass: float,
+        theo_max_mass: float
+</span>) -&gt; Optional[int]:</span>
+    <span class="hljs-comment"># Binary search exp_spec for the where theo_mid_mass would be inserted (left-most index chosen if already there).</span>
+    start_idx = bisect_left(exp_spec, theo_exact_mass, lo=exp_spec_lo_idx, hi=exp_spec_hi_idx)
+    <span class="hljs-keyword">if</span> start_idx == exp_spec_hi_idx:
+        start_idx -= <span class="hljs-number">1</span>
+    <span class="hljs-comment"># From start_idx - 1, walk left to find the closest possible value to theo_mid_mass</span>
+    left_idx = scan_left(exp_spec, exp_spec_lo_idx, start_idx - <span class="hljs-number">1</span>, theo_exact_mass, theo_min_mass)
+    <span class="hljs-comment"># From start_idx, walk right to find the closest possible value to theo_mid_mass</span>
+    right_idx = scan_right(exp_spec, exp_spec_hi_idx, start_idx, theo_exact_mass, theo_max_mass)
+    <span class="hljs-keyword">if</span> left_idx <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> right_idx <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># If nothing found, return None</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">if</span> left_idx <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># If found something while walking left but not while walking right, return left</span>
+        <span class="hljs-keyword">return</span> right_idx
+    <span class="hljs-keyword">if</span> right_idx <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># If found something while walking right but not while walking left, return right</span>
+        <span class="hljs-keyword">return</span> left_idx
+    <span class="hljs-comment"># Otherwise, compare left and right to see which is close to theo_mid_mass and return that</span>
+    left_exp_mass = exp_spec[left_idx]
+    left_dist_to_theo_mid_mass = abs(left_exp_mass - theo_exact_mass)
+    right_exp_mass = exp_spec[left_idx]
+    right_dist_to_theo_mid_mass = abs(right_exp_mass - theo_exact_mass)
+    <span class="hljs-keyword">if</span> left_dist_to_theo_mid_mass &lt; right_dist_to_theo_mid_mass:
+        <span class="hljs-keyword">return</span> left_idx
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> right_idx
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_spectrums</span>(<span class="hljs-params">
+        exp_spec: List[float],  <span class="hljs-comment"># must be sorted asc</span>
+        theo_spec_with_tolerances: List[Tuple[float, float, float]]  <span class="hljs-comment"># must be sorted asc, items are (expected,min,max)</span>
+</span>) -&gt; Tuple[int, float, float]:</span>
+    dist_score = <span class="hljs-number">0.0</span>
+    within_score = <span class="hljs-number">0</span>
+    exp_spec_lo_idx = <span class="hljs-number">0</span>
+    exp_spec_hi_idx = len(exp_spec)
+    <span class="hljs-keyword">for</span> theo_mass <span class="hljs-keyword">in</span> theo_spec_with_tolerances:
+        <span class="hljs-comment"># Find closest exp_spec mass for theo_mass</span>
+        theo_exact_mass, theo_min_mass, theo_max_mass = theo_mass
+        exp_idx = find_closest_within_tolerance(
+            exp_spec,
+            exp_spec_lo_idx,
+            exp_spec_hi_idx,
+            theo_exact_mass,
+            theo_min_mass,
+            theo_max_mass
+        )
+        <span class="hljs-keyword">if</span> exp_idx <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-comment"># Calculate how far the found mass is from the ideal mass (theo_exact_mass) -- a perfect match will add 1.0 to</span>
+        <span class="hljs-comment"># score, the farther out it is away the less gets added to score (min added will be 0.5).</span>
+        exp_mass = exp_spec[exp_idx]
+        dist = abs(exp_mass - theo_exact_mass)
+        max_dist = theo_max_mass - theo_min_mass
+        <span class="hljs-keyword">if</span> max_dist &gt; <span class="hljs-number">0.0</span>:
+            closeness = <span class="hljs-number">1.0</span> - (dist / max_dist)
+        <span class="hljs-keyword">else</span>:
+            closeness = <span class="hljs-number">1.0</span>
+        dist_score += closeness
+        <span class="hljs-comment"># Increment within_score for each match. The above block increases dist_score as the found mass gets closer to</span>
+        <span class="hljs-comment"># theo_exact_mass. There may be a case where a peptide with 6 of 10 AAs matches exactly (6 * 1.0) while another</span>
+        <span class="hljs-comment"># peptide with 10 of 10 AAs matching very loosely (10 * 0.5) -- the first peptide will incorrectly win out if</span>
+        <span class="hljs-comment"># only dist_score were used.</span>
+        within_score += <span class="hljs-number">1</span>
+        <span class="hljs-comment"># Move up the lower bound for what to consider in exp_spec such that it it's after the exp_spec mass found</span>
+        <span class="hljs-comment"># in this cycle. That is, the next cycle won't consider anything lower than the mass that was found here. This</span>
+        <span class="hljs-comment"># is done because theo_spec may contain multiple copies of the same mass, but a real experimental spectrum won't</span>
+        <span class="hljs-comment"># do that (e.g. a peptide containing 57 twice will have two entries for 57 in its theoretical spectrum, but a</span>
+        <span class="hljs-comment"># real experimental spectrum for that same peptide will only contain 57 -- anything with mass of 57 will be</span>
+        <span class="hljs-comment"># collected into the same bin).</span>
+        exp_spec_lo_idx = exp_idx + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> exp_spec_lo_idx == exp_spec_hi_idx:
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> within_score, dist_score, <span class="hljs-number">0.0</span> <span class="hljs-keyword">if</span> within_score == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> dist_score / within_score
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The spectrum score for...</p>
+<p>[0.0, 56.1, 71.9, 126.8, 200.6, 250.9]</p>
+<p>... vs ...</p>
+<p>[0.0, 57.0, 71.0, 128.0, 128.0, 199.0, 256.0]</p>
+<p>... with 2.0 amino acid tolerance is...</p>
+<p>(6, 4.624999999999999, 0.7708333333333331)</p>
 </div>
 <p></p>
 <a name="H_Sequencing"></a><h3>Sequencing</h3>

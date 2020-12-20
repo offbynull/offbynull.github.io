@@ -3,6 +3,7 @@ from typing import List, TypeVar, Dict, Set
 
 
 # MARKDOWN
+# Its expected that low intensity mass_charge_ratios have already been filtered out prior to invoking this func.
 def experimental_spectrum(mass_charge_ratios: List[float], charge_tendencies: Set[float]) -> List[float]:
     ret = [0.0]  # implied -- subpeptide of length 0
     for mcr in mass_charge_ratios:
