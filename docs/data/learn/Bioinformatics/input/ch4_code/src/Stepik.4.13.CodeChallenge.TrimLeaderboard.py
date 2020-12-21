@@ -1,4 +1,4 @@
-from SequenceCyclopeptide_LeaderboardNaive import top_n_peptides_including_last_place_ties
+from SequenceCyclopeptide_Leaderboard_NoNoise import top_n_peptides_including_last_place_ties
 from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 with open('/home/user/Downloads/dataset_240288_3(2).txt', mode='r', encoding='utf-8') as f:

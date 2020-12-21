@@ -47,7 +47,7 @@
 </ul>
 <li><a href="#H_Motif%20Matrix%20Hybrid%20Alphabet">Motif Matrix Hybrid Alphabet</a></li>
 </ul>
-<li><a href="#H_Assembly">Assembly</a></li>
+<li><a href="#H_DNA%20Sequencing">DNA Sequencing</a></li>
 <ul>
 <li><a href="#H_Stitch%20Reads">Stitch Reads</a></li>
 <li><a href="#H_Stitch%20Read-Pairs">Stitch Read-Pairs</a></li>
@@ -59,13 +59,10 @@
 <li><a href="#H_Find%20Bubbles">Find Bubbles</a></li>
 <li><a href="#H_Find%20Contigs">Find Contigs</a></li>
 </ul>
-<li><a href="#H_Codon">Codon</a></li>
+<li><a href="#H_Peptide%20Sequencing">Peptide Sequencing</a></li>
 <ul>
-<li><a href="#H_Encode%20Peptide">Encode Peptide</a></li>
-<li><a href="#H_Decode%20Peptide">Decode Peptide</a></li>
-</ul>
-<li><a href="#H_Mass%20Spectrometry">Mass Spectrometry</a></li>
-<ul>
+<li><a href="#H_Codon%20Encode">Codon Encode</a></li>
+<li><a href="#H_Codon%20Decode">Codon Decode</a></li>
 <li><a href="#H_Experimental%20Spectrum">Experimental Spectrum</a></li>
 <li><a href="#H_Theoretical%20Spectrum">Theoretical Spectrum</a></li>
 <ul>
@@ -74,7 +71,7 @@
 </ul>
 <li><a href="#H_Spectrum%20Convolution">Spectrum Convolution</a></li>
 <li><a href="#H_Spectrum%20Score">Spectrum Score</a></li>
-<li><a href="#H_Sequencing">Sequencing</a></li>
+<li><a href="#H_Spectrum%20Sequence">Spectrum Sequence</a></li>
 <ul>
 <li><a href="#H3_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
 <li><a href="#H_Branch-and-bound%20Algorithm">Branch-and-bound Algorithm</a></li>
@@ -2154,8 +2151,8 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
 </div>
 <p></p>
-<a name="H_Assembly"></a><h2>Assembly</h2>
-<p><a name="BM_(Algorithms%5C%2FAssembly)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_DNA%20Sequencing"></a><h2>DNA Sequencing</h2>
+<p><a name="BM_(Algorithms%5C%2FDNA%20Sequencing)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -3307,20 +3304,45 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>CA-&gt;AC-&gt;CC-&gt;CA</p>
 </div>
 <p></p>
-<a name="H_Codon"></a><h2>Codon</h2>
-<p><a name="BM_(Algorithms%5C%2FCodon)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Peptide%20Sequencing"></a><h2>Peptide Sequencing</h2>
+<p><a name="BM_(Algorithms%5C%2FPeptide%20Sequencing)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FK-mer)_TOPIC%2F">Algorithms/K-mer</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a miniature protein consisting of a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s that's anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length. Most <a href="#BM_(peptide)%2Fi">peptide</a>s are created through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a>: DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA (<a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a>), which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a> (<a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>).</p>
-<p>Each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in one of these <a href="#BM_(peptide)%2Fi">peptide</a>s is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by a DNA <a href="#BM_(sequence)%2Fi">sequence</a> of length 3, referred to as a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>. By knowing which <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s map to which <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s, the ...</p>
+<p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a miniature protein consisting of a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length. <a href="#BM_(peptide)%2Fi">Peptide</a>s are created through two mechanisms:</p>
+<ol>
+<li>ribosomal <a href="#BM_(peptide)%2Fi">peptide</a>s: DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA (<a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a>), which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a> (<a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>).</li>
+<li><a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s: proteins called <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> synthase construct <a href="#BM_(peptide)%2Fi">peptide</a>s.</li>
+</ol>
+<p>For ribosomal <a href="#BM_(peptide)%2Fi">peptide</a>s, each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d as a DNA <a href="#BM_(sequence)%2Fi">sequence</a> of length 3. This 3 length DNA <a href="#BM_(sequence)%2Fi">sequence</a> is referred to as a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>. By knowing which <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s map to which <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s, the ...</p>
 <ul>
 <li><a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> can be determined by mapping from DNA to <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s (you know the <a href="#BM_(peptide)%2Fi">peptide</a> just by looking at the DNA).</li>
 <li><a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> can be searched for in DNA by finding <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s (you can see if the <a href="#BM_(peptide)%2Fi">peptide</a> is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d in a <a href="#BM_(genome)%2Fi">genome</a>).</li>
 </ul>
+<p>For <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s, a sample of the <a href="#BM_(peptide)%2Fi">peptide</a> needs to be isolated and passed through a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>. A <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>m</mi><mi>z</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{m}{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>).</p>
+<p>The output of a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> is a plot called a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a>. The plot's ...</p>
+<ul>
+<li>x-axis is the mass-to-charge ratio.</li>
+<li>y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).</li>
+</ul>
+<p><img src="svgbob_2b5ef43ae7572c2c6bf63687c53860a71830d160.svg" alt="Kroki diagram output"></p>
+<p>For example, given a sample containing multiple instances of the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will take each instance of NQY and randomly break the bonds between its <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s:</p>
+<p><img src="svgbob_33c109cffe376e25dfa6ba85b256a1bb307dcd76.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>How does it know to break the bonds holding <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s together and not bonds within the <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s themselves? My guess is that the bonds coupling one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> to another are much weaker than the bonds holding an individual <a href="#BM_(amino%20acid)%2Fi">amino acid</a> together -- it's more likely that the weaker bonds will be broken.</p>
+</div>
+<p>Each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the <a href="#BM_(sequence)%2Fi">sequence</a> of the <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
+<p>Special consideration needs to be given to the real-world practical problems with <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>. Specifically, the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> given back by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will very likely ...</p>
+<ul>
+<li>miss mass-to-charge ratios for some fragments of the intended molecule (missing entries).</li>
+<li>include mass-to-charge ratios for fragments of unintended molecules (faulty entries).</li>
+<li>have noisy mass-to-charge ratios.</li>
+</ul>
+<p>The following table contains a list of common <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s with their masses and <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> mappings:</p>
 <table>
 <thead>
 <tr>
@@ -3328,6 +3350,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <th>3 Letter Code</th>
 <th><a href="#BM_(amino%20acid)%2Fi">Amino Acid</a></th>
 <th><a href="#BM_(codon%7Cgenetic%20code)%2Fi">Codon</a>s</th>
+<th>Monoisotopic Mass (<a href="#BM_(dalton)%2Fi">dalton</a>s)</th>
 </tr>
 </thead>
 <tbody>
@@ -3336,138 +3359,155 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <td>Ala</td>
 <td>Alanine</td>
 <td>GCA, GCC, GCG, GCU</td>
+<td>71.04</td>
 </tr>
 <tr>
 <td>C</td>
 <td>Cys</td>
 <td>Cysteine</td>
 <td>UGC, UGU</td>
+<td>103.01</td>
 </tr>
 <tr>
 <td>D</td>
 <td>Asp</td>
 <td>Aspartic acid</td>
 <td>GAC, GAU</td>
+<td>115.03</td>
 </tr>
 <tr>
 <td>E</td>
 <td>Glu</td>
 <td>Glutamic acid</td>
 <td>GAA, GAG</td>
+<td>129.04</td>
 </tr>
 <tr>
 <td>F</td>
 <td>Phe</td>
 <td>Phenylalanine</td>
 <td>UUC, UUU</td>
+<td>147.07</td>
 </tr>
 <tr>
 <td>G</td>
 <td>Gly</td>
 <td>Glycine</td>
 <td>GGA, GGC, GGG, GGU</td>
+<td>57.02</td>
 </tr>
 <tr>
 <td>H</td>
 <td>His</td>
 <td>Histidine</td>
 <td>CAC, CAU</td>
+<td>137.06</td>
 </tr>
 <tr>
 <td>I</td>
 <td>Ile</td>
 <td>Isoleucine</td>
 <td>AUA, AUC, AUU</td>
+<td>113.08</td>
 </tr>
 <tr>
 <td>K</td>
 <td>Lys</td>
 <td>Lysine</td>
 <td>AAA, AAG</td>
+<td>128.09</td>
 </tr>
 <tr>
 <td>L</td>
 <td>Leu</td>
 <td>Leucine</td>
 <td>CUA, CUC, CUG, CUU, UUA, UUG</td>
+<td>113.08</td>
 </tr>
 <tr>
 <td>M</td>
 <td>Met</td>
 <td>Methionine</td>
 <td>AUG</td>
+<td>131.04</td>
 </tr>
 <tr>
 <td>N</td>
 <td>Asn</td>
 <td>Asparagine</td>
 <td>AAC, AAU</td>
+<td>114.04</td>
 </tr>
 <tr>
 <td>P</td>
 <td>Pro</td>
 <td>Proline</td>
 <td>CCA, CCC, CCG, CCU</td>
+<td>97.05</td>
 </tr>
 <tr>
 <td>Q</td>
 <td>Gln</td>
 <td>Glutamine</td>
 <td>CAA, CAG</td>
+<td>128.06</td>
 </tr>
 <tr>
 <td>R</td>
 <td>Arg</td>
 <td>Arginine</td>
 <td>AGA, AGG, CGA, CGC, CGG, CGU</td>
+<td>156.1</td>
 </tr>
 <tr>
 <td>S</td>
 <td>Ser</td>
 <td>Serine</td>
 <td>AGC, AGU, UCA, UCC, UCG, UCU</td>
+<td>87.03</td>
 </tr>
 <tr>
 <td>T</td>
 <td>Thr</td>
 <td>Threonine</td>
 <td>ACA, ACC, ACG, ACU</td>
+<td>101.05</td>
 </tr>
 <tr>
 <td>V</td>
 <td>Val</td>
 <td>Valine</td>
 <td>GUA, GUC, GUG, GUU</td>
+<td>99.07</td>
 </tr>
 <tr>
 <td>W</td>
 <td>Trp</td>
 <td>Tryptophan</td>
 <td>UGG</td>
+<td>186.08</td>
 </tr>
 <tr>
 <td>Y</td>
 <td>Tyr</td>
 <td>Tyrosine</td>
 <td>UAC, UAU</td>
+<td>163.06</td>
 </tr>
 <tr>
 <td>*</td>
 <td>*</td>
 <td><strong>STOP</strong></td>
 <td>UAA, UAG, UGA</td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The stop marker tells the ribosome to stop translating / the protein is complete.</p>
+<p>The stop marker tells the ribosome to stop translating / the protein is complete. The <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s are listed as <a href="#BM_(ribonucleotide)%2Fi">ribonucleotide</a>s (RNA). For nucleotides (DNA), swap U with T.</p>
 </div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s are listed as <a href="#BM_(ribonucleotide)%2Fi">ribonucleotide</a>s (RNA). For nucleotides (DNA), swap U with T.</p>
-</div>
-<a name="H_Encode%20Peptide"></a><h3>Encode Peptide</h3>
+<a name="H_Codon%20Encode"></a><h3>Codon Encode</h3>
 <p><strong>WHAT</strong>: Given a DNA <a href="#BM_(sequence)%2Fi">sequence</a>, map each <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> to the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> it represents. In total, there are 6 different ways that a DNA <a href="#BM_(sequence)%2Fi">sequence</a> could be <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a>:</p>
 <ol>
 <li>Since the length of a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> is 3, the <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encoding</a> of the <a href="#BM_(peptide)%2Fi">peptide</a> could start from offset 0, 1, or 2 (referred to as <a href="#BM_(reading%20frame)%2Fi">reading frame</a>s).</li>
@@ -3527,7 +3567,7 @@ _amino_acid_to_codons = dict()
 </ul>
 </div>
 <p></p>
-<a name="H_Decode%20Peptide"></a><h3>Decode Peptide</h3>
+<a name="H_Codon%20Decode"></a><h3>Codon Decode</h3>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(peptide)%2Fi">peptide</a>, map each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> to the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s it represents. Since each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> can map to multiple <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s, there may be multiple DNA <a href="#BM_(sequence)%2Fi">sequence</a>s for a single <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
 <p><strong>WHY</strong>: The DNA <a href="#BM_(sequence)%2Fi">sequence</a>s that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a> a <a href="#BM_(peptide)%2Fi">peptide</a> can be determined from the <a href="#BM_(peptide)%2Fi">peptide</a> itself.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -3587,172 +3627,6 @@ _amino_acid_to_codons = dict()
 </ul>
 </div>
 <p></p>
-<a name="H_Mass%20Spectrometry"></a><h2>Mass Spectrometry</h2>
-<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FCodon)_TOPIC%2F">Algorithms/Codon</a></li>
-</ul>
-</div>
-<p>A <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>m</mi><mi>z</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{m}{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>).</p>
-<p>The output of a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> is a plot called a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a>. The plot's ...</p>
-<ul>
-<li>x-axis is the mass-to-charge ratio.</li>
-<li>y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).</li>
-</ul>
-<p><img src="svgbob_2b5ef43ae7572c2c6bf63687c53860a71830d160.svg" alt="Kroki diagram output"></p>
-<p>A typical use-case for <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a> is <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>. Since the ribosome / <a href="#BM_(codon%7Cgenetic%20code)%2Fi">genetic code</a> isn't involved in the creation of <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s, a <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>'s <a href="#BM_(sequence)%2Fi">sequence</a> can't be determined just by looking at the organism's DNA.</p>
-<p>For example, given a sample containing multiple instances of the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will take each instance of NQY and randomly break the bonds between its <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s:</p>
-<p><img src="svgbob_33c109cffe376e25dfa6ba85b256a1bb307dcd76.svg" alt="Kroki diagram output"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>How does it know to break the bonds holding <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s together and not bonds within the <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s themselves? My guess is that the bonds coupling one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> to another are much weaker than the bonds holding an individual <a href="#BM_(amino%20acid)%2Fi">amino acid</a> together -- it's more likely that the weaker bonds will be broken.</p>
-</div>
-<p>Each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the <a href="#BM_(sequence)%2Fi">sequence</a> of the <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
-<p>Special consideration needs to be given to the real-world practical problems with <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>. Specifically, the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> given back by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will very likely ...</p>
-<ul>
-<li>miss mass-to-charge ratios for some fragments of the intended molecule (missing entries).</li>
-<li>include mass-to-charge ratios for fragments of unintended molecules (faulty entries).</li>
-<li>have noisy mass-to-charge ratios.</li>
-</ul>
-<p>The techniques and algorithms in the subsections below focus on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s. As such, it's important to be aware of common <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses (list is not exhaustive):</p>
-<table>
-<thead>
-<tr>
-<th>1 Letter Code</th>
-<th>3 Letter Code</th>
-<th><a href="#BM_(amino%20acid)%2Fi">Amino Acid</a></th>
-<th>Monoisotopic Mass (<a href="#BM_(dalton)%2Fi">dalton</a>s)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>Ala</td>
-<td>Alanine</td>
-<td>71.04</td>
-</tr>
-<tr>
-<td>C</td>
-<td>Cys</td>
-<td>Cysteine</td>
-<td>103.01</td>
-</tr>
-<tr>
-<td>D</td>
-<td>Asp</td>
-<td>Aspartic acid</td>
-<td>115.03</td>
-</tr>
-<tr>
-<td>E</td>
-<td>Glu</td>
-<td>Glutamic acid</td>
-<td>129.04</td>
-</tr>
-<tr>
-<td>F</td>
-<td>Phe</td>
-<td>Phenylalanine</td>
-<td>147.07</td>
-</tr>
-<tr>
-<td>G</td>
-<td>Gly</td>
-<td>Glycine</td>
-<td>57.02</td>
-</tr>
-<tr>
-<td>H</td>
-<td>His</td>
-<td>Histidine</td>
-<td>137.06</td>
-</tr>
-<tr>
-<td>I</td>
-<td>Ile</td>
-<td>Isoleucine</td>
-<td>113.08</td>
-</tr>
-<tr>
-<td>K</td>
-<td>Lys</td>
-<td>Lysine</td>
-<td>128.09</td>
-</tr>
-<tr>
-<td>L</td>
-<td>Leu</td>
-<td>Leucine</td>
-<td>113.08</td>
-</tr>
-<tr>
-<td>M</td>
-<td>Met</td>
-<td>Methionine</td>
-<td>131.04</td>
-</tr>
-<tr>
-<td>N</td>
-<td>Asn</td>
-<td>Asparagine</td>
-<td>114.04</td>
-</tr>
-<tr>
-<td>P</td>
-<td>Pro</td>
-<td>Proline</td>
-<td>97.05</td>
-</tr>
-<tr>
-<td>Q</td>
-<td>Gln</td>
-<td>Glutamine</td>
-<td>128.06</td>
-</tr>
-<tr>
-<td>R</td>
-<td>Arg</td>
-<td>Arginine</td>
-<td>156.1</td>
-</tr>
-<tr>
-<td>S</td>
-<td>Ser</td>
-<td>Serine</td>
-<td>87.03</td>
-</tr>
-<tr>
-<td>T</td>
-<td>Thr</td>
-<td>Threonine</td>
-<td>101.05</td>
-</tr>
-<tr>
-<td>V</td>
-<td>Val</td>
-<td>Valine</td>
-<td>99.07</td>
-</tr>
-<tr>
-<td>W</td>
-<td>Trp</td>
-<td>Tryptophan</td>
-<td>186.08</td>
-</tr>
-<tr>
-<td>Y</td>
-<td>Tyr</td>
-<td>Tyrosine</td>
-<td>163.06</td>
-</tr>
-</tbody>
-</table>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Focus on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s is because that's what the Pevzner book focuses on.</p>
-</div>
 <a name="H_Experimental%20Spectrum"></a><h3>Experimental Spectrum</h3>
 <p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> for a <a href="#BM_(peptide)%2Fi">peptide</a>, derive a set of potential masses from the mass-to-charge ratios. These potential masses are referred to as an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
@@ -4298,12 +4172,12 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> will show up in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> anywhere between 113<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</li>
 </ul>
 <p>Subtract the opposite extremes from these two ranges: 243<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> - 113<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> = 130<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. That's 2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> away from the real mass difference: 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. As such, the maximum noise per <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass is 2 times the maximum noise for the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> that it was derived from: ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> for this example.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spectrum_convolution_noise</span>(<span class="hljs-params">max_mass_charge_ratio_noise: float, charge_tendencies: Set[float]</span>) -&gt; float:</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-number">2.0</span> * experimental_spectrum_noise(max_mass_charge_ratio_noise, charge_tendencies)
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spectrum_convolution_noise</span>(<span class="hljs-params">exp_spec_mass_noise: float</span>) -&gt; float:</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">2.0</span> * exp_spec_mass_noise
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given a max mass-to-charge ratio noise of ±0.5 and charge tendencies {1.0, 2.0}, the maximum noise per amino acid derived from an experimental spectrum is ±2.0</p>
+<p>Given a max experimental spectrum mass noise of ±1.0, the maximum noise per amino acid derived from an experimental spectrum is ±2.0</p>
 </div>
 <p></p>
 <p>Extending the algorithm to handle noisy <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses requires one extra step: group together differences that are within some tolerance of each other, where this tolerance is the maximum <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass noise calculation described above. For example, consider the following <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY that has up to ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise per mass:</p>
@@ -4807,13 +4681,103 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>(6, 4.624999999999999, 0.7708333333333331)</p>
 </div>
 <p></p>
-<a name="H_Sequencing"></a><h3>Sequencing</h3>
-<p><strong>WHAT</strong>:</p>
-<p><strong>WHY</strong>:</p>
+<a name="H_Spectrum%20Sequence"></a><h3>Spectrum Sequence</h3>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FExperimental%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Experimental Spectrum</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FTheoretical%20Spectrum)_TOPIC%2F">Algorithms/Mass Spectrometry/Theoretical Spectrum</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Convolution)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Convolution</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Score)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Score</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and a set of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses, generate <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s and score them against the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> in an effort to infer the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> of the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
+<p><strong>WHY</strong>: The more matching masses between a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> and an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
 <a name="H3_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
+<p>Imagine if <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s were perfect just like <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the <a href="#BM_(peptide)%2Fi">peptide</a> that produced for such an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, branch out all <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s at each position and compare the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> of that <a href="#BM_(peptide)%2Fi">peptide</a>. If the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> matches the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, there's a solid chance that <a href="#BM_(peptide)%2Fi">peptide</a> for that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is the same as the <a href="#BM_(peptide)%2Fi">peptide</a> that generated the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
+<p>The algorithm stops branching out once the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> being branched exceed the final mass in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For a perfect <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the final mass is always the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. For example, ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>G</th>
+<th>A</th>
+<th>K</th>
+<th>GA</th>
+<th>AK</th>
+<th>GAK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mass</td>
+<td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>57D a</td>
+<td>71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>199<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>256<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
+        exp_spec: List[float],
+        peptide_type: PeptideType,
+        mass_table: Dict[AA, float]
+</span>) -&gt; List[List[AA]]:</span>
+    peptide_mass = exp_spec[<span class="hljs-number">-1</span>]
+    candidate_peptides = [[]]
+    final_peptides = []
+    <span class="hljs-keyword">while</span> len(candidate_peptides) &gt; <span class="hljs-number">0</span>:
+        new_candidate_peptides = []
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> candidate_peptides:
+            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> mass_table.keys():
+                new_p = p[:] + [m]
+                new_p_mass = sum([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> new_p])
+                <span class="hljs-keyword">if</span> new_p_mass == peptide_mass <span class="hljs-keyword">and</span> theoretical_spectrum(new_p, peptide_type, mass_table) == exp_spec:
+                    final_peptides.append(new_p)
+                <span class="hljs-keyword">elif</span> new_p_mass &lt; peptide_mass:
+                    new_candidate_peptides.append(new_p)
+        candidate_peptides = new_candidate_peptides
+    <span class="hljs-keyword">return</span> final_peptides
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The linear peptides matching the experimental spectrum [0.0, 57.0, 71.0, 128.0, 128.0, 199.0, 256.0] are...</p>
+<ul>
+<li>GAK</li>
+<li>GAQ</li>
+<li>KAG</li>
+<li>QAG</li>
+</ul>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
+</div>
+<p>Real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> aren't perfect, but the high-level algorithm is the same. It creates test <a href="#BM_(peptide)%2Fi">peptide</a>s by branching out <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s and captures the best scoring ones until their mass exceeds. However, the problems with real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s complicates the algorithm.</p>
+<p>For starters, the last mass in a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> isn't guaranteed to be the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. Since real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s have faulty masses and missing masses, it's possible that either the <a href="#BM_(peptide)%2Fi">peptide</a>'s mass wasn't captured at all or was captured but at an index that isn't the last element. Also, there are no preset <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s to build test <a href="#BM_(peptide)%2Fi">peptide</a>s with. <a href="#BM_(amino%20acid)%2Fi">Amino acid</a> masses are captured using <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> and used directly. For example, instead of representing a <a href="#BM_(peptide)%2Fi">peptide</a> as GAK, it's represented as their masses separated by dashes: 57-71-128.</p>
+<p>If the mass was captured and found, it'll have noise. Assume an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> with ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise. If the <a href="#BM_(peptide)%2Fi">peptide</a> mass exists in this <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, it'll have ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise it. For example, the <a href="#BM_(peptide)%2Fi">peptide</a> 57-57 has an exact mass of 114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, but if that mass gets placed into the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> it may show up as anywhere between 113<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</p>
+<p>Given that same <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, running a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> to derive the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses ends up giving back <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses with ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise. For example, the mass 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> may be derived as anywhere between 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 59<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Assuming that you're building a test <a href="#BM_(peptide)%2Fi">peptide</a> with the low end (55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> + 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> = 110<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Compared against the high end of the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>'s <a href="#BM_(peptide)%2Fi">peptide</a> mass (115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), it's 5<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> away.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">experimental_spectrum_peptide_mass_noise</span>(<span class="hljs-params">exp_spec_mass_noise: float, peptide_len: int</span>) -&gt; float:</span>
+    aa_mass_noise = spectrum_convolution_noise(exp_spec_mass_noise)
+    <span class="hljs-keyword">return</span> aa_mass_noise * peptide_len + exp_spec_mass_noise
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given an experimental spectrum mass noise of ±1.0 and expected peptide length of 2, the maximum noise for an experimental spectrum's peptide mass is ±5.0</p>
+</div>
+<p></p>
 <a name="H_Branch-and-bound%20Algorithm"></a><h4>Branch-and-bound Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The following is an extension to the Pevzner book's algorithms. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
+</div>
 <a name="H_Leaderboard%20Algorithm"></a><h4>Leaderboard Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
 <a name="H_Stories"></a><h1>Stories</h1>

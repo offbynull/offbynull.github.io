@@ -1,9 +1,9 @@
 from typing import List, Dict, Tuple, Optional, TypeVar
 
-from SpectrumScore import score_spectrums, \
-    theoretical_spectrum_of_linear_peptide_with_noisy_aminoacid_masses
-from SpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses
-
+from PeptideType import PeptideType
+from SpectrumScore import score_spectrums
+from TheoreticalSpectrumTolerances import theoretical_spectrum_tolerances
+from TheoreticalSpectrum_PrefixSum import theoretical_spectrum
 
 AA = TypeVar('AA')
 
@@ -42,11 +42,9 @@ class Leaderboard:
 
         scores = [(0, 0.0)] * len(self.peptides)
         for i, peptide in enumerate(self.peptides):
-            theo_spec = theoretical_spectrum_of_linear_peptide_with_noisy_aminoacid_masses(
-                peptide,
-                self.mass_table,
-                self.amino_acid_mass_tolerance
-            )
+            theo_spec_raw = theoretical_spectrum(peptide, PeptideType.LINEAR, self.mass_table)
+            theo_spec_tols = theoretical_spectrum_tolerances(len(peptide), PeptideType.LINEAR, self.amino_acid_mass_tolerance)
+            theo_spec = [(m, m-t, m+t) for m, t in zip(theo_spec_raw, theo_spec_tols)]
             score = score_spectrums(self.exp_spec, theo_spec)
             score_within = score[0]
             score_perc = score[2]
@@ -109,11 +107,9 @@ class TopPeptides:
             self,
             peptide: List[float]
     ) -> None:
-        peptide_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(
-            peptide,
-            self.mass_table,
-            self.amino_acid_mass_tolerance
-        )
+        peptide_theo_spec_raw = theoretical_spectrum(peptide, PeptideType.CYCLIC, self.mass_table)
+        peptide_theo_spec_tols = theoretical_spectrum_tolerances(len(peptide), PeptideType.CYCLIC, self.amino_acid_mass_tolerance)
+        peptide_theo_spec = [(m, m - t, m + t) for m, t in zip(peptide_theo_spec_raw, peptide_theo_spec_tols)]
         peptide_score = score_spectrums(self.exp_spec, peptide_theo_spec)[0]
         min_acceptable_score = self.leader_peptides_top_score - self.max_backlog
         if peptide_score < min_acceptable_score:

@@ -1108,9 +1108,9 @@ CTTCCT
 CATCTT
 ```
 
-## Assembly
+## DNA Sequencing
 
-`{bm} /(Algorithms\/Assembly)_TOPIC/`
+`{bm} /(Algorithms\/DNA Sequencing)_TOPIC/`
 
 ```{prereq}
 Algorithms/K-mer_TOPIC
@@ -2019,54 +2019,101 @@ ACC
 CCA
 ```
 
-## Codon
+## Peptide Sequencing
 
-`{bm} /(Algorithms\/Codon)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequencing)_TOPIC/`
 
 ```{prereq}
 Algorithms/K-mer_TOPIC
 ```
 
-A peptide is a miniature protein consisting of a chain of amino acids that's anywhere between 2 to 100 amino acids in length. Most peptides are created through the central dogma of molecular biology: DNA gets transcribed to mRNA (transcription), which in turn gets translated by the ribosome into a peptide (translation).
+A peptide is a miniature protein consisting of a chain of amino acids anywhere between 2 to 100 amino acids in length. Peptides are created through two mechanisms:
 
-Each amino acid in one of these peptides is encoded by a DNA sequence of length 3, referred to as a codon. By knowing which codons map to which amino acids, the ...
+ 1. ribosomal peptides: DNA gets transcribed to mRNA (transcription), which in turn gets translated by the ribosome into a peptide (translation).
+ 2. non-ribosomal peptides: proteins called NRP synthase construct peptides.
+
+For ribosomal peptides, each amino acid is encoded as a DNA sequence of length 3. This 3 length DNA sequence is referred to as a codon. By knowing which codons map to which amino acids, the ...
 
  * peptide sequence can be determined by mapping from DNA to codons (you know the peptide just by looking at the DNA).
  * peptide sequence can be searched for in DNA by finding codons (you can see if the peptide is encoded in a genome).
 
-| 1 Letter Code | 3 Letter Code | Amino Acid                  | Codons                       |
-|---------------|---------------|-----------------------------|------------------------------|
-| A             | Ala           | Alanine                     | GCA, GCC, GCG, GCU           |
-| C             | Cys           | Cysteine                    | UGC, UGU                     |
-| D             | Asp           | Aspartic acid               | GAC, GAU                     |
-| E             | Glu           | Glutamic acid               | GAA, GAG                     |
-| F             | Phe           | Phenylalanine               | UUC, UUU                     |
-| G             | Gly           | Glycine                     | GGA, GGC, GGG, GGU           |
-| H             | His           | Histidine                   | CAC, CAU                     |
-| I             | Ile           | Isoleucine                  | AUA, AUC, AUU                |
-| K             | Lys           | Lysine                      | AAA, AAG                     |
-| L             | Leu           | Leucine                     | CUA, CUC, CUG, CUU, UUA, UUG |
-| M             | Met           | Methionine                  | AUG                          |
-| N             | Asn           | Asparagine                  | AAC, AAU                     |
-| P             | Pro           | Proline                     | CCA, CCC, CCG, CCU           |
-| Q             | Gln           | Glutamine                   | CAA, CAG                     |
-| R             | Arg           | Arginine                    | AGA, AGG, CGA, CGC, CGG, CGU |
-| S             | Ser           | Serine                      | AGC, AGU, UCA, UCC, UCG, UCU |
-| T             | Thr           | Threonine                   | ACA, ACC, ACG, ACU           |
-| V             | Val           | Valine                      | GUA, GUC, GUG, GUU           |
-| W             | Trp           | Tryptophan                  | UGG                          |
-| Y             | Tyr           | Tyrosine                    | UAC, UAU                     |
-| *             | * 	          | **STOP**                    | UAA, UAG, UGA                |
+For non-ribosomal peptides, a sample of the peptide needs to be isolated and passed through a mass spectrometer. A mass spectrometer is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
 
-```{note}
-The stop marker tells the ribosome to stop translating / the protein is complete.
+The output of a mass spectrometer is a plot called a spectrum_MS. The plot's ...
+
+ * x-axis is the mass-to-charge ratio.
+ * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).
+
+```{svgbob}
+    y
+    ^
+    |
+    |        |
+    |        |
+"%" |        |
+    |        | |           |
+    |        | |           |
+    | |      | | |         |        |
+    | | | |  | | |     |   |    | | |
+    +-+-+-+--+-+-+-----+---+----+-+-+--> x
+                     "m/z"
+```
+
+For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds between its amino acids:
+
+```{svgbob}
+N ---- Q ---- Y   "(NQY not broken)"
+
+N -//- Q ---- Y   "(NQY broken to N and QY)"
+
+N ---- Q -//- Y   "(NQY broken to NQ and Y)"
+
+N -//- Q -//- Y   "(NQY broken to N, Q, and Y)"
 ```
 
 ```{note}
-The codons are listed as ribonucleotides (RNA). For nucleotides (DNA), swap U with T.
+How does it know to break the bonds holding amino acids together and not bonds within the amino acids themselves? My guess is that the bonds coupling one amino acid to another are much weaker than the bonds holding an individual amino acid together -- it's more likely that the weaker bonds will be broken.
 ```
 
-### Encode Peptide
+Each subpeptide then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the sequence of the peptide.
+
+Special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
+
+ * miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
+ * include mass-to-charge ratios for fragment_NORMs of unintended molecules (faulty entries).
+ * have noisy mass-to-charge ratios.
+
+The following table contains a list of common amino acids with their masses and codon mappings:
+
+| 1 Letter Code | 3 Letter Code | Amino Acid                  | Codons                       | Monoisotopic Mass (daltons) |
+|---------------|---------------|-----------------------------|------------------------------|-----------------------------|
+| A             | Ala           | Alanine                     | GCA, GCC, GCG, GCU           | 71.04                       |
+| C             | Cys           | Cysteine                    | UGC, UGU                     | 103.01                      |
+| D             | Asp           | Aspartic acid               | GAC, GAU                     | 115.03                      |
+| E             | Glu           | Glutamic acid               | GAA, GAG                     | 129.04                      |
+| F             | Phe           | Phenylalanine               | UUC, UUU                     | 147.07                      |
+| G             | Gly           | Glycine                     | GGA, GGC, GGG, GGU           | 57.02                       |
+| H             | His           | Histidine                   | CAC, CAU                     | 137.06                      |
+| I             | Ile           | Isoleucine                  | AUA, AUC, AUU                | 113.08                      |
+| K             | Lys           | Lysine                      | AAA, AAG                     | 128.09                      |
+| L             | Leu           | Leucine                     | CUA, CUC, CUG, CUU, UUA, UUG | 113.08                      |
+| M             | Met           | Methionine                  | AUG                          | 131.04                      |
+| N             | Asn           | Asparagine                  | AAC, AAU                     | 114.04                      |
+| P             | Pro           | Proline                     | CCA, CCC, CCG, CCU           | 97.05                       |
+| Q             | Gln           | Glutamine                   | CAA, CAG                     | 128.06                      |
+| R             | Arg           | Arginine                    | AGA, AGG, CGA, CGC, CGG, CGU | 156.1                       |
+| S             | Ser           | Serine                      | AGC, AGU, UCA, UCC, UCG, UCU | 87.03                       |
+| T             | Thr           | Threonine                   | ACA, ACC, ACG, ACU           | 101.05                      |
+| V             | Val           | Valine                      | GUA, GUC, GUG, GUU           | 99.07                       |
+| W             | Trp           | Tryptophan                  | UGG                          | 186.08                      |
+| Y             | Tyr           | Tyrosine                    | UAC, UAU                     | 163.06                      |
+| *             | * 	          | **STOP**                    | UAA, UAG, UGA                |                             |
+
+```{note}
+The stop marker tells the ribosome to stop translating / the protein is complete. The codons are listed as ribonucleotides (RNA). For nucleotides (DNA), swap U with T.
+```
+
+### Codon Encode
 
 **WHAT**: Given a DNA sequence, map each codon to the amino acid it represents. In total, there are 6 different ways that a DNA sequence could be translated:
 
@@ -2094,7 +2141,7 @@ EncodePeptide
 AAAAGAACCTAATCTTAAAGGAGATGATGATTCTAA
 ```
 
-### Decode Peptide
+### Codon Decode
 
 **WHAT**: Given a peptide, map each amino acid to the DNA sequences it represents. Since each amino acid can map to multiple codons, there may be multiple DNA sequences for a single peptide.
 
@@ -2117,91 +2164,6 @@ python
 ```{ch4}
 DecodePeptide
 NQY
-```
-
-## Mass Spectrometry
-
-`{bm} /(Algorithms\/Mass Spectrometry)_TOPIC/`
-
-```{prereq}
-Algorithms/Codon_TOPIC
-```
-
-A mass spectrometer is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
-
-The output of a mass spectrometer is a plot called a spectrum_MS. The plot's ...
-
- * x-axis is the mass-to-charge ratio.
- * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).
-
-```{svgbob}
-    y
-    ^
-    |
-    |        |
-    |        |
-"%" |        |
-    |        | |           |
-    |        | |           |
-    | |      | | |         |        |
-    | | | |  | | |     |   |    | | |
-    +-+-+-+--+-+-+-----+---+----+-+-+--> x
-                     "m/z"
-```
-
-A typical use-case for mass spectrometry is non-ribosomal peptide sequencing. Since the ribosome / genetic code isn't involved in the creation of non-ribosomal peptides, a non-ribosomal peptide's sequence can't be determined just by looking at the organism's DNA.
-
-For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds between its amino acids:
-
-```{svgbob}
-N ---- Q ---- Y   "(NQY not broken)"
-
-N -//- Q ---- Y   "(NQY broken to N and QY)"
-
-N ---- Q -//- Y   "(NQY broken to NQ and Y)"
-
-N -//- Q -//- Y   "(NQY broken to N, Q, and Y)"
-```
-
-```{note}
-How does it know to break the bonds holding amino acids together and not bonds within the amino acids themselves? My guess is that the bonds coupling one amino acid to another are much weaker than the bonds holding an individual amino acid together -- it's more likely that the weaker bonds will be broken.
-```
-
-Each subpeptide then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the sequence of the peptide.
-
-Special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
-
- * miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
- * include mass-to-charge ratios for fragment_NORMs of unintended molecules (faulty entries).
- * have noisy mass-to-charge ratios.
-
-The techniques and algorithms in the subsections below focus on non-ribosomal peptides. As such, it's important to be aware of common amino acid masses (list is not exhaustive):
-
-| 1 Letter Code | 3 Letter Code | Amino Acid                  | Monoisotopic Mass (daltons) |
-|---------------|---------------|-----------------------------|-----------------------------|
-| A             | Ala           | Alanine                     | 71.04                       |
-| C             | Cys           | Cysteine                    | 103.01                      |
-| D             | Asp           | Aspartic acid               | 115.03                      |
-| E             | Glu           | Glutamic acid               | 129.04                      |
-| F             | Phe           | Phenylalanine               | 147.07                      |
-| G             | Gly           | Glycine                     | 57.02                       |
-| H             | His           | Histidine                   | 137.06                      |
-| I             | Ile           | Isoleucine                  | 113.08                      |
-| K             | Lys           | Lysine                      | 128.09                      |
-| L             | Leu           | Leucine                     | 113.08                      |
-| M             | Met           | Methionine                  | 131.04                      |
-| N             | Asn           | Asparagine                  | 114.04                      |
-| P             | Pro           | Proline                     | 97.05                       |
-| Q             | Gln           | Glutamine                   | 128.06                      |
-| R             | Arg           | Arginine                    | 156.1                       |
-| S             | Ser           | Serine                      | 87.03                       |
-| T             | Thr           | Threonine                   | 101.05                      |
-| V             | Val           | Valine                      | 99.07                       |
-| W             | Trp           | Tryptophan                  | 186.08                      |
-| Y             | Tyr           | Tyrosine                    | 163.06                      |
-
-```{note}
-Focus on non-ribosomal peptides is because that's what the Pevzner book focuses on.
 ```
 
 ### Experimental Spectrum
@@ -2571,8 +2533,7 @@ python
 
 ```{ch4}
 SpectrumConvolutionNoise
-0.5
-+1 +2
+1
 ```
 
 Extending the algorithm to handle noisy experimental spectrum masses requires one extra step: group together differences that are within some tolerance of each other, where this tolerance is the maximum amino acid mass noise calculation described above. For example, consider the following experimental spectrum for linear peptide NQY that has up to ±1Da noise per mass:
@@ -2714,19 +2675,76 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 2
 ```
 
-### Sequencing
+### Spectrum Sequence
 
-**WHAT**:
+```{prereq}
+Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
+Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
+Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
+Algorithms/Mass Spectrometry/Spectrum Score_TOPIC
+```
 
-**WHY**:
+**WHAT**: Given an experimental spectrum and a set of amino acid masses, generate theoretical spectrums and score them against the experimental spectrum in an effort to infer the peptide sequence of the experimental spectrum.
+
+**WHY**: The more matching masses between a theoretical spectrum and an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum.
 
 #### Bruteforce Algorithm
 
 **ALGORITHM**:
 
+Imagine if experimental spectrums were perfect just like theoretical spectrums: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the peptide that produced for such an experimental spectrum, branch out all amino acids at each position and compare the theoretical spectrum of that peptide. If the theoretical spectrum matches the experimental spectrum, there's a solid chance that peptide for that theoretical spectrum is the same as the peptide that generated the experimental spectrum.
+
+The algorithm stops branching out once the mass of the peptide being branched exceed the final mass in the experimental spectrum. For a perfect experimental spectrum, the final mass is always the mass of the peptide that produced it. For example, ...
+
+|           |     |   G   |   A   |   K   |  GA   |  AK   |  GAK  |
+|-----------|-----|-------|-------|-------|-------|-------|-------|
+| Mass      | 0Da | 57D a | 71Da  | 128Da | 128Da | 199Da | 256Da |
+
+```{output}
+ch4_code/src/SequencePeptide_Naive_Bruteforce.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+SequencePeptide_Naive_Bruteforce
+0 57 71 128 128 199 256
+linear
+G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
+```
+
+```{note}
+The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
+```
+
+Real experimental spectrum aren't perfect, but the high-level algorithm is the same. It creates test peptides by branching out amino acids and captures the best scoring ones until their mass exceeds. However, the problems with real experimental spectrums complicates the algorithm.
+
+For starters, the last mass in a real experimental spectrum isn't guaranteed to be the mass of the peptide that produced it. Since real experimental spectrums have faulty masses and missing masses, it's possible that either the peptide's mass wasn't captured at all or was captured but at an index that isn't the last element. Also, there are no preset amino acids to build test peptides with. Amino acid masses are captured using spectrum convolution and used directly. For example, instead of representing a peptide as GAK, it's represented as their masses separated by dashes: 57-71-128.
+
+If the mass was captured and found, it'll have noise. Assume an experimental spectrum with ±1Da noise. If the peptide mass exists in this experimental spectrum, it'll have ±1Da noise it. For example, the peptide 57-57 has an exact mass of 114Da, but if that mass gets placed into the experimental spectrum it may show up as anywhere between 113Da to 115Da.
+
+Given that same experimental spectrum, running a spectrum convolution to derive the amino acid masses ends up giving back amino acid masses with ±2Da noise. For example, the mass 57Da may be derived as anywhere between 55Da to 59Da. Assuming that you're building a test peptide with the low end (55Da), 55Da + 55Da = 110Da. Compared against the high end of the experimental spectrum's peptide mass (115Da), it's 5Da away.
+
+
+```{output}
+ch4_code/src/ExperimentalSpectrumPeptideMassNoise.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch4}
+ExperimentalSpectrumPeptideMassNoise
+1
+2
+```
+
 #### Branch-and-bound Algorithm
 
 **ALGORITHM**:
+
+```{note}
+The following is an extension to the Pevzner book's algorithms. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
+```
 
 #### Leaderboard Algorithm
 
