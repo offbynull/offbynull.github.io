@@ -4695,8 +4695,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>WHY</strong>: The more matching masses between a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> and an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
 <a name="H3_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
-<p>Imagine if <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s were perfect just like <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the <a href="#BM_(peptide)%2Fi">peptide</a> that produced for such an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, branch out all <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s at each position and compare the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> of that <a href="#BM_(peptide)%2Fi">peptide</a>. If the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> matches the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, there's a solid chance that <a href="#BM_(peptide)%2Fi">peptide</a> for that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is the same as the <a href="#BM_(peptide)%2Fi">peptide</a> that generated the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
-<p>The algorithm stops branching out once the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> being branched exceed the final mass in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For a perfect <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the final mass is always the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. For example, ...</p>
+<p>Imagine if <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s were perfect just like <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the <a href="#BM_(peptide)%2Fi">peptide</a> that produced such an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, branch out all <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s at each position and compare each <a href="#BM_(peptide)%2Fi">peptide</a>'s <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> to the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. If the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> matches the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, it's reasonable to assume that <a href="#BM_(peptide)%2Fi">peptide</a> is the same as the <a href="#BM_(peptide)%2Fi">peptide</a> that generated the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
+<p>The algorithm stops branching out once the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> being branched exceed the final mass in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For a perfect <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the final mass is always the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. For example, for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> GAK ...</p>
 <table>
 <thead>
 <tr>
@@ -4714,7 +4714,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <tr>
 <td>Mass</td>
 <td>0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
-<td>57D a</td>
+<td>57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
 <td>71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
 <td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
 <td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
@@ -4759,10 +4759,27 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
 </div>
-<p>Real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> aren't perfect, but the high-level algorithm is the same. It creates test <a href="#BM_(peptide)%2Fi">peptide</a>s by branching out <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s and captures the best scoring ones until their mass exceeds. However, the problems with real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s complicates the algorithm.</p>
-<p>For starters, the last mass in a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> isn't guaranteed to be the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. Since real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s have faulty masses and missing masses, it's possible that either the <a href="#BM_(peptide)%2Fi">peptide</a>'s mass wasn't captured at all or was captured but at an index that isn't the last element. Also, there are no preset <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s to build test <a href="#BM_(peptide)%2Fi">peptide</a>s with. <a href="#BM_(amino%20acid)%2Fi">Amino acid</a> masses are captured using <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> and used directly. For example, instead of representing a <a href="#BM_(peptide)%2Fi">peptide</a> as GAK, it's represented as their masses separated by dashes: 57-71-128.</p>
-<p>If the mass was captured and found, it'll have noise. Assume an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> with ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise. If the <a href="#BM_(peptide)%2Fi">peptide</a> mass exists in this <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, it'll have ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise it. For example, the <a href="#BM_(peptide)%2Fi">peptide</a> 57-57 has an exact mass of 114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, but if that mass gets placed into the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> it may show up as anywhere between 113<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</p>
-<p>Given that same <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, running a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> to derive the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses ends up giving back <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses with ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise. For example, the mass 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> may be derived as anywhere between 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 59<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Assuming that you're building a test <a href="#BM_(peptide)%2Fi">peptide</a> with the low end (55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> + 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> = 110<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Compared against the high end of the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>'s <a href="#BM_(peptide)%2Fi">peptide</a> mass (115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), it's 5<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> away.</p>
+<p>Even though real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s aren't perfect, the high-level algorithm remains the same: Create test <a href="#BM_(peptide)%2Fi">peptide</a>s by branching out <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s and capture the best scoring ones until <a href="#BM_(peptide)%2Fi">peptide</a> mass goes too high. However, the problems with real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s end up complicating the final algorithm.</p>
+<p>For starters, since there are no preset <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s to build test <a href="#BM_(peptide)%2Fi">peptide</a>s with, <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses are captured using <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> and used directly. For example, instead of representing a <a href="#BM_(peptide)%2Fi">peptide</a> as GAK, it's represented as their masses separated by dashes: 57-71-128.</p>
+<table>
+<thead>
+<tr>
+<th>G</th>
+<th>A</th>
+<th>K</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+<td>128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a></td>
+</tr>
+</tbody>
+</table>
+<p>Next, the last mass in a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> isn't guaranteed to be the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. Since real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s have faulty masses and may be missing masses, it's possible that either the <a href="#BM_(peptide)%2Fi">peptide</a>'s mass wasn't captured at all or was captured but at an index that isn't the last element.</p>
+<p>If the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>'s <a href="#BM_(peptide)%2Fi">peptide</a> mass was captured and found, it'll have noise. Assume an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> with ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise. If the <a href="#BM_(peptide)%2Fi">peptide</a> mass exists in this <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, it'll have ±1<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise. For example, the <a href="#BM_(peptide)%2Fi">peptide</a> 57-57 has an exact mass of 114<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, but if that mass gets placed into the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> it may show up as anywhere between 113<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</p>
+<p>Given that same <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, running a <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> to derive the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses ends up giving back <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses with ±2<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> noise. For example, the mass 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> may be derived as anywhere between 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> to 59<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Assuming that you're building the <a href="#BM_(peptide)%2Fi">peptide</a> 57-57 with the low end of that range (55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), it's mass will be 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> + 55<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> = 110<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Compared against the high end of the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>'s <a href="#BM_(peptide)%2Fi">peptide</a> mass (115<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>), it's 5<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> away.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">experimental_spectrum_peptide_mass_noise</span>(<span class="hljs-params">exp_spec_mass_noise: float, peptide_len: int</span>) -&gt; float:</span>
     aa_mass_noise = spectrum_convolution_noise(exp_spec_mass_noise)
     <span class="hljs-keyword">return</span> aa_mass_noise * peptide_len + exp_spec_mass_noise
@@ -4772,6 +4789,107 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>Given an experimental spectrum mass noise of ±1.0 and expected peptide length of 2, the maximum noise for an experimental spectrum's peptide mass is ±5.0</p>
 </div>
 <p></p>
+<p>Finally, given that real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s contain faulty masses and may be missing masses, more often than not the <a href="#BM_(peptide)%2Fi">peptide</a>s that score the best aren't the best candidates. The <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> masses ...</p>
+<ul>
+<li>matching faulty <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses</li>
+<li>missing matches in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a></li>
+</ul>
+<p>... may push poor <a href="#BM_(peptide)%2Fi">peptide</a> candidates forward. As such, it makes sense to keep a backlog of the last m scoring <a href="#BM_(peptide)%2Fi">peptide</a>s. Any of these backlog <a href="#BM_(peptide)%2Fi">peptide</a>s may be the correct <a href="#BM_(peptide)%2Fi">peptide</a> for the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SequenceTester</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">
+            self,
+            exp_spec: List[float],           <span class="hljs-comment"># must be sorted asc</span>
+            aa_mass_table: Dict[AA, float],  <span class="hljs-comment"># amino acid mass table</span>
+            aa_mass_tolerance: float,        <span class="hljs-comment"># amino acid mass tolerance</span>
+            peptide_min_mass: float,         <span class="hljs-comment"># min mass that the peptide could be</span>
+            peptide_max_mass: float,         <span class="hljs-comment"># max mass that the peptide could be</span>
+            peptide_type: PeptideType,       <span class="hljs-comment"># linear or cyclic</span>
+            score_backlog: int = <span class="hljs-number">0</span>           <span class="hljs-comment"># keep this many previous scores</span>
+    </span>):</span>
+        self.exp_spec = exp_spec
+        self.aa_mass_table = aa_mass_table
+        self.aa_mass_tolerance = aa_mass_tolerance
+        self.peptide_min_mass = peptide_min_mass
+        self.peptide_max_mass = peptide_max_mass
+        self.peptide_type = peptide_type
+        self.score_backlog = score_backlog
+        self.leader_peptides_top_score = <span class="hljs-number">0</span>
+        self.leader_peptides = {<span class="hljs-number">0</span>: []}
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_theroetical_spectrum_with_tolerances</span>(<span class="hljs-params">
+            peptide: List[AA],
+            peptide_type: PeptideType,
+            aa_mass_table: Dict[AA, float],
+            aa_mass_tolerance: float
+    </span>) -&gt; List[Tuple[float, float, float]]:</span>
+        theo_spec_raw = theoretical_spectrum(peptide, peptide_type, aa_mass_table)
+        theo_spec_tols = theoretical_spectrum_tolerances(len(peptide), peptide_type, aa_mass_tolerance)
+        theo_spec = [(m, m - t, m + t) <span class="hljs-keyword">for</span> m, t <span class="hljs-keyword">in</span> zip(theo_spec_raw, theo_spec_tols)]
+        <span class="hljs-keyword">return</span> theo_spec
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">
+            self,
+            peptide: List[AA],
+            theo_spec: Optional[List[Tuple[float, float, float]]] = None
+    </span>) -&gt; TestResult:</span>
+        <span class="hljs-keyword">if</span> theo_spec <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            theo_spec = SequenceTester.generate_theroetical_spectrum_with_tolerances(
+                peptide,
+                self.peptide_type,
+                self.aa_mass_table,
+                self.aa_mass_tolerance
+            )
+        <span class="hljs-comment"># Don't add if mass out of range</span>
+        _, tp_min_mass, tp_max_mass = theo_spec[<span class="hljs-number">-1</span>]  <span class="hljs-comment"># last element of theo spec is the mass of the theo spec peptide</span>
+        <span class="hljs-keyword">if</span> tp_min_mass &lt; self.peptide_min_mass:
+            <span class="hljs-keyword">return</span> TestResult.MASS_TOO_SMALL
+        <span class="hljs-keyword">elif</span> tp_max_mass &gt; self.peptide_max_mass:
+            <span class="hljs-keyword">return</span> TestResult.MASS_TOO_LARGE
+        <span class="hljs-comment"># Don't add if the score is lower than the previous n best scores</span>
+        peptide_score = score_spectrums(self.exp_spec, theo_spec)[<span class="hljs-number">0</span>]
+        min_acceptable_score = self.leader_peptides_top_score - self.score_backlog
+        <span class="hljs-keyword">if</span> peptide_score &lt; min_acceptable_score:
+            <span class="hljs-keyword">return</span> TestResult.SCORE_TOO_LOW
+        <span class="hljs-comment"># Add, but also remove any previous test peptides that are no longer within the acceptable score threshold</span>
+        leaders = self.leader_peptides.setdefault(peptide_score, [])
+        leaders.append(peptide)
+        <span class="hljs-keyword">if</span> peptide_score &gt; self.leader_peptides_top_score:
+            self.leader_peptides_top_score = peptide_score
+            <span class="hljs-keyword">if</span> len(self.leader_peptides) &gt;= self.score_backlog:
+                smallest_leader_score = min(self.leader_peptides.keys())
+                self.leader_peptides.pop(smallest_leader_score)
+        <span class="hljs-keyword">return</span> TestResult.ADDED
+</code></pre>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
+        exp_spec: List[float],                               <span class="hljs-comment"># must be sorted asc</span>
+        aa_mass_table: Dict[AA, float],                      <span class="hljs-comment"># amino acid mass table</span>
+        aa_mass_tolerance: float,                            <span class="hljs-comment"># amino acid mass tolerance</span>
+        peptide_mass_candidates: List[Tuple[float, float]],  <span class="hljs-comment"># mass range candidates for mass of peptide</span>
+        peptide_type: PeptideType,                           <span class="hljs-comment"># linear or cyclic</span>
+        score_backlog: int = <span class="hljs-number">0</span>                               <span class="hljs-comment"># backlog of top scores</span>
+</span>) -&gt; SequenceTesterSet:</span>
+    tester_set = SequenceTesterSet(
+        exp_spec,
+        aa_mass_table,
+        aa_mass_tolerance,
+        peptide_mass_candidates,
+        peptide_type,
+        score_backlog
+    )
+    candidates = [[]]
+    <span class="hljs-keyword">while</span> len(candidates) &gt; <span class="hljs-number">0</span>:
+        new_candidate_peptides = []
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> candidates:
+            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> aa_mass_table.keys():
+                new_p = p[:]
+                new_p.append(m)
+                res = set(tester_set.test(new_p))
+                <span class="hljs-keyword">if</span> res != {TestResult.MASS_TOO_LARGE}:
+                    new_candidate_peptides.append(new_p)
+        candidates = new_candidate_peptides
+    <span class="hljs-keyword">return</span> tester_set
+</code></pre>
 <a name="H_Branch-and-bound%20Algorithm"></a><h4>Branch-and-bound Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
