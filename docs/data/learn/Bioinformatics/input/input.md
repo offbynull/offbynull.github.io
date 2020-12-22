@@ -2692,9 +2692,9 @@ Algorithms/Mass Spectrometry/Spectrum Score_TOPIC
 
 **ALGORITHM**:
 
-Imagine if experimental spectrums were perfect just like theoretical spectrums: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the peptide that produced such an experimental spectrum, branch out all amino acids at each position and compare each peptide's theoretical spectrum to the experimental spectrum. If the theoretical spectrum matches the experimental spectrum, it's reasonable to assume that peptide is the same as the peptide that generated the experimental spectrum.
+Imagine if experimental spectrums were perfect just like theoretical spectrums: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the peptide that produced such an experimental spectrum, generate test peptides by branching out amino acids at each position and compare each test peptide's theoretical spectrum to the experimental spectrum. If the theoretical spectrum matches the experimental spectrum, it's reasonable to assume that peptide is the same as the peptide that generated the experimental spectrum.
 
-The algorithm stops branching out once the mass of the peptide being branched exceed the final mass in the experimental spectrum. For a perfect experimental spectrum, the final mass is always the mass of the peptide that produced it. For example, for the linear peptide GAK ...
+The algorithm stops branching out once the mass of the test peptide exceeds the final mass in the experimental spectrum. For a perfect experimental spectrum, the final mass is always the mass of the peptide that produced it. For example, for the linear peptide GAK ...
 
 |           |     |   G  |   A   |   K   |  GA   |  AK   |  GAK  |
 |-----------|-----|------|-------|-------|-------|-------|-------|
@@ -2717,9 +2717,9 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
 ```
 
-Even though real experimental spectrums aren't perfect, the high-level algorithm remains the same: Create test peptides by branching out amino acids and capture the best scoring ones until peptide mass goes too high. However, the problems with real experimental spectrums end up complicating the final algorithm.
+Even though real experimental spectrums aren't perfect, the high-level algorithm remains the same: Create test peptides by branching out amino acids and capture the best scoring ones until the mass goes too high. However, the problems with real experimental spectrums end up complicating the final algorithm.
 
-For starters, since there are no preset amino acids to build test peptides with, amino acid masses are captured using spectrum convolution and used directly. For example, instead of representing a peptide as GAK, it's represented as their masses separated by dashes: 57-71-128.
+For starters, since there are no preset amino acids to build test peptides with, amino acid masses are captured using spectrum convolution and used directly. For example, instead of representing a peptide as GAK, it's represented as 57-71-128.
 
 |   G  |   A   |   K   |
 |------|-------|-------|
@@ -2727,9 +2727,9 @@ For starters, since there are no preset amino acids to build test peptides with,
 
 Next, the last mass in a real experimental spectrum isn't guaranteed to be the mass of the peptide that produced it. Since real experimental spectrums have faulty masses and may be missing masses, it's possible that either the peptide's mass wasn't captured at all or was captured but at an index that isn't the last element.
 
-If the experimental spectrum's peptide mass was captured and found, it'll have noise. Assume an experimental spectrum with ±1Da noise. If the peptide mass exists in this experimental spectrum, it'll have ±1Da noise. For example, the peptide 57-57 has an exact mass of 114Da, but if that mass gets placed into the experimental spectrum it may show up as anywhere between 113Da to 115Da.
+If the experimental spectrum's peptide mass was captured and found, it'll have noise. For example, imagine an experimental spectrum for the peptide 57-57 with ±1Da noise. The exact mass of the peptide 57-57 is 114Da, but if that mass gets placed into the experimental spectrum it will show up as anywhere between 113Da to 115Da.
 
-Given that same experimental spectrum, running a spectrum convolution to derive the amino acid masses ends up giving back amino acid masses with ±2Da noise. For example, the mass 57Da may be derived as anywhere between 55Da to 59Da. Assuming that you're building the peptide 57-57 with the low end of that range (55Da), it's mass will be 55Da + 55Da = 110Da. Compared against the high end of the experimental spectrum's peptide mass (115Da), it's 5Da away.
+Given that same experimental spectrum, running a spectrum convolution to derive the amino acid masses ends up giving back amino acid masses with ±2Da noise. For example, the mass 57Da may be derived as anywhere between 55Da to 59Da. Assuming that you're building the peptide 57-57 with the low end of that range (55Da), its mass will be 55Da + 55Da = 110Da. Compared against the high end of the experimental spectrum's peptide mass (115Da), it's 5Da away.
 
 
 ```{output}
@@ -2744,10 +2744,10 @@ ExperimentalSpectrumPeptideMassNoise
 2
 ```
 
-Finally, given that real experimental spectrums contain faulty masses and may be missing masses, more often than not the peptides that score the best aren't the best candidates. The theoretical spectrum masses ...
+Finally, given that real experimental spectrums contain faulty masses and may be missing masses, more often than not the peptides that score the best aren't the best candidates. Theoretical spectrum masses that are ...
 
- * matching faulty experimental spectrum masses
- * missing matches in the experimental spectrum
+ * incorrect but match faulty experimental spectrum masses
+ * correct but are missing in the experimental spectrum
 
 ... may push poor peptide candidates forward. As such, it makes sense to keep a backlog of the last m scoring peptides. Any of these backlog peptides may be the correct peptide for the experimental spectrum.
 
@@ -2763,6 +2763,20 @@ python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
+```{note}
+The experimental spectrum in the example below is for the peptide 114-128-163.
+```
+
+```{ch4}
+SequencePeptide_Bruteforce
+0.0 112.5 126.8 245.9 287.0 400.0
+1.0
+1
+1
+linear
+3
+0
+```
 
 #### Branch-and-bound Algorithm
 
