@@ -2837,6 +2837,28 @@ The bounding step described above won't work for real experimental spectrums. Fo
 
 A possible bounding step for real experimental spectrums is to mark a candidate peptide as untenable if it has a certain number or percentage of mismatches. This is a heuristic, meaning that it won't always lead to the correct peptide. In contrast, the algorithm described above for perfect experimental spectrums always leads to the correct peptide.
 
+```{output}
+ch4_code/src/SequencePeptide_BranchAndBound.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{note}
+The experimental spectrum in the example below is for the peptide 114-128-163, which has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405].
+```
+
+```{ch4}
+SequencePeptide_BranchAndBound
+0.0 112.5 127.1 242.9 290.0 404.0
+1.0
+1
+1
+linear
+3
+0
+0.75
+```
+
 #### Leaderboard Algorithm
 
 **ALGORITHM**:
@@ -2845,6 +2867,7 @@ A possible bounding step for real experimental spectrums is to mark a candidate 
 
 ```{prereq}
 Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm_TOPIC
+Algorithms/Mass Spectrometry/Spectrum Sequence/Branch-and-bound Algorithm_TOPIC
 ```
 
 # Stories

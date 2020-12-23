@@ -10,7 +10,7 @@ AA = TypeVar('AA')
 def sequence_peptide(
         exp_spec: List[float],  # must be sorted asc
         peptide_type: PeptideType,
-        mass_table: Dict[AA, float]
+        aa_mass_table: Dict[AA, float]
 ) -> List[List[AA]]:
     peptide_mass = exp_spec[-1]
     candidate_peptides = [[]]
@@ -19,16 +19,16 @@ def sequence_peptide(
         # Branch candidates
         new_candidate_peptides = []
         for p in candidate_peptides:
-            for m in mass_table:
+            for m in aa_mass_table:
                 new_p = p[:] + [m]
                 new_candidate_peptides.append(new_p)
         candidate_peptides = new_candidate_peptides
         # Test candidates to see if they match exp_spec or if they should keep being branched
         removal_idxes = set()
         for i, p in enumerate(candidate_peptides):
-            p_mass = sum([mass_table[aa] for aa in p])
+            p_mass = sum([aa_mass_table[aa] for aa in p])
             if p_mass == peptide_mass:
-                theo_spec = theoretical_spectrum(p, peptide_type, mass_table)
+                theo_spec = theoretical_spectrum(p, peptide_type, aa_mass_table)
                 if theo_spec == exp_spec:
                     final_peptides.append(p)
                 removal_idxes.add(i)
@@ -48,7 +48,7 @@ def sequence_peptide(
                 # Theo spec linear NQY:  [0, 114, 128,      163, 242,      291,           405]
                 #
                 # Given the specs above, the exp spec contains all masses in the theo spec.
-                theo_spec = theoretical_spectrum(p, PeptideType.LINEAR, mass_table)
+                theo_spec = theoretical_spectrum(p, PeptideType.LINEAR, aa_mass_table)
                 if not contains_all_sorted(theo_spec, exp_spec):
                     removal_idxes.add(i)
         candidate_peptides = [p for i, p in enumerate(candidate_peptides) if i not in removal_idxes]

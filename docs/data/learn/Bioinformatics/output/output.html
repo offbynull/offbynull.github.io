@@ -5049,7 +5049,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
         exp_spec: List[float],  <span class="hljs-comment"># must be sorted asc</span>
         peptide_type: PeptideType,
-        mass_table: Dict[AA, float]
+        aa_mass_table: Dict[AA, float]
 </span>) -&gt; List[List[AA]]:</span>
     peptide_mass = exp_spec[<span class="hljs-number">-1</span>]
     candidate_peptides = [[]]
@@ -5058,16 +5058,16 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         <span class="hljs-comment"># Branch candidates</span>
         new_candidate_peptides = []
         <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> candidate_peptides:
-            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> mass_table:
+            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> aa_mass_table:
                 new_p = p[:] + [m]
                 new_candidate_peptides.append(new_p)
         candidate_peptides = new_candidate_peptides
         <span class="hljs-comment"># Test candidates to see if they match exp_spec or if they should keep being branched</span>
         removal_idxes = set()
         <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(candidate_peptides):
-            p_mass = sum([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> p])
+            p_mass = sum([aa_mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> p])
             <span class="hljs-keyword">if</span> p_mass == peptide_mass:
-                theo_spec = theoretical_spectrum(p, peptide_type, mass_table)
+                theo_spec = theoretical_spectrum(p, peptide_type, aa_mass_table)
                 <span class="hljs-keyword">if</span> theo_spec == exp_spec:
                     final_peptides.append(p)
                 removal_idxes.add(i)
@@ -5087,7 +5087,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
                 <span class="hljs-comment"># Theo spec linear NQY:  [0, 114, 128,      163, 242,      291,           405]</span>
                 <span class="hljs-comment">#</span>
                 <span class="hljs-comment"># Given the specs above, the exp spec contains all masses in the theo spec.</span>
-                theo_spec = theoretical_spectrum(p, PeptideType.LINEAR, mass_table)
+                theo_spec = theoretical_spectrum(p, PeptideType.LINEAR, aa_mass_table)
                 <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> contains_all_sorted(theo_spec, exp_spec):
                     removal_idxes.add(i)
         candidate_peptides = [p <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(candidate_peptides) <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> removal_idxes]
@@ -5127,6 +5127,93 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>have noise that causes good candidate <a href="#BM_(peptide)%2Fi">peptide</a> to be dropped / untenable candidate <a href="#BM_(peptide)%2Fi">peptide</a> through.</li>
 </ul>
 <p>A possible bounding step for real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s is to mark a candidate <a href="#BM_(peptide)%2Fi">peptide</a> as untenable if it has a certain number or percentage of mismatches. This is a heuristic, meaning that it won't always lead to the correct <a href="#BM_(peptide)%2Fi">peptide</a>. In contrast, the algorithm described above for perfect <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s always leads to the correct <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
+        exp_spec: List[float],                               <span class="hljs-comment"># must be sorted asc</span>
+        aa_mass_table: Dict[AA, float],                      <span class="hljs-comment"># amino acid mass table</span>
+        aa_mass_tolerance: float,                            <span class="hljs-comment"># amino acid mass tolerance</span>
+        peptide_mass_candidates: List[Tuple[float, float]],  <span class="hljs-comment"># mass range candidates for mass of peptide</span>
+        peptide_type: PeptideType,                           <span class="hljs-comment"># linear or cyclic</span>
+        score_backlog: int = <span class="hljs-number">0</span>,                              <span class="hljs-comment"># backlog of top scores</span>
+        candidate_threshold: float = <span class="hljs-number">0.5</span>                     <span class="hljs-comment"># if &lt; 1 then min % match, else min count match</span>
+</span>) -&gt; SequenceTesterSet:</span>
+    tester_set = SequenceTesterSet(
+        exp_spec,
+        aa_mass_table,
+        aa_mass_tolerance,
+        peptide_mass_candidates,
+        peptide_type,
+        score_backlog
+    )
+    candidate_peptides = [[]]
+    <span class="hljs-keyword">while</span> len(candidate_peptides) &gt; <span class="hljs-number">0</span>:
+        <span class="hljs-comment"># Branch candidates</span>
+        new_candidate_peptides = []
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> candidate_peptides:
+            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> aa_mass_table:
+                new_p = p[:] + [m]
+                new_candidate_peptides.append(new_p)
+        candidate_peptides = new_candidate_peptides
+        <span class="hljs-comment"># Test candidates to see if they match exp_spec or if they should keep being branched</span>
+        removal_idxes = set()
+        <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(candidate_peptides):
+            res = set(tester_set.test(p))
+            <span class="hljs-keyword">if</span> {TestResult.MASS_TOO_LARGE} == res\
+                    <span class="hljs-keyword">or</span> {TestResult.ADDED} == res\
+                    <span class="hljs-keyword">or</span> {TestResult.MASS_TOO_LARGE, TestResult.ADDED} == res:
+                removal_idxes.add(i)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># Why get the theo spec of the linear version even if the peptide is cyclic? Think about what's</span>
+                <span class="hljs-comment"># happening here. If the exp spec is for cyclic peptide NQYQ, and you're checking to see if the</span>
+                <span class="hljs-comment"># candidate NQY should continue to be branched out...</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242,      291, 291, 370, 405, 405, 419, 533]</span>
+                <span class="hljs-comment"># Theo spec cyclic NQY:  [0, 114, 128,      163, 242,      277, 291,           405]</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Given the specs above, the theo spec contains 277 but the exp spec doesn't. That means NQY won't be</span>
+                <span class="hljs-comment"># branched out any further even though it should. As such, even if the exp spec is for a cyclic peptide,</span>
+                <span class="hljs-comment"># treat the candidates as linear segments of that cyclic peptide (essentially linear peptides).</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242, 291, 291, 370, 405, 405, 419, 533]</span>
+                <span class="hljs-comment"># Theo spec linear NQY:  [0, 114, 128,      163, 242,      291,           405]</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Given the specs above, the exp spec contains all masses in the theo spec.</span>
+                theo_spec = SequenceTester.generate_theroetical_spectrum_with_tolerances(
+                    p,
+                    PeptideType.LINEAR,
+                    aa_mass_table,
+                    aa_mass_tolerance
+                )
+                score = score_spectrums(exp_spec, theo_spec)
+                <span class="hljs-keyword">if</span> (candidate_threshold &lt; <span class="hljs-number">1.0</span> <span class="hljs-keyword">and</span> score[<span class="hljs-number">0</span>] / len(theo_spec) &lt; candidate_threshold)\
+                        <span class="hljs-keyword">or</span> score[<span class="hljs-number">0</span>] &lt; candidate_threshold:
+                    removal_idxes.add(i)
+        candidate_peptides = [p <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(candidate_peptides) <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> removal_idxes]
+    <span class="hljs-keyword">return</span> tester_set
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> in the example below is for the <a href="#BM_(peptide)%2Fi">peptide</a> 114-128-163, which has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> [0, 114, 128, 163, 242, 291, 405].</p>
+</div>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the ...</p>
+<ul>
+<li>experimental spectrum: [0.0, 112.5, 127.1, 242.9, 290.0, 404.0]</li>
+<li>experimental spectrum mass noise: ±1.0</li>
+<li>assumed peptide type: linear</li>
+<li>assumed peptide length: 3</li>
+<li>assumed peptide mass: any of the last 1 experimental spectrum masses</li>
+<li>score backlog: 0</li>
+<li>candidate threshold: 75.0% mass matches per iteration</li>
+</ul>
+<p>Captured mino acid masses are (rounded to 1): [112.5, 114.0, 115.8, 127.1, 130.4, 161.1, 162.9, 177.5]</p>
+<p>For peptides between 397.0 and 411.0...</p>
+<ul>
+<li>Score 6: 114.0-127.1-162.9</li>
+<li>Score 6: 162.9-127.1-114.0</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Leaderboard%20Algorithm"></a><h4>Leaderboard Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FLeaderboard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -5134,6 +5221,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FBruteforce%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FBranch-and-bound%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Sequence/Branch-and-bound Algorithm</a></li>
 </ul>
 </div>
 <a name="H_Stories"></a><h1>Stories</h1>

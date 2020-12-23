@@ -9,38 +9,6 @@ from TheoreticalSpectrum_PrefixSum import PeptideType, theoretical_spectrum
 
 AA = TypeVar('AA')
 
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
-TEST ME
 
 # MARKDOWN
 def sequence_peptide(
@@ -68,6 +36,7 @@ def sequence_peptide(
             for m in aa_mass_table:
                 new_p = p[:] + [m]
                 new_candidate_peptides.append(new_p)
+        candidate_peptides = new_candidate_peptides
         # Test candidates to see if they match exp_spec or if they should keep being branched
         removal_idxes = set()
         for i, p in enumerate(candidate_peptides):
@@ -99,8 +68,8 @@ def sequence_peptide(
                     aa_mass_tolerance
                 )
                 score = score_spectrums(exp_spec, theo_spec)
-                if (candidate_threshold < 1.0 and score[0] / len(exp_spec) >= candidate_threshold)\
-                        or score[0] >= candidate_threshold:
+                if (candidate_threshold < 1.0 and score[0] / len(theo_spec) < candidate_threshold)\
+                        or score[0] < candidate_threshold:
                     removal_idxes.add(i)
         candidate_peptides = [p for i, p in enumerate(candidate_peptides) if i not in removal_idxes]
     return tester_set
@@ -123,6 +92,7 @@ def main():
         peptide_mass_noise = experimental_spectrum_peptide_mass_noise(exp_spec_mass_noise, peptide_expected_len)
         peptide_mass_range_candidates = [(m - peptide_mass_noise, m + peptide_mass_noise) for m in exp_spec[-exp_spec_final_mass_in_last_n:]]
         score_backlog = int(input().strip())
+        candidate_threshold = float(input().strip())
         testers = sequence_peptide(
             exp_spec,
             aa_mass_table,
@@ -137,7 +107,9 @@ def main():
         print(f' * assumed peptide type: {peptide_type}')
         print(f' * assumed peptide length: {peptide_expected_len}')
         print(f' * assumed peptide mass: any of the last {exp_spec_final_mass_in_last_n} experimental spectrum masses')
-        print(f' * score backlog: {score_backlog}', end='\n\n')
+        print(f' * score backlog: {score_backlog}')
+        print(f' * candidate threshold: {candidate_threshold * (100.0 if candidate_threshold < 1.0 else 1.0)}'
+              f'{"%" if candidate_threshold < 1.0 else ""} mass matches per iteration', end='\n\n')
         print(f'Captured mino acid masses are (rounded to {aa_mass_round}): {list(aa_mass_table.keys())}', end='\n\n')
         for tester in testers.testers:
             print(f'For peptides between {tester.peptide_min_mass} and {tester.peptide_max_mass}...', end='\n\n')
