@@ -17,6 +17,8 @@ def contains_all_sorted(sorted_this: S, sorted_other: S) -> bool:
     other_idx = 0
     for i in range(0, len(sorted_this)):
         this_elem = sorted_this[this_idx]
+        if other_idx >= len(sorted_other):
+            return False
         other_elem = sorted_other[other_idx]
         while other_elem < this_elem:
             other_idx += 1

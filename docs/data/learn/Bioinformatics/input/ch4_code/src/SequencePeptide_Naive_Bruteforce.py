@@ -7,7 +7,7 @@ AA = TypeVar('AA')
 
 # MARKDOWN
 def sequence_peptide(
-        exp_spec: List[float],
+        exp_spec: List[float],  # must be sorted asc
         peptide_type: PeptideType,
         mass_table: Dict[AA, float]
 ) -> List[List[AA]]:

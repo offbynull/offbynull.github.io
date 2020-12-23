@@ -39,7 +39,7 @@ def theoretical_spectrum(
         peptide: List[AA],
         peptide_type: PeptideType,
         mass_table: Dict[AA, float]
-) -> List[int]:
+) -> List[float]:
     prefixsum_masses = list(accumulate([mass_table[aa] for aa in peptide], initial=0.0))
     ret = [0.0]
     for end_idx in range(0, len(prefixsum_masses)):

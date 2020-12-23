@@ -2677,6 +2677,8 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 
 ### Spectrum Sequence
 
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence)_TOPIC/`
+
 ```{prereq}
 Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
 Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
@@ -2690,11 +2692,13 @@ Algorithms/Mass Spectrometry/Spectrum Score_TOPIC
 
 #### Bruteforce Algorithm
 
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence\/Bruteforce Algorithm)_TOPIC/`
+
 **ALGORITHM**:
 
-Imagine if experimental spectrums were perfect just like theoretical spectrums: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the peptide that produced such an experimental spectrum, generate test peptides by branching out amino acids at each position and compare each test peptide's theoretical spectrum to the experimental spectrum. If the theoretical spectrum matches the experimental spectrum, it's reasonable to assume that peptide is the same as the peptide that generated the experimental spectrum.
+Imagine if experimental spectrums were perfect just like theoretical spectrums: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the peptide that produced such an experimental spectrum, generate candidate peptides by branching out amino acids at each position and compare each candidate peptide's theoretical spectrum to the experimental spectrum. If the theoretical spectrum matches the experimental spectrum, it's reasonable to assume that peptide is the same as the peptide that generated the experimental spectrum.
 
-The algorithm stops branching out once the mass of the test peptide exceeds the final mass in the experimental spectrum. For a perfect experimental spectrum, the final mass is always the mass of the peptide that produced it. For example, for the linear peptide GAK ...
+The algorithm stops branching out once the mass of the candidate peptide exceeds the final mass in the experimental spectrum. For a perfect experimental spectrum, the final mass is always the mass of the peptide that produced it. For example, for the linear peptide GAK ...
 
 |           |     |   G  |   A   |   K   |  GA   |  AK   |  GAK  |
 |-----------|-----|------|-------|-------|-------|-------|-------|
@@ -2717,9 +2721,9 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
 ```
 
-Even though real experimental spectrums aren't perfect, the high-level algorithm remains the same: Create test peptides by branching out amino acids and capture the best scoring ones until the mass goes too high. However, the problems with real experimental spectrums end up complicating the final algorithm.
+Even though real experimental spectrums aren't perfect, the high-level algorithm remains the same: Create candidate peptides by branching out amino acids and capture the best scoring ones until the mass goes too high. However, various low-level aspects of the algorithm need to be modified to handle the problems with real experimental spectrums.
 
-For starters, since there are no preset amino acids to build test peptides with, amino acid masses are captured using spectrum convolution and used directly. For example, instead of representing a peptide as GAK, it's represented as 57-71-128.
+For starters, since there are no preset amino acids to build candidate peptides with, amino acid masses are captured using spectrum convolution and used directly. For example, instead of representing a peptide as GAK, it's represented as 57-71-128.
 
 |   G  |   A   |   K   |
 |------|-------|-------|
@@ -2764,12 +2768,12 @@ python
 ```
 
 ```{note}
-The experimental spectrum in the example below is for the peptide 114-128-163.
+The experimental spectrum in the example below is for the peptide 114-128-163, which has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405].
 ```
 
 ```{ch4}
 SequencePeptide_Bruteforce
-0.0 112.5 126.8 245.9 287.0 400.0
+0.0 112.5 127.1 242.9 290.0 404.0
 1.0
 1
 1
@@ -2780,15 +2784,68 @@ linear
 
 #### Branch-and-bound Algorithm
 
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence\/Branch-and-bound Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm_TOPIC
+```
+
 **ALGORITHM**:
 
-```{note}
-The following is an extension to the Pevzner book's algorithms. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
+This algorithm extends the bruteforce algorithm into a more efficient branch-and-bound algorithm by adding one extra step: After each branch, any candidates peptides deemed to be untenable are discarded. In this case, untenable means that there's no chance / little chance of the peptide branching out to a correct solution.
+
+Imagine if experimental spectrums were perfect just like theoretical spectrums: no missing masses, no faulty masses, no noise, and preserved repeat masses. For such an experimental spectrum, an untenable candidate peptide has a theoretical spectrum with at least one mass that don't exist in the experimental spectrum. For example, the peptide 57-71-128 has the theoretical spectrum [0Da, 57Da, 71Da, 128Da, 128Da, 199Da, 256Da]. If 71Da were missing from the experimental spectrum, that peptide would be untenable (won't move forward).
+
+When testing if a candidate peptide should move forward, the candidate peptide be treated as a linear peptide even if the experimental spectrum is for a cyclic peptide. For example, testing the experimental spectrum for cyclic peptide NQYQ against the theoretical spectrum for candidate cyclic peptide NQY...
+
+| Peptide | 0 | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  |
+|---------|---|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| NQYQ    | 0 | 114 | 128 | 128 | 163 | 242 | 242 |     | 291 | 291 | 370 | 405 | 405 | 419 | 533 |
+| NQY     | 0 | 114 | 128 |     | 163 | 242 |     | 277 | 291 |     |     | 405 |     |     |     |
+
+The theoretical spectrum contains 277, but the experimental spectrum doesn't. That means NQY won't branch out any further even though it should. As such, even if the experimental spectrum is for a cyclic peptide, treat candidate peptides as if they're linear segments of a cyclic peptide (essentially the same as linear peptides). If the theoretical spectrum for candidate linear peptide NQY were used...
+
+| Peptide | 0 | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  |
+|---------|---|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| NQYQ    | 0 | 114 | 128 | 128 | 163 | 242 | 242 | 291 | 291 | 370 | 405 | 405 | 419 | 533 |
+| NQY     | 0 | 114 | 128 |     | 163 | 242 |     | 291 |     |     | 405 |     |     |     |
+
+All theoretical spectrum masses are in the experimental spectrum. As such, the candidate NQY would move forward.
+
+```{output}
+ch4_code/src/SequencePeptide_Naive_BranchAndBound.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
+
+```{ch4}
+SequencePeptide_Naive_BranchAndBound
+0 114 128 128 163 242 242 291 291 370 405 405 419 533
+cyclic
+G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
+```
+
+```{note}
+The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
+```
+
+The bounding step described above won't work for real experimental spectrums. For example, a real experimental spectrum may ...
+
+ * have a faulty mass that allows candidate peptides that should be untenable.
+ * be missing a mass that drops candidate peptides that should be good.
+ * have noise that causes good candidate peptide to be dropped / untenable candidate peptide through.
+
+A possible bounding step for real experimental spectrums is to mark a candidate peptide as untenable if it has a certain number or percentage of mismatches. This is a heuristic, meaning that it won't always lead to the correct peptide. In contrast, the algorithm described above for perfect experimental spectrums always leads to the correct peptide.
 
 #### Leaderboard Algorithm
 
 **ALGORITHM**:
+
+`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence\/Leaderboard Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm_TOPIC
+```
 
 # Stories
 

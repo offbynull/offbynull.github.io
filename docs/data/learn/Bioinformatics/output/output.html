@@ -3853,7 +3853,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         peptide: List[AA],
         peptide_type: PeptideType,
         mass_table: Dict[AA, float]
-</span>) -&gt; List[int]:</span>
+</span>) -&gt; List[float]:</span>
     prefixsum_masses = list(accumulate([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> peptide], initial=<span class="hljs-number">0.0</span>))
     ret = [<span class="hljs-number">0.0</span>]
     <span class="hljs-keyword">for</span> end_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(prefixsum_masses)):
@@ -4682,6 +4682,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </div>
 <p></p>
 <a name="H_Spectrum%20Sequence"></a><h3>Spectrum Sequence</h3>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -4694,9 +4695,10 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>WHAT</strong>: Given an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> and a set of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses, generate <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s and score them against the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> in an effort to infer the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> of the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
 <p><strong>WHY</strong>: The more matching masses between a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> and an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
 <a name="H3_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FBruteforce%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>Imagine if <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s were perfect just like <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the <a href="#BM_(peptide)%2Fi">peptide</a> that produced such an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, generate test <a href="#BM_(peptide)%2Fi">peptide</a>s by branching out <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s at each position and compare each test <a href="#BM_(peptide)%2Fi">peptide</a>'s <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> to the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. If the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> matches the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, it's reasonable to assume that <a href="#BM_(peptide)%2Fi">peptide</a> is the same as the <a href="#BM_(peptide)%2Fi">peptide</a> that generated the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
-<p>The algorithm stops branching out once the mass of the test <a href="#BM_(peptide)%2Fi">peptide</a> exceeds the final mass in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For a perfect <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the final mass is always the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. For example, for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> GAK ...</p>
+<p>Imagine if <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s were perfect just like <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s: no missing masses, no faulty masses, no noise, and preserved repeat masses. To bruteforce the <a href="#BM_(peptide)%2Fi">peptide</a> that produced such an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, generate candidate <a href="#BM_(peptide)%2Fi">peptide</a>s by branching out <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s at each position and compare each candidate <a href="#BM_(peptide)%2Fi">peptide</a>'s <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> to the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. If the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> matches the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, it's reasonable to assume that <a href="#BM_(peptide)%2Fi">peptide</a> is the same as the <a href="#BM_(peptide)%2Fi">peptide</a> that generated the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>.</p>
+<p>The algorithm stops branching out once the mass of the candidate <a href="#BM_(peptide)%2Fi">peptide</a> exceeds the final mass in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For a perfect <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the final mass is always the mass of the <a href="#BM_(peptide)%2Fi">peptide</a> that produced it. For example, for the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> GAK ...</p>
 <table>
 <thead>
 <tr>
@@ -4724,7 +4726,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </tbody>
 </table>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
-        exp_spec: List[float],
+        exp_spec: List[float],  <span class="hljs-comment"># must be sorted asc</span>
         peptide_type: PeptideType,
         mass_table: Dict[AA, float]
 </span>) -&gt; List[List[AA]]:</span>
@@ -4759,8 +4761,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
 </div>
-<p>Even though real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s aren't perfect, the high-level algorithm remains the same: Create test <a href="#BM_(peptide)%2Fi">peptide</a>s by branching out <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s and capture the best scoring ones until the mass goes too high. However, the problems with real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s end up complicating the final algorithm.</p>
-<p>For starters, since there are no preset <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s to build test <a href="#BM_(peptide)%2Fi">peptide</a>s with, <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses are captured using <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> and used directly. For example, instead of representing a <a href="#BM_(peptide)%2Fi">peptide</a> as GAK, it's represented as 57-71-128.</p>
+<p>Even though real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s aren't perfect, the high-level algorithm remains the same: Create candidate <a href="#BM_(peptide)%2Fi">peptide</a>s by branching out <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s and capture the best scoring ones until the mass goes too high. However, various low-level aspects of the algorithm need to be modified to handle the problems with real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s.</p>
+<p>For starters, since there are no preset <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s to build candidate <a href="#BM_(peptide)%2Fi">peptide</a>s with, <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses are captured using <a href="#BM_(spectrum%20convolution)%2Fi">spectrum convolution</a> and used directly. For example, instead of representing a <a href="#BM_(peptide)%2Fi">peptide</a> as GAK, it's represented as 57-71-128.</p>
 <table>
 <thead>
 <tr>
@@ -4892,45 +4894,248 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> in the example below is for the <a href="#BM_(peptide)%2Fi">peptide</a> 114-128-163.</p>
+<p>The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> in the example below is for the <a href="#BM_(peptide)%2Fi">peptide</a> 114-128-163, which has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> [0, 114, 128, 163, 242, 291, 405].</p>
 </div>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the ...</p>
 <ul>
-<li>experimental spectrum: [0.0, 112.5, 126.8, 245.9, 287.0, 400.0]</li>
+<li>experimental spectrum: [0.0, 112.5, 127.1, 242.9, 290.0, 404.0]</li>
 <li>experimental spectrum mass noise: ±1.0</li>
 <li>assumed peptide type: linear</li>
 <li>assumed peptide length: 3</li>
 <li>assumed peptide mass: any of the last 1 experimental spectrum masses</li>
 <li>score backlog: 0</li>
 </ul>
-<p>Captured mino acid masses are (rounded to 1): [112.5, 113.0, 119.1, 126.8, 133.4, 154.1, 160.2, 174.5]</p>
-<p>For peptides between 393.0 and 407.0...</p>
+<p>Captured mino acid masses are (rounded to 1): [112.5, 114.0, 115.8, 127.1, 130.4, 161.1, 162.9, 177.5]</p>
+<p>For peptides between 397.0 and 411.0...</p>
 <ul>
-<li>Score 5: 112.5-126.8-160.2</li>
-<li>Score 5: 112.5-133.4-154.1</li>
-<li>Score 5: 112.5-160.2-126.8</li>
-<li>Score 5: 113.0-126.8-160.2</li>
-<li>Score 5: 113.0-133.4-154.1</li>
-<li>Score 5: 113.0-160.2-126.8</li>
-<li>Score 5: 126.8-160.2-112.5</li>
-<li>Score 5: 126.8-160.2-113.0</li>
-<li>Score 5: 154.1-133.4-112.5</li>
-<li>Score 5: 154.1-133.4-113.0</li>
-<li>Score 5: 160.2-126.8-112.5</li>
-<li>Score 5: 160.2-126.8-113.0</li>
+<li>Score 6: 114.0-127.1-162.9</li>
+<li>Score 6: 162.9-127.1-114.0</li>
 </ul>
 </div>
 <p></p>
 <a name="H_Branch-and-bound%20Algorithm"></a><h4>Branch-and-bound Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FBranch-and-bound%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FBruteforce%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm</a></li>
+</ul>
+</div>
 <p><strong>ALGORITHM</strong>:</p>
+<p>This algorithm extends the bruteforce algorithm into a more efficient <a href="#BM_(branch-and-bound%20algorithm%7Cbranch%20and%20bound%20algorithm)%2Fi">branch-and-bound algorithm</a> by adding one extra step: After each branch, any candidates <a href="#BM_(peptide)%2Fi">peptide</a>s deemed to be untenable are discarded. In this case, untenable means that there's no chance / little chance of the <a href="#BM_(peptide)%2Fi">peptide</a> branching out to a correct solution.</p>
+<p>Imagine if <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s were perfect just like <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s: no missing masses, no faulty masses, no noise, and preserved repeat masses. For such an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, an untenable candidate <a href="#BM_(peptide)%2Fi">peptide</a> has a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> with at least one mass that don't exist in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For example, the <a href="#BM_(peptide)%2Fi">peptide</a> 57-71-128 has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> [0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 199<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 256<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]. If 71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> were missing from the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, that <a href="#BM_(peptide)%2Fi">peptide</a> would be untenable (won't move forward).</p>
+<p>When testing if a candidate <a href="#BM_(peptide)%2Fi">peptide</a> should move forward, the candidate <a href="#BM_(peptide)%2Fi">peptide</a> be treated as a <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> even if the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a>. For example, testing the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a> NQYQ against the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for candidate <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a> NQY...</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(peptide)%2Fi">Peptide</a></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NQYQ</td>
+<td>0</td>
+<td>114</td>
+<td>128</td>
+<td>128</td>
+<td>163</td>
+<td>242</td>
+<td>242</td>
+<td></td>
+<td>291</td>
+<td>291</td>
+<td>370</td>
+<td>405</td>
+<td>405</td>
+<td>419</td>
+<td>533</td>
+</tr>
+<tr>
+<td>NQY</td>
+<td>0</td>
+<td>114</td>
+<td>128</td>
+<td></td>
+<td>163</td>
+<td>242</td>
+<td></td>
+<td>277</td>
+<td>291</td>
+<td></td>
+<td></td>
+<td>405</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> contains 277, but the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> doesn't. That means NQY won't branch out any further even though it should. As such, even if the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a>, treat candidate <a href="#BM_(peptide)%2Fi">peptide</a>s as if they're linear segments of a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a> (essentially the same as <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a>s). If the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for candidate <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY were used...</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(peptide)%2Fi">Peptide</a></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NQYQ</td>
+<td>0</td>
+<td>114</td>
+<td>128</td>
+<td>128</td>
+<td>163</td>
+<td>242</td>
+<td>242</td>
+<td>291</td>
+<td>291</td>
+<td>370</td>
+<td>405</td>
+<td>405</td>
+<td>419</td>
+<td>533</td>
+</tr>
+<tr>
+<td>NQY</td>
+<td>0</td>
+<td>114</td>
+<td>128</td>
+<td></td>
+<td>163</td>
+<td>242</td>
+<td></td>
+<td>291</td>
+<td></td>
+<td></td>
+<td>405</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>All <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> masses are in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. As such, the candidate NQY would move forward.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
+        exp_spec: List[float],  <span class="hljs-comment"># must be sorted asc</span>
+        peptide_type: PeptideType,
+        mass_table: Dict[AA, float]
+</span>) -&gt; List[List[AA]]:</span>
+    peptide_mass = exp_spec[<span class="hljs-number">-1</span>]
+    candidate_peptides = [[]]
+    final_peptides = []
+    <span class="hljs-keyword">while</span> len(candidate_peptides) &gt; <span class="hljs-number">0</span>:
+        <span class="hljs-comment"># Branch candidates</span>
+        new_candidate_peptides = []
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> candidate_peptides:
+            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> mass_table:
+                new_p = p[:] + [m]
+                new_candidate_peptides.append(new_p)
+        candidate_peptides = new_candidate_peptides
+        <span class="hljs-comment"># Test candidates to see if they match exp_spec or if they should keep being branched</span>
+        removal_idxes = set()
+        <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(candidate_peptides):
+            p_mass = sum([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> p])
+            <span class="hljs-keyword">if</span> p_mass == peptide_mass:
+                theo_spec = theoretical_spectrum(p, peptide_type, mass_table)
+                <span class="hljs-keyword">if</span> theo_spec == exp_spec:
+                    final_peptides.append(p)
+                removal_idxes.add(i)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># Why get the theo spec of the linear version even if the peptide is cyclic? Think about what's</span>
+                <span class="hljs-comment"># happening here. If the exp spec is for cyclic peptide NQYQ, and you're checking to see if the</span>
+                <span class="hljs-comment"># candidate NQY should continue to be branched out...</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242,      291, 291, 370, 405, 405, 419, 533]</span>
+                <span class="hljs-comment"># Theo spec cyclic NQY:  [0, 114, 128,      163, 242,      277, 291,           405]</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Given the specs above, the theo spec contains 277 but the exp spec doesn't. That means NQY won't be</span>
+                <span class="hljs-comment"># branched out any further even though it should. As such, even if the exp spec is for a cyclic peptide,</span>
+                <span class="hljs-comment"># treat the candidates as linear segments of that cyclic peptide (essentially linear peptides).</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242, 291, 291, 370, 405, 405, 419, 533]</span>
+                <span class="hljs-comment"># Theo spec linear NQY:  [0, 114, 128,      163, 242,      291,           405]</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># Given the specs above, the exp spec contains all masses in the theo spec.</span>
+                theo_spec = theoretical_spectrum(p, PeptideType.LINEAR, mass_table)
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> contains_all_sorted(theo_spec, exp_spec):
+                    removal_idxes.add(i)
+        candidate_peptides = [p <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(candidate_peptides) <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> removal_idxes]
+    <span class="hljs-keyword">return</span> final_peptides
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The cyclic peptides matching the experimental spectrum [0.0, 114.0, 128.0, 128.0, 163.0, 242.0, 242.0, 291.0, 291.0, 370.0, 405.0, 405.0, 419.0, 533.0] are...</p>
+<ul>
+<li>NKYK</li>
+<li>NKYQ</li>
+<li>NQYK</li>
+<li>NQYQ</li>
+<li>KNKY</li>
+<li>KNQY</li>
+<li>KYKN</li>
+<li>KYQN</li>
+<li>QNKY</li>
+<li>QNQY</li>
+<li>QYKN</li>
+<li>QYQN</li>
+<li>YKNK</li>
+<li>YKNQ</li>
+<li>YQNK</li>
+<li>YQNQ</li>
+</ul>
+</div>
+<p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The following is an extension to the Pevzner book's algorithms. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
+<p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
 </div>
+<p>The bounding step described above won't work for real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s. For example, a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> may ...</p>
+<ul>
+<li>have a faulty mass that allows candidate <a href="#BM_(peptide)%2Fi">peptide</a>s that should be untenable.</li>
+<li>be missing a mass that drops candidate <a href="#BM_(peptide)%2Fi">peptide</a>s that should be good.</li>
+<li>have noise that causes good candidate <a href="#BM_(peptide)%2Fi">peptide</a> to be dropped / untenable candidate <a href="#BM_(peptide)%2Fi">peptide</a> through.</li>
+</ul>
+<p>A possible bounding step for real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s is to mark a candidate <a href="#BM_(peptide)%2Fi">peptide</a> as untenable if it has a certain number or percentage of mismatches. This is a heuristic, meaning that it won't always lead to the correct <a href="#BM_(peptide)%2Fi">peptide</a>. In contrast, the algorithm described above for perfect <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s always leads to the correct <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
 <a name="H_Leaderboard%20Algorithm"></a><h4>Leaderboard Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
+<p><a name="BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FLeaderboard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence%2FBruteforce%20Algorithm)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm</a></li>
+</ul>
+</div>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
