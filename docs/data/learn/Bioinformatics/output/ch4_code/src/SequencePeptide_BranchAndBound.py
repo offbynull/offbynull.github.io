@@ -52,10 +52,14 @@ def sequence_peptide(
                 #
                 # Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242,      291, 291, 370, 405, 405, 419, 533]
                 # Theo spec cyclic NQY:  [0, 114, 128,      163, 242,      277, 291,           405]
+                #                                                           ^
+                #                                                           |
+                #                                                        mass(YN)
                 #
-                # Given the specs above, the theo spec contains 277 but the exp spec doesn't. That means NQY won't be
-                # branched out any further even though it should. As such, even if the exp spec is for a cyclic peptide,
-                # treat the candidates as linear segments of that cyclic peptide (essentially linear peptides).
+                # Since NQY is being treated as a cyclic peptide, it has the subpeptide YN (mass of 277). However, the
+                # cyclic peptide NQYQ doesn't have the subpeptide YN. That means NQY won't be branched out any further
+                # even though it should. As such, even if the exp spec is for a cyclic peptide, treat the candidates as
+                # linear segments of that cyclic peptide (essentially linear peptides).
                 #
                 # Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242, 291, 291, 370, 405, 405, 419, 533]
                 # Theo spec linear NQY:  [0, 114, 128,      163, 242,      291,           405]
@@ -123,18 +127,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# if __name__ == '__main__':
-#     exp_spec = [0.0, 112.5, 126.8, 163.6, 245.9, 287.0, 400.0]
-#     aa_masses = spectrum_convolution(exp_spec, 2.0)
-#     aa_mass_table = {round(k, 0): round(k, 0) for k, v in aa_masses.items()}
-#     peptide_mass_noise = experimental_spectrum_peptide_mass_noise(1, 3)
-#     peptide_mass_range_candidates = [(m - peptide_mass_noise, m + peptide_mass_noise)for m in exp_spec[-1:]]
-#     testers = sequence_peptide(exp_spec, aa_mass_table, 2.0, peptide_mass_range_candidates, PeptideType.LINEAR)
-#     for tester in testers.testers:
-#         print(f'For peptides between {tester.peptide_min_mass} and {tester.peptide_max_mass}')
-#         print(f'-------------------')
-#         for score, peptides in tester.leader_peptides.items():
-#             for peptide in peptides:
-#                 print(f'{score}: {peptide}')

@@ -2030,7 +2030,7 @@ Algorithms/K-mer_TOPIC
 A peptide is a miniature protein consisting of a chain of amino acids anywhere between 2 to 100 amino acids in length. Peptides are created through two mechanisms:
 
  1. ribosomal peptides: DNA gets transcribed to mRNA (transcription), which in turn gets translated by the ribosome into a peptide (translation).
- 2. non-ribosomal peptides: proteins called NRP synthase construct peptides.
+ 2. non-ribosomal peptides: proteins called NRP synthetase construct peptides.
 
 For ribosomal peptides, each amino acid is encoded as a DNA sequence of length 3. This 3 length DNA sequence is referred to as a codon. By knowing which codons map to which amino acids, the ...
 
@@ -2869,6 +2869,34 @@ linear
 Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm_TOPIC
 Algorithms/Mass Spectrometry/Spectrum Sequence/Branch-and-bound Algorithm_TOPIC
 ```
+
+This algorithm is similar to the branch-and-bound algorithm, but the bounding step is slightly different: At each branch, rather than removing untenable candidate peptides, it only moves forward the best n scoring candidate peptides. These best scoring peptides are referred to as the leaderboard.
+
+For a perfect experimental spectrum (no missing masses, no faulty masses, no noise, and preserved repeat masses), this algorithm isn't much different than the branch-and-bound algorithm. However, imagine if the perfect experimental spectrum wasn't exactly perfect in that it could have faulty masses and could be missing masses. In such a case, the branch-and-bound algorithm would always fail while this algorithm could still converge to the correct peptide -- it's a heuristic, meaning that it isn't guaranteed to lead to the correct peptide.
+
+```{output}
+ch4_code/src/SequencePeptide_Naive_Leaderboard.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{note}
+The experimental spectrum in the example below is for the peptide NQYQ, which has the theoretical spectrum [0, 114, 128, 128, 163, 242, 242, 291, 291, 370, 405, 405, 419, 533].
+```
+
+```{ch4}
+SequencePeptide_Naive_Leaderboard
+0 114 163 242 291 370 405 419 480 533
+cyclic
+533
+10
+G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 115, K: 128, Q: 128, E: 129, M: 131, H: 137, F: 147, R: 156, Y: 163, W: 186
+```
+
+```{note}
+The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
+```
+
 
 # Stories
 

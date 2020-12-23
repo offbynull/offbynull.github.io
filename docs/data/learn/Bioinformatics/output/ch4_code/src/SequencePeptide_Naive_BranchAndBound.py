@@ -39,10 +39,14 @@ def sequence_peptide(
                 #
                 # Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242,      291, 291, 370, 405, 405, 419, 533]
                 # Theo spec cyclic NQY:  [0, 114, 128,      163, 242,      277, 291,           405]
+                #                                                           ^
+                #                                                           |
+                #                                                        mass(YN)
                 #
-                # Given the specs above, the theo spec contains 277 but the exp spec doesn't. That means NQY won't be
-                # branched out any further even though it should. As such, even if the exp spec is for a cyclic peptide,
-                # treat the candidates as linear segments of that cyclic peptide (essentially linear peptides).
+                # Since NQY is being treated as a cyclic peptide, it has the subpeptide YN (mass of 277). However, the
+                # cyclic peptide NQYQ doesn't have the subpeptide YN. That means NQY won't be branched out any further
+                # even though it should. As such, even if the exp spec is for a cyclic peptide, treat the candidates as
+                # linear segments of that cyclic peptide (essentially linear peptides).
                 #
                 # Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242, 291, 291, 370, 405, 405, 419, 533]
                 # Theo spec linear NQY:  [0, 114, 128,      163, 242,      291,           405]
