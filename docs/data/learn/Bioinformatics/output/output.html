@@ -4728,7 +4728,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
         exp_spec: List[float],  <span class="hljs-comment"># must be sorted asc</span>
         peptide_type: PeptideType,
-        mass_table: Dict[AA, float]
+        aa_mass_table: Dict[AA, float]
 </span>) -&gt; List[List[AA]]:</span>
     peptide_mass = exp_spec[<span class="hljs-number">-1</span>]
     candidate_peptides = [[]]
@@ -4736,10 +4736,10 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
     <span class="hljs-keyword">while</span> len(candidate_peptides) &gt; <span class="hljs-number">0</span>:
         new_candidate_peptides = []
         <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> candidate_peptides:
-            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> mass_table.keys():
+            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> aa_mass_table.keys():
                 new_p = p[:] + [m]
-                new_p_mass = sum([mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> new_p])
-                <span class="hljs-keyword">if</span> new_p_mass == peptide_mass <span class="hljs-keyword">and</span> theoretical_spectrum(new_p, peptide_type, mass_table) == exp_spec:
+                new_p_mass = sum([aa_mass_table[aa] <span class="hljs-keyword">for</span> aa <span class="hljs-keyword">in</span> new_p])
+                <span class="hljs-keyword">if</span> new_p_mass == peptide_mass <span class="hljs-keyword">and</span> theoretical_spectrum(new_p, peptide_type, aa_mass_table) == exp_spec:
                     final_peptides.append(new_p)
                 <span class="hljs-keyword">elif</span> new_p_mass &lt; peptide_mass:
                     new_candidate_peptides.append(new_p)
