@@ -2,7 +2,6 @@ from typing import List, Dict, TypeVar, Optional
 
 from SpectrumScore_NoNoise import score_spectrums
 from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
-from helpers.AminoAcidUtils import get_amino_acid_to_mass_table
 
 AA = TypeVar('AA')
 
@@ -22,7 +21,7 @@ def sequence_peptide(
     leaderboard = [[]]
     final_peptides = [next(iter(leaderboard))]
     final_score = score_spectrums(
-        theoretical_spectrum(final_peptides[0], PeptideType.CYCLIC, aa_mass_table),
+        theoretical_spectrum(final_peptides[0], peptide_type, aa_mass_table),
         exp_spec
     )
     while len(leaderboard) > 0:
@@ -70,14 +69,14 @@ def sequence_peptide(
             # treat the candidates as linear segments of that cyclic peptide (essentially linear  peptides).
         theo_specs = [theoretical_spectrum(p, PeptideType.LINEAR, aa_mass_table) for p in expanded_leaderboard]
         scores = [score_spectrums(theo_spec, exp_spec) for theo_spec in theo_specs]
-        score_pairs = sorted(zip(expanded_leaderboard, scores), key=lambda x: x[1], reverse=True)
+        scores_paired = sorted(zip(expanded_leaderboard, scores), key=lambda x: x[1], reverse=True)
         trim_pos = leaderboard_size
-        tail_score = 0 if len(score_pairs) == 0 else score_pairs[-1][1]
-        for j in range(leaderboard_size + 1, len(score_pairs)):
-            if score_pairs[j][1] < tail_score:
+        tail_score = 0 if len(scores_paired) == 0 else scores_paired[-1][1]
+        for j in range(leaderboard_size + 1, len(scores_paired)):
+            if scores_paired[j][1] < tail_score:
                 trim_pos = j
                 break
-        leaderboard = [p for p, _ in score_pairs[:trim_pos]]
+        leaderboard = [p for p, _ in scores_paired[:trim_pos]]
     return final_peptides
 # MARKDOWN
 

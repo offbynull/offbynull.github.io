@@ -4869,7 +4869,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         aa_mass_tolerance: float,                            <span class="hljs-comment"># amino acid mass tolerance</span>
         peptide_mass_candidates: List[Tuple[float, float]],  <span class="hljs-comment"># mass range candidates for mass of peptide</span>
         peptide_type: PeptideType,                           <span class="hljs-comment"># linear or cyclic</span>
-        score_backlog: int = <span class="hljs-number">0</span>                               <span class="hljs-comment"># backlog of top scores</span>
+        score_backlog: int                                   <span class="hljs-comment"># backlog of top scores</span>
 </span>) -&gt; SequenceTesterSet:</span>
     tester_set = SequenceTesterSet(
         exp_spec,
@@ -5137,8 +5137,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         aa_mass_tolerance: float,                            <span class="hljs-comment"># amino acid mass tolerance</span>
         peptide_mass_candidates: List[Tuple[float, float]],  <span class="hljs-comment"># mass range candidates for mass of peptide</span>
         peptide_type: PeptideType,                           <span class="hljs-comment"># linear or cyclic</span>
-        score_backlog: int = <span class="hljs-number">0</span>,                              <span class="hljs-comment"># backlog of top scores</span>
-        candidate_threshold: float = <span class="hljs-number">0.5</span>                     <span class="hljs-comment"># if &lt; 1 then min % match, else min count match</span>
+        score_backlog: int,                                  <span class="hljs-comment"># backlog of top scores</span>
+        candidate_threshold: float                           <span class="hljs-comment"># if &lt; 1 then min % match, else min count match</span>
 </span>) -&gt; SequenceTesterSet:</span>
     tester_set = SequenceTesterSet(
         exp_spec,
@@ -5218,7 +5218,6 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>For peptides between 397.0 and 411.0...</p>
 <ul>
 <li>Score 6: 114.0-127.1-162.9</li>
-<li>Score 6: 162.9-127.1-114.0</li>
 </ul>
 </div>
 <p></p>
@@ -5248,7 +5247,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
     leaderboard = [[]]
     final_peptides = [next(iter(leaderboard))]
     final_score = score_spectrums(
-        theoretical_spectrum(final_peptides[<span class="hljs-number">0</span>], PeptideType.CYCLIC, aa_mass_table),
+        theoretical_spectrum(final_peptides[<span class="hljs-number">0</span>], peptide_type, aa_mass_table),
         exp_spec
     )
     <span class="hljs-keyword">while</span> len(leaderboard) &gt; <span class="hljs-number">0</span>:
@@ -5296,14 +5295,14 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
             <span class="hljs-comment"># treat the candidates as linear segments of that cyclic peptide (essentially linear  peptides).</span>
         theo_specs = [theoretical_spectrum(p, PeptideType.LINEAR, aa_mass_table) <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> expanded_leaderboard]
         scores = [score_spectrums(theo_spec, exp_spec) <span class="hljs-keyword">for</span> theo_spec <span class="hljs-keyword">in</span> theo_specs]
-        score_pairs = sorted(zip(expanded_leaderboard, scores), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
+        scores_paired = sorted(zip(expanded_leaderboard, scores), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
         trim_pos = leaderboard_size
-        tail_score = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> len(score_pairs) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> score_pairs[<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]
-        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(leaderboard_size + <span class="hljs-number">1</span>, len(score_pairs)):
-            <span class="hljs-keyword">if</span> score_pairs[j][<span class="hljs-number">1</span>] &lt; tail_score:
+        tail_score = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> len(scores_paired) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> scores_paired[<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(leaderboard_size + <span class="hljs-number">1</span>, len(scores_paired)):
+            <span class="hljs-keyword">if</span> scores_paired[j][<span class="hljs-number">1</span>] &lt; tail_score:
                 trim_pos = j
                 <span class="hljs-keyword">break</span>
-        leaderboard = [p <span class="hljs-keyword">for</span> p, _ <span class="hljs-keyword">in</span> score_pairs[:trim_pos]]
+        leaderboard = [p <span class="hljs-keyword">for</span> p, _ <span class="hljs-keyword">in</span> scores_paired[:trim_pos]]
     <span class="hljs-keyword">return</span> final_peptides
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -5341,6 +5340,95 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
 </div>
+<p>For real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s, the algorithm is very similar to the real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> version of the <a href="#BM_(branch-and-bound%20algorithm%7Cbranch%20and%20bound%20algorithm)%2Fi">branch-and-bound algorithm</a>. The only difference is that the heuristic for the <a href="#BM_(branch-and-bound%20algorithm%7Cbranch%20and%20bound%20algorithm)%2Fi">branch-and-bound algorithm</a> is swapped out for the leaderboard heuristic.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sequence_peptide</span>(<span class="hljs-params">
+        exp_spec: List[float],                               <span class="hljs-comment"># must be sorted asc</span>
+        aa_mass_table: Dict[AA, float],                      <span class="hljs-comment"># amino acid mass table</span>
+        aa_mass_tolerance: float,                            <span class="hljs-comment"># amino acid mass tolerance</span>
+        peptide_mass_candidates: List[Tuple[float, float]],  <span class="hljs-comment"># mass range candidates for mass of peptide</span>
+        peptide_type: PeptideType,                           <span class="hljs-comment"># linear or cyclic</span>
+        score_backlog: int,                                  <span class="hljs-comment"># backlog of top scores</span>
+        leaderboard_size: int
+</span>) -&gt; SequenceTesterSet:</span>
+    tester_set = SequenceTesterSet(
+        exp_spec,
+        aa_mass_table,
+        aa_mass_tolerance,
+        peptide_mass_candidates,
+        peptide_type,
+        score_backlog
+    )
+    leaderboard = [[]]
+    <span class="hljs-keyword">while</span> len(leaderboard) &gt; <span class="hljs-number">0</span>:
+        <span class="hljs-comment"># Branch candidates</span>
+        expanded_leaderboard = []
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> leaderboard:
+            <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> aa_mass_table:
+                new_p = p[:] + [m]
+                expanded_leaderboard.append(new_p)
+        <span class="hljs-comment"># Test candidates to see if they match exp_spec or if they should keep being branched</span>
+        removal_idxes = set()
+        <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(expanded_leaderboard):
+            res = set(tester_set.test(p))
+            <span class="hljs-keyword">if</span> {TestResult.MASS_TOO_LARGE} == res\
+                    <span class="hljs-keyword">or</span> {TestResult.ADDED} == res\
+                    <span class="hljs-keyword">or</span> {TestResult.MASS_TOO_LARGE, TestResult.ADDED} == res:
+                removal_idxes.add(i)
+        expanded_leaderboard = [p <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> enumerate(expanded_leaderboard) <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> removal_idxes]
+        <span class="hljs-comment"># Set leaderboard to the top n scoring peptides from expanded_leaderboard, but include peptides past n as long</span>
+        <span class="hljs-comment"># as those peptides have a score equal to the nth peptide. The reason for this is that because they score the</span>
+        <span class="hljs-comment"># same, there's just as much of a chance that they'll end up as the winner as it is that the nth peptide will.</span>
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> Why get the theo spec of the linear version even if the peptide is cyclic? For similar reasons as to</span>
+            <span class="hljs-comment"># why it's done in the branch-and-bound variant: If we treat candidate peptides as cyclic, their theo spec</span>
+            <span class="hljs-comment"># will include masses for wrapping subpeptides of the candidate peptide. These wrapping subpeptide masses</span>
+            <span class="hljs-comment"># may end up inadvertently matching masses in the experimental spectrum, meaning that the candidate may get</span>
+            <span class="hljs-comment"># a better score than it should, potentially pushing it forward over other candidates that would ultimately</span>
+            <span class="hljs-comment"># branch out  to a more optimal final solution. As such, even if the exp  spec is  for a cyclic peptide,</span>
+            <span class="hljs-comment"># treat the candidates as linear segments of that cyclic peptide (essentially linear  peptides).</span>
+        theo_specs = [
+            SequenceTester.generate_theroetical_spectrum_with_tolerances(
+                p,
+                peptide_type,
+                aa_mass_table,
+                aa_mass_tolerance
+            )
+            <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> expanded_leaderboard
+        ]
+        scores = [score_spectrums(exp_spec, theo_spec) <span class="hljs-keyword">for</span> theo_spec <span class="hljs-keyword">in</span> theo_specs]
+        scores_paired = sorted(zip(expanded_leaderboard, scores), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
+        trim_pos = leaderboard_size
+        tail_score = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> len(scores_paired) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> scores_paired[<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(leaderboard_size + <span class="hljs-number">1</span>, len(scores_paired)):
+            <span class="hljs-keyword">if</span> scores_paired[j][<span class="hljs-number">1</span>] &lt; tail_score:
+                trim_pos = j
+                <span class="hljs-keyword">break</span>
+        leaderboard = [p <span class="hljs-keyword">for</span> p, _ <span class="hljs-keyword">in</span> scores_paired[:trim_pos]]
+    <span class="hljs-keyword">return</span> tester_set
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> in the example below is for the <a href="#BM_(peptide)%2Fi">peptide</a> 114-128-163, which has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> [0, 114, 128, 163, 242, 291, 405].</p>
+</div>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the ...</p>
+<ul>
+<li>experimental spectrum: [0.0, 112.5, 127.1, 242.9, 290.0, 404.0]</li>
+<li>experimental spectrum mass noise: ±1.0</li>
+<li>assumed peptide type: linear</li>
+<li>assumed peptide length: 3</li>
+<li>assumed peptide mass: any of the last 1 experimental spectrum masses</li>
+<li>score backlog: 0</li>
+<li>leaderboard size: 100</li>
+</ul>
+<p>Captured mino acid masses are (rounded to 1): [112.5, 114.0, 115.8, 127.1, 130.4, 161.1, 162.9, 177.5]</p>
+<p>For peptides between 397.0 and 411.0...</p>
+<ul>
+<li>Score 6: 114.0-127.1-162.9</li>
+<li>Score 6: 162.9-127.1-114.0</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>

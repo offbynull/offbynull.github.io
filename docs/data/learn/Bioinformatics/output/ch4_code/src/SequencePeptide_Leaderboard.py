@@ -5,7 +5,7 @@ from SequenceTester import TestResult, SequenceTesterSet, SequenceTester
 from SpectrumConvolution import spectrum_convolution
 from SpectrumConvolutionNoise import spectrum_convolution_noise
 from SpectrumScore import score_spectrums
-from TheoreticalSpectrum_PrefixSum import PeptideType
+from TheoreticalSpectrum_PrefixSum import PeptideType, theoretical_spectrum
 
 AA = TypeVar('AA')
 
@@ -18,7 +18,7 @@ def sequence_peptide(
         peptide_mass_candidates: List[Tuple[float, float]],  # mass range candidates for mass of peptide
         peptide_type: PeptideType,                           # linear or cyclic
         score_backlog: int,                                  # backlog of top scores
-        candidate_threshold: float                           # if < 1 then min % match, else min count match
+        leaderboard_size: int
 ) -> SequenceTesterSet:
     tester_set = SequenceTesterSet(
         exp_spec,
@@ -28,54 +28,51 @@ def sequence_peptide(
         peptide_type,
         score_backlog
     )
-    candidate_peptides = [[]]
-    while len(candidate_peptides) > 0:
+    leaderboard = [[]]
+    while len(leaderboard) > 0:
         # Branch candidates
-        new_candidate_peptides = []
-        for p in candidate_peptides:
+        expanded_leaderboard = []
+        for p in leaderboard:
             for m in aa_mass_table:
                 new_p = p[:] + [m]
-                new_candidate_peptides.append(new_p)
-        candidate_peptides = new_candidate_peptides
+                expanded_leaderboard.append(new_p)
         # Test candidates to see if they match exp_spec or if they should keep being branched
         removal_idxes = set()
-        for i, p in enumerate(candidate_peptides):
+        for i, p in enumerate(expanded_leaderboard):
             res = set(tester_set.test(p))
             if {TestResult.MASS_TOO_LARGE} == res\
                     or {TestResult.ADDED} == res\
                     or {TestResult.MASS_TOO_LARGE, TestResult.ADDED} == res:
                 removal_idxes.add(i)
-            else:
-                # Why get the theo spec of the linear version even if the peptide is cyclic? Think about what's
-                # happening here. If the exp spec is for cyclic peptide NQYQ, and you're checking to see if the
-                # candidate NQY should continue to be branched out...
-                #
-                # Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242,      291, 291, 370, 405, 405, 419, 533]
-                # Theo spec cyclic NQY:  [0, 114, 128,      163, 242,      277, 291,           405]
-                #                                                           ^
-                #                                                           |
-                #                                                        mass(YN)
-                #
-                # Since NQY is being treated as a cyclic peptide, it has the subpeptide YN (mass of 277). However, the
-                # cyclic peptide NQYQ doesn't have the subpeptide YN. That means NQY won't be branched out any further
-                # even though it should. As such, even if the exp spec is for a cyclic peptide, treat the candidates as
-                # linear segments of that cyclic peptide (essentially linear peptides).
-                #
-                # Exp spec  cyclic NQYQ: [0, 114, 128, 128, 163, 242, 242, 291, 291, 370, 405, 405, 419, 533]
-                # Theo spec linear NQY:  [0, 114, 128,      163, 242,      291,           405]
-                #
-                # Given the specs above, the exp spec contains all masses in the theo spec.
-                theo_spec = SequenceTester.generate_theroetical_spectrum_with_tolerances(
-                    p,
-                    PeptideType.LINEAR,
-                    aa_mass_table,
-                    aa_mass_tolerance
-                )
-                score = score_spectrums(exp_spec, theo_spec)
-                if (candidate_threshold < 1.0 and score[0] / len(theo_spec) < candidate_threshold)\
-                        or score[0] < candidate_threshold:
-                    removal_idxes.add(i)
-        candidate_peptides = [p for i, p in enumerate(candidate_peptides) if i not in removal_idxes]
+        expanded_leaderboard = [p for i, p in enumerate(expanded_leaderboard) if i not in removal_idxes]
+        # Set leaderboard to the top n scoring peptides from expanded_leaderboard, but include peptides past n as long
+        # as those peptides have a score equal to the nth peptide. The reason for this is that because they score the
+        # same, there's just as much of a chance that they'll end up as the winner as it is that the nth peptide will.
+            # NOTE: Why get the theo spec of the linear version even if the peptide is cyclic? For similar reasons as to
+            # why it's done in the branch-and-bound variant: If we treat candidate peptides as cyclic, their theo spec
+            # will include masses for wrapping subpeptides of the candidate peptide. These wrapping subpeptide masses
+            # may end up inadvertently matching masses in the experimental spectrum, meaning that the candidate may get
+            # a better score than it should, potentially pushing it forward over other candidates that would ultimately
+            # branch out  to a more optimal final solution. As such, even if the exp  spec is  for a cyclic peptide,
+            # treat the candidates as linear segments of that cyclic peptide (essentially linear  peptides).
+        theo_specs = [
+            SequenceTester.generate_theroetical_spectrum_with_tolerances(
+                p,
+                peptide_type,
+                aa_mass_table,
+                aa_mass_tolerance
+            )
+            for p in expanded_leaderboard
+        ]
+        scores = [score_spectrums(exp_spec, theo_spec) for theo_spec in theo_specs]
+        scores_paired = sorted(zip(expanded_leaderboard, scores), key=lambda x: x[1], reverse=True)
+        trim_pos = leaderboard_size
+        tail_score = 0 if len(scores_paired) == 0 else scores_paired[-1][1]
+        for j in range(leaderboard_size + 1, len(scores_paired)):
+            if scores_paired[j][1] < tail_score:
+                trim_pos = j
+                break
+        leaderboard = [p for p, _ in scores_paired[:trim_pos]]
     return tester_set
 # MARKDOWN
 
@@ -96,7 +93,7 @@ def main():
         peptide_mass_noise = experimental_spectrum_peptide_mass_noise(exp_spec_mass_noise, peptide_expected_len)
         peptide_mass_range_candidates = [(m - peptide_mass_noise, m + peptide_mass_noise) for m in exp_spec[-exp_spec_final_mass_in_last_n:]]
         score_backlog = int(input().strip())
-        candidate_threshold = float(input().strip())
+        leaderboard_size = int(input().strip())
         testers = sequence_peptide(
             exp_spec,
             aa_mass_table,
@@ -104,7 +101,7 @@ def main():
             peptide_mass_range_candidates,
             {'cyclic': PeptideType.CYCLIC, 'linear': PeptideType.LINEAR}[peptide_type],
             score_backlog,
-            candidate_threshold
+            leaderboard_size
         )
         print(f'Given the ...', end='\n\n')
         print(f' * experimental spectrum: {exp_spec}')
@@ -113,8 +110,7 @@ def main():
         print(f' * assumed peptide length: {peptide_expected_len}')
         print(f' * assumed peptide mass: any of the last {exp_spec_final_mass_in_last_n} experimental spectrum masses')
         print(f' * score backlog: {score_backlog}')
-        print(f' * candidate threshold: {candidate_threshold * (100.0 if candidate_threshold < 1.0 else 1.0)}'
-              f'{"%" if candidate_threshold < 1.0 else ""} mass matches per iteration', end='\n\n')
+        print(f' * leaderboard size: {leaderboard_size}', end='\n\n')
         print(f'Captured mino acid masses are (rounded to {aa_mass_round}): {list(aa_mass_table.keys())}', end='\n\n')
         for tester in testers.testers:
             print(f'For peptides between {tester.peptide_min_mass} and {tester.peptide_max_mass}...', end='\n\n')

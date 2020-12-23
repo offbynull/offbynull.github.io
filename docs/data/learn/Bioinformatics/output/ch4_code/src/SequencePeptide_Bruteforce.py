@@ -16,7 +16,7 @@ def sequence_peptide(
         aa_mass_tolerance: float,                            # amino acid mass tolerance
         peptide_mass_candidates: List[Tuple[float, float]],  # mass range candidates for mass of peptide
         peptide_type: PeptideType,                           # linear or cyclic
-        score_backlog: int = 0                               # backlog of top scores
+        score_backlog: int                                   # backlog of top scores
 ) -> SequenceTesterSet:
     tester_set = SequenceTesterSet(
         exp_spec,

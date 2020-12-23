@@ -2897,6 +2897,30 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
 ```
 
+For real experimental spectrums, the algorithm is very similar to the real experimental spectrum version of the branch-and-bound algorithm. The only difference is that the heuristic for the branch-and-bound algorithm is swapped out for the leaderboard heuristic.
+
+```{output}
+ch4_code/src/SequencePeptide_Leaderboard.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{note}
+The experimental spectrum in the example below is for the peptide 114-128-163, which has the theoretical spectrum [0, 114, 128, 163, 242, 291, 405].
+```
+
+```{ch4}
+SequencePeptide_Leaderboard
+0.0 112.5 127.1 242.9 290.0 404.0
+1.0
+1
+1
+linear
+3
+0
+100
+```
+
 
 # Stories
 

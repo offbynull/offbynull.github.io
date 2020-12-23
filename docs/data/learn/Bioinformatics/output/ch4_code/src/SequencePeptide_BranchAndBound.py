@@ -5,7 +5,7 @@ from SequenceTester import TestResult, SequenceTesterSet, SequenceTester
 from SpectrumConvolution import spectrum_convolution
 from SpectrumConvolutionNoise import spectrum_convolution_noise
 from SpectrumScore import score_spectrums
-from TheoreticalSpectrum_PrefixSum import PeptideType, theoretical_spectrum
+from TheoreticalSpectrum_PrefixSum import PeptideType
 
 AA = TypeVar('AA')
 
@@ -17,8 +17,8 @@ def sequence_peptide(
         aa_mass_tolerance: float,                            # amino acid mass tolerance
         peptide_mass_candidates: List[Tuple[float, float]],  # mass range candidates for mass of peptide
         peptide_type: PeptideType,                           # linear or cyclic
-        score_backlog: int = 0,                              # backlog of top scores
-        candidate_threshold: float = 0.5                     # if < 1 then min % match, else min count match
+        score_backlog: int,                                  # backlog of top scores
+        candidate_threshold: float                           # if < 1 then min % match, else min count match
 ) -> SequenceTesterSet:
     tester_set = SequenceTesterSet(
         exp_spec,
@@ -103,7 +103,8 @@ def main():
             aa_mass_noise,
             peptide_mass_range_candidates,
             {'cyclic': PeptideType.CYCLIC, 'linear': PeptideType.LINEAR}[peptide_type],
-            score_backlog
+            score_backlog,
+            candidate_threshold
         )
         print(f'Given the ...', end='\n\n')
         print(f' * experimental spectrum: {exp_spec}')
