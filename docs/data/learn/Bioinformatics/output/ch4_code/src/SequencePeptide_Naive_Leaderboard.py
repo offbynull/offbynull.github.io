@@ -1,7 +1,8 @@
 from typing import List, Dict, TypeVar, Optional
 
+from PeptideType import PeptideType
 from SpectrumScore_NoNoise import score_spectrums
-from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
+from TheoreticalSpectrum_PrefixSum import theoretical_spectrum
 
 AA = TypeVar('AA')
 
@@ -38,9 +39,8 @@ def sequence_peptide(
             if p_mass == peptide_mass:
                 # The peptide's mass is equal to the expected mass. Check if the score against the current top score. If
                 # it's ...
-                #  * the same score, remove it and add it as a final peptide.
-                #  * a higher score, remove it and reset the final peptides to this.
-                #  * a lower score, remove and discard it.
+                #  * a higher score, reset the final peptides to it.
+                #  * the same score, add it to the final peptides.
                 theo_spec = theoretical_spectrum(p, peptide_type, aa_mass_table)
                 score = score_spectrums(theo_spec, exp_spec)
                 if score > final_score:
@@ -51,7 +51,20 @@ def sequence_peptide(
                     )
                 elif score == final_score:
                     final_peptides.append(p)
-                removal_idxes.add(i)
+                # p should be removed at this point (the line below should be uncommented). Not removing it means that
+                # it may end up in the leaderboard for the next cycle. If it that happens, it'll get branched out into
+                # new candidate peptides where each new candidate has an amino acids append. The problem is that it
+                # doesn't make sense to create these new candidates because p's mass already matches the peptide mass.
+                # Once p goes into the next cycle and branches out, those branched out candidates will have masses that
+                # EXCEED the peptide mass, meaning they'll all get removed anyway. This would be fine, except that by
+                # moving p into the leaderboard for the next cycle you're potentially preventing other viable candidates
+                # from making it in.
+                #
+                # So why isn't it being removed (why was the line removal commented out)? The questions on Stepik expect
+                # no removal at this point. Uncommenting it will cause more peptides than are expected to show up for
+                # some questions, meaning the answer will be rejected by Stepik.
+                #
+                # removal_idxes.add(i)
             elif p_mass > peptide_mass:
                 # The peptide's mass exceeds the expected mass, meaning that there's no chance that this peptide can be
                 # a match for exp_spec. Discard it.
@@ -70,13 +83,12 @@ def sequence_peptide(
         theo_specs = [theoretical_spectrum(p, PeptideType.LINEAR, aa_mass_table) for p in expanded_leaderboard]
         scores = [score_spectrums(theo_spec, exp_spec) for theo_spec in theo_specs]
         scores_paired = sorted(zip(expanded_leaderboard, scores), key=lambda x: x[1], reverse=True)
-        trim_pos = leaderboard_size
-        tail_score = 0 if len(scores_paired) == 0 else scores_paired[-1][1]
+        leaderboard_trim_to_size = len(expanded_leaderboard)
         for j in range(leaderboard_size + 1, len(scores_paired)):
-            if scores_paired[j][1] < tail_score:
-                trim_pos = j
+            if scores_paired[leaderboard_size][1] > scores_paired[j][1]:
+                leaderboard_trim_to_size = j - 1
                 break
-        leaderboard = [p for p, _ in scores_paired[:trim_pos]]
+        leaderboard = [p for p, _ in scores_paired[:leaderboard_trim_to_size]]
     return final_peptides
 # MARKDOWN
 

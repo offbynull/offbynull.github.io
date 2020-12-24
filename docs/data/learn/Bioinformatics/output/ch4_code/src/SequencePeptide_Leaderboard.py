@@ -1,11 +1,11 @@
 from typing import List, Dict, TypeVar, Tuple
 
 from ExperimentalSpectrumPeptideMassNoise import experimental_spectrum_peptide_mass_noise
+from PeptideType import PeptideType
 from SequenceTester import TestResult, SequenceTesterSet, SequenceTester
 from SpectrumConvolution import spectrum_convolution
 from SpectrumConvolutionNoise import spectrum_convolution_noise
 from SpectrumScore import score_spectrums
-from TheoreticalSpectrum_PrefixSum import PeptideType, theoretical_spectrum
 
 AA = TypeVar('AA')
 
@@ -66,13 +66,13 @@ def sequence_peptide(
         ]
         scores = [score_spectrums(exp_spec, theo_spec) for theo_spec in theo_specs]
         scores_paired = sorted(zip(expanded_leaderboard, scores), key=lambda x: x[1], reverse=True)
-        trim_pos = leaderboard_size
-        tail_score = 0 if len(scores_paired) == 0 else scores_paired[-1][1]
-        for j in range(leaderboard_size + 1, len(scores_paired)):
-            if scores_paired[j][1] < tail_score:
-                trim_pos = j
+        leaderboard_tail_idx = min(leaderboard_size, len(scores_paired)) - 1
+        leaderboard_tail_score = 0 if leaderboard_tail_idx == -1 else scores_paired[leaderboard_tail_idx][1]
+        for j in range(leaderboard_tail_idx + 1, len(scores_paired)):
+            if scores_paired[j][1] < leaderboard_tail_score:
+                leaderboard_tail_idx = j - 1
                 break
-        leaderboard = [p for p, _ in scores_paired[:trim_pos]]
+        leaderboard = [p for p, _ in scores_paired[:leaderboard_tail_idx + 1]]
     return tester_set
 # MARKDOWN
 

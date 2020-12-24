@@ -1,11 +1,11 @@
 from typing import List, Dict, TypeVar, Tuple
 
 from ExperimentalSpectrumPeptideMassNoise import experimental_spectrum_peptide_mass_noise
+from PeptideType import PeptideType
 from SequenceTester import TestResult, SequenceTesterSet, SequenceTester
 from SpectrumConvolution import spectrum_convolution
 from SpectrumConvolutionNoise import spectrum_convolution_noise
 from SpectrumScore import score_spectrums
-from TheoreticalSpectrum_PrefixSum import PeptideType
 
 AA = TypeVar('AA')
 

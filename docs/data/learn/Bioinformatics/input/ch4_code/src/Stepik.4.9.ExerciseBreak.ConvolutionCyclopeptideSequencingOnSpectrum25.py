@@ -1,6 +1,7 @@
 from collections import Counter
 
-from SequenceCyclopeptide_Leaderboard_NoNoise import sequence_cyclic_peptide
+from PeptideType import PeptideType
+from SequencePeptide_Naive_Leaderboard import sequence_peptide
 from SpectrumConvolution_NoNoise import spectrum_convolution
 
 with open('/home/user/Downloads/dataset_240284_8.txt', mode='r', encoding='utf-8') as f:
@@ -17,7 +18,13 @@ top_m_amino_acid_masses = Counter(amino_acid_masses).most_common(m)
 
 mass_table = dict([(mass, mass) for mass, _ in top_m_amino_acid_masses])
 
-leader_peptides = sequence_cyclic_peptide(cyclic_peptide_experimental_spectrum, n, mass_table=mass_table)
+leader_peptides = sequence_peptide(
+    cyclic_peptide_experimental_spectrum,
+    PeptideType.CYCLIC,
+    cyclic_peptide_experimental_spectrum[-1],
+    mass_table,
+    n
+)
 
 # For whatever reason, the site won't accept my answer with 128-114-147-129-57-97-147-113-128-99-163 in it, so remove it
 #

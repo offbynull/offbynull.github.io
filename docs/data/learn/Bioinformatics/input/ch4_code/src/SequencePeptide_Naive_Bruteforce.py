@@ -1,6 +1,7 @@
 from typing import List, Dict, TypeVar
 
-from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
+from PeptideType import PeptideType
+from TheoreticalSpectrum_PrefixSum import theoretical_spectrum
 
 AA = TypeVar('AA')
 

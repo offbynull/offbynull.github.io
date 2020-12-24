@@ -5264,9 +5264,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
             <span class="hljs-keyword">if</span> p_mass == peptide_mass:
                 <span class="hljs-comment"># The peptide's mass is equal to the expected mass. Check if the score against the current top score. If</span>
                 <span class="hljs-comment"># it's ...</span>
-                <span class="hljs-comment">#  * the same score, remove it and add it as a final peptide.</span>
-                <span class="hljs-comment">#  * a higher score, remove it and reset the final peptides to this.</span>
-                <span class="hljs-comment">#  * a lower score, remove and discard it.</span>
+                <span class="hljs-comment">#  * a higher score, reset the final peptides to it.</span>
+                <span class="hljs-comment">#  * the same score, add it to the final peptides.</span>
                 theo_spec = theoretical_spectrum(p, peptide_type, aa_mass_table)
                 score = score_spectrums(theo_spec, exp_spec)
                 <span class="hljs-keyword">if</span> score &gt; final_score:
@@ -5277,7 +5276,20 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
                     )
                 <span class="hljs-keyword">elif</span> score == final_score:
                     final_peptides.append(p)
-                removal_idxes.add(i)
+                <span class="hljs-comment"># p should be removed at this point (the line below should be uncommented). Not removing it means that</span>
+                <span class="hljs-comment"># it may end up in the leaderboard for the next cycle. If it that happens, it'll get branched out into</span>
+                <span class="hljs-comment"># new candidate peptides where each new candidate has an amino acids append. The problem is that it</span>
+                <span class="hljs-comment"># doesn't make sense to create these new candidates because p's mass already matches the peptide mass.</span>
+                <span class="hljs-comment"># Once p goes into the next cycle and branches out, those branched out candidates will have masses that</span>
+                <span class="hljs-comment"># EXCEED the peptide mass, meaning they'll all get removed anyway. This would be fine, except that by</span>
+                <span class="hljs-comment"># moving p into the leaderboard for the next cycle you're potentially preventing other viable candidates</span>
+                <span class="hljs-comment"># from making it in.</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># So why isn't it being removed (why was the line removal commented out)? The questions on Stepik expect</span>
+                <span class="hljs-comment"># no removal at this point. Uncommenting it will cause more peptides than are expected to show up for</span>
+                <span class="hljs-comment"># some questions, meaning the answer will be rejected by Stepik.</span>
+                <span class="hljs-comment">#</span>
+                <span class="hljs-comment"># removal_idxes.add(i)</span>
             <span class="hljs-keyword">elif</span> p_mass &gt; peptide_mass:
                 <span class="hljs-comment"># The peptide's mass exceeds the expected mass, meaning that there's no chance that this peptide can be</span>
                 <span class="hljs-comment"># a match for exp_spec. Discard it.</span>
@@ -5296,13 +5308,12 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         theo_specs = [theoretical_spectrum(p, PeptideType.LINEAR, aa_mass_table) <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> expanded_leaderboard]
         scores = [score_spectrums(theo_spec, exp_spec) <span class="hljs-keyword">for</span> theo_spec <span class="hljs-keyword">in</span> theo_specs]
         scores_paired = sorted(zip(expanded_leaderboard, scores), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
-        trim_pos = leaderboard_size
-        tail_score = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> len(scores_paired) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> scores_paired[<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]
+        leaderboard_trim_to_size = len(expanded_leaderboard)
         <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(leaderboard_size + <span class="hljs-number">1</span>, len(scores_paired)):
-            <span class="hljs-keyword">if</span> scores_paired[j][<span class="hljs-number">1</span>] &lt; tail_score:
-                trim_pos = j
+            <span class="hljs-keyword">if</span> scores_paired[leaderboard_size][<span class="hljs-number">1</span>] &gt; scores_paired[j][<span class="hljs-number">1</span>]:
+                leaderboard_trim_to_size = j - <span class="hljs-number">1</span>
                 <span class="hljs-keyword">break</span>
-        leaderboard = [p <span class="hljs-keyword">for</span> p, _ <span class="hljs-keyword">in</span> scores_paired[:trim_pos]]
+        leaderboard = [p <span class="hljs-keyword">for</span> p, _ <span class="hljs-keyword">in</span> scores_paired[:leaderboard_trim_to_size]]
     <span class="hljs-keyword">return</span> final_peptides
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -5329,10 +5340,12 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>YNKQ</li>
 <li>YNQK</li>
 <li>YNQQ</li>
-<li>NKKY</li>
-<li>NKQY</li>
-<li>NKYGA</li>
-<li>NKYAG</li>
+<li>KNYK</li>
+<li>KNYQ</li>
+<li>KYNK</li>
+<li>KYNQ</li>
+<li>QNYK</li>
+<li>QNYQ</li>
 </ul>
 </div>
 <p></p>
@@ -5396,13 +5409,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         ]
         scores = [score_spectrums(exp_spec, theo_spec) <span class="hljs-keyword">for</span> theo_spec <span class="hljs-keyword">in</span> theo_specs]
         scores_paired = sorted(zip(expanded_leaderboard, scores), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
-        trim_pos = leaderboard_size
-        tail_score = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> len(scores_paired) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> scores_paired[<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]
-        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(leaderboard_size + <span class="hljs-number">1</span>, len(scores_paired)):
-            <span class="hljs-keyword">if</span> scores_paired[j][<span class="hljs-number">1</span>] &lt; tail_score:
-                trim_pos = j
+        leaderboard_tail_idx = min(leaderboard_size, len(scores_paired)) - <span class="hljs-number">1</span>
+        leaderboard_tail_score = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> leaderboard_tail_idx == <span class="hljs-number">-1</span> <span class="hljs-keyword">else</span> scores_paired[leaderboard_tail_idx][<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(leaderboard_tail_idx + <span class="hljs-number">1</span>, len(scores_paired)):
+            <span class="hljs-keyword">if</span> scores_paired[j][<span class="hljs-number">1</span>] &lt; leaderboard_tail_score:
+                leaderboard_tail_idx = j - <span class="hljs-number">1</span>
                 <span class="hljs-keyword">break</span>
-        leaderboard = [p <span class="hljs-keyword">for</span> p, _ <span class="hljs-keyword">in</span> scores_paired[:trim_pos]]
+        leaderboard = [p <span class="hljs-keyword">for</span> p, _ <span class="hljs-keyword">in</span> scores_paired[:leaderboard_tail_idx + <span class="hljs-number">1</span>]]
     <span class="hljs-keyword">return</span> tester_set
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
