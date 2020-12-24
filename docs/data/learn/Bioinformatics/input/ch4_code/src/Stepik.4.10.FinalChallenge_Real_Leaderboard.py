@@ -1,7 +1,9 @@
-from SequenceCyclopeptide_LeaderboardNoisy import sequence_cyclic_peptide
-from SpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
-    score_spectrums
+from ExperimentalSpectrumPeptideMassNoise import experimental_spectrum_peptide_mass_noise
+from PeptideType import PeptideType
+from SequencePeptide_Leaderboard import sequence_peptide
+from SequenceTester import SequenceTester
 from SpectrumConvolution import spectrum_convolution
+from SpectrumScore import score_spectrums
 
 # This attempts to sequence the peptide for the a real noisy spectrum while the other file  attempts to sequence a
 # peptide from a generated (fake) noisy spectrum. This one (real) gets close to sequencing the real peptide while the
@@ -37,55 +39,52 @@ from SpectrumConvolution import spectrum_convolution
 #   overall peptides and it easily gets stuck in local optima).
 with open('real_spectrum.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
-cyclopeptide_exp_spec = [float(w) for w in data.strip().split()]
-cyclopeptide_exp_spec.sort()  # should be sorted already, but just in case
+exp_spec = [float(w) for w in data.strip().split()]
+exp_spec.sort()  # should be sorted already, but just in case
 
 m = 15
 n = 27000
-noise_tolerance = 0.3  # max amount of noise per spectrum entry
-guessed_len = 10  # how long you think the peptide is
+exp_spec_mass_tolerance = 0.3  # max amount of noise per spectrum entry
+estimated_peptide_len = 10  # how long you think the peptide is
+estimated_peptide_masses = exp_spec[-5:]  # suspected final cyclopeptide mass is in here
 score_backlog = 10  # for peptides to be returned, they need to be within x of the top score
-possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[-5:]  # suspected final cyclopeptide mass is in here
 
-cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]  # remove mass for +1 charge and round
+exp_spec = [round(m - 1.007, 1) for m in exp_spec]  # remove mass for +1 charge and round
 
-aa_mass_tolerance = noise_tolerance * 2
-aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round_digits=0)
-mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
+# run convolution to get possible masses
+aa_mass_tolerance = exp_spec_mass_tolerance * 2
+aa_masses = spectrum_convolution(exp_spec, aa_mass_tolerance, round_digits=0)
+aa_mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 
-# run leader board spectrum
-#   - Since the spectrum has false masses. Any of last x elements could be mass of peptide. I used x=11, but it could
-#     even be more than 11.
-#   - Because this is noisy data, you're looking for a mass within some tolerance rather than an exact mass. That range
-#     is determined by the amino acid masses calculated above. Specifically, a correctly identified amino acid mass
-#     could be up to -/+(noisy_tolerance * 2) away from what it actually is. When that amino acid mass is used to
-#     generate the theoretical spectrum that gets scored against the experimental spectrum, that amino acid mass's noise
-#     will propagate throughout the masses in the theoretical spectrum. If more than one amino acid masses have noise,
-#     the noise in the theoretical spectrum compounds. So, the range used encompasses everything from where all amino
-#     acids have -(noisy_tolerance * 2) to all amino acids have +(noisy_tolerance * 2) for some guessed peptide length
-#     (I guessed a length of 10).
-mass_ranges = [(m - (aa_mass_tolerance * guessed_len), m + (aa_mass_tolerance * guessed_len)) for m in possible_total_cyclopeptide_masses]
-mass_ranges.append((mass_ranges[-1][1], mass_ranges[-1][1] + 20.0))  # add an extra mass range -- the real mass for this peptide is larger than the mass ranges derived above
-res = sequence_cyclic_peptide(
-    cyclopeptide_exp_spec,
-    n,
-    mass_table,
-    mass_ranges,
+
+# run leader board to get possible peptides
+peptide_mass_noise = experimental_spectrum_peptide_mass_noise(exp_spec_mass_tolerance, estimated_peptide_len)
+peptide_mass_candidates = [(m - peptide_mass_noise, m + peptide_mass_noise) for m in estimated_peptide_masses]
+peptide_mass_candidates.append((peptide_mass_candidates[-1][1], peptide_mass_candidates[-1][1] + 20.0))  # add an extra mass range -- the real mass for this peptide is larger than the mass ranges derived above
+testers = sequence_peptide(
+    exp_spec,
+    aa_mass_table,
     aa_mass_tolerance,
-    score_backlog
+    peptide_mass_candidates,
+    PeptideType.CYCLIC,
+    score_backlog,
+    n
 )
 
-# The found peptides are grouped by the mass ranges they were for. Shove everything into a single list.
-all_peptides = []
-for mass_range, peptides in res.items():
-    all_peptides.extend(peptides)
 
-# The found peptides are grouped by the mass ranges they were for.
-for mass_range, peptides in res.items():
-    for p in peptides:
-        p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
-        score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
-        print(f'{mass_range} -> {p} len={len(p)} mass={sum(p)} score={score}')
+for tester in testers.testers:
+    for score, peptides in tester.leader_peptides.items():
+        for peptide in peptides:
+            theo_spec = SequenceTester.generate_theroetical_spectrum_with_tolerances(
+                peptide,
+                PeptideType.CYCLIC,
+                {aa: aa for aa in peptide},
+                aa_mass_tolerance
+            )
+            score = score_spectrums(exp_spec, theo_spec)
+            print(f'{(tester.peptide_min_mass, tester.peptide_max_mass)} -> {peptide} len={len(peptide)}'
+                  f' mass={sum(peptide)}'
+                  f' score={score}')
 
 # During one of my previous iterations of this problem, I solved the peptide for the real noisy spectrum by happenstance
 # + knowing that the peptide was similar to the other Tyrocidines solved earlier in this chapter. The algorithm above

@@ -1,81 +1,69 @@
 from random import Random
 from typing import List
 
-from SequenceCyclopeptide_LeaderboardNoisy import sequence_cyclic_peptide
+from ExperimentalSpectrumPeptideMassNoise import experimental_spectrum_peptide_mass_noise
+from SequencePeptide_Leaderboard import sequence_peptide
+from SequenceTester import SequenceTester
 from SpectrumConvolution import spectrum_convolution
-from SpectrumScore import theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses, \
-    score_spectrums
+from SpectrumConvolutionNoise import spectrum_convolution_noise
+from SpectrumScore import score_spectrums
 from TheoreticalSpectrum_PrefixSum import theoretical_spectrum, PeptideType
 from helpers.AminoAcidUtils import get_unique_amino_acid_masses_as_dict
 from helpers.Utils import rotate_left
 
 # Generate a noisy spectrum for a fake peptide
 r = Random(1)
-fake_peptide = [147, 97, 147, 147, 114, 128, 163, 99, 71, 156]
-cyclopeptide_exp_spec = theoretical_spectrum(fake_peptide, PeptideType.CYCLIC, get_unique_amino_acid_masses_as_dict())
-cyclopeptide_exp_spec = [float(w) for w in cyclopeptide_exp_spec]
+fake_peptide = [147, 97, 147, 147, 114, 128, 163, 99, 71, 156]  # mass = 1269
+exp_spec = theoretical_spectrum(fake_peptide, PeptideType.CYCLIC, get_unique_amino_acid_masses_as_dict())
+exp_spec = [float(w) for w in exp_spec]
 # remove 0.2x randomly (but re-add the final mass if it was removed)
-fake_peptide_mass = cyclopeptide_exp_spec[-1]
-r.shuffle(cyclopeptide_exp_spec)
-cyclopeptide_exp_spec = cyclopeptide_exp_spec[:int(len(cyclopeptide_exp_spec) * 0.8)]
-cyclopeptide_exp_spec.sort()
-if cyclopeptide_exp_spec[-1] != fake_peptide_mass:
-    cyclopeptide_exp_spec += [fake_peptide_mass]
+fake_peptide_mass = exp_spec[-1]
+r.shuffle(exp_spec)
+exp_spec = exp_spec[:int(len(exp_spec) * 0.8)]
+exp_spec.sort()
+if exp_spec[-1] != fake_peptide_mass:
+    exp_spec += [fake_peptide_mass]
 # add noise
-cyclopeptide_exp_spec = [w + r.uniform(-0.3, 0.3) for w in cyclopeptide_exp_spec]
+exp_spec = [w + r.uniform(-0.3, 0.3) for w in exp_spec]
 # add weight of +1 charge (a single proton)
-cyclopeptide_exp_spec = [w + 1.007 for w in cyclopeptide_exp_spec]
-# add 2.0x junk masses
-for i in range(0, int(len(cyclopeptide_exp_spec) * 0.75)):
-    idx = r.randrange(0, len(cyclopeptide_exp_spec))
-    junk_val = cyclopeptide_exp_spec[idx] + r.uniform(0, 50)
-    cyclopeptide_exp_spec.append(junk_val)
+exp_spec = [w + 1.007 for w in exp_spec]
+# add 0.75x junk masses
+for i in range(0, int(len(exp_spec) * 0.75)):
+    idx = r.randrange(0, len(exp_spec))
+    junk_val = exp_spec[idx] + r.uniform(0, 50)
+    exp_spec.append(junk_val)
 # sort
-cyclopeptide_exp_spec.sort()
+exp_spec.sort()
 
 m = 30
-n = 1000
-noise_tolerance = 0.3  # max amount of noise per spectrum entry
-guessed_len = 10  # how long you think the peptide is
+n = 5000
+exp_spec_mass_tolerance = 0.3  # max amount of noise per spectrum entry
+estimated_peptide_len = 10  # how long you think the peptide is
+estimated_peptide_masses = exp_spec[-11:]  # suspected final cyclopeptide mass is in here
 score_backlog = 10  # for peptides to be returned, they need to be within x of the top score
-possible_total_cyclopeptide_masses = cyclopeptide_exp_spec[-11:]  # suspected final cyclopeptide mass is in here
 
-cyclopeptide_exp_spec = [round(m - 1.007, 1) for m in cyclopeptide_exp_spec]  # remove mass for +1 charge and round
+exp_spec = [round(m - 1.007, 1) for m in exp_spec]  # remove mass for +1 charge and round
 
 # run convolution to get possible masses
-#   - Why noisy_tolerance * 2? because each mass in the noisy spectrum is +/-rand(0, noisy_tolerance). Imagine you have
-#     a mass spec device adds up to 0.3 in noise to the spectrum. That means that each mass in the spectrum has
-#     +/-rand(0, 0.3) added to it. If a spectrum from that device measured 1000 as 999.7 (-0.3 noise) and 1057 as 1057.3
-#     (+0.3 noise), then the convolution would return 1057.3-999.7=57.6 vs the non-noisy convolution 1057-1000=57.
-#     There's 0.6 difference, which is noisy_tolerance * 2.
-#   - Each returned mass is mapped to the number of masses in range m -/+ (noisy_tolerance * 2) where m is the mass.
-aa_mass_tolerance = noise_tolerance * 2
-aa_masses = spectrum_convolution(cyclopeptide_exp_spec, aa_mass_tolerance, round_digits=0)
-mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
+aa_mass_tolerance = spectrum_convolution_noise(exp_spec_mass_tolerance)
+aa_masses = spectrum_convolution(exp_spec, aa_mass_tolerance, round_digits=0)
+aa_mass_table = {mass: mass for mass, _ in aa_masses.most_common(m)}
 
 
-# run leader board spectrum
-#   - Since the spectrum has false masses. Any of last x elements could be mass of peptide. I used x=11, but it could
-#     even be more than 11.
-#   - Because this is noisy data, you're looking for a mass within some tolerance rather than an exact mass. That range
-#     is determined by the amino acid masses calculated above. Specifically, a correctly identified amino acid mass
-#     could be up to -/+(noisy_tolerance * 2) away from what it actually is. When that amino acid mass is used to
-#     generate the theoretical spectrum that gets scored against the experimental spectrum, that amino acid mass's noise
-#     will propagate throughout the masses in the theoretical spectrum. If more than one amino acid masses have noise,
-#     the noise in the theoretical spectrum compounds. So, the range used encompasses everything from where all amino
-#     acids have -(noisy_tolerance * 2) to all amino acids have +(noisy_tolerance * 2) for some guessed peptide length
-#     (I guessed a length of 10).
-mass_ranges = [(m - (aa_mass_tolerance * guessed_len), m + (aa_mass_tolerance * guessed_len)) for m in possible_total_cyclopeptide_masses]
-res = sequence_cyclic_peptide(
-    cyclopeptide_exp_spec,
-    n,
-    mass_table,
-    mass_ranges,
+# run leader board to get possible peptides
+peptide_mass_noise = experimental_spectrum_peptide_mass_noise(exp_spec_mass_tolerance, estimated_peptide_len)
+peptide_mass_candidates = [(m - peptide_mass_noise, m + peptide_mass_noise) for m in estimated_peptide_masses]
+testers = sequence_peptide(
+    exp_spec,
+    aa_mass_table,
     aa_mass_tolerance,
-    score_backlog
+    peptide_mass_candidates,
+    PeptideType.CYCLIC,
+    score_backlog,
+    n
 )
 
-# The found peptides are grouped by the mass ranges they were for.
+# the found peptides are grouped by the mass ranges they were for.
 def max_position_distance(p1: List[float], p2: List[float]) -> float:
     max_idx_dists = []
     for p2_rotated in rotate_left(p2):
@@ -83,12 +71,20 @@ def max_position_distance(p1: List[float], p2: List[float]) -> float:
         max_idx_dists.append(max_idx_dist)
     return min(max_idx_dists)
 
-for mass_range, peptides in res.items():
-    for p in peptides:
-        p_theo_spec = theoretical_spectrum_of_cyclic_peptide_with_noisy_aminoacid_masses(p, {aa: aa for aa in p}, aa_mass_tolerance)
-        score = score_spectrums(cyclopeptide_exp_spec, p_theo_spec)
-        print(f'{mass_range} -> {p} len={len(p)} closeness={max_position_distance(p, fake_peptide)} mass={sum(p)} score={score}')
 
-# For the settings above, the peptide is found. It's one of the best scoring peptides / closest peptides within
-# tolerances...
-# [147.0, 147.0, 114.0, 128.0, 163.0, 99.0, 71.0, 156.0, 147.0, 97.0] len=10 score=(68, 62.11230158730157, 0.9134161998132584)
+for tester in testers.testers:
+    for score, peptides in tester.leader_peptides.items():
+        for peptide in peptides:
+            theo_spec = SequenceTester.generate_theroetical_spectrum_with_tolerances(
+                peptide,
+                PeptideType.CYCLIC,
+                {aa: aa for aa in peptide},
+                aa_mass_tolerance
+            )
+            score = score_spectrums(exp_spec, theo_spec)
+            print(f'{(tester.peptide_min_mass, tester.peptide_max_mass)} -> {peptide} len={len(peptide)}'
+                  f' closeness={max_position_distance(peptide, fake_peptide)}'
+                  f' mass={sum(peptide)}'
+                  f' score={score}')
+# For the settings above, the peptide is found. It's one of the best scoring peptides / closest peptides...
+# (1263.9468911002136, 1276.5468911002135) -> [114.0, 128.0, 163.0, 99.0, 71.0, 156.0, 147.0, 98.0, 147.0, 147.0] len=10 closeness=1.0 mass=1270.0 score=(65, 57.176851851851886, 0.8796438746438752)

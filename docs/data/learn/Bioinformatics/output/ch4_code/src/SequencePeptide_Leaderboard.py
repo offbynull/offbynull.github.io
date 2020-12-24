@@ -18,7 +18,8 @@ def sequence_peptide(
         peptide_mass_candidates: List[Tuple[float, float]],  # mass range candidates for mass of peptide
         peptide_type: PeptideType,                           # linear or cyclic
         score_backlog: int,                                  # backlog of top scores
-        leaderboard_size: int
+        leaderboard_size: int,
+        leaderboard_initial: List[List[AA]] = None           # bootstrap candidate peptides for leaderboard
 ) -> SequenceTesterSet:
     tester_set = SequenceTesterSet(
         exp_spec,
@@ -28,7 +29,10 @@ def sequence_peptide(
         peptide_type,
         score_backlog
     )
-    leaderboard = [[]]
+    if leaderboard_initial is None:
+        leaderboard = [[]]
+    else:
+        leaderboard = leaderboard_initial[:]
     while len(leaderboard) > 0:
         # Branch candidates
         expanded_leaderboard = []
@@ -40,9 +44,7 @@ def sequence_peptide(
         removal_idxes = set()
         for i, p in enumerate(expanded_leaderboard):
             res = set(tester_set.test(p))
-            if {TestResult.MASS_TOO_LARGE} == res\
-                    or {TestResult.ADDED} == res\
-                    or {TestResult.MASS_TOO_LARGE, TestResult.ADDED} == res:
+            if {TestResult.MASS_TOO_LARGE} == res:
                 removal_idxes.add(i)
         expanded_leaderboard = [p for i, p in enumerate(expanded_leaderboard) if i not in removal_idxes]
         # Set leaderboard to the top n scoring peptides from expanded_leaderboard, but include peptides past n as long

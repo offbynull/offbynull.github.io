@@ -41,9 +41,7 @@ def sequence_peptide(
         removal_idxes = set()
         for i, p in enumerate(candidate_peptides):
             res = set(tester_set.test(p))
-            if {TestResult.MASS_TOO_LARGE} == res\
-                    or {TestResult.ADDED} == res\
-                    or {TestResult.MASS_TOO_LARGE, TestResult.ADDED} == res:
+            if {TestResult.MASS_TOO_LARGE} == res:
                 removal_idxes.add(i)
             else:
                 # Why get the theo spec of the linear version even if the peptide is cyclic? Think about what's
