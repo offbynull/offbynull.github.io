@@ -88,8 +88,9 @@ def main():
         exp_spec_final_mass_in_last_n = int(input().strip())
         aa_mass_noise = spectrum_convolution_noise(exp_spec_mass_noise)
         aa_mass_round = int(input().strip())
+        aa_top_n = int(input().strip())
         aa_masses = spectrum_convolution(exp_spec, aa_mass_noise)
-        aa_mass_table = {round(k, aa_mass_round): round(k, aa_mass_round) for k, v in aa_masses.items()}
+        aa_mass_table = {round(k, aa_mass_round): round(k, aa_mass_round) for k, v in aa_masses.most_common(aa_top_n)}
         peptide_type = input().strip()
         peptide_expected_len = int(input().strip())
         peptide_mass_noise = experimental_spectrum_peptide_mass_noise(exp_spec_mass_noise, peptide_expected_len)
@@ -113,7 +114,8 @@ def main():
         print(f' * assumed peptide mass: any of the last {exp_spec_final_mass_in_last_n} experimental spectrum masses')
         print(f' * score backlog: {score_backlog}')
         print(f' * leaderboard size: {leaderboard_size}', end='\n\n')
-        print(f'Captured mino acid masses are (rounded to {aa_mass_round}): {list(aa_mass_table.keys())}', end='\n\n')
+        print(f'Top {aa_top_n} captured mino acid masses (rounded to {aa_mass_round}): {list(aa_mass_table.keys())}',
+              end='\n\n')
         for tester in testers.testers:
             print(f'For peptides between {tester.peptide_min_mass} and {tester.peptide_max_mass}...', end='\n\n')
             for score, peptides in tester.leader_peptides.items():

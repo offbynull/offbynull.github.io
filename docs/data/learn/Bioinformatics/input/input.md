@@ -2030,7 +2030,38 @@ Algorithms/K-mer_TOPIC
 A peptide is a miniature protein consisting of a chain of amino acids anywhere between 2 to 100 amino acids in length. Peptides are created through two mechanisms:
 
  1. ribosomal peptides: DNA gets transcribed to mRNA (transcription), which in turn gets translated by the ribosome into a peptide (translation).
- 2. non-ribosomal peptides: proteins called NRP synthetase construct peptides.
+
+    ```{svgbob}
+      DNA
+       |
+       | transcribed
+       |
+       v
+     mRNA
+       |
+       | translated
+       |
+       v
+    peptide
+    ```
+
+ 2. non-ribosomal peptides: proteins called NRP synthetase construct peptides one amino acid at a time.
+
+    ```{svgbob}
+    .------------.   .------------.   .------------.   .------------.   .------------.
+    |   NRP      |   |   NRP      |   |   NRP      |   |   NRP      |   |   NRP      |
+    | synthetase |   | synthetase |   | synthetase |   | synthetase |   | synthetase |
+    `----. .-----'   `----. .-----'   `----. .-----'   `----. .-----'   `----. .-----'
+          N                K                S                N                G       
+                           |                |                |                |
+                           N                K                S                N
+                                            |                |                |
+                                            N                K                S
+                                                             |                |
+                                                             N                K
+                                                                              |
+                                                                              N
+    ```
 
 For ribosomal peptides, each amino acid is encoded as a DNA sequence of length 3. This 3 length DNA sequence is referred to as a codon. By knowing which codons map to which amino acids, the ...
 
@@ -2083,7 +2114,7 @@ Special consideration needs to be given to the real-world practical problems wit
  * include mass-to-charge ratios for fragment_NORMs of unintended molecules (faulty entries).
  * have noisy mass-to-charge ratios.
 
-The following table contains a list of common amino acids with their masses and codon mappings:
+The following table contains a list of proteinogenic amino acids with their masses and codon mappings:
 
 | 1 Letter Code | 3 Letter Code | Amino Acid                  | Codons                       | Monoisotopic Mass (daltons) |
 |---------------|---------------|-----------------------------|------------------------------|-----------------------------|
@@ -2449,7 +2480,9 @@ Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for a
  * Mass of Q is 128Da, 0 experimental spectrum masses are near: \[\]
  * Mass of Y is 163Da, 1 experimental spectrum mass is near: \[162.9\]
 
-**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. However, before being able to build a theoretical spectrum, a list of potential amino acids need to be inferred from the experimental spectrum. This operation infers a list of potential amino acid masses, which can be mapped to amino acids themselves (e.g. 114 maps to N).
+**WHY**: The closer a theoretical spectrum is to an experimental spectrum, the more likely it is that the peptide sequence used to generate that theoretical spectrum is related to the peptide sequence that produced that experimental spectrum. However, before being able to build a theoretical spectrum, a list of potential amino acids need to be inferred from the experimental spectrum. In addition to the 20 proteinogenic amino acids, there are many other non-proteinogenic amino acids that may be part of the peptide.
+
+This operation infers a list of potential amino acid masses, which can be mapped back to amino acids themselves.
 
 **ALGORITHM**:
 
@@ -2777,6 +2810,7 @@ SequencePeptide_Bruteforce
 1.0
 1
 1
+10
 linear
 3
 0
@@ -2853,6 +2887,7 @@ SequencePeptide_BranchAndBound
 1.0
 1
 1
+10
 linear
 3
 0
@@ -2915,6 +2950,7 @@ SequencePeptide_Leaderboard
 1.0
 1
 1
+10
 linear
 3
 0
@@ -3331,7 +3367,29 @@ PracticalMotifFindingExample
 
 ## Non-ribosomal Peptides
 
-Most peptides are synthesized through the central dogma of molecular biology: DNA is translated to mRNA, which in turn gets transcribed to a peptide by a ribosome. Non-ribosomal peptides (NRP) however, aren't synthesized using mRNA or ribosomes at all. Instead, giant proteins typically found in bacteria and fungi called NRP synthetase build out these peptides by growing them one amino acid at a time.
+A peptide is a miniature protein consisting of a chain of amino acids anywhere between 2 to 100 amino acids in length. 
+
+```{svgbob}
+G - N - S - K - N - ...
+```
+
+Most peptides are synthesized through the central dogma of molecular biology: a segment of the DNA that encodes the peptide is transcribed to mRNA, which in turn is translated to a peptide by a ribosome.
+
+```{svgbob}
+  DNA
+   |
+   | transcribed
+   |
+   v
+ mRNA
+   |
+   | translated
+   |
+   v
+peptide
+```
+
+Non-ribosomal peptides (NRP) however, aren't synthesized via the central dogma of molecular biology. Instead, giant proteins typically found in bacteria and fungi called NRP synthetase build out these peptides by growing them one amino acid at a time.
 
 ```{svgbob}
 .------------.   .------------.   .------------.   .------------.   .------------.
@@ -3349,7 +3407,7 @@ Most peptides are synthesized through the central dogma of molecular biology: DN
                                                                           N
 ```
 
-Non-ribosomal peptides may be `{bm-target} cyclic/(cyclopeptide|cyclic peptide)/i`. Common use-cases for non-ribosomal peptides:
+NRPs may be `{bm-target} cyclic/(cyclopeptide|cyclic peptide)/i`. Common use-cases for NRPs:
 
  * antibiotics
  * anti-tumor agents
@@ -3357,38 +3415,84 @@ Non-ribosomal peptides may be `{bm-target} cyclic/(cyclopeptide|cyclic peptide)/
  * communication between bacteria (quorum sensing)
 
 ```{note}
-According to the Wikpedia article on non-ribosomal peptides, there exist a wide range of peptides that are not synthesized by ribosomes but the term non-ribosomal peptide typically refers to the ones synthesized by NRP synthetases.
+According to the Wikipedia article on NRPs, there exist a wide range of peptides that are not synthesized by ribosomes but the term non-ribosomal peptide typically refers to the ones synthesized by NRP synthetases.
 ```
 
 ### Find Sequence
 
-TODO: FILL ME IN
+```{prereq}
+Algorithms/Mass Spectrometry/Spectrum Sequence_TOPIC
+```
 
-TODO: FILL ME IN
+Unlike ribosomal peptides, NRPs aren't encoded in the organism's DNA. As such, their sequence can't be inferred by directly by looking through the organism's DNA sequence.
 
-TODO: FILL ME IN
+Instead, a sample of the NRP needs to be isolated and passed through a mass spectrometer. A mass spectrometer is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (`{kt} \frac{m}{z}`).
 
-TODO: FILL ME IN
+The output of a mass spectrometer is a plot called a spectrum_MS. The plot's ...
 
-TODO: FILL ME IN
+ * x-axis is the mass-to-charge ratio.
+ * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).
 
-TODO: FILL ME IN
+```{svgbob}
+    y
+    ^
+    |
+    |        |
+    |        |
+"%" |        |
+    |        | |           |
+    |        | |           |
+    | |      | | |         |        |
+    | | | |  | | |     |   |    | | |
+    +-+-+-+--+-+-+-----+---+----+-+-+--> x
+                     "m/z"
+```
 
-TODO: FILL ME IN
+For example, given a sample containing multiple instances of the linear peptide NQY, the mass spectrometer will take each instance of NQY and randomly break the bonds between its amino acids:
 
-TODO: FILL ME IN
+```{svgbob}
+N ---- Q ---- Y   "(NQY not broken)"
 
-TODO: FILL ME IN
+N -//- Q ---- Y   "(NQY broken to N and QY)"
 
-TODO: FILL ME IN
+N ---- Q -//- Y   "(NQY broken to NQ and Y)"
 
-TODO: FILL ME IN
+N -//- Q -//- Y   "(NQY broken to N, Q, and Y)"
+```
 
-TODO: FILL ME IN
+Each subpeptide then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer which amino acids make up the peptide as well as the peptide sequence.
 
-TODO: FILL ME IN
+In the example below, peptide sequences are inferred from a noisy spectrum_MS for the cyclopeptide Viomycin. The elements of each inferred peptide sequence are amino acid masses rather than the amino acids themselves (e.g. instead of S being output at a position, the mass of S is output -- 87). Since the spectrum_MS is noisy, the inferred peptide sequences are also noisy (e.g. instead of an amino acid mass 87 showing up as exactly 87 in the peptide sequence, it may show up as 87.2, 86.9, etc...).
 
-TODO: FILL ME IN
+Note that the correct peptide sequence isn't guaranteed to be inferred. Also, since Viomycin is a cyclopeptide, the correct peptide may be inferred in a wrapped form (e.g. the cyclopeptide 128-113-57 may show up as 128-113-57, 113-57-128, or 57-128-113).
+
+```{note}
+I artificially generated a spectrum_MS for Viomycin from the sequence listed on [KEGG](https://www.genome.jp/dbget-bin/www_bget?cpd:C01540). 
+
+> Sequence 	 0 beta-Lys  1 Dpr  2 Ser  3 Ser  4 Ala  5 Cpd  (Cyclization: 1-5)
+>
+> Gene 	0 vioO [UP:Q6WZ98] vioM [UP:Q6WZA0]; 1 vioF [UP:Q6WZA7]; 2-3 vioA
+[UP:Q6WZB2]; 4 vioI [UP:Q6WZA4]; 5 vioG [UP:Q84CG4]
+>
+> Organism 	 Streptomyces vinaceus
+>
+> Type 	NRP
+
+The problem is that I have no idea what the 5th amino acid is: Cpd (I arbitrarily put it's mass as 200) and I'm unsure of the mapping I found for Dpr (2,3-diaminopropionic acid has mass of 104). The peptide sequence being searched for in the example below is 128-104-87-87-71-200.
+```
+
+```{ch4}
+SequencePeptide_Leaderboard
+0.0 71.2 87.1 104.0 127.9 158.0 174.0 191.0 200.0 232.0 245.0 271.0 319.0 328.0 358.0 399.0 406.0 432.0 445.0 477.1 490.0 492.0 503.1 530.5 548.7 572.9 590.1 606.1 677.0
+0.3
+1
+1
+24
+cyclic
+6
+0
+30
+```
 
 # Terminology
 
@@ -4371,32 +4475,38 @@ TODO: FILL ME IN
 
  * `{bm} amino acid` - The building blocks of peptides / proteins, similar to how nucleotides are the building blocks of DNA.
 
-   | 1 Letter Code | 3 Letter Code | Amino Acid                  | Mass (daltons) |
-   |---------------|---------------|-----------------------------|----------------|
-   | A             | Ala           | Alanine                     | 71.04          |
-   | C             | Cys           | Cysteine                    | 103.01         |
-   | D             | Asp           | Aspartic acid               | 115.03         |
-   | E             | Glu           | Glutamic acid               | 129.04         |
-   | F             | Phe           | Phenylalanine               | 147.07         |
-   | G             | Gly           | Glycine                     | 57.02          |
-   | H             | His           | Histidine                   | 137.06         |
-   | I             | Ile           | Isoleucine                  | 113.08         |
-   | K             | Lys           | Lysine                      | 128.09         |
-   | L             | Leu           | Leucine                     | 113.08         |
-   | M             | Met           | Methionine                  | 131.04         |
-   | N             | Asn           | Asparagine                  | 114.04         |
-   | P             | Pro           | Proline                     | 97.05          |
-   | Q             | Gln           | Glutamine                   | 128.06         |
-   | R             | Arg           | Arginine                    | 156.1          |
-   | S             | Ser           | Serine                      | 87.03          |
-   | T             | Thr           | Threonine                   | 101.05         |
-   | V             | Val           | Valine                      | 99.07          |
-   | W             | Trp           | Tryptophan                  | 186.08         |
-   | Y             | Tyr           | Tyrosine                    | 163.06         |
+    See proteinogenic amino acid for the list of 20 amino acids used during the translation.
 
-   ```{note}
-   The masses are monoisotopic masses.
-   ```
+ * `{bm} proteinogenic amino acid` - Amino acids that are used during translation. These are the 20 amino acids that the ribosome translates from codons. In contrast, there are many other non-proteinogenic amino acids that are used for non-ribosomal peptides.
+ 
+    The term "proteinogenic" means "protein creating". 
+
+    | 1 Letter Code | 3 Letter Code | Amino Acid                  | Mass (daltons) |
+    |---------------|---------------|-----------------------------|----------------|
+    | A             | Ala           | Alanine                     | 71.04          |
+    | C             | Cys           | Cysteine                    | 103.01         |
+    | D             | Asp           | Aspartic acid               | 115.03         |
+    | E             | Glu           | Glutamic acid               | 129.04         |
+    | F             | Phe           | Phenylalanine               | 147.07         |
+    | G             | Gly           | Glycine                     | 57.02          |
+    | H             | His           | Histidine                   | 137.06         |
+    | I             | Ile           | Isoleucine                  | 113.08         |
+    | K             | Lys           | Lysine                      | 128.09         |
+    | L             | Leu           | Leucine                     | 113.08         |
+    | M             | Met           | Methionine                  | 131.04         |
+    | N             | Asn           | Asparagine                  | 114.04         |
+    | P             | Pro           | Proline                     | 97.05          |
+    | Q             | Gln           | Glutamine                   | 128.06         |
+    | R             | Arg           | Arginine                    | 156.1          |
+    | S             | Ser           | Serine                      | 87.03          |
+    | T             | Thr           | Threonine                   | 101.05         |
+    | V             | Val           | Valine                      | 99.07          |
+    | W             | Trp           | Tryptophan                  | 186.08         |
+    | Y             | Tyr           | Tyrosine                    | 163.06         |
+ 
+    ```{note}
+    The masses are monoisotopic masses.
+    ```
 
  * `{bm} peptide` - A short amino acid chain of at least size two. Peptides are considered miniature proteins, but when something should be called a peptide vs a protein is loosely defined: the cut-off is anywhere between 50 to 100 amino acids.
  

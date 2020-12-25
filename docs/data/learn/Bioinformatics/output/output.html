@@ -3318,8 +3318,14 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 </div>
 <p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a miniature protein consisting of a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length. <a href="#BM_(peptide)%2Fi">Peptide</a>s are created through two mechanisms:</p>
 <ol>
-<li>ribosomal <a href="#BM_(peptide)%2Fi">peptide</a>s: DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA (<a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a>), which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a> (<a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>).</li>
-<li><a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s: proteins called <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> synthetase construct <a href="#BM_(peptide)%2Fi">peptide</a>s.</li>
+<li>
+<p>ribosomal <a href="#BM_(peptide)%2Fi">peptide</a>s: DNA gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA (<a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a>), which in turn gets <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> by the ribosome into a <a href="#BM_(peptide)%2Fi">peptide</a> (<a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>).</p>
+<p><img src="svgbob_3b69a590a67c8d8db6ca97d50bdeec9cb4c1ffee.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s: proteins called <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> synthetase construct <a href="#BM_(peptide)%2Fi">peptide</a>s one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> at a time.</p>
+<p><img src="svgbob_beb44b4a49d8f6713eefec469487c6b717b811f4.svg" alt="Kroki diagram output"></p>
+</li>
 </ol>
 <p>For ribosomal <a href="#BM_(peptide)%2Fi">peptide</a>s, each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> is <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d as a DNA <a href="#BM_(sequence)%2Fi">sequence</a> of length 3. This 3 length DNA <a href="#BM_(sequence)%2Fi">sequence</a> is referred to as a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>. By knowing which <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s map to which <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s, the ...</p>
 <ul>
@@ -3346,7 +3352,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li>include mass-to-charge ratios for fragments of unintended molecules (faulty entries).</li>
 <li>have noisy mass-to-charge ratios.</li>
 </ul>
-<p>The following table contains a list of common <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s with their masses and <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> mappings:</p>
+<p>The following table contains a list of <a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a>s with their masses and <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> mappings:</p>
 <table>
 <thead>
 <tr>
@@ -3902,7 +3908,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>Mass of Q is 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 0 <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> masses are near: []</li>
 <li>Mass of Y is 163<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 1 <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> mass is near: [162.9]</li>
 </ul>
-<p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. However, before being able to build a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s need to be inferred from the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. This operation infers a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses, which can be mapped to <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s themselves (e.g. 114 maps to N).</p>
+<p><strong>WHY</strong>: The closer a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is to an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, the more likely it is that the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> used to generate that <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> is related to the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> that produced that <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. However, before being able to build a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>, a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s need to be inferred from the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. In addition to the 20 <a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a>s, there are many other non-<a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a>s that may be part of the <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
+<p>This operation infers a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses, which can be mapped back to <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s themselves.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Consider an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> with masses that don't contain any noise. That is, the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> may have faulty masses and may be missing masses, but any correct masses it does have are exact / noise-free. To derive a list of potential <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses for this <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>:</p>
 <ol>
@@ -4911,7 +4918,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>assumed peptide mass: any of the last 1 experimental spectrum masses</li>
 <li>score backlog: 0</li>
 </ul>
-<p>Captured mino acid masses are (rounded to 1): [112.5, 114.0, 115.8, 127.1, 130.4, 161.1, 162.9, 177.5]</p>
+<p>Top 10 captured mino acid masses (rounded to 1): [114.0, 112.5, 115.8, 161.1, 162.9, 127.1, 130.4, 177.5]</p>
 <p>For peptides between 397.0 and 411.0...</p>
 <ul>
 <li>Score 6: 114.0-127.1-162.9</li>
@@ -5216,7 +5223,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>score backlog: 0</li>
 <li>candidate threshold: 75.0% mass matches per iteration</li>
 </ul>
-<p>Captured mino acid masses are (rounded to 1): [112.5, 114.0, 115.8, 127.1, 130.4, 161.1, 162.9, 177.5]</p>
+<p>Top 10 captured mino acid masses (rounded to 1): [114.0, 112.5, 115.8, 161.1, 162.9, 127.1, 130.4, 177.5]</p>
 <p>For peptides between 397.0 and 411.0...</p>
 <ul>
 <li>Score 6: 114.0-127.1-162.9</li>
@@ -5440,7 +5447,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>score backlog: 0</li>
 <li>leaderboard size: 100</li>
 </ul>
-<p>Captured mino acid masses are (rounded to 1): [112.5, 114.0, 115.8, 127.1, 130.4, 161.1, 162.9, 177.5]</p>
+<p>Top 10 captured mino acid masses (rounded to 1): [114.0, 112.5, 115.8, 161.1, 162.9, 127.1, 130.4, 177.5]</p>
 <p>For peptides between 397.0 and 411.0...</p>
 <ul>
 <li>Score 6: 114.0-127.1-162.9</li>
@@ -5657,9 +5664,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>
-<p>Most <a href="#BM_(peptide)%2Fi">peptide</a>s are synthesized through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a>: DNA is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to mRNA, which in turn gets <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to a <a href="#BM_(peptide)%2Fi">peptide</a> by a ribosome. <a href="#BM_(non-ribosomal%20peptide)%2Fi">Non-ribosomal peptide</a>s (<a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a>) however, aren't synthesized using mRNA or ribosomes at all. Instead, giant proteins typically found in bacteria and fungi called <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> synthetase build out these <a href="#BM_(peptide)%2Fi">peptide</a>s by growing them one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> at a time.</p>
+<p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a miniature protein consisting of a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length.</p>
+<p><img src="svgbob_65d4227aac16dd6290813a8c18042c837e078f9d.svg" alt="Kroki diagram output"></p>
+<p>Most <a href="#BM_(peptide)%2Fi">peptide</a>s are synthesized through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a>: a segment of the DNA that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s the <a href="#BM_(peptide)%2Fi">peptide</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA, which in turn is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a <a href="#BM_(peptide)%2Fi">peptide</a> by a ribosome.</p>
+<p><img src="svgbob_3b69a590a67c8d8db6ca97d50bdeec9cb4c1ffee.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(non-ribosomal%20peptide)%2Fi">Non-ribosomal peptide</a>s (<a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a>) however, aren't synthesized via the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a>. Instead, giant proteins typically found in bacteria and fungi called <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> synthetase build out these <a href="#BM_(peptide)%2Fi">peptide</a>s by growing them one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> at a time.</p>
 <p><img src="svgbob_beb44b4a49d8f6713eefec469487c6b717b811f4.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(non-ribosomal%20peptide)%2Fi">Non-ribosomal peptide</a>s may be <a href="#BM_(cyclopeptide|cyclic peptide)/i">cyclic</a>. Common use-cases for <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s:</p>
+<p>NRPs may be <a href="#BM_(cyclopeptide|cyclic peptide)/i">cyclic</a>. Common use-cases for NRPs:</p>
 <ul>
 <li><a href="#BM_(antibiotic)%2Fi">antibiotic</a>s</li>
 <li>anti-tumor agents</li>
@@ -5668,23 +5679,171 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>According to the Wikpedia article on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s, there exist a wide range of <a href="#BM_(peptide)%2Fi">peptide</a>s that are not synthesized by ribosomes but the term <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> typically refers to the ones synthesized by <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> synthetases.</p>
+<p>According to the Wikipedia article on NRPs, there exist a wide range of <a href="#BM_(peptide)%2Fi">peptide</a>s that are not synthesized by ribosomes but the term <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> typically refers to the ones synthesized by <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> synthetases.</p>
 </div>
 <a name="H_Find%20Sequence"></a><h3>Find Sequence</h3>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMass%20Spectrometry%2FSpectrum%20Sequence)_TOPIC%2F">Algorithms/Mass Spectrometry/Spectrum Sequence</a></li>
+</ul>
+</div>
+<p>Unlike ribosomal <a href="#BM_(peptide)%2Fi">peptide</a>s, NRPs aren't <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d in the organism's DNA. As such, their <a href="#BM_(sequence)%2Fi">sequence</a> can't be inferred by directly by looking through the organism's DNA <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p>Instead, a sample of the <a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a> needs to be isolated and passed through a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a>. A <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> is a device that shatters and bins molecules by their mass-to-charge ratio: Given a sample of molecules, the device randomly shatters each molecule in the sample (forming ions), then bins each ion by its mass-to-charge ratio (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>m</mi><mi>z</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{m}{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>).</p>
+<p>The output of a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> is a plot called a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a>. The plot's ...</p>
+<ul>
+<li>x-axis is the mass-to-charge ratio.</li>
+<li>y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).</li>
+</ul>
+<p><img src="svgbob_2b5ef43ae7572c2c6bf63687c53860a71830d160.svg" alt="Kroki diagram output"></p>
+<p>For example, given a sample containing multiple instances of the <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> NQY, the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will take each instance of NQY and randomly break the bonds between its <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s:</p>
+<p><img src="svgbob_33c109cffe376e25dfa6ba85b256a1bb307dcd76.svg" alt="Kroki diagram output"></p>
+<p>Each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer which <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s make up the <a href="#BM_(peptide)%2Fi">peptide</a> as well as the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p>In the example below, <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s are inferred from a noisy <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> for the <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclopeptide</a> Viomycin. The elements of each inferred <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> are <a href="#BM_(amino%20acid)%2Fi">amino acid</a> masses rather than the <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s themselves (e.g. instead of S being output at a position, the mass of S is output -- 87). Since the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> is noisy, the inferred <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s are also noisy (e.g. instead of an <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mass 87 showing up as exactly 87 in the <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>, it may show up as 87.2, 86.9, etc...).</p>
+<p>Note that the correct <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> isn't guaranteed to be inferred. Also, since Viomycin is a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclopeptide</a>, the correct <a href="#BM_(peptide)%2Fi">peptide</a> may be inferred in a wrapped form (e.g. the <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclopeptide</a> 128-113-57 may show up as 128-113-57, 113-57-128, or 57-128-113).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I artificially generated a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> for Viomycin from the <a href="#BM_(sequence)%2Fi">sequence</a> listed on <a href="https://www.genome.jp/dbget-bin/www_bget?cpd:C01540">KEGG</a>.</p>
+<blockquote>
+<p><a href="#BM_(sequence)%2Fi">Sequence</a> 	 0 beta-Lys  1 Dpr  2 Ser  3 Ser  4 Ala  5 Cpd  (Cyclization: 1-5)</p>
+<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 	0 vioO [UP:Q6WZ98] vioM [UP:Q6WZA0]; 1 vioF [UP:Q6WZA7]; 2-3 vioA
+[UP:Q6WZB2]; 4 vioI [UP:Q6WZA4]; 5 vioG [UP:Q84CG4]</p>
+<p>Organism 	 Streptomyces vinaceus</p>
+<p>Type 	<a href="#BM_%5Cb(NRP)%5Cb%2Fi">NRP</a></p>
+</blockquote>
+<p>The problem is that I have no idea what the 5th <a href="#BM_(amino%20acid)%2Fi">amino acid</a> is: Cpd (I arbitrarily put it's mass as 200) and I'm unsure of the mapping I found for Dpr (2,3-diaminopropionic acid has mass of 104). The <a href="#BM_(peptide)%2Fi">peptide</a> <a href="#BM_(sequence)%2Fi">sequence</a> being searched for in the example below is 128-104-87-87-71-200.</p>
+</div>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the ...</p>
+<ul>
+<li>experimental spectrum: [0.0, 71.2, 87.1, 104.0, 127.9, 158.0, 174.0, 191.0, 200.0, 232.0, 245.0, 271.0, 319.0, 328.0, 358.0, 399.0, 406.0, 432.0, 445.0, 477.1, 490.0, 492.0, 503.1, 530.5, 548.7, 572.9, 590.1, 606.1, 677.0]</li>
+<li>experimental spectrum mass noise: ±0.3</li>
+<li>assumed peptide type: cyclic</li>
+<li>assumed peptide length: 6</li>
+<li>assumed peptide mass: any of the last 1 experimental spectrum masses</li>
+<li>score backlog: 0</li>
+<li>leaderboard size: 30</li>
+</ul>
+<p>Top 24 captured mino acid masses (rounded to 1): [86.8, 86.9, 87.0, 87.1, 71.1, 71.2, 70.9, 71.0, 128.3, 199.8, 199.9, 200.0, 200.1, 103.7, 103.9, 104.0, 104.1, 127.9, 128.0]</p>
+<p>For peptides between 673.1 and 680.9...</p>
+<ul>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.0-86.8</li>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.0-86.9</li>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.0-87.0</li>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.0-87.1</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-87.0-86.8</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-87.0-86.9</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-87.0-87.0</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-87.0-87.1</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-86.9-86.8</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-86.9-86.9</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-86.9-87.0</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-86.9-87.1</li>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.1-86.8</li>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.1-86.9</li>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.1-87.0</li>
+<li>Score 26: 104.0-128.0-200.0-71.0-87.1-87.1</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.0-86.8</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.0-86.9</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.0-87.0</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.0-87.1</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.0-86.8</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.0-86.9</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.0-87.0</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.0-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.0-87.0-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.0-87.0-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.0-87.0-87.1</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-87.0-86.8</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-87.0-86.9</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-87.0-87.0</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-87.0-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.0-86.8</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.0-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.0-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.0-87.1</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-86.9-86.8</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-86.9-86.9</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-86.9-87.0</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-86.9-87.1</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.1-86.8</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.1-86.9</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.1-87.0</li>
+<li>Score 26: 104.0-127.9-200.1-71.0-87.1-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.0-87.1-86.8</li>
+<li>Score 26: 104.0-127.9-200.0-71.0-87.1-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.0-87.1-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.0-87.1-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.1-86.8</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.1-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.1-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-87.1-87.1</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-87.0-86.8</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-87.0-86.9</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-87.0-87.0</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-87.0-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-86.9-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-86.9-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.1-86.9-87.1</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-87.0-86.8</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-87.0-86.9</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-87.0-87.0</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-87.0-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.0-86.8</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.0-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.0-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.0-87.1</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-87.1-86.8</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-87.1-86.9</li>
+<li>Score 26: 104.0-128.0-200.0-71.1-87.1-87.0</li>
+<li>Score 26: 104.1-127.9-200.0-71.2-86.9-86.8</li>
+<li>Score 26: 104.1-127.9-200.0-71.2-86.9-86.9</li>
+<li>Score 26: 104.1-127.9-200.0-71.2-86.9-87.0</li>
+<li>Score 26: 104.1-127.9-200.0-71.2-86.9-87.1</li>
+<li>Score 26: 71.2-200.0-127.9-104.1-86.9-86.8</li>
+<li>Score 26: 71.2-200.0-127.9-104.1-86.9-86.9</li>
+<li>Score 26: 71.2-200.0-127.9-104.1-86.9-87.0</li>
+<li>Score 26: 71.2-200.0-127.9-104.1-86.9-87.1</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.1-86.8</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.1-86.9</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.1-87.0</li>
+<li>Score 26: 104.1-127.9-200.0-71.0-87.1-87.1</li>
+<li>Score 26: 104.0-128.0-200.0-71.2-87.0-86.8</li>
+<li>Score 26: 104.0-128.0-200.0-71.2-87.0-86.9</li>
+<li>Score 26: 104.0-128.0-200.0-71.2-87.0-87.0</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-86.9-86.8</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-86.9-86.9</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-86.9-87.0</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-86.9-87.1</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-87.1-86.8</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-87.1-86.9</li>
+<li>Score 26: 104.1-127.9-200.0-71.1-87.1-87.0</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-87.1-86.8</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-87.1-86.9</li>
+<li>Score 26: 104.0-127.9-200.1-71.1-87.1-87.0</li>
+<li>Score 26: 104.0-128.0-200.0-71.2-86.9-86.8</li>
+<li>Score 26: 104.0-128.0-200.0-71.2-86.9-86.9</li>
+<li>Score 26: 104.0-128.0-200.0-71.2-86.9-87.0</li>
+<li>Score 26: 104.0-128.0-200.0-71.2-86.9-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.1-86.8</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.1-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.1-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-87.1-87.1</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-86.9-86.8</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-86.9-86.9</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-86.9-87.0</li>
+<li>Score 26: 104.0-127.9-200.0-71.2-86.9-87.1</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-86.9-86.8</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-86.9-86.9</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-86.9-87.0</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-86.9-87.1</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-87.1-86.8</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-87.1-86.9</li>
+<li>Score 26: 71.2-200.0-127.9-104.0-87.1-87.0</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -6697,6 +6856,11 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </li>
 <li>
 <p><a name="BM_(amino%20acid)%2Fi"></a><strong>amino acid</strong> - The building blocks of <a href="#BM_(peptide)%2Fi">peptide</a>s / proteins, similar to how nucleotides are the building blocks of DNA.</p>
+<p>See <a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a> for the list of 20 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s used during the <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>.</p>
+</li>
+<li>
+<p><a name="BM_(proteinogenic%20amino%20acid)%2Fi"></a><strong>proteinogenic amino acid</strong> - <a href="#BM_(amino%20acid)%2Fi">Amino acid</a>s that are used during <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translation</a>. These are the 20 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s that the ribosome <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translate</a>s from <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s. In contrast, there are many other non-<a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a>s that are used for <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s.</p>
+<p>The term "proteinogenic" means "protein creating".</p>
 <table>
 <thead>
 <tr>
