@@ -2897,7 +2897,7 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
 ```
 
-For real experimental spectrums, the algorithm is very similar to the real experimental spectrum version of the branch-and-bound algorithm. The only major difference is that the bounding heuristic is swapped out from removing candidates that don't meet a mass match threshold to using a leaderboard to decide which candidates move forward.
+For real experimental spectrums, the algorithm is very similar to the real experimental spectrum version of the branch-and-bound algorithm. The only difference is the bounding heuristic: At each branch, rather than moving forward candidate peptides that meet a certain score threshold, move forward the best n scoring candidate peptides. These best scoring peptides are referred to as the leaderboard.
 
 ```{output}
 ch4_code/src/SequencePeptide_Leaderboard.py
@@ -3328,6 +3328,36 @@ The example below hard codes k to 18, but you typically don't know what k should
 ```{ch2}
 PracticalMotifFindingExample
 ```
+
+## Non-ribosomal Peptides
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
 
 # Terminology
 
