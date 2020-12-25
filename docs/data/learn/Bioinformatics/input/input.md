@@ -3331,6 +3331,37 @@ PracticalMotifFindingExample
 
 ## Non-ribosomal Peptides
 
+Most peptides are synthesized through the central dogma of molecular biology: DNA is translated to mRNA, which in turn gets transcribed to a peptide by a ribosome. Non-ribosomal peptides (NRP) however, aren't synthesized using mRNA or ribosomes at all. Instead, giant proteins typically found in bacteria and fungi called NRP synthetase build out these peptides by growing them one amino acid at a time.
+
+```{svgbob}
+.------------.   .------------.   .------------.   .------------.   .------------.
+|   NRP      |   |   NRP      |   |   NRP      |   |   NRP      |   |   NRP      |
+| synthetase |   | synthetase |   | synthetase |   | synthetase |   | synthetase |
+`----. .-----'   `----. .-----'   `----. .-----'   `----. .-----'   `----. .-----'
+      N                K                S                N                G       
+                       |                |                |                |
+                       N                K                S                N
+                                        |                |                |
+                                        N                K                S
+                                                         |                |
+                                                         N                K
+                                                                          |
+                                                                          N
+```
+
+Non-ribosomal peptides may be `{bm-target} cyclic/(cyclopeptide|cyclic peptide)/i`. Common use-cases for non-ribosomal peptides:
+
+ * antibiotics
+ * anti-tumor agents
+ * immunosuppressors
+ * communication between bacteria (quorum sensing)
+
+```{note}
+According to the Wikpedia article on non-ribosomal peptides, there exist a wide range of peptides that are not synthesized by ribosomes but the term non-ribosomal peptide typically refers to the ones synthesized by NRP synthetases.
+```
+
+### Find Sequence
+
 TODO: FILL ME IN
 
 TODO: FILL ME IN
