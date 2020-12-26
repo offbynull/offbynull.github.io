@@ -54,38 +54,3 @@
 # --AT-CGTCC-    (seq from top side of DAG)
 #
 # There is no code for this. You just look at the DAG and follow the path.
-
-
-
-
-
-
-
-
-
-
-
-# The alighment path is marked by by the symbols | / \ - while the symbols → ↓ ↘ mark directions of the graph.
-#     A   T   C   G   T   C   C
-#   * → * → * → * → * → * → * → *
-# A | ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
-# T | ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
-# G ↓ \ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
-# T ↓ ↘ ↓ \ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
-# T ↓ ↘ ↓ ↘ | ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
-# A ↓ ↘ ↓ ↘ ↓ \ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * - * → * → * → *
-# T ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ \ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * - * - *
-# A ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ |
-#   * → * → * → * → * → * → * → *
-#
-# ATGTTA-T--A
-# --AT-CGTCC-
-#
-# There is no code for this. You just look at the DAG and follow the path.
