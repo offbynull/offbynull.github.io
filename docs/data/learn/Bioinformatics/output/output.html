@@ -103,7 +103,7 @@
 <a name="H_Algorithms"></a><h1>Algorithms</h1>
 <a name="H_K-mer"></a><h2>K-mer</h2>
 <p><a name="BM_(Algorithms%5C%2FK-mer)_TOPIC%2F"></a><strong></strong></p>
-<p>A <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is a sub<a href="#BM_(sequence)%2Fi">sequence</a> of length k within some larger biological <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. DNA or <a href="#BM_(amino%20acid)%2Fi">amino acid</a> chain). For example, in the DNA <a href="#BM_(sequence)%2Fi">sequence</a> GAAATC, the following <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s exist:</p>
+<p>A <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is a <a href="#BM_(substring)%2Fi">substring</a> of length k within some larger biological <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. DNA or <a href="#BM_(amino%20acid)%2Fi">amino acid</a> chain). For example, in the DNA <a href="#BM_(sequence)%2Fi">sequence</a> GAAATC, the following <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s exist:</p>
 <table>
 <thead>
 <tr>
@@ -5847,7 +5847,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
-<p><a name="BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi"></a><strong>k-mer</strong> - A sub<a href="#BM_(sequence)%2Fi">sequence</a> of length k within some larger biological <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. DNA or <a href="#BM_(amino%20acid)%2Fi">amino acid</a> chain). For example, in the DNA <a href="#BM_(sequence)%2Fi">sequence</a> GAAATC, the following <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s exist:</p>
+<p><a name="BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi"></a><strong>k-mer</strong> - A <a href="#BM_(substring)%2Fi">substring</a> of length k within some larger biological <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. DNA or <a href="#BM_(amino%20acid)%2Fi">amino acid</a> chain). For example, in the DNA <a href="#BM_(sequence)%2Fi">sequence</a> GAAATC, the following <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s exist:</p>
 <table>
 <thead>
 <tr>
@@ -5884,7 +5884,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </table>
 </li>
 <li>
-<p><a name="BM_(%5C(%5Cd%2B%2C%5Cs*%5Cd%2B%5C)-mer%7Ckd-mer%7Ckdmer%7C%5C(k%2C%5Cs*d%5C)-mer)%2Fi"></a><strong>kd-mer</strong> - A sub<a href="#BM_(sequence)%2Fi">sequence</a> of length 2k + d within some larger biological <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. DNA or <a href="#BM_(amino%20acid)%2Fi">amino acid</a> chain) where the first k elements and the last k elements are known but the d elements in between isn't known.</p>
+<p><a name="BM_(%5C(%5Cd%2B%2C%5Cs*%5Cd%2B%5C)-mer%7Ckd-mer%7Ckdmer%7C%5C(k%2C%5Cs*d%5C)-mer)%2Fi"></a><strong>kd-mer</strong> - A <a href="#BM_(substring)%2Fi">substring</a> of length 2k + d within some larger biological <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. DNA or <a href="#BM_(amino%20acid)%2Fi">amino acid</a> chain) where the first k elements and the last k elements are known but the d elements in between isn't known.</p>
 <p>When identifying a <a href="#BM_(%5C(%5Cd%2B%2C%5Cs*%5Cd%2B%5C)-mer%7Ckd-mer%7Ckdmer%7C%5C(k%2C%5Cs*d%5C)-mer)%2Fi">kd-mer</a> with a specific k and d, the proper syntax is <a href="#BM_(%5C(%5Cd%2B%2C%5Cs*%5Cd%2B%5C)-mer%7Ckd-mer%7Ckdmer%7C%5C(k%2C%5Cs*d%5C)-mer)%2Fi">(k, d)-mer</a>. For example, <a href="#BM_(%5C(%5Cd%2B%2C%5Cs*%5Cd%2B%5C)-mer%7Ckd-mer%7Ckdmer%7C%5C(k%2C%5Cs*d%5C)-mer)%2Fi">(1, 2)-mer</a> represents a <a href="#BM_(%5C(%5Cd%2B%2C%5Cs*%5Cd%2B%5C)-mer%7Ckd-mer%7Ckdmer%7C%5C(k%2C%5Cs*d%5C)-mer)%2Fi">kd-mer</a> with k=1 and d=2. In the DNA <a href="#BM_(sequence)%2Fi">sequence</a> GAAATC, the following <a href="#BM_(%5C(%5Cd%2B%2C%5Cs*%5Cd%2B%5C)-mer%7Ckd-mer%7Ckdmer%7C%5C(k%2C%5Cs*d%5C)-mer)%2Fi">(1, 2)-mer</a>'s exist: <code>G--A</code>, <code>A--T</code>, <code>A--C</code>.</p>
 <p>See <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>.</p>
 </li>
@@ -6785,7 +6785,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>For larger values of k (e.g. 20), finding <a href="#BM_(k-universal%7C%5Cd%2B-universal)%2Fi">k-universal</a> strings would be too computationally intensive without <a href="#BM_(de%20Bruijn%20graph)%2Fi">De Bruijn graph</a>s and <a href="#BM_(Eulerian%20cycle)%2Fi">Eulerian cycle</a>s.</p>
 </li>
 <li>
-<p><a name="BM_(coverage)_SEQ%2Fi"></a><strong>coverage</strong> - Given a substring from some larger <a href="#BM_(sequence)%2Fi">sequence</a> that was reconstructed from a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s, the <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> of that substring is the number of <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s used to construct it. The substring length is typically 1: the <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> for each position of the <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><a name="BM_(coverage)_SEQ%2Fi"></a><strong>coverage</strong> - Given a <a href="#BM_(substring)%2Fi">substring</a> from some larger <a href="#BM_(sequence)%2Fi">sequence</a> that was reconstructed from a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s, the <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> of that <a href="#BM_(substring)%2Fi">substring</a> is the number of <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s used to construct it. The <a href="#BM_(substring)%2Fi">substring</a> length is typically 1: the <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> for each position of the <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_8dd35ba9a6498739b4dd8f3759fd49dec3d1e9c8.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -7314,6 +7314,16 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </li>
 <li>
 <p><a name="BM_(branch-and-bound%20algorithm%7Cbranch%20and%20bound%20algorithm)%2Fi"></a><strong>branch-and-bound algorithm</strong> - A bruteforce algorithm that enumerates candidates to explore at each step but also discards untenable candidates using various checks. The enumeration of candidates is the branching step, while the culling of untenable candidates is the bounding step.</p>
+</li>
+<li>
+<p><a name="BM_(subsequence)%2Fi"></a><strong>subsequence</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> derived by traversing some other <a href="#BM_(sequence)%2Fi">sequence</a> in order and choosing which elements to keep vs delete. For example, can is a <a href="#BM_(subsequence)%2Fi">subsequence</a> of cation.</p>
+<p><img src="svgbob_c25309d3982681fa348879d4c3fe065899f82016.svg" alt="Kroki diagram output"></p>
+<p>Not to be confused with <a href="#BM_(substring)%2Fi">substring</a>. A <a href="#BM_(substring)%2Fi">substring</a> may also be a <a href="#BM_(subsequence)%2Fi">subsequence</a>, but a <a href="#BM_(subsequence)%2Fi">subsequence</a> won't necessarily be a <a href="#BM_(substring)%2Fi">substring</a>.</p>
+</li>
+<li>
+<p><a name="BM_(substring)%2Fi"></a><strong>substring</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> derived by taking a contiguous part of some other <a href="#BM_(sequence)%2Fi">sequence</a> (order of elements maintained). For example, cat is a <a href="#BM_(substring)%2Fi">substring</a> of cation.</p>
+<p><img src="svgbob_1c969351b840ffdbd3172ad117673e5506efbd17.svg" alt="Kroki diagram output"></p>
+<p>Not to be confused with <a href="#BM_(subsequence)%2Fi">subsequence</a>. A <a href="#BM_(substring)%2Fi">substring</a> may also be a <a href="#BM_(subsequence)%2Fi">subsequence</a>, but a <a href="#BM_(subsequence)%2Fi">subsequence</a> won't necessarily be a <a href="#BM_(substring)%2Fi">substring</a>.</p>
 </li>
 </ul>
 <p>

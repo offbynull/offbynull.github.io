@@ -15,7 +15,7 @@ Bioinformatics is the science of transforming and processing biological data to 
 
 `{bm} /(Algorithms\/K-mer)_TOPIC/`
 
-A k-mer is a subsequence of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:
+A k-mer is a substring of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:
 
 | k | k-mers          |
 |---|-----------------|
@@ -3496,7 +3496,7 @@ cyclic
 
 # Terminology
 
- * `{bm} k-mer/(\d+-mer|k-mer|kmer)/i` - A subsequence of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:
+ * `{bm} k-mer/(\d+-mer|k-mer|kmer)/i` - A substring of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:
 
    | k | k-mers          |
    |---|-----------------|
@@ -3507,7 +3507,7 @@ cyclic
    | 5 | GAAAT AAATC     |
    | 6 | GAAATC          |
 
- * `{bm} kd-mer/(\(\d+,\s*\d+\)-mer|kd-mer|kdmer|\(k,\s*d\)-mer)/i` - A subsequence of length 2k + d within some larger biological sequence (e.g. DNA or amino acid chain) where the first k elements and the last k elements are known but the d elements in between isn't known.
+ * `{bm} kd-mer/(\(\d+,\s*\d+\)-mer|kd-mer|kdmer|\(k,\s*d\)-mer)/i` - A substring of length 2k + d within some larger biological sequence (e.g. DNA or amino acid chain) where the first k elements and the last k elements are known but the d elements in between isn't known.
  
    When identifying a kd-mer with a specific k and d, the proper syntax is (k, d)-mer. For example, (1, 2)-mer represents a kd-mer with k=1 and d=2. In the DNA sequence GAAATC, the following (1, 2)-mer's exist: `G--A`, `A--T`, `A--C`.
 
@@ -4672,6 +4672,32 @@ cyclic
     * Tyrosine-Cysteine (derived from reverse complement)
     
  * `{bm} branch-and-bound algorithm/(branch-and-bound algorithm|branch and bound algorithm)/i` - A bruteforce algorithm that enumerates candidates to explore at each step but also discards untenable candidates using various checks. The enumeration of candidates is the branching step, while the culling of untenable candidates is the bounding step.
+
+ * `{bm} subsequence` - A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. For example, can is a subsequence of cation.
+
+   ```{svgbob}
+   C -----------> C 
+   A -----------> A
+   T ----o
+   I ----o
+   O ----o
+   N -----------> N
+   ```
+
+   Not to be confused with substring. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.
+
+ * `{bm} substring` - A sequence derived by taking a contiguous part of some other sequence (order of elements maintained). For example, cat is a substring of cation.
+
+   ```{svgbob}
+   C -----------> C 
+   A -----------> A
+   T -----------> T
+   I 
+   O 
+   N 
+   ```
+
+   Not to be confused with subsequence. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
