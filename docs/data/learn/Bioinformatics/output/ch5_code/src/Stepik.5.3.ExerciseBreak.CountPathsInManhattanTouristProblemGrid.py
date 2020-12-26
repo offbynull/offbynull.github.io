@@ -15,7 +15,7 @@ def dfs_count_paths(graph: dict[str, list[str]], node: str, end_node: str) -> in
 
 
 def create_grid(x: int, y: int) -> dict[str, list[str]]:
-    g = dict()
+    g = HashableDict()
     for x_ in range(x+1):
         for y_ in range(y+1):
             children = g.setdefault(f'{x_}x{y_}', HashableList())
@@ -28,6 +28,6 @@ def create_grid(x: int, y: int) -> dict[str, list[str]]:
 
 x = 16
 y = 12
-grid = HashableDict(create_grid(x, y))
+grid = create_grid(x, y)
 path_count = dfs_count_paths(grid, '0x0', f'{x}x{y}')
 print(f'{x}x{y}={path_count}')

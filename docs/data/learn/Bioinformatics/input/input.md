@@ -4512,6 +4512,10 @@ cyclic
  
  * `{bm} polypeptide` - A peptide of at least size 10.
 
+ * `{bm} amino acid residue` - The part of an amino acid that makes it unique from all others.
+ 
+   When two or more amino acids combine to make a peptide/protein, specific elements are removed from each amino acid. What remains of each amino acid is the amino acid residue.
+
  * `{bm} cyclopeptide/(cyclopeptide|cyclic peptide)/i` - A peptide that doesn't have a start / end. It loops.
 
    ```{svgbob}
@@ -4537,7 +4541,7 @@ cyclic
 
    Most, not all, peptides are synthesized as described above. Non-ribosomal peptides are synthesized outside of the transcription and translation.
 
- * `{bm} non-ribosomal peptide` `{bm} /\b(NRP)\b/i` - A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.
+ * `{bm} non-ribosomal peptide` `{bm} /\b(NRP)s?\b//true/true` - A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.
 
    Non-ribosomal peptides may be cyclic. Common use-cases for non-ribosomal peptides:
 
