@@ -4699,6 +4699,23 @@ cyclic
 
    Not to be confused with subsequence. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.
 
+ * `{bm} topological order` - A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.
+
+   For example, the graph ...
+
+   ```{svgbob}
+                  ,----> E
+                  |
+                  |
+   A --->  B ---> C ---> D
+           |             ^
+           |             |
+           `-------------'
+   ```
+
+   ... the topological order is either [A, B, C, D, E] or [A, B, C, E, D]. Both are correct.
+   
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
