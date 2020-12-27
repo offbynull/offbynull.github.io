@@ -65,8 +65,8 @@ class Graph(Generic[N]):
         from_node, to_node, _ = self._edges[edge]
         assert from_node in self._node_outbound  # if it's in outbound, it'll be in inbound as well
         assert to_node in self._node_outbound  # if it's in outbound, it'll be in inbound as well
-        del self._node_outbound[from_node][edge]
-        del self._node_inbound[to_node][edge]
+        self._node_outbound[from_node].remove(edge)
+        self._node_inbound[to_node].remove(edge)
         # from and to may be the same -- if they are, and you've removed the from, make sure you don't try to remove to
         # because form and to are the same... you can't remove the same node twice
         dealing_with_same_node = from_node == to_node
