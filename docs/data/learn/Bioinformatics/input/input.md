@@ -4704,16 +4704,72 @@ cyclic
    For example, the graph ...
 
    ```{svgbob}
-                  ,----> E
+                  ,----> E 
                   |
                   |
-   A --->  B ---> C ---> D
-           |             ^
-           |             |
-           `-------------'
+   A --->  B ---> C ---> D 
+           |             ^ 
+           |             | 
+           `-------------' 
    ```
 
    ... the topological order is either [A, B, C, D, E] or [A, B, C, E, D]. Both are correct.
+
+ * `{bm} longest common subsequence`  `{bm} /\b(LCS)es?\b//true/true` - A common subsequence between a set of strings of which is the longest out of all possible common subsequences. There may be more than one per set.
+ 
+   For example, AACCTTGG and ACACTGTGA share a longest common subsequence of...
+  
+    * ACCTGG...
+
+      ```{svgbob}
+      A A C C T T G G
+      │ │ | | | | | |
+      | o | | | o | |
+      | .-' | |   | |
+      | | .-' |   | |
+      | | | .-'   | |
+      | | | | .---' |
+      | | | | | .---'
+      | | | | | |
+      v v v v v v
+      A C C T G G
+      ^ ^ ^ ^ ^ ^
+      | | | | | |
+      | | | | | `---.
+      | | | | `-.   |
+      | | | `-. |   |
+      | | `-. | |   |
+      | | o | | | o | o
+      | | | | | | | | |
+      A C A C T G T G A
+      ```
+
+    * AACTGG...
+
+      ```{svgbob}
+      A A C C T T G G
+      │ │ | | | | | |
+      | | o | | o | |
+      | | .-' |   | |
+      | | | .-'   | |
+      | | | | .---' |
+      | | | | | .---'
+      | | | | | |
+      v v v v v v
+      A A C T G G
+      ^ ^ ^ ^ ^ ^
+      | | | | | |
+      | | | | | `---.
+      | | | | `-.   |
+      | | | `-. |   |
+      | | `-. | |   |
+      | `-. | | |   | 
+      | o | | | | o | o
+      | | | | | | | | |
+      A C A C T G T G A
+      ```
+
+    * etc..
    
 
 `{bm-ignore} \b(read)_NORM/i`
