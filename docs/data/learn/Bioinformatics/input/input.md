@@ -1108,9 +1108,9 @@ CTTCCT
 CATCTT
 ```
 
-## DNA Sequencing
+## DNA Assembly
 
-`{bm} /(Algorithms\/DNA Sequencing)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly)_TOPIC/`
 
 ```{prereq}
 Algorithms/K-mer_TOPIC
@@ -1234,7 +1234,7 @@ Assembly has many practical complications that prevent full genome reconstructio
 
 ### Stitch Reads
 
-`{bm} /(Algorithms\/Assembly\/Stitch Reads)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Stitch Reads)_TOPIC/`
 
 **WHAT**: Given a list of overlapping read_SEQs where ...
 
@@ -1271,10 +1271,10 @@ AATC
 
 ### Stitch Read-Pairs
 
-`{bm} /(Algorithms\/Assembly\/Stitch Read-Pairs)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Stitch Read-Pairs)_TOPIC/`
 
 ```{prereq}
-Algorithms/Assembly/Stitch Reads_TOPIC
+Algorithms/DNA Assembly/Stitch Reads_TOPIC
 ```
 
 **WHAT**: Given a list of overlapping read-pairs where ...
@@ -1330,7 +1330,7 @@ TTA|3|TTC
 
 ### Break Reads
 
-`{bm} /(Algorithms\/Assembly\/Break Reads)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Break Reads)_TOPIC/`
 
 **WHAT**: Given a set of read_SEQs that arbitrarily overlap, each read_SEQ can be broken into many smaller read_SEQs that overlap better. For example, given 4 10-mers that arbitrarily overlap, you can break them into better overlapping 5-mers...
 
@@ -1386,10 +1386,10 @@ ACTAAGAACC
 
 ### Break Read-Pairs
 
-`{bm} /(Algorithms\/Assembly\/Break Read-Pairs)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Break Read-Pairs)_TOPIC/`
 
 ```{prereq}
-Algorithms/Assembly/Break Reads_TOPIC
+Algorithms/DNA Assembly/Break Reads_TOPIC
 ```
 
 **WHAT**: Given a set of read-pairs that arbitrarily overlap, each read-pair can be broken into many read-pairs with a smaller k that overlap better. For example, given 4 (4,2)-mers that arbitrarily overlap, you can break them into better overlapping (2,4)-mers...
@@ -1432,13 +1432,13 @@ ACTA|2|AACC
 
 ### Probability of Fragment Occurrence
 
-`{bm} /(Algorithms\/Assembly\/Probability of Fragment Occurrence)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Probability of Fragment Occurrence)_TOPIC/`
 
 ```{prereq}
-Algorithms/Assembly/Stitch Reads_TOPIC
-Algorithms/Assembly/Stitch Read-Pairs_TOPIC
-Algorithms/Assembly/Break Reads_TOPIC
-Algorithms/Assembly/Break Read-Pairs_TOPIC
+Algorithms/DNA Assembly/Stitch Reads_TOPIC
+Algorithms/DNA Assembly/Stitch Read-Pairs_TOPIC
+Algorithms/DNA Assembly/Break Reads_TOPIC
+Algorithms/DNA Assembly/Break Read-Pairs_TOPIC
 ```
 
 **WHAT**: Sequencers work by taking many copies of an organism's genome, randomly breaking up those genomes into smaller pieces, and randomly scanning in those pieces (fragment_SEQs). As such, it isn't immediately obvious how many times each fragment_SEQ actually appears in the genome.
@@ -1509,14 +1509,14 @@ TGT 1
 
 ### Overlap Graph
 
-`{bm} /(Algorithms\/Assembly\/Overlap Graph)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Overlap Graph)_TOPIC/`
 
 ```{prereq}
-Algorithms/Assembly/Stitch Reads_TOPIC
-Algorithms/Assembly/Stitch Read-Pairs_TOPIC
-Algorithms/Assembly/Break Reads_TOPIC
-Algorithms/Assembly/Break Read-Pairs_TOPIC
-Algorithms/Assembly/Probability of Fragment Occurrence_TOPIC
+Algorithms/DNA Assembly/Stitch Reads_TOPIC
+Algorithms/DNA Assembly/Stitch Read-Pairs_TOPIC
+Algorithms/DNA Assembly/Break Reads_TOPIC
+Algorithms/DNA Assembly/Break Read-Pairs_TOPIC
+Algorithms/DNA Assembly/Probability of Fragment Occurrence_TOPIC
 ```
 
 **WHAT**: Given the fragment_SEQs for a single strand of DNA, create a directed graph where ...
@@ -1577,7 +1577,7 @@ Never the less, in an ideal world where most of these problems don't exist, an o
  * and contain no errors.
 
 ```{note}
-Although the complications discussed above make it impossible to get the original genome in its entirety, it's still possible to pull out large parts of the original genome. This is discussed in Algorithms/Assembly/Find Contigs_TOPIC.
+Although the complications discussed above make it impossible to get the original genome in its entirety, it's still possible to pull out large parts of the original genome. This is discussed in Algorithms/DNA Assembly/Find Contigs_TOPIC.
 ```
 
 To construct an overlap graph, create an edge between fragment_SEQs that have an overlap.
@@ -1636,15 +1636,15 @@ CTT
 
 ### De Bruijn Graph
 
-`{bm} /(Algorithms\/Assembly\/De Bruijn Graph)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/De Bruijn Graph)_TOPIC/`
 
 ```{prereq}
-Algorithms/Assembly/Stitch Reads_TOPIC
-Algorithms/Assembly/Stitch Read-Pairs_TOPIC
-Algorithms/Assembly/Break Reads_TOPIC
-Algorithms/Assembly/Break Read-Pairs_TOPIC
-Algorithms/Assembly/Probability of Fragment Occurrence_TOPIC
-Algorithms/Assembly/Overlap Graph_TOPIC
+Algorithms/DNA Assembly/Stitch Reads_TOPIC
+Algorithms/DNA Assembly/Stitch Read-Pairs_TOPIC
+Algorithms/DNA Assembly/Break Reads_TOPIC
+Algorithms/DNA Assembly/Break Read-Pairs_TOPIC
+Algorithms/DNA Assembly/Probability of Fragment Occurrence_TOPIC
+Algorithms/DNA Assembly/Overlap Graph_TOPIC
 ```
 
 **WHAT**: Given the fragment_SEQs for a single strand of DNA, create a directed graph where ...
@@ -1712,7 +1712,7 @@ Never the less, in an ideal world where most of these problems don't exist, a de
  * and contain no errors.
 
 ```{note}
-Although the complications discussed above make it impossible to get the original genome in its entirety, it's still possible to pull out large parts of the original genome. This is discussed in Algorithms/Assembly/Find Contigs_TOPIC.
+Although the complications discussed above make it impossible to get the original genome in its entirety, it's still possible to pull out large parts of the original genome. This is discussed in Algorithms/DNA Assembly/Find Contigs_TOPIC.
 ```
 
 To construct a de Bruijn graph, add an edge for each fragment_SEQ, creating missing nodes as required.
@@ -1799,11 +1799,11 @@ See the section on k-universal strings to see a real-world application of Euleri
 
 ### Find Bubbles
 
-`{bm} /(Algorithms\/Assembly\/Find Bubbles)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Find Bubbles)_TOPIC/`
 
 ```{prereq}
-Algorithms/Assembly/Overlap Graph_TOPIC
-Algorithms/Assembly/De Bruijn Graph_TOPIC
+Algorithms/DNA Assembly/Overlap Graph_TOPIC
+Algorithms/DNA Assembly/De Bruijn Graph_TOPIC
 ```
 
 **WHAT**: Given a set of a fragment_SEQs that have been broken to k (read breaking / read-pair breaking), any ...
@@ -1924,12 +1924,12 @@ CTCGTGC 1
 
 ### Find Contigs
 
-`{bm} /(Algorithms\/Assembly\/Find Contigs)_TOPIC/`
+`{bm} /(Algorithms\/DNA Assembly\/Find Contigs)_TOPIC/`
 
 ```{prereq}
-Algorithms/Assembly/Overlap Graph_TOPIC
-Algorithms/Assembly/De Bruijn Graph_TOPIC
-Algorithms/Assembly/Find Bubbles_TOPIC
+Algorithms/DNA Assembly/Overlap Graph_TOPIC
+Algorithms/DNA Assembly/De Bruijn Graph_TOPIC
+Algorithms/DNA Assembly/Find Bubbles_TOPIC
 ```
 
 **WHAT**: Given an overlap graph or de Bruijn graph, find the longest possible stretches of non-branching nodes. Each stretch will be a path that's either  ...
@@ -2019,9 +2019,9 @@ ACC
 CCA
 ```
 
-## Peptide Sequencing
+## Peptide Sequence
 
-`{bm} /(Algorithms\/Peptide Sequencing)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence)_TOPIC/`
 
 ```{prereq}
 Algorithms/K-mer_TOPIC
@@ -2199,7 +2199,7 @@ NQY
 
 ### Experimental Spectrum
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Experimental Spectrum)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Experimental Spectrum)_TOPIC/`
 
 **WHAT**: Given a spectrum_MS for a peptide, derive a set of potential masses from the mass-to-charge ratios. These potential masses are referred to as an experimental spectrum.
 
@@ -2303,10 +2303,10 @@ ExperimentalSpectrumNoise
 
 ### Theoretical Spectrum
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Theoretical Spectrum)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
+Algorithms/Peptide Sequence/Experimental Spectrum_TOPIC
 ```
 
 **WHAT**: A theoretical spectrum is an algorithmically generated list of all subpeptide masses for a known peptide sequence (including 0 and the full peptide's mass).
@@ -2354,7 +2354,7 @@ The theoretical spectrum is what the experimental spectrum would be in a perfect
 
 #### Bruteforce Algorithm
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Bruteforce Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Theoretical Spectrum\/Bruteforce Algorithm)_TOPIC/`
 
 **ALGORITHM**:
 
@@ -2375,10 +2375,10 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 
 #### Prefix Sum Algorithm
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Theoretical Spectrum\/Prefix Sum Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Theoretical Spectrum\/Prefix Sum Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Theoretical Spectrum/Bruteforce Algorithm_TOPIC
+Algorithms/Peptide Sequence/Theoretical Spectrum/Bruteforce Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -2461,11 +2461,11 @@ The algorithm above is serial, but it can be made parallel to get even more spee
 
 ### Spectrum Convolution
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Convolution)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Spectrum Convolution)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
-Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
+Algorithms/Peptide Sequence/Experimental Spectrum_TOPIC
+Algorithms/Peptide Sequence/Theoretical Spectrum_TOPIC
 ```
 
 **WHAT**: Given an experimental spectrum, subtract its masses from each other. The differences are a set of potential amino acid masses for the peptide that generated that experimental spectrum.
@@ -2627,12 +2627,12 @@ SpectrumConvolution
 
 ### Spectrum Score
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Score)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Spectrum Score)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
-Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
-Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
+Algorithms/Peptide Sequence/Experimental Spectrum_TOPIC
+Algorithms/Peptide Sequence/Theoretical Spectrum_TOPIC
+Algorithms/Peptide Sequence/Spectrum Convolution_TOPIC
 ```
 
 **WHAT**: Given an experimental spectrum and a theoretical spectrum, score them against each other by counting how many masses match between them.
@@ -2710,13 +2710,13 @@ G: 57, A: 71, S: 87, P: 97, V: 99, T: 101, C: 103, I: 113, L: 113, N: 114, D: 11
 
 ### Spectrum Sequence
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Spectrum Sequence)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Experimental Spectrum_TOPIC
-Algorithms/Mass Spectrometry/Theoretical Spectrum_TOPIC
-Algorithms/Mass Spectrometry/Spectrum Convolution_TOPIC
-Algorithms/Mass Spectrometry/Spectrum Score_TOPIC
+Algorithms/Peptide Sequence/Experimental Spectrum_TOPIC
+Algorithms/Peptide Sequence/Theoretical Spectrum_TOPIC
+Algorithms/Peptide Sequence/Spectrum Convolution_TOPIC
+Algorithms/Peptide Sequence/Spectrum Score_TOPIC
 ```
 
 **WHAT**: Given an experimental spectrum and a set of amino acid masses, generate theoretical spectrums and score them against the experimental spectrum in an effort to infer the peptide sequence of the experimental spectrum.
@@ -2725,7 +2725,7 @@ Algorithms/Mass Spectrometry/Spectrum Score_TOPIC
 
 #### Bruteforce Algorithm
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence\/Bruteforce Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Spectrum Sequence\/Bruteforce Algorithm)_TOPIC/`
 
 **ALGORITHM**:
 
@@ -2818,10 +2818,10 @@ linear
 
 #### Branch-and-bound Algorithm
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence\/Branch-and-bound Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Spectrum Sequence\/Branch-and-bound Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm_TOPIC
+Algorithms/Peptide Sequence/Spectrum Sequence/Bruteforce Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -2898,11 +2898,11 @@ linear
 
 **ALGORITHM**:
 
-`{bm} /(Algorithms\/Mass Spectrometry\/Spectrum Sequence\/Leaderboard Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Peptide Sequence\/Spectrum Sequence\/Leaderboard Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Spectrum Sequence/Bruteforce Algorithm_TOPIC
-Algorithms/Mass Spectrometry/Spectrum Sequence/Branch-and-bound Algorithm_TOPIC
+Algorithms/Peptide Sequence/Spectrum Sequence/Bruteforce Algorithm_TOPIC
+Algorithms/Peptide Sequence/Spectrum Sequence/Branch-and-bound Algorithm_TOPIC
 ```
 
 This algorithm is similar to the branch-and-bound algorithm, but the bounding step is slightly different: At each branch, rather than removing untenable candidate peptides, it only moves forward the best n scoring candidate peptides. These best scoring peptides are referred to as the leaderboard.
@@ -3421,7 +3421,7 @@ According to the Wikipedia article on NRPs, there exist a wide range of peptides
 ### Find Sequence
 
 ```{prereq}
-Algorithms/Mass Spectrometry/Spectrum Sequence_TOPIC
+Algorithms/Peptide Sequence/Spectrum Sequence_TOPIC
 ```
 
 Unlike ribosomal peptides, NRPs aren't encoded in the organism's DNA. As such, their sequence can't be inferred by directly by looking through the organism's DNA sequence.
