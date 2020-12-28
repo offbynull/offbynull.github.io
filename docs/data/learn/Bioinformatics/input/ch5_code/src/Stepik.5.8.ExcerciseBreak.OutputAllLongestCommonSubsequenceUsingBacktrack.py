@@ -6,6 +6,9 @@ from typing import List
 # subsequences! This explodes out the backtrack matrix on each step, so things get real intensive real fast. It might
 # be good to keep track of backtrack_matrixes as a set to avoid duplicates (see helpers/HashableCollections to help with
 # this).
+#
+# If you were using an actual DAG, I think the appropriate thing to do would be to fork out a new path in the DAG for
+# each deviation rather than copying the matrix (exploding it) for each deviation.
 def lcs_backtrack(v: str, w: str):
     lcs_matrix = [[-1] * (len(w) + 1) for i in range(len(v) + 1)]
     backtrack_matrix_init = [[' '] * (len(w) + 1) for i in range(len(v) + 1)]
