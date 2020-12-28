@@ -25,16 +25,15 @@ class Graph(Generic[N]):
 
     def delete_node(self: Graph, node: N):
         assert node in self._node_outbound
-        for other_node, edge_data in self._node_outbound[node]:
-            self._node_inbound[other_node].remove((node, edge_data))
-            if len(self._node_inbound[other_node]) == 0:
-                del self._node_inbound[other_node]
-        for other_node, edge_data in self._node_inbound[node]:
-            self._node_outbound[other_node].remove((node, edge_data))
-            if len(self._node_outbound[other_node]) == 0:
-                del self._node_outbound[other_node]
+        for edge_id in self._node_outbound[node].copy():
+            from_node, to_node, _ = self._edges[edge_id]
+            self._node_outbound[from_node].remove(edge_id)
+            self._node_inbound[to_node].remove(edge_id)
+            del self._edges[edge_id]
+        # _node_inbound mirrors _node_outbound, so you don't have to do the above again for _node_inbound
         del self._node_inbound[node]
         del self._node_outbound[node]
+        del self._node_data[node]
 
     def update_node_data(self: Graph, node: N, data: Optional[ND] = None):
         assert node in self._node_outbound  # if it's not in outbound, it won't be in inbound as well
@@ -148,22 +147,9 @@ class Graph(Generic[N]):
         graph = Graph()
         graph._node_outbound = copy_outbound
         graph._node_inbound = copy_inbound
+        graph._node_data = self._node_data.copy()
+        graph._edges = self._edges.copy()
         return graph
-
-    def to_graphviz(self: Graph) -> str:
-        out = ''
-        for node, to_nodes in self._node_outbound.items():
-            for to_node in to_nodes.elements():
-                out += '"' + str(node).replace("\"", "\\\"") + '\"'\
-                       + ' -> '\
-                       + '"' + str(to_node).replace("\"", "\\\"") + '"'\
-                       + ' [shape=plain];\n'
-        return 'digraph {\n'\
-               + 'graph[center=true, margin=0.2, nodesep=0.1, ranksep=0.2]\n'\
-               + 'node[shape=none, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]\n'\
-               + 'edge[arrowsize=0.6, arrowhead=vee]\n'\
-               + out\
-               + '}\n'
 
     def __len__(self: Graph) -> int:
         return len(self._node_outbound)
@@ -173,17 +159,20 @@ class Graph(Generic[N]):
 
     def __hash__(self: Graph) -> int:
         # don't bother including inbound because inbound and outbound are reflections of each other
-        return hash(self._node_outbound)
+        return hash((self._node_outbound, self._node_data, self._edges))
 
     def __eq__(self: Graph, o: Graph) -> bool:
         # don't bother including inbound because inbound and outbound are reflections of each other
-        return type(self) == type(o) and self._node_outbound == o._node_outbound
+        return type(self) == type(o) and\
+               self._node_outbound == o._node_outbound and\
+               self._node_data == o._node_data and\
+               self._edges == o._edges
 
     def __str__(self: Graph) -> str:
         out = []
-        for node, to_nodes in self._node_outbound.items():
-            node_data = self._node_data[node]
-            out.append(f'{(node, node_data)}->{to_nodes}')
+        for edge in self._edges:
+            from_node, to_node, edge_data = self._edges[edge];
+            out.append(f'{from_node}-{edge}->{to_node}')
         return ', '.join(out)
 
     def __repr__(self: Graph) -> str:
