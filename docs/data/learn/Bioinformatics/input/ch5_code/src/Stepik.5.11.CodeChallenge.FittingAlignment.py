@@ -5,32 +5,35 @@ from typing import Dict, Tuple
 from Graph import Graph
 from helpers.Utils import slide_window
 
-with open('/home/user/Downloads/dataset_240306_3(1).txt', mode='r', encoding='utf-8') as f:
+#
+# Load scoring matrix
+#
+indel_penalty = -1  # specified in problem statement
+mismatch_penalties: Dict[Tuple[str, str], int] = {}
+for ch1, ch2 in product('ACTG', repeat=2):
+    mismatch_penalties[(ch1, ch2)] = 1 if ch1 == ch2 else -1
+
+
+#
+# Load sequences
+#
+with open('/home/user/Downloads/dataset_240306_5.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 
 lines = data.strip().split('\n')
 
 s1 = list(lines[0].strip())
 s2 = list(lines[1].strip())
-insert_penalty = 1
-delete_penalty = 1
-swap_penalty = 1
-keep_penalty = 0
-
-
-# THIS IS THE SAME AS 5.10 GLOBAL ALIGNMENT, BUT INSTEAD OF GETTING THE MAX SCORE WE'RE GETTING THE MIN SCORE WHERE THE
-# PENALTIES ARE POSITIVE. THE MODIFICATION TYPES HAVE BEEN CHANGED AS WELL TO BETTER REFLECT WHAT THIS ALGORITHM IS
-# DOING. YOU MAY BE ABLE TO STAY WITH GETTING THE MAX SCORE IF YOU CHANGED ALL THE PENALTIES TO NEGATIVE
 
 
 #
 # Generate graph
 #
 class ModificationType:
-    INSERT = 'INSERT'
-    DELETE = 'DELETE'
-    SWAP = 'SWAP'
-    KEEP = 'KEEP'
+    KEEP_S1_ONLY = 'KEEP_S1_ONLY'
+    KEEP_S2_ONLY = 'KEEP_S2_ONLY'
+    KEEP_BOTH = 'KEEP_BOTH'
+    SKIP = 'SKIP'
 
 
 next_edge_id = 0
@@ -50,24 +53,34 @@ for s1_ch in [None] + s1:  # create nodes
 for row in grid:  # create horizontal edges
     for node_pair, _ in slide_window(row, 2):
         src_n, dst_n = node_pair
-        g.insert_edge(next_edge_id, src_n, dst_n, [ModificationType.DELETE, delete_penalty])
+        g.insert_edge(next_edge_id, src_n, dst_n, [ModificationType.KEEP_S2_ONLY, indel_penalty])
         next_edge_id += 1
 for row_pair, _ in slide_window(grid, 2):  # create vertical edges
     row1, row2 = row_pair
     for src_n, dst_n in zip(row1, row2):
-        g.insert_edge(next_edge_id, src_n, dst_n, [ModificationType.INSERT, insert_penalty])
+        g.insert_edge(next_edge_id, src_n, dst_n, [ModificationType.KEEP_S1_ONLY, indel_penalty])
         next_edge_id += 1
 for row_pair, _ in slide_window(grid, 2):  # create diagonal edges
     row1, row2 = row_pair
     for src_n, dst_n in zip(row1[:-1], row2[1:]):
         _, _, dst_n_s1_ch, dst_n_s2_ch = g.get_node_data(dst_n)
-        penalty = swap_penalty if dst_n_s1_ch != dst_n_s2_ch else keep_penalty
-        mod_type = ModificationType.SWAP if dst_n_s1_ch != dst_n_s2_ch else ModificationType.KEEP
-        g.insert_edge(next_edge_id, src_n, dst_n, [mod_type, penalty])
+        penalty = mismatch_penalties[(dst_n_s1_ch, dst_n_s2_ch)]
+        g.insert_edge(next_edge_id, src_n, dst_n, [ModificationType.KEEP_BOTH, penalty])
         next_edge_id += 1
 from_node = grid[0][0]
 to_node = grid[-1][-1]
-
+for row in grid:  # create free-rides from source node to every node in the first column
+    dst_n = row[0]
+    if dst_n == from_node:
+        continue
+    g.insert_edge(next_edge_id, from_node, dst_n, [ModificationType.SKIP, 0])
+    next_edge_id += 1
+for row in grid:  # create free-rides from every node in the last column to dst node
+    src_n = row[-1]
+    if src_n == to_node:
+        continue
+    g.insert_edge(next_edge_id, src_n, to_node, [ModificationType.SKIP, 0])
+    next_edge_id += 1
 
 # Populate node weights and backtracking info. Each node's data is a tuple where [0] is the calculated weight and [1] is
 # the edge the incoming connection that was chosen to calculate that weight (used for backtracking).
@@ -111,14 +124,14 @@ while len(waiting_nodes) > 0:
             if src_node_weight is not None:
                 incoming_accum_weights[edge] = src_node_weight + edge_weight
         if len(incoming_accum_weights) == 0:
-            min_edge = None
-            min_weight = None
+            max_edge = None
+            max_weight = None
         else:
-            min_edge = min(incoming_accum_weights, key=lambda e: incoming_accum_weights[e])
-            min_weight = incoming_accum_weights[min_edge]
+            max_edge = max(incoming_accum_weights, key=lambda e: incoming_accum_weights[e])
+            max_weight = incoming_accum_weights[max_edge]
         node_data = g.get_node_data(node)
-        node_data[0] = min_weight
-        node_data[1] = min_edge
+        node_data[0] = max_weight
+        node_data[1] = max_edge
         # This node has been processed, move it over to complete_nodes.
         waiting_nodes.remove(node)
         complete_nodes.add(node)
@@ -148,24 +161,22 @@ while backtracking_edge is not None:
 s1_alignment = []
 s2_alignment = []
 for op, node in longest_path_operations[1:]:
-    if op == ModificationType.INSERT:
+    if op == ModificationType.KEEP_S1_ONLY:
         _, _, s1_ch, s2_ch = g.get_node_data(node)
         s1_alignment.append(s1_ch)
         s2_alignment.append('-')
-    elif op == ModificationType.DELETE:
+    elif op == ModificationType.KEEP_S2_ONLY:
         _, _, s1_ch, s2_ch = g.get_node_data(node)
         s1_alignment.append('-')
         s2_alignment.append(s2_ch)
-    elif op == ModificationType.SWAP:
+    elif op == ModificationType.KEEP_BOTH:
         _, _, s1_ch, s2_ch = g.get_node_data(node)
         s1_alignment.append(s1_ch)
         s2_alignment.append(s2_ch)
-    elif op == ModificationType.KEEP:
-        _, _, s1_ch, s2_ch = g.get_node_data(node)
-        s1_alignment.append(s1_ch)
-        s2_alignment.append(s2_ch)
+    elif op == ModificationType.SKIP:
+        continue  # do nothing -- this is a free ride to the starting point
 
 
 print(f'{longest_path_length}')
-# print(f'{"".join(s1_alignment)}')
-# print(f'{"".join(s2_alignment)}')
+print(f'{"".join(s1_alignment)}')
+print(f'{"".join(s2_alignment)}')
