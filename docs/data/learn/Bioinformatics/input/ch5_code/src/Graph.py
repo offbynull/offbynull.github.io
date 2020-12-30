@@ -51,6 +51,7 @@ class Graph(Generic[N]):
             data: Optional[ED] = None):
         assert from_node in self._node_outbound
         assert to_node in self._node_outbound
+        assert edge not in self._edges
         self._edges[edge] = (from_node, to_node, data)
         self._node_inbound[to_node].add(edge)
         self._node_outbound[from_node].add(edge)
@@ -170,10 +171,15 @@ class Graph(Generic[N]):
 
     def __str__(self: Graph) -> str:
         out = []
-        for edge in self._edges:
-            from_node, to_node, edge_data = self._edges[edge];
-            out.append(f'{from_node}-{edge}->{to_node}')
-        return ', '.join(out)
+        for node, edges in self._node_outbound.items():
+            for edge in edges:
+                from_node, to_node, edge_data = self._edges[edge];
+                out.append(f'{(from_node, self._node_data[from_node])}--'
+                           f'{(edge, edge_data)}->'
+                           f'{(to_node, self._node_data[to_node])}')
+            if len(edges) == 0:
+                out.append(f'{(node, self._node_data[node])}--x')
+        return '\n'.join(out)
 
     def __repr__(self: Graph) -> str:
         return str(self)
