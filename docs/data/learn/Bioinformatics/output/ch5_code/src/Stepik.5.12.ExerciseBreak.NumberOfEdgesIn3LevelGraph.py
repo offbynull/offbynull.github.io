@@ -30,8 +30,13 @@
 # n-1*m-1 + n-1*m-1 + n-1*m-1 + n-1*m-1 + n-1*m-1 + n-1*m-1 + n-1*m-1 <= 7*n*m - n - n - 1
 # 7*n-1*m-1 <= 7*n*m - n - n - 1
 # 7*n-1*m-1 <= 7*n*m - 2n - 1
+# 7*n-1*m-1 + 2n + 1 <= 7*n*m
 
 # I hope I didn't screw up the reasoning somewhere, but I think this is correct. For n and m of ...
 # 0, it'll be 0 <= 0
-# 1, it'll be 0 <= 5
-# 2, it'll be 7 <= 23
+# 1, it'll be 3 <= 7
+# 2, it'll be 12 <= 28
+# 3, ...
+#
+# As both sides grow from 0 onward, the rhs's growth is faster than the lhs's growth (steeper slope).
+

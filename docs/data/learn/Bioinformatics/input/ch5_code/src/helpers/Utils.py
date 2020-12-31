@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from typing import Tuple, List, TypeVar, Generator
-
+import itertools
+from typing import Tuple, List, TypeVar, Generator, Callable
 
 S = TypeVar('S', str, List)
 
@@ -65,3 +65,8 @@ def enumerate_patterns(k: int, elements: S) -> Generator[S]:
                 yield from inner(current + element, k - 1, elements)
 
     yield from inner('', k, elements)
+
+
+def unique_id_generator(prefix: str = '') -> Callable[[], str]:
+    counter = itertools.count(start=0)
+    return lambda: prefix + str(next(counter))
