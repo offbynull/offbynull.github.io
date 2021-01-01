@@ -23,15 +23,15 @@ export class FinishedStudyList extends React.Component<FinishedStudyListProps, F
         const notesGroupedAndSortedByYear = this.props.notes
             .filter(n => n.year !== undefined)
             .groupBy(n => n.year);
-        const currentNotes = this.props.notes.filter(n => n.year === undefined);
-        const prevNotesYears = notesGroupedAndSortedByYear.keySeq().sort().reverse();
+        const wipNotes = this.props.notes.filter(n => n.year === undefined);
+        const doneNotesByYear = notesGroupedAndSortedByYear.keySeq().sort().reverse();
 
-        const currentNotesElems = <ul>{currentNotes.map(n => <FinishedStudyItem entry={n} />)}</ul>;
-        const prevNotesElems = prevNotesYears.map(y => <ul>{notesGroupedAndSortedByYear.get(y)?.map(n => <FinishedStudyItem entry={n} />)}</ul>);
+        const wipNotesElems = wipNotes.map(n => <FinishedStudyItem entry={n} />);
+        const doneNotesElems = doneNotesByYear.map(y => notesGroupedAndSortedByYear.get(y)?.map(n => <FinishedStudyItem entry={n} />));
         return (
             <div>
                 <ul>
-                    {currentNotesElems}{prevNotesElems}
+                    {wipNotesElems}{doneNotesElems}
                 </ul>
             </div>
         );
