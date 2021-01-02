@@ -5,6 +5,25 @@ from typing import Dict, Tuple
 from Graph import Graph
 from helpers.Utils import slide_window, unique_id_generator
 
+
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+FIX ME FIX ME
+
+
 #
 # Load scoring matrix
 #
@@ -25,7 +44,7 @@ for line in lines[1:]:
 #
 # Load sequences
 #
-with open('/home/user/Downloads/dataset_240308_12.txt', mode='r', encoding='utf-8') as f:
+with open('/home/user/Downloads/test.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 
 lines = data.strip().split('\n')
@@ -39,13 +58,7 @@ s2 = list(lines[1].strip())
 # the path up until the middle column + 1, not until the end of the graph.
 
 
-create_edge_id = unique_id_generator('E')
-g = Graph()
-grid_rows = len(s1) + 1
-grid_cols = len(s2) + 1
-
-
-def populate_initial_2_columns_of_graph():
+def populate_initial_2_columns_of_graph(g: Graph, s1: str, s2: str):
     grid = []
     s1_list = [None] + s1
     s2_list = ([None] + s2)
@@ -71,7 +84,8 @@ def populate_initial_2_columns_of_graph():
             penalty = mismatch_penalties[(dst_n_s1_ch, dst_n_s2_ch)]
             g.insert_edge(create_edge_id(), src_n, dst_n, penalty)
 
-def move_subgraph_over_by_1_column(next_col: int):
+
+def move_subgraph_over_by_1_column(g: Graph, s1: str, s2: str, next_col: int):
     grid = []
     s1_list = [None] + s1
     s2_list = ([None] + s2)
@@ -99,7 +113,7 @@ def move_subgraph_over_by_1_column(next_col: int):
             g.insert_edge(create_edge_id(), src_n, dst_n, penalty)
 
 
-def step(col1: int, col2: int, start_row: int):
+def step(g: Graph, grid_rows: int, col1: int, col2: int, start_row: int):
     from_node = f'{start_row}x{col1}'
     assert all([g.get_node_data(g.get_edge_from(e))[0] is not None for e in g.get_inputs(from_node)])  # all predecessor nodes have weights
     to_node = f'{grid_rows-1}x{col2}'
@@ -155,24 +169,73 @@ def step(col1: int, col2: int, start_row: int):
                 waiting_nodes.add(output_node)
 
 
-populate_initial_2_columns_of_graph()
-root_node_data = g.get_node_data(f'{0}x{0}')
-root_node_data[0] = 0
-step(col1=0, col2=1, start_row=0)
-found_row, _ = max([(r, g.get_node_data(f'{r}x1')[0]) for r in range(grid_rows)], key=lambda e: e[1])
+def find_middle_edge(s1: str, s2: str, s1_start_idx: int, s1_end_idx: int, s2_start_idx: int, s2_end_idx: int):
+    s1 = s1[s1_start_idx:s1_end_idx]
+    s2 = s2[s2_start_idx:s2_end_idx]
 
-# Calculate up until middle column
-middle_col_idx = grid_cols // 2 - 1
-for c in range(2, middle_col_idx + 1):
-    move_subgraph_over_by_1_column(next_col=c)
-    step(col1=c-1, col2=c, start_row=found_row)
-    found_row, _ = max([(r, g.get_node_data(f'{r}x{c}')[0]) for r in range(grid_rows)], key=lambda e: e[1])
-row_in_middle_col = found_row
+    grid_rows = len(s1) + 1
+    grid_cols = len(s2) + 1
 
-# Calculate the column just after the middle column
-move_subgraph_over_by_1_column(next_col=middle_col_idx + 1)
-step(col1=middle_col_idx, col2=middle_col_idx + 1, start_row=row_in_middle_col)
-row_in_col_after_middle_col, _ = max([(r, g.get_node_data(f'{r}x{middle_col_idx + 1}')[0]) for r in range(grid_rows)], key=lambda e: e[1])
+    g = Graph()
+    populate_initial_2_columns_of_graph(g, s1, s2)
+    root_node_data = g.get_node_data(f'{0}x{0}')
+    root_node_data[0] = 0
+    step(g, grid_rows, col1=0, col2=1, start_row=0)
+    found_row, _ = max([(r, g.get_node_data(f'{r}x1')[0]) for r in range(grid_rows)], key=lambda e: e[1])
 
-print(f'({row_in_middle_col}, {middle_col_idx}) ({row_in_col_after_middle_col}, {middle_col_idx + 1})')
+    # Calculate up until middle column
+    middle_col_idx = grid_cols // 2 - 1
+    for c in range(2, middle_col_idx + 1):
+        move_subgraph_over_by_1_column(g, s1, s2, next_col=c)
+        step(g, grid_rows, col1=c-1, col2=c, start_row=found_row)
+        found_row, _ = max([(r, g.get_node_data(f'{r}x{c}')[0]) for r in range(grid_rows)], key=lambda e: e[1])
+    row_in_middle_col = found_row
 
+    # Calculate the node in the next column that the middle node points to
+    middle_node_id = f'{row_in_middle_col}x{middle_col_idx}'
+    move_subgraph_over_by_1_column(g, s1, s2, next_col=middle_col_idx + 1)
+    max_edge_weight = None
+    max_edge_src_node_id = None
+    max_edge_dst_node_id = None
+    for edge in g.get_outputs(f'{middle_node_id}'):
+        from_node_id, to_node_id, weight = g.get_edge(edge)
+        if max_edge_weight is None or weight > max_edge_weight:
+            max_edge_src_node_id = from_node_id
+            max_edge_dst_node_id = to_node_id
+            max_edge_weight = weight
+    max_neighbour_row, max_neighbour_col = [int(x) for x in max_edge_dst_node_id.split('x')]
+
+    if row_in_middle_col == max_neighbour_row:
+        next_dir = '→'
+    elif row_in_middle_col + 1 == max_neighbour_row:
+        next_dir = '↘'
+    else:
+        raise ValueError('This should never happen')
+
+    return max_edge_src_node_id, max_edge_dst_node_id, next_dir
+
+
+def linear_space_alignment(v, w, top, bottom, left, right):
+    if left == right:
+        for i in range(top, bottom):
+            print('↓')
+        return
+    if top == bottom:
+        for i in range(left, right):
+            print('→')
+        return
+    middle = (left + right) // 2
+    mid_edge_src, mid_edge_dst, mid_edge_dir = find_middle_edge(v, w, top, bottom, left, right)
+    midNode = int(mid_edge_src.split('x')[0])  # vertical coordinate of the initial node of midEdge
+    linear_space_alignment(v, w, top, midNode, left, middle)
+    print(dir)
+    if mid_edge_dir == "→" or mid_edge_dir == "↘":
+        middle = middle + 1
+    if mid_edge_dir == "↓" or mid_edge_dir == "↘":
+        midNode = midNode + 1
+    linear_space_alignment(v, w, midNode, bottom, middle, right)
+
+
+create_edge_id = unique_id_generator('E')
+
+linear_space_alignment(s1, s2, 0, len(s1) + 1, 0, len(s2) + 1)
