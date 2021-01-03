@@ -25,7 +25,7 @@ for line in lines[1:]:
 #
 # Load sequences
 #
-with open('/home/user/Downloads/dataset_240308_12.txt', mode='r', encoding='utf-8') as f:
+with open('/home/user/Downloads/test.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 
 lines = data.strip().split('\n')
@@ -162,7 +162,7 @@ step(col1=0, col2=1, start_row=0)
 found_row, _ = max([(r, g.get_node_data(f'{r}x1')[0]) for r in range(grid_rows)], key=lambda e: e[1])
 
 # Calculate up until middle column
-middle_col_idx = grid_cols // 2 - 1
+middle_col_idx = grid_cols // 2
 for c in range(2, middle_col_idx + 1):
     move_subgraph_over_by_1_column(next_col=c)
     step(col1=c-1, col2=c, start_row=found_row)
