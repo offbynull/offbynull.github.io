@@ -30,22 +30,11 @@ with open('/home/user/Downloads/test.txt', mode='r', encoding='utf-8') as f:
 
 lines = data.strip().split('\n')
 
-s1 = list(lines[0].strip())
-s2 = list(lines[1].strip())
-
-
-# THIS ONLY CALCULATES THE MAX WEIGHT OF THE PATH IN A LARGE SEQUENCE ALIGNMENT GRAPH (not the path itself, just the
-# weight of the path) -- IT DOES SO BY ONLY LOADING ENOUGH OF THE GRAPH TO PROCESS THE NEXT STEP. Also, this calculates
-# the path up until the middle column + 1, not until the end of the graph.
-
 
 create_edge_id = unique_id_generator('E')
-g = Graph()
-grid_rows = len(s1) + 1
-grid_cols = len(s2) + 1
 
 
-def populate_initial_2_columns_of_graph():
+def populate_initial_2_columns_of_graph(g, s1, s2):
     grid = []
     s1_list = [None] + s1
     s2_list = ([None] + s2)
@@ -71,7 +60,7 @@ def populate_initial_2_columns_of_graph():
             penalty = mismatch_penalties[(dst_n_s1_ch, dst_n_s2_ch)]
             g.insert_edge(create_edge_id(), src_n, dst_n, penalty)
 
-def move_subgraph_over_by_1_column(next_col: int):
+def move_subgraph_over_by_1_column(g, s1, s2, next_col: int):
     grid = []
     s1_list = [None] + s1
     s2_list = ([None] + s2)
@@ -99,7 +88,10 @@ def move_subgraph_over_by_1_column(next_col: int):
             g.insert_edge(create_edge_id(), src_n, dst_n, penalty)
 
 
-def step(col1: int, col2: int, start_row: int):
+def step(g, s1, s2, col1: int, col2: int, start_row: int):
+    grid_rows = len(s1) + 1
+    grid_cols = len(s2) + 1
+
     from_node = f'{start_row}x{col1}'
     assert all([g.get_node_data(g.get_edge_from(e))[0] is not None for e in g.get_inputs(from_node)])  # all predecessor nodes have weights
     to_node = f'{grid_rows-1}x{col2}'
@@ -155,31 +147,77 @@ def step(col1: int, col2: int, start_row: int):
                 waiting_nodes.add(output_node)
 
 
-populate_initial_2_columns_of_graph()
-root_node_data = g.get_node_data(f'{0}x{0}')
-root_node_data[0] = 0
-step(col1=0, col2=1, start_row=0)
-found_row, _ = max([(r, g.get_node_data(f'{r}x1')[0]) for r in range(grid_rows)], key=lambda e: e[1])
+def sweep_till_last_col(s1, s2):
+    grid_rows = len(s1) + 1
+    grid_cols = len(s2) + 1
+    g = Graph()
 
-# Calculate up until middle column
-middle_col_idx = grid_cols // 2
-for c in range(2, middle_col_idx + 1):
-    move_subgraph_over_by_1_column(next_col=c)
-    step(col1=c-1, col2=c, start_row=found_row)
-    found_row, _ = max([(r, g.get_node_data(f'{r}x{c}')[0]) for r in range(grid_rows)], key=lambda e: e[1])
-row_in_middle_col = found_row
+    populate_initial_2_columns_of_graph(g, s1, s2)
+    root_node_data = g.get_node_data(f'{0}x{0}')
+    root_node_data[0] = 0
+    step(g, s1, s2, col1=0, col2=1, start_row=0)
+    found_row, _ = max([(r, g.get_node_data(f'{r}x1')[0]) for r in range(grid_rows)], key=lambda e: e[1])
 
-# Calculate the node in the next column that the middle node points to
-middle_node_id = f'{row_in_middle_col}x{middle_col_idx}'
-move_subgraph_over_by_1_column(next_col=middle_col_idx + 1)
-max_edge_weight = None
-max_edge_dst_node_id = None
-for edge in g.get_outputs(f'{middle_node_id}'):
-    _, to_node_id, weight = g.get_edge(edge)
-    if max_edge_weight is None or weight > max_edge_weight:
-        max_edge_dst_node_id = to_node_id
-        max_edge_weight = weight
-max_neighbour_row, max_neighbour_col = max_edge_dst_node_id.split('x')
+    # Calculate up until middle column
+    for c in range(2, grid_cols):
+        move_subgraph_over_by_1_column(g, s1, s2, next_col=c)
+        step(g, s1, s2, col1=c - 1, col2=c, start_row=found_row)
+        found_row, _ = max([(r, g.get_node_data(f'{r}x{c}')[0]) for r in range(grid_rows)], key=lambda e: e[1])
+    last_col_vals = [g.get_node_data(f'{r}x{grid_cols - 1}')[0] for r in range(grid_rows)]
 
-print(f'({row_in_middle_col}, {middle_col_idx}) ({max_neighbour_row}, {max_neighbour_col})')
+    return last_col_vals
+
+
+def find_middle_nodes(s1, s2):
+    col_idx = len(s2) // 2
+    left_sweep_final_col_weights = sweep_till_last_col(s1, s2[:col_idx])
+    right_sweep_final_col_weights = sweep_till_last_col(s1[::-1], s2[col_idx - 1:][::-1])[::-1]
+    # print(f'{left_sweep_final_col_weights}')
+    # print(f'{right_sweep_final_col_weights}')
+    combined_sweep_final_col_weights = [v1 + v2 for v1, v2 in zip(left_sweep_final_col_weights, right_sweep_final_col_weights)]
+    # print(f'{combined_sweep_final_col_weights}')
+    max_combined_weight = max(combined_sweep_final_col_weights)
+    max_combined_weight_idxes = [i for i, v in enumerate(combined_sweep_final_col_weights) if v == max_combined_weight]
+    return (max_combined_weight_idxes[0], col_idx, max_combined_weight_idxes[0])
+
+
+def find_middle_edge(s1, s2, node):
+    s1_idx = node[0] - 1
+    s2_idx = node[1] - 1
+    weight = node[2]
+    right = (weight + indel_penalty, '→')
+    down = (weight + indel_penalty, '↓')
+    diag = (weight + mismatch_penalties[(s1[s1_idx + 1], s2[s2_idx + 1])], '↘')
+    return max([right, down, diag])
+
+
+
+I THINK FIND_MIDDLE_NODES IS CORRECT BUT FIND_MIDDLE_EDGES IS STILL WRONG -- TO FIND THE CORRECT MIDDLE EDGE, YOU NEED
+TO PROCESS 1 COLUMN PAST THE MIDDLE COLUMN. IF THE NODES THAT THE MIDDLE NODE POINTS TO IN THAT NEXT COLUMN, THE NODE
+WITH THE LARGEST WEIGHT IS THE WHERE THE EDGE IS BETWEEN. RIGHT NOW YOU'RE USING THE EDGE WEIGHTS, WHICH IS INCORRECT
+-- THE OUTGOING EDGE WITH MAX WEIGHT DOESN'T MEAN THAT THE NODE ITS POINTING TO WILL HAVE THE MAX WEIGHT AS WELL (IT
+HAS OTHER EDGES POINTING TO IT)
+
+TEST USING THE TEST DATASETS FROM STEPIK
+
+STOP TRYING TO DO THIS WITH A GRAPH ABTRACTION. INSTEAD MAKE A STEPPER ABSTRACTION THAT INTERNALY USES A 2 COLUMN MATRIX
+THAT YOU CAN USE TO STEP OVER EACH COLUMN / STEP OVER N COLUMNS / STEP BACK. USE THAT TO BUILD OUT HTE LOGIC BECAUSE
+WHATS HAPPENING HERE IS A DUMPSTER FIRE.
+
+
+s1 = list(lines[0].strip())
+s2 = list(lines[1].strip())
+middle_node = find_middle_nodes(s1, s2)
+_, direction = find_middle_edge(s1, s2, middle_node)
+from_row, from_col = middle_node[:2]
+if direction == '→':
+    to_row, to_col = from_row, from_col + 1
+elif direction == '↓':
+    to_row, to_col = from_row + 1, from_col
+elif direction == '↘':
+    to_row, to_col = from_row + 1, from_col + 1
+else:
+    raise ValueError()
+
+print(f'({from_row}, {from_col}) ({to_row}, {to_col})')
 
