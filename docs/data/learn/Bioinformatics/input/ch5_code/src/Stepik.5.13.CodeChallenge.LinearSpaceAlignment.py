@@ -38,6 +38,79 @@ with open('/home/user/Downloads/test.txt', mode='r', encoding='utf-8') as f:
 lines = data.strip().split('\n')
 
 
+# HEADS UP: |v| maps to len(v)+1 and |w| maps to len(w)+1
+def lcs(v: str, w: str):
+    lcs_matrix = [[-1] * (len(v) + 1) for i in range(len(w) + 1)]
+    for i in range(len(v) + 1):
+        lcs_matrix[0][i] = indel_penalty * i
+    for j in range(len(w) + 1):
+        lcs_matrix[j][0] = indel_penalty * j
+    for j in range(1, len(w) + 1):
+        for i in range(1, len(v) + 1):
+            match = mismatch_penalties[(v[i - 1], w[j - 1])]
+            lcs_matrix[j][i] = max(
+                lcs_matrix[j - 1][i] + indel_penalty,
+                lcs_matrix[j][i - 1] + indel_penalty,
+                lcs_matrix[j - 1][i - 1] + match
+            )
+    return lcs_matrix
+
+class Sweeper:
+    def __init__(self, v: str, w: str, col_backtrack: int = 2):
+        self.v = v
+        self.w = w
+        self.col_backtrack = col_backtrack
+        self.matrix_w_start_idx = 0  # col
+        col = [-1] * (len(v) + 1)
+        for v_idx in range(len(v) + 1):
+            col[v_idx] = indel_penalty * v_idx
+        self.matrix = [col]
+
+    def walk_right(self):
+        next_col = [-1] * (len(self.v) + 1)
+        next_w_idx = self.matrix_w_start_idx + len(self.matrix)
+        if len(self.matrix) == self.col_backtrack:
+            self.matrix.pop(0)
+            self.matrix_w_start_idx += 1
+        self.matrix += [next_col]
+        self.matrix[-1][0] = self.matrix[-2][0] + indel_penalty  # right penalty for first row of new col
+        for v_idx in range(1, len(self.v) + 1):
+            self.matrix[-1][v_idx] = max(
+                self.matrix[-2][v_idx] + indel_penalty,  # right penalty
+                self.matrix[-1][v_idx-1] + indel_penalty,  # down penalty
+                self.matrix[-2][v_idx-1] + mismatch_penalties[(self.v[v_idx - 1], self.w[next_w_idx - 1])]
+            )
+
+
+y = lcs('PLEASANTLY', 'MEANLY')
+x1 = Sweeper('PLEASANTLY', 'MEANLY')
+x1.walk_right()
+x1.walk_right()
+x1.walk_right()
+x2 = Sweeper('PLEASANTLY'[::-1], 'MEANLY'[::-1])
+x2.walk_right()
+x2.walk_right()
+x2.walk_right()
+
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+THIS IS WORKING -- REORIENT CODE AROUND THIS
+
+
+
+
+
+
+
 create_edge_id = unique_id_generator('E')
 
 
