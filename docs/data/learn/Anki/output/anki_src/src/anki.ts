@@ -6,8 +6,7 @@ export class Anki {
 
     private constructor(
         private readonly dom: AnkiDom,
-        private readonly db: AnkiDb,
-        private readonly questionCount: number
+        private readonly db: AnkiDb
     ) {
         this.activeQuestion = undefined;
     }
@@ -26,27 +25,28 @@ export class Anki {
             }
         }
 
-        dom.findAndUpdateInfoTag('NONE', aliveCnt);
-        return new Anki(dom, db, aliveCnt);
+        dom.setQuestionCount(aliveCnt);
+        return new Anki(dom, db);
     }
 
     public async showNextQuestion() {
         if (this.activeQuestion !== undefined) {
             this.dom.hideQuestion(this.activeQuestion.id);
-            console.log('hiding' + this.activeQuestion.id)
         }
         this.activeQuestion = await this.db.getNextScheduledQuestion();
         if (this.activeQuestion !== undefined) {
-            this.dom.showQuestion(this.activeQuestion.id, (passed, showTime) => this.questionComplete(passed, showTime));
+            this.dom.showQuestion(this.activeQuestion.id, (grade) => this.questionComplete(grade));
+            this.dom.setOutOfQuestionsFlag(false);
+        } else {
+            this.dom.setOutOfQuestionsFlag(true);
         }
     }
 
-    private async questionComplete(passed: boolean, showTime: Date): Promise<void> {
+    private async questionComplete(grade: Grade): Promise<void> {
         if (this.activeQuestion === undefined) {
             throw new Error('Should never happen');
         }
-        this.dom.findAndUpdateInfoTag(passed ? 'PASS' : 'FAIL', this.questionCount);
-        await this.db.answerQuestion(this.activeQuestion.id, passed ? Grade.CORRECT_PERFECT : Grade.INCORRECT_BLACKOUT);
+        await this.db.answerQuestion(this.activeQuestion.id, grade);
         await this.showNextQuestion();
     }
 }

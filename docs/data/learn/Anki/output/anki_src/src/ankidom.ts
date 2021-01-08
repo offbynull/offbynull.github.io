@@ -1,9 +1,13 @@
 import { breakOnSlashes, combineWithSlashes } from "./parse_helpers";
 
+export type ANSWER_CALLBACK = (postMortem: 0 | 1 | 2| 3 | 4 | 5) => Promise<void>;
+
 export class AnkiDom {
     private readonly questionTags: HTMLUListElement[];
     private originalQuestionTag: HTMLUListElement | null = null;
     private processedQuestionTag: HTMLUListElement | null = null;
+    private infoQuestionCount: number | undefined = undefined;
+    private infoOutOfQuestionsFlag: boolean | undefined = undefined;
 
     constructor() {
         this.questionTags = AnkiDom.findQuestionTags();
@@ -42,6 +46,9 @@ export class AnkiDom {
         this.processedQuestionTag = this.originalQuestionTag.cloneNode(true) as HTMLUListElement;
 
         const patterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag);
+        if (patterns.length === 0) {
+            throw new Error(`No patterns found for question:\n\n${this.originalQuestionTag.innerHTML}`);
+        }
         for (const [patternIdx, pattern] of patterns.entries()) {
             AnkiDom.blackoutClozeWord(this.processedQuestionTag, pattern, patternIdx);
         }
@@ -74,18 +81,35 @@ export class AnkiDom {
         return node !== null;
     }
 
-    public findAndUpdateInfoTag(passed: 'NONE' | 'PASS' | 'FAIL', questionCount: number) {
+    public setQuestionCount(questionCount: number) {
+        this.infoQuestionCount = questionCount;
+        this.findAndUpdateInfoTag();
+    }
+
+    public setOutOfQuestionsFlag(outOfQuestions: boolean) {
+        this.infoOutOfQuestionsFlag = outOfQuestions;
+        this.findAndUpdateInfoTag();
+    }
+
+    private findAndUpdateInfoTag() {
         const nodeIt = document.evaluate(".//info", document, null, XPathResult.ANY_TYPE, null);
         const node = nodeIt.iterateNext();
         while (node === null) {
             console.error('info node not found');
             return;
         }
-        const children = Array(... node.childNodes.values());
+        const children = Array(...node.childNodes.values());
         children.forEach(c => node.removeChild(c));
+        let t: string[] = [];
+        if (this.infoOutOfQuestionsFlag === true) {
+            t.push(`No more questions`);
+        }
+        if (this.infoQuestionCount !== undefined) {
+            t.push(`Total questions: ${this.infoQuestionCount}`);
+        }
         node.appendChild(
             document.createTextNode(
-                `Last answer: ${passed} / Total questions: ${questionCount}`
+                t.join(' / ')
             )
         );
     }
@@ -119,8 +143,8 @@ export class AnkiDom {
                             'Incorrect number of arguments in guess_word tag: ' + JSON.stringify(broken) + '\n'
                             + '------\n'
                             + 'Examples:\n'
-                            + '  `my bookmark`\n'
-                            + '  `(my\\s+bookmark)/i`\n'
+                            + '  my bookmark\n'
+                            + '  (my\\s+bookmark)/i\n'
                             + 'Tag arguments are delimited using forward slash (\\). Use \\ to escape the delimiter (\\/).'
                         );
                 }
@@ -192,7 +216,6 @@ export class AnkiDom {
             );
             answerTextElems.push(answerTextElem);
         }
-        const questionShowTime = new Date();
         const submitButtonElem = document.createElement('button');
         submitButtonElem.appendChild(
             document.createTextNode('Answer')
@@ -209,9 +232,69 @@ export class AnkiDom {
                     break;
                 }
             }
-            callback(questionPassed, questionShowTime);
+            submitButtonElem.disabled = true;
+            this.addClozeWordPostMortemZone(parent, questionPassed, patterns, callback);
         };
         divElem.appendChild(submitButtonElem);
+        divElem.style.borderWidth = '1px';
+        parent.appendChild(divElem);
+    }
+
+    private static addClozeWordPostMortemZone(parent: HTMLElement, correctAnswer: boolean, patterns: RegExp[], callback: ANSWER_CALLBACK) {
+        const divElem = document.createElement('div');
+        const labelElem = document.createElement('p');
+        labelElem.appendChild(
+            document.createTextNode(`Answer was ${correctAnswer ? 'correct' : 'incorrect'}!`)
+        )
+        labelElem.style.backgroundColor = correctAnswer ? 'green' : 'red';
+        divElem.appendChild(labelElem);
+        const answerTextElem = document.createElement('p');
+        for (const [patternIdx, pattern] of patterns.entries()) {
+            answerTextElem.appendChild(
+                document.createTextNode(
+                    `{${patternIdx}} = ` + combineWithSlashes([pattern.source, pattern.flags])
+                )
+            );
+            answerTextElem.appendChild(
+                document.createElement('br')
+            );
+        }
+        divElem.appendChild(answerTextElem);
+        if (correctAnswer === true) {
+            const items: [string, number][] = [
+                ['Got answer easily', 5],
+                ['Got answer with some hesitation', 4],
+                ['Got answer but with difficulty', 3]
+            ];
+            for (const [ label, grade ] of items) {
+                const buttonElem = document.createElement('button');
+                buttonElem.appendChild(
+                    document.createTextNode(label)
+                );
+                buttonElem.onclick = (e) => callback(grade as 0 | 1 | 2 | 3 | 4 | 5);
+                divElem.appendChild(buttonElem);
+                divElem.appendChild(
+                    document.createElement('p')
+                );
+            }
+        } else {
+            const items: [string, number][] = [
+                ['Recalled after seeing answer with ease', 2],
+                ['Recalled after seeing answer but was difficult', 1],
+                ['Not recalled after seeing answer', 0]
+            ];
+            for (const [ label, grade ] of items) {
+                const buttonElem = document.createElement('button');
+                buttonElem.appendChild(
+                    document.createTextNode(label)
+                );
+                buttonElem.onclick = (e) => callback(grade as 0 | 1 | 2 | 3 | 4 | 5);
+                divElem.appendChild(buttonElem);
+                divElem.appendChild(
+                    document.createElement('p')
+                );
+            }
+        }
         divElem.style.borderWidth = '1px';
         parent.appendChild(divElem);
     }
@@ -223,5 +306,3 @@ export class AnkiDom {
         originalElement.parentNode.replaceChild(replacementElement, originalElement);
     }
 }
-
-export type ANSWER_CALLBACK = (correct: boolean, showTime: Date) => Promise<void>;

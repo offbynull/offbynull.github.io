@@ -1,5 +1,23 @@
 import Dexie from 'dexie';
 
+export enum Grade {
+    CORRECT_PERFECT = 5,           // correct.
+    CORRECT_HESITATION = 4,        // correct -- got it after some hesitation.
+    CORRECT_DIFFICULT = 3,         // correct -- got it but it was difficult to think up.
+    INCORRECT_REMEMBERED_EASY = 2, // incorrect -- but the correct one was easy to recall.
+    INCORRECT_REMEMBERED_HARD = 1, // incorrect -- but the correct one was recalled with difficulty.
+    INCORRECT_BLACKOUT = 0         // incorrect -- complete blackout.
+}
+
+export interface Question {
+    id: number;         // question id
+    repetition: number; // how many times the correct answer's been gotten in a row -- initial val is 0.
+    interval: number;   // how many days until this question is to be answered again -- initial val is 0.
+    eFactor: number;    // easiness factor reflecting how easy memorizing / retaining is -- initial val is 2.5.
+    nextUtc: number;    // next time to show this question (as utc) based on the timestamp interval was set -- initial val is 0.
+    dead: boolean;      // if set, this question shouldn't be displayed to the user
+}
+
 export class AnkiDb {
     private constructor(private readonly db: Dexie) { }
 
@@ -98,22 +116,4 @@ export class AnkiDb {
         }
         return undefined;
     }
-}
-
-export enum Grade {
-    CORRECT_PERFECT = 5,           // correct.
-    CORRECT_HESITATION = 4,        // correct -- got it after some hesitation.
-    CORRECT_DIFFICULT = 3,         // correct -- got it but it was difficult to think up.
-    INCORRECT_REMEMBERED_EASY = 2, // incorrect -- but the correct one was easy to recall.
-    INCORRECT_REMEMBERED_HARD = 1, // incorrect -- but the correct one was recalled with difficulty.
-    INCORRECT_BLACKOUT = 0         // incorrect -- complete blackout.
-}
-
-export interface Question {
-    id: number;         // question id
-    repetition: number; // how many times the correct answer's been gotten in a row -- initial val is 0.
-    interval: number;   // how many days until this question is to be answered again -- initial val is 0.
-    eFactor: number;    // easiness factor reflecting how easy memorizing / retaining is -- initial val is 2.5.
-    nextUtc: number;    // next time to show this question (as utc) based on the timestamp interval was set -- initial val is 0.
-    dead: boolean;      // if set, this question shouldn't be displayed to the user
 }
