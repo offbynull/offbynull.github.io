@@ -45,14 +45,17 @@ export class AnkiDom {
         this.originalQuestionTag = this.questionTags[id];
         this.processedQuestionTag = this.originalQuestionTag.cloneNode(true) as HTMLUListElement;
 
-        const patterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag);
-        if (patterns.length === 0) {
-            throw new Error(`No patterns found for question:\n\n${this.originalQuestionTag.innerHTML}`);
+        const answerPatterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag, 'anki-answerpattern');
+        for (const [patternIdx, pattern] of answerPatterns.entries()) {
+            AnkiDom.blackoutPattern(this.processedQuestionTag, pattern, '' + patternIdx);
         }
-        for (const [patternIdx, pattern] of patterns.entries()) {
-            AnkiDom.blackoutClozeWord(this.processedQuestionTag, pattern, patternIdx);
+        
+        const hidePatterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag, 'anki-hidepattern');
+        for (const pattern of hidePatterns) {
+            AnkiDom.blackoutPattern(this.processedQuestionTag, pattern, 'HIDDEN', 'black');
         }
-        AnkiDom.addClozeWordAnswerZone(this.processedQuestionTag, patterns, callback);
+
+        AnkiDom.addClozeWordAnswerZone(this.processedQuestionTag, answerPatterns, callback);
 
         this.processedQuestionTag.style.display = 'block';
 
@@ -76,7 +79,7 @@ export class AnkiDom {
     }
 
     public isDeadQuestion(id: number) {
-        const nodeIt = document.evaluate(".//dead", this.questionTags[id], null, XPathResult.ANY_TYPE, null);
+        const nodeIt = document.evaluate(".//span[@class=\"anki-deadquestion\"]", this.questionTags[id], null, XPathResult.ANY_TYPE, null);
         const node = nodeIt.iterateNext();
         return node !== null;
     }
@@ -92,7 +95,7 @@ export class AnkiDom {
     }
 
     private findAndUpdateInfoTag() {
-        const nodeIt = document.evaluate(".//info", document, null, XPathResult.ANY_TYPE, null);
+        const nodeIt = document.evaluate(".//span[@class=\"anki-infopanel\"]", document, null, XPathResult.ANY_TYPE, null);
         const node = nodeIt.iterateNext();
         while (node === null) {
             console.error('info node not found');
@@ -114,29 +117,31 @@ export class AnkiDom {
         );
     }
 
-    private static findAndRemovePatternTags(parent: HTMLElement): RegExp[] {
-        const nodeIt = document.evaluate(".//pattern", parent, null, XPathResult.ANY_TYPE, null);
+    private static findAndRemovePatternTags(parent: HTMLElement, classAttr: string): RegExp[] {
+        const nodeIt = document.evaluate(".//span[@class=\"" + classAttr + "\"]", parent, null, XPathResult.ANY_TYPE, null);
         const ret: RegExp[] = []
         let node = nodeIt.iterateNext();
         while (node !== null) {
             node.parentElement?.removeChild(node);
-            if (node.textContent === null) {
+            if (!(node instanceof Element)) {
                 continue;
             }
-            const txt = node.textContent;
+            const txt = node.getAttribute("data-pattern"); // Why use an attr instead of textContent? markdown-it applies escaping to stuff inside tag before it spits it out, which may produce invalid regex.
+            if (txt === null) {
+                throw new Error(`Word pattern expects data-pattern attribute.\n\n${node.innerHTML}`);
+            }
             const info = (() => {
                 const broken = breakOnSlashes(txt);
                 switch(broken.length) {
                     case 1:
                         return {
-                            label: broken[0],
                             regex: '(' + broken[0] + ')',
                             flags: 'i'
                         };
                     case 2:
                         return {
-                            regex: broken[1],
-                            flags: broken[2]
+                            regex: broken[0],
+                            flags: broken[1]
                         };
                     default:
                         throw new Error(
@@ -157,32 +162,27 @@ export class AnkiDom {
         return ret;
     }
 
-    private static blackoutClozeWord(parent: HTMLElement, pattern: RegExp, patternIdx: number) {
+    private static blackoutPattern(parent: HTMLElement, pattern: RegExp, blackoutText: string, blackoutColor?: string) {
         function hide(node: Node) {
             if (node.nodeName === '#text') {
                 const text = (node as CharacterData).data;
                 const regex = RegExp(pattern.source, pattern.flags + 'g'); // g required
                 const containerNode = document.createElement('span');
+                let regexFoundCount = 0;
                 let regexLastFoundIdx = 0;
                 let found;
                 while ((found = regex.exec(text)) !== null) {
-                    const textNode = document.createTextNode(
+                    if (found[0].trim().length === 0) {
+                        throw new Error(`Regex pattern is matching 0 length substring: regex ${pattern.source} found at index ${found.index} of text ${text}\n\n${parent.textContent}`);
+                    }
+                    const preTextNode = document.createTextNode(
                         text.slice(regexLastFoundIdx, found.index)
                     );
-                    const hiddenNode = document.createElement('span');
-                    hiddenNode.appendChild(
-                        document.createTextNode(
-                            '{' + patternIdx + '}'
-                        )
-                    );
-                    // hiddenNode.style.visibility = 'hidden;
-                    hiddenNode.style.color = 'white';
-                    hiddenNode.style.backgroundColor = 'red';
-                    hiddenNode.style.fontWeight = 'bold';
-                    hiddenNode.style.userSelect = 'none';
-                    containerNode.appendChild(textNode);
-                    containerNode.appendChild(hiddenNode);
+                    const replacementNode = AnkiDom.createBlackoutPatternLabel(blackoutText, blackoutColor);
+                    containerNode.appendChild(preTextNode);
+                    containerNode.appendChild(replacementNode);
                     regexLastFoundIdx = regex.lastIndex;
+                    regexFoundCount += 1;
                 }
                 const finalTextNode = document.createTextNode(
                     text.slice(regexLastFoundIdx)
@@ -191,7 +191,9 @@ export class AnkiDom {
                 if (node.parentNode === null) {
                     throw new Error('Null parent');
                 }
-                node.parentNode.replaceChild(containerNode, node)
+                if (regexFoundCount > 0) { // only apply change if something was found
+                    node.parentNode.replaceChild(containerNode, node);
+                }
             }
             for (let childNode of (node as Element).childNodes) {
                 hide(childNode)
@@ -200,16 +202,32 @@ export class AnkiDom {
         hide(parent);
     }
 
+    private static createBlackoutPatternLabel(text: string, color?: string) {
+        const labelNode = document.createElement('span');
+        labelNode.appendChild(
+            document.createTextNode(
+                '{' + text + '}'
+            )
+        );
+        const hash = Math.abs(text.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0)); // https://stackoverflow.com/a/34842797
+        // hiddenNode.style.visibility = 'hidden;
+        labelNode.style.color = 'white';
+        labelNode.style.backgroundColor =  color || `hsl(${hash * 137.508},50%,75%)`; // https://stackoverflow.com/a/20129594
+        labelNode.style.fontWeight = 'bold';
+        labelNode.style.userSelect = 'none';
+        return labelNode;
+    }
+
     private static addClozeWordAnswerZone(parent: HTMLElement, patterns: RegExp[], callback: ANSWER_CALLBACK) {
         const divElem = document.createElement('div');
         const answerTextElems: HTMLInputElement[] = [];
         for (const [patternIdx, pattern] of patterns.entries()) {
             const answerTextElem = document.createElement('input');
-            answerTextElem.setAttribute('type', 'text');
-            answerTextElem.setAttribute('id', combineWithSlashes([pattern.source, pattern.flags]));
-            divElem.appendChild(
-                document.createTextNode(`{${patternIdx}}: `)
-            );
+            answerTextElem.type = 'text';
+            answerTextElem.autocomplete = 'off';
+            answerTextElem.id = combineWithSlashes([pattern.source, pattern.flags]);
+            const labelNode = AnkiDom.createBlackoutPatternLabel('' + patternIdx);
+            divElem.appendChild(labelNode);
             divElem.appendChild(answerTextElem);
             divElem.appendChild(
                 document.createElement('p')
@@ -237,6 +255,7 @@ export class AnkiDom {
         };
         divElem.appendChild(submitButtonElem);
         divElem.style.borderWidth = '1px';
+        divElem.style.borderStyle = 'solid';
         parent.appendChild(divElem);
     }
 
@@ -250,9 +269,11 @@ export class AnkiDom {
         divElem.appendChild(labelElem);
         const answerTextElem = document.createElement('p');
         for (const [patternIdx, pattern] of patterns.entries()) {
+            const labelNode = AnkiDom.createBlackoutPatternLabel('' + patternIdx);
+            answerTextElem.appendChild(labelNode);
             answerTextElem.appendChild(
                 document.createTextNode(
-                    `{${patternIdx}} = ` + combineWithSlashes([pattern.source, pattern.flags])
+                    ' = ' + combineWithSlashes([pattern.source, pattern.flags])
                 )
             );
             answerTextElem.appendChild(
@@ -296,6 +317,7 @@ export class AnkiDom {
             }
         }
         divElem.style.borderWidth = '1px';
+        divElem.style.borderStyle = 'solid';
         parent.appendChild(divElem);
     }
 
