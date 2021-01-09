@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import itertools
-from typing import Tuple, List, TypeVar, Generator, Callable
+from typing import Tuple, List, TypeVar, Generator, Callable, Optional
 
 S = TypeVar('S', str, List)
 
@@ -46,6 +46,18 @@ def slide_window(data: S, k: int, cyclic: bool = False) -> Tuple[S, int]:
     for i in range(len(data) - k + 1, len(data)):
         rem = k - (len(data) - i)
         yield data[i:] + data[:rem], i
+
+
+def range_inclusive(start: int, stop: Optional[int] = None, step: Optional[int] = None):
+    if start is not None and stop is not None and step is not None:
+        args = [start, stop + (-1 if step < 0 else 1), step]
+    elif start is not None and stop is None and step is None:
+        args = [start + 1]
+    elif start is not None and stop is not None and step is None:
+        args = [start, stop + 1]
+    else:
+        raise ValueError()
+    return range(*args)
 
 
 def split_to_size(data: str, n: int) -> List[str]:
