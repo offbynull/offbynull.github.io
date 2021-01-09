@@ -19,7 +19,7 @@ export class Anki {
         let aliveCnt = 0;
         for (let id = 0; id < cnt; id++) {
             const dead = dom.isDeadQuestion(id);
-            db.trackQuestion(id, dead);
+            await db.trackQuestion(id, dead);
             if (dead === false) {
                 aliveCnt++;
             }

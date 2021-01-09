@@ -119,9 +119,9 @@ export class AnkiDom {
 
     private static findAndRemovePatternTags(parent: HTMLElement, classAttr: string): RegExp[] {
         const nodeIt = document.evaluate(".//span[@class=\"" + classAttr + "\"]", parent, null, XPathResult.ANY_TYPE, null);
+        const nodes = AnkiDom.xPathResultToArray(nodeIt); // place results in array to because modding while iterating causes some browsers to barf
         const ret: RegExp[] = []
-        let node = nodeIt.iterateNext();
-        while (node !== null) {
+        for (const node of nodes) {
             node.parentElement?.removeChild(node);
             if (!(node instanceof Element)) {
                 continue;
@@ -157,9 +157,18 @@ export class AnkiDom {
             ret.push(
                 new RegExp(info.regex, info.flags)
             );
-            node = nodeIt.iterateNext();
         }
         return ret;
+    }
+
+    private static xPathResultToArray(res: XPathResult): Node[] {
+        const nodes = [];
+        let node = res.iterateNext();
+        while (node !== null) {
+          nodes.push(node);
+          node = res.iterateNext();
+        }
+        return nodes;
     }
 
     private static blackoutPattern(parent: HTMLElement, pattern: RegExp, blackoutText: string, blackoutColor?: string) {
