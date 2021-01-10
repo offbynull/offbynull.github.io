@@ -105,6 +105,11 @@ export class AnkiDb {
         return found as Question | undefined;
     }
 
+    public async deleteQuestion(id: number): Promise<void> {
+        const table = this.db.table('questions');
+        await table.delete(id);
+    }
+
     public async getNextScheduledQuestion(): Promise<Question | undefined> {
         const table = this.db.table('questions');
         // get the next pending value

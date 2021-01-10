@@ -8,21 +8,26 @@ bullet list as anki cloze words questions.
 
 The anki* inline tags generate HTML spans/divs with special class names that get processed by the anki JS:
 
-ankiInfoPanel - Information about the question / questions / state. One allowed in entire file.
-   ankiAnswer - Regex answer for the current question. Multiple allowed per question.
-                  Text in question that matches the regex will be blacked out and users must answer them. The
-                  content of this tag are the same as a 2 or 3 parameter bm tag WITHOUT the label. For
-                  example...
-                  `{ankiAnswer}one`
-                  `{ankiAnswer}(two)/i`
-                  The label (parameter 1 of the 3 parameter tag) isn't used.
-     ankiHide - Regex hider for the current question. Multiple allowed per question.
-                  Text in question that matches the regex will be blacked out. The content of this tag are the
-                  same as the ankiAnswer tag. For example...
-                  `{ankiHide}one`
-                  `{ankiHide}(two)/i`
-                  The label (parameter 1 of the 3 parameter tag) isn't used.
-     ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
+     ankiInfoPanel - Information about the question / questions / state. One allowed in entire file.
+        ankiAnswer - Regex answer for the current question. Multiple allowed per question.
+                       Text in question that matches the regex will be blacked out and users must answer them. The
+                       content of this tag are the same as a 2 or 3 parameter bm tag WITHOUT the label. Also, the
+                       regex doesn't explicitly output capture group 1 like the bm tag does (no prefix/suffixes/).
+                       It outputs the entire match instead. For example...
+                       `{ankiAnswer}my string literal`
+                       `{ankiAnswer}my regex literal/i`
+                       `{ankiAnswer}my (regex) literal/i`  -- unlike bm, there is no special logic for capture groups 
+                       The label (parameter 1 of the 3 parameter tag) isn't used.
+          ankiHide - Regex hider for the current question. Multiple allowed per question.
+                       Text in question that matches the regex will be blacked out. The content of this tag are the
+                       same as the ankiAnswer tag. For example...
+                       `{ankiHide}my string literal`
+                       `{ankiHide}my regex literal/i`
+                       `{ankiHide}my (regex) literal/i`  -- unlike bm, there is no special logic for capture groups
+          ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
+ankiDebugForceShow - Marks a question as the question being debugged. The system will pretend that all other
+                     questions don't exist. As such, the question this is applied on will be question #1 in the
+                     database and all other questions will be removed from the DB.
 ```
 
  * Question 1 one and two. `{ankiAnswer}one` `{ankiAnswer}two`  `{ankiDead}`
@@ -1112,7 +1117,9 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
  
    The building blocks of peptides / proteins, similar to how nucleotides are the building blocks of DNA.
 
-   See proteinogenic amino acid for the list of 20 amino acids used during the translation.
+   ```{note}
+   Answer shouldn't be plural.
+   ```
 
  * `{ankiAnswer} proteinogenic amino acid`
  
@@ -1146,3 +1153,310 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
     ```{note}
     The masses are monoisotopic masses.
     ```
+ * `{ankiAnswer} peptide`
+   
+   A short amino acid chain of at least size two. Peptides are considered miniature proteins, but when something should be called a peptide vs a protein is loosely defined: the cut-off is anywhere between 50 to 100 amino acids.
+ 
+ * `{ankiAnswer} polypeptide`
+ 
+   A peptide of at least size 10.
+
+ * `{ankiAnswer} amino acid residue`
+ 
+   The part of an amino acid that makes it unique from all others.
+ 
+   When two or more amino acids combine to make a peptide/protein, specific elements are removed from each amino acid. What remains of each amino acid is the amino acid residue.
+
+ * `{ankiAnswer} (cyclopeptide|cyclic peptide)/i`
+ 
+   A peptide that doesn't have a start / end. It loops.
+
+   ```{svgbob}
+   N ----> Q 
+   ^       |
+   |       |
+   `-- Y <-'
+   ```
+
+ * `{ankiAnswer} linear peptide`
+ 
+   A peptide that has a start and an end. It doesn't loop.
+
+   ```{svgbob}
+   N --> Q --> Y 
+   ```
+
+ * `{ankiAnswer} subpeptide`
+ 
+   A peptide derived taking some contiguous piece of a larger peptide.
+ 
+   A subpeptide can have a length == 1 where a peptide must have a length > 1. As such, in the case where the subpeptide has a length ...
+    * == 1, it isn't considered a peptide.
+    * \> 1, it is considered a peptide.
+
+ * `{ankiAnswer} central dogma of molecular biology`
+ 
+   The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).
+
+   Most, not all, peptides are synthesized as described above. Non-ribosomal peptides are synthesized outside of the transcription and translation.
+
+ * `{ankiAnswer} non-ribosomal peptide`
+ 
+   A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.
+
+   Non-ribosomal peptides may be cyclic. Common use-cases for non-ribosomal peptides:
+
+   * antibiotics
+   * anti-tumor agents
+   * immunosuppressors
+   * communication between bacteria (quorum sensing)
+
+ * `{ankiAnswer} (mass spectrometer|mass spectrometry)/i`
+ 
+   A device that randomly shatters molecules into pieces and measures the mass-to-charge of those pieces. The output of the device is a plot called a spectrum.
+
+   Note that mass spectrometers have various real-world practical problems. Specifically, they ...
+
+    * may not capture all possible pieces from the intended molecules (missing mass-to-charge ratios).
+    * may capture pieces from unintended molecules (faulty mass-to-charge ratios).
+    * will likely introduce noise into the pieces they capture.
+
+ * `{ankiAnswer} (spectrum)/i`
+ 
+   The output of a mass spectrometer. The...
+
+    * x-axis is the mass-to-charge ratio.
+    * y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).
+   
+   ```{svgbob}
+       y
+       ^
+       |
+       |        |
+       |        |
+   "%" |        |
+       |        | |           |
+       |        | |           |
+       | |      | | |         |        |
+       | | | |  | | |     |   |    | | |
+       +-+-+-+--+-+-+-----+---+----+-+-+--> x
+                        "m/z"
+   ```
+
+   Note that mass spectrometers have various real-world practical problems. Specifically, they ...
+
+    * may not capture all possible pieces from the intended molecules (missing mass-to-charge ratios).
+    * may capture pieces from unintended molecules (faulty mass-to-charge ratios).
+    * will likely introduce noise into the pieces they capture.
+
+   As such, these plots aren't exact.
+
+ * `{ankiAnswer} experimental spectrum`
+ 
+   List of potential fragment masses derived from a spectrum. That is, the molecules fed into the mass spectrometer were randomly fragmented and each fragment had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.
+ 
+   The masses in an experimental spectrum ...
+
+    * may not capture all possible fragments for the intended molecule (missing masses).
+    * may capture fragments from unintended molecules (faulty masses).
+    * will likely contain noise.
+
+    In the context of peptides, the mass spectrometer is expected to fragment based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses, Y and NQ missing).
+
+ * `{ankiAnswer} theoretical spectrum`
+ 
+   List of all of possible fragment masses for a molecule in addition to 0 and the mass of the entire molecule. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
+
+   In the context of peptides, the mass spectrometer is expected to fragment based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the theoretical spectrum will include the masses for [0, N, Q, Y, NQ, QY, NQY]. It shouldn't include masses for partial amino acids. For example, it shouldn't include NQY breaking into 2 pieces by splitting Q, such that one half has N and part of Q, and the other has the remaining part of Q with Y.
+
+ * `{ankiAnswer} spectrum convolution`
+ 
+   An operation used to derive amino acid masses that probably come from the peptide used to generate that experimental spectrum. That is, it generates a list of amino acid masses that could have been for the peptide that generated the experimental spectrum.
+ 
+   The operation derives amino acid masses by subtracting experimental spectrum masses from each other. For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y.
+   
+   Note how the mass for Y was derived from the masses in experimental spectrum even though it's missing from the experimental spectrum itself:
+   
+   * Mass of N is 114. 2 masses are close to 114 in the experimental spectrum: \[113.9, 115.1\].
+   * Mass of Q is 163. 1 mass is close to 163 in the experimental spectrum: \[162.9\].
+   * Mass of Y is 128. 0 masses are close to 128 in the experimental spectrum: \[\].
+
+ * `{ankiAnswer} dalton`
+ 
+   A unit of measurement used in physics and chemistry. 1 Dalton is approximately the mass of a single proton / neutron, derived by taking the mass of a carbon-12 atom and dividing it by 12.
+
+ * `{ankiAnswer} (codon)/i`
+ 
+   A sequence of 3 ribonucleotides that maps to an amino acid or a stop marker. During translation, the ribosome translates the RNA to a protein 3 ribonucleotides at a time:
+
+   ```{note}
+   The stop marker tells the ribosome to stop translating / the protein is complete.
+   ```
+
+   ```{note}
+   The codons are listed as ribonucleotides (RNA). For nucleotides (DNA), swap U with T.
+   ```
+
+   | 1 Letter Code | 3 Letter Code | Amino Acid                  | Codons                       |
+   |---------------|---------------|-----------------------------|------------------------------|
+   | A             | Ala           | Alanine                     | GCA, GCC, GCG, GCU           |
+   | C             | Cys           | Cysteine                    | UGC, UGU                     |
+   | D             | Asp           | Aspartic acid               | GAC, GAU                     |
+   | E             | Glu           | Glutamic acid               | GAA, GAG                     |
+   | F             | Phe           | Phenylalanine               | UUC, UUU                     |
+   | G             | Gly           | Glycine                     | GGA, GGC, GGG, GGU           |
+   | H             | His           | Histidine                   | CAC, CAU                     |
+   | I             | Ile           | Isoleucine                  | AUA, AUC, AUU                |
+   | K             | Lys           | Lysine                      | AAA, AAG                     |
+   | L             | Leu           | Leucine                     | CUA, CUC, CUG, CUU, UUA, UUG |
+   | M             | Met           | Methionine                  | AUG                          |
+   | N             | Asn           | Asparagine                  | AAC, AAU                     |
+   | P             | Pro           | Proline                     | CCA, CCC, CCG, CCU           |
+   | Q             | Gln           | Glutamine                   | CAA, CAG                     |
+   | R             | Arg           | Arginine                    | AGA, AGG, CGA, CGC, CGG, CGU |
+   | S             | Ser           | Serine                      | AGC, AGU, UCA, UCC, UCG, UCU |
+   | T             | Thr           | Threonine                   | ACA, ACC, ACG, ACU           |
+   | V             | Val           | Valine                      | GUA, GUC, GUG, GUU           |
+   | W             | Trp           | Tryptophan                  | UGG                          |
+   | Y             | Tyr           | Tyrosine                    | UAC, UAU                     |
+   | *             | * 	           | **STOP**                    | UAA, UAG, UGA                |
+
+ * `{ankiAnswer} reading frame`
+ 
+   The different ways of dividing a DNA string into codons. Specifically, there are 6 different ways that a DNA string can be divided into codons:
+
+    * You can start dividing at index 0, 1, or 2.
+    * You can divide either the DNA string itself or the reverse complementing DNA string.
+ 
+   For example, given the string ATGTTCCATTAA, the following codon division are possible:
+
+    | DNA          | Start Index | Discard Prefix | Codons             | Discard Suffix |
+    |--------------|-------------|----------------|--------------------|----------------|
+    | ATGTTCCATTAA | 0           |                | ATG, TTC, CAT, TAA |                |
+    | ATGTTCCATTAA | 1           | A              | TGT, TCC, ATT      | AA             |
+    | ATGTTCCATTAA | 2           | AT             | GTT, CCA, TTA      | A              |
+    | TTAATGGAACAT | 0           |                | TTA, ATG, GAA, CAT |                |
+    | TTAATGGAACAT | 1           | T              | TAA, TGG, AAC      | AT             |
+    | TTAATGGAACAT | 2           | TT             | AAT, GGA, ACA      | T              |
+    
+   ```{note}
+   TTAATGGAACAT is the reverse complement of ATGTTCCATTAA.
+   ```
+
+ * `{ankiAnswer} (encode)/i`
+ 
+   When a DNA string or its reverse complement is made up of the codons required for an amino acid sequence. For example, ACAGTA encodes for the amino acid sequence...
+
+    * Threonine-Valine
+    * Tyrosine-Cysteine (derived from reverse complement)
+
+ * `{ankiAnswer} (branch-and-bound algorithm|branch and bound algorithm|branch-and-bound|branch and bound|branch-and-bound)/i`
+ 
+   A bruteforce algorithm that enumerates candidates to explore at each step but also discards untenable candidates using various checks. The enumeration of candidates is the branching step, while the culling of untenable candidates is the bounding step.
+
+ * `{ankiAnswer} subsequence`
+ 
+   A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. For example, can is a subsequence of cation.
+
+   ```{svgbob}
+   C -----------> C 
+   A -----------> A
+   T ----o
+   I ----o
+   O ----o
+   N -----------> N
+   ```
+
+   Not to be confused with substring. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.
+
+ * `{ankiAnswer} substring`
+ 
+   A sequence derived by taking a contiguous part of some other sequence (order of elements maintained). For example, cat is a substring of cation.
+
+   ```{svgbob}
+   C -----------> C 
+   A -----------> A
+   T -----------> T
+   I 
+   O 
+   N 
+   ```
+
+   Not to be confused with subsequence. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.
+
+ * `{ankiAnswer} (topological ordering|topological order|topological)/i`
+ 
+   A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.
+
+   For example, the graph ...
+
+   ```{svgbob}
+                  ,----> E 
+                  |
+                  |
+   A --->  B ---> C ---> D 
+           |             ^ 
+           |             | 
+           `-------------' 
+   ```
+
+   ... the topological order is either [A, B, C, D, E] or [A, B, C, E, D]. Both are correct.
+
+ * `{ankiAnswer} longest common subsequence`
+ 
+   A common subsequence between a set of strings of which is the longest out of all possible common subsequences. There may be more than one per set.
+ 
+   For example, AACCTTGG and ACACTGTGA share a longest common subsequence of...
+  
+    * ACCTGG...
+
+      ```{svgbob}
+      A A C C T T G G
+      │ │ | | | | | |
+      | o | | | o | |
+      | .-' | |   | |
+      | | .-' |   | |
+      | | | .-'   | |
+      | | | | .---' |
+      | | | | | .---'
+      | | | | | |
+      v v v v v v
+      A C C T G G
+      ^ ^ ^ ^ ^ ^
+      | | | | | |
+      | | | | | `---.
+      | | | | `-.   |
+      | | | `-. |   |
+      | | `-. | |   |
+      | | o | | | o | o
+      | | | | | | | | |
+      A C A C T G T G A
+      ```
+
+    * AACTGG...
+
+      ```{svgbob}
+      A A C C T T G G
+      │ │ | | | | | |
+      | | o | | o | |
+      | | .-' |   | |
+      | | | .-'   | |
+      | | | | .---' |
+      | | | | | .---'
+      | | | | | |
+      v v v v v v
+      A A C T G G
+      ^ ^ ^ ^ ^ ^
+      | | | | | |
+      | | | | | `---.
+      | | | | `-.   |
+      | | | `-. |   |
+      | | `-. | |   |
+      | `-. | | |   | 
+      | o | | | | o | o
+      | | | | | | | | |
+      A C A C T G T G A
+      ```
+
+    * etc..
+   

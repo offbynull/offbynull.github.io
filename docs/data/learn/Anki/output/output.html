@@ -1067,7 +1067,10 @@
 <li>
 <p><span class="anki-answerpattern" data-pattern="amino acid"></span></p>
 <p>The building blocks of peptides / proteins, similar to how nucleotides are the building blocks of DNA.</p>
-<p>See proteinogenic amino acid for the list of 20 amino acids used during the translation.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Answer shouldn't be plural.</p>
+</div>
 </li>
 <li>
 <p><span class="anki-answerpattern" data-pattern="proteinogenic amino acid"></span></p>
@@ -1209,6 +1212,378 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The masses are monoisotopic masses.</p>
 </div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="peptide"></span></p>
+<p>A short amino acid chain of at least size two. Peptides are considered miniature proteins, but when something should be called a peptide vs a protein is loosely defined: the cut-off is anywhere between 50 to 100 amino acids.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="polypeptide"></span></p>
+<p>A peptide of at least size 10.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="amino acid residue"></span></p>
+<p>The part of an amino acid that makes it unique from all others.</p>
+<p>When two or more amino acids combine to make a peptide/protein, specific elements are removed from each amino acid. What remains of each amino acid is the amino acid residue.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(cyclopeptide|cyclic peptide)/i"></span></p>
+<p>A peptide that doesn't have a start / end. It loops.</p>
+<p><img src="svgbob_0de8076d92d299650e3473fc869328891e1ef452.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="linear peptide"></span></p>
+<p>A peptide that has a start and an end. It doesn't loop.</p>
+<p><img src="svgbob_1a5d3942fce4284a9ad77c8e4624b7b21573543d.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="subpeptide"></span></p>
+<p>A peptide derived taking some contiguous piece of a larger peptide.</p>
+<p>A subpeptide can have a length == 1 where a peptide must have a length &gt; 1. As such, in the case where the subpeptide has a length ...</p>
+<ul>
+<li>== 1, it isn't considered a peptide.</li>
+<li>&gt; 1, it is considered a peptide.</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="central dogma of molecular biology"></span></p>
+<p>The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).</p>
+<p>Most, not all, peptides are synthesized as described above. Non-ribosomal peptides are synthesized outside of the transcription and translation.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="non-ribosomal peptide"></span></p>
+<p>A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.</p>
+<p>Non-ribosomal peptides may be cyclic. Common use-cases for non-ribosomal peptides:</p>
+<ul>
+<li>antibiotics</li>
+<li>anti-tumor agents</li>
+<li>immunosuppressors</li>
+<li>communication between bacteria (quorum sensing)</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(mass spectrometer|mass spectrometry)/i"></span></p>
+<p>A device that randomly shatters molecules into pieces and measures the mass-to-charge of those pieces. The output of the device is a plot called a spectrum.</p>
+<p>Note that mass spectrometers have various real-world practical problems. Specifically, they ...</p>
+<ul>
+<li>may not capture all possible pieces from the intended molecules (missing mass-to-charge ratios).</li>
+<li>may capture pieces from unintended molecules (faulty mass-to-charge ratios).</li>
+<li>will likely introduce noise into the pieces they capture.</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(spectrum)/i"></span></p>
+<p>The output of a mass spectrometer. The...</p>
+<ul>
+<li>x-axis is the mass-to-charge ratio.</li>
+<li>y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).</li>
+</ul>
+<p><img src="svgbob_2b5ef43ae7572c2c6bf63687c53860a71830d160.svg" alt="Kroki diagram output"></p>
+<p>Note that mass spectrometers have various real-world practical problems. Specifically, they ...</p>
+<ul>
+<li>may not capture all possible pieces from the intended molecules (missing mass-to-charge ratios).</li>
+<li>may capture pieces from unintended molecules (faulty mass-to-charge ratios).</li>
+<li>will likely introduce noise into the pieces they capture.</li>
+</ul>
+<p>As such, these plots aren't exact.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="experimental spectrum"></span></p>
+<p>List of potential fragment masses derived from a spectrum. That is, the molecules fed into the mass spectrometer were randomly fragmented and each fragment had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.</p>
+<p>The masses in an experimental spectrum ...</p>
+<ul>
+<li>may not capture all possible fragments for the intended molecule (missing masses).</li>
+<li>may capture fragments from unintended molecules (faulty masses).</li>
+<li>will likely contain noise.</li>
+</ul>
+<p>In the context of peptides, the mass spectrometer is expected to fragment based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses, Y and NQ missing).</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="theoretical spectrum"></span></p>
+<p>List of all of possible fragment masses for a molecule in addition to 0 and the mass of the entire molecule. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.</p>
+<p>In the context of peptides, the mass spectrometer is expected to fragment based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the theoretical spectrum will include the masses for [0, N, Q, Y, NQ, QY, NQY]. It shouldn't include masses for partial amino acids. For example, it shouldn't include NQY breaking into 2 pieces by splitting Q, such that one half has N and part of Q, and the other has the remaining part of Q with Y.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="spectrum convolution"></span></p>
+<p>An operation used to derive amino acid masses that probably come from the peptide used to generate that experimental spectrum. That is, it generates a list of amino acid masses that could have been for the peptide that generated the experimental spectrum.</p>
+<p>The operation derives amino acid masses by subtracting experimental spectrum masses from each other. For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y.</p>
+<p>Note how the mass for Y was derived from the masses in experimental spectrum even though it's missing from the experimental spectrum itself:</p>
+<ul>
+<li>Mass of N is 114. 2 masses are close to 114 in the experimental spectrum: [113.9, 115.1].</li>
+<li>Mass of Q is 163. 1 mass is close to 163 in the experimental spectrum: [162.9].</li>
+<li>Mass of Y is 128. 0 masses are close to 128 in the experimental spectrum: [].</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="dalton"></span></p>
+<p>A unit of measurement used in physics and chemistry. 1 Dalton is approximately the mass of a single proton / neutron, derived by taking the mass of a carbon-12 atom and dividing it by 12.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(codon)/i"></span></p>
+<p>A sequence of 3 ribonucleotides that maps to an amino acid or a stop marker. During translation, the ribosome translates the RNA to a protein 3 ribonucleotides at a time:</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The stop marker tells the ribosome to stop translating / the protein is complete.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The codons are listed as ribonucleotides (RNA). For nucleotides (DNA), swap U with T.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>1 Letter Code</th>
+<th>3 Letter Code</th>
+<th>Amino Acid</th>
+<th>Codons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Ala</td>
+<td>Alanine</td>
+<td>GCA, GCC, GCG, GCU</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Cys</td>
+<td>Cysteine</td>
+<td>UGC, UGU</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Asp</td>
+<td>Aspartic acid</td>
+<td>GAC, GAU</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Glu</td>
+<td>Glutamic acid</td>
+<td>GAA, GAG</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Phe</td>
+<td>Phenylalanine</td>
+<td>UUC, UUU</td>
+</tr>
+<tr>
+<td>G</td>
+<td>Gly</td>
+<td>Glycine</td>
+<td>GGA, GGC, GGG, GGU</td>
+</tr>
+<tr>
+<td>H</td>
+<td>His</td>
+<td>Histidine</td>
+<td>CAC, CAU</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Ile</td>
+<td>Isoleucine</td>
+<td>AUA, AUC, AUU</td>
+</tr>
+<tr>
+<td>K</td>
+<td>Lys</td>
+<td>Lysine</td>
+<td>AAA, AAG</td>
+</tr>
+<tr>
+<td>L</td>
+<td>Leu</td>
+<td>Leucine</td>
+<td>CUA, CUC, CUG, CUU, UUA, UUG</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Met</td>
+<td>Methionine</td>
+<td>AUG</td>
+</tr>
+<tr>
+<td>N</td>
+<td>Asn</td>
+<td>Asparagine</td>
+<td>AAC, AAU</td>
+</tr>
+<tr>
+<td>P</td>
+<td>Pro</td>
+<td>Proline</td>
+<td>CCA, CCC, CCG, CCU</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>Gln</td>
+<td>Glutamine</td>
+<td>CAA, CAG</td>
+</tr>
+<tr>
+<td>R</td>
+<td>Arg</td>
+<td>Arginine</td>
+<td>AGA, AGG, CGA, CGC, CGG, CGU</td>
+</tr>
+<tr>
+<td>S</td>
+<td>Ser</td>
+<td>Serine</td>
+<td>AGC, AGU, UCA, UCC, UCG, UCU</td>
+</tr>
+<tr>
+<td>T</td>
+<td>Thr</td>
+<td>Threonine</td>
+<td>ACA, ACC, ACG, ACU</td>
+</tr>
+<tr>
+<td>V</td>
+<td>Val</td>
+<td>Valine</td>
+<td>GUA, GUC, GUG, GUU</td>
+</tr>
+<tr>
+<td>W</td>
+<td>Trp</td>
+<td>Tryptophan</td>
+<td>UGG</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Tyr</td>
+<td>Tyrosine</td>
+<td>UAC, UAU</td>
+</tr>
+<tr>
+<td>*</td>
+<td>*</td>
+<td><strong>STOP</strong></td>
+<td>UAA, UAG, UGA</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="reading frame"></span></p>
+<p>The different ways of dividing a DNA string into codons. Specifically, there are 6 different ways that a DNA string can be divided into codons:</p>
+<ul>
+<li>You can start dividing at index 0, 1, or 2.</li>
+<li>You can divide either the DNA string itself or the reverse complementing DNA string.</li>
+</ul>
+<p>For example, given the string ATGTTCCATTAA, the following codon division are possible:</p>
+<table>
+<thead>
+<tr>
+<th>DNA</th>
+<th>Start Index</th>
+<th>Discard Prefix</th>
+<th>Codons</th>
+<th>Discard Suffix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ATGTTCCATTAA</td>
+<td>0</td>
+<td></td>
+<td>ATG, TTC, CAT, TAA</td>
+<td></td>
+</tr>
+<tr>
+<td>ATGTTCCATTAA</td>
+<td>1</td>
+<td>A</td>
+<td>TGT, TCC, ATT</td>
+<td>AA</td>
+</tr>
+<tr>
+<td>ATGTTCCATTAA</td>
+<td>2</td>
+<td>AT</td>
+<td>GTT, CCA, TTA</td>
+<td>A</td>
+</tr>
+<tr>
+<td>TTAATGGAACAT</td>
+<td>0</td>
+<td></td>
+<td>TTA, ATG, GAA, CAT</td>
+<td></td>
+</tr>
+<tr>
+<td>TTAATGGAACAT</td>
+<td>1</td>
+<td>T</td>
+<td>TAA, TGG, AAC</td>
+<td>AT</td>
+</tr>
+<tr>
+<td>TTAATGGAACAT</td>
+<td>2</td>
+<td>TT</td>
+<td>AAT, GGA, ACA</td>
+<td>T</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>TTAATGGAACAT is the reverse complement of ATGTTCCATTAA.</p>
+</div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(encode)/i"></span></p>
+<p>When a DNA string or its reverse complement is made up of the codons required for an amino acid sequence. For example, ACAGTA encodes for the amino acid sequence...</p>
+<ul>
+<li>Threonine-Valine</li>
+<li>Tyrosine-Cysteine (derived from reverse complement)</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(branch-and-bound algorithm|branch and bound algorithm|branch-and-bound|branch and bound|branch-and-bound)/i"></span></p>
+<p>A bruteforce algorithm that enumerates candidates to explore at each step but also discards untenable candidates using various checks. The enumeration of candidates is the branching step, while the culling of untenable candidates is the bounding step.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="subsequence"></span></p>
+<p>A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. For example, can is a subsequence of cation.</p>
+<p><img src="svgbob_c25309d3982681fa348879d4c3fe065899f82016.svg" alt="Kroki diagram output"></p>
+<p>Not to be confused with substring. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="substring"></span></p>
+<p>A sequence derived by taking a contiguous part of some other sequence (order of elements maintained). For example, cat is a substring of cation.</p>
+<p><img src="svgbob_1c969351b840ffdbd3172ad117673e5506efbd17.svg" alt="Kroki diagram output"></p>
+<p>Not to be confused with subsequence. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(topological ordering|topological order|topological)/i"></span></p>
+<p>A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.</p>
+<p>For example, the graph ...</p>
+<p><img src="svgbob_6a2f3c0925fa0e1b69f5e2c59e731dc23f8c54e5.svg" alt="Kroki diagram output"></p>
+<p>... the topological order is either [A, B, C, D, E] or [A, B, C, E, D]. Both are correct.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="longest common subsequence"></span></p>
+<p>A common subsequence between a set of strings of which is the longest out of all possible common subsequences. There may be more than one per set.</p>
+<p>For example, AACCTTGG and ACACTGTGA share a longest common subsequence of...</p>
+<ul>
+<li>
+<p>ACCTGG...</p>
+<p><img src="svgbob_f1eadf7cf7bbf51eeb3471a6a5610a06f4dc2d1b.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>AACTGG...</p>
+<p><img src="svgbob_a9b0360f8eeb866179f567437d7cfc36c167251a.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>etc..</p>
+</li>
+</ul>
 </li>
 </ul>
 

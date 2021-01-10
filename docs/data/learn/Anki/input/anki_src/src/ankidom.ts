@@ -1,6 +1,12 @@
 import { breakOnSlashes, combineWithSlashes } from "./parse_helpers";
 
-export type ANSWER_CALLBACK = (postMortem: 0 | 1 | 2| 3 | 4 | 5) => Promise<void>;
+export type ANSWER_CALLBACK = (postMortem: 0 | 1 | 2 | 3 | 4 | 5) => Promise<void>;
+
+const ANSWER_PATTERN_CLASS = 'anki-answerpattern';
+const HIDE_PATTERN_CLASS = 'anki-hidepattern';
+const DEAD_QUESTION_CLASS = 'anki-deadquestion';
+const INFO_PANEL_CLASS = 'anki-infopanel';
+const DEBUG_FORCE_SHOW_CLASS = 'anki-debugforceshow';
 
 export class AnkiDom {
     private readonly questionTags: HTMLUListElement[];
@@ -12,6 +18,14 @@ export class AnkiDom {
     constructor() {
         this.questionTags = AnkiDom.findQuestionTags();
         this.hideAllQuestionTags();
+        for (const questionTag of this.questionTags) {
+            AnkiDom.findPatternTags(questionTag, ANSWER_PATTERN_CLASS, false);  // validate answer regex
+            AnkiDom.findPatternTags(questionTag, HIDE_PATTERN_CLASS, false);  // validate hide regex
+            if (AnkiDom.findDebugForceShowTag(questionTag)) {
+                this.questionTags = [questionTag];
+                break;
+            }
+        }
     }
 
     private static findQuestionTags(): HTMLUListElement[] {
@@ -49,7 +63,7 @@ export class AnkiDom {
         // is the order in which matching should occur. However, the answer regexes also need to be DISPLAYED to the user in a
         // randomized order because the user may end up memorizing that "when I see this question answer A goes in slot 1, answer B
         // goes in slow 2, etc.." instead of memorizing the actual content.
-        const answerPatterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag, 'anki-answerpattern');
+        const answerPatterns = AnkiDom.findPatternTags(this.processedQuestionTag, ANSWER_PATTERN_CLASS, true);
         const answerPatternKeys = [...answerPatterns.keys()] // map each answerPatterns index to a random index
             .map((a) => ({sort: Math.random(), value: a}))
             .sort((a, b) => a.sort - b.sort)
@@ -61,7 +75,7 @@ export class AnkiDom {
             answerPatternsOrderedByKeys[remappedKey] = pattern;
         }
         
-        const hidePatterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag, 'anki-hidepattern');
+        const hidePatterns = AnkiDom.findPatternTags(this.processedQuestionTag, HIDE_PATTERN_CLASS, true);
         for (const pattern of hidePatterns) {
             AnkiDom.blackoutPattern(this.processedQuestionTag, pattern, 'HIDDEN', 'black');
         }
@@ -90,7 +104,7 @@ export class AnkiDom {
     }
 
     public isDeadQuestion(id: number) {
-        const nodeIt = document.evaluate(".//span[@class=\"anki-deadquestion\"]", this.questionTags[id], null, XPathResult.ANY_TYPE, null);
+        const nodeIt = document.evaluate(`.//span[@class="${DEAD_QUESTION_CLASS}"]`, this.questionTags[id], null, XPathResult.ANY_TYPE, null);
         const node = nodeIt.iterateNext();
         return node !== null;
     }
@@ -106,7 +120,7 @@ export class AnkiDom {
     }
 
     private findAndUpdateInfoTag() {
-        const nodeIt = document.evaluate(".//span[@class=\"anki-infopanel\"]", document, null, XPathResult.ANY_TYPE, null);
+        const nodeIt = document.evaluate(`.//span[@class="${INFO_PANEL_CLASS}"]`, document, null, XPathResult.ANY_TYPE, null);
         const node = nodeIt.iterateNext();
         while (node === null) {
             console.error('info node not found');
@@ -128,12 +142,19 @@ export class AnkiDom {
         );
     }
 
-    private static findAndRemovePatternTags(parent: HTMLElement, classAttr: string): RegExp[] {
+    private static findDebugForceShowTag(parent: HTMLElement): boolean {
+        const nodeIt = document.evaluate(".//span[@class=\"" + DEBUG_FORCE_SHOW_CLASS + "\"]", parent, null, XPathResult.ANY_TYPE, null);
+        return nodeIt.iterateNext() !== null;
+    }
+
+    private static findPatternTags(parent: HTMLElement, classAttr: string, removeTag: boolean): RegExp[] {
         const nodeIt = document.evaluate(".//span[@class=\"" + classAttr + "\"]", parent, null, XPathResult.ANY_TYPE, null);
         const nodes = AnkiDom.xPathResultToArray(nodeIt); // place results in array to because modding while iterating causes some browsers to barf
         const ret: RegExp[] = []
         for (const node of nodes) {
-            node.parentElement?.removeChild(node);
+            if (removeTag) {
+                node.parentElement?.removeChild(node);
+            }
             if (!(node instanceof Element)) {
                 continue;
             }
@@ -151,8 +172,8 @@ export class AnkiDom {
                         };
                     case 2:
                         return {
-                            regex: broken[1],
-                            flags: broken[2]
+                            regex: broken[0],
+                            flags: broken[1]
                         };
                     default:
                         throw new Error(
@@ -192,7 +213,7 @@ export class AnkiDom {
                 let regexLastFoundIdx = 0;
                 let found;
                 while ((found = regex.exec(text)) !== null) {
-                    if (found[1].trim().length === 0) {
+                    if (found[0].trim().length === 0) {
                         throw new Error(`Regex pattern is matching 0 length substring: regex ${pattern.source} found at index ${found.index} of text ${text}\n\n${parent.textContent}`);
                     }
                     const preTextNode = document.createTextNode(

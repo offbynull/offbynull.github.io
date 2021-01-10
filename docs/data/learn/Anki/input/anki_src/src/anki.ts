@@ -17,12 +17,25 @@ export class Anki {
         
         const cnt = dom.getQuestionCount();
         let aliveCnt = 0;
+        let lastId = 0;
         for (let id = 0; id < cnt; id++) {
             const dead = dom.isDeadQuestion(id);
             await db.trackQuestion(id, dead);
             if (dead === false) {
                 aliveCnt++;
             }
+            lastId = id;
+        }
+
+        // remove trailing questions stored in db, if any exist
+        while (true) {
+            lastId += 1;
+            const question = await db.getQuestion(lastId);
+            if (question === undefined) {
+                break;
+            }
+            console.log(`Deleting question ${lastId} from db`);
+            await db.deleteQuestion(lastId);
         }
 
         dom.setQuestionCount(aliveCnt);
