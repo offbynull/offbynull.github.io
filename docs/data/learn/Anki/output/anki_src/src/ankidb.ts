@@ -107,13 +107,20 @@ export class AnkiDb {
 
     public async getNextScheduledQuestion(): Promise<Question | undefined> {
         const table = this.db.table('questions');
+        // get the next pending value
         const value = await table
             .orderBy('nextUtc')
             .filter(q => q.dead === false)
             .first() as Question | undefined;
-        if (value !== undefined && value.nextUtc <= Date.now()) {
-            return value;
+        // if no next pending value, bail out
+        if (value === undefined || value.nextUtc >= Date.now()) {
+            return undefined;
         }
-        return undefined;
+        // there may be multiple pending values (same nextUtc), so pick one at random to show
+        const values = await table
+            .where('nextUtc').equals(value.nextUtc)
+            .toArray();
+        const randomValue = values[Math.floor(Math.random() * values.length)];
+        return randomValue;
     }
 }

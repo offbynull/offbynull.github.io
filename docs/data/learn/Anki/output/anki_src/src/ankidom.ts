@@ -45,9 +45,20 @@ export class AnkiDom {
         this.originalQuestionTag = this.questionTags[id];
         this.processedQuestionTag = this.originalQuestionTag.cloneNode(true) as HTMLUListElement;
 
+        // Pull out answer regexes. The order is important because the regexes may match overlapping text and the user-defined order
+        // is the order in which matching should occur. However, the answer regexes also need to be DISPLAYED to the user in a
+        // randomized order because the user may end up memorizing that "when I see this question answer A goes in slot 1, answer B
+        // goes in slow 2, etc.." instead of memorizing the actual content.
         const answerPatterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag, 'anki-answerpattern');
-        for (const [patternIdx, pattern] of answerPatterns.entries()) {
-            AnkiDom.blackoutPattern(this.processedQuestionTag, pattern, '' + patternIdx);
+        const answerPatternKeys = [...answerPatterns.keys()] // map each answerPatterns index to a random index
+            .map((a) => ({sort: Math.random(), value: a}))
+            .sort((a, b) => a.sort - b.sort)
+            .map((a) => a.value);
+        const answerPatternsOrderedByKeys = Array(answerPatterns.length);
+        for (const [patternIdx, pattern] of answerPatterns.entries()) { // black out in user defined order, but display with shuffled keys
+            const remappedKey = answerPatternKeys[patternIdx];
+            AnkiDom.blackoutPattern(this.processedQuestionTag, pattern, '' + remappedKey);
+            answerPatternsOrderedByKeys[remappedKey] = pattern;
         }
         
         const hidePatterns = AnkiDom.findAndRemovePatternTags(this.processedQuestionTag, 'anki-hidepattern');
@@ -55,7 +66,7 @@ export class AnkiDom {
             AnkiDom.blackoutPattern(this.processedQuestionTag, pattern, 'HIDDEN', 'black');
         }
 
-        AnkiDom.addClozeWordAnswerZone(this.processedQuestionTag, answerPatterns, callback);
+        AnkiDom.addClozeWordAnswerZone(this.processedQuestionTag, answerPatternsOrderedByKeys, callback);
 
         this.processedQuestionTag.style.display = 'block';
 
@@ -140,16 +151,16 @@ export class AnkiDom {
                         };
                     case 2:
                         return {
-                            regex: broken[0],
-                            flags: broken[1]
+                            regex: broken[1],
+                            flags: broken[2]
                         };
                     default:
                         throw new Error(
-                            'Incorrect number of arguments in guess_word tag: ' + JSON.stringify(broken) + '\n'
+                            'Incorrect number of arguments in ' + classAttr + ' tag: ' + JSON.stringify(broken) + '\n'
                             + '------\n'
                             + 'Examples:\n'
-                            + '  my bookmark\n'
-                            + '  (my\\s+bookmark)/i\n'
+                            + '  `my bookmark`\n'
+                            + '  `(bookmark\\s+regex)/i`\n'
                             + 'Tag arguments are delimited using forward slash (\\). Use \\ to escape the delimiter (\\/).'
                         );
                 }
@@ -181,7 +192,7 @@ export class AnkiDom {
                 let regexLastFoundIdx = 0;
                 let found;
                 while ((found = regex.exec(text)) !== null) {
-                    if (found[0].trim().length === 0) {
+                    if (found[1].trim().length === 0) {
                         throw new Error(`Regex pattern is matching 0 length substring: regex ${pattern.source} found at index ${found.index} of text ${text}\n\n${parent.textContent}`);
                     }
                     const preTextNode = document.createTextNode(
@@ -234,6 +245,8 @@ export class AnkiDom {
             const answerTextElem = document.createElement('input');
             answerTextElem.type = 'text';
             answerTextElem.autocomplete = 'off';
+            answerTextElem.autocapitalize = 'off';
+            answerTextElem.spellcheck = false;
             answerTextElem.id = combineWithSlashes([pattern.source, pattern.flags]);
             const labelNode = AnkiDom.createBlackoutPatternLabel('' + patternIdx);
             divElem.appendChild(labelNode);

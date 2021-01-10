@@ -1,3 +1,5 @@
+`{title} Anki`
+
 `{anki}` offbynull anki -- JS must be enabled.<br/>`{ankiInfoPanel}`
 
 ```{comment}
@@ -9,24 +11,27 @@ The anki* inline tags generate HTML spans/divs with special class names that get
 ankiInfoPanel - Information about the question / questions / state. One allowed in entire file.
    ankiAnswer - Regex answer for the current question. Multiple allowed per question.
                   Text in question that matches the regex will be blacked out and users must answer them. The
-                  content of this tag are the same as a 2 or 3 parameter bm tag with the 1st parameter (label)
-                  removed. For example...
+                  content of this tag are the same as a 2 or 3 parameter bm tag WITHOUT the label. For
+                  example...
                   `{ankiAnswer}one`
-                  `{ankiAnswer}two`
-                  `{ankiAnswer}(three)/i`
+                  `{ankiAnswer}(two)/i`
+                  The label (parameter 1 of the 3 parameter tag) isn't used.
      ankiHide - Regex hider for the current question. Multiple allowed per question.
                   Text in question that matches the regex will be blacked out. The content of this tag are the
-                  same as the ankiAnswer tag.
+                  same as the ankiAnswer tag. For example...
+                  `{ankiHide}one`
+                  `{ankiHide}(two)/i`
+                  The label (parameter 1 of the 3 parameter tag) isn't used.
      ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
 ```
 
- * Question 1 one. `{ankiAnswer}one`
+ * Question 1 one and two. `{ankiAnswer}one` `{ankiAnswer}two`  `{ankiDead}`
 
  * Question 2 two. `{ankiAnswer}two` `{ankiDead}`
 
- * Question 3 three. The word red should be hidden. `{ankiAnswer}three` `{ankiHide}red`
+ * Question 3 three. The word red should be hidden. `{ankiAnswer}three` `{ankiHide}red` `{ankiDead}`
 
- * Question 4 four and beep or boop. `{ankiAnswer}four` `{ankiAnswer}beep` `{ankiAnswer}boop`
+ * Question 4 four and beep or boop. `{ankiAnswer}four` `{ankiAnswer}beep` `{ankiAnswer}boop` `{ankiDead}`
 
  * `{ankiAnswer} (k-mer|kmer)/i`
  
@@ -99,11 +104,11 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
                  ori
    ```
  
- * `{ankiAnswer} replication origin` `{ankiAnswer} \b(ori)\b/i`
+ * `{ankiAnswer} replication origin` `{ankiAnswer} ori`
  
    The point in DNA at which replication starts. May be shortened to ori.
  
- * `{ankiAnswer} replication terminus` `{ankiAnswer} \b(ter)\b/i`
+ * `{ankiAnswer} replication terminus` `{ankiAnswer} ter`
    
    The point in DNA at which replication ends. May be shortened to ter.
 
@@ -162,7 +167,7 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
    * forward half-strand (5' to 3') is called the lagging half-strand.
    * reverse half-strand (3' to 5') is called the leading half-strand.
 
-   This nomenclature has to do with DNA polymerase. Since DNA polymerase can only walk in the reverse direction (3' to 5'), it synthesizes the leading half-strand in one shot. For the lagging half-strand (5' to 3'), multiple DNA polymerases have to used to synthesize DNA, each binding to the lagging strand and walking backwards a small amount to generate a small fragment_NORM of DNA (Okazaki fragment). the process is much slower for the lagging half-strand, that's why it's called lagging.
+   This nomenclature has to do with DNA polymerase. Since DNA polymerase can only walk in the reverse direction (3' to 5'), it synthesizes the leading half-strand in one shot. For the lagging half-strand (5' to 3'), multiple DNA polymerases have to used to synthesize DNA, each binding to the lagging strand and walking backwards a small amount to generate a small fragment of DNA (Okazaki fragment). the process is much slower for the lagging half-strand, that's why it's called lagging.
 
  * `{ankiAnswer} Okazaki fragment`
  
@@ -320,20 +325,20 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
    A gene's upstream region is the 600 to 1000 nucleotides preceding the start of the gene.
    ```
 
- * `{ankiAnswer} (cDNA)/i`
+ * `{ankiAnswer} (cDNA|complementary DNA)/i`
  
    A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.
 
    ```{svgbob}
    3' . . . U <- U <- U <- G <- C <- U <- U <- U <- U <- G <- . . . 5'   mRNA  
             |    |    |    |    |    |    |    |    |    | 
-   5' . . . A -> A -> A -> C -> G -> G -> A -> A -> A -> C -> . . . 3'   cDNA  
+   5' . . . A -> A -> A -> C -> G -> G -> A -> A -> A -> C -> . . . 3'   ?  
    ```
 
    The mRNA portion breaks off, leaving the single-stranded DNA.
 
    ```{svgbob}
-   5' . . . A -> A -> A -> C -> G -> G -> A -> A -> A -> C -> . . . 3'   cDNA  
+   5' . . . A -> A -> A -> C -> G -> G -> A -> A -> A -> C -> . . . 3'   ?  
    ```
 
  * `{ankiAnswer} (DNA microarray|DNA array)/i`
@@ -406,7 +411,7 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
 
    Perform the optimization (the entire thing, not just a single step) thousands of times and pick the best network.
   
- * `{ankiAnswer} (consensus string|consensus sequence)/i`
+ * `{ankiAnswer} (consensus string|consensus sequence|consensus)/i`
  
    The k-mer generated by selecting the most abundant column at each index of a motif matrix.
 
@@ -446,11 +451,11 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
 
    |             |0|1|2|3|4|5|6|7|8|9|
    |-------------|-|-|-|-|-|-|-|-|-|-|
-   |read_SEQ 1   | | | | |C|T|T|C|T|T|
-   |read_SEQ 2   | | | |G|C|T|T|C|T| |
-   |read_SEQ 3   | | |T|G|C|T|T|C| | |
-   |read_SEQ 4   | |T|T|G|C|T|T| | | |
-   |read_SEQ 5   |A|T|T|G|C|T| | | | |
+   |read 1       | | | | |C|T|T|C|T|T|
+   |read 2       | | | |G|C|T|T|C|T| |
+   |read 3       | | |T|G|C|T|T|C| | |
+   |read 4       | |T|T|G|C|T|T| | | |
+   |read 5       |A|T|T|G|C|T| | | | |
    |reconstructed|A|T|T|G|C|T|T|C|T|T|
 
  * `{ankiAnswer} sequencer`
@@ -467,7 +472,7 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
    > A homopolymer is when you have stretches of the same nucleotide, and the error is miscounting the number of them. e.g: GAAAC could be called as "GAAC" or "GAAAAC" or even "GAAAAAAAC".
    ```
 
- * `{ankiAnswer} \b(read)/i`
+ * `{ankiAnswer} read`
  
    A segment of genome scanned in during the process of sequencing.
 
@@ -479,7 +484,7 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
 
    See kd-mer.
 
- * `{ankiAnswer} (fragment)/i`
+ * `{ankiAnswer} fragment`
  
    A scanned sequence returned by a sequencer. Represented as either a read or a read-pair.
 
@@ -502,3 +507,642 @@ ankiInfoPanel - Information about the question / questions / state. One allowed 
    * ...
 
    If the sequence being represented can be either AAAC or AATT, it may be easier to represent a single string of AAWY.
+  
+ * `{ankiAnswer} (IUPAC nucleotide code|IUPAC)/i`
+ 
+   A hybrid alphabet with the following mapping:
+
+   | Letter   | Base                |
+   |----------|---------------------|
+   | A        | Adenine             |
+   | C        | Cytosine            |
+   | G        | Guanine             |
+   | T (or U) | Thymine (or Uracil) |
+   | R        | A or G              |
+   | Y        | C or T              |
+   | S        | G or C              |
+   | W        | A or T              |
+   | K        | G or T              |
+   | M        | A or C              |
+   | B        | C or G or T         |
+   | D        | A or G or T         |
+   | H        | A or C or T         |
+   | V        | A or C or G         |
+   | N        | any base            |
+   | . or -   | gap                 |
+
+ * `{ankiAnswer} (logo|sequence logo|motif logo)/i`
+ 
+   A graphical representation of how conserved a sequence's positions are. Each position has its possible nucleotides stacked on top of each other, where the height of each nucleotide is based on how conserved it is. The more conserved a position is, the taller that column will be.
+ 
+   Typically applied to DNA or RNA, and May also be applied to other biological sequence types (e.g. amino acids).
+
+   The following is an example of a logo generated from a motif sequence:
+
+   ![Example Image](motif_logo.svg)
+
+ * `{ankiAnswer} (transposon|transposable element|jumping gene)/i`
+ 
+   A DNA sequence that can change its position within a genome, altering the genome size. They come in two flavours:
+
+   * Class I (retrotransposon) - Behaves similarly to copy-and-paste where the sequence is duplicated. DNA is transcribed to RNA, followed by that RNA being reverse transcribed back to DNA by an enzyme called reverse transcriptase.
+   * Class II (DNA transposon) - Behaves similarly to cut-and-paste where the sequence is moved. DNA is physically cut out by an enzyme called transposases and placed back in at some other location.
+  
+   Often times, transposons cause disease. For example, ...
+
+   * insertion of a transposon into a gene will likely disable that gene.
+   * after a transposon leaves a gene, the gap likely won't be repaired correctly.
+
+ * `{ankiAnswer} adjacency list`
+ 
+   An internal representation of a graph where each node has a list of pointers to other nodes that it can forward to.
+
+   ```{svgbob}
+   A ---> B ---> C ---> D ---> F
+                 |      ^      ^
+                 |      |      |
+                 +----> E -----+
+   ```
+
+   The graph above represented as an adjacency list would be...
+
+   | From | To  |
+   |------|-----|
+   | A    | B   |
+   | B    | C   |
+   | C    | D,E |
+   | D    | F   |
+   | E    | D,F |
+   | F    |     |
+
+ * `{ankiAnswer} adjacency matrix`
+ 
+   An internal representation of a graph where a matrix defines the number of times that each node forwards to every other node.
+
+   ```{svgbob}
+   A ---> B ---> C ---> D ---> F
+                 |      ^      ^
+                 |      |      |
+                 +----> E -----+
+   ```
+
+   The graph above represented as an adjacency matrix would be...
+
+   |   | A | B | C | D | E | F |
+   |---|---|---|---|---|---|---|
+   | A | 0 | 1 | 0 | 0 | 0 | 0 |
+   | B | 0 | 0 | 1 | 0 | 0 | 0 |
+   | C | 0 | 0 | 0 | 1 | 1 | 0 |
+   | D | 0 | 0 | 0 | 0 | 0 | 1 |
+   | E | 0 | 0 | 0 | 1 | 0 | 1 |
+   | F | 0 | 0 | 0 | 0 | 0 | 0 |
+
+ * `{ankiAnswer} (Hamiltonian path|Hamilton path)/i`
+   
+    A path in a graph that visits every node exactly once.
+ 
+   The graph below has the Hamiltonian path ABCEDF.
+
+   ```{svgbob}
+   A ---> B ---> C ---> D ---> F
+                 |      ^      ^
+                 |      |      |
+                 +----> E -----+
+   ```
+
+ * `{ankiAnswer} Eulerian path`
+ 
+   A path in a graph that visits every edge exactly once.
+ 
+   In the graph below, the Eulerian path is (A,B), (B,C), (C,D), (D,E), (E,C), (C,D), (D,F).
+
+   ```{svgbob}
+                 +------+
+                 |      |
+                 |      v
+   A ---> B ---> C ---> D ---> F
+                 ^      |
+                 |      v
+                 +----- E
+   ```
+
+ * `{ankiAnswer} Eulerian cycle`
+ 
+   An Eulerian path that forms a cycle. That is, a path in a graph that is a cycle and visits every edge exactly once.
+ 
+   The graph below has an Eulerian cycle of (A,B), (B,C) (C,D), (D,F), (F,C), (C,A).
+
+   ```{svgbob}
+                 +-------------+
+                 |             |
+                 v             |
+   A ---> B ---> C ---> D ---> F
+   ^             |
+   |             |
+   +-------------+
+   ```
+
+   If a graph contains an Eulerian cycle, it's said to be an Eulerian graph.
+
+ * `{ankiAnswer} Eulerian graph` `{ankiAnswer} Eulerian cycle`
+ 
+   For a graph to be a Eulerian graph, it must have an Eulerian cycle: a path in a graph that is a cycle and visits every edge exactly once. For a graph to have an Eulerian cycle, it must be both balanced and strongly connected.
+ 
+    ```{svgbob}
+                 +-------------+
+                 |             |
+                 v             |
+   A ---> B ---> C ---> D ---> F
+   ^             |
+   |             |
+   +-------------+
+   ```
+
+   Note how in the graph above, ...
+   
+   * every node is reachable from every other node (strongly connected),
+   * every node has an outdegree equal to its indegree (balanced).
+
+     | Node | Indegree | Outdegree |
+     |------|----------|-----------|
+     | A    | 1        | 1         |
+     | B    | 1        | 1         |
+     | C    | 2        | 2         |
+     | D    | 1        | 1         |
+     | F    | 1        | 1         |
+
+   In contrast, the following graphs are not Eulerian graphs (no Eulerian cycles exist):
+   
+   * Strongly connected but not balanced.
+
+     ```{svgbob}
+     A ---> B <--- D
+     ^      |      ^
+     |      v      |
+     +----- C -----+
+
+     "* B contains 2 indegree but only 1 outdegree."
+     ```
+
+   * Balanced but not strongly connected.
+
+     ```{svgbob}
+     A ---> B ---> E ---> F
+     ^      |      ^      |
+     |      v      |      v
+     D <--- C      H <--- G
+
+     "* It isn't possible to reach B from E, F, G, or H"
+     ```
+
+   * Balanced but disconnected (not strongly connected).
+
+     ```{svgbob}
+     A ---> B      E ---> F
+     ^      |      ^      |
+     |      v      |      v
+     D <--- C      H <--- G
+
+     "* It isn't possible to reach E, F, G, or H from A, B, C, or D (and vice versa)"
+     ```
+
+ * `{ankiAnswer} disconnected` `{ankiAnswer} connected`
+   
+   A graph is disconnected if you can break it out into 2 or more distinct sub-graphs without breaking any paths. In other words, the graph contains at least two nodes which aren't contained in any path.
+
+   The graph below is disconnected because there is no path that contains E, F, G, or H and A, B, C, or D.
+
+    ```{svgbob}
+   A ---> B      E ---> F
+   ^      |      ^      |
+   |      v      |      v
+   D <--- C      H <--- G
+   ```
+
+   The graph below is connected.
+
+   ```{svgbob}
+   A ---> B ---> E ---> F
+   ^      |      ^      |
+   |      v      |      v
+   D <--- C      H <--- G
+   ```
+
+ * `{ankiAnswer} strongly connected` - A graph is strongly connected if every node is reachable from every other node.
+
+   The graph below is **not** strongly connected because neither A nor B is reachable by C, D, E, or F.
+
+   ```{svgbob}
+   A ---> B ---> C ---> D ---> F
+                 |      ^      ^
+                 |      |      |
+                 +----> E -----+
+   ```
+
+   The graph below is strongly connected because all nodes are reachable from all nodes.
+
+   ```{svgbob}
+                 +-------------+
+                 |             |
+                 v             |
+   A ---> B ---> C ---> D ---> F
+   ^             |
+   |             |
+   +-------------+
+   ```
+
+ * `{ankiAnswer} indegree` `{ankiAnswer} outdegree`
+ 
+    The number of edges leading into / out of a node of a directed graph.
+
+    The node below has an indegree of 3 and an outdegree of 1.
+
+    ```{svgbob}
+    -----+
+         |
+         v
+    ---> N --->
+         ^
+         |
+    -----+
+    ```
+
+ * `{ankiAnswer} balanced node`
+ 
+    A node of a directed graph that has an equal indegree and outdegree. That is, the number of edges coming in is equal to the number of edges going out.
+
+    The node below has an indegree and outdegree of 1. It is a balanced node.
+
+    ```{svgbob}
+    ---> N --->
+    ```
+
+ * `{ankiAnswer} balanced graph`
+ 
+   A directed graph where ever node is balanced.
+
+   The graph below is balanced graph because each node has an equal indegree and outdegree.
+
+   ```{svgbob}
+                 +-------------+
+                 |             |
+                 v             |
+   A ---> B ---> C ---> D ---> F
+   ^             |
+   |             |
+   +-------------+
+   ```
+
+   | Node | Indegree | Outdegree |
+   |------|----------|-----------|
+   | A    | 1        | 1         |
+   | B    | 1        | 1         |
+   | C    | 2        | 2         |
+   | D    | 1        | 1         |
+   | F    | 1        | 1         |
+
+ * `{ankiAnswer} overlap graph`
+ 
+   A graph representing the k-mers making up a string. Specifically, the graph is built in 2 steps:
+ 
+   1. Each node is a fragment.
+ 
+      ```{svgbob}
+      TTA     TAG     AGT     GTT 
+      TAC     TTA     CTT     ACT 
+      ```
+ 
+   2. Each edge is between overlapping fragments (nodes), where the ...
+      * source node has the overlap in its suffix .
+      * destination node has the overlap in its prefix.
+ 
+      ```{svgbob}
+      +----------------------------------------------------------------+
+      |                                                                |
+      |                                                                |
+      +-> TTA --> TAG --> AGT --> GTT --> TTA --> TAC --> ACT --> CTT -+
+           ^                       |       ^                       |
+           |                       |       |                       |
+           +-----------------------+       +-----------------------+
+      ```
+
+   Overlap graphs used for genome assembly.
+
+ * `{ankiAnswer} de Bruijn graph`
+ 
+   A special graph representing the k-mers making up a string. Specifically, the graph is built in 2 steps:
+ 
+   1. Each k-mer is represented as an edge connecting 2 nodes. The ...
+
+      * source node represents the first 0 to n-1 elements of the k-mer,
+      * destination node represents last 1 to n elements of the k-mer,
+      * and edge represents the k-mer.
+
+      For example, ...
+
+      ```{svgbob}
+      "* GGTGGT has k-mers GGT GTG TGG GGT"
+      
+         GGT
+      GG ---> GT
+
+         GTG
+      GT ---> TG
+
+         TGG
+      TG ---> GG
+
+         GGT
+      GG ---> GT
+      ```
+
+   2. Each node representing the same value is merged together to form the graph.
+
+      For example, ...
+
+      ```{svgbob}
+      "* GGTGGT has k-mers GGT GTG TGG GGT"
+
+              GTG       
+      +----------------+
+      |                |
+      |        +------+|
+      |        | GGT  ||
+      v  TGG   |      v|
+      TG ---> GG      GT
+               |      ^
+               | GGT  |
+               +------+
+      ```
+
+   De Bruijn graphs are used for genome assembly. It's much faster to assemble a genome from a de Bruijn graph than it is to from an overlap graphs.
+   
+   De Bruijn graphs were originally invented to solve the k-universal string problem.
+
+ * `{ankiAnswer} (k-universal string|k-universal)/i`
+ 
+   For some alphabet and k, a string is considered k-universal if it contains every k-mer for that alphabet exactly once. For example, for an alphabet containing only 0 and 1 (binary) and k=3, a 3-universal string would be 0001110100 because it contains every 3-mer exactly once:
+
+   * 000: **000**1110100
+   * 001: 0**001**110100
+   * 010: 000111**010**0
+   * 011: 00**011**10100
+   * 100: 0001110**100**
+   * 101: 00011**101**00
+   * 110: 0001**110**100
+   * 111: 000**111**0100
+
+   ```{note}
+   This is effectively assembly. There are a set of k-mers and they're being stitched together to form a larger string. The only difference is that the elements aren't nucleotides.
+   ```
+
+   De Bruijn graphs were invented in an effort to construct k-universal strings for arbitrary values of k. For example, given the k-mers in the example above (000, 001, ...), a k-universal string can be found by constructing a de Bruijn graph from the k-mers and finding a Eulerian cycle in that graph.
+
+   ```{svgbob}
+        001                011
+   +-----------> 01 -------------+
+   |             ^|              |
+   |+----+       |+----+   +----+|
+   ||    |  +----+ 010 |   |    ||
+   ||    |  |          |   |    ▼▼
+   00    |  |          |   |    11
+   ^^    |  |          |   |    || 
+   ||000 |  | 101 +----+   |111 ||
+   |+----+  +----+|        +----+|
+   |             |v              |
+   +------------ 10 <------------+
+       100                110
+   
+   "* Cycle 1:"            00 -> 00
+   "* Cycle 2:"                  00 -> 01 -------------------------> 10 -> 00
+   "* Cycle 3:"                        01 -> 11 -> 11 -> 10 -> 01
+   "* Merged 1 to 2 to 3:" 00 -> 00 -> 01 -> 11 -> 11 -> 10 -> 01 -> 10 -> 00
+
+   "* ? string:" 0001110100
+   ```
+
+   There are multiple Eulerian cycles in the graph, meaning that there are multiple 3-universal strings:
+  
+   * 0001110100
+   * 0011101000
+   * 1110001011
+   * 1100010111
+   * ...
+   
+   For larger values of k (e.g. 20), finding k-universal strings would be too computationally intensive without De Bruijn graphs and Eulerian cycles.
+
+ * `{ankiAnswer} coverage`
+ 
+   Given a substring from some larger sequence that was reconstructed from a set of fragments, the coverage of that substring is the number of reads used to construct it. The substring length is typically 1: the coverage for each position of the sequence.
+
+   ```{svgbob}
+              "Read ? for each 1-mer"
+   
+   "1:"        A C T A A G A              
+   "2:"          C T A A G A A            
+   "3:"            T A A G A A C          
+   "4:"                A G A A C C T                
+   "5:"                    A A C C T A A            
+   "6:"                          C T A A T T T      
+   "7:"                              A A T T T A G  
+   "8:"                                A T T T A G C
+   "String:"   A C T A A G A A C C T A A T T T A G C
+   
+   "?:"        1 2 3 3 4 4 5 4 3 3 3 3 4 3 3 3 2 2 1
+   ```
+
+
+ * `{ankiAnswer} (read breaking|read-breaking|breaking reads)/i`
+ 
+   The concept of taking multiple reads and breaking them up into smaller reads.
+
+   ```{svgbob}
+                       "4 original 10-mers (left) broken up to perfectly overlapping 5-mers (right)"
+   
+   "1:"        A C T A A G A A C C --+--------------------> A C T A A                                   
+                                     +-------------------->   C T A A G                                 
+                                     +-------------------->     T A A G A                               
+                                     +-------------------->       A A G A A                             
+                                     +-------------------->         A G A A C                           
+                                     +-------------------->           G A A C C                         
+   "2:"              A A G A A C C T A A --+-------------->       A A G A A                             
+                                           +-------------->         A G A A C                           
+                                           +-------------->           G A A C C                         
+                                           +-------------->             A A C C T                       
+                                           +-------------->               A C C T A                     
+                                           +-------------->                 C C T A A                   
+   "3:"                  G A A C C T A A T T --+---------->           G A A C C                         
+                                               +---------->             A A C C T                       
+                                               +---------->               A C C T A                     
+                                               +---------->                 C C T A A                   
+                                               +---------->                   C T A A T                 
+                                               +---------->                     T A A T T               
+   "4:"                            T A A T T T A G C T -+->                     T A A T T               
+                                                        +->                       A A T T T             
+                                                        +->                         A T T T A           
+                                                        +->                           T T T A G         
+                                                        +->                             T T A G C       
+                                                        +->                               T A G C T     
+   "String:"   A C T A A G A A C C T A A T T T A G C T      A C T A A G A A C C T A A T T T A G C T     
+   "Coverage:" 1 1 1 2 2 3 3 3 3 3 3 3 3 2 2 1 1 1 1 1      1 2 3 5 7 9 > > > > 9 8 7 6 6 5 4 3 2 1
+   
+   "* Coverage of > means more than 9."
+   ```
+
+   When read breaking, smaller k-mers result in better coverage but also make the de Bruijn graph more tangled. The more tangled the de Bruijn graph is, the harder it is to infer the full sequence.
+
+   In the example above, the average coverage...
+
+    * for the left-hand side (original) is 2.1.
+    * for the right-hand side (broken) is 4.
+
+   See also: read-pair breaking.
+
+   ```{note}
+   What purpose does this actually serve? Mimicking 1 long read as n shorter reads isn't equivalent to actually having sequenced those n shorter reads. For example, what if the longer read being broken up has an error? That error replicates when breaking into n shorter reads, which gives a false sense of having good coverage and makes it seems as if it wasn't an error.
+   ```
+
+ * `{ankiAnswer} (read-pair breaking|read pair breaking|breaking read-pairs|breaking read pairs)/i`
+ 
+   The concept of taking multiple read-pairs and breaking them up into read-pairs with a smaller k.
+
+   ```{svgbob}
+                       "4 original (4,2)-mers (left) broken up to perfectly overlapping (2,4)-mers (right)"
+   
+   "1:"        A C T A ‑ ‑ A A C C --+------------------> A C ‑ ‑ ‑ ‑ A A                             
+                                     +------------------>   C T ‑ ‑ ‑ ‑ A C                           
+                                     +------------------>     T A ‑ ‑ ‑ ‑ C C                         
+   "2:"              A A G A ‑ ‑ C T A A --+------------>       A A ‑ ‑ ‑ ‑ C T                       
+                                           +------------>         A G ‑ ‑ ‑ ‑ T A                     
+                                           +------------>           G A ‑ ‑ ‑ ‑ A A                   
+   "3:"                  G A A C ‑ ‑ A A T T --+-------->           G A ‑ ‑ ‑ ‑ A A                 
+                                               +-------->             A A ‑ ‑ ‑ ‑ A T                  
+                                               +-------->               A C ‑ ‑ ‑ ‑ T T               
+   "4:"                          C T A A ‑ ‑ A G C T -+->                   C T ‑ ‑ ‑ ‑ A G         
+                                                      +->                     T A ‑ ‑ ‑ ‑ G C         
+                                                      +->                       A A ‑ ‑ ‑ ‑ C T       
+   "String:"   A C T A A G A A C C T A A T T A G C T      A C T A A G A A C C T A A T T A G C T     
+   "Coverage:" 1 1 1 2 1 2 3 2 2 2 2 3 3 2 1 1 1 1 1      1 2 2 2 2 3 4 4 3 3 4 5 4 2 1 1 2 2 1
+   ```
+
+   When read-pair breaking, a smaller k results in better coverage but also make the de Bruijn graph more tangled. The more tangled the de Bruijn graph is, the harder it is to infer the full sequence.
+
+   In the example above, the average coverage...
+
+    * for the left-hand side (original) is 1.6.
+    * for the right-hand side (broken) is 2.5.
+
+   See also: read breaking.
+
+   ```{note}
+   What purpose does this actually serve? Mimicking 1 long read-pair as n shorter read-pairs isn't equivalent to actually having sequenced those n shorter read-pairs. For example, what if the longer read-pair being broken up has an error? That error replicates when breaking into n shorter read-pairs, which gives a false sense of having good coverage and makes it seems as if it wasn't an error.
+   ```
+
+ * `{ankiAnswer} contig`
+ 
+   An unambiguous stretch of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1). Each stretch will be a path that's either  ...
+  
+    * a line: each node has an indegree and outdegree of 1.
+   
+      ```{svgbob}
+      GT --> TG --> GG
+      ```
+   
+    * a cycle: each node has an indegree and outdegree of 1 and it loops.
+   
+      ```{svgbob}
+      CA ---> AC ---> CC 
+      ^                |
+      |                |
+      `----------------'
+      ```
+   
+    * a line sandwiched between branching nodes: nodes in between have an indegree and outdegree of 1 but either...
+      * starts at a node where indegree != 1 but outdegree == 1 (incoming branch),
+      * or ends at a node where indegree == 1 but outdegree != 1 (outgoing branch),
+      * or both.
+   
+      ```{svgbob}
+      -.                 
+       |              .->
+       v              |
+       GT --> TG --> GG
+       ^              |
+       |              `->
+      -'
+      ```
+   
+   Real-world complications with DNA sequencing make de Bruijn / overlap graphs too tangled to guess a full genome: both strands of double-stranded DNA are sequenced and mixed into the graph, sequencing errors make into the graph, repeats regions of the genome can't be reliably handled by the graph, poor coverage, etc.. As such, biologists / bioinformaticians have no choice but to settle on contigs.
+   
+   ```{svgbob}
+       "Original"                "1: GTGG"             "2: GGT"          "3: GGT"             "4: CACCA"
+   
+           GTG                      GTG                                          
+   +----------------+       +----------------+                                   
+   |                |       |                |                                   
+   |        +------+|       |                |        +------+                   
+   |        | GGT  ||       |                |        | GGT  |                   
+   v  TGG   |      v|       v  TGG           |        |      v                   
+   TG ---> GG      GT       TG ---> GG      GT       GG      GT        GG      GT
+            |      ^                                                    |      ^  
+            | GGT  |                                                    | GGT  |  
+            +------+                                                    +------+  
+   
+       CAC     ACC                                                                          CAC     ACC    
+    CA ---> AC ---> CC                                                                   CA ---> AC ---> CC 
+    ^                |                                                                   ^                |
+    |      CCA       |                                                                   |      CCA       |
+    +----------------+                                                                   +----------------+
+   ```
+
+ * `{ankiAnswer} ribonucleotide`
+ 
+   Elements that make up RNA, similar to how nucleotides are the elements that make up DNA.
+
+   * A = Adenine (same as nucleotide)
+   * C = Cytosine (same as nucleotide)
+   * G = Guanine (same as nucleotide)
+   * U = Uracil (replace nucleotide Thymine)
+  
+ * `{ankiAnswer} antibiotic`
+ 
+   A substance (typically an enzyme) for killing, preventing, or inhibiting the grow of bacterial infections.
+
+ * `{ankiAnswer} amino acid`
+ 
+   The building blocks of peptides / proteins, similar to how nucleotides are the building blocks of DNA.
+
+   See proteinogenic amino acid for the list of 20 amino acids used during the translation.
+
+ * `{ankiAnswer} proteinogenic amino acid`
+ 
+   Amino acids that are used during translation. These are the 20 amino acids that the ribosome translates from codons. In contrast, there are many other non-proteinogenic amino acids that are used for non-ribosomal peptides.
+ 
+    The term "proteinogenic" means "protein creating". 
+
+    | 1 Letter Code | 3 Letter Code | Amino Acid                  | Mass (daltons) |
+    |---------------|---------------|-----------------------------|----------------|
+    | A             | Ala           | Alanine                     | 71.04          |
+    | C             | Cys           | Cysteine                    | 103.01         |
+    | D             | Asp           | Aspartic acid               | 115.03         |
+    | E             | Glu           | Glutamic acid               | 129.04         |
+    | F             | Phe           | Phenylalanine               | 147.07         |
+    | G             | Gly           | Glycine                     | 57.02          |
+    | H             | His           | Histidine                   | 137.06         |
+    | I             | Ile           | Isoleucine                  | 113.08         |
+    | K             | Lys           | Lysine                      | 128.09         |
+    | L             | Leu           | Leucine                     | 113.08         |
+    | M             | Met           | Methionine                  | 131.04         |
+    | N             | Asn           | Asparagine                  | 114.04         |
+    | P             | Pro           | Proline                     | 97.05          |
+    | Q             | Gln           | Glutamine                   | 128.06         |
+    | R             | Arg           | Arginine                    | 156.1          |
+    | S             | Ser           | Serine                      | 87.03          |
+    | T             | Thr           | Threonine                   | 101.05         |
+    | V             | Val           | Valine                      | 99.07          |
+    | W             | Trp           | Tryptophan                  | 186.08         |
+    | Y             | Tyr           | Tyrosine                    | 163.06         |
+ 
+    ```{note}
+    The masses are monoisotopic masses.
+    ```

@@ -4034,7 +4034,7 @@ cyclic
 
    If a graph contains an Eulerian cycle, it's said to be an Eulerian graph.
 
- * `{bm} Eulerian graph` `{bm} /(Eulerian)_GRAPH/i` - For a graph to be Eulerian_GRAPH, it must have am Eulerian cycle. For a graph to have an Eulerian cycle, it must be both balanced_GRAPH and strongly connected.
+ * `{bm} Eulerian graph` `{bm} /(Eulerian)_GRAPH/i` - For a graph to be Eulerian_GRAPH, it must have an Eulerian cycle: a path in a graph that is a cycle and visits every edge exactly once. For a graph to have an Eulerian cycle, it must be both balanced_GRAPH and strongly connected.
  
     ```{svgbob}
                  +-------------+
