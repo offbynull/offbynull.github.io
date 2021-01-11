@@ -1161,7 +1161,7 @@ ankiDebugForceShow - Marks a question as the question being debugged. The system
  
    A peptide of at least size 10.
 
- * `{ankiAnswer} amino acid residue`
+ * `{ankiAnswer} (amino acid residue|residue)/i`
  
    The part of an amino acid that makes it unique from all others.
  

@@ -10,7 +10,7 @@ E = TypeVar('E')
 ED = TypeVar('ED')
 
 
-class Graph(Generic[N]):
+class Graph(Generic[N, ND, E, ED]):
     def __init__(self):
         self._node_outbound = {}
         self._node_inbound = {}

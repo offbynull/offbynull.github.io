@@ -4793,5 +4793,7 @@ cyclic
 `{bm-ignore} (spectrum)_NORM/i`
 `{bm-error} Apply suffix _NORM, _MS/(spectrum)/i`
 
+`{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
+
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`
