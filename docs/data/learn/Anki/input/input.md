@@ -1,6 +1,6 @@
-`{title} Anki`
+`{title} offbynull Anki` `{anki}`
 
-`{anki}` offbynull anki -- JS must be enabled.<br/>`{ankiInfoPanel}`
+`{ankiInfoPanel}`
 
 ```{comment}
 The anki inline tag injects a special anki JS into the HTML. The anki JS will treat the items in the first
@@ -8,26 +8,36 @@ bullet list as anki cloze words questions.
 
 The anki* inline tags generate HTML spans/divs with special class names that get processed by the anki JS:
 
-     ankiInfoPanel - Information about the question / questions / state. One allowed in entire file.
-        ankiAnswer - Regex answer for the current question. Multiple allowed per question.
-                       Text in question that matches the regex will be blacked out and users must answer them. The
-                       content of this tag are the same as a 2 or 3 parameter bm tag WITHOUT the label. Also, the
-                       regex doesn't explicitly output capture group 1 like the bm tag does (no prefix/suffixes/).
-                       It outputs the entire match instead. For example...
-                       `{ankiAnswer}my string literal`
-                       `{ankiAnswer}my regex literal/i`
-                       `{ankiAnswer}my (regex) literal/i`  -- unlike bm, there is no special logic for capture groups 
-                       The label (parameter 1 of the 3 parameter tag) isn't used.
-          ankiHide - Regex hider for the current question. Multiple allowed per question.
-                       Text in question that matches the regex will be blacked out. The content of this tag are the
-                       same as the ankiAnswer tag. For example...
-                       `{ankiHide}my string literal`
-                       `{ankiHide}my regex literal/i`
-                       `{ankiHide}my (regex) literal/i`  -- unlike bm, there is no special logic for capture groups
+      ankiInfoPanel - Information about the question / questions / state. One allowed in entire file.
+         ankiAnswer - Regex answer for the current question. Multiple allowed per question.
+                        Text in question that matches the regex will be blacked out and users must answer them. The
+                        content of this tag are the same as a bm tag except no label parameter. For example...
+                         * `{ankiAnswer}my string literal`
+                         * `{ankiAnswer}(my regex literal)/i`
+                         * `{ankiAnswer}my (regex) literal/i/true/false`
+                        Note that the 3rd example doesn't make any sense as an answer. When hiding instances of the
+                        answer in the question, it'll take into account the preamble/postamble of capture group 1.
+                        But when submitting an answer, the answer will be matched against the ENTIRE regex. The user
+                        would have to include the preamble/postamble in the answer.
+           ankiHide - Regex hider for the current question. Multiple allowed per question.
+                        Text in question that matches the regex will be blacked out. The content of this tag are the
+                        same as the ankiAnswer tag. For example...
+                         * `{ankiHide}my string literal`
+                         * `{ankiHide}(my regex literal)/i`
+                         * `{ankiHide}my (regex) literal/i/true/false`
+         ankiIgnore - Regex ignorer for the current question. Multiple allowed per question.
+                        Text in question that matches the regex, it'll output what was captured as-is. The content of
+                        this tag are the same as the ankiAnswer tag. For example...
+                         * `{ankiIgnore}my string literal`
+                         * `{ankiIgnore}(my regex literal)/i`
+                         * `{ankiIgnore}my (regex) literal/i/true/false`
+ankiRandomOrderList - When used in a list item, the parent list item will automatically be randomly reordered. 
+           ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
           ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
-ankiDebugForceShow - Marks a question as the question being debugged. The system will pretend that all other
-                     questions don't exist. As such, the question this is applied on will be question #1 in the
-                     database and all other questions will be removed from the DB.
+           ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
+ ankiDebugForceShow - Marks a question as the question being debugged. The system will pretend that all other
+                      questions don't exist. As such, the question this is applied on will be question #1 in the
+                      database and all other questions will be removed from the DB.
 ```
 
  * Question 1 one and two. `{ankiAnswer}one` `{ankiAnswer}two`  `{ankiDead}`
@@ -37,6 +47,13 @@ ankiDebugForceShow - Marks a question as the question being debugged. The system
  * Question 3 three. The word red should be hidden. `{ankiAnswer}three` `{ankiHide}red` `{ankiDead}`
 
  * Question 4 four and beep or boop. `{ankiAnswer}four` `{ankiAnswer}beep` `{ankiAnswer}boop` `{ankiDead}`
+
+ * Question 5 What are the colors? The word peach should be hidden. `{ankiIgnore} blueberries` `{ankiAnswer} green` `{ankiAnswer} yellow` `{ankiAnswer} (red)/i` `{ankiAnswer} blue` `{ankiHide}peach` `{ankiDead}`
+
+   * A. avocado = green `{ankiRandomOrderList}`
+   * B. blueberries = blue
+   * C. banana = yellow
+   * D. strawberry = red_TEST
 
  * `{ankiAnswer} (k-mer|kmer)/i`
  
