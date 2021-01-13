@@ -8,52 +8,59 @@ bullet list as anki cloze words questions.
 
 The anki* inline tags generate HTML spans/divs with special class names that get processed by the anki JS:
 
-      ankiInfoPanel - Information about the question / questions / state. One allowed in entire file.
-         ankiAnswer - Regex answer for the current question. Multiple allowed per question.
-                        Text in question that matches the regex will be blacked out and users must answer them. The
-                        content of this tag are the same as a bm tag except no label parameter. For example...
-                         * `{ankiAnswer}my string literal`
-                         * `{ankiAnswer}(my regex literal)/i`
-                         * `{ankiAnswer}my (regex) literal/i/true/false`
-                        Note that the 3rd example doesn't make any sense as an answer. When hiding instances of the
-                        answer in the question, it'll take into account the preamble/postamble of capture group 1.
-                        But when submitting an answer, the answer will be matched against the ENTIRE regex. The user
-                        would have to include the preamble/postamble in the answer.
-           ankiHide - Regex hider for the current question. Multiple allowed per question.
-                        Text in question that matches the regex will be blacked out. The content of this tag are the
-                        same as the ankiAnswer tag. For example...
-                         * `{ankiHide}my string literal`
-                         * `{ankiHide}(my regex literal)/i`
-                         * `{ankiHide}my (regex) literal/i/true/false`
-         ankiIgnore - Regex ignorer for the current question. Multiple allowed per question.
-                        Text in question that matches the regex, it'll output what was captured as-is. The content of
-                        this tag are the same as the ankiAnswer tag. For example...
-                         * `{ankiIgnore}my string literal`
-                         * `{ankiIgnore}(my regex literal)/i`
-                         * `{ankiIgnore}my (regex) literal/i/true/false`
-ankiRandomOrderList - When used in a list item, the parent list item will automatically be randomly reordered. 
-           ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
-          ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
-           ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
- ankiDebugForceShow - Marks a question as the question being debugged. The system will pretend that all other
-                      questions don't exist. As such, the question this is applied on will be question #1 in the
-                      database and all other questions will be removed from the DB.
+       ankiInfoPanel - Information about the question / questions / state. One allowed in entire file.
+          ankiAnswer - Regex answer for the current question. Multiple allowed per question.
+                         Text in question that matches the regex will be blacked out and users must answer them. The
+                         content of this tag are the same as a bm tag except no label parameter. For example...
+                          * `{ankiAnswer}my string literal`
+                          * `{ankiAnswer}(my regex literal)/i`
+                          * `{ankiAnswer}my (regex) literal/i/true/false`
+                         Note that the 3rd example doesn't make any sense as an answer. When hiding instances of the
+                         answer in the question, it'll take into account the preamble/postamble of capture group 1.
+                         But when submitting an answer, the answer will be matched against the ENTIRE regex. The user
+                         would have to include the preamble/postamble in the answer.
+            ankiHide - Regex hider for the current question. Multiple allowed per question.
+                         Text in question that matches the regex will be blacked out. The content of this tag are the
+                         same as the ankiAnswer tag. For example...
+                          * `{ankiHide}my string literal`
+                          * `{ankiHide}(my regex literal)/i`
+                          * `{ankiHide}my (regex) literal/i/true/false`
+          ankiIgnore - Regex ignorer for the current question. Multiple allowed per question.
+                         Text in question that matches the regex, it'll output what was captured as-is. The content of
+                         this tag are the same as the ankiAnswer tag. For example...
+                          * `{ankiIgnore}my string literal`
+                          * `{ankiIgnore}(my regex literal)/i`
+                          * `{ankiIgnore}my (regex) literal/i/true/false`
+ ankiListRandomOrder - When used in a list item, the parent list will automatically be randomly reordered. 
+ankiListRandomSelect - When used in a list item, the parent list will keep only 1 item at random.
+            ankiDead - Marks a question as dead / to be skipped. One allowed per question. 
+  ankiDebugForceShow - Marks a question as the question being debugged. The system will pretend that all other
+                       questions don't exist. As such, the question this is applied on will be question #1 in the
+                       database and all other questions will be removed from the DB.
 ```
 
- * Question 1 one and two. `{ankiAnswer}one` `{ankiAnswer}two`  `{ankiDead}`
+ * Question 1 four and beep or boop. The word red should be hidden. `{ankiHide}red` `{ankiAnswer}four` `{ankiAnswer}beep` `{ankiAnswer}boop` `{ankiDead}`
 
- * Question 2 two. `{ankiAnswer}two` `{ankiDead}`
+ * Question 2 What are the colors? `{ankiIgnore} blueberries` `{ankiAnswer} green` `{ankiAnswer} yellow` `{ankiAnswer} (red)/i` `{ankiAnswer} blue` `{ankiDead}`
 
- * Question 3 three. The word red should be hidden. `{ankiAnswer}three` `{ankiHide}red` `{ankiDead}`
+   * avocado = green `{ankiListRandomOrder}`
+   * blueberries = blue
+   * banana = yellow
+   * strawberry = red
 
- * Question 4 four and beep or boop. `{ankiAnswer}four` `{ankiAnswer}beep` `{ankiAnswer}boop` `{ankiDead}`
+ * Question 3 Which fruit has a red color? `{ankiAnswer} \b(1f)\b/i` `{ankiAnswer} \b(2f)\b/i` `{ankiAnswer} \b(3f)\b/i` `{ankiAnswer} \b(4t)\b/i` `{ankiDead}`
 
- * Question 5 What are the colors? The word peach should be hidden. `{ankiIgnore} blueberries` `{ankiAnswer} green` `{ankiAnswer} yellow` `{ankiAnswer} (red)/i` `{ankiAnswer} blue` `{ankiHide}peach` `{ankiDead}`
+   * 1f avocado -- answer as 1(t|f) `{ankiListRandomOrder}`
+   * 2f blueberries -- answer as 2(t|f)
+   * 3f banana -- answer as 3(t|f)
+   * 4t strawberry -- answer as 4(t|f)
 
-   * A. avocado = green `{ankiRandomOrderList}`
-   * B. blueberries = blue
-   * C. banana = yellow
-   * D. strawberry = red_TEST
+ * Question 4 What color is the item? 4 possibilities but only 1 will be shown. `{ankiAnswer} red` `{ankiDead}`
+
+   * cherry `{ankiListRandomSelect}`
+   * strawberry
+   * stop sign
+   * lipstick
 
  * `{ankiAnswer} (k-mer|kmer)/i`
  
@@ -1267,6 +1274,28 @@ ankiRandomOrderList - When used in a list item, the parent list item will automa
     * will likely introduce noise into the pieces they capture.
 
    As such, these plots aren't exact.
+
+ * `{ankiAnswer} (mass-?to-?charge ratio|mass-?to-?charge)/i` `{ankiAnswer} (intensity|relative abundance|abundance)/i`
+ 
+   In a mass spectrometer output, the...
+
+    * x-axis is the mass-to-charge ratio. `{ankiListRandomOrder}`
+    * y-axis is the intensity.
+   
+   ```{svgbob}
+       y
+       ^
+       |
+       |        |
+       |        |
+   "?" |        |
+       |        | |           |
+       |        | |           |
+       | |      | | |         |        |
+       | | | |  | | |     |   |    | | |
+       +-+-+-+--+-+-+-----+---+----+-+-+--> x
+                         "?"
+   ```
 
  * `{ankiAnswer} experimental spectrum`
  

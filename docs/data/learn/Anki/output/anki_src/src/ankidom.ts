@@ -1,4 +1,4 @@
-import { Entry, Key, RegexScannerCollection, ScannerEntry } from "./regex_scanner_collection";
+import { Key, RegexScannerCollection, ScannerEntry } from "./regex_scanner_collection";
 import { breakOnSlashes, combineWithSlashes } from "./utils/parse_helpers";
 
 export type ANSWER_CALLBACK = (postMortem: 0 | 1 | 2 | 3 | 4 | 5) => Promise<void>;
@@ -6,17 +6,16 @@ export type ANSWER_CALLBACK = (postMortem: 0 | 1 | 2 | 3 | 4 | 5) => Promise<voi
 const ANSWER_PATTERN_CLASS = 'anki-answerpattern';
 const HIDE_PATTERN_CLASS = 'anki-hidepattern';
 const IGNORE_PATTERN_CLASS = 'anki-ignorepattern';
-const RANDOM_ORDER_LIST_CLASS = 'anki-randomorderlist';
+const LIST_RANDOM_ORDER_CLASS = 'anki-listrandomorder';
+const LIST_RANDOM_SELECT_CLASS = 'anki-listrandomselect';
 const DEAD_QUESTION_CLASS = 'anki-deadquestion';
 const INFO_PANEL_CLASS = 'anki-infopanel';
 const DEBUG_FORCE_SHOW_CLASS = 'anki-debugforceshow';
 
 class IgnorePattern {
-    public constructor() { }
 }
 
 class HidePattern {
-    public constructor() { }
 }
 
 class AnswerPattern {
@@ -85,7 +84,8 @@ export class AnkiDom {
         this.processedQuestionTag = this.originalQuestionTag.cloneNode(true) as HTMLUListElement;
 
         // Reorder any lists that are marked to be reordered
-        AnkiDom.findAndProcessReorderListTags(this.processedQuestionTag);
+        AnkiDom.findAndProcessListRandomSelectTags(this.processedQuestionTag);
+        AnkiDom.findAndProcessListRandomOrderTags(this.processedQuestionTag);
 
         // Pull out all regex patterns
         const allPatterns = AnkiDom.findPatternTags(this.processedQuestionTag, [IGNORE_PATTERN_CLASS, HIDE_PATTERN_CLASS, ANSWER_PATTERN_CLASS], true);
@@ -276,20 +276,38 @@ export class AnkiDom {
         }
     }
 
-    private static findAndProcessReorderListTags(parent: HTMLElement) {
-        const nodeIt = document.evaluate(".//span[@class=\"" + RANDOM_ORDER_LIST_CLASS + "\"]/ancestor::ul[1]|.//span[@class=\"" + RANDOM_ORDER_LIST_CLASS + "\"]/ancestor::ol[1]", parent, null, XPathResult.ANY_TYPE, null);
-        const nodes = AnkiDom.xPathResultToArray(nodeIt); // place results in array to because modding while iterating causes some browsers to barf
-        for (const node of nodes) {
-            if (!(node instanceof Element)) {
+    private static findAndProcessListRandomOrderTags(parent: HTMLElement) {
+        const listNodeIt = document.evaluate(".//span[@class=\"" + LIST_RANDOM_ORDER_CLASS + "\"]/ancestor::ul[1]|.//span[@class=\"" + LIST_RANDOM_ORDER_CLASS + "\"]/ancestor::ol[1]", parent, null, XPathResult.ANY_TYPE, null);
+        const listNodes = AnkiDom.xPathResultToArray(listNodeIt); // place results in array to because modding while iterating causes some browsers to barf
+        for (const listNode of listNodes) {
+            if (!(listNode instanceof Element)) {
                 continue;
             }
-            const children = Array(...node.childNodes);
+            const children = Array(...listNode.childNodes);
             for (const child of children) {
                 child.parentElement?.removeChild(child);
             }
             AnkiDom.shuffleArray(children);
             for (const child of children) {
-                node.insertBefore(child, null);
+                listNode.insertBefore(child, null);
+            }
+        }
+    }
+
+    private static findAndProcessListRandomSelectTags(parent: HTMLElement) {
+        const listNodeIt = document.evaluate(".//span[@class=\"" + LIST_RANDOM_SELECT_CLASS + "\"]/ancestor::ul[1]|.//span[@class=\"" + LIST_RANDOM_SELECT_CLASS + "\"]/ancestor::ol[1]", parent, null, XPathResult.ANY_TYPE, null);
+        const listNodes = AnkiDom.xPathResultToArray(listNodeIt); // place results in array to because modding while iterating causes some browsers to barf
+        for (const listNode of listNodes) {
+            if (!(listNode instanceof Element)) {
+                continue;
+            }
+            const children = AnkiDom.xPathResultToArray(
+                document.evaluate("li", listNode, null, XPathResult.ANY_TYPE, null)
+            );
+            AnkiDom.shuffleArray(children);
+            children.pop();
+            for (const child of children) {
+                child.parentElement?.removeChild(child);
             }
         }
     }
@@ -435,7 +453,7 @@ export class AnkiDom {
                 const answerTextElem = answerTextElems[i];
                 const answer = answerTextElem.value;
                 const match = pattern.scanner.scan(answer);
-                if (match === null || match.captureMatch !== answer) {
+                if (match === null || match.fullMatch !== answer) {
                     questionPassed = false;
                     break;
                 }

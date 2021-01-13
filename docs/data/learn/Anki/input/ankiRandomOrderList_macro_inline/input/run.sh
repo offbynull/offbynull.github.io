@@ -1,1 +1,0 @@
-echo "<span class=\"anki-randomorderlist\"></span>" >> /output/output.md
