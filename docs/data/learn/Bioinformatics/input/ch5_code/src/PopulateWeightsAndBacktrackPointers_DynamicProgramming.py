@@ -25,35 +25,35 @@ def populate_weights_and_backtrack_pointers(
             None
         ]
 ):
-    # For all root nodes, add to complete and set None weight and None backtracking edge.
-    complete_nodes = set()
+    processed_nodes = set()          # nodes where all parents have been processed AND it has been processed
+    waiting_nodes = set()            # nodes where all parents have been processed BUT it has yet to be processed
+    unprocessable_nodes = Counter()  # nodes that have some parents are remaining are processed (value=# of parents left)
+    # For all root nodes, add to processed_nodes and set None weight and None backtracking edge.
     for node in g.get_nodes():
         if g.get_in_degree(node) == 0:
             set_node_data_func(node, None, None)
-            complete_nodes |= {node}
-    waiting_nodes = set()
-    # For all root nodes, add any children where its the only parent to waiting.
-    for node in complete_nodes:
+            processed_nodes |= {node}
+    # For all root nodes, add any children where its the only parent to waiting_nodes.
+    for node in processed_nodes:
         for e in g.get_outputs(node):
             dst_node = g.get_edge_to(e)
-            if {g.get_edge_from(e) for e in g.get_inputs(dst_node)}.issubset(complete_nodes):
+            if {g.get_edge_from(e) for e in g.get_inputs(dst_node)}.issubset(processed_nodes):
                 waiting_nodes |= {dst_node}
     # Make sure from_node is a root and set its weight to 0.
-    assert from_node in complete_nodes
+    assert from_node in processed_nodes
     set_node_data_func(from_node, 0.0, None)
-    # Track how many remaining (not complete) parents each node in the graph has. Note that the graph's root nodes were
-    # already marked as complete above.
-    remaining_unprocessed_inputs_for_each_node = Counter()
+    # Track how many remaining parents each node in the graph has. Note that the graph's root nodes were already marked
+    # as processed above.
     for node in g.get_nodes():
         incoming_nodes = {g.get_edge_from(e) for e in g.get_inputs(node)}
-        incoming_nodes -= complete_nodes
-        remaining_unprocessed_inputs_for_each_node[node] = len(incoming_nodes)
-    # Any nodes in waiting have had all their parents already processed (complete). As such, they can have their weights
-    # and backtracking pointers calculated.
+        incoming_nodes -= processed_nodes
+        unprocessable_nodes[node] = len(incoming_nodes)
+    # Any nodes in waiting_nodes have had all their parents already processed (in processed_nodes). As such, they can
+    # have their weights and backtracking pointers calculated. They can then be placed into processed_nodes themselves.
     while len(waiting_nodes) > 0:
         node = next(iter(waiting_nodes))
         incoming_nodes = {g.get_edge_from(e) for e in g.get_inputs(node)}
-        if not incoming_nodes.issubset(complete_nodes):
+        if not incoming_nodes.issubset(processed_nodes):
             continue
         incoming_accum_weights = {}
         for edge in g.get_inputs(node):
@@ -70,13 +70,13 @@ def populate_weights_and_backtrack_pointers(
             max_edge = max(incoming_accum_weights, key=lambda e: incoming_accum_weights[e])
             max_weight = incoming_accum_weights[max_edge]
         set_node_data_func(from_node, max_weight, max_edge)
-        # This node has been processed, move it over to complete_nodes.
+        # This node has been processed, move it over to processed_nodes.
         waiting_nodes.remove(node)
-        complete_nodes.add(node)
-        # For outgoing nodes this node points to, if that outgoing node has all of its dependencies in complete_nodes,
+        processed_nodes.add(node)
+        # For outgoing nodes this node points to, if that outgoing node has all of its dependencies in processed_nodes,
         # then add it to waiting_nodes (so it can be processed).
         outgoing_nodes = {g.get_edge_to(e) for e in g.get_outputs(node)}
         for output_node in outgoing_nodes:
-            remaining_unprocessed_inputs_for_each_node[output_node] -= 1
-            if remaining_unprocessed_inputs_for_each_node[output_node] == 0:
+            unprocessable_nodes[output_node] -= 1
+            if unprocessable_nodes[output_node] == 0:
                 waiting_nodes.add(output_node)

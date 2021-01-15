@@ -48,12 +48,14 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
    * banana = yellow
    * strawberry = red
 
- * Question 3 Which fruit has a red color? `{ankiAnswer} \b(1f)\b/i` `{ankiAnswer} \b(2f)\b/i` `{ankiAnswer} \b(3f)\b/i` `{ankiAnswer} \b(4t)\b/i` `{ankiDead}`
+ * Question 3 Which fruit has a red color? `{ankiIgnore} (true|false)_IGNORE/i` `{ankiAnswer} (false1?)/i` `{ankiAnswer} (false2?)/i` `{ankiAnswer} (false3?)/i` `{ankiAnswer} (true0?)/i` `{ankiDead}`
 
-   * 1f avocado -- answer as 1(t|f) `{ankiListRandomOrder}`
-   * 2f blueberries -- answer as 2(t|f)
-   * 3f banana -- answer as 3(t|f)
-   * 4t strawberry -- answer as 4(t|f)
+   Answer with true_IGNORE or false_IGNORE:
+
+   * avocado = false1 `{ankiListRandomOrder}`
+   * blueberries = false2
+   * banana = false3
+   * strawberry = true0
 
  * Question 4 What color is the item? 4 possibilities but only 1 will be shown. `{ankiAnswer} red` `{ankiDead}`
 

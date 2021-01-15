@@ -53,6 +53,8 @@
 #    sequence alignment against the profile matrix, taking the weights from each column of the profile matrix. The
 #    highest weighted path is the one you want.
 #
-#    If the alignment results in the profile matrix having a gap, add the gaps in. Then update the frequences in the
+#    If the alignment results in the profile matrix having a gap, add the gaps in. Then update the frequencies in the
 #    profile matrix based on this alignment.
+#
+#    Maybe penalize the widening of the profile more than widening the sequence.
 IMPLEMENT SOMETHING
