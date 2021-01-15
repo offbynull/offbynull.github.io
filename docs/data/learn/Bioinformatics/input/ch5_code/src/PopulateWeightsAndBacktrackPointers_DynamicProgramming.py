@@ -4,7 +4,7 @@
 # from_node should be a root node. Initialize its weight to 0, but initialize all other root node weights to None.
 # A None weight is used as a marker to skip over these because we don't want to consider them.
 from collections import Counter
-from typing import TypeVar, Callable, Optional
+from typing import TypeVar, Callable, Optional, Tuple
 
 from Graph import Graph
 
@@ -23,11 +23,26 @@ def populate_weights_and_backtrack_pointers(
                 E                 # edge ID of incoming edge made node have max weight
             ],
             None
+        ],
+        get_node_data_func: Callable[
+            [
+                N,  # node ID
+            ],
+            Tuple[
+                Optional[float], # max weight of node
+                E  # edge ID of incoming edge made node have max weight
+            ]
+        ],
+        get_edge_data_func: Callable[
+            [
+                E,  # edge ID
+            ],
+            float,  # weight of edge
         ]
 ):
     processed_nodes = set()          # nodes where all parents have been processed AND it has been processed
     waiting_nodes = set()            # nodes where all parents have been processed BUT it has yet to be processed
-    unprocessable_nodes = Counter()  # nodes that have some parents are remaining are processed (value=# of parents left)
+    unprocessable_nodes = Counter()  # nodes that have some parents remaining to be processed (value=# of parents left)
     # For all root nodes, add to processed_nodes and set None weight and None backtracking edge.
     for node in g.get_nodes():
         if g.get_in_degree(node) == 0:
@@ -58,8 +73,8 @@ def populate_weights_and_backtrack_pointers(
         incoming_accum_weights = {}
         for edge in g.get_inputs(node):
             src_node = g.get_edge_from(edge)
-            src_node_weight, _, _, _ = g.get_node_data(src_node)
-            _, edge_weight = g.get_edge_data(edge)
+            src_node_weight, _ = get_node_data_func(src_node)
+            edge_weight = get_edge_data_func(edge)
             # Roots that aren't from_node were initialized to a weight of None -- if you see them, skip them.
             if src_node_weight is not None:
                 incoming_accum_weights[edge] = src_node_weight + edge_weight

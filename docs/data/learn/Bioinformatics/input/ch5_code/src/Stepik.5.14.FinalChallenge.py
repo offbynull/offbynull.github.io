@@ -57,4 +57,29 @@
 #    profile matrix based on this alignment.
 #
 #    Maybe penalize the widening of the profile more than widening the sequence.
-IMPLEMENT SOMETHING
+from itertools import product
+
+from GraphGridCreate import create_grid_graph
+from PopulateWeightsAndBacktrackPointers_DynamicProgramming import populate_weights_and_backtrack_pointers
+
+with open('Marahiel_data.csv', mode='r', encoding='utf-8') as f:
+    data = f.read()
+lines = data.strip().split('\n')
+sequences = [list(s) for s in lines[1:]]
+
+for s1, s2 in product(sequences, repeat=2):
+    if s1 is s2:
+        continue
+    graph = create_grid_graph(
+        [s1, s2],
+        lambda n: (True, (None, None)),
+        lambda e, _1, offset, _2: (True, offset == (1,1))
+    )
+    populate_weights_and_backtrack_pointers(
+        graph,
+        (0, 0),
+        lambda n, weight, backtracking_edge: graph.update_node_data(n, (weight, backtracking_edge)),
+        lambda n: graph.get_node_data(n),
+        lambda e: graph.get_edge_data(e)
+    )
+    print('!')

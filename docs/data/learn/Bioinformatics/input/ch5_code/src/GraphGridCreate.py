@@ -4,12 +4,12 @@ from typing import TypeVar, List, Callable, Tuple, Optional
 from Graph import Graph
 from helpers.Utils import unique_id_generator
 
-E = TypeVar('E')  # sequence element type
+ELEM = TypeVar('ELEM')  # sequence element type
 ND = TypeVar('ND')  # node data type
 ED = TypeVar('ED')  # edge data type
 
 def create_grid_graph(
-        sequences: List[List[E]],
+        sequences: List[List[ELEM]],
         on_new_node: Optional[
             Callable[
                 [
@@ -24,7 +24,7 @@ def create_grid_graph(
                     Tuple[int, ...],  # src node id / coord
                     Tuple[int, ...],  # dst node id / coord
                     Tuple[int, ...],  # coord offsets (same as dst coord - src coord)
-                    Tuple[Optional[E], ...]   # sequence elements at each coord
+                    Tuple[Optional[ELEM], ...]   # sequence elements at each coord
                 ],
                 Tuple[bool, Optional[ED]]  # flag indicating if edge could be added, edge data
             ]
@@ -60,13 +60,14 @@ def create_grid_graph(
     return graph
 
 
-g = create_grid_graph(
-    [
-        list('KAVVMPGAAVVNLLAWHRREIPAGAGTTVAQFASLSFDVAAQEILSTLLYGATLAVPTDAVRRDADAFAAWLEEYRVNELYAPNLVVEALAEAAAEQGRTLPDLRHIAQAGEALTAGPRVRDFCAALPGRRLHNHYGPAETHVMTGI'),
-        list('KGVPVPHRSVASVLVPLIEEFGLGPGSRVLQFASISFDAALWEITLALLSGATLVVAPAEQLQPGPALAELVARTGTTFLTLPPTALAVLADDALPAGVDLVVAGEATSPDQVGRWSTGRRMTNAYGPTEAAVCTTI'),
-        list('KGVIGTHRALSAYADDHIERVLRPAAQRLGRPLRIAHAWSFTFDAAWQPLVALLDGHAVHIVDDHRQRDAGALVEAIDRFGLDMIDTTPSMFAQLHNAGLLDRAPLAVLALGGEALGAATWRMIQQNCARTAMTAFNCYGPTETTVEAVV'),
-    ],
-    lambda node_id: (True, None),
-    lambda src_id, dst_id, offsets, e: (True, e)
-)
-print(f'{g}')
+if __name__ == '__main__':
+    g = create_grid_graph(
+        [
+            list('KAVVMPGAAVVNLLAWHRREIPAGAGTTVAQFASLSFDVAAQEILSTLLYGATLAVPTDAVRRDADAFAAWLEEYRVNELYAPNLVVEALAEAAAEQGRTLPDLRHIAQAGEALTAGPRVRDFCAALPGRRLHNHYGPAETHVMTGI'),
+            list('KGVPVPHRSVASVLVPLIEEFGLGPGSRVLQFASISFDAALWEITLALLSGATLVVAPAEQLQPGPALAELVARTGTTFLTLPPTALAVLADDALPAGVDLVVAGEATSPDQVGRWSTGRRMTNAYGPTEAAVCTTI'),
+            list('KGVIGTHRALSAYADDHIERVLRPAAQRLGRPLRIAHAWSFTFDAAWQPLVALLDGHAVHIVDDHRQRDAGALVEAIDRFGLDMIDTTPSMFAQLHNAGLLDRAPLAVLALGGEALGAATWRMIQQNCARTAMTAFNCYGPTETTVEAVV'),
+        ],
+        lambda node_id: (True, None),
+        lambda src_id, dst_id, offsets, e: (True, e)
+    )
+    print(f'{g}')

@@ -1,4 +1,4 @@
-from typing import TypeVar, Callable, Tuple, Optional
+from typing import TypeVar, Callable, Tuple, Optional, List
 
 from Graph import Graph
 
@@ -6,7 +6,7 @@ N = TypeVar('N')
 ND = TypeVar('ND')
 E = TypeVar('E')
 ED = TypeVar('ED')
-ELEMENT = TypeVar('ELEMENT')
+ELEM = TypeVar('ELEM')
 
 def backtrack(
         g: Graph[N, ND, E, ED],
@@ -25,10 +25,10 @@ def backtrack(
                 E,  # edge ID
             ],
             Tuple[
-                Tuple[Optional[ELEMENT], ...]  # elements
+                Tuple[Optional[ELEM], ...]  # elements
             ]
         ]
-):
+) -> List[List[Optional[ELEM]]]:
     # Now backtrack from the end_node to start_node to get the path.
     node = to_node
     operations = []
@@ -48,10 +48,11 @@ def backtrack(
     for op in operations:
         elements = op[0]
         for i, elem in enumerate(elements):
-            alignments[i] = elem if elem is not None else '-'
+            alignments[i] = elem
 
-    for alignment in alignments:
-        print(alignment)
+    # for alignment in alignments:
+    #     print(alignment)
+    return alignments
 
 
     # for elements, weight in operations:
