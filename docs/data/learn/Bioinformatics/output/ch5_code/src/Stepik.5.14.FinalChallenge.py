@@ -34,5 +34,55 @@
 #     o o o o o
 #
 #     What defines which edge is taken? The score of the element pair weighed by the frequency.
+#
+# 3. Use the profile matrix to determine edge weights for each column as well as gaps. Then construct your graph as
+#    such...
+#
+#      G G G G
+#     o-o-o-o-o
+#    ?|\|\|\|\|
+#     o-o-o-o-o
+#    ?|\|\|\|\|
+#     o-o-o-o-o
+#    ?|\|\|\|\|
+#     o-o-o-o-o
+#    ?|\|\|\|\|
+#     o-o-o-o-o
+#
+#    The columns are the string being tested and the rows are columns from the profile matrix. The graph does global
+#    sequence alignment against the profile matrix, taking the weights from each column of the profile matrix. The
+#    highest weighted path is the one you want.
+#
+#    If the alignment results in the profile matrix having a gap, add the gaps in. Then update the frequencies in the
+#    profile matrix based on this alignment.
+#
+#    Maybe penalize the widening of the profile more than widening the sequence.
+import time
+from itertools import product
 
-IMPLEMENT SOMETHING
+from GlobalAlignment_Matrix import global_alignment, get_score
+
+with open('Marahiel_data.csv', mode='r', encoding='utf-8') as f:
+    data = f.read()
+lines = data.strip().split('\n')
+sequences = [list(s) for s in lines[1:]]
+
+buffer_dim = max(len(s) for s in sequences) + 1
+buffer = []
+for v_idx in range(buffer_dim):
+    row = []
+    for w_idx in range(buffer_dim):
+        row.append([-1, None])
+    buffer.append(row)
+
+start = time.time()
+for i, (s1, s2) in enumerate(product(sequences, repeat=2)):
+    if s1 is s2:
+        continue
+    global_alignment(s1, s2, buffer)
+    get_score(buffer, s1, s2)
+    print('!')
+    if i == 1000:
+        break
+end = time.time()
+print(f'{end - start}')

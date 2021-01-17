@@ -3407,6 +3407,8 @@ Non-ribosomal peptides (NRP) however, aren't synthesized via the central dogma o
                                                                           N
 ```
 
+Each segment of an NRP synthetase protein responsible for the outputting a single amino acid is called an adenylation domain. The example above has 5 adenylation domains, each of which is responsible for outputting a single amino acid of the peptide it produces.
+
 NRPs may be `{bm-target} cyclic/(cyclopeptide|cyclic peptide)/i`. Common use-cases for NRPs:
 
  * antibiotics
@@ -4550,6 +4552,10 @@ cyclic
    * immunosuppressors
    * communication between bacteria (quorum sensing)
 
+ * `{bm} non-ribosomal peptide synthetase/(non-ribosomal peptide synthetase|NRP synthetase)/i` - A protein responsible for the production of a non-ribosomal peptide.
+
+ * `{bm} adenylation domain/(adenylation domain|A domain|A-domain)/i` - A segment of an NRP synthetase protein responsible for the outputting a single amino acid. For example, the NRP synthetase responsible for producing Tyrocidine has 10 adenylation domains, each of which is responsible for outputting a single amino acid of Tyrocidine.
+
  * `{bm} mass spectrometer/(mass spectrometer|mass spectrometry)/i` - A device that randomly shatters molecules into pieces and measures the mass-to-charge of those pieces. The output of the device is a plot called a spectrum_MS.
 
    Note that mass spectrometers have various real-world practical problems. Specifically, they ...
@@ -4770,7 +4776,224 @@ cyclic
       ```
 
     * etc..
+
+ * `{bm} sequence alignment` - Given a set of sequences, a sequence alignment is a set of operations applied to each position in an effort to line up the sequences. These operations include:
+ 
+   * insert/delete (indel for short).
+   * replace (also referred to as mismatch).
+   * keep matching (also referred to as match).
+ 
+   For example, the sequences MAPLE and TABLE may be aligned by performing...
+
+   | String 1 | String 2 | Operation     |
+   |----------|----------|---------------|
+   |    M     |          | Insert/delete |
+   |          |     T    | Insert/delete |
+   |    A     |     A    | Keep matching |
+   |    P     |     B    | Replace       |
+   |    L     |     L    | Keep matching |
+   |    E     |     E    | Keep matching |
+
+   Or, MAPLE and TABLE may be aligned by performing...
+
+   | String 1 | String 2 | Operation     |
+   |----------|----------|---------------|
+   |    M     |     T    | Replace       |
+   |    A     |     A    | Keep matching |
+   |    P     |     B    | Replace       |
+   |    L     |     L    | Keep matching |
+   |    E     |     E    | Keep matching |
+
+   The names of these operations make more sense if you were to think of alignment instead as __transformation__. The first example above in the context of __transforming__ MAPLE to TABLE may be thought of as:
+
+   | From | To | Operation       | Result |
+   |------|----|-----------------|--------|
+   |   M  |    | Delete M        |        |
+   |      | T  | Insert T        | T      |
+   |   A  | A  | Keep matching A | TA     |
+   |   P  | B  | Replace P to B  | TAB    |
+   |   L  | L  | Keep matching L | TABL   |
+   |   E  | E  | Keep matching E | TABLE  |
+
+   The shorthand form of representing sequence alignments is to stack each sequence. The example above may be written as...
+
+   |          | 0 | 1 | 2 | 3 | 4 | 5 |
+   |----------|---|---|---|---|---|---|
+   | String 1 | M |   | A | P | L | E |
+   | String 2 |   | T | A | B | L | E |
+
+   Typically, all possible sequence alignments are represented using an alignment graph. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...
+
+   ```{svgbob}
+      T   A   B   L   E
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |   "* each diagonal edge is a replacement / keep matching"
+   M| \ | \ | \ | \ | \ |   "* each horizontal edge is an indel where the top is kept"
+    |  \|  \|  \|  \|  \|   "* each vertical edge is an indel where the left is kept"
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o   
+    |\  |\  |\  |\  |\  |
+   A| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |
+   P| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |
+   L| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |
+   E| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+   ```
+
+   A path in this graph from source (top-left) to sink (bottom-right) is called an alignment path. An alignment path represents a sequence alignment. Often times the best sequence alignment is either the one that has the ...
+
+    * smallest number of operations.
+    * set of operations with the least cost (e.g. some replacements can be considered more costly than an indel).
+
+ * `{bm} alignment graph/(alignment graph|sequence alignment graph)/i` - A directed graph representing all possible sequence alignments for some set of sequences. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...
+
+   ```{svgbob}
+      T   A   B   L   E
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |   "* each diagonal edge is a replacement / keep matching"
+   M| \ | \ | \ | \ | \ |   "* each horizontal edge is an indel where the top is kept"
+    |  \|  \|  \|  \|  \|   "* each vertical edge is an indel where the left is kept"
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o   
+    |\  |\  |\  |\  |\  |
+   A| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |
+   P| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |
+   L| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+    |\  |\  |\  |\  |\  |
+   E| \ | \ | \ | \ | \ |
+    |  \|  \|  \|  \|  \|
+    v   v   v   v   v   v
+    o-->o-->o-->o-->o-->o
+   ```
+
+   A path in this graph from source (top-left) to sink (bottom-right) represents an alignment.
+
+ * `{bm} alignment path/(sequence alignment graph path|sequence alignment path|alignment graph path|alignment path)/i` - A path in an alignment graph that represents one possible sequence alignment. For example, given the following alignment path ...
    
+   ```{svgbob}
+      T   A   B   L   E
+    o-->o-->o   o   o   o
+            |                 "* each diagonal edge is a replacement / keep matching"
+   M        |                 "* each horizontal edge is an indel where the top is kept"
+            |                 "* each vertical edge is an indel where the left is kept"
+            v
+    o   o   o   o   o   o   
+             \
+   A          \
+               \
+                v
+    o   o   o   o   o   o
+                 \
+   P              \
+                   \
+                    v
+    o   o   o   o   o-->o
+                        |
+   L                    |
+                        |
+                        v
+    o   o   o   o   o   o
+                        |
+   E                    |
+                        |
+                        v
+    o   o   o   o   o   o
+   ```
+
+   is represent as the alignment...
+
+   |          | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+   |----------|---|---|---|---|---|---|---|---|
+   | String 1 | - | - | M | A | P | - | L | E |
+   | String 2 | T | A | - | B | L | E | - | - |
+
+ * `{bm} indel` - In the context of sequence alignment, indel is short-hand for insert/delete. For example, the following sequence alignment has 2 indels in the very beginning...
+
+   | String 1 | String 2 | Operation     |
+   |----------|----------|---------------|
+   |     M    |          | Indel         |
+   |          |     T    | Indel         |
+   |     A    |     A    | Keep matching |
+   |     P    |     B    | Replace       |
+   |     L    |     L    | Keep matching |
+   |     E    |     E    | Keep matching |
+
+   The term insert/delete makes sense if you were to think of the set of operations as a __transformation__ rather than an alignment. For example, the example above in the context of __transforming__ MAPLE to TABLE:
+
+   | From | To    | Operation       | Result |
+   |------|-------|-----------------|--------|
+   |   M  |       | Delete M        |        |
+   |      |   T   | Insert T        | T      |
+   |   A  |   A   | Keep matching A | TA     |
+   |   P  |   B   | Replace P to B  | TAB    |
+   |   L  |   L   | Keep matching L | TABL   |
+   |   E  |   E   | Keep matching E | TABLE  |
+
+ * `{bm} oncogene` - A gene that has the potential to cause cancer. In tumor cells, these genes are often mutated or expressed at higher levels.
+
+   Most normal cells will undergo apoptosis when critical functions are altered and malfunctioning. Activated oncogenes may cause those cells to survive and proliferate instead.
+
+ * `{bm} hamming distance` - Given two strings, the hamming distance is the number of positional mismatches between them. For example, the hamming distance between ACTTTGTT and AGTTTCTT is 2.
+
+   |          | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+   |----------|---|---|---|---|---|---|---|---|
+   | String 1 | A | C | T | T | T | G | T | T |
+   | String 2 | A | G | T | T | T | C | T | T |
+   | Results  | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ |
+
+ * `{bm} dynamic programming/(dynamic programming algorithm|dynamic programming)/i` - An algorithm that solves a problem by recursively breaking it down into simpler smaller sub-problems, where recurrence computations are performed and stored in some lookup table such that they can be re-used rather than having to perform the computation multiple times (essentially trading space for faster results). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.
+ 
+   For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use dynamic programming to find the minimum number of coins to represent some monetary value such as $0.17: `min_coins(0.17) = min(min_coins(0.17 - 0.01) + 1, min_coins(0.17 - 0.12) + 1, min_coins(0.17 - 0.13) + 1)`.
+
+   ```{svgbob}
+   "Recursive breaking down into smaller problems."
+
+                      13
+                     /
+                   14--2--1
+                  /  \
+                 /    1
+                /
+              15--3--2--1
+             /  \
+            /    2--1
+           /
+         16--4--3--2--1
+        /  \
+       /    \ 
+      /      3--2--1
+     /
+   17--5--4--3--2--1
+     \
+      4--3--2--1
+   ```
+
+   The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, the branch 3--2--1 is independently computed 5 times. With dynamic program, that branch would only be computed once. The result of that computation would be re-used each time it was encountered.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

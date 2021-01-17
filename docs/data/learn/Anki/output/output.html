@@ -1283,6 +1283,15 @@
 </ul>
 </li>
 <li>
+<p><span class="anki-answerpattern" data-pattern="(non-ribosomal peptide synthetase|NRP synthetase)/i"></span></p>
+<p>A protein responsible for the production of a non-ribosomal peptide.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="adenylation domain"></span> <span class="anki-answerpattern" data-pattern="(A[\s-]domain)/i"></span></p>
+<p>A segment of an NRP synthetase protein responsible for the outputting a single amino acid. For example, the NRP synthetase responsible for producing Tyrocidine has 10 adenylation domains, each of which is responsible for outputting a single amino acid of Tyrocidine.</p>
+<p>May also be shortened to A-domain.</p>
+</li>
+<li>
 <p><span class="anki-answerpattern" data-pattern="(mass spectrometer|mass spectrometry)/i"></span></p>
 <p>A device that randomly shatters molecules into pieces and measures the mass-to-charge of those pieces. The output of the device is a plot called a spectrum.</p>
 <p>Note that mass spectrometers have various real-world practical problems. Specifically, they ...</p>
@@ -1592,6 +1601,14 @@
 <p>Not to be confused with subsequence. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.</p>
 </li>
 <li>
+<p><span class="anki-answerpattern" data-pattern="subsequence"></span> <span class="anki-answerpattern" data-pattern="substring"></span></p>
+<ul>
+<li>Subsequence: A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. <span class="anki-listrandomorder"></span>
+</li>
+<li>String: A sequence derived by taking a contiguous part of some other sequence (order of elements maintained).</li>
+</ul>
+</li>
+<li>
 <p><span class="anki-answerpattern" data-pattern="(topological ordering|topological order|topological)/i"></span></p>
 <p>A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.</p>
 <p>For example, the graph ...</p>
@@ -1615,6 +1632,345 @@
 <p>etc..</p>
 </li>
 </ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="sequence alignment"></span> <span class="anki-hidepattern" data-pattern="alignment"></span> <span class="anki-hidepattern" data-pattern="align"></span></p>
+<p>Given a set of sequences, a sequence alignment is a set of operations applied to each position in an effort to line up the sequences. These operations include:</p>
+<ul>
+<li>insert/delete (indel for short).</li>
+<li>replace (also referred to as mismatch).</li>
+<li>keep matching (also referred to as match).</li>
+</ul>
+<p>For example, the sequences MAPLE and TABLE may be aligned by performing...</p>
+<table>
+<thead>
+<tr>
+<th>String 1</th>
+<th>String 2</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td></td>
+<td>Insert/delete</td>
+</tr>
+<tr>
+<td></td>
+<td>T</td>
+<td>Insert/delete</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching</td>
+</tr>
+</tbody>
+</table>
+<p>Or, MAPLE and TABLE may be aligned by performing...</p>
+<table>
+<thead>
+<tr>
+<th>String 1</th>
+<th>String 2</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td>T</td>
+<td>Replace</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching</td>
+</tr>
+</tbody>
+</table>
+<p>The names of these operations make more sense if you were to think of alignment instead as <strong>transformation</strong>. The first example above in the context of <strong>transforming</strong> MAPLE to TABLE may be thought of as:</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Operation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td></td>
+<td>Delete M</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>T</td>
+<td>Insert T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching A</td>
+<td>TA</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace P to B</td>
+<td>TAB</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching L</td>
+<td>TABL</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching E</td>
+<td>TABLE</td>
+</tr>
+</tbody>
+</table>
+<p>The shorthand form of representing sequence alignments is to stack each sequence. The example above may be written as...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String 1</td>
+<td>M</td>
+<td></td>
+<td>A</td>
+<td>P</td>
+<td>L</td>
+<td>E</td>
+</tr>
+<tr>
+<td>String 2</td>
+<td></td>
+<td>T</td>
+<td>A</td>
+<td>B</td>
+<td>L</td>
+<td>E</td>
+</tr>
+</tbody>
+</table>
+<p>Typically, all possible sequence alignments are represented using an alignment graph. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...</p>
+<p><img src="svgbob_ce1ac3439fefb865a1d70920bc1a29d0ee7c2308.svg" alt="Kroki diagram output"></p>
+<p>A path in this graph from source (top-left) to sink (bottom-right) is called an alignment path. An alignment path represents a sequence alignment. Often times the best sequence alignment is either the one that has the ...</p>
+<ul>
+<li>smallest number of operations.</li>
+<li>set of operations with the least cost (e.g. some replacements can be considered more costly than an indel).</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(alignment graph|sequence alignment graph)/i"></span></p>
+<p>A directed graph representing all possible sequence alignments for some set of sequences. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...</p>
+<p><img src="svgbob_ce1ac3439fefb865a1d70920bc1a29d0ee7c2308.svg" alt="Kroki diagram output"></p>
+<p>A path in this graph from source (top-left) to sink (bottom-right) represents an alignment.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(sequence alignment graph path|sequence alignment path|alignment graph path|alignment path)/i"></span></p>
+<p>A path in an alignment graph that represents one possible sequence alignment. For example, given the following alignment path ...</p>
+<p><img src="svgbob_6133c15854b867ec6d44f9a55c046bd9f5afd9d8.svg" alt="Kroki diagram output"></p>
+<p>is represent as the alignment...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String 1</td>
+<td>-</td>
+<td>-</td>
+<td>M</td>
+<td>A</td>
+<td>P</td>
+<td>-</td>
+<td>L</td>
+<td>E</td>
+</tr>
+<tr>
+<td>String 2</td>
+<td>T</td>
+<td>A</td>
+<td>-</td>
+<td>B</td>
+<td>L</td>
+<td>E</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="indel"></span></p>
+<p>In the context of sequence alignment, indel is short-hand for insert/delete. For example, the following sequence alignment has 2 indels in the very beginning...</p>
+<table>
+<thead>
+<tr>
+<th>Left</th>
+<th>Right</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td></td>
+<td>Indel</td>
+</tr>
+<tr>
+<td></td>
+<td>T</td>
+<td>Indel</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching</td>
+</tr>
+</tbody>
+</table>
+<p>The term insert/delete makes sense if you were to think of the set of operations as a <strong>transformation</strong> rather than an alignment. For example, the example above in the context of <strong>transforming</strong> MAPLE to TABLE:</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Operation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td></td>
+<td>Delete M</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>T</td>
+<td>Insert T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching A</td>
+<td>TA</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace P to B</td>
+<td>TAB</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching L</td>
+<td>TABL</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching E</td>
+<td>TABLE</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="oncogene"></span></p>
+<p>A gene that has the potential to cause cancer. In tumor cells, these genes are often mutated or expressed at higher levels.</p>
+<p>Most normal cells will undergo apoptosis when critical functions are altered and malfunctioning. Activated oncogenes may cause those cells to survive and proliferate instead.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="hamming distance"></span></p>
+<p>Given two strings, the hamming distance is the number of positional mismatches between them. For example, the hamming distance between TABLE and MAPLE is 2.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(dynamic programming algorithm|dynamic programming)/i"></span></p>
+<p>An algorithm that solves a problem by recursively breaking it down into simpler smaller sub-problems, where recurrence computations are performed and stored in some lookup table such that they can be re-used rather than having to perform the computation multiple times (essentially trading space for faster results). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.</p>
+<p>For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use dynamic programming to find the minimum number of coins to represent some monetary value such as $0.17: <code>min_coins(0.17) = min(min_coins(0.17 - 0.01) + 1, min_coins(0.17 - 0.12) + 1, min_coins(0.17 - 0.13) + 1)</code>.</p>
+<p><img src="svgbob_011d5f745d519fd5c1a5354faa9961f538f726fc.svg" alt="Kroki diagram output"></p>
+<p>The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, the branch 3--2--1 is independently computed 5 times. With dynamic program, that branch would only be computed once. The result of that computation would be re-used each time it was encountered.</p>
 </li>
 </ul>
 
