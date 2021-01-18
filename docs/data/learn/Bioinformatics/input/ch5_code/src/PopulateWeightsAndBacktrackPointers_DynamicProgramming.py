@@ -20,7 +20,7 @@ def populate_weights_and_backtrack_pointers(
             [
                 N,                # node ID
                 Optional[float],  # max weight of node
-                E                 # edge ID of incoming edge made node have max weight
+                Optional[E]       # edge ID of incoming edge made node have max weight
             ],
             None
         ],
@@ -29,8 +29,8 @@ def populate_weights_and_backtrack_pointers(
                 N,  # node ID
             ],
             Tuple[
-                Optional[float], # max weight of node
-                E  # edge ID of incoming edge made node have max weight
+                Optional[float],  # max weight of node
+                Optional[E]       # edge ID of incoming edge made node have max weight
             ]
         ],
         get_edge_data_func: Callable[
@@ -84,7 +84,7 @@ def populate_weights_and_backtrack_pointers(
         else:
             max_edge = max(incoming_accum_weights, key=lambda e: incoming_accum_weights[e])
             max_weight = incoming_accum_weights[max_edge]
-        set_node_data_func(from_node, max_weight, max_edge)
+        set_node_data_func(node, max_weight, max_edge)
         # This node has been processed, move it over to processed_nodes.
         waiting_nodes.remove(node)
         processed_nodes.add(node)

@@ -29,7 +29,7 @@ def create_grid_graph(
                 Tuple[bool, Optional[ED]]  # flag indicating if edge could be added, edge data
             ]
         ] = None
-) -> Graph:
+) -> Graph[Tuple[int, ...], ND, str, ED]:
     create_edge_id_func = unique_id_generator('E')
     graph = Graph()
     axes = [[None] + av for av in sequences]

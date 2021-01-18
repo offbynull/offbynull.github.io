@@ -4966,7 +4966,7 @@ cyclic
    | String 2 | A | G | T | T | T | C | T | T |
    | Results  | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ |
 
- * `{bm} dynamic programming/(dynamic programming algorithm|dynamic programming)/i` - An algorithm that solves a problem by recursively breaking it down into simpler smaller sub-problems, where recurrence computations are performed and stored in some lookup table such that they can be re-used rather than having to perform the computation multiple times (essentially trading space for faster results). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.
+ * `{bm} dynamic programming/(dynamic programming algorithm|dynamic programming)/i` - An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again. The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.
  
    For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use dynamic programming to find the minimum number of coins to represent some monetary value such as $0.17: `min_coins(0.17) = min(min_coins(0.17 - 0.01) + 1, min_coins(0.17 - 0.12) + 1, min_coins(0.17 - 0.13) + 1)`.
 
@@ -4993,7 +4993,7 @@ cyclic
       4--3--2--1
    ```
 
-   The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, the branch 3--2--1 is independently computed 5 times. With dynamic program, that branch would only be computed once. The result of that computation would be re-used each time it was encountered.
+   The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, the branch 3--2--1 is independently computed 5 times. With dynamic program, that branch would only be computed once. The result of that computation would be re-used each time 3 was encountered.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
