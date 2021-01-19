@@ -28,11 +28,11 @@ GET_EDGE_DATA_FUNC_TYPE =\
 
 def backtrack(
         g: Graph[N, ND, E, ED],
-        to_node: N,
+        end_node: N,
         get_node_data_func: GET_NODE_DATA_FUNC_TYPE,
         get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE
 ) -> List[List[Optional[ELEM]]]:
-    node = to_node
+    node = end_node
     operations = []
     while True:
         weight, backtracking_edge = get_node_data_func(node)
@@ -42,7 +42,7 @@ def backtrack(
         operations.insert(0, [elements, weight])
         node, _, _ = g.get_edge(backtracking_edge)
 
-    seq_count = len(to_node)
+    seq_count = len(end_node)
     alignments = [[] for i in range(seq_count)]
     for op in operations:
         elements = op[0]

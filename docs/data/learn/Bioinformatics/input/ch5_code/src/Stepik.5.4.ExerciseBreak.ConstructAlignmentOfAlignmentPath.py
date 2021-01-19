@@ -1,46 +1,46 @@
-# The DAG representing the possible sequence alignments is below. The symbol * represents a node, while → ↓ ↘ represent
+# The DAG representing the possible sequence alignments is below. The symbol o represents a node, while → ↓ ↘ represent
 # directed edges.
 #
 #     A   T   C   G   T   C   C
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # A ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # T ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # G ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # T ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # T ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # A ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # T ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # A ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 #
 # The DAG below is the same as the one above, but with a path highlighted. The symbols | / \ - are used to highlight the
 # path (starts from top-left and finishes at bottom right).
 #
 #     A   T   C   G   T   C   C
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # A | ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # T | ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # G ↓ \ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # T ↓ ↘ ↓ \ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # T ↓ ↘ ↓ ↘ | ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 # A ↓ ↘ ↓ ↘ ↓ \ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * - * → * → * → *
+#   o → o → o → o - o → o → o → o
 # T ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ \ ↓ ↘ ↓ ↘ ↓
-#   * → * → * → * → * → * - * - *
+#   o → o → o → o → o → o - o - o
 # A ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ ↓ ↘ |
-#   * → * → * → * → * → * → * → *
+#   o → o → o → o → o → o → o → o
 #
 # This is an alignment path. Each step ...
 #  * down (|) represents keep the left element but discard the top   (INSERT LEFT / DELETE TOP)

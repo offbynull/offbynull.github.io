@@ -33,7 +33,7 @@ class EdgeData:
         return self.v_elem, self.w_elem
 
 
-def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup):
+def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup) -> Tuple[float, List[List[ELEM]]]:
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
     graph = create_grid_graph(
@@ -50,13 +50,14 @@ def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup):
         lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
         lambda e_id: graph.get_edge_data(e_id).weight
     )
-    alignments = backtrack(
+    final_weight = graph.get_node_data(to_node).weight
+    alignment = backtrack(
         graph,
         to_node,
         lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
         lambda e_id: graph.get_edge_data(e_id).get_elements()
     )
-    return alignments
+    return final_weight, alignment
 
 
 if __name__ == '__main__':
