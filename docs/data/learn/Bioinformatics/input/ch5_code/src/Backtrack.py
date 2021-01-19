@@ -8,26 +8,29 @@ E = TypeVar('E')
 ED = TypeVar('ED')
 ELEM = TypeVar('ELEM')
 
+GET_NODE_DATA_FUNC_TYPE =\
+    Callable[
+        [
+            N  # node ID
+        ],
+        Tuple[
+            Optional[float],  # max weight of node
+            Optional[E]       # edge ID of incoming edge made node have max weight
+        ]
+    ]
+GET_EDGE_DATA_FUNC_TYPE =\
+    Callable[
+        [
+            E  # edge ID
+        ],
+        Tuple[Optional[ELEM], ...]   # elements on edge (None if gap)
+    ]
+
 def backtrack(
         g: Graph[N, ND, E, ED],
         to_node: N,
-        get_node_data_func: Callable[
-            [
-                N,  # node ID
-            ],
-            Tuple[
-                Optional[float],  # max weight of node
-                Optional[E],      # edge ID of incoming edge made node have max weight
-            ]
-        ],
-        get_edge_data_func: Callable[
-            [
-                E,  # edge ID
-            ],
-            Tuple[
-                Tuple[Optional[ELEM], ...]  # elements
-            ]
-        ]
+        get_node_data_func: GET_NODE_DATA_FUNC_TYPE,
+        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE
 ) -> List[List[Optional[ELEM]]]:
     node = to_node
     operations = []

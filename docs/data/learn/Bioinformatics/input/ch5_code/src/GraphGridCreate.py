@@ -8,27 +8,35 @@ ELEM = TypeVar('ELEM')  # sequence element type
 ND = TypeVar('ND')  # node data type
 ED = TypeVar('ED')  # edge data type
 
+ON_NEW_NODE_FUNC_TYPE =\
+    Callable[
+        [
+            Tuple[int, ...]  # node id / coord
+        ],
+        Tuple[
+            bool,         # flag indicating if node could be added
+            Optional[ND]  # node data (may be None if flag is false)
+        ]
+    ]
+ON_NEW_EDGE_FUNC_TYPE =\
+    Callable[
+        [
+            Tuple[int, ...],  # src node id / coord
+            Tuple[int, ...],  # dst node id / coord
+            Tuple[int, ...],  # coord offsets (same as dst coord - src coord)
+            Tuple[Optional[ELEM], ...]   # sequence elements at each coord
+        ],
+        Tuple[
+            bool,         # flag indicating if edge could be added
+            Optional[ED]  # edge data (may be None if flag is false)
+        ]
+    ]
+
+
 def create_grid_graph(
         sequences: List[List[ELEM]],
-        on_new_node: Optional[
-            Callable[
-                [
-                    Tuple[int, ...]  # node id / coord
-                ],
-                Tuple[bool, Optional[ND]]  # flag indicating if node could be added, node data
-            ]
-        ] = None,
-        on_new_edge: Optional[
-            Callable[
-                [
-                    Tuple[int, ...],  # src node id / coord
-                    Tuple[int, ...],  # dst node id / coord
-                    Tuple[int, ...],  # coord offsets (same as dst coord - src coord)
-                    Tuple[Optional[ELEM], ...]   # sequence elements at each coord
-                ],
-                Tuple[bool, Optional[ED]]  # flag indicating if edge could be added, edge data
-            ]
-        ] = None
+        on_new_node: Optional[ON_NEW_NODE_FUNC_TYPE] = None,
+        on_new_edge: Optional[ON_NEW_EDGE_FUNC_TYPE] = None
 ) -> Graph[Tuple[int, ...], ND, str, ED]:
     create_edge_id_func = unique_id_generator('E')
     graph = Graph()

@@ -1,73 +1,67 @@
-from typing import List, Any, Optional, TypeVar
+from typing import List, Any, Optional, TypeVar, Tuple, Callable
 
+from Backtrack import backtrack
 from GraphGridCreate import create_grid_graph
+from PopulateWeightsAndBacktrackPointers_DynamicProgramming import populate_weights_and_backtrack_pointers
 from WeightLookup import WeightLookup, Constant2DWeightLookup
 
 ELEM = TypeVar('ELEM')
+N = TypeVar('N')
+E = TypeVar('E')
+
 
 class NodeData:
     def __init__(self):
-        ...
+        self.weight = None
+        self.backtracking_edge = None
+
+    def set_weight_and_backtracking_edge(self, weight: float, backtracking_edge: E):
+        self.weight = weight
+        self.backtracking_edge = backtracking_edge
+
+    def get_weight_and_backtracking_edge(self):
+        return self.weight, self.backtracking_edge
+
 
 class EdgeData:
-    def __init__(self, v_elem: ELEM, w_elem: ELEM, weight: float):
+    def __init__(self, v_elem: Optional[ELEM], w_elem: Optional[ELEM], weight: float):
         self.v_elem = v_elem
         self.w_elem = w_elem
+        self.weight = weight
 
-def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup, buffer: Optional[List[List[Any]]] = None):
+    def get_elements(self) -> Tuple[Optional[ELEM], Optional[ELEM]]:
+        return self.v_elem, self.w_elem
+
+
+def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup):
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
-    create_grid_graph(
-        [list(v), list(w)],
+    graph = create_grid_graph(
+        [v, w],
         lambda n_id: (True, NodeData()),
-        lambda src_n_id, dst_n_id, offset, elems: (True, EdgeData(elems[0], elems[1], weight_lookup.lookup(elems)))
-        on_new_node: Optional[
-            Callable[
-                [
-                    Tuple[int, ...]  # node id / coord
-                ],
-                Tuple[bool, Optional[ND]]  # flag indicating if node could be added, node data
-            ]
-        ] = None,
-        on_new_edge: Optional[
-            Callable[
-                [
-                    Tuple[int, ...],  # src node id / coord
-                    Tuple[int, ...],  # dst node id / coord
-                    Tuple[int, ...],  # coord offsets (same as dst coord - src coord)
-                    Tuple[Optional[ELEM], ...]   # sequence elements at each coord
-                ],
-                Tuple[bool, Optional[ED]]  # flag indicating if edge could be added, edge data
-            ]
-        ] = None)
-    if buffer is None:
-        buffer = []
-        for v_idx in range(v_node_count):
-            row = []
-            for w_idx in range(w_node_count):
-                row.append([-1, None])
-            buffer.append(row)
-    for v_idx in range(v_node_count):
-        buffer[v_idx][0][0] = 0
-    for w_idx in range(w_node_count):
-        buffer[0][w_idx][0] = 0
-    for v_idx in range(1, v_node_count):
-        for w_idx in range(1, w_node_count):
-            buffer[v_idx][w_idx] = max(
-                (buffer[v_idx - 1][w_idx][0] + weight_lookup.lookup(v[v_idx - 1], None), '↓'),
-                (buffer[v_idx][w_idx - 1][0] + weight_lookup.lookup(None, w[w_idx - 1]), '→'),
-                (buffer[v_idx - 1][w_idx - 1][0] + weight_lookup.lookup(v[v_idx - 1], w[w_idx - 1]), '↘'),
-                key=lambda x: x[0]
-            )
-    return buffer
+        lambda src_n_id, dst_n_id, offset, elems: (True, EdgeData(elems[0], elems[1], weight_lookup.lookup(*elems)))
+    )
+    from_node = (0, 0)
+    to_node = (v_node_count - 1, w_node_count - 1)
+    populate_weights_and_backtrack_pointers(
+        graph,
+        from_node,
+        lambda n_id, weight, e_id: graph.get_node_data(n_id).set_weight_and_backtracking_edge(weight, e_id),
+        lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        lambda e_id: graph.get_edge_data(e_id).weight
+    )
+    alignments = backtrack(
+        graph,
+        to_node,
+        lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        lambda e_id: graph.get_edge_data(e_id).get_elements()
+    )
+    return alignments
 
 
-s1 = 'STEAK'
-s2 = 'BREAK'
-matrix = global_alignment('STEAK', 'BREAK', Constant2DWeightLookup(1, 0, 0))
-
-
-import sys
-sys.setrecursionlimit(2000)
-out = output_lcs(matrix, s1, len(s1), len(s2))
-print(f'{out}')
+if __name__ == '__main__':
+    s1 = list('STEAK')
+    s2 = list('BREAK')
+    alignment = global_alignment(s1, s2, Constant2DWeightLookup(1, 0, 0))
+    for a in alignment:
+        print(f'{a}')

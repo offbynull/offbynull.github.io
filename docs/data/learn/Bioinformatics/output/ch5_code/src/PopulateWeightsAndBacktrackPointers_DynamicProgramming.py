@@ -1,44 +1,50 @@
-# Populate node weights and backtracking info. Each node's data is a tuple where [0] is the calculated weight and [1] is
-# the edge the incoming connection that was chosen to calculate that weight (used for backtracking).
-#
-# from_node should be a root node. Initialize its weight to 0, but initialize all other root node weights to None.
-# A None weight is used as a marker to skip over these because we don't want to consider them.
 from collections import Counter
 from typing import TypeVar, Callable, Optional, Tuple
 
 from Graph import Graph
+
 
 N = TypeVar('N')
 ND = TypeVar('ND')
 E = TypeVar('E')
 ED = TypeVar('ED')
 
+ELEM = TypeVar('ELEM')
+
+SET_NODE_DATA_FUNC_TYPE =\
+    Callable[
+        [
+            N,                # node ID
+            Optional[float],  # max weight of node
+            Optional[E]       # edge ID of incoming edge made node have max weight
+        ],
+        None
+    ]
+GET_NODE_DATA_FUNC_TYPE =\
+    Callable[
+        [
+            N,                # node ID
+        ],
+        Tuple[
+            Optional[float],  # max weight of node
+            Optional[E],      # edge ID of incoming edge made node have max weight
+        ]
+    ]
+GET_EDGE_WEIGHT_FUNC_TYPE =\
+    Callable[
+        [
+            E,                 # edge ID
+        ],
+        float                  # edge weight
+    ]
+
+
 def populate_weights_and_backtrack_pointers(
         g: Graph[N, ND, E, ED],
         from_node: N,
-        set_node_data_func: Callable[
-            [
-                N,                # node ID
-                Optional[float],  # max weight of node
-                E                 # edge ID of incoming edge made node have max weight
-            ],
-            None
-        ],
-        get_node_data_func: Callable[
-            [
-                N,  # node ID
-            ],
-            Tuple[
-                Optional[float], # max weight of node
-                E  # edge ID of incoming edge made node have max weight
-            ]
-        ],
-        get_edge_data_func: Callable[
-            [
-                E,  # edge ID
-            ],
-            float,  # weight of edge
-        ]
+        set_node_data_func: SET_NODE_DATA_FUNC_TYPE,
+        get_node_data_func: GET_NODE_DATA_FUNC_TYPE,
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
 ):
     processed_nodes = set()          # nodes where all parents have been processed AND it has been processed
     waiting_nodes = set()            # nodes where all parents have been processed BUT it has yet to be processed
@@ -74,7 +80,7 @@ def populate_weights_and_backtrack_pointers(
         for edge in g.get_inputs(node):
             src_node = g.get_edge_from(edge)
             src_node_weight, _ = get_node_data_func(src_node)
-            edge_weight = get_edge_data_func(edge)
+            edge_weight = get_edge_weight_func(edge)
             # Roots that aren't from_node were initialized to a weight of None -- if you see them, skip them.
             if src_node_weight is not None:
                 incoming_accum_weights[edge] = src_node_weight + edge_weight
@@ -84,7 +90,7 @@ def populate_weights_and_backtrack_pointers(
         else:
             max_edge = max(incoming_accum_weights, key=lambda e: incoming_accum_weights[e])
             max_weight = incoming_accum_weights[max_edge]
-        set_node_data_func(from_node, max_weight, max_edge)
+        set_node_data_func(node, max_weight, max_edge)
         # This node has been processed, move it over to processed_nodes.
         waiting_nodes.remove(node)
         processed_nodes.add(node)

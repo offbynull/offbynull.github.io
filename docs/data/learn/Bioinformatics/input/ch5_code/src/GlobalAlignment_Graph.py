@@ -1,4 +1,4 @@
-from typing import List, Any, Optional, TypeVar
+from typing import List, Any, Optional, TypeVar, Tuple, Callable
 
 from Backtrack import backtrack
 from GraphGridCreate import create_grid_graph
@@ -6,7 +6,9 @@ from PopulateWeightsAndBacktrackPointers_DynamicProgramming import populate_weig
 from WeightLookup import WeightLookup, Constant2DWeightLookup
 
 ELEM = TypeVar('ELEM')
+N = TypeVar('N')
 E = TypeVar('E')
+
 
 class NodeData:
     def __init__(self):
@@ -20,14 +22,16 @@ class NodeData:
     def get_weight_and_backtracking_edge(self):
         return self.weight, self.backtracking_edge
 
+
 class EdgeData:
-    def __init__(self, v_elem: ELEM, w_elem: ELEM, weight: float):
+    def __init__(self, v_elem: Optional[ELEM], w_elem: Optional[ELEM], weight: float):
         self.v_elem = v_elem
         self.w_elem = w_elem
         self.weight = weight
 
-    def get_elements(self):
+    def get_elements(self) -> Tuple[Optional[ELEM], Optional[ELEM]]:
         return self.v_elem, self.w_elem
+
 
 def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup):
     v_node_count = len(v) + 1
