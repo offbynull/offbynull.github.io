@@ -25,27 +25,42 @@ GET_EDGE_DATA_FUNC_TYPE =\
         ],
         Tuple[Optional[ELEM], ...]   # elements on edge (None if gap)
     ]
+IS_FREE_RIDE_FUNC_TYPE =\
+    Callable[
+        [
+            E  # edge ID
+        ],
+        bool
+    ]
+
 
 def backtrack(
         g: Graph[N, ND, E, ED],
         end_node: N,
         get_node_data_func: GET_NODE_DATA_FUNC_TYPE,
-        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE
+        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE,
+        is_free_ride_func: IS_FREE_RIDE_FUNC_TYPE = lambda e: False,
 ) -> List[List[Optional[ELEM]]]:
-    node = end_node
-    operations = []
+    next_node = end_node
+    column_elements = []
     while True:
+        node = next_node
         weight, backtracking_edge = get_node_data_func(node)
         if backtracking_edge is None:
             break
-        elements = get_edge_data_func(backtracking_edge)
-        operations.insert(0, [elements, weight])
-        node, _, _ = g.get_edge(backtracking_edge)
+        if is_free_ride_func(backtracking_edge):
+            column_elements.insert(0, None)
+        else:
+            elements = get_edge_data_func(backtracking_edge)
+            column_elements.insert(0, elements)
+
+        next_node, _, _ = g.get_edge(backtracking_edge)
 
     seq_count = len(end_node)
     alignments = [[] for i in range(seq_count)]
-    for op in operations:
-        elements = op[0]
+    for elements in column_elements:
+        if elements is None:
+            continue
         for i, elem in enumerate(elements):
             alignments[i].append(elem)
 

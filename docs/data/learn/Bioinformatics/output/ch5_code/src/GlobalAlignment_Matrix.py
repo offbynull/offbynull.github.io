@@ -3,27 +3,6 @@ from typing import List, Any, Optional
 from WeightLookup import WeightLookup, Constant2DWeightLookup
 
 
-#     LCSBackTrack(v, w)
-#         for i ← 0 to |v|
-#             si, 0 ← 0
-#         for j ← 0 to |w|
-#             s0, j ← 0
-#         for i ← 1 to |v|
-#             for j ← 1 to |w|
-#                 match ← 0
-#                 if vi-1 = wj-1
-#                     match ← 1
-#                 si, j ← max{si-1, j , si,j-1 , si-1, j-1 + match }
-#                 if si,j = si-1,j
-#                     Backtracki, j ← "↓"
-#                 else if si, j = si, j-1
-#                     Backtracki, j ← "→"
-#                 else if si, j = si-1, j-1 + match
-#                     Backtracki, j ← "↘"
-#         return Backtrack
-# HEADS UP: |v| maps to len(v)+1 and |w| maps to len(w)+1
-
-
 def global_alignment(v: str, w: str, weight_lookup: WeightLookup, buffer: Optional[List[List[Any]]] = None):
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
@@ -49,17 +28,6 @@ def global_alignment(v: str, w: str, weight_lookup: WeightLookup, buffer: Option
     return buffer
 
 
-#     OutputLCS(backtrack, v, i, j)
-#         if i = 0 or j = 0
-#             return ""
-#         if backtracki, j = "↓"
-#             return OutputLCS(backtrack, v, i - 1, j)
-#         else if backtracki, j = "→"
-#             return OutputLCS(backtrack, v, i, j - 1)
-#         else
-#             return OutputLCS(backtrack, v, i - 1, j - 1) + vi
-
-# HEADS UP: vi should actually be vi-1
 def output_lcs(buffer: List[List[Any]], v: str, i: int, j: int):
     if i == 0 or j == 0:
         return ''

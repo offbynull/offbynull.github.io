@@ -23,17 +23,17 @@ SET_NODE_DATA_FUNC_TYPE =\
 GET_NODE_DATA_FUNC_TYPE =\
     Callable[
         [
-            N,                # node ID
+            N                 # node ID
         ],
         Tuple[
             Optional[float],  # max weight of node
             Optional[E],      # edge ID of incoming edge made node have max weight
         ]
     ]
-GET_EDGE_WEIGHT_FUNC_TYPE =\
+GET_EDGE_DATA_FUNC_TYPE =\
     Callable[
         [
-            E,                 # edge ID
+            E                  # edge ID
         ],
         float                  # edge weight
     ]
@@ -44,7 +44,7 @@ def populate_weights_and_backtrack_pointers(
         from_node: N,
         set_node_data_func: SET_NODE_DATA_FUNC_TYPE,
         get_node_data_func: GET_NODE_DATA_FUNC_TYPE,
-        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE
 ):
     processed_nodes = set()          # nodes where all parents have been processed AND it has been processed
     waiting_nodes = set()            # nodes where all parents have been processed BUT it has yet to be processed
@@ -80,7 +80,7 @@ def populate_weights_and_backtrack_pointers(
         for edge in g.get_inputs(node):
             src_node = g.get_edge_from(edge)
             src_node_weight, _ = get_node_data_func(src_node)
-            edge_weight = get_edge_weight_func(edge)
+            edge_weight = get_edge_data_func(edge)
             # Roots that aren't from_node were initialized to a weight of None -- if you see them, skip them.
             if src_node_weight is not None:
                 incoming_accum_weights[edge] = src_node_weight + edge_weight

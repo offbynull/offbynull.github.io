@@ -33,13 +33,13 @@ class EdgeData:
         return self.v_elem, self.w_elem
 
 
-def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup):
+def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup) -> Tuple[float, List[List[ELEM]]]:
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
     graph = create_grid_graph(
         [v, w],
-        lambda n_id: (True, NodeData()),
-        lambda src_n_id, dst_n_id, offset, elems: (True, EdgeData(elems[0], elems[1], weight_lookup.lookup(*elems)))
+        lambda n_id: NodeData(),
+        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], weight_lookup.lookup(*elems))
     )
     from_node = (0, 0)
     to_node = (v_node_count - 1, w_node_count - 1)
@@ -50,18 +50,21 @@ def global_alignment(v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup):
         lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
         lambda e_id: graph.get_edge_data(e_id).weight
     )
-    alignments = backtrack(
+    final_weight = graph.get_node_data(to_node).weight
+    alignment = backtrack(
         graph,
         to_node,
         lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
         lambda e_id: graph.get_edge_data(e_id).get_elements()
     )
-    return alignments
+    return final_weight, alignment
 
 
 if __name__ == '__main__':
     s1 = list('STEAK')
     s2 = list('BREAK')
     alignment = global_alignment(s1, s2, Constant2DWeightLookup(1, 0, 0))
-    for a in alignment:
-        print(f'{a}')
+    for alignment_string in alignment[1]:
+        for ch in alignment_string:
+            print(f'{"-" if ch is None else ch}', end='')
+        print()
