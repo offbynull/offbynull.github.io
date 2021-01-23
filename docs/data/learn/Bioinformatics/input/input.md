@@ -4968,7 +4968,19 @@ cyclic
 
  * `{bm} dynamic programming/(dynamic programming algorithm|dynamic programming)/i` - An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again (essentially trading space for speed). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.
  
-   For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use dynamic programming to find the minimum number of coins to represent some monetary value such as $0.17: `min_coins(0.17) = min(min_coins(0.17 - 0.01) + 1, min_coins(0.17 - 0.12) + 1, min_coins(0.17 - 0.13) + 1)`.
+   For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use recursion to find the minimum number of coins to represent some monetary value such as $0.17:
+   
+   ```python
+   def min_coins(value):
+     if value == 0.01 or value == 0.12 or value == 0.13:
+       return 1
+     else:
+       return min([
+         min_coins(value - 0.01) + 1,
+         min_coins(value - 0.12) + 1,
+         min_coins(value - 0.13) + 1
+       ])
+   ```
 
    ```{svgbob}
    "Recursive breaking down into smaller problems."
@@ -4993,7 +5005,166 @@ cyclic
       4--3--2--1
    ```
 
-   The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, the branch 3--2--1 is independently computed 5 times. With dynamic program, that branch would only be computed once. The result of that computation would be re-used each time 3 was encountered.
+   The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, `min_coins(3)` is independently computed 5 times. With dynamic programming, it would only be computed once and the result would be re-used each subsequent time `min_coins(3)` gets encountered.
+
+ * `{bm} manhattan tourist problem` - The Manhattan tourist problem is an allegory to help explain sequence alignment graphs. Where as in sequence alignments you're finding a path through the graph from source to sink that has the maximum weight, in the Manhattan tourist problem you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as global alignment: 
+ 
+   * The graph is the street layout of Manhattan.
+   * The only options at each intersection are to move right or down.
+   * The source node is the intersection of 59th St and 8th Ave.
+   * The sink node is the intersection of 42nd St and 3rd Ave.
+   * The number of tourist sights per street is the weight of an edge.
+
+
+   ```{svgbob}
+           8   7   6   5           3
+                         
+           A   A   A   A           A
+           v   v   v   v           v
+           e   e   e   e           e
+         o-->o-->o-->o-->o- - - -o-->o
+         |   |   |   |   |       |   |
+   59 St |   |   |   |   |       |   |
+         |   |   |   |   |       |   |
+         v   v   v   v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+         |   | T |   | T |       |   |
+   57 St |   |   |   |   |       |   |
+         |   |   |   |   |       |   |
+         v   v   v   v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+         |   |   |   |   |       |   |
+   55 St |   |  T|   |   |       |   |
+         |   |   |   |   |       |   |
+         v   v   v   v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+         |   |   |   |   |       |   |
+   53 St |   |   |   |   |       |   |
+         |   |   |   |   |       |   |
+         v   v   v   v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+         |   |   |   | T |       |   |
+   51 St |   |   |   |   |       |   |
+         |   |   |   |   |       |   |
+         v   v   v   v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+         :   :   :   :   :       :   :
+         :   :   :   :   :       :   :
+         :   :   :   :   :       :   :
+         :   :   :   :   :       :   :
+         :   :   :   :   :       :   :
+         v   v   v   v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+         | T |   |   |   |       |   |
+   43 St |   |   |   |   |       |   |
+         |   |   |   |   |       |   |
+         v   v   v T v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+         |   |   |   |   |       |   |
+   42 St |   |   |   |   |       |   |
+         |   |   |   |   |       |   |
+         v   v   v   v   v       v   v
+         o-->o-->o-->o-->o- - - -o-->o
+   ```
+
+ * `{bm} point accepted mutation/(point accepted mutation|percent accepted mutation)/i` `{bm} /\b(PAM)\d*\b//false/true` - A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA sequence that encode some protein may change the resulting amino acid sequence for that protein. Those mutations that...
+
+    * impair the ability of the protein to function aren't likely to survive, and as such are given a low score. 
+    * keep the protein functional are likely to survive, and as such are given a normal or high score.
+ 
+   PAM matrices are developed iteratively. An initial PAM matrix is calculated by aligning extremely similar protein sequences using a simple scoring model (1 for match, 0 for mismatch / indel). That sequence alignment then provides the scoring model for the next iteration. For example, the alignment for the initial iteration may have determined that D may be a suitable substitution for W. As such, the sequence alignment for the next iteration will score more than 0 (e.g. 1) if it encounters D being compared to W.
+
+   Other factors are also brought into the mix when developing scores for PAM matrices. For example, the ...
+
+    * likelihood of amino acid mutations (e.g. Cys and Trp are the least mutable amino acids).
+    * speed of evolution (e.g. some mutations were more probably in species 100 million years ago vs 1 million years ago).
+
+   It's said that PAM is focused on tracking the evolutionary origins of proteins. Sequences that are 99% similar are said to be 1 PAM unit diverged, where a PAM unit is the amount of time it takes an "average" protein to mutate 1% of its amino acids. PAM1 (the initial scoring matrix) was defined by performing many sequence alignments between proteins that are 99% similar (1 PAM unit diverged).
+
+   ```{note}
+   [Here](http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html) and [here](https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&oldid=1002281881#Comparing_PAM_and_BLOSUM) both seem to say that BLOSUM supersedes PAM as a scoring matrix for protein sequences.
+
+   > Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degrees the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
+
+   > Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known member_NORMs of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.
+   ```
+
+   PAM250 is the most commonly used variant:
+
+   |   |  A |  R |  N |  D |  C |  Q |  E |  G |  H |  I |  L |  K |  M |  F |  P |  S |  T |  W |  Y |  V |  B |  Z |  X |  - |
+   |---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+   | A |  2 | -2 |  0 |  0 | -2 |  0 |  0 |  1 | -1 | -1 | -2 | -1 | -1 | -3 |  1 |  1 |  1 | -6 | -3 |  0 |  0 |  0 |  0 | -8 |
+   | R | -2 |  6 |  0 | -1 | -4 |  1 | -1 | -3 |  2 | -2 | -3 |  3 |  0 | -4 |  0 |  0 | -1 |  2 | -4 | -2 | -1 |  0 | -1 | -8 |
+   | N |  0 |  0 |  2 |  2 | -4 |  1 |  1 |  0 |  2 | -2 | -3 |  1 | -2 | -3 |  0 |  1 |  0 | -4 | -2 | -2 |  2 |  1 |  0 | -8 |
+   | D |  0 | -1 |  2 |  4 | -5 |  2 |  3 |  1 |  1 | -2 | -4 |  0 | -3 | -6 | -1 |  0 |  0 | -7 | -4 | -2 |  3 |  3 | -1 | -8 |
+   | C | -2 | -4 | -4 | -5 | 12 | -5 | -5 | -3 | -3 | -2 | -6 | -5 | -5 | -4 | -3 |  0 | -2 | -8 |  0 | -2 | -4 | -5 | -3 | -8 |
+   | Q |  0 |  1 |  1 |  2 | -5 |  4 |  2 | -1 |  3 | -2 | -2 |  1 | -1 | -5 |  0 | -1 | -1 | -5 | -4 | -2 |  1 |  3 | -1 | -8 |
+   | E |  0 | -1 |  1 |  3 | -5 |  2 |  4 |  0 |  1 | -2 | -3 |  0 | -2 | -5 | -1 |  0 |  0 | -7 | -4 | -2 |  3 |  3 | -1 | -8 |
+   | G |  1 | -3 |  0 |  1 | -3 | -1 |  0 |  5 | -2 | -3 | -4 | -2 | -3 | -5 |  0 |  1 |  0 | -7 | -5 | -1 |  0 |  0 | -1 | -8 |
+   | H | -1 |  2 |  2 |  1 | -3 |  3 |  1 | -2 |  6 | -2 | -2 |  0 | -2 | -2 |  0 | -1 | -1 | -3 |  0 | -2 |  1 |  2 | -1 | -8 |
+   | I | -1 | -2 | -2 | -2 | -2 | -2 | -2 | -3 | -2 |  5 |  2 | -2 |  2 |  1 | -2 | -1 |  0 | -5 | -1 |  4 | -2 | -2 | -1 | -8 |
+   | L | -2 | -3 | -3 | -4 | -6 | -2 | -3 | -4 | -2 |  2 |  6 | -3 |  4 |  2 | -3 | -3 | -2 | -2 | -1 |  2 | -3 | -3 | -1 | -8 |
+   | K | -1 |  3 |  1 |  0 | -5 |  1 |  0 | -2 |  0 | -2 | -3 |  5 |  0 | -5 | -1 |  0 |  0 | -3 | -4 | -2 |  1 |  0 | -1 | -8 |
+   | M | -1 |  0 | -2 | -3 | -5 | -1 | -2 | -3 | -2 |  2 |  4 |  0 |  6 |  0 | -2 | -2 | -1 | -4 | -2 |  2 | -2 | -2 | -1 | -8 |
+   | F | -3 | -4 | -3 | -6 | -4 | -5 | -5 | -5 | -2 |  1 |  2 | -5 |  0 |  9 | -5 | -3 | -3 |  0 |  7 | -1 | -4 | -5 | -2 | -8 |
+   | P |  1 |  0 |  0 | -1 | -3 |  0 | -1 |  0 |  0 | -2 | -3 | -1 | -2 | -5 |  6 |  1 |  0 | -6 | -5 | -1 | -1 |  0 | -1 | -8 |
+   | S |  1 |  0 |  1 |  0 |  0 | -1 |  0 |  1 | -1 | -1 | -3 |  0 | -2 | -3 |  1 |  2 |  1 | -2 | -3 | -1 |  0 |  0 |  0 | -8 |
+   | T |  1 | -1 |  0 |  0 | -2 | -1 |  0 |  0 | -1 |  0 | -2 |  0 | -1 | -3 |  0 |  1 |  3 | -5 | -3 |  0 |  0 | -1 |  0 | -8 |
+   | W | -6 |  2 | -4 | -7 | -8 | -5 | -7 | -7 | -3 | -5 | -2 | -3 | -4 |  0 | -6 | -2 | -5 | 17 |  0 | -6 | -5 | -6 | -4 | -8 |
+   | Y | -3 | -4 | -2 | -4 |  0 | -4 | -4 | -5 |  0 | -1 | -1 | -4 | -2 |  7 | -5 | -3 | -3 |  0 | 10 | -2 | -3 | -4 | -2 | -8 |
+   | V |  0 | -2 | -2 | -2 | -2 | -2 | -2 | -1 | -2 |  4 |  2 | -2 |  2 | -1 | -1 | -1 |  0 | -6 | -2 |  4 | -2 | -2 | -1 | -8 |
+   | B |  0 | -1 |  2 |  3 | -4 |  1 |  3 |  0 |  1 | -2 | -3 |  1 | -2 | -4 | -1 |  0 |  0 | -5 | -3 | -2 |  3 |  2 | -1 | -8 |
+   | Z |  0 |  0 |  1 |  3 | -5 |  3 |  3 |  0 |  2 | -2 | -3 |  0 | -2 | -5 |  0 |  0 | -1 | -6 | -4 | -2 |  2 |  3 | -1 | -8 |
+   | X |  0 | -1 |  0 | -1 | -3 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -2 | -1 |  0 |  0 | -4 | -2 | -1 | -1 | -1 | -1 | -8 |
+   | - | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 |    |
+
+   ```{note}
+   The above matrix was extracted from [here](https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml). The indel scores on that matrix are set to -8, but I've also seen them set to -5. I don't know if PAM250 defines a constant for indels?
+   ```
+
+ * `{bm} blocks amino acid substitution matrix/(blocks substitution matrix|blocks substitution matrices|blocks amino acid substitution matrices|blocks amino acid substitution matrix)/i` `{bm} /\b(BLOSUM)\d*\b//false/true` - A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for indels (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.
+
+   Several sets of BLOSUM matrices exist, each identified by a different number. This number defines the similarity of the sequences used to create the matrix: The protein database sequences used to derive the matrix are filtered such that only those with >= n% similarity are used, where n is the number. For example, ...
+   
+    * BLOSUM80 is created from sequences that are >= 80% similar.
+    * BLOSUM45 is created from sequences that are >= 45% similar.
+    
+   As such, BLOSUM matrices higher numbers are designed to compare more closely related sequences while those with lower numbers are designed to score more distant related sequences.
+
+   BLOSUM62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":
+
+   |   |  A |  R |  N |  D |  C |  Q |  E |  G |  H |  I |  L |  K |  M |  F |  P |  S |  T |  W |  Y |  V |  B |  Z |  X |  - |
+   |---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+   | A |  4 | -1 | -2 | -2 |  0 | -1 | -1 |  0 | -2 | -1 | -1 | -1 | -1 | -2 | -1 |  1 |  0 | -3 | -2 |  0 | -2 | -1 |  0 | -4 | 
+   | R | -1 |  5 |  0 | -2 | -3 |  1 |  0 | -2 |  0 | -3 | -2 |  2 | -1 | -3 | -2 | -1 | -1 | -3 | -2 | -3 | -1 |  0 | -1 | -4 | 
+   | N | -2 |  0 |  6 |  1 | -3 |  0 |  0 |  0 |  1 | -3 | -3 |  0 | -2 | -3 | -2 |  1 |  0 | -4 | -2 | -3 |  3 |  0 | -1 | -4 | 
+   | D | -2 | -2 |  1 |  6 | -3 |  0 |  2 | -1 | -1 | -3 | -4 | -1 | -3 | -3 | -1 |  0 | -1 | -4 | -3 | -3 |  4 |  1 | -1 | -4 | 
+   | C |  0 | -3 | -3 | -3 |  9 | -3 | -4 | -3 | -3 | -1 | -1 | -3 | -1 | -2 | -3 | -1 | -1 | -2 | -2 | -1 | -3 | -3 | -2 | -4 | 
+   | Q | -1 |  1 |  0 |  0 | -3 |  5 |  2 | -2 |  0 | -3 | -2 |  1 |  0 | -3 | -1 |  0 | -1 | -2 | -1 | -2 |  0 |  3 | -1 | -4 | 
+   | E | -1 |  0 |  0 |  2 | -4 |  2 |  5 | -2 |  0 | -3 | -3 |  1 | -2 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  1 |  4 | -1 | -4 | 
+   | G |  0 | -2 |  0 | -1 | -3 | -2 | -2 |  6 | -2 | -4 | -4 | -2 | -3 | -3 | -2 |  0 | -2 | -2 | -3 | -3 | -1 | -2 | -1 | -4 | 
+   | H | -2 |  0 |  1 | -1 | -3 |  0 |  0 | -2 |  8 | -3 | -3 | -1 | -2 | -1 | -2 | -1 | -2 | -2 |  2 | -3 |  0 |  0 | -1 | -4 | 
+   | I | -1 | -3 | -3 | -3 | -1 | -3 | -3 | -4 | -3 |  4 |  2 | -3 |  1 |  0 | -3 | -2 | -1 | -3 | -1 |  3 | -3 | -3 | -1 | -4 | 
+   | L | -1 | -2 | -3 | -4 | -1 | -2 | -3 | -4 | -3 |  2 |  4 | -2 |  2 |  0 | -3 | -2 | -1 | -2 | -1 |  1 | -4 | -3 | -1 | -4 | 
+   | K | -1 |  2 |  0 | -1 | -3 |  1 |  1 | -2 | -1 | -3 | -2 |  5 | -1 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  0 |  1 | -1 | -4 | 
+   | M | -1 | -1 | -2 | -3 | -1 |  0 | -2 | -3 | -2 |  1 |  2 | -1 |  5 |  0 | -2 | -1 | -1 | -1 | -1 |  1 | -3 | -1 | -1 | -4 | 
+   | F | -2 | -3 | -3 | -3 | -2 | -3 | -3 | -3 | -1 |  0 |  0 | -3 |  0 |  6 | -4 | -2 | -2 |  1 |  3 | -1 | -3 | -3 | -1 | -4 | 
+   | P | -1 | -2 | -2 | -1 | -3 | -1 | -1 | -2 | -2 | -3 | -3 | -1 | -2 | -4 |  7 | -1 | -1 | -4 | -3 | -2 | -2 | -1 | -2 | -4 | 
+   | S |  1 | -1 |  1 |  0 | -1 |  0 |  0 |  0 | -1 | -2 | -2 |  0 | -1 | -2 | -1 |  4 |  1 | -3 | -2 | -2 |  0 |  0 |  0 | -4 | 
+   | T |  0 | -1 |  0 | -1 | -1 | -1 | -1 | -2 | -2 | -1 | -1 | -1 | -1 | -2 | -1 |  1 |  5 | -2 | -2 |  0 | -1 | -1 |  0 | -4 | 
+   | W | -3 | -3 | -4 | -4 | -2 | -2 | -3 | -2 | -2 | -3 | -2 | -3 | -1 |  1 | -4 | -3 | -2 | 11 |  2 | -3 | -4 | -3 | -2 | -4 | 
+   | Y | -2 | -2 | -2 | -3 | -2 | -1 | -2 | -3 |  2 | -1 | -1 | -2 | -1 |  3 | -3 | -2 | -2 |  2 |  7 | -1 | -3 | -2 | -1 | -4 | 
+   | V |  0 | -3 | -3 | -3 | -1 | -2 | -2 | -3 | -3 |  3 |  1 | -2 |  1 | -1 | -2 | -2 |  0 | -3 | -1 |  4 | -3 | -2 | -1 | -4 | 
+   | B | -2 | -1 |  3 |  4 | -3 |  0 |  1 | -1 |  0 | -3 | -4 |  0 | -3 | -3 | -2 |  0 | -1 | -4 | -3 | -3 |  4 |  1 | -1 | -4 | 
+   | Z | -1 |  0 |  0 |  1 | -3 |  3 |  4 | -2 |  0 | -3 | -3 |  1 | -1 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  1 |  4 | -1 | -4 | 
+   | X |  0 | -1 | -1 | -1 | -2 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -2 |  0 |  0 | -2 | -1 | -1 | -1 | -1 | -1 | -4 | 
+   | - | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 |    | 
+
+   ```{note}
+   The above matrix was extracted from [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt). The indel scores on that matrix are set to -5, but I've also seen them set to -5. I don't know if BLOSUM62 defines a constant for indels?
+   ```
+
+ * `{bm} point mutation` - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
