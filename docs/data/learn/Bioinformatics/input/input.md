@@ -2963,6 +2963,130 @@ This was the version of the algorithm used to solve chapter 4's final assignment
 Before coming up with the above solution, I came up with another heuristic that I tried: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward peptides. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.
 ```
 
+## Sequence Alignment
+
+Many core biology constructs are represented as sequences. For example, ...
+
+ * DNA strands are represented as a sequence (chained nucleotides),
+ * proteins are represented as a sequence (chained amino acids),
+ * etc..
+ 
+Performing a sequence alignment on a set of sequences means to match up the elements of those sequences against each other using a set of basic operations:
+ 
+ * insert/delete (also referred to as indel).
+ * replace (also referred to as mismatch).
+ * keep matching (also referred to as match).
+ 
+There are many ways that a set of sequences can be aligned. For example, the sequences MAPLE and TABLE may be aligned by performing...
+
+| String 1 | String 2 | Operation     |
+|----------|----------|---------------|
+|    M     |          | Insert/delete |
+|          |     T    | Insert/delete |
+|    A     |     A    | Keep matching |
+|    P     |     B    | Replace       |
+|    L     |     L    | Keep matching |
+|    E     |     E    | Keep matching |
+
+Or, MAPLE and TABLE may be aligned by performing...
+
+| String 1 | String 2 | Operation     |
+|----------|----------|---------------|
+|    M     |     T    | Replace       |
+|    A     |     A    | Keep matching |
+|    P     |     B    | Replace       |
+|    L     |     L    | Keep matching |
+|    E     |     E    | Keep matching |
+
+Typically the highest scoring sequence alignment is the one that's chosen, where the score is some custom function that best represents the type of sequence being worked with (e.g. proteins are scored differently than DNA). In the example above, if replacements are scored better than indels, the latter alignment would be the highest scoring. Sequences that strongly align are thought of as being related / similar (e.g. proteins that came from the same parent but diverged to 2 separate evolutionary paths).
+
+The names of these operations make more sense if you were to think of alignment instead as __transformation__. The example above's first alignment in the context of __transforming__ MAPLE to TABLE may be thought of as:
+
+| From | To | Operation       | Result |
+|------|----|-----------------|--------|
+|   M  |    | Delete M        |        |
+|      | T  | Insert T        | T      |
+|   A  | A  | Keep matching A | TA     |
+|   P  | B  | Replace P to B  | TAB    |
+|   L  | L  | Keep matching L | TABL   |
+|   E  | E  | Keep matching E | TABLE  |
+
+The shorthand form of representing sequence alignments is to stack each sequence. The example above may be written as...
+
+|          | 0 | 1 | 2 | 3 | 4 | 5 |
+|----------|---|---|---|---|---|---|
+| String 1 | M |   | A | P | L | E |
+| String 2 |   | T | A | B | L | E |
+
+Typically, all possible sequence alignments are represented using an alignment graph: a graph that represents all possible alignments for a set of sequences. A path through an alignment graph from source node to sink node is called an alignment path: a path that represents one specific way the set of sequences may be aligned. For example, the alignment graph and alignment paths for the alignments above (MAPLE vs TABLE) ...
+
+```{svgbob}
+"* Each diagonal edge is a replacement / keep matching"
+"* Each horizontal edge is an indel where the top is kept"
+"* Each vertical edge is an indel where the left is kept"
+
+    Complete graph               Example alignment 1           Example alignment 2
+                                       M-APLE                        MAPLE
+                                       -TABLE                        TABLE
+
+   T   A   B   L   E             T   A   B   L   E             T   A   B   L   E  
+ o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
+ |\  |\  |\  |\  |\  |         |                              \                   
+M| \ | \ | \ | \ | \ |        M|                            M  \                  
+ |  \|  \|  \|  \|  \|         |                                \                 
+ v   v   v   v   v   v         v                                 v                
+ o-->o-->o-->o-->o-->o         o-->o   o   o   o   o         o   o   o   o   o   o
+ |\  |\  |\  |\  |\  |              \                             \               
+A| \ | \ | \ | \ | \ |        A      \                      A      \              
+ |  \|  \|  \|  \|  \|                \                             \             
+ v   v   v   v   v   v                 v                             v            
+ o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
+ |\  |\  |\  |\  |\  |                  \                             \           
+P| \ | \ | \ | \ | \ |        P          \                  P          \          
+ |  \|  \|  \|  \|  \|                    \                             \         
+ v   v   v   v   v   v                     v                             v        
+ o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
+ |\  |\  |\  |\  |\  |                      \                             \       
+L| \ | \ | \ | \ | \ |        L              \              L              \      
+ |  \|  \|  \|  \|  \|                        \                             \     
+ v   v   v   v   v   v                         v                             v    
+ o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
+ |\  |\  |\  |\  |\  |                          \                             \   
+E| \ | \ | \ | \ | \ |        E                  \          E                  \  
+ |  \|  \|  \|  \|  \|                            \                             \ 
+ v   v   v   v   v   v                             v                             v
+ o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
+```
+
+The example above is just one of many sequence alignment types. There are different types of alignment graphs, applications of alignment graphs, and different scoring models used in bioinformatics.
+
+```{note}
+The Pevzner book mentions a non-biology related problem to help illustrate alignment graphs: the Manhattan Tourist problem. Look it up if you're confused.
+```
+
+### Find Maximum Path
+
+**WHAT**: Given an arbitrary directed acyclic graph where each edge has a weight, find the path with the maximum weight between two nodes.
+
+**WHY**: Finding a maximum path between nodes is fundamental to sequence alignments. That is, regardless of what type of sequence alignment is being performed, at its core it boils down to finding the maximum weight between two nodes in the alignment graph.
+
+#### Bruteforce Algorithm
+
+**ALGORITHM**:
+
+The following algorithm finds a maximum path in the most obvious way: iterate over all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.
+
+```{output}
+ch5_code/src/FindMaxPath_Bruteforce.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+FindMaxPath_Bruteforce
+A B 1, A C 1, B C 1, C D 1, C E 1
+```
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -4822,42 +4946,7 @@ cyclic
    | String 1 | M |   | A | P | L | E |
    | String 2 |   | T | A | B | L | E |
 
-   Typically, all possible sequence alignments are represented using an alignment graph. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...
-
-   ```{svgbob}
-      T   A   B   L   E
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |   "* each diagonal edge is a replacement / keep matching"
-   M| \ | \ | \ | \ | \ |   "* each horizontal edge is an indel where the top is kept"
-    |  \|  \|  \|  \|  \|   "* each vertical edge is an indel where the left is kept"
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o   
-    |\  |\  |\  |\  |\  |
-   A| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |
-   P| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |
-   L| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |
-   E| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
-   ```
-
-   A path in this graph from source (top-left) to sink (bottom-right) is called an alignment path. An alignment path represents a sequence alignment. Often times the best sequence alignment is either the one that has the ...
-
-    * smallest number of operations.
-    * set of operations with the least cost (e.g. some replacements can be considered more costly than an indel).
+   All possible sequence alignments are represented using an alignment graph. A path through the alignment graph (called alignment path) represents one possible way to align the set of sequences. 
 
  * `{bm} alignment graph/(alignment graph|sequence alignment graph)/i` - A directed graph representing all possible sequence alignments for some set of sequences. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...
 
@@ -5013,7 +5102,7 @@ cyclic
    * The only options at each intersection are to move right or down.
    * The source node is the intersection of 59th St and 8th Ave.
    * The sink node is the intersection of 42nd St and 3rd Ave.
-   * The number of tourist sights per street is the weight of an edge.
+   * The number of tourist sights from one intersection to the next is the weight of an edge.
 
 
    ```{svgbob}
@@ -5129,7 +5218,7 @@ cyclic
     * BLOSUM80 is created from sequences that are >= 80% similar.
     * BLOSUM45 is created from sequences that are >= 45% similar.
     
-   As such, BLOSUM matrices higher numbers are designed to compare more closely related sequences while those with lower numbers are designed to score more distant related sequences.
+   As such, BLOSUM matrices with higher numbers are designed to compare more closely related sequences while those with lower numbers are designed to score more distant related sequences.
 
    BLOSUM62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":
 
@@ -5165,6 +5254,40 @@ cyclic
    ```
 
  * `{bm} point mutation` - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.
+
+ * `{bm} directed acyclic graph` `{bm} /\b(DAG)\b/` - A graph where the edges are directed (have a direction) and no cycles exist in the graph.
+
+   For example, the following is a directed acyclic graph...
+
+   ```{svgbob}
+   .----> B ----.
+   |            v
+   A ---------> C ----> D
+                |
+                `-----> E 
+   ```
+
+   The following graph isn't a directed acyclic graph because the edges don't have a direction (no arrowhead means you can travel in either direction)...
+
+   ```{svgbob}
+   .----- B ----.
+   |            |
+   A ---------- C ----- D
+                |
+                `------ E 
+   ```
+
+   The following graph isn't a directed acyclic graph because it contains a cycle between D and B...
+
+   ```{svgbob}
+          .-------------.
+          v             |
+   .----> B ----.       |
+   |            v       |
+   A ---------> C ----> D
+                |
+                `-----> E 
+   ```
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

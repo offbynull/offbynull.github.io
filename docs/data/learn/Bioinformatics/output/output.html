@@ -78,6 +78,13 @@
 <li><a href="#H_Leaderboard%20Algorithm">Leaderboard Algorithm</a></li>
 </ul>
 </ul>
+<li><a href="#H_Sequence%20Alignment">Sequence Alignment</a></li>
+<ul>
+<li><a href="#H_Find%20Maximum%20Path">Find Maximum Path</a></li>
+<ul>
+<li><a href="#H4_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
+</ul>
+</ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
 <ul>
@@ -5518,6 +5525,253 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>This was the version of the algorithm used to solve chapter 4's final assignment (<a href="#BM_(sequence)%2Fi">sequence</a> a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for some unknown variant of Tyrocidine). Note how the parameters into <a href="#BM_(sequence)%2Fi">sequence</a>_<a href="#BM_(peptide)%2Fi">peptide</a> take an initial leaderboard. This initial leaderboard was primed with <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s from other Tyrocidine variants discusses in chapter 4. The problem wasn't solvable without these <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s. More information on this can be found in the Python file for the final assignment.</p>
 <p>Before coming up with the above solution, I came up with another heuristic that I tried: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
 </div>
+<a name="H_Sequence%20Alignment"></a><h2>Sequence Alignment</h2>
+<p>Many core biology constructs are represented as <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, ...</p>
+<ul>
+<li>DNA strands are represented as a <a href="#BM_(sequence)%2Fi">sequence</a> (chained nucleotides),</li>
+<li>proteins are represented as a <a href="#BM_(sequence)%2Fi">sequence</a> (chained <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s),</li>
+<li>etc..</li>
+</ul>
+<p>Performing a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> on a set of <a href="#BM_(sequence)%2Fi">sequence</a>s means to match up the elements of those <a href="#BM_(sequence)%2Fi">sequence</a>s against each other using a set of basic operations:</p>
+<ul>
+<li>insert/delete (also referred to as <a href="#BM_(indel)%2Fi">indel</a>).</li>
+<li>replace (also referred to as mismatch).</li>
+<li>keep matching (also referred to as match).</li>
+</ul>
+<p>There are many ways that a set of <a href="#BM_(sequence)%2Fi">sequence</a>s can be aligned. For example, the <a href="#BM_(sequence)%2Fi">sequence</a>s MAPLE and TABLE may be aligned by performing...</p>
+<table>
+<thead>
+<tr>
+<th>String 1</th>
+<th>String 2</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td></td>
+<td>Insert/delete</td>
+</tr>
+<tr>
+<td></td>
+<td>T</td>
+<td>Insert/delete</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching</td>
+</tr>
+</tbody>
+</table>
+<p>Or, MAPLE and TABLE may be aligned by performing...</p>
+<table>
+<thead>
+<tr>
+<th>String 1</th>
+<th>String 2</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td>T</td>
+<td>Replace</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching</td>
+</tr>
+</tbody>
+</table>
+<p>Typically the highest scoring <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> is the one that's chosen, where the score is some custom function that best represents the type of <a href="#BM_(sequence)%2Fi">sequence</a> being worked with (e.g. proteins are scored differently than DNA). In the example above, if replacements are scored better than <a href="#BM_(indel)%2Fi">indel</a>s, the latter alignment would be the highest scoring. <a href="#BM_(sequence)%2Fi">Sequence</a>s that strongly align are thought of as being related / similar (e.g. proteins that came from the same parent but diverged to 2 separate evolutionary paths).</p>
+<p>The names of these operations make more sense if you were to think of alignment instead as <strong>transformation</strong>. The example above's first alignment in the context of <strong>transforming</strong> MAPLE to TABLE may be thought of as:</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Operation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td></td>
+<td>Delete M</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>T</td>
+<td>Insert T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Keep matching A</td>
+<td>TA</td>
+</tr>
+<tr>
+<td>P</td>
+<td>B</td>
+<td>Replace P to B</td>
+<td>TAB</td>
+</tr>
+<tr>
+<td>L</td>
+<td>L</td>
+<td>Keep matching L</td>
+<td>TABL</td>
+</tr>
+<tr>
+<td>E</td>
+<td>E</td>
+<td>Keep matching E</td>
+<td>TABLE</td>
+</tr>
+</tbody>
+</table>
+<p>The shorthand form of representing <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s is to stack each <a href="#BM_(sequence)%2Fi">sequence</a>. The example above may be written as...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String 1</td>
+<td>M</td>
+<td></td>
+<td>A</td>
+<td>P</td>
+<td>L</td>
+<td>E</td>
+</tr>
+<tr>
+<td>String 2</td>
+<td></td>
+<td>T</td>
+<td>A</td>
+<td>B</td>
+<td>L</td>
+<td>E</td>
+</tr>
+</tbody>
+</table>
+<p>Typically, all possible <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are represented using an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>: a graph that represents all possible alignments for a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. A path through an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> from source node to sink node is called an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>: a path that represents one specific way the set of <a href="#BM_(sequence)%2Fi">sequence</a>s may be aligned. For example, the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for the alignments above (MAPLE vs TABLE) ...</p>
+<p><img src="svgbob_41fe568e16fbce05fa8de2d159eed50fcdab2065.svg" alt="Kroki diagram output"></p>
+<p>The example above is just one of many <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> types. There are different types of <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s, applications of <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s, and different scoring models used in bioinformatics.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book mentions a non-biology related problem to help illustrate <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s: the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan Tourist problem</a>. Look it up if you're confused.</p>
+</div>
+<a name="H_Find%20Maximum%20Path"></a><h3>Find Maximum Path</h3>
+<p><strong>WHAT</strong>: Given an arbitrary <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> where each edge has a weight, find the path with the maximum weight between two nodes.</p>
+<p><strong>WHY</strong>: Finding a maximum path between nodes is fundamental to <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s. That is, regardless of what type of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> is being performed, at its core it boils down to finding the maximum weight between two nodes in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>.</p>
+<a name="H4_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The following algorithm finds a maximum path in the most obvious way: iterate over all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.</p>
+<p><a href="ch5_code/src/FindMaxPath_Bruteforce.py">ch5_code/src/FindMaxPath_Bruteforce.py</a> (lines 32 to 75):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        end_node: N,
+        current_node: N,
+        current_path: List[N],
+        current_weight: float,
+        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE,
+        found_path_func: FOUND_PATH_FUNC_TYPE
+</span>):</span>
+    <span class="hljs-keyword">if</span> current_node == end_node:
+        found_path_func(current_path, current_weight)
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">for</span> edge_id <span class="hljs-keyword">in</span> g.get_outputs(current_node):
+        edge_weight = get_edge_data_func(edge_id)
+        child_n = g.get_edge_to(edge_id)
+        walk(
+            g,
+            end_node,
+            child_n,
+            current_path + [child_n],
+            current_weight + edge_weight,
+            get_edge_data_func,
+            found_path_func
+        )
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        from_node: N,
+        to_node: N,
+        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE
+</span>) -&gt; Tuple[List[N], float]:</span>
+    last_path = []
+    last_weight = -math.inf
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overwrite_max_func</span>(<span class="hljs-params">path: List[N], weight: float</span>):</span>
+        <span class="hljs-keyword">nonlocal</span>  last_path, last_weight
+        <span class="hljs-keyword">if</span> weight &gt; last_weight:
+            last_weight = weight
+            last_path = path
+
+    walk(g, to_node, from_node, [from_node], <span class="hljs-number">0.0</span>, get_edge_data_func, overwrite_max_func)
+    <span class="hljs-keyword">return</span> last_path, last_weight
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the following graph...</p>
+<p>INSERT GRAPH HERE</p>
+<p>INSERT GRAPH HERE</p>
+<p>INSERT GRAPH HERE</p>
+<p>INSERT GRAPH HERE</p>
+<ul>
+<li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
+<li>Maximum weight = 3.0</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
@@ -7391,7 +7645,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>Not to be confused with <a href="#BM_(subsequence)%2Fi">subsequence</a>. A <a href="#BM_(substring)%2Fi">substring</a> may also be a <a href="#BM_(subsequence)%2Fi">subsequence</a>, but a <a href="#BM_(subsequence)%2Fi">subsequence</a> won't necessarily be a <a href="#BM_(substring)%2Fi">substring</a>.</p>
 </li>
 <li>
-<p><a name="BM_(topological%20order)%2Fi"></a><strong>topological order</strong> - A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.</p>
+<p><a name="BM_(topological%20order)%2Fi"></a><strong>topological order</strong> - A 1-dimensional ordering of nodes in a <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.</p>
 <p>For example, the graph ...</p>
 <p><img src="svgbob_6a2f3c0925fa0e1b69f5e2c59e731dc23f8c54e5.svg" alt="Kroki diagram output"></p>
 <p>... the <a href="#BM_(topological%20order)%2Fi">topological order</a> is either [A, B, C, D, E] or [A, B, C, E, D]. Both are correct.</p>
@@ -7582,13 +7836,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </tr>
 </tbody>
 </table>
-<p>Typically, all possible <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are represented using an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...</p>
-<p><img src="svgbob_ce1ac3439fefb865a1d70920bc1a29d0ee7c2308.svg" alt="Kroki diagram output"></p>
-<p>A path in this graph from source (top-left) to sink (bottom-right) is called an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. An <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> represents a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>. Often times the best <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> is either the one that has the ...</p>
-<ul>
-<li>smallest number of operations.</li>
-<li>set of operations with the least cost (e.g. some replacements can be considered more costly than an <a href="#BM_(indel)%2Fi">indel</a>).</li>
-</ul>
+<p>All possible <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are represented using an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. A path through the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (called <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>) represents one possible way to align the set of <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi"></a><strong>alignment graph</strong> - A directed graph representing all possible <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s for some set of <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...</p>
@@ -7812,7 +8060,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>The only options at each intersection are to move right or down.</li>
 <li>The source node is the intersection of 59th St and 8th Ave.</li>
 <li>The sink node is the intersection of 42nd St and 3rd Ave.</li>
-<li>The number of tourist sights per street is the weight of an edge.</li>
+<li>The number of tourist sights from one intersection to the next is the weight of an edge.</li>
 </ul>
 <p><img src="svgbob_d97ecce5abf34fc49b4c08c082e77841e4fd50b3.svg" alt="Kroki diagram output"></p>
 </li>
@@ -8533,7 +8781,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 is created from <a href="#BM_(sequence)%2Fi">sequence</a>s that are &gt;= 80% similar.</li>
 <li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>45 is created from <a href="#BM_(sequence)%2Fi">sequence</a>s that are &gt;= 45% similar.</li>
 </ul>
-<p>As such, <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices higher numbers are designed to compare more closely related <a href="#BM_(sequence)%2Fi">sequence</a>s while those with lower numbers are designed to score more distant related <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p>As such, <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices with higher numbers are designed to compare more closely related <a href="#BM_(sequence)%2Fi">sequence</a>s while those with lower numbers are designed to score more distant related <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
 <p><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":</p>
 <table>
 <thead>
@@ -9223,6 +9471,15 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </li>
 <li>
 <p><a name="BM_(point%20mutation)%2Fi"></a><strong>point mutation</strong> - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.</p>
+</li>
+<li>
+<p><a name="BM_(directed%20acyclic%20graph)%2Fi"></a><strong>directed acyclic graph</strong> <a name="BM_%5Cb(DAG)%5Cb%2F"></a><strong></strong> - A graph where the edges are directed (have a direction) and no cycles exist in the graph.</p>
+<p>For example, the following is a <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a>...</p>
+<p><img src="svgbob_d6ba29b704329aea40b096d1beeeec7da7d062f5.svg" alt="Kroki diagram output"></p>
+<p>The following graph isn't a <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> because the edges don't have a direction (no arrowhead means you can travel in either direction)...</p>
+<p><img src="svgbob_64d614efe5a1433237c817bfba588e85082acf69.svg" alt="Kroki diagram output"></p>
+<p>The following graph isn't a <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> because it contains a cycle between D and B...</p>
+<p><img src="svgbob_36208e0955503cf8020cbe27be7ca286ebcf55e2.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 <p>
