@@ -3085,6 +3085,8 @@ python
 ```{ch5}
 FindMaxPath_Bruteforce
 A B 1, A C 1, B C 1, C D 1, C E 1
+A
+E
 ```
 
 # Stories

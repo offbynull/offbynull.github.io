@@ -108,6 +108,9 @@ class Graph(Generic[N, ND, E, ED]):
     def get_nodes(self: Graph) -> Iterator[N]:
         return iter(self._node_outbound)
 
+    def get_edges(self: Graph) -> Iterator[E]:
+        return iter(self._edges)
+
     def has_node(self: Graph, node: N) -> bool:
         return node in self._node_outbound  # inbound and outbound are reflections of each other, so only check one
 

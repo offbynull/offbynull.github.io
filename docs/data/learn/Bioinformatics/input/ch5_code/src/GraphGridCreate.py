@@ -1,4 +1,3 @@
-import json
 from itertools import product
 from typing import TypeVar, List, Callable, Tuple, Optional
 
@@ -57,64 +56,14 @@ def create_grid_graph(
     return graph
 
 
-def grid_graph_to_graphviz(graph: Graph[Tuple[int, ...], ND, str, ED]) -> str:
-    dim = len(next(graph.get_nodes()))
-    if dim < 2:
-        raise ValueError('Need at least a dimension of 2')
-
-    layers = set(n[:-2] for n in graph.get_nodes())
-    row_len = max(n[-2] for n in graph.get_nodes()) + 1
-    col_len = max(n[-1] for n in graph.get_nodes()) + 1
-    dot_subgraph = 'digraph {\n'
-    dot_subgraph += '  node [shape=plaintext]\n'
-    for node_id_prefix in layers:
-        dot_subgraph += f'  subgraph "cluster_{node_id_prefix}" {{\n'
-        dot_subgraph += f'    label="{node_id_prefix}"\n'
-        for node_id_suffix in product(range(row_len), range(col_len)):
-            node_id = node_id_prefix + node_id_suffix
-            if not graph.has_node(node_id):
-                continue
-            for edge_id in graph.get_outputs(node_id):
-                child_node_id = graph.get_edge_to(edge_id)
-                child_node_id_prefix = child_node_id[:-2]
-                if child_node_id_prefix != node_id_prefix:
-                    continue
-                edge_data = graph.get_edge_data(edge_id)
-                edge_label = json.dumps(edge_data).replace('"', '\\\"')
-                dot_subgraph += f'    "{node_id}" -> "{child_node_id}"\n'
-                # dot_subgraph += f'    "{node_id}" -> "{child_node_id}" [label="{edge_label}"]\n'
-        for row in range(row_len):
-            dot_subgraph += f'    rank=same {{ '
-            dot_subgraph += ' '.join(f'"{node_id_prefix + (row, col)}"' for col in range(col_len))
-            dot_subgraph += ' }\n'
-        dot_subgraph += '  }\n'
-    for node_id_prefix in layers:
-        for node_id_suffix in product(range(row_len), range(col_len)):
-            node_id = node_id_prefix + node_id_suffix
-            if not graph.has_node(node_id):
-                continue
-            for edge_id in graph.get_outputs(node_id):
-                child_node_id = graph.get_edge_to(edge_id)
-                child_node_id_prefix = child_node_id[:-2]
-                if child_node_id_prefix == node_id_prefix:
-                    continue
-                edge_data = graph.get_edge_data(edge_id)
-                edge_label = json.dumps(edge_data).replace('"', '\\\"')
-                dot_subgraph += f'  "{node_id}" -> "{child_node_id}"\n'
-                # dot_subgraph += f'  "{node_id}" -> "{child_node_id}" [label="{edge_label}"]\n'
-    dot_subgraph += '}'
-    return dot_subgraph
-
-
 if __name__ == '__main__':
     g = create_grid_graph(
         [
             list('HELLO'),
             list('YELLOW'),
-            # list('TRELLO')
+            list('TRELLO')
         ],
         lambda node_id: (),
         lambda src_id, dst_id, offsets, e: e
     )
-    # print(f'{g}')
-    print(f'{grid_graph_to_graphviz(g)}')
+    print(f'{g}')

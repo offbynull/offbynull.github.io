@@ -2,6 +2,7 @@ import math
 from typing import TypeVar, Callable, Tuple, List
 
 from Graph import Graph
+from GraphvizRender import graph_to_graphviz
 from helpers.Utils import unique_id_generator
 
 N = TypeVar('N')
@@ -87,17 +88,17 @@ def main():
         edge_id_gen_func = unique_id_generator('E')
         for n1, n2, weight in edges:
             graph.insert_edge(edge_id_gen_func(), n1, n2, float(weight))
+        from_node = input()
+        to_node = input()
         print(f'Given the following graph...', end="\n\n")
-        print(f'INSERT GRAPH HERE', end='\n\n')
-        print(f'INSERT GRAPH HERE', end='\n\n')
-        print(f'INSERT GRAPH HERE', end='\n\n')
-        print(f'INSERT GRAPH HERE', end='\n\n')
+        print(f'````{{dot}}\n{graph_to_graphviz(graph, lambda e: str(e))}\n````', end='\n\n')
         path, weight = find_max_path(
             graph,
-            'A',
-            'E',
+            from_node,
+            to_node,
             lambda edge_id: graph.get_edge_data(edge_id)
         )
+        print(f'... the path with the max weight between {from_node} and {to_node} ...', end='\n')
         print(f' * Maximum path = {" -> ".join(path)}', end='\n')
         print(f' * Maximum weight = {weight}', end='\n')
     finally:
