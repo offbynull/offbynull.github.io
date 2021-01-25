@@ -5721,14 +5721,14 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         current_node: N,
         current_path: List[N],
         current_weight: float,
-        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE,
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE,
         found_path_func: FOUND_PATH_FUNC_TYPE
 </span>):</span>
     <span class="hljs-keyword">if</span> current_node == end_node:
         found_path_func(current_path, current_weight)
         <span class="hljs-keyword">return</span>
     <span class="hljs-keyword">for</span> edge_id <span class="hljs-keyword">in</span> g.get_outputs(current_node):
-        edge_weight = get_edge_data_func(edge_id)
+        edge_weight = get_edge_weight_func(edge_id)
         child_n = g.get_edge_to(edge_id)
         walk(
             g,
@@ -5736,7 +5736,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
             child_n,
             current_path + [child_n],
             current_weight + edge_weight,
-            get_edge_data_func,
+            get_edge_weight_func,
             found_path_func
         )
 
@@ -5745,7 +5745,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         g: Graph[N, ND, E, ED],
         from_node: N,
         to_node: N,
-        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE
+        get_edge_data_func: GET_EDGE_WEIGHT_FUNC_TYPE
 </span>) -&gt; Tuple[List[N], float]:</span>
     last_path = []
     last_weight = -math.inf
@@ -5762,7 +5762,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_34064b3f110f0be76b1bee3f8c3adf44.svg" alt="Dot diagram"></p>
+<p><img src="dot_407ff13d1af68ce57ae1fa03aec3323b.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -9464,7 +9464,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above matrix was extracted from <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>. The <a href="#BM_(indel)%2Fi">indel</a> scores on that matrix are set to -5, but I've also seen them set to -5. I don't know if <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s?</p>
+<p>The above matrix was extracted from <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>. The <a href="#BM_(indel)%2Fi">indel</a> scores on that matrix are set to -4, but I've also seen them set to -5. I don't know if <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s?</p>
 </div>
 </li>
 <li>

@@ -12,7 +12,7 @@ ED = TypeVar('ED')
 
 ELEM = TypeVar('ELEM')
 
-GET_EDGE_DATA_FUNC_TYPE =\
+GET_EDGE_WEIGHT_FUNC_TYPE =\
     Callable[
         [
             E                  # edge ID
@@ -36,14 +36,14 @@ def walk(
         current_node: N,
         current_path: List[N],
         current_weight: float,
-        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE,
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE,
         found_path_func: FOUND_PATH_FUNC_TYPE
 ):
     if current_node == end_node:
         found_path_func(current_path, current_weight)
         return
     for edge_id in g.get_outputs(current_node):
-        edge_weight = get_edge_data_func(edge_id)
+        edge_weight = get_edge_weight_func(edge_id)
         child_n = g.get_edge_to(edge_id)
         walk(
             g,
@@ -51,7 +51,7 @@ def walk(
             child_n,
             current_path + [child_n],
             current_weight + edge_weight,
-            get_edge_data_func,
+            get_edge_weight_func,
             found_path_func
         )
 
@@ -60,7 +60,7 @@ def find_max_path(
         g: Graph[N, ND, E, ED],
         from_node: N,
         to_node: N,
-        get_edge_data_func: GET_EDGE_DATA_FUNC_TYPE
+        get_edge_data_func: GET_EDGE_WEIGHT_FUNC_TYPE
 ) -> Tuple[List[N], float]:
     last_path = []
     last_weight = -math.inf

@@ -5252,7 +5252,7 @@ cyclic
    | - | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 |    | 
 
    ```{note}
-   The above matrix was extracted from [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt). The indel scores on that matrix are set to -5, but I've also seen them set to -5. I don't know if BLOSUM62 defines a constant for indels?
+   The above matrix was extracted from [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt). The indel scores on that matrix are set to -4, but I've also seen them set to -5. I don't know if BLOSUM62 defines a constant for indels?
    ```
 
  * `{bm} point mutation` - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.
