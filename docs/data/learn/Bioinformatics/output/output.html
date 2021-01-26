@@ -83,6 +83,7 @@
 <li><a href="#H_Find%20Maximum%20Path">Find Maximum Path</a></li>
 <ul>
 <li><a href="#H4_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
+<li><a href="#H_Dynamic%20Programming%20Algorithm">Dynamic Programming Algorithm</a></li>
 </ul>
 </ul>
 </ul>
@@ -5713,56 +5714,42 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>WHY</strong>: Finding a maximum path between nodes is fundamental to <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s. That is, regardless of what type of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> is being performed, at its core it boils down to finding the maximum weight between two nodes in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>.</p>
 <a name="H4_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm finds a maximum path in the most obvious way: iterate over all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.</p>
-<p><a href="ch5_code/src/FindMaxPath_Bruteforce.py">ch5_code/src/FindMaxPath_Bruteforce.py</a> (lines 33 to 76):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        end_node: N,
+<p>This algorithm finds a maximum path in the most obvious way: Recursively drill down all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.</p>
+<p><a href="ch5_code/src/FindMaxPath_Bruteforce.py">ch5_code/src/FindMaxPath_Bruteforce.py</a> (lines 24 to 53):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
+        graph: Graph[N, ND, E, ED],
         current_node: N,
-        current_path: List[N],
-        current_weight: float,
-        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE,
-        found_path_func: FOUND_PATH_FUNC_TYPE
-</span>):</span>
+        end_node: N,
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+</span>) -&gt; Optional[Tuple[List[N], float]]:</span>
     <span class="hljs-keyword">if</span> current_node == end_node:
-        found_path_func(current_path, current_weight)
-        <span class="hljs-keyword">return</span>
-    <span class="hljs-keyword">for</span> edge_id <span class="hljs-keyword">in</span> g.get_outputs(current_node):
+        <span class="hljs-keyword">return</span> [end_node], <span class="hljs-number">0.0</span>
+    alternatives = []
+    <span class="hljs-keyword">for</span> edge_id <span class="hljs-keyword">in</span> graph.get_outputs(current_node):
         edge_weight = get_edge_weight_func(edge_id)
-        child_n = g.get_edge_to(edge_id)
-        walk(
-            g,
-            end_node,
+        child_n = graph.get_edge_to(edge_id)
+        res = find_max_path(
+            graph,
             child_n,
-            current_path + [child_n],
-            current_weight + edge_weight,
-            get_edge_weight_func,
-            found_path_func
+            end_node,
+            get_edge_weight_func
         )
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        from_node: N,
-        to_node: N,
-        get_edge_data_func: GET_EDGE_WEIGHT_FUNC_TYPE
-</span>) -&gt; Tuple[List[N], float]:</span>
-    last_path = []
-    last_weight = -math.inf
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overwrite_max_func</span>(<span class="hljs-params">path: List[N], weight: float</span>):</span>
-        <span class="hljs-keyword">nonlocal</span>  last_path, last_weight
-        <span class="hljs-keyword">if</span> weight &gt; last_weight:
-            last_weight = weight
-            last_path = path
-
-    walk(g, to_node, from_node, [from_node], <span class="hljs-number">0.0</span>, get_edge_data_func, overwrite_max_func)
-    <span class="hljs-keyword">return</span> last_path, last_weight
+        <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">continue</span>
+        path, weight = res
+        path = [current_node] + path
+        weight = edge_weight + weight
+        res = path, weight
+        alternatives.append(res)
+    <span class="hljs-keyword">if</span> len(alternatives) == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># no path to end, so return None</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> max(alternatives, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])  <span class="hljs-comment"># choose path to end with max weight</span>
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_407ff13d1af68ce57ae1fa03aec3323b.svg" alt="Dot diagram"></p>
+<p><img src="dot_5ee0902513dd5d98021f14206feefcdd.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5770,6 +5757,97 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 </div>
 <p></p>
+<a name="H_Dynamic%20Programming%20Algorithm"></a><h4>Dynamic Programming Algorithm</h4>
+<p><strong>ALGORITHM</strong>:</p>
+<p>This algorithm extends the bruteforce algorithm using <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>: At each recursive step, cache the results. Each recursive step drills down one node and finds the maximum path between that node and the destination node. If that maximum path for that node has already been computed once before, its result is reused rather than computing it again.</p>
+<p><a href="ch5_code/src/FindMaxPath_DPCache.py">ch5_code/src/FindMaxPath_DPCache.py</a> (lines 24 to 59):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
+        graph: Graph[N, ND, E, ED],
+        current_node: N,
+        end_node: N,
+        cache: Dict[N, Optional[Tuple[List[N], float]]],
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+</span>) -&gt; Optional[Tuple[List[N], float]]:</span>
+    <span class="hljs-keyword">if</span> current_node == end_node:
+        <span class="hljs-keyword">return</span> [end_node], <span class="hljs-number">0.0</span>
+    alternatives = []
+    <span class="hljs-keyword">for</span> edge_id <span class="hljs-keyword">in</span> graph.get_outputs(current_node):
+        edge_weight = get_edge_weight_func(edge_id)
+        child_n = graph.get_edge_to(edge_id)
+        <span class="hljs-keyword">if</span> child_n <span class="hljs-keyword">in</span> cache:
+            res = cache[child_n]
+        <span class="hljs-keyword">else</span>:
+            res = find_max_path(
+                graph,
+                child_n,
+                end_node,
+                cache,
+                get_edge_weight_func
+            )
+            cache[child_n] = res
+        <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">continue</span>
+        path, weight = res
+        path = [current_node] + path
+        weight = edge_weight + weight
+        res = path, weight
+        alternatives.append(res)
+    <span class="hljs-keyword">if</span> len(alternatives) == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># no path to end, so return None</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> max(alternatives, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])  <span class="hljs-comment"># choose path to end with max weight</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the following graph...</p>
+<p><img src="dot_cbacbd7381b4deb38ffedea67a514dc8.svg" alt="Dot diagram"></p>
+<p>... the path with the max weight between A and E ...</p>
+<ul>
+<li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
+<li>Maximum weight = 3.0</li>
+</ul>
+</div>
+<p></p>
+<p>The above works fine, but a better <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a> approach is to build out a cache from the source node one step at a time. Set the source node to have a weight of 0. Then, for any node where all of its parents have a weight set, choose the edge where <code>parent_weight + edge_weight</code> is the highest. That highest <code>parent_weight + edge_weight</code> becomes the weight of that node and the edge responsible (backtracking edge) for it gets stored within the node as well.</p>
+<p>Repeat until all nodes have a weight and edge set.</p>
+<p>For example, imagine the following graph...</p>
+<p><img src="svgbob_17a86f29e93ea0ac10d87eff5b54f515afa543aa.svg" alt="Kroki diagram output"></p>
+<p>Set source nodes to have a weight of 0...</p>
+<p><img src="svgbob_b46f186f6a89af1bdf29d6d58eb4eb86228b5a41.svg" alt="Kroki diagram output"></p>
+<p>Then, iteratively set the weights and backtracking edge...</p>
+<p><img src="svgbob_b50016ce027bdf6cec626ccea86f9351f4d043d4.svg" alt="Kroki diagram output"></p>
+<p>To find the edge with the highest weight, simply walk backward using the backtracking edges from the destination node to the source node. For example, in the graph above the maximum path that ends at E can be determined by following the backtracking edges from E until A is reached...</p>
+<ul>
+<li>E came from C</li>
+<li>C came from A</li>
+</ul>
+<p>The maximum path from A to E is A -&gt; C -&gt; E and the weight of that path is for (the weight of E).</p>
+<p>Why is this variant of the <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming algorithm</a> better than the more obvious caching approach?</p>
+<ul>
+<li>Less memory: The caching approach stores a path to the destination for each node. With this approach, each node only stores a backtracking edge and weight.</li>
+<li>More reusable: The caching approach only works for a specific destination node. With this approach, once the node weights and backtracking edges have been set, it's possible to find the max path from any destination node just by walking back to the source node.</li>
+</ul>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
+<p>INSERT CODE HERE</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>

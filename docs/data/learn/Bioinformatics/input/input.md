@@ -3074,7 +3074,7 @@ The Pevzner book mentions a non-biology related problem to help illustrate align
 
 **ALGORITHM**:
 
-The following algorithm finds a maximum path in the most obvious way: iterate over all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.
+This algorithm finds a maximum path in the most obvious way: Recursively drill down all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.
 
 ```{output}
 ch5_code/src/FindMaxPath_Bruteforce.py
@@ -3088,6 +3088,126 @@ A B 1, A C 1, B C 1, C D 1, C E 1
 A
 E
 ```
+
+#### Dynamic Programming Algorithm
+
+**ALGORITHM**:
+
+This algorithm extends the bruteforce algorithm using dynamic programming: At each recursive step, cache the results. Each recursive step drills down one node and finds the maximum path between that node and the destination node. If that maximum path for that node has already been computed once before, its result is reused rather than computing it again.
+
+```{output}
+ch5_code/src/FindMaxPath_DPCache.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+FindMaxPath_DPCache
+A B 1, A C 1, B C 1, C D 1, C E 1
+A
+E
+```
+
+The above works fine, but a better dynamic programming approach is to build out a cache from the source node one step at a time. Set the source node to have a weight of 0. Then, for any node where all of its parents have a weight set, choose the edge where `parent_weight + edge_weight` is the highest. That highest `parent_weight + edge_weight` becomes the weight of that node and the edge responsible (backtracking edge) for it gets stored within the node as well.
+
+Repeat until all nodes have a weight and edge set.
+
+For example, imagine the following graph...
+
+```{svgbob}
+  1       1
+.----> B ----.
+|            v   2
+A ---------> C ----> D
+      3      |
+             `-----> E 
+                 1
+```
+
+Set source nodes to have a weight of 0...
+
+```{svgbob}
+"* Node weight denoted in brackets next to node name"
+
+  1       1
+.----> B ----.
+|            v   2
+A(0) ------> C ----> D
+      3      |
+             `-----> E 
+                 1
+```
+
+Then, iteratively set the weights and backtracking edge...
+
+```{svgbob}
+"* Node weight denoted in brackets next to node name"
+"* Backtracking edge chosen for a node is denoted by double lines"
+
+   "Iteration 1"                       "Iteration 2"                       "Iteration 3"
+  1       1                          1       1                          1       1           
+.==> B(1) ---.                     .==> B(1) ---.                     .==> B(1) ---.        
+|            v   2                 |            v   2                 |            v   2    
+A(0) ------> C ----> D             A(0) =====> C(3) --> D             A(0) =====> C(3) ==> D(5)
+      3      |                           3      |                           3      |        
+             `-----> E                          `-----> E                          `=====> E(4)
+                 1                                  1                                  1    
+```
+
+To find the edge with the highest weight, simply walk backward using the backtracking edges from the destination node to the source node. For example, in the graph above the maximum path that ends at E can be determined by following the backtracking edges from E until A is reached...
+
+ * E came from C
+ * C came from A
+
+The maximum path from A to E is A -> C -> E and the weight of that path is for (the weight of E).
+
+Why is this variant of the dynamic programming algorithm better than the more obvious caching approach?
+
+ * Less memory: The caching approach stores a path to the destination for each node. With this approach, each node only stores a backtracking edge and weight.
+ * More reusable: The caching approach only works for a specific destination node. With this approach, once the node weights and backtracking edges have been set, it's possible to find the max path from any destination node just by walking back to the source node.
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
+INSERT CODE HERE
+
 
 # Stories
 

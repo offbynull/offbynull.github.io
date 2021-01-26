@@ -1,5 +1,4 @@
-import math
-from typing import TypeVar, Callable, Tuple, List
+from typing import TypeVar, Callable, Tuple, List, Optional
 
 from Graph import Graph
 from GraphvizRender import graph_to_graphviz
@@ -19,60 +18,38 @@ GET_EDGE_WEIGHT_FUNC_TYPE =\
         ],
         float                  # edge weight
     ]
-FOUND_PATH_FUNC_TYPE =\
-    Callable[
-        [
-            List[N],
-            float
-        ],
-        None
-    ]
 
 
 # MARKDOWN
-def walk(
-        g: Graph[N, ND, E, ED],
-        end_node: N,
-        current_node: N,
-        current_path: List[N],
-        current_weight: float,
-        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE,
-        found_path_func: FOUND_PATH_FUNC_TYPE
-):
-    if current_node == end_node:
-        found_path_func(current_path, current_weight)
-        return
-    for edge_id in g.get_outputs(current_node):
-        edge_weight = get_edge_weight_func(edge_id)
-        child_n = g.get_edge_to(edge_id)
-        walk(
-            g,
-            end_node,
-            child_n,
-            current_path + [child_n],
-            current_weight + edge_weight,
-            get_edge_weight_func,
-            found_path_func
-        )
-
-
 def find_max_path(
-        g: Graph[N, ND, E, ED],
-        from_node: N,
-        to_node: N,
-        get_edge_data_func: GET_EDGE_WEIGHT_FUNC_TYPE
-) -> Tuple[List[N], float]:
-    last_path = []
-    last_weight = -math.inf
-
-    def overwrite_max_func(path: List[N], weight: float):
-        nonlocal  last_path, last_weight
-        if weight > last_weight:
-            last_weight = weight
-            last_path = path
-
-    walk(g, to_node, from_node, [from_node], 0.0, get_edge_data_func, overwrite_max_func)
-    return last_path, last_weight
+        graph: Graph[N, ND, E, ED],
+        current_node: N,
+        end_node: N,
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+) -> Optional[Tuple[List[N], float]]:
+    if current_node == end_node:
+        return [end_node], 0.0
+    alternatives = []
+    for edge_id in graph.get_outputs(current_node):
+        edge_weight = get_edge_weight_func(edge_id)
+        child_n = graph.get_edge_to(edge_id)
+        res = find_max_path(
+            graph,
+            child_n,
+            end_node,
+            get_edge_weight_func
+        )
+        if res is None:
+            continue
+        path, weight = res
+        path = [current_node] + path
+        weight = edge_weight + weight
+        res = path, weight
+        alternatives.append(res)
+    if len(alternatives) == 0:
+        return None  # no path to end, so return None
+    else:
+        return max(alternatives, key=lambda x: x[1])  # choose path to end with max weight
 # MARKDOWN
 
 

@@ -1,5 +1,4 @@
-import math
-from typing import TypeVar, Callable, Tuple, List, Dict
+from typing import TypeVar, Callable, Tuple, List, Dict, Optional
 
 from Graph import Graph
 from GraphvizRender import graph_to_graphviz
@@ -19,93 +18,48 @@ GET_EDGE_WEIGHT_FUNC_TYPE =\
         ],
         float                  # edge weight
     ]
-FOUND_PATH_FUNC_TYPE =\
-    Callable[
-        [
-            List[N],
-            float
-        ],
-        None
-    ]
 
 
 # MARKDOWN
-def walk(
-        g: Graph[N, ND, E, ED],
-        end_node: N,
-        current_node: N,
-        current_path: List[N],
-        current_weight: float,
-        cache: Dict[N, Tuple[List[N], float]],
-        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE,
-        found_path_func: FOUND_PATH_FUNC_TYPE
-) -> Tuple[List[N], float]:
-    if current_node == end_node:
-        found_path_func(current_path, current_weight)
-        return current_path, current_weight
-    if current_node in cache:
-        max_path, max_weight = cache[current_node]
-        max_path = current_path + max_path  # prepend with current path
-        return max_path, max_weight
-    max_walk_res = None
-    for edge_id in g.get_outputs(current_node):
-        edge_weight = get_edge_weight_func(edge_id)
-        child_n = g.get_edge_to(edge_id)
-        walk_res = walk(
-            g,
-            end_node,
-            child_n,
-            current_path + [child_n],
-            current_weight + edge_weight,
-            cache,
-            get_edge_weight_func,
-            found_path_func
-        )
-        if max_walk_res is None or walk_res[1] > max_walk_res[1]:
-            max_walk_res = walk_res
-    if max_walk_res is not None:
-        max_path, max_weight = max_walk_res
-        max_path = max_path[len(current_path):]  # trunc path so it starts with current_node
-        cache[current_node] = (max_path, max_weight)
-        return max_walk_res
-
-
 def find_max_path(
-        g: Graph[N, ND, E, ED],
-        from_node: N,
-        to_node: N,
-        get_edge_data_func: GET_EDGE_WEIGHT_FUNC_TYPE
-) -> Tuple[List[N], float]:
-    last_path = []
-    last_weight = -math.inf
-
-    def overwrite_max_func(path: List[N], weight: float):
-        nonlocal  last_path, last_weight
-        if weight > last_weight:
-            last_weight = weight
-            last_path = path
-
-    walk(g, to_node, from_node, [from_node], 0.0, {}, get_edge_data_func, overwrite_max_func)
-    return last_path, last_weight
+        graph: Graph[N, ND, E, ED],
+        current_node: N,
+        end_node: N,
+        cache: Dict[N, Optional[Tuple[List[N], float]]],
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+) -> Optional[Tuple[List[N], float]]:
+    if current_node == end_node:
+        return [end_node], 0.0
+    alternatives = []
+    for edge_id in graph.get_outputs(current_node):
+        edge_weight = get_edge_weight_func(edge_id)
+        child_n = graph.get_edge_to(edge_id)
+        if child_n in cache:
+            res = cache[child_n]
+        else:
+            res = find_max_path(
+                graph,
+                child_n,
+                end_node,
+                cache,
+                get_edge_weight_func
+            )
+            cache[child_n] = res
+        if res is None:
+            continue
+        path, weight = res
+        path = [current_node] + path
+        weight = edge_weight + weight
+        res = path, weight
+        alternatives.append(res)
+    if len(alternatives) == 0:
+        return None  # no path to end, so return None
+    else:
+        return max(alternatives, key=lambda x: x[1])  # choose path to end with max weight
 # MARKDOWN
 
 
 def main():
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
-    TEST ME BEFORE DEPLOYMENT
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
     try:
@@ -125,6 +79,7 @@ def main():
             graph,
             from_node,
             to_node,
+            {},
             lambda edge_id: graph.get_edge_data(edge_id)
         )
         print(f'... the path with the max weight between {from_node} and {to_node} ...', end='\n\n')
