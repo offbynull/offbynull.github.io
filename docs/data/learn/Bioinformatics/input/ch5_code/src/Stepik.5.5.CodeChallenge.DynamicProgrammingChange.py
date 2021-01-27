@@ -47,6 +47,15 @@ print(f'{count}')
 #     * for d=1, min_num_coins(13-1) = min_num_coins(12) = 3
 #   In the above example, max(d) is 5 -- we're only ever looking up 5 slots back in the cache.
 #
+#   ALTERNATIVELY...
+#
+#   The STOP AND THINK section immediately following this problem asks how you can perform this exact same problem by
+#   only keeping a cache up to the max coin denomination (e.g. if coin denom were 0.05, create cache with 0.01, 0.02,
+#   0.03, 0.04, 0.05). I think this is possible by using modulo and division. For example, if 0.05 were the highest
+#   denom, then take the input divide by 0.05 -- that'll tell you how many 0.05 coins you need in total. The remainder
+#   will by less than 0.05 and you can use the cache to calculate that.
+#
+#   THE SECOND OPTION IS THE BETTER CHOICE IF IT WORKS.
 #
 # 2. Recall that our original goal was to make change, not just compute MinNumCoins(money). Modify DPChange so that it
 # not only computes the minimum number of coins but also returns these coins.

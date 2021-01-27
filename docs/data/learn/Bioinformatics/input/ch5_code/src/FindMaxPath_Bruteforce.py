@@ -1,15 +1,12 @@
 from typing import TypeVar, Callable, Tuple, List, Optional
 
 from Graph import Graph
-from GraphvizRender import graph_to_graphviz
 from helpers.Utils import unique_id_generator
 
 N = TypeVar('N')
 ND = TypeVar('ND')
 E = TypeVar('E')
 ED = TypeVar('ED')
-
-ELEM = TypeVar('ELEM')
 
 GET_EDGE_WEIGHT_FUNC_TYPE =\
     Callable[
@@ -26,9 +23,9 @@ def find_max_path(
         current_node: N,
         end_node: N,
         get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
-) -> Optional[Tuple[List[N], float]]:
+) -> Optional[Tuple[List[E], float]]:
     if current_node == end_node:
-        return [end_node], 0.0
+        return [], 0.0
     alternatives = []
     for edge_id in graph.get_outputs(current_node):
         edge_weight = get_edge_weight_func(edge_id)
@@ -42,7 +39,7 @@ def find_max_path(
         if res is None:
             continue
         path, weight = res
-        path = [current_node] + path
+        path = [edge_id] + path
         weight = edge_weight + weight
         res = path, weight
         alternatives.append(res)
@@ -51,6 +48,22 @@ def find_max_path(
     else:
         return max(alternatives, key=lambda x: x[1])  # choose path to end with max weight
 # MARKDOWN
+
+
+def graph_to_graphviz(
+        graph: Graph[N, ND, E, ED],
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+) -> str:
+    dot_subgraph = 'digraph {\n'
+    dot_subgraph += '  node [shape=plaintext]\n'
+    for node_id in graph.get_nodes():
+        dot_subgraph += f'  "{node_id}"\n'
+    for edge_id in graph.get_edges():
+        from_id, to_id, data = graph.get_edge(edge_id)
+        weight = get_edge_weight_func(data)
+        dot_subgraph += f'  "{from_id}" -> "{to_id}" [label="{weight}"]\n'
+    dot_subgraph += '}'
+    return dot_subgraph
 
 
 def main():
@@ -75,8 +88,9 @@ def main():
             to_node,
             lambda edge_id: graph.get_edge_data(edge_id)
         )
+        path_as_nodes = [graph.get_edge_from(path[0])] + [graph.get_edge_to(e) for e in path]
         print(f'... the path with the max weight between {from_node} and {to_node} ...', end='\n')
-        print(f' * Maximum path = {" -> ".join(path)}', end='\n')
+        print(f' * Maximum path = {" -> ".join(path_as_nodes)}', end='\n')
         print(f' * Maximum weight = {weight}', end='\n')
     finally:
         print("</div>", end="\n\n")

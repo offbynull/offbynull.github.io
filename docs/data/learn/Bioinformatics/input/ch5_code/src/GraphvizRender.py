@@ -20,23 +20,6 @@ GET_EDGE_LABEL_FUNC_TYPE =\
     ]
 
 
-
-def graph_to_graphviz(
-        graph: Graph[N, ND, E, ED],
-        get_edge_label_func: GET_EDGE_LABEL_FUNC_TYPE
-) -> str:
-    dot_subgraph = 'digraph {\n'
-    dot_subgraph += '  node [shape=plaintext]\n'
-    for node_id in graph.get_nodes():
-        dot_subgraph += f'  "{node_id}"\n'
-    for edge_id in graph.get_edges():
-        from_id, to_id, data = graph.get_edge(edge_id)
-        label = get_edge_label_func(data)
-        dot_subgraph += f'  "{from_id}" -> "{to_id}" [label="{label}"]\n'
-    dot_subgraph += '}'
-    return dot_subgraph
-
-
 def grid_graph_to_graphviz(graph: Graph[Tuple[int, ...], ND, str, ED]) -> str:
     dim = len(next(graph.get_nodes()))
     if dim < 2:
@@ -97,4 +80,4 @@ if __name__ == '__main__':
         lambda src_id, dst_id, offsets, e: e
     )
     # print(f'{g}')
-    print(f'{graph_to_graphviz(g, lambda e: str(e))}')
+    print(f'{grid_graph_to_graphviz(g, lambda e: str(e))}')

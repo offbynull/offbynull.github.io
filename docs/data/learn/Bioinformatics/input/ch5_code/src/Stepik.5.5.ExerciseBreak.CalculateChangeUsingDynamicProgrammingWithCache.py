@@ -61,9 +61,3 @@ for i in range(13, 22 + 1):
 # On second thought, it may be better to use a cache directly and to build out that cache by computing from 0 to m. That
 # way you don't bitten by overflowing the stack from recursion. See the CodeChallenge for 5.5 to see how that's
 # implemented.
-
-# The STOP AND THINK section immediately following this problem asks how you can perform this exact same problem by only
-# keeping a cache up to the max coin denomination (e.g. if coin denom were 0.05, create cache with 0.01, 0.02, 0.03,
-# 0.04, 0.05). I think this is possible by using modulo and division. For example, if 0.05 were the highest denom, then
-# take the input divide by 0.05 -- that'll tell you how many 0.05 coins you need in total. The remainder will by less
-# than 0.05 and you can use the cache to calculate that.

@@ -2,7 +2,7 @@ from typing import List, Any, Optional, TypeVar, Tuple, Callable
 
 from Backtrack import backtrack
 from GraphGridCreate import create_grid_graph
-from PopulateWeightsAndBacktrackPointers_DynamicProgramming import populate_weights_and_backtrack_pointers
+from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers
 from WeightLookup import WeightLookup, Constant2DWeightLookup
 
 ELEM = TypeVar('ELEM')

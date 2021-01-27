@@ -83,7 +83,8 @@
 <li><a href="#H_Find%20Maximum%20Path">Find Maximum Path</a></li>
 <ul>
 <li><a href="#H4_Bruteforce%20Algorithm">Bruteforce Algorithm</a></li>
-<li><a href="#H_Dynamic%20Programming%20Algorithm">Dynamic Programming Algorithm</a></li>
+<li><a href="#H_Cache%20Algorithm">Cache Algorithm</a></li>
+<li><a href="#H_Backtrack%20Algorithm">Backtrack Algorithm</a></li>
 </ul>
 </ul>
 </ul>
@@ -245,7 +246,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -377,12 +378,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>TTAAA = 6 occurrences</li>
-<li>GATCA = 6 occurrences</li>
 <li>AAGGG = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>CCCTT = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>TTAAA = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>GATCA = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -456,18 +457,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1600,7 +1601,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>AAAGA<br>AAAGA<br>AAAGA</p>
+<p>ATAAT<br>ATAAT<br>ATAAT</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2123,7 +2124,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2184,7 +2185,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2860,22 +2861,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
 </ul>
 </div>
 <p></p>
@@ -5527,6 +5528,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>Before coming up with the above solution, I came up with another heuristic that I tried: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
 </div>
 <a name="H_Sequence%20Alignment"></a><h2>Sequence Alignment</h2>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <p>Many core biology constructs are represented as <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, ...</p>
 <ul>
 <li>DNA strands are represented as a <a href="#BM_(sequence)%2Fi">sequence</a> (chained nucleotides),</li>
@@ -5710,20 +5712,23 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>The Pevzner book mentions a non-biology related problem to help illustrate <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s: the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan Tourist problem</a>. Look it up if you're confused.</p>
 </div>
 <a name="H_Find%20Maximum%20Path"></a><h3>Find Maximum Path</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given an arbitrary <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> where each edge has a weight, find the path with the maximum weight between two nodes.</p>
 <p><strong>WHY</strong>: Finding a maximum path between nodes is fundamental to <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s. That is, regardless of what type of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> is being performed, at its core it boils down to finding the maximum weight between two nodes in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>.</p>
 <a name="H4_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBruteforce%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm finds a maximum path in the most obvious way: Recursively drill down all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.</p>
-<p><a href="ch5_code/src/FindMaxPath_Bruteforce.py">ch5_code/src/FindMaxPath_Bruteforce.py</a> (lines 24 to 53):</p>
+<p>This algorithm finds a maximum path using recursion. To calculate the maximum path between two nodes, iterate over each of the source node's children and calculate <code>edge_weight + max_path(child, destination).weight</code>. The iteration with the highest value is the one with the maximum path to the destination node.</p>
+<p>This is too slow to be used on anything but small DAGs.</p>
+<p><a href="ch5_code/src/FindMaxPath_Bruteforce.py">ch5_code/src/FindMaxPath_Bruteforce.py</a> (lines 21 to 50):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
         graph: Graph[N, ND, E, ED],
         current_node: N,
         end_node: N,
         get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
-</span>) -&gt; Optional[Tuple[List[N], float]]:</span>
+</span>) -&gt; Optional[Tuple[List[E], float]]:</span>
     <span class="hljs-keyword">if</span> current_node == end_node:
-        <span class="hljs-keyword">return</span> [end_node], <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">return</span> [], <span class="hljs-number">0.0</span>
     alternatives = []
     <span class="hljs-keyword">for</span> edge_id <span class="hljs-keyword">in</span> graph.get_outputs(current_node):
         edge_weight = get_edge_weight_func(edge_id)
@@ -5737,7 +5742,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
             <span class="hljs-keyword">continue</span>
         path, weight = res
-        path = [current_node] + path
+        path = [edge_id] + path
         weight = edge_weight + weight
         res = path, weight
         alternatives.append(res)
@@ -5749,7 +5754,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_5ee0902513dd5d98021f14206feefcdd.svg" alt="Dot diagram"></p>
+<p><img src="dot_56633e725a1d1b20c518d59304174b25.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5757,19 +5762,26 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 </div>
 <p></p>
-<a name="H_Dynamic%20Programming%20Algorithm"></a><h4>Dynamic Programming Algorithm</h4>
+<a name="H_Cache%20Algorithm"></a><h4>Cache Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FCache%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBruteforce%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Bruteforce Algorithm</a></li>
+</ul>
+</div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm extends the bruteforce algorithm using <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>: At each recursive step, cache the results. Each recursive step drills down one node and finds the maximum path between that node and the destination node. If that maximum path for that node has already been computed once before, its result is reused rather than computing it again.</p>
-<p><a href="ch5_code/src/FindMaxPath_DPCache.py">ch5_code/src/FindMaxPath_DPCache.py</a> (lines 24 to 59):</p>
+<p>This algorithm extends the bruteforce algorithm using <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>: A technique that breaks down a problem into recursive sub-problems, where the result of each sub-problem is stored in some lookup table (cache) such that it can be re-used if that sub-problem were ever encountered again. The bruteforce algorithm already breaks down into recursive sub-problems. As such, the only change here is that the result of each sub-problem computation is cached such that it can be re-used if it were ever encountered again.</p>
+<p><a href="ch5_code/src/FindMaxPath_DPCache.py">ch5_code/src/FindMaxPath_DPCache.py</a> (lines 21 to 56):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
         graph: Graph[N, ND, E, ED],
         current_node: N,
         end_node: N,
-        cache: Dict[N, Optional[Tuple[List[N], float]]],
+        cache: Dict[N, Optional[Tuple[List[E], float]]],
         get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
-</span>) -&gt; Optional[Tuple[List[N], float]]:</span>
+</span>) -&gt; Optional[Tuple[List[E], float]]:</span>
     <span class="hljs-keyword">if</span> current_node == end_node:
-        <span class="hljs-keyword">return</span> [end_node], <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">return</span> [], <span class="hljs-number">0.0</span>
     alternatives = []
     <span class="hljs-keyword">for</span> edge_id <span class="hljs-keyword">in</span> graph.get_outputs(current_node):
         edge_weight = get_edge_weight_func(edge_id)
@@ -5788,7 +5800,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
         <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
             <span class="hljs-keyword">continue</span>
         path, weight = res
-        path = [current_node] + path
+        path = [edge_id] + path
         weight = edge_weight + weight
         res = path, weight
         alternatives.append(res)
@@ -5800,7 +5812,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_cbacbd7381b4deb38ffedea67a514dc8.svg" alt="Dot diagram"></p>
+<p><img src="dot_a43ff5f4af5599db691d6628eb03f479.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5808,46 +5820,165 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 </div>
 <p></p>
-<p>The above works fine, but a better <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a> approach is to build out a cache from the source node one step at a time. Set the source node to have a weight of 0. Then, for any node where all of its parents have a weight set, choose the edge where <code>parent_weight + edge_weight</code> is the highest. That highest <code>parent_weight + edge_weight</code> becomes the weight of that node and the edge responsible (backtracking edge) for it gets stored within the node as well.</p>
-<p>Repeat until all nodes have a weight and edge set.</p>
-<p>For example, imagine the following graph...</p>
+<a name="H_Backtrack%20Algorithm"></a><h4>Backtrack Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FCache%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Cache Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>This algorithm is a better but less obvious <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a> approach. The previous <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming algorithm</a> builds a cache containing the maximum path from each node encountered to the destination node. This <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming algorithm</a> instead builds out a smaller cache from the source node fanning out one step at a time.</p>
+<p>In this less obvious algorithm, there are edge weights just as before but each node also has a weight and a selected incoming edge. The <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> starts off with all node weights and incoming edge selections being unset. The source node has its weight set to 0. Then, for any node where all of its parents have a weight set, select the incoming edge where <code>parent_weight + edge_weight</code> is the highest. That highest <code>parent_weight + edge_weight</code> becomes the weight of that node and the edge responsible for it becomes the selected incoming edge (backtracking edge).</p>
+<p>Repeat until all nodes have a weight and backtracking edge set.</p>
+<p>For example, imagine the following <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a>...</p>
 <p><img src="svgbob_17a86f29e93ea0ac10d87eff5b54f515afa543aa.svg" alt="Kroki diagram output"></p>
 <p>Set source nodes to have a weight of 0...</p>
 <p><img src="svgbob_b46f186f6a89af1bdf29d6d58eb4eb86228b5a41.svg" alt="Kroki diagram output"></p>
-<p>Then, iteratively set the weights and backtracking edge...</p>
+<p>Then, iteratively set the weights and backtracking edges...</p>
 <p><img src="svgbob_b50016ce027bdf6cec626ccea86f9351f4d043d4.svg" alt="Kroki diagram output"></p>
-<p>To find the edge with the highest weight, simply walk backward using the backtracking edges from the destination node to the source node. For example, in the graph above the maximum path that ends at E can be determined by following the backtracking edges from E until A is reached...</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This process is walking the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> in <a href="#BM_(topological%20order)%2Fi">topological order</a>.</p>
+</div>
+<p>To find the path with the maximum weight, simply walk backward using the backtracking edges from the destination node to the source node. For example, in the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> above the maximum path that ends at E can be determined by following the backtracking edges from E until A is reached...</p>
 <ul>
 <li>E came from C</li>
 <li>C came from A</li>
 </ul>
-<p>The maximum path from A to E is A -&gt; C -&gt; E and the weight of that path is for (the weight of E).</p>
-<p>Why is this variant of the <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming algorithm</a> better than the more obvious caching approach?</p>
+<p>The maximum path from A to E is A -&gt; C -&gt; E and the weight of that path is 4 (the weight of E).</p>
+<p>This variant of the <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming algorithm</a> uses less memory than the first. For each node encountered, ...</p>
 <ul>
-<li>Less memory: The caching approach stores a path to the destination for each node. With this approach, each node only stores a backtracking edge and weight.</li>
-<li>More reusable: The caching approach only works for a specific destination node. With this approach, once the node weights and backtracking edges have been set, it's possible to find the max path from any destination node just by walking back to the source node.</li>
+<li>the first variant caches a path to the destination.</li>
+<li>this variant only caches a weight and backtracking edge.</li>
 </ul>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
-<p>INSERT CODE HERE</p>
+<p><a href="ch5_code/src/FindMaxPath_DPBacktrack.py">ch5_code/src/FindMaxPath_DPBacktrack.py</a> (lines 41 to 143):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">populate_weights_and_backtrack_pointers</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        from_node: N,
+        set_node_data_func: SET_NODE_DATA_FUNC_TYPE,
+        get_node_data_func: GET_NODE_DATA_FUNC_TYPE,
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+</span>):</span>
+    processed_nodes = set()          <span class="hljs-comment"># nodes where all parents have been processed AND it has been processed</span>
+    waiting_nodes = set()            <span class="hljs-comment"># nodes where all parents have been processed BUT it has yet to be processed</span>
+    unprocessable_nodes = Counter()  <span class="hljs-comment"># nodes that have some parents remaining to be processed (value=# of parents left)</span>
+    <span class="hljs-comment"># For all root nodes, add to processed_nodes and set None weight and None backtracking edge.</span>
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> g.get_nodes():
+        <span class="hljs-keyword">if</span> g.get_in_degree(node) == <span class="hljs-number">0</span>:
+            set_node_data_func(node, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>)
+            processed_nodes |= {node}
+    <span class="hljs-comment"># For all root nodes, add any children where its the only parent to waiting_nodes.</span>
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> processed_nodes:
+        <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_outputs(node):
+            dst_node = g.get_edge_to(e)
+            <span class="hljs-keyword">if</span> {g.get_edge_from(e) <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_inputs(dst_node)}.issubset(processed_nodes):
+                waiting_nodes |= {dst_node}
+    <span class="hljs-comment"># Make sure from_node is a root and set its weight to 0.</span>
+    <span class="hljs-keyword">assert</span> from_node <span class="hljs-keyword">in</span> processed_nodes
+    set_node_data_func(from_node, <span class="hljs-number">0.0</span>, <span class="hljs-literal">None</span>)
+    <span class="hljs-comment"># Track how many remaining parents each node in the graph has. Note that the graph's root nodes were already marked</span>
+    <span class="hljs-comment"># as processed above.</span>
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> g.get_nodes():
+        incoming_nodes = {g.get_edge_from(e) <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_inputs(node)}
+        incoming_nodes -= processed_nodes
+        unprocessable_nodes[node] = len(incoming_nodes)
+    <span class="hljs-comment"># Any nodes in waiting_nodes have had all their parents already processed (in processed_nodes). As such, they can</span>
+    <span class="hljs-comment"># have their weights and backtracking pointers calculated. They can then be placed into processed_nodes themselves.</span>
+    <span class="hljs-keyword">while</span> len(waiting_nodes) &gt; <span class="hljs-number">0</span>:
+        node = next(iter(waiting_nodes))
+        incoming_nodes = {g.get_edge_from(e) <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_inputs(node)}
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> incoming_nodes.issubset(processed_nodes):
+            <span class="hljs-keyword">continue</span>
+        incoming_accum_weights = {}
+        <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> g.get_inputs(node):
+            src_node = g.get_edge_from(edge)
+            src_node_weight, _ = get_node_data_func(src_node)
+            edge_weight = get_edge_weight_func(edge)
+            <span class="hljs-comment"># Roots that aren't from_node were initialized to a weight of None -- if you see them, skip them.</span>
+            <span class="hljs-keyword">if</span> src_node_weight <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                incoming_accum_weights[edge] = src_node_weight + edge_weight
+        <span class="hljs-keyword">if</span> len(incoming_accum_weights) == <span class="hljs-number">0</span>:
+            max_edge = <span class="hljs-literal">None</span>
+            max_weight = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">else</span>:
+            max_edge = max(incoming_accum_weights, key=<span class="hljs-keyword">lambda</span> e: incoming_accum_weights[e])
+            max_weight = incoming_accum_weights[max_edge]
+        set_node_data_func(node, max_weight, max_edge)
+        <span class="hljs-comment"># This node has been processed, move it over to processed_nodes.</span>
+        waiting_nodes.remove(node)
+        processed_nodes.add(node)
+        <span class="hljs-comment"># For outgoing nodes this node points to, if that outgoing node has all of its dependencies in processed_nodes,</span>
+        <span class="hljs-comment"># then add it to waiting_nodes (so it can be processed).</span>
+        outgoing_nodes = {g.get_edge_to(e) <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_outputs(node)}
+        <span class="hljs-keyword">for</span> output_node <span class="hljs-keyword">in</span> outgoing_nodes:
+            unprocessable_nodes[output_node] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> unprocessable_nodes[output_node] == <span class="hljs-number">0</span>:
+                waiting_nodes.add(output_node)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        end_node: N,
+        get_node_data_func: GET_NODE_DATA_FUNC_TYPE
+</span>) -&gt; List[E]:</span>
+    next_node = end_node
+    reverse_path = []
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        node = next_node
+        weight, backtracking_edge = get_node_data_func(node)
+        <span class="hljs-keyword">if</span> backtracking_edge <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">else</span>:
+            reverse_path.append(backtracking_edge)
+        next_node = g.get_edge_from(backtracking_edge)
+    <span class="hljs-keyword">return</span> reverse_path[::<span class="hljs-number">-1</span>]  <span class="hljs-comment"># this is the path in reverse -- reverse it to get it in the correct order</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
+        graph: Graph[N, ND, E, ED],
+        start_node: N,
+        end_node: N,
+        set_node_data_func: SET_NODE_DATA_FUNC_TYPE,
+        get_node_data_func: GET_NODE_DATA_FUNC_TYPE,
+        get_edge_weight_func: GET_EDGE_WEIGHT_FUNC_TYPE
+</span>) -&gt; Optional[Tuple[List[E], float]]:</span>
+    populate_weights_and_backtrack_pointers(
+        graph,
+        start_node,
+        set_node_data_func,
+        get_node_data_func,
+        get_edge_weight_func
+    )
+    path = backtrack(graph, end_node, get_node_data_func)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> path:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    weight, _ = get_node_data_func(end_node)
+    <span class="hljs-keyword">return</span> path, weight
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the following graph...</p>
+<p><img src="dot_fd40fe69582af290c67b81441dfbac4f.svg" alt="Dot diagram"></p>
+<p>... the path with the max weight between A and E ...</p>
+<ul>
+<li>Maximum path = A -&gt; C -&gt; E</li>
+<li>Maximum weight = 4.0</li>
+</ul>
+<p><img src="dot_3901f578162e8aaf695af3ba7a399253.svg" alt="Dot diagram"></p>
+<p>The edges in blue signify the incoming edge that was selected for that node.</p>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Note how ...</p>
+<ul>
+<li>the first variant's cache is built out such that it's possible to find the maximum path between any walked node and the destination node.</li>
+<li>this variant's cache is built out such that it's possible to find the maximum path between the source node and any walked node.</li>
+</ul>
+<p>It's easy to flip this around by reversing the direction the algorithm walks.</p>
+</div>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
@@ -5938,8 +6069,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -5957,19 +6088,19 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -5981,12 +6112,12 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -6047,8 +6178,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 18</p>
+<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 21</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>

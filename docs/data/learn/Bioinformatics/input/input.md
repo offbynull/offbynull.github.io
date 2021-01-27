@@ -2965,6 +2965,8 @@ Before coming up with the above solution, I came up with another heuristic that 
 
 ## Sequence Alignment
 
+`{bm} /(Algorithms\/Sequence Alignment)_TOPIC/`
+
 Many core biology constructs are represented as sequences. For example, ...
 
  * DNA strands are represented as a sequence (chained nucleotides),
@@ -3066,15 +3068,21 @@ The Pevzner book mentions a non-biology related problem to help illustrate align
 
 ### Find Maximum Path
 
+`{bm} /(Algorithms\/Sequence Alignment\/Find Maximum Path)_TOPIC/`
+
 **WHAT**: Given an arbitrary directed acyclic graph where each edge has a weight, find the path with the maximum weight between two nodes.
 
 **WHY**: Finding a maximum path between nodes is fundamental to sequence alignments. That is, regardless of what type of sequence alignment is being performed, at its core it boils down to finding the maximum weight between two nodes in the alignment graph.
 
 #### Bruteforce Algorithm
 
+`{bm} /(Algorithms\/Sequence Alignment\/Find Maximum Path\/Bruteforce Algorithm)_TOPIC/`
+
 **ALGORITHM**:
 
-This algorithm finds a maximum path in the most obvious way: Recursively drill down all paths in the graph and pick the one with the highest weight. It's too slow to be used on anything but small graphs.
+This algorithm finds a maximum path using recursion. To calculate the maximum path between two nodes, iterate over each of the source node's children and calculate `edge_weight + max_path(child, destination).weight`. The iteration with the highest value is the one with the maximum path to the destination node.
+
+This is too slow to be used on anything but small DAGs.
 
 ```{output}
 ch5_code/src/FindMaxPath_Bruteforce.py
@@ -3089,11 +3097,17 @@ A
 E
 ```
 
-#### Dynamic Programming Algorithm
+#### Cache Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Find Maximum Path\/Cache Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path/Bruteforce Algorithm_TOPIC
+```
 
 **ALGORITHM**:
 
-This algorithm extends the bruteforce algorithm using dynamic programming: At each recursive step, cache the results. Each recursive step drills down one node and finds the maximum path between that node and the destination node. If that maximum path for that node has already been computed once before, its result is reused rather than computing it again.
+This algorithm extends the bruteforce algorithm using dynamic programming: A technique that breaks down a problem into recursive sub-problems, where the result of each sub-problem is stored in some lookup table (cache) such that it can be re-used if that sub-problem were ever encountered again. The bruteforce algorithm already breaks down into recursive sub-problems. As such, the only change here is that the result of each sub-problem computation is cached such that it can be re-used if it were ever encountered again.
 
 ```{output}
 ch5_code/src/FindMaxPath_DPCache.py
@@ -3108,11 +3122,23 @@ A
 E
 ```
 
-The above works fine, but a better dynamic programming approach is to build out a cache from the source node one step at a time. Set the source node to have a weight of 0. Then, for any node where all of its parents have a weight set, choose the edge where `parent_weight + edge_weight` is the highest. That highest `parent_weight + edge_weight` becomes the weight of that node and the edge responsible (backtracking edge) for it gets stored within the node as well.
+#### Backtrack Algorithm
 
-Repeat until all nodes have a weight and edge set.
+`{bm} /(Algorithms\/Sequence Alignment\/Find Maximum Path\/Backtrack Algorithm)_TOPIC/`
 
-For example, imagine the following graph...
+```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path/Cache Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+This algorithm is a better but less obvious dynamic programming approach. The previous dynamic programming algorithm builds a cache containing the maximum path from each node encountered to the destination node. This dynamic programming algorithm instead builds out a smaller cache from the source node fanning out one step at a time.
+
+In this less obvious algorithm, there are edge weights just as before but each node also has a weight and a selected incoming edge. The DAG starts off with all node weights and incoming edge selections being unset. The source node has its weight set to 0. Then, for any node where all of its parents have a weight set, select the incoming edge where `parent_weight + edge_weight` is the highest. That highest `parent_weight + edge_weight` becomes the weight of that node and the edge responsible for it becomes the selected incoming edge (backtracking edge).
+
+Repeat until all nodes have a weight and backtracking edge set.
+
+For example, imagine the following DAG...
 
 ```{svgbob}
   1       1
@@ -3138,7 +3164,7 @@ A(0) ------> C ----> D
                  1
 ```
 
-Then, iteratively set the weights and backtracking edge...
+Then, iteratively set the weights and backtracking edges...
 
 ```{svgbob}
 "* Node weight denoted in brackets next to node name"
@@ -3154,60 +3180,43 @@ A(0) ------> C ----> D             A(0) =====> C(3) --> D             A(0) =====
                  1                                  1                                  1    
 ```
 
-To find the edge with the highest weight, simply walk backward using the backtracking edges from the destination node to the source node. For example, in the graph above the maximum path that ends at E can be determined by following the backtracking edges from E until A is reached...
+```{note}
+This process is walking the DAG in topological order.
+```
+
+To find the path with the maximum weight, simply walk backward using the backtracking edges from the destination node to the source node. For example, in the DAG above the maximum path that ends at E can be determined by following the backtracking edges from E until A is reached...
 
  * E came from C
  * C came from A
 
-The maximum path from A to E is A -> C -> E and the weight of that path is for (the weight of E).
+The maximum path from A to E is A -> C -> E and the weight of that path is 4 (the weight of E).
 
-Why is this variant of the dynamic programming algorithm better than the more obvious caching approach?
+This variant of the dynamic programming algorithm uses less memory than the first. For each node encountered, ...
 
- * Less memory: The caching approach stores a path to the destination for each node. With this approach, each node only stores a backtracking edge and weight.
- * More reusable: The caching approach only works for a specific destination node. With this approach, once the node weights and backtracking edges have been set, it's possible to find the max path from any destination node just by walking back to the source node.
+ * the first variant caches a path to the destination.
+ * this variant only caches a weight and backtracking edge.
 
-INSERT CODE HERE
+```{output}
+ch5_code/src/FindMaxPath_DPBacktrack.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-INSERT CODE HERE
+```{ch5}
+FindMaxPath_DPBacktrack
+A B 1, A C 3, B C 1, C D 2, C E 1
+A
+E
+```
 
-INSERT CODE HERE
+```{note}
+Note how ...
 
-INSERT CODE HERE
+ * the first variant's cache is built out such that it's possible to find the maximum path between any walked node and the destination node.
+ * this variant's cache is built out such that it's possible to find the maximum path between the source node and any walked node.
 
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
-INSERT CODE HERE
-
+It's easy to flip this around by reversing the direction the algorithm walks.
+```
 
 # Stories
 

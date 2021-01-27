@@ -4,7 +4,7 @@ from typing import List, Optional, TypeVar, Tuple
 from Backtrack import backtrack
 from Graph import Graph
 from GraphGridCreate import create_grid_graph
-from PopulateWeightsAndBacktrackPointers_DynamicProgramming import populate_weights_and_backtrack_pointers
+from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers
 from WeightLookup import WeightLookup, Constant2DWeightLookup
 from helpers.Utils import unique_id_generator
 
