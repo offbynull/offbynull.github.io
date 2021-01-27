@@ -86,6 +86,26 @@
 <li><a href="#H_Cache%20Algorithm">Cache Algorithm</a></li>
 <li><a href="#H_Backtrack%20Algorithm">Backtrack Algorithm</a></li>
 </ul>
+<li><a href="#H_Global%20Alignment">Global Alignment</a></li>
+<ul>
+<li><a href="#H_Graph%20Algorithm">Graph Algorithm</a></li>
+<li><a href="#H_Matrix%20Algorithm">Matrix Algorithm</a></li>
+<li><a href="#H_Space-efficient%20Algorithm">Space-efficient Algorithm</a></li>
+</ul>
+<li><a href="#H_Local%20Alignment">Local Alignment</a></li>
+<li><a href="#H_Fitting%20Alignment">Fitting Alignment</a></li>
+<li><a href="#H_Overlap%20Alignment">Overlap Alignment</a></li>
+<li><a href="#H_Affine%20Gap%20Penalty">Affine Gap Penalty</a></li>
+<ul>
+<li><a href="#H_Basic%20Algorithm">Basic Algorithm</a></li>
+<li><a href="#H_Layer%20Algorithm">Layer Algorithm</a></li>
+</ul>
+<li><a href="#H_Multiple%20Alignment">Multiple Alignment</a></li>
+<li><a href="#H_Protein%20Scoring">Protein Scoring</a></li>
+<ul>
+<li><a href="#H_PAM%20Scoring%20Matrix">PAM Scoring Matrix</a></li>
+<li><a href="#H_BLOSUM%20Scoring%20Matrix">BLOSUM Scoring Matrix</a></li>
+</ul>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -246,7 +266,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -378,12 +398,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>AAGGG = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
+<li>AAGGG = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -457,18 +477,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1601,7 +1621,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>ATAAT<br>ATAAT<br>ATAAT</p>
+<p>AAAGA<br>AAAGA<br>AAAGA</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2124,7 +2144,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2185,7 +2205,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2861,22 +2881,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 </ul>
 </div>
 <p></p>
@@ -5754,7 +5774,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_56633e725a1d1b20c518d59304174b25.svg" alt="Dot diagram"></p>
+<p><img src="dot_82397f876f0c571f78c568511a154c7e.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5812,7 +5832,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_a43ff5f4af5599db691d6628eb03f479.svg" alt="Dot diagram"></p>
+<p><img src="dot_f15d836e8826551c33795973ff35151c.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5960,13 +5980,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_fd40fe69582af290c67b81441dfbac4f.svg" alt="Dot diagram"></p>
+<p><img src="dot_6ec7cf60604c50b5a69c5d50c98c7801.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_3901f578162e8aaf695af3ba7a399253.svg" alt="Dot diagram"></p>
+<p><img src="dot_76528d9a5da72700d378ebc491ac0d8b.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -5979,6 +5999,52 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <p>It's easy to flip this around by reversing the direction the algorithm walks.</p>
 </div>
+<a name="H_Global%20Alignment"></a><h3>Global Alignment</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<a name="H_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
+<a name="H_Space-efficient%20Algorithm"></a><h4>Space-efficient Algorithm</h4>
+<a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+</ul>
+</div>
+<a name="H_Fitting%20Alignment"></a><h3>Fitting Alignment</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+</ul>
+</div>
+<a name="H_Overlap%20Alignment"></a><h3>Overlap Alignment</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+</ul>
+</div>
+<a name="H_Affine%20Gap%20Penalty"></a><h3>Affine Gap Penalty</h3>
+<a name="H_Basic%20Algorithm"></a><h4>Basic Algorithm</h4>
+<a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
+<a name="H_Multiple%20Alignment"></a><h3>Multiple Alignment</h3>
+<a name="H_Protein%20Scoring"></a><h3>Protein Scoring</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Local Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Fitting Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Overlap Alignment</a></li>
+</ul>
+</div>
+<a name="H_PAM%20Scoring%20Matrix"></a><h4>PAM Scoring Matrix</h4>
+<a name="H_BLOSUM%20Scoring%20Matrix"></a><h4>BLOSUM Scoring Matrix</h4>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
@@ -6069,8 +6135,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -6088,19 +6154,19 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -6112,12 +6178,12 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -6178,8 +6244,8 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 21</p>
+<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 18</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>

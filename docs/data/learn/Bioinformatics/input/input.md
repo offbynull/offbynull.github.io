@@ -3218,6 +3218,64 @@ Note how ...
 It's easy to flip this around by reversing the direction the algorithm walks.
 ```
 
+### Global Alignment
+
+`{bm} /(Algorithms\/Sequence Alignment\/Global Alignment)_TOPIC/`
+
+#### Graph Algorithm
+
+#### Matrix Algorithm
+
+#### Space-efficient Algorithm
+
+### Local Alignment
+
+`{bm} /(Algorithms\/Sequence Alignment\/Local Alignment)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+```
+
+### Fitting Alignment
+
+`{bm} /(Algorithms\/Sequence Alignment\/Fitting Alignment)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+```
+
+### Overlap Alignment
+
+`{bm} /(Algorithms\/Sequence Alignment\/Overlap Alignment)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+```
+
+### Affine Gap Penalty
+
+#### Basic Algorithm
+
+#### Layer Algorithm
+
+### Multiple Alignment
+
+### Protein Scoring
+
+`{bm} /(Algorithms\/Sequence Alignment\/Protein Scoring)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+Algorithms/Sequence Alignment/Local Alignment_TOPIC
+Algorithms/Sequence Alignment/Fitting Alignment_TOPIC
+Algorithms/Sequence Alignment/Overlap Alignment_TOPIC
+```
+
+#### PAM Scoring Matrix
+
+#### BLOSUM Scoring Matrix
+
+
 # Stories
 
 ## Bacterial Genome Replication
