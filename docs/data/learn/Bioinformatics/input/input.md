@@ -3222,7 +3222,106 @@ It's easy to flip this around by reversing the direction the algorithm walks.
 
 `{bm} /(Algorithms\/Sequence Alignment\/Global Alignment)_TOPIC/`
 
+```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
+```
+
+**WHAT**: Given two sequences, perform sequence alignment and pull out the best alignment.
+
+In this case, the term "best alignment" is defined as the most number of matches, but this same algorithm may be used with other scoring algorithms that are more appropriate to the type of biological sequence being compared. For example, if comparing proteins, the probability that some amino acid will mutate to another is used when determining the best alignment.
+
+**WHY**: A strongly matching global alignment means that the sequences may be homologous.
+
 #### Graph Algorithm
+
+**ALGORITHM**:
+
+Determining the best scoring pairwise alignment can be done by generating a DAG of all possible operations at all possible positions in each sequence. Specifically, each operation (indel, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower eights (e.g. a match is typically more favourable than an indel).
+
+For example, consider a DAG that pits FOUR against CHOIR...
+
+```{svgbob}
+   C   H   O   I   R  
+ o-->o-->o-->o-->o-->o
+ |\  |\  |\  |\  |\  |
+F| \ | \ | \ | \ | \ |
+ |  \|  \|  \|  \|  \|
+ v   v   v   v   v   v
+ o-->o-->o-->o-->o-->o
+ |\  |\  |\  |\  |\  |
+O| \ | \ | \ | \ | \ |
+ |  \|  \|  \|  \|  \|
+ v   v   v   v   v   v
+ o-->o-->o-->o-->o-->o
+ |\  |\  |\  |\  |\  |
+U| \ | \ | \ | \ | \ |
+ |  \|  \|  \|  \|  \|
+ v   v   v   v   v   v
+ o-->o-->o-->o-->o-->o
+ |\  |\  |\  |\  |\  |
+R| \ | \ | \ | \ | \ |
+ |  \|  \|  \|  \|  \|
+ v   v   v   v   v   v
+ o-->o-->o-->o-->o-->o
+```
+
+Given this graph, each ...
+
+ * diagonal edge is a replacement / keep matching.
+ * horizontal edge is an indel where the top is kept.
+ * vertical edge is an indel where the left is kept
+
+```{ch5}
+GlobalAlignment_Visualize
+CHOIR
+FOUR
+```
+
+This graph is called an alignment graph. A path through the alignment graph from source (top-left) to sink (bottom-right) represents a single alignment, referred to as an alignment path. For example the alignment path representing...
+
+```
+CH-OIR
+--FOUR
+```
+
+... is as follows...
+
+```{ch5}
+GlobalAlignment_Visualize
+CHOIR
+FOUR
+0,0->0,1|0,1->0,2|0,2->1,2|1,2->2,3|2,3->3,4|3,4->4,5
+```
+
+Since operations with higher weights are more desirable operations compared to operations with lower eights, the alignment path with the highest weight is the most desirable alignment path. That is, out of all the alignment paths possible, the one with the highest weight is the one with the most desirable set of operations. 
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+
+PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
 
 #### Matrix Algorithm
 
@@ -3258,9 +3357,7 @@ Algorithms/Sequence Alignment/Global Alignment_TOPIC
 
 #### Layer Algorithm
 
-### Multiple Alignment
-
-### Protein Scoring
+### Pair-wise Scoring
 
 `{bm} /(Algorithms\/Sequence Alignment\/Protein Scoring)_TOPIC/`
 
@@ -3271,10 +3368,19 @@ Algorithms/Sequence Alignment/Fitting Alignment_TOPIC
 Algorithms/Sequence Alignment/Overlap Alignment_TOPIC
 ```
 
+### Pair-wise Scoring
+
+**WHAT**: Given a pair of sequences, score an element from sequence 1 against sequence 2 based on how similar they are. The type of biological sequence defines how it should be scored, where things such as evolution are mutation probability are used.
+
+**WHY**: Before performing a pair-wise sequence alignment, there needs to be a baseline for how elements within those sequences measure up against each other. In the simplest case, you can compare elements directly against each other. For example, if the sequences are words, it may be enough to compare the letters such that a matching letter scores 1 while a mismatch or indel scores 0. A more complex way to compare words may be to use the phonetics. For example, rather than treating letters as the sequence elements, break up the words by what groups of letters may sound like. For example, the sound made by "ea" and "ee" may be the same depending on the word (e.g. leak vs leek) and as such will score higher.
+
 #### PAM Scoring Matrix
 
 #### BLOSUM Scoring Matrix
 
+### Multi Scoring
+
+### Multiple Alignment
 
 # Stories
 

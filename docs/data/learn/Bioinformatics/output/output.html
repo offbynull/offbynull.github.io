@@ -100,12 +100,14 @@
 <li><a href="#H_Basic%20Algorithm">Basic Algorithm</a></li>
 <li><a href="#H_Layer%20Algorithm">Layer Algorithm</a></li>
 </ul>
-<li><a href="#H_Multiple%20Alignment">Multiple Alignment</a></li>
-<li><a href="#H_Protein%20Scoring">Protein Scoring</a></li>
+<li><a href="#H_Pair-wise%20Scoring">Pair-wise Scoring</a></li>
+<li><a href="#H1_Pair-wise%20Scoring">Pair-wise Scoring</a></li>
 <ul>
 <li><a href="#H_PAM%20Scoring%20Matrix">PAM Scoring Matrix</a></li>
 <li><a href="#H_BLOSUM%20Scoring%20Matrix">BLOSUM Scoring Matrix</a></li>
 </ul>
+<li><a href="#H_Multi%20Scoring">Multi Scoring</a></li>
+<li><a href="#H_Multiple%20Alignment">Multiple Alignment</a></li>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -5774,7 +5776,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_82397f876f0c571f78c568511a154c7e.svg" alt="Dot diagram"></p>
+<p><img src="dot_c0fdf0ce75c780d4b5548affdb3b8875.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5832,7 +5834,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_f15d836e8826551c33795973ff35151c.svg" alt="Dot diagram"></p>
+<p><img src="dot_7244ea8335362f8ee9d2c121d6a6bc2e.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5980,13 +5982,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_6ec7cf60604c50b5a69c5d50c98c7801.svg" alt="Dot diagram"></p>
+<p><img src="dot_5d28ba08b8cc2ffbdc0204b61e6cfab2.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_76528d9a5da72700d378ebc491ac0d8b.svg" alt="Dot diagram"></p>
+<p><img src="dot_a67a8722d95257bdeed85336326576d4.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6001,7 +6003,56 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </div>
 <a name="H_Global%20Alignment"></a><h3>Global Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, perform <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> and pull out the best alignment.</p>
+<p>In this case, the term "best alignment" is defined as the most number of matches, but this same algorithm may be used with other scoring algorithms that are more appropriate to the type of biological <a href="#BM_(sequence)%2Fi">sequence</a> being compared. For example, if comparing proteins, the probability that some <a href="#BM_(amino%20acid)%2Fi">amino acid</a> will mutate to another is used when determining the best alignment.</p>
+<p><strong>WHY</strong>: A strongly matching global alignment means that the <a href="#BM_(sequence)%2Fi">sequence</a>s may be homologous.</p>
 <a name="H_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Determining the best scoring pairwise alignment can be done by generating a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> of all possible operations at all possible positions in each <a href="#BM_(sequence)%2Fi">sequence</a>. Specifically, each operation (<a href="#BM_(indel)%2Fi">indel</a>, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower eights (e.g. a match is typically more favourable than an <a href="#BM_(indel)%2Fi">indel</a>).</p>
+<p>For example, consider a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> that pits FOUR against CHOIR...</p>
+<p><img src="svgbob_02b6fbd51ce88108bb252ec41c7d4ab94697ce52.svg" alt="Kroki diagram output"></p>
+<p>Given this graph, each ...</p>
+<ul>
+<li>diagonal edge is a replacement / keep matching.</li>
+<li>horizontal edge is an <a href="#BM_(indel)%2Fi">indel</a> where the top is kept.</li>
+<li>vertical edge is an <a href="#BM_(indel)%2Fi">indel</a> where the left is kept</li>
+</ul>
+<div style="border:1px solid black;">
+<p></p>
+<p><img src="fdp_d7ed9bf4c28a6c54b2b111a01fe02713.svg" alt="Fdp diagram"></p>
+</div>
+<p></p>
+<p>This graph is called an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. A path through the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> from source (top-left) to sink (bottom-right) represents a single alignment, referred to as an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. For example the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> representing...</p>
+<pre><code>CH-OIR
+--FOUR
+</code></pre>
+<p>... is as follows...</p>
+<div style="border:1px solid black;">
+<p></p>
+<p><img src="fdp_e2310f4189d252f74f6d97b9f164c172.svg" alt="Fdp diagram"></p>
+</div>
+<p></p>
+<p>Since operations with higher weights are more desirable operations compared to operations with lower eights, the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> with the highest weight is the most desirable <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. That is, out of all the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s possible, the one with the highest weight is the one with the most desirable set of operations.</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
 <a name="H_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
 <a name="H_Space-efficient%20Algorithm"></a><h4>Space-efficient Algorithm</h4>
 <a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
@@ -6031,8 +6082,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <a name="H_Affine%20Gap%20Penalty"></a><h3>Affine Gap Penalty</h3>
 <a name="H_Basic%20Algorithm"></a><h4>Basic Algorithm</h4>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
-<a name="H_Multiple%20Alignment"></a><h3>Multiple Alignment</h3>
-<a name="H_Protein%20Scoring"></a><h3>Protein Scoring</h3>
+<a name="H_Pair-wise%20Scoring"></a><h3>Pair-wise Scoring</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -6043,8 +6093,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Overlap Alignment</a></li>
 </ul>
 </div>
+<a name="H1_Pair-wise%20Scoring"></a><h3>Pair-wise Scoring</h3>
+<p><strong>WHAT</strong>: Given a pair of <a href="#BM_(sequence)%2Fi">sequence</a>s, score an element from <a href="#BM_(sequence)%2Fi">sequence</a> 1 against <a href="#BM_(sequence)%2Fi">sequence</a> 2 based on how similar they are. The type of biological <a href="#BM_(sequence)%2Fi">sequence</a> defines how it should be scored, where things such as evolution are mutation probability are used.</p>
+<p><strong>WHY</strong>: Before performing a pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, there needs to be a baseline for how elements within those <a href="#BM_(sequence)%2Fi">sequence</a>s measure up against each other. In the simplest case, you can compare elements directly against each other. For example, if the <a href="#BM_(sequence)%2Fi">sequence</a>s are words, it may be enough to compare the letters such that a matching letter scores 1 while a mismatch or <a href="#BM_(indel)%2Fi">indel</a> scores 0. A more complex way to compare words may be to use the phonetics. For example, rather than treating letters as the <a href="#BM_(sequence)%2Fi">sequence</a> elements, break up the words by what groups of letters may sound like. For example, the sound made by "ea" and "ee" may be the same depending on the word (e.g. leak vs leek) and as such will score higher.</p>
 <a name="H_PAM%20Scoring%20Matrix"></a><h4>PAM Scoring Matrix</h4>
 <a name="H_BLOSUM%20Scoring%20Matrix"></a><h4>BLOSUM Scoring Matrix</h4>
+<a name="H_Multi%20Scoring"></a><h3>Multi Scoring</h3>
+<a name="H_Multiple%20Alignment"></a><h3>Multiple Alignment</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
