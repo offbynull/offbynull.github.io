@@ -30,9 +30,13 @@ class Table2DWeightLookup(WeightLookup):
 
     @staticmethod
     def create_from_file(weight_lookup_path: str, indel_weight: float):
-        weight_lookup = {}
         with open(weight_lookup_path, mode='r', encoding='utf-8') as f:
             data = f.read()
+        return Table2DWeightLookup.create_from_str(data, indel_weight)
+
+    @staticmethod
+    def create_from_str(data: str, indel_weight: float):
+        weight_lookup = {}
         lines = data.strip().split('\n')
         aa_row = lines[0].strip().split()
         for line in lines[1:]:

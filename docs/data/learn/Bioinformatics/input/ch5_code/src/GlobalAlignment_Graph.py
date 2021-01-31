@@ -5,7 +5,7 @@ from typing import List, Optional, TypeVar, Tuple, Callable
 from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from Graph import Graph
 from GraphGridCreate import create_grid_graph
-from WeightLookup import WeightLookup, Constant2DWeightLookup
+from WeightLookup import WeightLookup, Constant2DWeightLookup, Table2DWeightLookup
 
 ELEM = TypeVar('ELEM')
 
@@ -203,7 +203,23 @@ def main():
     try:
         s1 = list(input())
         s2 = list(input())
-        weight_lookup = Constant2DWeightLookup(1.0, 0.0, -1.0)
+        matrix_type = input()
+        if matrix_type == 'embedded_score_matrix':
+            indel_weight = float(input())
+            weights_data = ''
+            try:
+                while True:
+                    weights_data += input() + '\n'
+            except EOFError:
+                ...
+        elif matrix_type == 'file_score_matrix':
+            indel_weight = float(input())
+            path = input()
+            with open(path, mode='r', encoding='utf-8') as f:
+                weights_data = f.read()
+        else:
+            raise ValueError('Bad score matrix type')
+        weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
         weight, edges, elems = global_alignment(s1, s2, weight_lookup)
         graph = create_global_alignment_graph(s1, s2, weight_lookup)
         output = graph_to_graphviz(
@@ -214,7 +230,9 @@ def main():
             scale_x=1.75,
             scale_y=1.75
         )
-        print(f'Given the sequences {"".join(s1)} and {"".join(s2)}, the global alignment is...', end="\n\n")
+        print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
+        print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
+        print(f'... the global alignment is...', end="\n\n")
         print(f'````{{graphvizFdp}}\n{output}\n````', end='\n\n')
         print(f'````')
         print(f'{"".join("-" if e[0] is None else e[0] for e in elems)}')
