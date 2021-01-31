@@ -5,7 +5,7 @@ from typing import List, Optional, TypeVar, Tuple, Callable
 from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from Graph import Graph
 from GraphGridCreate import create_grid_graph
-from WeightLookup import WeightLookup, Constant2DWeightLookup, Table2DWeightLookup
+from WeightLookup import WeightLookup, Table2DWeightLookup
 
 ELEM = TypeVar('ELEM')
 

@@ -5776,7 +5776,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_98026ed92401eb9823d910c784b1d168.svg" alt="Dot diagram"></p>
+<p><img src="dot_fade5da785698a2e87f650914e514816.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5834,7 +5834,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_b06b405b60770c1b2b635035dda77034.svg" alt="Dot diagram"></p>
+<p><img src="dot_329c3d47bd5c65b821d7ab4fd8f6a559.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5982,13 +5982,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_5d28ba08b8cc2ffbdc0204b61e6cfab2.svg" alt="Dot diagram"></p>
+<p><img src="dot_275f5768892a0d239da81543b221abec.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_a67a8722d95257bdeed85336326576d4.svg" alt="Dot diagram"></p>
+<p><img src="dot_27437fc6448f2199beb0710a20100e1d.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6012,6 +6012,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, perform <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> and pull out the highest scoring alignment.</p>
 <p><strong>WHY</strong>: A strongly matching global alignment means that the <a href="#BM_(sequence)%2Fi">sequence</a>s may be homologous.</p>
 <a name="H_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Determining the best scoring pairwise alignment can be done by generating a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> of all possible operations at all possible positions in each <a href="#BM_(sequence)%2Fi">sequence</a>. Specifically, each operation (<a href="#BM_(indel)%2Fi">indel</a>, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower eights (e.g. a match is typically more favourable than an <a href="#BM_(indel)%2Fi">indel</a>).</p>
 <p>For example, consider a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> that pits FOUR against CHOIR...</p>
@@ -6024,7 +6025,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="fdp_3930125d323706d7491f98c7c8605812.svg" alt="Fdp diagram"></p>
+<p><img src="fdp_9f10a96af081e5188567711d98ce68c5.svg" alt="Fdp diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6036,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="fdp_b84a4af9e7b68fe511c16414f3c85034.svg" alt="Fdp diagram"></p>
+<p><img src="fdp_4d25a0054e1d0d4cdf3842cc15aab921.svg" alt="Fdp diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6118,14 +6119,125 @@ Z  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="fdp_e1cc3e9646e29d7ddd949f869cbb3cd7.svg" alt="Fdp diagram"></p>
+<p><img src="fdp_8de63d991a412889470eac7c49990184.svg" alt="Fdp diagram"></p>
+<pre><code>CHOIR
+-FOUR
+</code></pre>
+<p>Weight: 1.0</p>
+</div>
+<p></p>
+<a name="H_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is represented as a 2D matrix, where each element in the matrix represents a node in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. The weights are then populated in a predefined order and backtracking is used find the maximum path.</p>
+<p><img src="svgbob_075e13942e51f40204dae1fa393e5e56c9581068.svg" alt="Kroki diagram output"></p>
+<p><a href="ch5_code/src/GlobalAlignment_Matrix.py">ch5_code/src/GlobalAlignment_Matrix.py</a> (lines 10 to 68):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
+        node_matrix: List[List[Any]]
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_idx = len(node_matrix) - <span class="hljs-number">1</span>
+    w_node_idx = len(node_matrix[<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>
+    final_weight = node_matrix[v_node_idx][w_node_idx][<span class="hljs-number">0</span>]
+    alignment = []
+    <span class="hljs-keyword">while</span> v_node_idx &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> w_node_idx &gt; <span class="hljs-number">0</span>:
+        _, elems, backtrack_ptr = node_matrix[v_node_idx][w_node_idx]
+        <span class="hljs-keyword">if</span> backtrack_ptr == <span class="hljs-string">'↓'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'→'</span>:
+            w_node_idx -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'↘'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+            w_node_idx -= <span class="hljs-number">1</span>
+        alignment.append(elems)
+    <span class="hljs-keyword">return</span> final_weight, alignment[::<span class="hljs-number">-1</span>]
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    node_matrix = []
+    <span class="hljs-keyword">for</span> v_node_idx <span class="hljs-keyword">in</span> range(v_node_count):
+        row = []
+        <span class="hljs-keyword">for</span> w_node_idx <span class="hljs-keyword">in</span> range(w_node_count):
+            row.append([<span class="hljs-number">-1.0</span>, (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>), <span class="hljs-string">'?'</span>])
+        node_matrix.append(row)
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0.0</span>           <span class="hljs-comment"># source node weight</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>)  <span class="hljs-comment"># source node elements (elements don't matter for source node)</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">2</span>] = <span class="hljs-string">'↘'</span>           <span class="hljs-comment"># source node backtracking edge (direction doesn't matter for source node)</span>
+    <span class="hljs-keyword">for</span> v_node_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, v_node_count):
+        v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+        elems = v_elem, <span class="hljs-literal">None</span>
+        node_matrix[v_node_idx][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = weight_lookup.lookup(*elems)
+        node_matrix[v_node_idx][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = elems
+        node_matrix[v_node_idx][<span class="hljs-number">0</span>][<span class="hljs-number">2</span>] = <span class="hljs-string">'↓'</span>
+    <span class="hljs-keyword">for</span> w_node_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, w_node_count):
+        w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+        elems = <span class="hljs-literal">None</span>, w_elem
+        node_matrix[<span class="hljs-number">0</span>][w_node_idx][<span class="hljs-number">0</span>] = weight_lookup.lookup(*elems)
+        node_matrix[<span class="hljs-number">0</span>][w_node_idx][<span class="hljs-number">1</span>] = elems
+        node_matrix[<span class="hljs-number">0</span>][w_node_idx][<span class="hljs-number">2</span>] = <span class="hljs-string">'→'</span>
+    <span class="hljs-keyword">for</span> v_node_idx, w_node_idx <span class="hljs-keyword">in</span> product(range(<span class="hljs-number">1</span>, v_node_count), range(<span class="hljs-number">1</span>, w_node_count)):
+        v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+        w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+        node_matrix[v_node_idx][w_node_idx] = max(
+            [node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, <span class="hljs-literal">None</span>), (v_elem, <span class="hljs-literal">None</span>), <span class="hljs-string">'↓'</span>],
+            [node_matrix[v_node_idx][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(<span class="hljs-literal">None</span>, w_elem), (<span class="hljs-literal">None</span>, w_elem), <span class="hljs-string">'→'</span>],
+            [node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, w_elem), (v_elem, w_elem), <span class="hljs-string">'↘'</span>],
+            key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>]
+        )
+    <span class="hljs-keyword">return</span> backtrack(node_matrix)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences CHOIR and FOUR and the score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+A  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+B  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+C  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+D  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+E  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+F  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+G  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+H  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+I  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+J  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+K  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+L  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+M  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0
+N  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0
+O  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0
+P  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0
+Q  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0
+R  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0
+S  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0
+T  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0
+U  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0
+V  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0
+W  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0
+X  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0
+Y  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0
+Z  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1
+
+</code></pre>
+<p>... the global alignment is...</p>
 <pre><code>CHOIR
 F-OUR
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
 <p></p>
-<a name="H_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
 <a name="H_Space-efficient%20Algorithm"></a><h4>Space-efficient Algorithm</h4>
 <a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F"></a><strong></strong></p>

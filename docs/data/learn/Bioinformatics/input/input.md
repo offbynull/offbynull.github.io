@@ -3232,6 +3232,8 @@ Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
 
 #### Graph Algorithm
 
+`{bm} /(Algorithms\/Sequence Alignment\/Global Alignment\/Graph Algorithm)_TOPIC/`
+
 **ALGORITHM**:
 
 Determining the best scoring pairwise alignment can be done by generating a DAG of all possible operations at all possible positions in each sequence. Specifically, each operation (indel, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower eights (e.g. a match is typically more favourable than an indel).
@@ -3396,6 +3398,83 @@ Z  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1
 ```
 
 #### Matrix Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Global Alignment\/Matrix Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix, where each element in the matrix represents a node in the alignment graph. The weights are then populated in a predefined order and backtracking is used find the maximum path.
+
+```{svgbob}
+   "Create graph"               "Calc first row"             "Calc col 1"                "Calc col 2"                "Calc col 3"  
+*-->*-->*-->*-->*-->*       o-->o-->o-->o-->o-->o       o-->o-->o-->o-->o-->o       o-->o-->o-->o-->o-->o       o-->o-->o-->o-->o-->o
+|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
+| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
+|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|
+v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
+*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
+|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
+| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
+|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|      "do the rest..."
+v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
+*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
+|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
+| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
+|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|
+v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
+*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
+|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
+| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
+|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|
+v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
+*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
+```
+
+```{output}
+ch5_code/src/GlobalAlignment_Matrix.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+GlobalAlignment_Matrix
+CHOIR
+FOUR
+embedded_score_matrix
+-1
+   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+A  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+B  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+C  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+D  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+E  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+F  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+G  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+H  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+I  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+J  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+K  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+L  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+M  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0
+N  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0
+O  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0
+P  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0
+Q  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0
+R  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0
+S  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0
+T  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0
+U  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0
+V  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0
+W  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0
+X  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0
+Y  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0
+Z  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1
+```
 
 #### Space-efficient Algorithm
 
