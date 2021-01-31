@@ -3226,9 +3226,7 @@ It's easy to flip this around by reversing the direction the algorithm walks.
 Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
 ```
 
-**WHAT**: Given two sequences, perform sequence alignment and pull out the best alignment.
-
-In this case, the term "best alignment" is defined as the most number of matches, but this same algorithm may be used with other scoring algorithms that are more appropriate to the type of biological sequence being compared. For example, if comparing proteins, the probability that some amino acid will mutate to another is used when determining the best alignment.
+**WHAT**: Given two sequences, perform sequence alignment and pull out the highest scoring alignment.
 
 **WHY**: A strongly matching global alignment means that the sequences may be homologous.
 
@@ -3269,7 +3267,7 @@ Given this graph, each ...
 
  * diagonal edge is a replacement / keep matching.
  * horizontal edge is an indel where the top is kept.
- * vertical edge is an indel where the left is kept
+ * vertical edge is an indel where the left is kept.
 
 ```{ch5}
 GlobalAlignment_Visualize
@@ -3293,35 +3291,21 @@ FOUR
 0,0->0,1|0,1->0,2|0,2->1,2|1,2->2,3|2,3->3,4|3,4->4,5
 ```
 
-Since operations with higher weights are more desirable operations compared to operations with lower eights, the alignment path with the highest weight is the most desirable alignment path. That is, out of all the alignment paths possible, the one with the highest weight is the one with the most desirable set of operations. 
+The weight of an alignment path is the sum of its operation weights. Since operations with higher weights are more desirable than those with lower weights, alignment paths with higher weights are more desirable than those with lower weights. As such, out of all the alignment paths possible, the one with the highest weight is the one with the most desirable set of operations.
 
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+The highlighted path in the example path above has a weight of -1: -1 + -1 + -1 + 1 + 0 + 1.
 
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+```{output}
+ch5_code/src/GlobalAlignment_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
-
-PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE
+```{ch5}
+GlobalAlignment_Graph
+CHOIR
+FOUR
+```
 
 #### Matrix Algorithm
 

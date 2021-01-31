@@ -12,7 +12,7 @@ class WeightLookup(ABC):
 
 
 class Constant2DWeightLookup(WeightLookup):
-    def __init__(self, match_weight: int, mismatch_weight: int, indel_weight: int):
+    def __init__(self, match_weight: float, mismatch_weight: float, indel_weight: float):
         self.match_weight = match_weight
         self.misatch_weight = mismatch_weight
         self.indel_weight = indel_weight
@@ -24,12 +24,12 @@ class Constant2DWeightLookup(WeightLookup):
 
 
 class Table2DWeightLookup(WeightLookup):
-    def __init__(self, weight_lookup: Dict[Tuple[ELEM, ELEM], int], indel_weight: int):
+    def __init__(self, weight_lookup: Dict[Tuple[ELEM, ELEM], float], indel_weight: float):
         self.weight_lookup = weight_lookup
         self.indel_weight = indel_weight
 
     @staticmethod
-    def create_from_file(weight_lookup_path: str, indel_weight: int):
+    def create_from_file(weight_lookup_path: str, indel_weight: float):
         weight_lookup = {}
         with open(weight_lookup_path, mode='r', encoding='utf-8') as f:
             data = f.read()
@@ -40,7 +40,7 @@ class Table2DWeightLookup(WeightLookup):
             aa2 = vals[0]
             weight = vals[1:]
             for aa1, weight in zip(aa_row, weight):
-                weight_lookup[(aa1, aa2)] = int(weight)
+                weight_lookup[(aa1, aa2)] = float(weight)
         return Table2DWeightLookup(weight_lookup, indel_weight)
 
     def lookup(self, *elements: Tuple[Optional[ELEM]]):
@@ -50,7 +50,7 @@ class Table2DWeightLookup(WeightLookup):
 
 
 if __name__ == '__main__':
-    x = Table2DWeightLookup.create_from_file('PAM250.txt', -5)
+    x = Table2DWeightLookup.create_from_file('PAM250.txt', -5.0)
     print(f'{x.lookup("S", "A")}')
     print(f'{x.lookup("S", None)}')
     print(f'{x.lookup(None, "A")}')

@@ -5776,7 +5776,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_c0fdf0ce75c780d4b5548affdb3b8875.svg" alt="Dot diagram"></p>
+<p><img src="dot_afd9f1bd543aba420b08a607c3398e9a.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5834,7 +5834,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_7244ea8335362f8ee9d2c121d6a6bc2e.svg" alt="Dot diagram"></p>
+<p><img src="dot_63eb1a2085a5f6141c243c4ce3943941.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5982,13 +5982,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_5d28ba08b8cc2ffbdc0204b61e6cfab2.svg" alt="Dot diagram"></p>
+<p><img src="dot_eca805b48ab794ee77734ed59411d472.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_a67a8722d95257bdeed85336326576d4.svg" alt="Dot diagram"></p>
+<p><img src="dot_8ee3bcbfd3a71624a360750834e61b16.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6009,8 +6009,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, perform <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> and pull out the best alignment.</p>
-<p>In this case, the term "best alignment" is defined as the most number of matches, but this same algorithm may be used with other scoring algorithms that are more appropriate to the type of biological <a href="#BM_(sequence)%2Fi">sequence</a> being compared. For example, if comparing proteins, the probability that some <a href="#BM_(amino%20acid)%2Fi">amino acid</a> will mutate to another is used when determining the best alignment.</p>
+<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, perform <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> and pull out the highest scoring alignment.</p>
 <p><strong>WHY</strong>: A strongly matching global alignment means that the <a href="#BM_(sequence)%2Fi">sequence</a>s may be homologous.</p>
 <a name="H_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
@@ -6021,11 +6020,12 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <ul>
 <li>diagonal edge is a replacement / keep matching.</li>
 <li>horizontal edge is an <a href="#BM_(indel)%2Fi">indel</a> where the top is kept.</li>
-<li>vertical edge is an <a href="#BM_(indel)%2Fi">indel</a> where the left is kept</li>
+<li>vertical edge is an <a href="#BM_(indel)%2Fi">indel</a> where the left is kept.</li>
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="fdp_d7ed9bf4c28a6c54b2b111a01fe02713.svg" alt="Fdp diagram"></p>
+<p><img src="fdp_b42d5b3f7fcd94feea543dcf2a249ae7.svg" alt="Fdp diagram"></p>
+<p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <p>This graph is called an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. A path through the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> from source (top-left) to sink (bottom-right) represents a single alignment, referred to as an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. For example the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> representing...</p>
@@ -6035,24 +6035,65 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="fdp_e2310f4189d252f74f6d97b9f164c172.svg" alt="Fdp diagram"></p>
+<p><img src="fdp_518381d1cdc3b1c9bb20f5a99f45362c.svg" alt="Fdp diagram"></p>
+<p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
-<p>Since operations with higher weights are more desirable operations compared to operations with lower eights, the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> with the highest weight is the most desirable <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. That is, out of all the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s possible, the one with the highest weight is the one with the most desirable set of operations.</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
-<p>PUT SOURCE CODE / EXAMPLE HERE AND ADD WEIGHTS TO EXAMPLE GRAPH ABOVE</p>
+<p>The weight of an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> is the sum of its operation weights. Since operations with higher weights are more desirable than those with lower weights, <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s with higher weights are more desirable than those with lower weights. As such, out of all the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s possible, the one with the highest weight is the one with the most desirable set of operations.</p>
+<p>The highlighted path in the example path above has a weight of -1: -1 + -1 + -1 + 1 + 0 + 1.</p>
+<p><a href="ch5_code/src/GlobalAlignment_Graph.py">ch5_code/src/GlobalAlignment_Graph.py</a> (lines 36 to 77):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_global_alignment_graph</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Graph[Tuple[int, ...], NodeData, str, EdgeData]:</span>
+    graph = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], weight_lookup.lookup(*elems))
+    )
+    <span class="hljs-keyword">return</span> graph
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    graph = create_global_alignment_graph(v, w, weight_lookup)
+    from_node = (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    to_node = (v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>)
+    populate_weights_and_backtrack_pointers(
+        graph,
+        from_node,
+        <span class="hljs-keyword">lambda</span> n_id, weight, e_id: graph.get_node_data(n_id).set_weight_and_backtracking_edge(weight, e_id),
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        <span class="hljs-keyword">lambda</span> e_id: graph.get_edge_data(e_id).weight
+    )
+    final_weight = graph.get_node_data(to_node).weight
+    edges = backtrack(
+        graph,
+        to_node,
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
+    )
+    alignment = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        ed = graph.get_edge_data(e)
+        alignment.append((ed.v_elem, ed.w_elem))
+    <span class="hljs-keyword">return</span> final_weight, edges, alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences CHOIR and FOUR, the global alignment is...</p>
+<p><img src="fdp_fd3adcd513e72787b1c51a40e6afcbc5.svg" alt="Fdp diagram"></p>
+<pre><code>CHOIR
+F-OUR
+</code></pre>
+<p>Weight: 1.0</p>
+</div>
+<p></p>
 <a name="H_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
 <a name="H_Space-efficient%20Algorithm"></a><h4>Space-efficient Algorithm</h4>
 <a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
