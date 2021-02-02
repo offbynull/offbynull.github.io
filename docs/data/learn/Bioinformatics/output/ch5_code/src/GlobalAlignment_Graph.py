@@ -1,6 +1,6 @@
 import json
 from itertools import product
-from typing import List, Optional, TypeVar, Tuple, Callable
+from typing import List, Optional, TypeVar, Tuple, Callable, Set
 
 from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from Graph import Graph
@@ -97,40 +97,10 @@ def global_alignment(
 
 
 
-N = TypeVar('N')  # node id
-ND = TypeVar('ND')  # node data type
-E = TypeVar('E')  # edge id
-ED = TypeVar('ED')  # edge data type
-
-GET_EDGE_LABEL_FUNC_TYPE =\
-    Callable[
-        [
-            ED
-        ],
-        str
-    ]
-
-GET_NODE_LABEL_FUNC_TYPE =\
-    Callable[
-        [
-            ND
-        ],
-        str
-    ]
-
-IS_EDGE_HIGHLIGHT_FUNC_TYPE =\
-    Callable[
-        [
-            E
-        ],
-        bool
-    ]
 
 def graph_to_graphviz(
-        graph: Graph[N, ND, E, ED],
-        get_node_label_func: GET_NODE_LABEL_FUNC_TYPE = lambda nd: json.dumps(nd).replace('"', '\\\"'),
-        get_edge_label_func: GET_EDGE_LABEL_FUNC_TYPE = lambda ed: json.dumps(ed).replace('"', '\\\"'),
-        is_edge_highlight_func: IS_EDGE_HIGHLIGHT_FUNC_TYPE = lambda e: False,
+        graph: Graph[Tuple[int, ...], NodeData, str, EdgeData],
+        highlight_edges: Set[str],
         scale_x: float = 1.5,
         scale_y: float = 1.5
 ) -> str:
@@ -150,7 +120,7 @@ def graph_to_graphviz(
         for node_id_suffix in product(range(row_len), range(col_len)):
             node_id = node_id_prefix + node_id_suffix
             node_data = graph.get_node_data(node_id)
-            node_label = get_node_label_func(node_data)
+            node_label = ''  # f'{node_id}'
             row_pos = node_id_suffix[0] * scale_x
             col_pos = -node_id_suffix[1] * scale_y
             dot_subgraph += f'    "{node_id}" [label="{node_label}", pos="{row_pos},{col_pos}!"]\n'
@@ -164,10 +134,11 @@ def graph_to_graphviz(
                 if child_node_id_prefix != node_id_prefix:
                     continue
                 edge_data = graph.get_edge_data(edge_id)
-                edge_label = get_edge_label_func(edge_data)
-                dot_subgraph += f'    "{node_id}" -> "{child_node_id}" [label="{edge_label}"'
-                dot_subgraph += f', color="green"' if is_edge_highlight_func(edge_id) else ''
-                dot_subgraph += f']\n'
+                edge_params = {}
+                if edge_id in highlight_edges:
+                    edge_params['color'] = 'green'
+                edge_params['label'] = f'{"-" if edge_data.v_elem is None else edge_data.v_elem}\n{"-" if edge_data.w_elem is None else edge_data.w_elem}\n{edge_data.weight}'
+                dot_subgraph += f'    "{node_id}" -> "{child_node_id}" [' + ', '.join(f'{k}="{v}"' for k, v in edge_params.items()) + ']\n'
         dot_subgraph += '  }\n'
     dot_subgraph += '}'
     return dot_subgraph
@@ -224,9 +195,7 @@ def main():
         graph = create_global_alignment_graph(s1, s2, weight_lookup)
         output = graph_to_graphviz(
             graph,
-            get_edge_label_func=lambda ed: f'{"-" if ed.v_elem is None else ed.v_elem}\n{"-" if ed.w_elem is None else ed.w_elem}\n{ed.weight}',
-            is_edge_highlight_func=lambda e: e.startswith('E') and e in edges,
-            get_node_label_func=lambda nd: "",
+            set(edges),
             scale_x=1.75,
             scale_y=1.75
         )

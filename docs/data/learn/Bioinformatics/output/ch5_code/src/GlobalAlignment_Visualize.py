@@ -1,5 +1,5 @@
 from GlobalAlignment_Graph import create_global_alignment_graph, graph_to_graphviz
-from WeightLookup import Constant2DWeightLookup, Table2DWeightLookup
+from WeightLookup import Table2DWeightLookup
 
 
 def main():
@@ -33,9 +33,7 @@ def main():
         graph = create_global_alignment_graph(s1, s2, weight_lookup)
         output = graph_to_graphviz(
             graph,
-            get_edge_label_func=lambda ed: f'{"-" if ed.v_elem is None else ed.v_elem}\n{"-" if ed.w_elem is None else ed.w_elem}\n{ed.weight}',
-            is_edge_highlight_func=lambda e: e.startswith('E') and (graph.get_edge_from(e), graph.get_edge_to(e)) in edge_highlights,
-            get_node_label_func=lambda nd: "",
+            set(filter(lambda e: (graph.get_edge_from(e), graph.get_edge_to(e)) in edge_highlights, graph.get_edges())),
             scale_x=1.75,
             scale_y=1.75
         )

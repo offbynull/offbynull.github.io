@@ -1,4 +1,4 @@
-from GlobalAlignment_Graph import create_global_alignment_graph, graph_to_graphviz
+from LocalAlignment_Graph import create_local_alignment_graph, graph_to_graphviz
 from WeightLookup import Table2DWeightLookup
 
 
@@ -30,15 +30,15 @@ def main():
         else:
             raise ValueError('Bad score matrix type')
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
-        graph = create_global_alignment_graph(s1, s2, weight_lookup)
+        graph = create_local_alignment_graph(s1, s2, weight_lookup)
         output = graph_to_graphviz(
             graph,
-            set(filter(lambda e: (graph.get_edge_from(e), graph.get_edge_to(e)) in edge_highlights, graph.get_edges())),
+            edge_highlights,
             scale_x=1.75,
             scale_y=1.75
         )
         print(f'````{{graphvizFdp}}\n{output}\n````', end='\n\n')
-        print(f'NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.', end='\n\n')
+        print(f'NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides..', end='\n\n')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
