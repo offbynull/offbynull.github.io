@@ -1,4 +1,5 @@
-from LocalAlignment_Graph import create_local_alignment_graph, graph_to_graphviz
+from LocalAlignment_Graph import graph_to_graphviz
+from OverlapAlignment_Graph import create_overlap_alignment_graph
 from WeightLookup import Table2DWeightLookup
 
 
@@ -30,7 +31,7 @@ def main():
         else:
             raise ValueError('Bad score matrix type')
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
-        graph = create_local_alignment_graph(s1, s2, weight_lookup)
+        graph = create_overlap_alignment_graph(s1, s2, weight_lookup)
         output = graph_to_graphviz(
             graph,
             edge_highlights,

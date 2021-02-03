@@ -3488,38 +3488,16 @@ Algorithms/Sequence Alignment/Global Alignment_TOPIC
 
 ```{ch5}
 LocalAlignment_Visualize
-TOOK
-LOOP
-0,0->0,1|0,1->0,2|0,2->1,2|1,2->2,3|2,3->3,4|3,4->4,5
+TAAT
+GAAG
+
 embedded_score_matrix
 -1
-   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
-A  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-B  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-C  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-D  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-E  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-F  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-G  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-H  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-I  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-J  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-K  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-L  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-M  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0
-N  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0
-O  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0
-P  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0
-Q  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0
-R  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0
-S  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0
-T  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0
-U  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0
-V  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0
-W  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0
-X  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0
-Y  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0
-Z  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
 ```
 
 ### Fitting Alignment
@@ -3530,12 +3508,40 @@ Z  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1
 Algorithms/Sequence Alignment/Global Alignment_TOPIC
 ```
 
+```{ch5}
+FittingAlignment_Visualize
+TAAT
+GAAG
+
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
+
 ### Overlap Alignment
 
 `{bm} /(Algorithms\/Sequence Alignment\/Overlap Alignment)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Alignment/Global Alignment_TOPIC
+```
+
+```{ch5}
+OverlapAlignment_Visualize
+TAGT
+GAGG
+
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
 ```
 
 ### Affine Gap Penalty
