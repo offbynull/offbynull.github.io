@@ -3265,6 +3265,33 @@ R| \ | \ | \ | \ | \ |
  o-->o-->o-->o-->o-->o
 ```
 
+```{latex}
+\documentclass{standalone}
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+
+\begin{document}
+    % Comments starts with %
+    % add pagecolor to usepackage above
+    % \pagecolor{white}
+    \begin{tikzpicture}
+        \node[draw = black, fill = white, thick, circle, minimum size = 2px] at (0, 0) (a) {};
+        \node[draw = black, fill = white, thick, circle, minimum size = 2px] at (0, -1) (b) {};
+        \node[draw = black, fill = white, thick, circle, minimum size = 2px] at (1, 0) (c) {};
+        \node[draw = black, fill = white, thick, circle, minimum size = 2px] at (1, -1) (d) {};
+
+        \draw[->, >=stealth, line width = 2px, gray] (a) -- (b) node [midway, left, fill=white] {hi};
+        \draw[->, >=stealth, line width = 2px, gray] (a) -- (c);
+        \draw[->, >=stealth, line width = 2px, gray] (a) -- (d);
+        \draw[->, >=stealth, line width = 2px, gray] (b) -- (d);
+        \draw[->, >=stealth, line width = 2px, gray] (c) -- (d);
+
+        \draw[->, red] (a) to [out=135,in=90,looseness=1.5] (c);
+    \end{tikzpicture}
+
+\end{document}
+```
+
 Given this graph, each ...
 
  * diagonal edge is a replacement / keep matching.
