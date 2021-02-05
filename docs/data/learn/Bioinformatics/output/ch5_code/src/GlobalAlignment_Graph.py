@@ -1,11 +1,13 @@
 import json
 from itertools import product
+from textwrap import dedent
 from typing import List, Optional, TypeVar, Tuple, Callable, Set
 
 from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from Graph import Graph
 from GraphGridCreate import create_grid_graph
 from WeightLookup import WeightLookup, Table2DWeightLookup
+from helpers.Utils import latex_escape
 
 ELEM = TypeVar('ELEM')
 
@@ -96,6 +98,57 @@ def global_alignment(
 
 
 
+
+
+def graph_to_tikz(
+        graph: Graph[Tuple[int, ...], NodeData, str, EdgeData],
+        highlight_edges: Set[str],
+        scale_x: float = 1,
+        scale_y: float = 1
+) -> str:
+    layers = set(n[:-2] for n in graph.get_nodes())
+    row_len = max(n[-2] for n in graph.get_nodes()) + 1
+    col_len = max(n[-1] for n in graph.get_nodes()) + 1
+    ret = dedent('''
+    \\documentclass{standalone}
+    \\usepackage{pgf, tikz, pagecolor}
+    \\usetikzlibrary{arrows, automata}
+    \\begin{document}
+        \\pagecolor{white}
+        \\begin{tikzpicture}
+    ''')
+    node_id_to_latex_id = {}
+    for node_id_prefix in layers:
+        for node_id_suffix in product(range(row_len), range(col_len)):
+            node_id = node_id_prefix + node_id_suffix
+            node_id_to_latex_id[node_id] = 'N' + '_'.join(str(c) for c in node_id)
+        for node_id_suffix in product(range(row_len), range(col_len)):
+            node_id = node_id_prefix + node_id_suffix
+            node_data = graph.get_node_data(node_id)
+            node_label = ''  # f'{node_id}'
+            row_pos = node_id_suffix[0] * scale_x
+            col_pos = -node_id_suffix[1] * scale_y
+            ret += f'        \\node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at ({row_pos}, {col_pos}) ({node_id_to_latex_id[node_id]}) {{{latex_escape(node_label)}}};\n'
+        for node_id_suffix in product(range(row_len), range(col_len)):
+            node_id = node_id_prefix + node_id_suffix
+            if not graph.has_node(node_id):
+                continue
+            for edge_id in graph.get_outputs(node_id):
+                child_node_id = graph.get_edge_to(edge_id)
+                child_node_id_prefix = child_node_id[:-2]
+                if child_node_id_prefix != node_id_prefix:
+                    continue
+                edge_data = graph.get_edge_data(edge_id)
+                edge_color = 'gray!40'
+                if edge_id in highlight_edges:
+                    edge_color = 'green'
+                edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
+                ret += f'        \\draw[->, >=stealth, line width = 2px, {edge_color}] ({node_id_to_latex_id[node_id]}) -- ({node_id_to_latex_id[child_node_id]}) node [align=center, midway, color=black] {{{edge_label}}};\n'
+    ret += dedent('''
+        \\end{tikzpicture}
+    \\end{document}
+    ''')
+    return ret
 
 
 def graph_to_graphviz(
@@ -193,16 +246,16 @@ def main():
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
         weight, edges, elems = global_alignment(s1, s2, weight_lookup)
         graph = create_global_alignment_graph(s1, s2, weight_lookup)
-        output = graph_to_graphviz(
+        output = graph_to_tikz(
             graph,
             set(edges),
-            scale_x=1.75,
-            scale_y=1.75
+            scale_x=3.75,
+            scale_y=3.75
         )
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         print(f'... the global alignment is...', end="\n\n")
-        print(f'````{{graphvizFdp}}\n{output}\n````', end='\n\n')
+        print(f'````{{latex}}\n{output}\n````', end='\n\n')
         print(f'````')
         print(f'{"".join("-" if e[0] is None else e[0] for e in elems)}')
         print(f'{"".join("-" if e[1] is None else e[1] for e in elems)}')

@@ -5,10 +5,12 @@ cd /tmp/work
 cat /input/input.data > input.tex
 latex input.tex
 if [ ! $? -eq 0 ]; then
+    cat input.tex
     exit 1
 fi
 dvisvgm input.dvi
 if [ ! $? -eq 0 ]; then
+    cat input.tex
     exit 1
 fi
 mv input-1.svg /output/$NAME

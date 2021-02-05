@@ -14,18 +14,13 @@
 <title>D</title>
 <text text-anchor="middle" x="29" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
 </g>
-<!-- E -->
-<g id="node2" class="node">
-<title>E</title>
-<text text-anchor="middle" x="101" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
-</g>
 <!-- A -->
-<g id="node3" class="node">
+<g id="node2" class="node">
 <title>A</title>
 <text text-anchor="middle" x="59" y="-275.3" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
 </g>
 <!-- B -->
-<g id="node4" class="node">
+<g id="node3" class="node">
 <title>B</title>
 <text text-anchor="middle" x="27" y="-188.3" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
 </g>
@@ -37,7 +32,7 @@
 <text text-anchor="middle" x="55.5" y="-231.8" font-family="Times,serif" font-size="14.00" fill="#000000">1.0</text>
 </g>
 <!-- C -->
-<g id="node5" class="node">
+<g id="node4" class="node">
 <title>C</title>
 <text text-anchor="middle" x="65" y="-101.3" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
 </g>
@@ -61,6 +56,11 @@
 <path fill="none" stroke="#000000" d="M57.5408,-86.9735C52.569,-74.9585 45.9407,-58.9401 40.3233,-45.3646"/>
 <polygon fill="#000000" stroke="#000000" points="43.5073,-43.9053 36.4497,-36.0034 37.0392,-46.5818 43.5073,-43.9053"/>
 <text text-anchor="middle" x="60.5" y="-57.8" font-family="Times,serif" font-size="14.00" fill="#000000">1.0</text>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<text text-anchor="middle" x="101" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
 </g>
 <!-- C&#45;&gt;E -->
 <g id="edge5" class="edge">

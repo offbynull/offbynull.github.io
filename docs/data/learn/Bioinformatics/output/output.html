@@ -5776,7 +5776,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_d404583b07d8c2a0ccde406b26b0be0f.svg" alt="Dot diagram"></p>
+<p><img src="dot_cc813bb8b33dc562f2f6bc021dfb8392.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5834,7 +5834,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_e1a3db43dfd5e49a77111dbc8fbde58b.svg" alt="Dot diagram"></p>
+<p><img src="dot_534a909bca0e0c324a5c817a1547200d.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5982,13 +5982,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_0d234f8b1b7b08d63af57113a9033844.svg" alt="Dot diagram"></p>
+<p><img src="dot_41a5a81e4ba618c4d9d50441fc8ec866.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_4797d8649f8885a52e20c7db105e595f.svg" alt="Dot diagram"></p>
+<p><img src="dot_fdcd6ebd6e344a2cc7fd8b840d3a89c8.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6017,7 +6017,6 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>Determining the best scoring pairwise alignment can be done by generating a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> of all possible operations at all possible positions in each <a href="#BM_(sequence)%2Fi">sequence</a>. Specifically, each operation (<a href="#BM_(indel)%2Fi">indel</a>, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower eights (e.g. a match is typically more favourable than an <a href="#BM_(indel)%2Fi">indel</a>).</p>
 <p>For example, consider a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> that pits FOUR against CHOIR...</p>
 <p><img src="svgbob_02b6fbd51ce88108bb252ec41c7d4ab94697ce52.svg" alt="Kroki diagram output"></p>
-<p><img src="latex_6534a6d330139c62f89beb81abf8ecde.svg" alt="Latex diagram"></p>
 <p>Given this graph, each ...</p>
 <ul>
 <li>diagonal edge is a replacement / keep matching.</li>
@@ -6026,7 +6025,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="fdp_fd906f735f1716368e7fa915d932388d.svg" alt="Fdp diagram"></p>
+<p><img src="fdp_0e51d39117e4eebe2653c15251a7d032.svg" alt="Fdp diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6037,13 +6036,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="fdp_f9018556df393b5681a61c8a66820541.svg" alt="Fdp diagram"></p>
+<p><img src="fdp_1321f64e402279ba81258ef5aa60a77e.svg" alt="Fdp diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <p>The weight of an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> is the sum of its operation weights. Since operations with higher weights are more desirable than those with lower weights, <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s with higher weights are more desirable than those with lower weights. As such, out of all the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s possible, the one with the highest weight is the one with the most desirable set of operations.</p>
 <p>The highlighted path in the example path above has a weight of -1: -1 + -1 + -1 + 1 + 0 + 1.</p>
-<p><a href="ch5_code/src/GlobalAlignment_Graph.py">ch5_code/src/GlobalAlignment_Graph.py</a> (lines 36 to 77):</p>
+<p><a href="ch5_code/src/GlobalAlignment_Graph.py">ch5_code/src/GlobalAlignment_Graph.py</a> (lines 38 to 79):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_global_alignment_graph</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6120,7 +6119,7 @@ Z  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="fdp_b516f527f4a636c81c985444f7425b34.svg" alt="Fdp diagram"></p>
+<p><img src="latex_2b14164bde15e03d43ec763b58f3006d.svg" alt="Latex diagram"></p>
 <pre><code>CHOIR
 F-OUR
 </code></pre>

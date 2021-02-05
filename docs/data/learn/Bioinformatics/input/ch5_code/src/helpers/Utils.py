@@ -82,3 +82,22 @@ def enumerate_patterns(k: int, elements: S) -> Generator[S]:
 def unique_id_generator(prefix: str = '') -> Callable[[], str]:
     counter = itertools.count(start=0)
     return lambda: prefix + str(next(counter))
+
+
+def latex_escape(v: str) -> str:
+    mapper = {
+        '&': '\\&',
+        '%': '\\%',
+        '$': '\\$',
+        '#': '\\#',
+        '_': '\\_',
+        '{': '\\{',
+        '}': '\\}',
+        '~': '\\textasciitilde',
+        '^': '\\textasciicircum',
+        '\\': '\\textbackslash'
+    }
+    ret = ''
+    for ch in v:
+        ret += mapper[ch] if ch in mapper else ch
+    return ret
