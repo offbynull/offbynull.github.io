@@ -3027,37 +3027,37 @@ Typically, all possible sequence alignments are represented using an alignment g
 "* Each horizontal edge is an indel where the top is kept"
 "* Each vertical edge is an indel where the left is kept"
 
-    Complete graph               Example alignment 1           Example alignment 2
-                                       M-APLE                        MAPLE
-                                       -TABLE                        TABLE
+    Complete graph                     Example alignment 1                Example alignment 2
+                                             M-APLE                             MAPLE
+                                             -TABLE                             TABLE
 
-   T   A   B   L   E             T   A   B   L   E             T   A   B   L   E  
- o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
- |\  |\  |\  |\  |\  |         |                              \                   
-M| \ | \ | \ | \ | \ |        M|                            M  \                  
- |  \|  \|  \|  \|  \|         |                                \                 
- v   v   v   v   v   v         v                                 v                
- o-->o-->o-->o-->o-->o         o-->o   o   o   o   o         o   o   o   o   o   o
- |\  |\  |\  |\  |\  |              \                             \               
-A| \ | \ | \ | \ | \ |        A      \                      A      \              
- |  \|  \|  \|  \|  \|                \                             \             
- v   v   v   v   v   v                 v                             v            
- o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
- |\  |\  |\  |\  |\  |                  \                             \           
-P| \ | \ | \ | \ | \ |        P          \                  P          \          
- |  \|  \|  \|  \|  \|                    \                             \         
- v   v   v   v   v   v                     v                             v        
- o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
- |\  |\  |\  |\  |\  |                      \                             \       
-L| \ | \ | \ | \ | \ |        L              \              L              \      
- |  \|  \|  \|  \|  \|                        \                             \     
- v   v   v   v   v   v                         v                             v    
- o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
- |\  |\  |\  |\  |\  |                          \                             \   
-E| \ | \ | \ | \ | \ |        E                  \          E                  \  
- |  \|  \|  \|  \|  \|                            \                             \ 
- v   v   v   v   v   v                             v                             v
- o-->o-->o-->o-->o-->o         o   o   o   o   o   o         o   o   o   o   o   o
+   T    A    B    L    E              T    A    B    L    E              T    A    B    L    E   
+ o---▶o---▶o---▶o---▶o---▶o         o    o    o    o    o    o         o    o    o    o    o    o
+ |\   |\   |\   |\   |\   |         |                                   \                        
+M| \  | \  | \  | \  | \  |        M|                                 M  \                       
+ |  \ |  \ |  \ |  \ |  \ |         |                                     \                      
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼         ▼                                      ▼                     
+ o---▶o---▶o---▶o---▶o---▶o         o---▶o    o    o    o    o         o    o    o    o    o    o
+ |\   |\   |\   |\   |\   |               \                                  \                   
+A| \  | \  | \  | \  | \  |        A       \                          A       \                  
+ |  \ |  \ |  \ |  \ |  \ |                 \                                  \                 
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                  ▼                                  ▼                
+ o---▶o---▶o---▶o---▶o---▶o         o    o    o    o    o    o         o    o    o    o    o    o
+ |\   |\   |\   |\   |\   |                    \                                  \              
+P| \  | \  | \  | \  | \  |        P            \                     P            \             
+ |  \ |  \ |  \ |  \ |  \ |                      \                                  \            
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                       ▼                                  ▼           
+ o---▶o---▶o---▶o---▶o---▶o         o    o    o    o    o    o         o    o    o    o    o    o
+ |\   |\   |\   |\   |\   |                         \                                  \         
+L| \  | \  | \  | \  | \  |        L                 \                L                 \        
+ |  \ |  \ |  \ |  \ |  \ |                           \                                  \       
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼                                  ▼      
+ o---▶o---▶o---▶o---▶o---▶o         o    o    o    o    o    o         o    o    o    o    o    o
+ |\   |\   |\   |\   |\   |                              \                                  \    
+E| \  | \  | \  | \  | \  |        E                      \           E                      \   
+ |  \ |  \ |  \ |  \ |  \ |                                \                                  \  
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                                 ▼                                  ▼ 
+ o---▶o---▶o---▶o---▶o---▶o         o    o    o    o    o    o         o    o    o    o    o    o
 ```
 
 The example above is just one of many sequence alignment types. There are different types of alignment graphs, applications of alignment graphs, and different scoring models used in bioinformatics.
@@ -3241,28 +3241,28 @@ Determining the best scoring pairwise alignment can be done by generating a DAG 
 For example, consider a DAG that pits FOUR against CHOIR...
 
 ```{svgbob}
-   C   H   O   I   R  
- o-->o-->o-->o-->o-->o
- |\  |\  |\  |\  |\  |
-F| \ | \ | \ | \ | \ |
- |  \|  \|  \|  \|  \|
- v   v   v   v   v   v
- o-->o-->o-->o-->o-->o
- |\  |\  |\  |\  |\  |
-O| \ | \ | \ | \ | \ |
- |  \|  \|  \|  \|  \|
- v   v   v   v   v   v
- o-->o-->o-->o-->o-->o
- |\  |\  |\  |\  |\  |
-U| \ | \ | \ | \ | \ |
- |  \|  \|  \|  \|  \|
- v   v   v   v   v   v
- o-->o-->o-->o-->o-->o
- |\  |\  |\  |\  |\  |
-R| \ | \ | \ | \ | \ |
- |  \|  \|  \|  \|  \|
- v   v   v   v   v   v
- o-->o-->o-->o-->o-->o
+   C    H    O    I    R  
+ o--->o--->o--->o--->o--->o
+ |\   |\   |\   |\   |\   |
+F| \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+ o--->o--->o--->o--->o--->o
+ |\   |\   |\   |\   |\   |
+O| \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+ o--->o--->o--->o--->o--->o
+ |\   |\   |\   |\   |\   |
+U| \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+ o--->o--->o--->o--->o--->o
+ |\   |\   |\   |\   |\   |
+R| \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+ o---▶o---▶o---▶o---▶o---▶o
 ```
 
 
@@ -3390,28 +3390,28 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix, where each element in the matrix represents a node in the alignment graph. The weights are then populated in a predefined order and backtracking is used find the maximum path.
 
 ```{svgbob}
-   "Create graph"               "Calc first row"             "Calc col 1"                "Calc col 2"                "Calc col 3"  
-*-->*-->*-->*-->*-->*       o-->o-->o-->o-->o-->o       o-->o-->o-->o-->o-->o       o-->o-->o-->o-->o-->o       o-->o-->o-->o-->o-->o
-|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
-| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
-|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|
-v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
-*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
-|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
-| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
-|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|      "do the rest..."
-v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
-*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
-|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
-| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
-|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|
-v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
-*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
-|\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |       |\  |\  |\  |\  |\  |
-| \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |       | \ | \ | \ | \ | \ |
-|  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|       |  \|  \|  \|  \|  \|
-v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v       v   v   v   v   v   v
-*-->*-->*-->*-->*-->*       *-->*-->*-->*-->*-->*       o-->*-->*-->*-->*-->*       o-->o-->*-->*-->*-->*       o-->o-->o-->*-->*-->*
+       "Create graph"                  "Calc first row"                  "Calc col 1"                     "Calc col 2"                     "Calc col 3"  
+*---▶*---▶*---▶*---▶*---▶*       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      "do the rest..."
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
 ```
 
 ```{output}
@@ -3554,35 +3554,34 @@ o------▶o------▶o------▶o
 "Row after:"
 
            TAA
-  ,-------------------.
- /                     \
-,       TA              .
-|   ,-------.   AA      |
-|  /       ,-\-------.  |
+   ,-----------------.
+  /     TA            \
+ /  ,-------.   AA     \
+,  /       ,-\-------.  .
 | /       /   \       \ |
 |/  T    /  A  ▼    A  ▼▼
 o------▶o------▶o------▶o
 ```
 
 ```{svgbob}
-"Column before:"              "Column after:"
-                              
- o                             o-------.
- |                             |\       \
-G|                            G| \       \
- |                             |  `---.   .
- ▼                             ▼      |   |
- o                             o----. |GA |
- |                             |    | |   |
-A|                            A|  .-+-'   | GAG 
- |                             | /  |     |
- ▼                             ▼▼   |     |
- o                             o    |AG   |
- |                             |    |     ,
-G|                            G|  .-'    /
- |                             | /      /
- ▼                             ▼▼      /
- o                             o◀-----'
+"Column before:"     "Column after:"
+                     
+ o                    o---.
+ |                    |\   \
+G|                   G| \   \
+ |                    |  \   \
+ ▼                    ▼   .   . 
+ o                    o   |GA |
+ |                    |\  ,   |
+A|                   A| \/    |GAG 
+ |                    | /.    |
+ ▼                    ▼▼ |    |
+ o                    o  |AG  |
+ |                    |  |    .
+G|                   G|  .   /
+ |                    | /   /
+ ▼                    ▼▼   /
+ o                    o◀--'
 ```
 
 ```{ch5}
@@ -5485,33 +5484,33 @@ cyclic
  * `{bm} alignment graph/(alignment graph|sequence alignment graph)/i` - A directed graph representing all possible sequence alignments for some set of sequences. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...
 
    ```{svgbob}
-      T   A   B   L   E
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |   "* each diagonal edge is a replacement / keep matching"
-   M| \ | \ | \ | \ | \ |   "* each horizontal edge is an indel where the top is kept"
-    |  \|  \|  \|  \|  \|   "* each vertical edge is an indel where the left is kept"
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o   
-    |\  |\  |\  |\  |\  |
-   A| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |
-   P| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |
-   L| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
-    |\  |\  |\  |\  |\  |
-   E| \ | \ | \ | \ | \ |
-    |  \|  \|  \|  \|  \|
-    v   v   v   v   v   v
-    o-->o-->o-->o-->o-->o
+      T    A    B    L    E   
+    o---▶o---▶o---▶o---▶o---▶o
+    |\   |\   |\   |\   |\   |   "* each diagonal edge is a replacement / keep matching"
+   M| \  | \  | \  | \  | \  |   "* each horizontal edge is an indel where the top is kept"
+    |  \ |  \ |  \ |  \ |  \ |   "* each vertical edge is an indel where the left is kept"
+    ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+    o---▶o---▶o---▶o---▶o---▶o
+    |\   |\   |\   |\   |\   |
+   A| \  | \  | \  | \  | \  |
+    |  \ |  \ |  \ |  \ |  \ |
+    ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+    o---▶o---▶o---▶o---▶o---▶o
+    |\   |\   |\   |\   |\   |
+   P| \  | \  | \  | \  | \  |
+    |  \ |  \ |  \ |  \ |  \ |
+    ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+    o---▶o---▶o---▶o---▶o---▶o
+    |\   |\   |\   |\   |\   |
+   L| \  | \  | \  | \  | \  |
+    |  \ |  \ |  \ |  \ |  \ |
+    ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+    o---▶o---▶o---▶o---▶o---▶o
+    |\   |\   |\   |\   |\   |
+   E| \  | \  | \  | \  | \  |
+    |  \ |  \ |  \ |  \ |  \ |
+    ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+    o---▶o---▶o---▶o---▶o---▶o
    ```
 
    A path in this graph from source (top-left) to sink (bottom-right) represents an alignment.
@@ -5519,33 +5518,33 @@ cyclic
  * `{bm} alignment path/(sequence alignment graph path|sequence alignment path|alignment graph path|alignment path)/i` - A path in an alignment graph that represents one possible sequence alignment. For example, given the following alignment path ...
    
    ```{svgbob}
-      T   A   B   L   E
-    o-->o-->o   o   o   o
-            |                 "* each diagonal edge is a replacement / keep matching"
-   M        |                 "* each horizontal edge is an indel where the top is kept"
-            |                 "* each vertical edge is an indel where the left is kept"
-            v
-    o   o   o   o   o   o   
-             \
-   A          \
-               \
-                v
-    o   o   o   o   o   o
-                 \
-   P              \
-                   \
-                    v
-    o   o   o   o   o-->o
-                        |
-   L                    |
-                        |
-                        v
-    o   o   o   o   o   o
-                        |
-   E                    |
-                        |
-                        v
-    o   o   o   o   o   o
+      T    A    B    L    E
+    o---▶o---▶o    o    o    o
+              |                    "* each diagonal edge is a replacement / keep matching"
+   M          |                    "* each horizontal edge is an indel where the top is kept"
+              |                    "* each vertical edge is an indel where the left is kept"
+              ▼               
+    o    o    o    o    o    o   
+               \              
+   A            \             
+                 \            
+                  ▼           
+    o    o    o    o    o    o
+                    \         
+   P                 \        
+                      \       
+                       ▼      
+    o    o    o    o    o---▶o
+                             |
+   L                         |
+                             |
+                             ▼
+    o    o    o    o    o    o
+                             |
+   E                         |
+                             |
+                             ▼
+    o    o    o    o    o    o
    ```
 
    is represent as the alignment...
