@@ -7,7 +7,7 @@ from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, bac
 from Graph import Graph
 from GraphGridCreate import create_grid_graph
 from WeightLookup import WeightLookup, Table2DWeightLookup
-from helpers.Utils import latex_escape
+from helpers.Utils import latex_escape, unique_id_generator
 
 ELEM = TypeVar('ELEM')
 
@@ -42,33 +42,49 @@ def create_affine_gap_alignment_graph(
         vertical_contig_gap_weight: float,
         horizontal_contig_gap_weight: float
 ) -> Graph[Tuple[int, ...], NodeData, str, EdgeData]:
-    def on_new_node_func(n_id):
-        return NodeData() if n_id[0] in {0, 1, 2} else None
-
-    def on_new_edge_func(src_n_id, dst_n_id, offset, elems):
-        # node id index 0 is the layer -- 0=low, 1=mid, 2=high
-        if src_n_id[0] == 1 and dst_n_id == 1:
-            return EdgeData(elems[1], elems[2], weight_lookup.lookup(*elems[1:3]))
-        elif src_n_id[0] == 0 and dst_n_id[0] == 0:
-            return EdgeData(elems[1], elems[2], vertical_contig_gap_weight) if offset[1:] == (1, 0) else None
-        elif src_n_id[0] == 2 and dst_n_id[0] == 2:
-            return EdgeData(elems[1], elems[2], horizontal_contig_gap_weight) if offset[1:] == (0, 1) else None
-        elif src_n_id[0] == 1 and dst_n_id[0] == 0:
-            return EdgeData(elems[1], elems[2], vertical_contig_gap_weight) if offset[1:] == (1, 0) else None
-        elif src_n_id[0] == 1 and dst_n_id[0] == 2:
-            return EdgeData(elems[1], elems[2], horizontal_contig_gap_weight) if offset[1:] == (0, 1) else None
-        elif src_n_id[0] == 0 and dst_n_id[0] == 1:
-            return EdgeData(elems[1], elems[2], 0.0) if offset[1:] == (1, 0) else None
-        elif src_n_id[0] == 2 and dst_n_id[0] == 1:
-            return EdgeData(elems[1], elems[2], 0.0) if offset[1:] == (0, 1) else None
-        else:
-            return None
-    graph = create_grid_graph(
-        [['low', 'mid', 'high'], v, w],
-        on_new_node=on_new_node_func,
-        on_new_edge=on_new_edge_func
+    graph_low = create_grid_graph(
+        [v, w],
+        lambda n_id: NodeData(),
+        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], vertical_contig_gap_weight) if offset == (1, 0) else None
     )
-    return graph
+    graph_mid = create_grid_graph(
+        [v, w],
+        lambda n_id: NodeData(),
+        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], weight_lookup.lookup(*elems))
+    )
+    graph_high = create_grid_graph(
+        [v, w],
+        lambda n_id: NodeData(),
+        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], horizontal_contig_gap_weight) if offset == (0, 1) else None
+    )
+
+    graph_merged = Graph()
+    create_edge_id_func = unique_id_generator()
+
+    def merge(from_graph, n_prefix):
+        for n_id in from_graph.get_nodes():
+            n_data = from_graph.get_node_data(n_id)
+            graph_merged.insert_node(n_prefix + n_id, n_data)
+        for e_id in from_graph.get_edges():
+            from_n_id, to_n_id, e_data = from_graph.get_edge(e_id)
+            graph_merged.insert_edge(create_edge_id_func(), n_prefix + from_n_id, n_prefix + to_n_id, e_data)
+
+    merge(graph_low, ('low', ))
+    merge(graph_mid, ('mid',))
+    merge(graph_high, ('high',))
+
+    v_node_count = len(v) + 1
+    w_node_count = len(w) + 1
+    mid_to_low_edge_id_func = unique_id_generator('MID_TO_LOW')
+    for r, c in product(range(v_node_count), range(w_node_count)):
+        from_n_id = 'mid', r, c
+        to_n_id = 'low', r + 1, c
+        if not graph_merged.has_node(to_n_id):
+            continue
+        e = mid_to_low_edge_id_func()
+        graph_merged.insert_edge(e, from_n_id, to_n_id, EdgeData('X', 'X', 0.0))
+
+    return graph_merged
 
 
 def affine_gap_alignment(
@@ -143,18 +159,17 @@ def graph_to_tikz(
         \\begin{tikzpicture}
     ''')
     node_id_to_latex_id = {}
+    for node_id in graph.get_nodes():
+        node_id_to_latex_id[node_id] = 'N' + '_'.join(str(c) for c in node_id)
     for node_id_prefix in layers:
-        for node_id_suffix in product(range(row_len), range(col_len)):
-            node_id = node_id_prefix + node_id_suffix
-            node_id_to_latex_id[node_id] = 'N' + '_'.join(str(c) for c in node_id)
         for node_id_suffix in product(range(row_len), range(col_len)):
             node_id = node_id_prefix + node_id_suffix
             node_data = graph.get_node_data(node_id)
             node_label = ''  # f'{node_id}'
             layer_pos_offset = {
-                (2,): (0, -col_len * scale_x * 2),                      # high
-                (1,): (row_len * scale_y * 1, -col_len * scale_x * 1),  # mid
-                (0,): (row_len * scale_y * 2, 0)                        # low
+                ('high',): (0, -col_len * scale_x * 2),
+                ('mid',): (row_len * scale_y * 1, -col_len * scale_x * 1),
+                ('low',): (row_len * scale_y * 2, 0)
             }[node_id_prefix]
             row_pos = node_id_suffix[0] * scale_x + layer_pos_offset[0]
             col_pos = -node_id_suffix[1] * scale_y + layer_pos_offset[1]
@@ -166,8 +181,6 @@ def graph_to_tikz(
             for edge_id in graph.get_outputs(node_id):
                 child_node_id = graph.get_edge_to(edge_id)
                 child_node_id_prefix = child_node_id[:-2]
-                if child_node_id_prefix != node_id_prefix:
-                    continue
                 edge_data = graph.get_edge_data(edge_id)
                 edge_color = 'gray!40'
                 if edge_id in highlight_edges:

@@ -36,7 +36,7 @@
 <title>A&#45;&gt;C</title>
 <path fill="none" stroke="#000000" d="M77.6403,-260.7591C78.6091,-255.0928 79.5192,-248.8095 80,-243 82.4816,-213.0154 84.769,-185.1094 76,-141 75.4599,-138.283 74.7509,-135.4963 73.9425,-132.7346"/>
 <polygon fill="#000000" stroke="#000000" points="77.1843,-131.3917 70.7023,-123.0111 70.5433,-133.6048 77.1843,-131.3917"/>
-<text text-anchor="middle" x="93.5" y="-188.3" font-family="Times,serif" font-size="14.00" fill="#000000">3.0</text>
+<text text-anchor="middle" x="93.5" y="-188.3" font-family="Times,serif" font-size="14.00" fill="#000000">1.0</text>
 </g>
 <!-- B&#45;&gt;C -->
 <g id="edge3" class="edge">
@@ -67,7 +67,7 @@
 <title>C&#45;&gt;D</title>
 <path fill="none" stroke="#000000" d="M70.4592,-86.9735C75.431,-74.9585 82.0593,-58.9401 87.6767,-45.3646"/>
 <polygon fill="#000000" stroke="#000000" points="90.9608,-46.5818 91.5503,-36.0034 84.4927,-43.9053 90.9608,-46.5818"/>
-<text text-anchor="middle" x="94.5" y="-57.8" font-family="Times,serif" font-size="14.00" fill="#000000">2.0</text>
+<text text-anchor="middle" x="94.5" y="-57.8" font-family="Times,serif" font-size="14.00" fill="#000000">1.0</text>
 </g>
 </g>
 </svg>
