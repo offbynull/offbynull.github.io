@@ -143,7 +143,12 @@ def graph_to_tikz(
                 if edge_id in highlight_edges:
                     edge_color = 'green'
                 edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
-                ret += f'        \\draw[->, >=stealth, line width = 2px, {edge_color}] ({node_id_to_latex_id[node_id]}) -- ({node_id_to_latex_id[child_node_id]}) node [align=center, midway, color=black] {{{edge_label}}};\n'
+                ret += f'        \\draw[->, >=stealth, line width = 2px, {edge_color}]' \
+                       f' ({node_id_to_latex_id[node_id]})' \
+                       f' to' \
+                       f' []' \
+                       f' node [align=center, midway, color=black] {{{edge_label}}}' \
+                       f' ({node_id_to_latex_id[child_node_id]});\n'
     ret += dedent('''
         \\end{tikzpicture}
     \\end{document}

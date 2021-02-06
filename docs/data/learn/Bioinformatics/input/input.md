@@ -3618,6 +3618,82 @@ G  0  0  0  1
 
 ### Multiple Alignment
 
+```{svgbob}
++---------+
+|         |
+|         |
+|         |
+|         |
++---------+
+
+   +---------+
+  /|        /|
+ / |       / |
++--+------+  |
+|  |      |  |
+|  +------+--+
+| /       | /
+|/        |/
++---------+
+```
+
+```{latex}
+\documentclass{standalone}
+\usepackage{pgf, tikz, pagecolor}
+\usetikzlibrary{arrows, automata}
+\begin{document}
+    \pagecolor{white}
+    \begin{tikzpicture}
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (0, 0)    (N00) {(0, 0)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (0, -10)  (N01) {(0, 1)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (10, 0)   (N10) {(1, 0)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (10, -10) (N11) {(1, 1)};
+
+        \draw[line width = 1px, black, dotted] (N01) -- (N11);
+        \draw[line width = 1px, black, dotted] (N10) -- (N11);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N00) to [] node [align=center, midway, color=black] {—\\ B} (N01);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N00) to [] node [align=center, midway, color=black] {A\\ —} (N10);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N00) to [] node [align=center, midway, color=black] {A\\ B} (N11);
+    \end{tikzpicture}
+\end{document}
+```
+
+```{latex}
+\documentclass{standalone}
+\usepackage{pgf, tikz, pagecolor}
+\usetikzlibrary{arrows, automata}
+\begin{document}
+    \pagecolor{white}
+    \begin{tikzpicture}
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (0, 0)    (N000) {(0, 0, 0)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (2, 3)    (N001) {(0, 0, 1)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (0, -10)  (N010) {(0, 1, 0)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (2, -7)   (N011) {(0, 1, 1)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (10, 0)   (N100) {(1, 0, 0)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (12, 3)   (N101) {(1, 0, 1)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (10, -10) (N110) {(1, 1, 0)};
+        \node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at (12, -7)  (N111) {(1, 1, 1)};
+
+        \draw[line width = 1px, black, dotted] (N001) -- (N101);
+        \draw[line width = 1px, black, dotted] (N001) -- (N011);
+        \draw[line width = 1px, black, dotted] (N011) -- (N111);
+        \draw[line width = 1px, black, dotted] (N010) -- (N011);
+        \draw[line width = 1px, black, dotted] (N010) -- (N110);
+        \draw[line width = 1px, black, dotted] (N101) -- (N100);
+        \draw[line width = 1px, black, dotted] (N101) -- (N111);
+        \draw[line width = 1px, black, dotted] (N110) -- (N111);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N000) to [] node [align=center, midway, color=black] {—\\ —\\ C} (N001);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N000) to [] node [align=center, midway, color=black] {—\\ B\\ —} (N010);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N000) to [] node [align=center, midway, color=black] {—\\ B\\ C} (N011);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N000) to [] node [align=center, midway, color=black] {A\\ —\\ —} (N100);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N000) to [] node [align=center, midway, color=black] {A\\ —\\ C} (N101);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N000) to [] node [align=center, midway, color=black] {A\\ B\\ —} (N110);
+        \draw[->, >=stealth, line width = 2px, gray!40] (N000) to [] node [align=center, midway, color=black] {A\\ B\\ C} (N111);
+        \draw[line width = 1px, black, dotted] (N100) -- (N110);
+    \end{tikzpicture}
+\end{document}
+```
+
 ### Multiple Alignment Scoring
 
 # Stories
