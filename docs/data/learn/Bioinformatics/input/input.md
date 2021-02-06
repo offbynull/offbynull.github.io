@@ -3501,28 +3501,7 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-### Affine Gap Penalty
-
-```{ch5}
-AffineGapAlignment_Visualize
-TAGT
-GAGG
-
-embedded_score_matrix
--1
-0.1, 0.1
-   A  C  T  G
-A  1  0  0  0
-C  0  1  0  0
-T  0  0  1  0
-G  0  0  0  1
-```
-
-#### Basic Algorithm
-
-#### Layer Algorithm
-
-### Pair-wise Scoring
+### Protein Scoring
 
 `{bm} /(Algorithms\/Sequence Alignment\/Protein Scoring)_TOPIC/`
 
@@ -3533,8 +3512,6 @@ Algorithms/Sequence Alignment/Fitting Alignment_TOPIC
 Algorithms/Sequence Alignment/Overlap Alignment_TOPIC
 ```
 
-### Pair-wise Scoring
-
 **WHAT**: Given a pair of sequences, score an element from sequence 1 against sequence 2 based on how similar they are. The type of biological sequence defines how it should be scored, where things such as evolution are mutation probability are used.
 
 **WHY**: Before performing a pair-wise sequence alignment, there needs to be a baseline for how elements within those sequences measure up against each other. In the simplest case, you can compare elements directly against each other. For example, if the sequences are words, it may be enough to compare the letters such that a matching letter scores 1 while a mismatch or indel scores 0. A more complex way to compare words may be to use the phonetics. For example, rather than treating letters as the sequence elements, break up the words by what groups of letters may sound like. For example, the sound made by "ea" and "ee" may be the same depending on the word (e.g. leak vs leek) and as such will score higher.
@@ -3543,9 +3520,106 @@ Algorithms/Sequence Alignment/Overlap Alignment_TOPIC
 
 #### BLOSUM Scoring Matrix
 
-### Multi Scoring
+### Affine Gap Scoring
+
+#### Basic Algorithm
+
+```{svgbob}
+   T    A    A   
+ o---▶o---▶o---▶o
+ |\   |\   |\   |
+G| \  | \  | \  |
+ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼
+ o---▶o---▶o---▶o
+ |\   |\   |\   |
+A| \  | \  | \  |
+ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼
+ o---▶o---▶o---▶o
+ |\   |\   |\   |
+G| \  | \  | \  |
+ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼
+ o---▶o---▶o---▶o
+```
+
+```{svgbob}
+"Row before:"
+
+    T       A       A
+o------▶o------▶o------▶o
+
+
+"Row after:"
+
+           TAA
+  ,-------------------.
+ /                     \
+,       TA              .
+|   ,-------.   AA      |
+|  /       ,-\-------.  |
+| /       /   \       \ |
+|/  T    /  A  ▼    A  ▼▼
+o------▶o------▶o------▶o
+```
+
+```{svgbob}
+"Column before:"              "Column after:"
+                              
+ o                             o-------.
+ |                             |\       \
+G|                            G| \       \
+ |                             |  `---.   .
+ ▼                             ▼      |   |
+ o                             o----. |GA |
+ |                             |    | |   |
+A|                            A|  .-+-'   | GAG 
+ |                             | /  |     |
+ ▼                             ▼▼   |     |
+ o                             o    |AG   |
+ |                             |    |     ,
+G|                            G|  .-'    /
+ |                             | /      /
+ ▼                             ▼▼      /
+ o                             o◀-----'
+```
+
+```{ch5}
+AffineGapAlignment_Basic_Visualize
+TGAT
+GAGG
+
+embedded_score_matrix
+-1
+-0.1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
+
+#### Layer Algorithm
+
+```{ch5}
+AffineGapAlignment_Layer_Visualize
+TGAT
+GAGG
+
+embedded_score_matrix
+-1
+-0.1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
 
 ### Multiple Alignment
+
+### Multiple Alignment Scoring
 
 # Stories
 

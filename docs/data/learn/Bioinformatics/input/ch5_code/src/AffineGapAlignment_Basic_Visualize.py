@@ -1,4 +1,4 @@
-from AffineGapAlignment_Graph import create_affine_gap_alignment_graph, graph_to_tikz
+from AffineGapAlignment_Basic_Graph import create_affine_gap_alignment_graph, graph_to_tikz
 from WeightLookup import Table2DWeightLookup
 
 
@@ -15,7 +15,7 @@ def main():
             edge_highlights = set()
         matrix_type = input()
         indel_weight = float(input())
-        vertical_contig_gap_weight, horizontal_contig_gap_weight = tuple(float(s.strip()) for s in input().split(','))
+        extended_gap_weight = float(input())
         if matrix_type == 'embedded_score_matrix':
             weights_data = ''
             try:
@@ -30,7 +30,7 @@ def main():
         else:
             raise ValueError('Bad score matrix type')
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
-        graph = create_affine_gap_alignment_graph(s1, s2, weight_lookup, vertical_contig_gap_weight, horizontal_contig_gap_weight)
+        graph = create_affine_gap_alignment_graph(s1, s2, weight_lookup, extended_gap_weight)
         output = graph_to_tikz(
             graph,
             set(filter(lambda e: (graph.get_edge_from(e), graph.get_edge_to(e)) in edge_highlights, graph.get_edges()))

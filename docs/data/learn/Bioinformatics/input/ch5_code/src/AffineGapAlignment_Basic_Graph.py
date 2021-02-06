@@ -1,7 +1,7 @@
-import json
+from itertools import product
 from itertools import product
 from textwrap import dedent
-from typing import List, Optional, TypeVar, Tuple, Callable, Set, Any
+from typing import List, Optional, TypeVar, Tuple, Set
 
 from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from Graph import Graph
@@ -39,64 +39,49 @@ def create_affine_gap_alignment_graph(
         v: List[ELEM],
         w: List[ELEM],
         weight_lookup: WeightLookup,
-        vertical_contig_gap_weight: float,
-        horizontal_contig_gap_weight: float
+        extended_gap_weight: float
 ) -> Graph[Tuple[int, ...], NodeData, str, EdgeData]:
-    graph_low = create_grid_graph(
-        [v, w],
-        lambda n_id: NodeData(),
-        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], vertical_contig_gap_weight) if offset == (1, 0) else None
-    )
-    graph_mid = create_grid_graph(
+    graph = create_grid_graph(
         [v, w],
         lambda n_id: NodeData(),
         lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], weight_lookup.lookup(*elems))
     )
-    graph_high = create_grid_graph(
-        [v, w],
-        lambda n_id: NodeData(),
-        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], horizontal_contig_gap_weight) if offset == (0, 1) else None
-    )
-
-    graph_merged = Graph()
-    create_edge_id_func = unique_id_generator()
-
-    def merge(from_graph, n_prefix):
-        for n_id in from_graph.get_nodes():
-            n_data = from_graph.get_node_data(n_id)
-            graph_merged.insert_node(n_prefix + n_id, n_data)
-        for e_id in from_graph.get_edges():
-            from_n_id, to_n_id, e_data = from_graph.get_edge(e_id)
-            graph_merged.insert_edge(create_edge_id_func(), n_prefix + from_n_id, n_prefix + to_n_id, e_data)
-
-    merge(graph_low, ('low', ))
-    merge(graph_mid, ('mid',))
-    merge(graph_high, ('high',))
-
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
-    mid_to_low_edge_id_func = unique_id_generator('MID_TO_LOW')
-    for r, c in product(range(v_node_count), range(w_node_count)):
-        from_n_id = 'mid', r, c
-        to_n_id = 'low', r + 1, c
-        if not graph_merged.has_node(to_n_id):
-            continue
-        e = mid_to_low_edge_id_func()
-        graph_merged.insert_edge(e, from_n_id, to_n_id, EdgeData('X', 'X', 0.0))
-
-    return graph_merged
+    horizontal_indel_hop_edge_id_func = unique_id_generator('HORIZONTAL_INDEL_HOP')
+    for r, from_c in product(range(v_node_count), range(w_node_count)):
+        from_node_id = r, from_c
+        for to_c in range(from_c + 2, w_node_count):
+            to_node_id = r, to_c
+            edge_id = horizontal_indel_hop_edge_id_func()
+            v_elems = v[from_c:to_c]
+            w_elems = [None] * len(v_elems)
+            hop_count = to_c - from_c
+            weight = weight_lookup.lookup(v_elems[0], w_elems[0]) + (hop_count - 1) * extended_gap_weight
+            graph.insert_edge(edge_id, from_node_id, to_node_id, EdgeData(v_elems, w_elems, weight))
+    vertical_indel_hop_edge_id_func = unique_id_generator('VERTICAL_INDEL_HOP')
+    for from_r, c in product(range(v_node_count), range(w_node_count)):
+        from_node_id = from_r, c
+        for to_r in range(from_r + 2, w_node_count):
+            to_node_id = to_r, c
+            edge_id = vertical_indel_hop_edge_id_func()
+            w_elems = w[from_r:to_r]
+            v_elems = [None] * len(w_elems)
+            hop_count = to_r - from_r
+            weight = weight_lookup.lookup(v_elems[0], w_elems[0]) + (hop_count - 1) * extended_gap_weight
+            graph.insert_edge(edge_id, from_node_id, to_node_id, EdgeData(v_elems, w_elems, weight))
+    return graph
 
 
 def affine_gap_alignment(
         v: List[ELEM],
         w: List[ELEM],
         weight_lookup: WeightLookup,
-        vertical_contig_gap_weight: float,
-        horizontal_contig_gap_weight: float
+        extended_gap_weight: float
 ) -> Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
-    graph = create_affine_gap_alignment_graph(v, w, weight_lookup, vertical_contig_gap_weight, horizontal_contig_gap_weight)
+    graph = create_affine_gap_alignment_graph(v, w, weight_lookup, extended_gap_weight)
     from_node = (1, 0, 0)
     to_node = (1, v_node_count - 1, w_node_count - 1)
     populate_weights_and_backtrack_pointers(
@@ -154,6 +139,8 @@ def graph_to_tikz(
     \\documentclass{standalone}
     \\usepackage{pgf, tikz, pagecolor}
     \\usetikzlibrary{arrows, automata}
+    \\pgfdeclarelayer{bg}    % declare background layer
+    \\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
     \\begin{document}
         \\pagecolor{white}
         \\begin{tikzpicture}
@@ -166,14 +153,10 @@ def graph_to_tikz(
             node_id = node_id_prefix + node_id_suffix
             node_data = graph.get_node_data(node_id)
             node_label = ''  # f'{node_id}'
-            layer_pos_offset = {
-                ('high',): (0, -col_len * scale_x * 2),
-                ('mid',): (row_len * scale_y * 1, -col_len * scale_x * 1),
-                ('low',): (row_len * scale_y * 2, 0)
-            }[node_id_prefix]
-            row_pos = node_id_suffix[0] * scale_x + layer_pos_offset[0]
-            col_pos = -node_id_suffix[1] * scale_y + layer_pos_offset[1]
+            row_pos = node_id_suffix[0] * scale_x
+            col_pos = -node_id_suffix[1] * scale_y
             ret += f'        \\node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at ({row_pos}, {col_pos}) ({node_id_to_latex_id[node_id]}) {{{latex_escape(node_label)}}};\n'
+    for node_id_prefix in layers:
         for node_id_suffix in product(range(row_len), range(col_len)):
             node_id = node_id_prefix + node_id_suffix
             if not graph.has_node(node_id):
@@ -182,11 +165,29 @@ def graph_to_tikz(
                 child_node_id = graph.get_edge_to(edge_id)
                 child_node_id_prefix = child_node_id[:-2]
                 edge_data = graph.get_edge_data(edge_id)
-                edge_color = 'gray!40'
+                edge_label = ''
+                edge_params = ['->', '>=stealth', 'line width = 2px', 'gray!40']
+                edge_to_params = [None, None]
+                if edge_id.startswith('HORIZONTAL_INDEL_HOP'):
+                    edge_params[2:] = ['line width = 1px', 'magenta']
+                    edge_to_params[0:] = ['bend left', 'looseness=0.3']
+                if edge_id.startswith('VERTICAL_INDEL_HOP'):
+                    edge_params[2:] = ['line width = 1px', 'red']
+                    edge_to_params[0:] = ['bend left', 'looseness=0.3']
                 if edge_id in highlight_edges:
-                    edge_color = 'green'
-                edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
-                ret += f'        \\draw[->, >=stealth, line width = 2px, {edge_color}] ({node_id_to_latex_id[node_id]}) -- ({node_id_to_latex_id[child_node_id]}) node [align=center, midway, color=black] {{{edge_label}}};\n'
+                    edge_params[3] = 'green'
+                if edge_id.startswith('E'):
+                    edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
+                if not edge_id.startswith('E'):
+                    ret += f'        \\begin{{pgfonlayer}}{{bg}}\n'
+                ret += f'        \\draw[{", ".join(p for p in edge_params if p is not None)}]' \
+                       f' ({node_id_to_latex_id[node_id]})' \
+                       f' to' \
+                       f' [{", ".join(p for p in edge_to_params if p is not None)}]' \
+                       f' node [align=center, midway, color=black] {{{edge_label}}}' \
+                       f' ({node_id_to_latex_id[child_node_id]});\n'
+                if not edge_id.startswith('E'):
+                    ret += f'        \\end{{pgfonlayer}}\n'
     ret += dedent('''
         \\end{tikzpicture}
     \\end{document}
@@ -225,7 +226,7 @@ def main():
         s2 = list(input())
         matrix_type = input()
         indel_weight = float(input())
-        vertical_contig_gap_weight, horizontal_contig_gap_weight = tuple(float(s.strip()) for s in input().split(','))
+        extended_gap_weight = float(input())
         if matrix_type == 'embedded_score_matrix':
             weights_data = ''
             try:
@@ -240,8 +241,8 @@ def main():
         else:
             raise ValueError('Bad score matrix type')
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
-        weight, edges, elems = affine_gap_alignment(s1, s2, weight_lookup, vertical_contig_gap_weight, horizontal_contig_gap_weight)
-        graph = create_affine_gap_alignment_graph(s1, s2, weight_lookup, vertical_contig_gap_weight, horizontal_contig_gap_weight)
+        weight, edges, elems = affine_gap_alignment(s1, s2, weight_lookup, extended_gap_weight)
+        graph = create_affine_gap_alignment_graph(s1, s2, weight_lookup, extended_gap_weight)
         output = graph_to_tikz(
             graph,
             set(edges)
