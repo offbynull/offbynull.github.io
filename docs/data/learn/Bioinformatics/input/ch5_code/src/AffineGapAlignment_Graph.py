@@ -1,12 +1,13 @@
+import json
 from itertools import product
 from textwrap import dedent
-from typing import List, Optional, TypeVar, Tuple, Set
+from typing import List, Optional, TypeVar, Tuple, Callable, Set, Any
 
 from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from Graph import Graph
 from GraphGridCreate import create_grid_graph
 from WeightLookup import WeightLookup, Table2DWeightLookup
-from helpers.Utils import unique_id_generator, latex_escape
+from helpers.Utils import latex_escape
 
 ELEM = TypeVar('ELEM')
 
@@ -25,54 +26,63 @@ class NodeData:
 
 class EdgeData:
     def __init__(self, v_elem: Optional[ELEM], w_elem: Optional[ELEM], weight: float):
-        self.weight = weight
         self.v_elem = v_elem
         self.w_elem = w_elem
+        self.weight = weight
 
     def get_elements(self) -> Tuple[Optional[ELEM], Optional[ELEM]]:
         return self.v_elem, self.w_elem
 
 
 # MARKDOWN
-def create_overlap_alignment_graph(
+def create_affine_gap_alignment_graph(
         v: List[ELEM],
         w: List[ELEM],
-        weight_lookup: WeightLookup
+        weight_lookup: WeightLookup,
+        vertical_contig_gap_weight: float,
+        horizontal_contig_gap_weight: float
 ) -> Graph[Tuple[int, ...], NodeData, str, EdgeData]:
+    def on_new_node_func(n_id):
+        return NodeData() if n_id[0] in {0, 1, 2} else None
+
+    def on_new_edge_func(src_n_id, dst_n_id, offset, elems):
+        # node id index 0 is the layer -- 0=low, 1=mid, 2=high
+        if src_n_id[0] == 1 and dst_n_id == 1:
+            return EdgeData(elems[1], elems[2], weight_lookup.lookup(*elems[1:3]))
+        elif src_n_id[0] == 0 and dst_n_id[0] == 0:
+            return EdgeData(elems[1], elems[2], vertical_contig_gap_weight) if offset[1:] == (1, 0) else None
+        elif src_n_id[0] == 2 and dst_n_id[0] == 2:
+            return EdgeData(elems[1], elems[2], horizontal_contig_gap_weight) if offset[1:] == (0, 1) else None
+        elif src_n_id[0] == 1 and dst_n_id[0] == 0:
+            return EdgeData(elems[1], elems[2], vertical_contig_gap_weight) if offset[1:] == (1, 0) else None
+        elif src_n_id[0] == 1 and dst_n_id[0] == 2:
+            return EdgeData(elems[1], elems[2], horizontal_contig_gap_weight) if offset[1:] == (0, 1) else None
+        elif src_n_id[0] == 0 and dst_n_id[0] == 1:
+            return EdgeData(elems[1], elems[2], 0.0) if offset[1:] == (1, 0) else None
+        elif src_n_id[0] == 2 and dst_n_id[0] == 1:
+            return EdgeData(elems[1], elems[2], 0.0) if offset[1:] == (0, 1) else None
+        else:
+            return None
     graph = create_grid_graph(
-        [v, w],
-        lambda n_id: NodeData(),
-        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], weight_lookup.lookup(*elems))
+        [['low', 'mid', 'high'], v, w],
+        on_new_node=on_new_node_func,
+        on_new_edge=on_new_edge_func
     )
-    v_node_count = len(v) + 1
-    w_node_count = len(w) + 1
-    source_node = 0, 0
-    source_create_free_ride_edge_id_func = unique_id_generator('FREE_RIDE_SOURCE')
-    for node in product([0], range(w_node_count)):
-        if node == source_node:
-            continue
-        e = source_create_free_ride_edge_id_func()
-        graph.insert_edge(e, source_node, node, EdgeData(None, None, 0.0))
-    sink_node = v_node_count - 1, w_node_count - 1
-    sink_create_free_ride_edge_id_func = unique_id_generator('FREE_RIDE_SINK')
-    for node in product(range(v_node_count), [w_node_count - 1]):
-        if node == sink_node:
-            continue
-        e = sink_create_free_ride_edge_id_func()
-        graph.insert_edge(e, node, sink_node, EdgeData(None, None, 0.0))
     return graph
 
 
-def overlap_alignment(
+def affine_gap_alignment(
         v: List[ELEM],
         w: List[ELEM],
-        weight_lookup: WeightLookup
+        weight_lookup: WeightLookup,
+        vertical_contig_gap_weight: float,
+        horizontal_contig_gap_weight: float
 ) -> Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
-    graph = create_overlap_alignment_graph(v, w, weight_lookup)
-    from_node = (0, 0)
-    to_node = (v_node_count - 1, w_node_count - 1)
+    graph = create_affine_gap_alignment_graph(v, w, weight_lookup, vertical_contig_gap_weight, horizontal_contig_gap_weight)
+    from_node = (1, 0, 0)
+    to_node = (1, v_node_count - 1, w_node_count - 1)
     populate_weights_and_backtrack_pointers(
         graph,
         from_node,
@@ -86,13 +96,13 @@ def overlap_alignment(
         to_node,
         lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
     )
-    edges = list(filter(lambda e: not e.startswith('FREE_RIDE'), edges))  # remove free rides from list
     alignment = []
     for e in edges:
         ed = graph.get_edge_data(e)
         alignment.append((ed.v_elem, ed.w_elem))
     return final_weight, edges, alignment
 # MARKDOWN
+
 
 
 
@@ -128,8 +138,6 @@ def graph_to_tikz(
     \\documentclass{standalone}
     \\usepackage{pgf, tikz, pagecolor}
     \\usetikzlibrary{arrows, automata}
-    \\pgfdeclarelayer{bg}    % declare background layer
-    \\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
     \\begin{document}
         \\pagecolor{white}
         \\begin{tikzpicture}
@@ -143,8 +151,13 @@ def graph_to_tikz(
             node_id = node_id_prefix + node_id_suffix
             node_data = graph.get_node_data(node_id)
             node_label = ''  # f'{node_id}'
-            row_pos = node_id_suffix[0] * scale_x
-            col_pos = -node_id_suffix[1] * scale_y
+            layer_pos_offset = {
+                (2,): (0, -col_len * scale_x * 2),                      # high
+                (1,): (row_len * scale_y * 1, -col_len * scale_x * 1),  # mid
+                (0,): (row_len * scale_y * 2, 0)                        # low
+            }[node_id_prefix]
+            row_pos = node_id_suffix[0] * scale_x + layer_pos_offset[0]
+            col_pos = -node_id_suffix[1] * scale_y + layer_pos_offset[1]
             ret += f'        \\node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at ({row_pos}, {col_pos}) ({node_id_to_latex_id[node_id]}) {{{latex_escape(node_label)}}};\n'
         for node_id_suffix in product(range(row_len), range(col_len)):
             node_id = node_id_prefix + node_id_suffix
@@ -156,35 +169,16 @@ def graph_to_tikz(
                 if child_node_id_prefix != node_id_prefix:
                     continue
                 edge_data = graph.get_edge_data(edge_id)
-                edge_label = ''
-                edge_params = ['->', '>=stealth', 'line width = 2px', 'gray!40']
-                edge_to_params = [None, None]
-                if edge_id.startswith('FREE_RIDE_SOURCE'):
-                    edge_params[2:] = ['line width = 1px', 'orange']
-                    edge_to_params[0:] = ['bend right', 'looseness=0.3']
-                if edge_id.startswith('FREE_RIDE_SINK'):
-                    edge_params[2:] = ['line width = 1px', 'purple']
-                    edge_to_params[0:] = ['bend left', 'looseness=0.3']
+                edge_color = 'gray!40'
                 if edge_id in highlight_edges:
-                    edge_params[3] = 'green'
-                if edge_id.startswith('E'):
-                    edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
-                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK'):
-                    ret += f'        \\begin{{pgfonlayer}}{{bg}}\n'
-                ret += f'        \\draw[{", ".join(p for p in edge_params if p is not None)}]' \
-                       f' ({node_id_to_latex_id[node_id]})' \
-                       f' to' \
-                       f' [{", ".join(p for p in edge_to_params if p is not None)}]' \
-                       f' node [align=center, midway, color=black] {{{edge_label}}}' \
-                       f' ({node_id_to_latex_id[child_node_id]});\n'
-                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK'):
-                    ret += f'        \\end{{pgfonlayer}}\n'
+                    edge_color = 'green'
+                edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
+                ret += f'        \\draw[->, >=stealth, line width = 2px, {edge_color}] ({node_id_to_latex_id[node_id]}) -- ({node_id_to_latex_id[child_node_id]}) node [align=center, midway, color=black] {{{edge_label}}};\n'
     ret += dedent('''
         \\end{tikzpicture}
     \\end{document}
     ''')
     return ret
-
 
 
 
@@ -217,8 +211,9 @@ def main():
         s1 = list(input())
         s2 = list(input())
         matrix_type = input()
+        indel_weight = float(input())
+        vertical_contig_gap_weight, horizontal_contig_gap_weight = tuple(float(s.strip()) for s in input().split(','))
         if matrix_type == 'embedded_score_matrix':
-            indel_weight = float(input())
             weights_data = ''
             try:
                 while True:
@@ -226,15 +221,14 @@ def main():
             except EOFError:
                 ...
         elif matrix_type == 'file_score_matrix':
-            indel_weight = float(input())
             path = input()
             with open(path, mode='r', encoding='utf-8') as f:
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
-        weight, edges, elems = overlap_alignment(s1, s2, weight_lookup)
-        graph = create_overlap_alignment_graph(s1, s2, weight_lookup)
+        weight, edges, elems = affine_gap_alignment(s1, s2, weight_lookup, vertical_contig_gap_weight, horizontal_contig_gap_weight)
+        graph = create_affine_gap_alignment_graph(s1, s2, weight_lookup, vertical_contig_gap_weight, horizontal_contig_gap_weight)
         output = graph_to_tikz(
             graph,
             set(edges)

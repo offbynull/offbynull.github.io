@@ -1,4 +1,4 @@
-from LocalAlignment_Graph import create_local_alignment_graph, graph_to_graphviz
+from LocalAlignment_Graph import create_local_alignment_graph, graph_to_tikz
 from WeightLookup import Table2DWeightLookup
 
 
@@ -9,10 +9,6 @@ def main():
         s1 = list(input())
         s2 = list(input())
         edge_highlight_str = input()
-        if edge_highlight_str != '':
-            edge_highlights = {tuple((int(t.split(',')[1]), int(t.split(',')[0])) for t in s.split('->')) for s in edge_highlight_str.split('|')}  # 0,0->1,1|0,0->0,1
-        else:
-            edge_highlights = set()
         matrix_type = input()
         if matrix_type == 'embedded_score_matrix':
             indel_weight = float(input())
@@ -31,13 +27,20 @@ def main():
             raise ValueError('Bad score matrix type')
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
         graph = create_local_alignment_graph(s1, s2, weight_lookup)
-        output = graph_to_graphviz(
+        edge_highlights = set()
+        if edge_highlight_str != '':  # 0,0->E->1,1|0,0->E->0,1
+            for s in edge_highlight_str.split('|'):
+                for t1, prefix, t2 in s.split('->'):
+                    row1, col1 = t1.split(',')
+                    row2, col2 = t2.split(',')
+                    found = [e for e in graph.get_edges() if e.startswith(prefix) and graph.get_edge_from(e) == (row1, col1) and graph.get_edge_to() == (row2, col2)]
+                    if found:
+                        edge_highlights.add(found[0])
+        output = graph_to_tikz(
             graph,
-            edge_highlights,
-            scale_x=1.75,
-            scale_y=1.75
+            edge_highlights
         )
-        print(f'````{{graphvizFdp}}\n{output}\n````', end='\n\n')
+        print(f'````{{latex}}\n{output}\n````', end='\n\n')
         print(f'NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.', end='\n\n')
     finally:
         print("</div>", end="\n\n")

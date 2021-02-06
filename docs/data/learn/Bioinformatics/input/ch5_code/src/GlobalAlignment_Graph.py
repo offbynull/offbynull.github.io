@@ -103,8 +103,8 @@ def global_alignment(
 def graph_to_tikz(
         graph: Graph[Tuple[int, ...], NodeData, str, EdgeData],
         highlight_edges: Set[str],
-        scale_x: float = 1,
-        scale_y: float = 1
+        scale_x: float = 3.75,
+        scale_y: float = 3.75
 ) -> str:
     layers = set(n[:-2] for n in graph.get_nodes())
     row_len = max(n[-2] for n in graph.get_nodes()) + 1
@@ -149,53 +149,6 @@ def graph_to_tikz(
     \\end{document}
     ''')
     return ret
-
-
-def graph_to_graphviz(
-        graph: Graph[Tuple[int, ...], NodeData, str, EdgeData],
-        highlight_edges: Set[str],
-        scale_x: float = 1.5,
-        scale_y: float = 1.5
-) -> str:
-    dim = len(next(graph.get_nodes()))
-    if dim < 2:
-        raise ValueError('Need at least a dimension of 2')
-    layers = set(n[:-2] for n in graph.get_nodes())
-    row_len = max(n[-2] for n in graph.get_nodes()) + 1
-    col_len = max(n[-1] for n in graph.get_nodes()) + 1
-    dot_subgraph = 'digraph {\n'
-    dot_subgraph += '  node[shape=point, width=0.15, color="grey", fontname="Courier", fontsize=10]\n'
-    dot_subgraph += '  edge[color="grey", penwidth=2, fontname="Courier", fontsize=10]\n'
-    for node_id_prefix in layers:
-        dot_subgraph += f'  subgraph "cluster_{node_id_prefix}" {{\n'
-        dot_subgraph += f'    style=invis\n'
-        # dot_subgraph += f'    label="{node_id_prefix}"\n'
-        for node_id_suffix in product(range(row_len), range(col_len)):
-            node_id = node_id_prefix + node_id_suffix
-            node_data = graph.get_node_data(node_id)
-            node_label = ''  # f'{node_id}'
-            row_pos = node_id_suffix[0] * scale_x
-            col_pos = -node_id_suffix[1] * scale_y
-            dot_subgraph += f'    "{node_id}" [label="{node_label}", pos="{row_pos},{col_pos}!"]\n'
-        for node_id_suffix in product(range(row_len), range(col_len)):
-            node_id = node_id_prefix + node_id_suffix
-            if not graph.has_node(node_id):
-                continue
-            for edge_id in graph.get_outputs(node_id):
-                child_node_id = graph.get_edge_to(edge_id)
-                child_node_id_prefix = child_node_id[:-2]
-                if child_node_id_prefix != node_id_prefix:
-                    continue
-                edge_data = graph.get_edge_data(edge_id)
-                edge_params = {}
-                if edge_id in highlight_edges:
-                    edge_params['color'] = 'green'
-                edge_params['label'] = f'{"-" if edge_data.v_elem is None else edge_data.v_elem}\n{"-" if edge_data.w_elem is None else edge_data.w_elem}\n{edge_data.weight}'
-                dot_subgraph += f'    "{node_id}" -> "{child_node_id}" [' + ', '.join(f'{k}="{v}"' for k, v in edge_params.items()) + ']\n'
-        dot_subgraph += '  }\n'
-    dot_subgraph += '}'
-    return dot_subgraph
-
 
 
 
@@ -248,9 +201,7 @@ def main():
         graph = create_global_alignment_graph(s1, s2, weight_lookup)
         output = graph_to_tikz(
             graph,
-            set(edges),
-            scale_x=3.75,
-            scale_y=3.75
+            set(edges)
         )
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")

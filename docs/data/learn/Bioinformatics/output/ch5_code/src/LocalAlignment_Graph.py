@@ -1,11 +1,12 @@
 from itertools import product
+from textwrap import dedent
 from typing import List, Optional, TypeVar, Tuple, Set
 
 from FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from Graph import Graph
 from GraphGridCreate import create_grid_graph
 from WeightLookup import WeightLookup, Table2DWeightLookup
-from helpers.Utils import unique_id_generator
+from helpers.Utils import unique_id_generator, latex_escape
 
 ELEM = TypeVar('ELEM')
 
@@ -114,66 +115,75 @@ def local_alignment(
 
 
 
-def graph_to_graphviz(
+def graph_to_tikz(
         graph: Graph[Tuple[int, ...], NodeData, str, EdgeData],
         highlight_edges: Set[str],
-        scale_x: float = 1.5,
-        scale_y: float = 1.5
+        scale_x: float = 3.75,
+        scale_y: float = 3.75
 ) -> str:
-    dim = len(next(graph.get_nodes()))
-    if dim < 2:
-        raise ValueError('Need at least a dimension of 2')
     layers = set(n[:-2] for n in graph.get_nodes())
     row_len = max(n[-2] for n in graph.get_nodes()) + 1
     col_len = max(n[-1] for n in graph.get_nodes()) + 1
-    dot_subgraph = 'digraph {\n'
-    dot_subgraph += '  splines="curved"\n'  # ALL EDGES WILL BE CURVED -- so far I haven't found a way to keep free rides curved but normal edges straight
-    dot_subgraph += '  node[shape=point, width=0.15, color="grey", fontname="Courier", fontsize=10]\n'
-    dot_subgraph += '  edge[color="grey", penwidth=2, fontname="Courier", fontsize=10]\n'
+    ret = dedent('''
+    \\documentclass{standalone}
+    \\usepackage{pgf, tikz, pagecolor}
+    \\usetikzlibrary{arrows, automata}
+    \\pgfdeclarelayer{bg}    % declare background layer
+    \\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+    \\begin{document}
+        \\pagecolor{white}
+        \\begin{tikzpicture}
+    ''')
+    node_id_to_latex_id = {}
     for node_id_prefix in layers:
-        dot_subgraph += f'  subgraph "cluster_{node_id_prefix}" {{\n'
-        dot_subgraph += f'    style=invis\n'
-        # dot_subgraph += f'    label="{node_id_prefix}"\n'
+        for node_id_suffix in product(range(row_len), range(col_len)):
+            node_id = node_id_prefix + node_id_suffix
+            node_id_to_latex_id[node_id] = 'N' + '_'.join(str(c) for c in node_id)
         for node_id_suffix in product(range(row_len), range(col_len)):
             node_id = node_id_prefix + node_id_suffix
             node_data = graph.get_node_data(node_id)
             node_label = ''  # f'{node_id}'
             row_pos = node_id_suffix[0] * scale_x
             col_pos = -node_id_suffix[1] * scale_y
-            dot_subgraph += f'    "{node_id}" [label="{node_label}", pos="{row_pos},{col_pos}!"]\n'
+            ret += f'        \\node[draw = gray, fill = gray, thick, circle, minimum size = 2px] at ({row_pos}, {col_pos}) ({node_id_to_latex_id[node_id]}) {{{latex_escape(node_label)}}};\n'
         for node_id_suffix in product(range(row_len), range(col_len)):
             node_id = node_id_prefix + node_id_suffix
             if not graph.has_node(node_id):
                 continue
-            edge_ids = list(graph.get_outputs(node_id))
-            edge_ids.sort()  # E goes first, then the FREE_RIDE edges
-            for edge_id in edge_ids:
+            for edge_id in graph.get_outputs(node_id):
                 child_node_id = graph.get_edge_to(edge_id)
                 child_node_id_prefix = child_node_id[:-2]
                 if child_node_id_prefix != node_id_prefix:
                     continue
                 edge_data = graph.get_edge_data(edge_id)
-                edge_params = {}
-                post_from = ''
-                port_to = ''
+                edge_label = ''
+                edge_params = ['->', '>=stealth', 'line width = 2px', 'gray!40']
+                edge_to_params = [None, None]
                 if edge_id.startswith('FREE_RIDE_SOURCE'):
-                    edge_params['color'] = 'orange'
-                    edge_params['penwidth'] = '1'
-                    post_from = ':nw'
-                    port_to = ':w'
+                    edge_params[2:] = ['line width = 1px', 'orange']
+                    edge_to_params[0:] = ['bend right', 'looseness=0.3']
                 if edge_id.startswith('FREE_RIDE_SINK'):
-                    edge_params['color'] = 'purple'
-                    edge_params['penwidth'] = '1'
-                    post_from = ':se'
-                    port_to = ':e'
+                    edge_params[2:] = ['line width = 1px', 'purple']
+                    edge_to_params[0:] = ['bend left', 'looseness=0.3']
                 if edge_id in highlight_edges:
-                    edge_params['color'] = 'green'
+                    edge_params[3] = 'green'
                 if edge_id.startswith('E'):
-                    edge_params['label'] = f'{"-" if edge_data.v_elem is None else edge_data.v_elem}\n{"-" if edge_data.w_elem is None else edge_data.w_elem}\n{edge_data.weight}'
-                dot_subgraph += f'    "{node_id}"{post_from} -> "{child_node_id}"{port_to} [' + ', '.join(f'{k}="{v}"' for k, v in edge_params.items()) + ']\n'
-        dot_subgraph += '  }\n'
-    dot_subgraph += '}'
-    return dot_subgraph
+                    edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
+                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK'):
+                    ret += f'        \\begin{{pgfonlayer}}{{bg}}\n'
+                ret += f'        \\draw[{", ".join(p for p in edge_params if p is not None)}]' \
+                       f' ({node_id_to_latex_id[node_id]})' \
+                       f' to' \
+                       f' [{", ".join(p for p in edge_to_params if p is not None)}]' \
+                       f' node [align=center, midway, color=black] {{{edge_label}}}' \
+                       f' ({node_id_to_latex_id[child_node_id]});\n'
+                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK'):
+                    ret += f'        \\end{{pgfonlayer}}\n'
+    ret += dedent('''
+        \\end{tikzpicture}
+    \\end{document}
+    ''')
+    return ret
 
 
 
@@ -225,16 +235,14 @@ def main():
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
         weight, edges, elems = local_alignment(s1, s2, weight_lookup)
         graph = create_local_alignment_graph(s1, s2, weight_lookup)
-        output = graph_to_graphviz(
+        output = graph_to_tikz(
             graph,
-            set(edges),
-            scale_x=1.75,
-            scale_y=1.75
+            set(edges)
         )
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         print(f'... the global alignment is...', end="\n\n")
-        print(f'````{{graphvizFdp}}\n{output}\n````', end='\n\n')
+        print(f'````{{latex}}\n{output}\n````', end='\n\n')
         print(f'````')
         print(f'{"".join("-" if e[0] is None else e[0] for e in elems)}')
         print(f'{"".join("-" if e[1] is None else e[1] for e in elems)}')
