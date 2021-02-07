@@ -14,7 +14,7 @@ def backtrack(
     w_node_idx = len(node_matrix[0]) - 1
     final_weight = node_matrix[v_node_idx][w_node_idx][0]
     alignment = []
-    while v_node_idx >= 0 and w_node_idx > 0:
+    while v_node_idx != 0 or w_node_idx != 0:
         _, elems, backtrack_ptr = node_matrix[v_node_idx][w_node_idx]
         if backtrack_ptr == '↓':
             v_node_idx -= 1
@@ -43,27 +43,32 @@ def global_alignment(
     node_matrix[0][0][0] = 0.0           # source node weight
     node_matrix[0][0][1] = (None, None)  # source node elements (elements don't matter for source node)
     node_matrix[0][0][2] = '↘'           # source node backtracking edge (direction doesn't matter for source node)
-    for v_node_idx in range(1, v_node_count):
-        v_elem = v[v_node_idx - 1]
-        elems = v_elem, None
-        node_matrix[v_node_idx][0][0] = weight_lookup.lookup(*elems)
-        node_matrix[v_node_idx][0][1] = elems
-        node_matrix[v_node_idx][0][2] = '↓'
-    for w_node_idx in range(1, w_node_count):
-        w_elem = w[w_node_idx - 1]
-        elems = None, w_elem
-        node_matrix[0][w_node_idx][0] = weight_lookup.lookup(*elems)
-        node_matrix[0][w_node_idx][1] = elems
-        node_matrix[0][w_node_idx][2] = '→'
-    for v_node_idx, w_node_idx in product(range(1, v_node_count), range(1, w_node_count)):
-        v_elem = v[v_node_idx - 1]
-        w_elem = w[w_node_idx - 1]
-        node_matrix[v_node_idx][w_node_idx] = max(
-            [node_matrix[v_node_idx - 1][w_node_idx][0] + weight_lookup.lookup(v_elem, None), (v_elem, None), '↓'],
-            [node_matrix[v_node_idx][w_node_idx - 1][0] + weight_lookup.lookup(None, w_elem), (None, w_elem), '→'],
-            [node_matrix[v_node_idx - 1][w_node_idx - 1][0] + weight_lookup.lookup(v_elem, w_elem), (v_elem, w_elem), '↘'],
-            key=lambda x: x[0]
-        )
+    for v_node_idx, w_node_idx in product(range(v_node_count), range(w_node_count)):
+        parents = []
+        if v_node_idx > 0 and w_node_idx > 0:
+            v_elem = v[v_node_idx - 1]
+            w_elem = w[w_node_idx - 1]
+            parents.append([
+                node_matrix[v_node_idx - 1][w_node_idx - 1][0] + weight_lookup.lookup(v_elem, w_elem),
+                (v_elem, w_elem),
+                '↘'
+            ])
+        if v_node_idx > 0:
+            v_elem = v[v_node_idx - 1]
+            parents.append([
+                node_matrix[v_node_idx - 1][w_node_idx][0] + weight_lookup.lookup(v_elem, None),
+                (v_elem, None),
+                '↓'
+            ])
+        if w_node_idx > 0:
+            w_elem = w[w_node_idx - 1]
+            parents.append([
+                node_matrix[v_node_idx][w_node_idx - 1][0] + weight_lookup.lookup(None, w_elem),
+                (None, w_elem),
+                '→'
+            ])
+        if parents:  # parents wil be empty if v_node_idx and w_node_idx were both 0
+            node_matrix[v_node_idx][w_node_idx] = max(parents, key=lambda x: x[0])
     return backtrack(node_matrix)
 # MARKDOWN
 

@@ -3387,31 +3387,38 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 
 **ALGORITHM**:
 
-The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix, where each element in the matrix represents a node in the alignment graph. The weights are then populated in a predefined order and backtracking is used find the maximum path.
+The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix where each element in the matrix represents a node in the alignment graph. The node weights are then populated in a predefined topological order and backtracking is used find the maximum path.
+
+Since the alignment graph is a grid, the node weights may be populated either...
+
+ * row-by-row, starting from the left column and walking to the right column.
+ * column-by-column, starting form the top row and walking to the bottom row.
+
+In either case, the nodes being walked are guaranteed to have their parent node weights already set.
 
 ```{svgbob}
-       "Create graph"                  "Calc first row"                  "Calc col 1"                     "Calc col 2"                     "Calc col 3"  
-*---▶*---▶*---▶*---▶*---▶*       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
-|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      "do the rest..."
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
-|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
-|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       o---▶o---▶o---▶*---▶*---▶*
+       "Create graph"                   "Calc row 1"                      "Calc row 2"                    "Calc row 3"       
+*---▶*---▶*---▶*---▶*---▶*       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      "do the rest..."
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       o---▶o---▶o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+*---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*       *---▶*---▶*---▶*---▶*---▶*
 ```
 
 ```{output}
@@ -3422,8 +3429,8 @@ python
 
 ```{ch5}
 GlobalAlignment_Matrix
-TAAT
-GAT
+TATTATTAT
+AAA
 embedded_score_matrix
 -1
    A  C  T  G
@@ -3434,6 +3441,239 @@ G  0  0  0  1
 ```
 
 #### Space-efficient Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Global Alignment\/Matrix Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+The following algorithm extends the matrix algorithm such that it can process much larger graphs. It relies on two ideas.
+
+Recall that in the matrix implementation of global alignment, node weights are populated in a predefined topological order (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column. The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.
+
+In other words, the only data needed to calculate the weights of the next column is the weights in the previous column. Any columns behind the previous column may be discarded.
+
+```{svgbob}
+       "Calc col 1"                     "Calc col 2"                     "Calc col 3"                     "Calc col 4"       
+o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       *---▶o---▶o---▶*---▶*---▶*       *---▶*---▶o---▶o---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       *---▶o---▶o---▶*---▶*---▶*       *---▶*---▶o---▶o---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      "do the rest..."
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       *---▶o---▶o---▶*---▶*---▶*       *---▶*---▶o---▶o---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       *---▶o---▶o---▶*---▶*---▶*       *---▶*---▶o---▶o---▶*---▶*
+|\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |       | \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶*       *---▶o---▶o---▶*---▶*---▶*       *---▶*---▶o---▶o---▶*---▶*
+                                                                                            
+✔    ✗    ✗    ✗    ✗    ✗       ✔    ✔    ✗    ✗    ✗    ✗       ✗    ✔    ✔    ✗    ✗    ✗       ✗    ✗    ✔    ✔    ✗    ✗
+
+"* ✗ = column not in memory"
+"* ✔ = column in memory"
+```
+
+The second idea is that, for a column, it's possible to find out which node in that column the maximum path travels through. Knowing this, it becomes possible to use a divide-and-conquer algorithm which recursively sub-divides the graph based on the node the maximum path travels through:
+
+ * Find the middle node, then split into 2 sub-graphs A and B.
+   * A: Find the middle node, then split into 2 sub-graphs C and D.
+     * ...
+   * B: Find the middle node, then split into 2 sub-graphs E and F.
+     * ...
+
+To understand how to find which node in a column the maximum path travels through, consider what happens when you reverse edge direction in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed strings. For example, reversing the edges for the alignment graph of AJAX and SNACK is essentially the same as the alignment graph for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...
+
+```{svgbob}
+        "Original"                     "Reversed strings"                "Reversed edges"
+   S    N    A    C    K            K    C    A    N    S              S    N    A    C   K
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
+A| \  | \  | \  | \  | \  |      X| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       A|  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
+J| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       J|  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
+A| \  | \  | \  | \  | \  |      J| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       A|  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
+X| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       X|  \ |  \ |  \ |  \ |  \ |
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
+
+"* The alignment graph for reversed strings and reversed edges are the"
+"  same. They just look different because reversed strings starts at the"
+"  top-left and flows towards down-right, while reversed edges starts"
+"  bottom-right and flows towards top-left."
+```
+
+For example, finding the maximum path between an alignment graph and its reversed edge variant, ...
+
+```{ch5}
+GlobalAlignment_EdgeReverse
+TACT
+GACGT
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
+
+Notice that in the alignment graph and reversed edge alignment graph example above, ...
+
+ * the maximum path for both the original graph and reversed edge graph produced the same path, except for the reversed graph the path is in reverse order and with reversed edge directions.
+
+ * the source node weight (0.0) and the sink node weight (final weight of the alignment) will be the same for both the reversed edge alignment graph as well as the original. In the example, both the original's sink node and the reversed edge's sink node have a weight of 2.
+
+ * for each column, the maximum path travels through one or more nodes in that column. Pick any node that the maximum path travels through and add the original alignment graph's weight and the reversed edge alignment graph's weight together. It should always equal 2 (final weight of the alignment).
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+    VERIFY THIS.
+
+USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
+
+USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
+
+USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
+
+USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
+
+
+Now, consider an alignment graph getting split down the middle column into two distinct alignment graphs. The first half has edges traveling in the normal direction but the second half has its edges reversed...
+
+```{svgbob}
+0    1    2    3    4    5           0    1    2     2    3    4    5
+o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀---o◀---o
+|\   |\   |\   |\   |\   |           |\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  | \  | \  | \  |           | \  | \  |     | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |           |  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼           ▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀---o◀---o
+|\   |\   |\   |\   |\   |           |\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  | \  | \  | \  |           | \  | \  |     | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |           |  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼  split... ▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀---o◀---o
+|\   |\   |\   |\   |\   |           |\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  | \  | \  | \  |           | \  | \  |     | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |           |  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼           ▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀---o◀---o
+|\   |\   |\   |\   |\   |           |\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  | \  | \  | \  |           | \  | \  |     | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |           |  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼           ▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀---o◀---o
+                                        "half 1"          "half 2"   
+
+"* Notice that the middle column (col 2) is duplicated when split."
+```
+
+
+If you were to populate node weights for half 1 and half 2, then add the weights from each node pair in half 1's last column and half 2's first column, the addition with the maximum weight would be the one that the maximum path travels through...
+
+```{svgbob}
+0    1    2     2    3    4    5
+o---▶o---▶o- - -o◀---o◀---o◀---o
+|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  |     | \  | \  | \  |
+|  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o- - -o◀---o◀---o◀---o
+|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  |     | \  | \  | \  |
+|  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o- - -o◀---o◀---o◀---o
+|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  |     | \  | \  | \  |
+|  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o- - -o◀---o◀---o◀---o
+|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
+| \  | \  |     | \  | \  | \  |
+|  \ |  \ |     |  \ |  \ |  \ |
+▼   ▼▼   ▼▼     |   \|   \|   \|
+o---▶o---▶o     o◀---o◀---o◀---o
+   "half 1"          "half 2"   
+
+"* Notice that the middle column (col 2) is duplicated when split."
+```
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
+
+CONTINUE HERE
 
 ### Local Alignment
 
