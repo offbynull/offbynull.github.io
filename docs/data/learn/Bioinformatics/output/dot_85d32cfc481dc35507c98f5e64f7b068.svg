@@ -9,15 +9,15 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 301)">
 <title>%3</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-301 137,-301 137,4 -4,4"/>
-<!-- D -->
-<g id="node1" class="node">
-<title>D</title>
-<text text-anchor="middle" x="27" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
-</g>
 <!-- C -->
-<g id="node2" class="node">
+<g id="node1" class="node">
 <title>C</title>
 <text text-anchor="middle" x="63" y="-101.3" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- D -->
+<g id="node2" class="node">
+<title>D</title>
+<text text-anchor="middle" x="27" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
 </g>
 <!-- C&#45;&gt;D -->
 <g id="edge4" class="edge">

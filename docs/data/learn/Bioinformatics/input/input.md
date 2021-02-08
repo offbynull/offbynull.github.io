@@ -3522,10 +3522,10 @@ X| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |        | \  | \  | 
  ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
  o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
 
-"* The alignment graph for reversed strings and reversed edges are the"
-"  same. They just look different because reversed strings starts at the"
-"  top-left and flows towards down-right, while reversed edges starts"
-"  bottom-right and flows towards top-left."
+* "The alignment graph for reversed strings and reversed edges are the"
+  "same. They just look different because reversed strings starts at the"
+  "top-left and flows towards down-right, while reversed edges starts"
+  "bottom-right and flows towards top-left."
 ```
 
 For example, finding the maximum path between an alignment graph and its reversed edge variant, ...
@@ -3545,33 +3545,12 @@ G  0  0  0  1
 
 Notice that in the alignment graph and reversed edge alignment graph example above, ...
 
- * the maximum path for both the original graph and reversed edge graph produced the same path, except for the reversed graph the path is in reverse order and with reversed edge directions.
+ * both the original's maximum path and reversed edge's maximum path target the same set of edges.
 
- * the source node weight (0.0) and the sink node weight (final weight of the alignment) will be the same for both the reversed edge alignment graph as well as the original. In the example, both the original's sink node and the reversed edge's sink node have a weight of 2.
+ * the source node weight and the sink node weight are the same for both alignment graphs. That is, both the original's sink node and the reversed edge's sink node have a weight of 2.
 
  * for each column, the maximum path travels through one or more nodes in that column. Pick any node that the maximum path travels through and add the original alignment graph's weight and the reversed edge alignment graph's weight together. It should always equal 2 (final weight of the alignment).
 
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
-
-    VERIFY THIS.
 
 USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
 

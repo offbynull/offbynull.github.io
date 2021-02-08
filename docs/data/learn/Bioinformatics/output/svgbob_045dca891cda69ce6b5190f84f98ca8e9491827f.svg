@@ -397,22 +397,27 @@ X
 </g>
 <g>
 <text x="1" y="396">
-* The alignment graph for reversed strings and reversed edges are the
+*
 </text>
 </g>
 <g>
-<text x="1" y="412">
-  same. They just look different because reversed strings starts at the
+<text x="17" y="396">
+The alignment graph for reversed strings and reversed edges are the
 </text>
 </g>
 <g>
-<text x="1" y="428">
-  top-left and flows towards down-right, while reversed edges starts
+<text x="17" y="412">
+same. They just look different because reversed strings starts at the
 </text>
 </g>
 <g>
-<text x="1" y="444">
-  bottom-right and flows towards top-left.
+<text x="17" y="428">
+top-left and flows towards down-right, while reversed edges starts
+</text>
+</g>
+<g>
+<text x="17" y="444">
+bottom-right and flows towards top-left.
 </text>
 </g>
 <g>

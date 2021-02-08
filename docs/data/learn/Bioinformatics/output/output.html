@@ -267,7 +267,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -399,12 +399,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>AAGGG = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
+<li>AAGGG = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -478,18 +478,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1622,7 +1622,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>ATAAT<br>ATAAT<br>ATAAT</p>
+<p>AAAGA<br>AAAGA<br>AAAGA</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2145,7 +2145,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2206,7 +2206,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2882,22 +2882,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 </ul>
 </div>
 <p></p>
@@ -5775,7 +5775,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_5e4557837418899bebddb6ffbf1163b2.svg" alt="Dot diagram"></p>
+<p><img src="dot_85d32cfc481dc35507c98f5e64f7b068.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5833,7 +5833,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_a32a08b2095db838c560467343851b25.svg" alt="Dot diagram"></p>
+<p><img src="dot_9a5b7fe4e90eaea87f85cdbe4366ab71.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5981,13 +5981,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_6f55259a4fe40365c5193abd412c8b78.svg" alt="Dot diagram"></p>
+<p><img src="dot_ddfdd0d3e1e8ec2829255fcd46848d68.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_05c828de9eea4c6fc5947c0975592305.svg" alt="Dot diagram"></p>
+<p><img src="dot_59f1451bb7e80943a3720d237f75b509.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6024,7 +6024,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_d0b2a6df3f2e5bc7e9d6a7b2796bdfaf.svg" alt="Latex diagram"></p>
+<p><img src="latex_80b1d06c16c476575c5f3b21cd48a8cc.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6035,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f1cfb65b5b0cf27ec8d4b5e1b4550148.svg" alt="Latex diagram"></p>
+<p><img src="latex_abc0b5e4ade6a46948d5add5d7c7c107.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6096,9 +6096,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_f8205c4e1682b0e24633562382676641.svg" alt="Latex diagram"></p>
+<p><img src="latex_7dbac7e357eeecb2c87962d01c9d929d.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
-GA-T
+G-AT
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6236,7 +6236,7 @@ G  0  0  0  1
 </li>
 </ul>
 <p>To understand how to find which node in a column the maximum path travels through, consider what happens when you reverse edge direction in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. When edge directions are reversed, the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> essentially becomes the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for the reversed strings. For example, reversing the edges for the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> of AJAX and SNACK is essentially the same as the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...</p>
-<p><img src="svgbob_bf2b9f0486872adf125590d76f9ac7e0cf3ca885.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_045dca891cda69ce6b5190f84f98ca8e9491827f.svg" alt="Kroki diagram output"></p>
 <p>For example, finding the maximum path between an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and its reversed edge variant, ...</p>
 <div style="border:1px solid black;">
 <p></p>
@@ -6250,30 +6250,19 @@ G  0  0  0  1
 
 </code></pre>
 <p>Left is original, right is reversed edges:</p>
-<p><img src="latex_27e0e74c5f3f8174c5de7d7835b88fa1.svg" alt="Latex diagram"></p>
+<p><img src="latex_513f34eb0889e66713ebbdf6f7751237.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Notice that in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and reversed edge <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> example above, ...</p>
 <ul>
 <li>
-<p>the maximum path for both the original graph and reversed edge graph produced the same path, except for the reversed graph the path is in reverse order and with reversed edge directions.</p>
+<p>both the original's maximum path and reversed edge's maximum path target the same set of edges.</p>
 </li>
 <li>
-<p>the source node weight (0.0) and the sink node weight (final weight of the alignment) will be the same for both the reversed edge <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> as well as the original. In the example, both the original's sink node and the reversed edge's sink node have a weight of 2.</p>
+<p>the source node weight and the sink node weight are the same for both <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. That is, both the original's sink node and the reversed edge's sink node have a weight of 2.</p>
 </li>
 <li>
 <p>for each column, the maximum path travels through one or more nodes in that column. Pick any node that the maximum path travels through and add the original <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>'s weight and the reversed edge <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>'s weight together. It should always equal 2 (final weight of the alignment).</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
-<p>VERIFY THIS.</p>
 </li>
 </ul>
 <p>USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.</p>
@@ -6310,7 +6299,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_71a2fa71f2d895d90af3f581be0a0d3e.svg" alt="Latex diagram"></p>
+<p><img src="latex_0e09caaea508ffcc13072d31df9ff19c.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6324,7 +6313,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_b2dae78cf7f1c92f65bd80a6e62f6878.svg" alt="Latex diagram"></p>
+<p><img src="latex_356507a34e1dbbdadd69350d71e0f976.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6338,7 +6327,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_baf8ce02602d84bf0656e568fad1254a.svg" alt="Latex diagram"></p>
+<p><img src="latex_5dfb00bcb368e62bb3b44af10a909e3c.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6364,14 +6353,14 @@ G  0  0  0  1
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_0ebfced5ba219bd40a22e53296dd0472.svg" alt="Latex diagram"></p>
+<p><img src="latex_2e49eb51377961a01be737e38838bcd2.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_41977cc1adacad9e8f5ce1857830fb85.svg" alt="Latex diagram"></p>
+<p><img src="latex_1d79d6999561ba34ddeb502a088fbcae.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6470,8 +6459,8 @@ G  0  0  0  1
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -6489,19 +6478,19 @@ G  0  0  0  1
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -6513,12 +6502,12 @@ G  0  0  0  1
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -6579,8 +6568,8 @@ G  0  0  0  1
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 21</p>
+<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 18</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>

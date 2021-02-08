@@ -1,4 +1,3 @@
-import re
 from itertools import product
 from textwrap import dedent
 from typing import Tuple, Set
@@ -26,13 +25,14 @@ def graph_to_tikz(
         highlight_edges: Set[str],
         scale_x: float = 3.75,
         scale_y: float = 3.75,
-        caption: str = 'hello world'
+        caption: str = ''
 ) -> str:
     layers = set(n[:-2] for n in graph.get_nodes())
     row_len = max(n[-2] for n in graph.get_nodes()) + 1
     col_len = max(n[-1] for n in graph.get_nodes()) + 1
-    ret = dedent('''
-        \\begin{tikzpicture}
+    ret = dedent(f'''
+        \\begin{{tikzpicture}}
+        \\node[anchor=west] at (0, 1.5) (header) {{{latex_escape(caption)}}};
     ''')
     node_id_to_latex_id = {}
     for node_id_prefix in layers:
@@ -95,10 +95,9 @@ def main():
         else:
             raise ValueError('Bad score matrix type')
         weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
-        graph = create_global_alignment_graph(s1, s2, weight_lookup)
-        flipped_graph = flip_graph(graph)
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
+        graph = create_global_alignment_graph(s1, s2, weight_lookup)
         populate_weights_and_backtrack_pointers(
             graph,
             (0, 0),
@@ -111,7 +110,8 @@ def main():
             (len(s1), len(s2)),
             lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
         )
-        graph_output = graph_to_tikz(graph, set(graph_edges))
+        graph_output = graph_to_tikz(graph, set(graph_edges), caption='Original')
+        flipped_graph = flip_graph(graph)
         populate_weights_and_backtrack_pointers(
             flipped_graph,
             (len(s1), len(s2)),
@@ -119,16 +119,17 @@ def main():
             lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
             lambda e_id: graph.get_edge_data(e_id).weight
         )
-        flipped_graph_edges = backtrack(
-            flipped_graph,
-            (0, 0),
-            lambda n_id: flipped_graph.get_node_data(n_id).get_weight_and_backtracking_edge()
-        )
-        flipped_graph_output = graph_to_tikz(flipped_graph, set(flipped_graph_edges))
+        # flipped_graph_edges = backtrack(
+        #     flipped_graph,
+        #     (0, 0),
+        #     lambda n_id: flipped_graph.get_node_data(n_id).get_weight_and_backtracking_edge()
+        # )
+        flipped_graph_edges = graph_edges  # if you backtracked flipped_graph, the edges would be exactly the same (verified below)
+        assert flipped_graph.get_node_data((0, 0)).weight == sum(flipped_graph.get_edge_data(e_id).weight for e_id in flipped_graph_edges)  # flipped_graph's (0, 0) node is the sink node
+        flipped_graph_output = graph_to_tikz(flipped_graph, set(flipped_graph_edges), caption='Reversed Edge')
         combined_output = dedent(f'''
         \\documentclass{{standalone}}
-        \\usepackage{{pgf, tikz, pagecolor}}
-        \\usetikzlibrary{{arrows, automata}}
+        \\usepackage{{tikz, pagecolor}}
         \\begin{{document}}
             \\pagecolor{{white}}
             {graph_output}
