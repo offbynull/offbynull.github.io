@@ -3440,7 +3440,7 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-#### Space-efficient Algorithm
+#### Divide-and-Conquer Algorithm
 
 `{bm} /(Algorithms\/Sequence Alignment\/Global Alignment\/Matrix Algorithm)_TOPIC/`
 
@@ -3451,7 +3451,7 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 
 **ALGORITHM**:
 
-The following algorithm extends the matrix algorithm such that it can process much larger graphs. It relies on two ideas.
+The following algorithm extends the matrix algorithm such that it can process much larger graphs at the expense of more computation time. It relies on two ideas.
 
 Recall that in the matrix implementation of global alignment, node weights are populated in a predefined topological order (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column. The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.
 
@@ -3487,40 +3487,43 @@ o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶* 
 "* ✔ = column in memory"
 ```
 
-The second idea is that, for a column, it's possible to find out which node in that column the maximum path travels through. Knowing this, it becomes possible to use a divide-and-conquer algorithm which recursively sub-divides the graph based on the node the maximum path travels through:
+The second idea is that, for a column, it's possible to find out which node in that column a maximum alignment path travels through without knowing that path beforehand. Knowing this, it becomes possible to use a divide-and-conquer algorithm which recursively sub-divides the graph based on the node the maximum alignment path travels through to find that maximum alignment path:
 
- * Find the middle node, then split into 2 sub-graphs A and B.
-   * A: Find the middle node, then split into 2 sub-graphs C and D.
+ * Find node travelled through, then split into 2 sub-graphs A and B.
+   * Sub-graph A: Find node travelled through, then split into 2 sub-graphs C and D.
      * ...
-   * B: Find the middle node, then split into 2 sub-graphs E and F.
+   * Sub-graph B: Find node travelled through, then split into 2 sub-graphs E and F.
      * ...
 
-To understand how to find which node in a column the maximum path travels through, consider what happens when you reverse edge direction in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed strings. For example, reversing the edges for the alignment graph of AJAX and SNACK is essentially the same as the alignment graph for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...
+At the end of the recursion, all nodes which that maximum alignment path travels through will be known.
+
+To understand how to find which node in a column a maximum alignment path travels through, consider what happens when you reverse edge direction in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed strings. For example, reversing the edges for the alignment graph of AJAX and SNACK is essentially the same as the alignment graph for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...
 
 ```{svgbob}
-        "Original"                     "Reversed strings"                "Reversed edges"
-   S    N    A    C    K            K    C    A    N    S              S    N    A    C   K
- o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
- |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
-A| \  | \  | \  | \  | \  |      X| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
- |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       A|  \ |  \ |  \ |  \ |  \ |
- ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
- o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
- |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
-J| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
- |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       J|  \ |  \ |  \ |  \ |  \ |
- ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
- o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
- |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
-A| \  | \  | \  | \  | \  |      J| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
- |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       A|  \ |  \ |  \ |  \ |  \ |
- ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
- o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
- |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |        ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲
-X| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |        | \  | \  | \  | \  | \  |
- |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |       X|  \ |  \ |  \ |  \ |  \ |
- ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼        |   \|   \|   \|   \|   \|
- o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o        o◀---o◀---o◀---o◀---o◀---o
+        "Original"                     "Reversed strings"              "Reversed edges"      
+   S    N    A    C    K            K    C    A    N    S                                    
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o      o◀---o◀---o◀---o◀---o◀---o 
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |      ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲ 
+A| \  | \  | \  | \  | \  |      X| \  | \  | \  | \  | \  |      | \  | \  | \  | \  | \  | 
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      |  \ |  \ |  \ |  \ |  \ |A 
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼      |   \|   \|   \|   \|   \| 
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o      o◀---o◀---o◀---o◀---o◀---o 
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |      ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲ 
+J| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |      | \  | \  | \  | \  | \  | 
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      |  \ |  \ |  \ |  \ |  \ |J
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼      |   \|   \|   \|   \|   \| 
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o      o◀---o◀---o◀---o◀---o◀---o 
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |      ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲ 
+A| \  | \  | \  | \  | \  |      J| \  | \  | \  | \  | \  |      | \  | \  | \  | \  | \  | 
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      |  \ |  \ |  \ |  \ |  \ |A
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼      |   \|   \|   \|   \|   \| 
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o      o◀---o◀---o◀---o◀---o◀---o 
+ |\   |\   |\   |\   |\   |       |\   |\   |\   |\   |\   |      ▲▲   ▲▲   ▲▲   ▲▲   ▲▲   ▲ 
+X| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |      | \  | \  | \  | \  | \  | 
+ |  \ |  \ |  \ |  \ |  \ |       |  \ |  \ |  \ |  \ |  \ |      |  \ |  \ |  \ |  \ |  \ |X
+ ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼       ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼      |   \|   \|   \|   \|   \| 
+ o---▶o---▶o---▶o---▶o---▶o       o---▶o---▶o---▶o---▶o---▶o      o◀---o◀---o◀---o◀---o◀---o 
+                                                                     S    N    A    C   K   
 
 * "The alignment graph for reversed strings and reversed edges are the"
   "same. They just look different because reversed strings starts at the"
@@ -3528,10 +3531,18 @@ X| \  | \  | \  | \  | \  |      A| \  | \  | \  | \  | \  |        | \  | \  | 
   "bottom-right and flows towards top-left."
 ```
 
-For example, finding the maximum path between an alignment graph and its reversed edge variant, ...
+Between an alignment graph and its reversed edge variant, a maximum alignment path should travel through the same set of nodes. Notice how in the following example, ...
+
+ 1. the maximum alignment path in both alignment graphs have the same edges.
+
+ 2. the sink node weight in both alignment graphs are the same.
+
+ 3. for any node that the maximum alignment path travels through, taking the weight of that node from both alignment graphs and adding them together results in the sink node weight.
+
+ 4. for any node that the maximum alignment path *DOES NOT* travel through, taking the weight of that node from both alignment graphs and adding them together results in *LESS THAN* the sink node weight.
 
 ```{ch5}
-GlobalAlignment_EdgeReverse
+GlobalAlignment_SpaceEfficient_Visualize_EdgeReverseAdd
 TACT
 GACGT
 embedded_score_matrix
@@ -3543,25 +3554,7 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-Notice that in the alignment graph and reversed edge alignment graph example above, ...
-
- * both the original's maximum path and reversed edge's maximum path target the same set of edges.
-
- * the source node weight and the sink node weight are the same for both alignment graphs. That is, both the original's sink node and the reversed edge's sink node have a weight of 2.
-
- * for each column, the maximum path travels through one or more nodes in that column. Pick any node that the maximum path travels through and add the original alignment graph's weight and the reversed edge alignment graph's weight together. It should always equal 2 (final weight of the alignment).
-
-
-USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
-
-USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
-
-USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
-
-USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.
-
-
-Now, consider an alignment graph getting split down the middle column into two distinct alignment graphs. The first half has edges traveling in the normal direction but the second half has its edges reversed...
+Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an alignment graph getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...
 
 ```{svgbob}
 0    1    2    3    4    5           0    1    2     2    3    4    5
@@ -3586,41 +3579,30 @@ o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀--
 |  \ |  \ |  \ |  \ |  \ |           |  \ |  \ |     |  \ |  \ |  \ |
 ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼           ▼   ▼▼   ▼▼     |   \|   \|   \|
 o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀---o◀---o
-                                        "half 1"          "half 2"   
+                                        "Half 1"          "Half 2"
+                                                     "Reversed edges"   
 
-"* Notice that the middle column (col 2) is duplicated when split."
+* "Notice that the column 2 is duplicated when split (half 1's"
+  "last column and half 2's first column are both column 2)."
 ```
 
+Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum alignment path travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split alignment graph (insight #3 above).
 
-If you were to populate node weights for half 1 and half 2, then add the weights from each node pair in half 1's last column and half 2's first column, the addition with the maximum weight would be the one that the maximum path travels through...
-
-```{svgbob}
-0    1    2     2    3    4    5
-o---▶o---▶o- - -o◀---o◀---o◀---o
-|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
-| \  | \  |     | \  | \  | \  |
-|  \ |  \ |     |  \ |  \ |  \ |
-▼   ▼▼   ▼▼     |   \|   \|   \|
-o---▶o---▶o- - -o◀---o◀---o◀---o
-|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
-| \  | \  |     | \  | \  | \  |
-|  \ |  \ |     |  \ |  \ |  \ |
-▼   ▼▼   ▼▼     |   \|   \|   \|
-o---▶o---▶o- - -o◀---o◀---o◀---o
-|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
-| \  | \  |     | \  | \  | \  |
-|  \ |  \ |     |  \ |  \ |  \ |
-▼   ▼▼   ▼▼     |   \|   \|   \|
-o---▶o---▶o- - -o◀---o◀---o◀---o
-|\   |\   |     ▲▲   ▲▲   ▲▲   ▲
-| \  | \  |     | \  | \  | \  |
-|  \ |  \ |     |  \ |  \ |  \ |
-▼   ▼▼   ▼▼     |   \|   \|   \|
-o---▶o---▶o     o◀---o◀---o◀---o
-   "half 1"          "half 2"   
-
-"* Notice that the middle column (col 2) is duplicated when split."
+```{ch5}
+GlobalAlignment_SpaceEfficient_Visualize_SplitAdd
+TACT
+GACGT
+3
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
 ```
+
+Given that there may be multiple maximum alignment paths for an alignment graph, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum alignment path or the same maximum alignment path.
 
 CONTINUE HERE
 

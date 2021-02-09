@@ -90,7 +90,7 @@
 <ul>
 <li><a href="#H_Graph%20Algorithm">Graph Algorithm</a></li>
 <li><a href="#H_Matrix%20Algorithm">Matrix Algorithm</a></li>
-<li><a href="#H_Space-efficient%20Algorithm">Space-efficient Algorithm</a></li>
+<li><a href="#H_Divide-and-Conquer%20Algorithm">Divide-and-Conquer Algorithm</a></li>
 </ul>
 <li><a href="#H_Local%20Alignment">Local Alignment</a></li>
 <li><a href="#H_Fitting%20Alignment">Fitting Alignment</a></li>
@@ -5775,7 +5775,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_85d32cfc481dc35507c98f5e64f7b068.svg" alt="Dot diagram"></p>
+<p><img src="dot_000bacb11a1651241e16e505830ab31e.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5833,7 +5833,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_9a5b7fe4e90eaea87f85cdbe4366ab71.svg" alt="Dot diagram"></p>
+<p><img src="dot_cf35fbab566dcad0b154c5013d1813c4.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5981,13 +5981,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_ddfdd0d3e1e8ec2829255fcd46848d68.svg" alt="Dot diagram"></p>
+<p><img src="dot_08bfb500f562493d46c2ebc4f06142a1.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_59f1451bb7e80943a3720d237f75b509.svg" alt="Dot diagram"></p>
+<p><img src="dot_e1c55fd43f263622a7ee8c117202b2fb.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6024,7 +6024,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_80b1d06c16c476575c5f3b21cd48a8cc.svg" alt="Latex diagram"></p>
+<p><img src="latex_8e917f8158c68ff85095b72f7fe02bf7.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6035,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_abc0b5e4ade6a46948d5add5d7c7c107.svg" alt="Latex diagram"></p>
+<p><img src="latex_038de8f7de38e7f0b5ca9b99aa1b946e.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6096,7 +6096,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_7dbac7e357eeecb2c87962d01c9d929d.svg" alt="Latex diagram"></p>
+<p><img src="latex_c9140a1b015387f9acbff34bfec150ea.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 G-AT
 </code></pre>
@@ -6204,7 +6204,7 @@ G  0  0  0  1
 <p>Weight: -3.0</p>
 </div>
 <p></p>
-<a name="H_Space-efficient%20Algorithm"></a><h4>Space-efficient Algorithm</h4>
+<a name="H_Divide-and-Conquer%20Algorithm"></a><h4>Divide-and-Conquer Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -6214,65 +6214,59 @@ G  0  0  0  1
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm extends the matrix algorithm such that it can process much larger graphs. It relies on two ideas.</p>
+<p>The following algorithm extends the matrix algorithm such that it can process much larger graphs at the expense of more computation time. It relies on two ideas.</p>
 <p>Recall that in the matrix implementation of global alignment, node weights are populated in a predefined <a href="#BM_(topological%20order)%2Fi">topological order</a> (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column. The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.</p>
 <p>In other words, the only data needed to calculate the weights of the next column is the weights in the previous column. Any columns behind the previous column may be discarded.</p>
 <p><img src="svgbob_a778e17c20ba10aa76e0c0375a70cc19614cd870.svg" alt="Kroki diagram output"></p>
-<p>The second idea is that, for a column, it's possible to find out which node in that column the maximum path travels through. Knowing this, it becomes possible to use a divide-and-conquer algorithm which recursively sub-divides the graph based on the node the maximum path travels through:</p>
+<p>The second idea is that, for a column, it's possible to find out which node in that column a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through without knowing that path beforehand. Knowing this, it becomes possible to use a divide-and-conquer algorithm which recursively sub-divides the graph based on the node the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through to find that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>:</p>
 <ul>
-<li>Find the middle node, then split into 2 sub-graphs A and B.
+<li>Find node travelled through, then split into 2 sub-graphs A and B.
 <ul>
-<li>A: Find the middle node, then split into 2 sub-graphs C and D.
-<ul>
-<li>...</li>
-</ul>
-</li>
-<li>B: Find the middle node, then split into 2 sub-graphs E and F.
+<li>Sub-graph A: Find node travelled through, then split into 2 sub-graphs C and D.
 <ul>
 <li>...</li>
 </ul>
 </li>
+<li>Sub-graph B: Find node travelled through, then split into 2 sub-graphs E and F.
+<ul>
+<li>...</li>
 </ul>
 </li>
 </ul>
-<p>To understand how to find which node in a column the maximum path travels through, consider what happens when you reverse edge direction in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. When edge directions are reversed, the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> essentially becomes the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for the reversed strings. For example, reversing the edges for the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> of AJAX and SNACK is essentially the same as the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...</p>
-<p><img src="svgbob_045dca891cda69ce6b5190f84f98ca8e9491827f.svg" alt="Kroki diagram output"></p>
-<p>For example, finding the maximum path between an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and its reversed edge variant, ...</p>
+</li>
+</ul>
+<p>At the end of the recursion, all nodes which that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through will be known.</p>
+<p>To understand how to find which node in a column a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, consider what happens when you reverse edge direction in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. When edge directions are reversed, the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> essentially becomes the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for the reversed strings. For example, reversing the edges for the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> of AJAX and SNACK is essentially the same as the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...</p>
+<p><img src="svgbob_da8db26052b32c600c5e011bfc6c5cac06910718.svg" alt="Kroki diagram output"></p>
+<p>Between an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and its reversed edge variant, a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> should travel through the same set of nodes. Notice how in the following example, ...</p>
+<ol>
+<li>
+<p>the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> in both <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s have the same edges.</p>
+</li>
+<li>
+<p>the sink node weight in both <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s are the same.</p>
+</li>
+<li>
+<p>for any node that the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, taking the weight of that node from both <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s and adding them together results in the sink node weight.</p>
+</li>
+<li>
+<p>for any node that the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> <em>DOES NOT</em> travel through, taking the weight of that node from both <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s and adding them together results in <em>LESS THAN</em> the sink node weight.</p>
+</li>
+</ol>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given the sequences TACT and GACGT and the score matrix...</p>
-<pre><code>INDEL=-1.0
-   A  C  T  G
-A  1  0  0  0
-C  0  1  0  0
-T  0  0  1  0
-G  0  0  0  1
-
-</code></pre>
-<p>Left is original, right is reversed edges:</p>
-<p><img src="latex_513f34eb0889e66713ebbdf6f7751237.svg" alt="Latex diagram"></p>
+<p><img src="latex_96fda17281c3b8b9cb9f2a0f335779fa.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
-<p>Notice that in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and reversed edge <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> example above, ...</p>
-<ul>
-<li>
-<p>both the original's maximum path and reversed edge's maximum path target the same set of edges.</p>
-</li>
-<li>
-<p>the source node weight and the sink node weight are the same for both <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. That is, both the original's sink node and the reversed edge's sink node have a weight of 2.</p>
-</li>
-<li>
-<p>for each column, the maximum path travels through one or more nodes in that column. Pick any node that the maximum path travels through and add the original <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>'s weight and the reversed edge <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>'s weight together. It should always equal 2 (final weight of the alignment).</p>
-</li>
-</ul>
-<p>USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.</p>
-<p>USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.</p>
-<p>USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.</p>
-<p>USE THE LAST POINT OT LEAD IN TO THE NEXT POINT.</p>
-<p>Now, consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down the middle column into two distinct <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
-<p><img src="svgbob_dbef0d8c390eb84dad0da8bfe8d92eca6aa46ebc.svg" alt="Kroki diagram output"></p>
-<p>If you were to populate node weights for half 1 and half 2, then add the weights from each node pair in half 1's last column and half 2's first column, the addition with the maximum weight would be the one that the maximum path travels through...</p>
-<p><img src="svgbob_b79d85185a33fb53bb01f5a36e8af18bfbf394bc.svg" alt="Kroki diagram output"></p>
+<p>Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
+<p><img src="svgbob_072c713f2836b876275a7dbf010669c022d1b6a1.svg" alt="Kroki diagram output"></p>
+<p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
+<div style="border:1px solid black;">
+<p></p>
+<p><img src="latex_9caf49a6cbb09363331e5d90b2aa904a.svg" alt="Latex diagram"></p>
+</div>
+<p></p>
+<p>Given that there may be multiple maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> or the same maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
@@ -6299,7 +6293,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_0e09caaea508ffcc13072d31df9ff19c.svg" alt="Latex diagram"></p>
+<p><img src="latex_892beb3a07065ccb9a253c7774dd933b.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6313,7 +6307,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_356507a34e1dbbdadd69350d71e0f976.svg" alt="Latex diagram"></p>
+<p><img src="latex_7a917984bd564aeed53b4a6d2cdf6efb.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6327,7 +6321,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_5dfb00bcb368e62bb3b44af10a909e3c.svg" alt="Latex diagram"></p>
+<p><img src="latex_12f5a5df8a10109fffd9be9a98f82742.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6353,14 +6347,14 @@ G  0  0  0  1
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_2e49eb51377961a01be737e38838bcd2.svg" alt="Latex diagram"></p>
+<p><img src="latex_b1ebc471f90f4013429dfc2d81146a2e.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1d79d6999561ba34ddeb502a088fbcae.svg" alt="Latex diagram"></p>
+<p><img src="latex_47ee53271c38cfbde2fb7eca2b219ee6.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
