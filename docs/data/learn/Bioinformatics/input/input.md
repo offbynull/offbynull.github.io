@@ -3487,17 +3487,159 @@ o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶* 
 "* ✔ = column in memory"
 ```
 
-The second idea is that, for a column, it's possible to find out which node in that column a maximum alignment path travels through without knowing that path beforehand. Knowing this, it becomes possible to use a divide-and-conquer algorithm which recursively sub-divides the graph based on the node the maximum alignment path travels through to find that maximum alignment path:
+```{output}
+ch5_code/src/GlobalAlignment_ForwardSweeper.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
- * Find node travelled through, then split into 2 sub-graphs A and B.
-   * Sub-graph A: Find node travelled through, then split into 2 sub-graphs C and D.
-     * ...
-   * Sub-graph B: Find node travelled through, then split into 2 sub-graphs E and F.
-     * ...
+```{ch5}
+GlobalAlignment_ForwardSweeper
+GAT
+TAAT
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
 
-At the end of the recursion, all nodes which that maximum alignment path travels through will be known.
+The second idea is that, for a column, it's possible to find out which node in that column a maximum alignment path travels through without knowing that path beforehand.
 
-To understand how to find which node in a column a maximum alignment path travels through, consider what happens when you reverse edge direction in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed strings. For example, reversing the edges for the alignment graph of AJAX and SNACK is essentially the same as the alignment graph for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...
+```{svgbob}
+* "I don't know what the maximum alignment path is, but"
+  "I know it travels through the node at row 1 column 2"
+  "(denoted by a larger circle)."
+
+o---▶o---▶o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶O---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |
+| \  | \  | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o
+```
+
+Knowing this, a divide-and-conquer algorithm may be used to find that maximum alignment path. Any alignment path must travel from the source node (top-left) to the sink node (bottom-right). If you're able to find a node between the source node and sink node that the maximum alignment path travels through, you can sub-divide the alignment graph into 2.
+
+```{svgbob}
+* "I know the maximum alignment path travels through"
+  "the node at row 2 column 2 (denoted by a larger"
+  "circle). Sub-divide the graph at that node."
+
+o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
+| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
+| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶O---▶o---▶o---▶o "sub-divide to..."         o---▶o---▶O    O---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
+| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
+| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
+                                                      "sub-graph1"     "sub-graph 2"   
+```
+
+Since the alignment graph flows from top-left to bottom-right, those sub-graphs can be made smaller. That is, if you know that an alignment path travels through some node, it's guaranteed that...
+
+ * prior parts of the path travel through the region that's to the top-left of that node.
+ * subsequent parts of that path travel through the region that's to the bottom-right of that node.
+
+```{svgbob}
+* "Prior parts of the path must travel through the top-left, while"
+  "subsequent parts must travel through the bottom-right."
+
+o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o                  
+|\   |\   |\   |\   |\   |                            |\   |\   |                  
+| \  | \  | \  | \  | \  |                            | \  | \  |                  
+|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |                  
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼                  
+o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o                  
+|\   |\   |\   |\   |\   |                            |\   |\   |                  
+| \  | \  | \  | \  | \  |                            | \  | \  |                  
+|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |                  
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼                  
+o---▶o---▶O---▶o---▶o---▶o "sub-divide to..."         o---▶o---▶O    O---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |                            "sub-graph1"   |\   |\   |\   |
+| \  | \  | \  | \  | \  |                                           | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |                                           |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                                           ▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o                                           o---▶o---▶o---▶o
+|\   |\   |\   |\   |\   |                                           |\   |\   |\   |
+| \  | \  | \  | \  | \  |                                           | \  | \  | \  |
+|  \ |  \ |  \ |  \ |  \ |                                           |  \ |  \ |  \ |
+▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                                           ▼   ▼▼   ▼▼   ▼▼
+o---▶o---▶o---▶o---▶o---▶o                                           o---▶o---▶o---▶o
+                                                                       "sub-graph 2"   
+```
+
+For each sub-graph, find a node that the maximum path travels through and repeat the process. Repeat this process until all nodes in the maximum alignment path are found.
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+ADD SUBDIVISION CODE HERE
+
+
+To understand how to find which node in a column a maximum alignment path travels through, consider what happens when edge directions are reversed in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed sequences. For example, reversing the edges for the alignment graph of AJAX and SNACK is essentially the same as the alignment graph for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...
 
 ```{svgbob}
         "Original"                     "Reversed strings"              "Reversed edges"      

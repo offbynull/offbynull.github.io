@@ -145,19 +145,14 @@
 <text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 842.3791 706.3124)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M577.2069 482.0976L55.0429 1108.6996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M52.230441 1112.074774L59.429643 1108.926317L55.042955 1108.699755L54.031209 1104.422435' fill='#ccc'/>
-<text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 364.0261 864.5044)'>—<tspan x='-53.216591' y='-65.275587'>G</tspan>
-<tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
-</text>
 <path d='M584.3829 474.9216L1210.9869-47.24609' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
 <path d='M1214.355812-50.05866L1206.703498-48.257893L1210.980871-47.246167L1211.2035-42.855524' fill='#ccc'/>
 <text class='f0' x='-53.216591' y='-77.230755' transform='matrix(1 0 0 1 948.6791 281.1104)'>G<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M584.3829 581.2226L1210.9869 59.0546' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M1214.355814 56.242155L1206.703459 58.042873L1210.980834 59.054602L1211.203492 63.445295' fill='#ccc'/>
-<text class='f0' x='-53.216591' y='-77.230755' transform='matrix(1 0 0 1 948.6791 387.4114)'>G<tspan x='-54.28897' y='-65.275587'>—</tspan>
+<path d='M577.2069 482.0976L55.0429 1108.6996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M52.230441 1112.074774L59.429643 1108.926317L55.042955 1108.699755L54.031209 1104.422435' fill='#ccc'/>
+<text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 364.0261 864.5044)'>—<tspan x='-53.216591' y='-65.275587'>G</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M577.2069 588.3986L55.0429 1214.9996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
@@ -165,14 +160,19 @@
 <text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 364.0261 970.8044)'>—<tspan x='-53.04364' y='-65.275587'>A</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M584.3829 687.5236L1210.9869 165.3556' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M1214.355785 162.542439L1206.703467 164.343201L1210.98084 165.354936L1211.203461 169.745577' fill='#ccc'/>
-<text class='f0' x='-53.216591' y='-77.230755' transform='matrix(1 0 0 1 948.6791 493.7114)'>G<tspan x='-54.28897' y='-65.275587'>—</tspan>
+<path d='M584.3829 581.2226L1210.9869 59.0546' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M1214.355814 56.242155L1206.703459 58.042873L1210.980834 59.054602L1211.203492 63.445295' fill='#ccc'/>
+<text class='f0' x='-53.216591' y='-77.230755' transform='matrix(1 0 0 1 948.6791 387.4114)'>G<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M577.2069 694.6956L55.0429 1321.2996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
 <path d='M52.230383 1324.67513L59.429629 1321.526708L55.0429 1321.300107L54.031149 1317.022788' fill='#ccc'/>
 <text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 364.0261 1077.1104)'>—<tspan x='-53.216591' y='-65.275587'>G</tspan>
+<tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
+</text>
+<path d='M584.3829 687.5236L1210.9869 165.3556' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M1214.355785 162.542439L1206.703467 164.343201L1210.98084 165.354936L1211.203461 169.745577' fill='#ccc'/>
+<text class='f0' x='-53.216591' y='-77.230755' transform='matrix(1 0 0 1 948.6791 493.7114)'>G<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M577.2069 800.9956L55.0429 1427.5996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
@@ -210,14 +210,14 @@
 <text class='f0' x='-53.04364' y='-77.230755' transform='matrix(1 0 0 1 1054.9801 387.4114)'>A<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M690.6839 687.5236L1317.2869 165.3556' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M1320.656079 162.542511L1313.003719 164.343317L1317.28109 165.355045L1317.503729 169.745601' fill='#ccc'/>
-<text class='f0' x='-53.04364' y='-77.230755' transform='matrix(1 0 0 1 1054.9801 493.7114)'>A<tspan x='-54.28897' y='-65.275587'>—</tspan>
-<tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
-</text>
 <path d='M683.5079 694.6956L161.3439 1321.2996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
 <path d='M158.531469 1324.675121L165.730712 1321.526697L161.343979 1321.300101L160.328321 1317.022785' fill='#ccc'/>
 <text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 470.3271 1077.1104)'>—<tspan x='-53.216591' y='-65.275587'>G</tspan>
+<tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
+</text>
+<path d='M690.6839 687.5236L1317.2869 165.3556' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M1320.656079 162.542511L1313.003719 164.343317L1317.28109 165.355045L1317.503729 169.745601' fill='#ccc'/>
+<text class='f0' x='-53.04364' y='-77.230755' transform='matrix(1 0 0 1 1054.9801 493.7114)'>A<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M690.6839 793.8246L1317.2869 271.6566' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
@@ -235,19 +235,14 @@
 <text class='f0' x='-53.04364' y='-77.230755' transform='matrix(1 0 0 1 1054.9801 706.3124)'>A<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M796.9849 474.9216L1423.5869-47.24609' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M1426.956508-50.058684L1419.304143-48.257884L1423.581519-47.246151L1423.804099-42.855554' fill='#ccc'/>
-<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 281.1104)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
-<tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
-</text>
 <path d='M789.8089 482.0976L267.6449 1108.6996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
 <path d='M264.827843 1112.074728L272.030911 1108.926317L267.644223 1108.699748L266.628573 1104.422435' fill='#ccc'/>
 <text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 576.6271 864.5044)'>—<tspan x='-53.216591' y='-65.275587'>G</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M796.9849 581.2226L1423.5869 59.0546' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M1426.956425 56.242123L1419.304057 58.042935L1423.581397 59.05461L1423.804021 63.445258' fill='#ccc'/>
-<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 387.4114)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
+<path d='M796.9849 474.9216L1423.5869-47.24609' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M1426.956508-50.058684L1419.304143-48.257884L1423.581519-47.246151L1423.804099-42.855554' fill='#ccc'/>
+<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 281.1104)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M789.8089 588.3986L267.6449 1214.9996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
@@ -255,9 +250,9 @@
 <text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 576.6271 970.8044)'>—<tspan x='-53.04364' y='-65.275587'>A</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M796.9849 687.5236L1423.5869 165.3556' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M1426.956481 162.542415L1419.304111 164.343224L1423.581489 165.354951L1423.804075 169.745547' fill='#ccc'/>
-<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 493.7114)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
+<path d='M796.9849 581.2226L1423.5869 59.0546' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M1426.956425 56.242123L1419.304057 58.042935L1423.581397 59.05461L1423.804021 63.445258' fill='#ccc'/>
+<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 387.4114)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M789.8089 694.6956L267.6449 1321.2996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
@@ -265,14 +260,19 @@
 <text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 576.6271 1077.1104)'>—<tspan x='-53.216591' y='-65.275587'>G</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
-<path d='M796.9849 793.8246L1423.5869 271.6566' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
-<path d='M1426.956476 268.843737L1419.304072 270.644491L1423.581453 271.656219L1423.804089 276.042956' fill='#ccc'/>
-<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 600.0124)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
+<path d='M796.9849 687.5236L1423.5869 165.3556' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M1426.956481 162.542415L1419.304111 164.343224L1423.581489 165.354951L1423.804075 169.745547' fill='#ccc'/>
+<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 493.7114)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M789.8089 800.9956L267.6449 1427.5996' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
 <path d='M264.827743 1430.975517L272.03092 1427.823057L267.64416 1427.60049L266.628582 1423.32308' fill='#ccc'/>
 <text class='f0' x='-54.28897' y='-77.230755' transform='matrix(1 0 0 1 576.6271 1183.4104)'>—<tspan x='-53.216591' y='-65.275587'>G</tspan>
+<tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
+</text>
+<path d='M796.9849 793.8246L1423.5869 271.6566' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
+<path d='M1426.956476 268.843737L1419.304072 270.644491L1423.581453 271.656219L1423.804089 276.042956' fill='#ccc'/>
+<text class='f0' x='-52.905258' y='-77.230755' transform='matrix(1 0 0 1 1161.2831 600.0124)'>T<tspan x='-54.28897' y='-65.275587'>—</tspan>
 <tspan x='-57.333127' y='-53.320419'>-1.0</tspan>
 </text>
 <path d='M796.9849 900.1206L1423.5869 377.9566' stroke='#ccc' fill='none' stroke-width='2.00003' stroke-miterlimit='10'/>
