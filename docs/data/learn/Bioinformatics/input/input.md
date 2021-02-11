@@ -3273,7 +3273,7 @@ Given this graph, each ...
  * vertical edge is an indel where the left is kept.
 
 ```{ch5}
-GlobalAlignment_Visualize
+GlobalAlignment_Graph_Visualize
 CHOIR
 FOUR
 
@@ -3318,7 +3318,7 @@ CH-OIR
 ... is as follows...
 
 ```{ch5}
-GlobalAlignment_Visualize
+GlobalAlignment_Graph_Visualize
 CHOIR
 FOUR
 0,0->0,1|0,1->0,2|0,2->1,2|1,2->2,3|2,3->3,4|3,4->4,5
@@ -3488,13 +3488,13 @@ o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶* 
 ```
 
 ```{output}
-ch5_code/src/GlobalAlignment_ForwardSweeper.py
+ch5_code/src/Global_ForwardSweeper.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-GlobalAlignment_ForwardSweeper
+Global_ForwardSweeper
 GAT
 TAAT
 embedded_score_matrix
@@ -3684,7 +3684,7 @@ Between an alignment graph and its reversed edge variant, a maximum alignment pa
  4. for any node that the maximum alignment path *DOES NOT* travel through, taking the weight of that node from both alignment graphs and adding them together results in *LESS THAN* the sink node weight.
 
 ```{ch5}
-GlobalAlignment_SpaceEfficient_Visualize_EdgeReverseAdd
+GlobalAlignment_DivideAndConquer_Visualize_EdgeReverseAdd
 TACT
 GACGT
 embedded_score_matrix
@@ -3731,7 +3731,7 @@ o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀--
 Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum alignment path travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split alignment graph (insight #3 above).
 
 ```{ch5}
-GlobalAlignment_SpaceEfficient_Visualize_SplitAdd
+GlobalAlignment_DivideAndConquer_Visualize_SplitAdd
 TACT
 GACGT
 3

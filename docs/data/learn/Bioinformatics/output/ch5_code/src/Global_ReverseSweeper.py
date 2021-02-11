@@ -1,7 +1,7 @@
 from itertools import product
 from typing import List, Any, TypeVar, Tuple
 
-from GlobalAlignment_ForwardSweeper import ForwardSweeper
+from Global_ForwardSweeper import ForwardSweeper
 from WeightLookup import WeightLookup, Table2DWeightLookup
 
 ELEM = TypeVar('ELEM')

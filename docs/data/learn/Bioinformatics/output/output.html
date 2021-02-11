@@ -5775,7 +5775,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_eeab83f15c41662ad15a5d2bf2729024.svg" alt="Dot diagram"></p>
+<p><img src="dot_63eb1a2085a5f6141c243c4ce3943941.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5833,7 +5833,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_151b4f3aeae22e18d67021a2b0087a5b.svg" alt="Dot diagram"></p>
+<p><img src="dot_908f2e7df71e56c66ef49549ea8e3030.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5981,13 +5981,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_bb1f6f8468a79cc02655cde67d1561f1.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa0cbb52198dcdb4904452cb45f7721f.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_c29c464897eb1150ccf8b803b4be77e7.svg" alt="Dot diagram"></p>
+<p><img src="dot_4782f14dfc7db738f66a09a25f7ac04e.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6024,7 +6024,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_a95ca6f524a8e0c73256a1e47fe177e7.svg" alt="Latex diagram"></p>
+<p><img src="latex_e6516e56ed3d6a14bbac3e442a5561e5.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6035,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_bed96dd0d9af3a0c864d3ce5317a95e0.svg" alt="Latex diagram"></p>
+<p><img src="latex_d23332867aeda052897b54336c065495.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6096,9 +6096,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_503912fb0e8da96422ea018745f1106b.svg" alt="Latex diagram"></p>
+<p><img src="latex_667f958e99f9a49a93dd28b06c199ef2.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
-GA-T
+-GAT
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6218,7 +6218,7 @@ G  0  0  0  1
 <p>Recall that in the matrix implementation of global alignment, node weights are populated in a predefined <a href="#BM_(topological%20order)%2Fi">topological order</a> (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column. The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.</p>
 <p>In other words, the only data needed to calculate the weights of the next column is the weights in the previous column. Any columns behind the previous column may be discarded.</p>
 <p><img src="svgbob_a778e17c20ba10aa76e0c0375a70cc19614cd870.svg" alt="Kroki diagram output"></p>
-<p><a href="ch5_code/src/GlobalAlignment_ForwardSweeper.py">ch5_code/src/GlobalAlignment_ForwardSweeper.py</a> (lines 10 to 52):</p>
+<p><a href="ch5_code/src/Global_ForwardSweeper.py">ch5_code/src/Global_ForwardSweeper.py</a> (lines 10 to 52):</p>
 <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForwardSweeper</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup, col_backtrack: int = <span class="hljs-number">2</span></span>):</span>
         self.v = v
@@ -6330,7 +6330,7 @@ G  0  0  0  1
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_196c953a3621f9979697fdd6156ce7ac.svg" alt="Latex diagram"></p>
+<p><img src="latex_0fa2bea486eccc1948b6c6d57a23341e.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6338,7 +6338,7 @@ G  0  0  0  1
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_8a08afb9ed8f637a8647ee0a3237b1fd.svg" alt="Latex diagram"></p>
+<p><img src="latex_f7f8b28722d0760498495a75d572e2c0.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Given that there may be multiple maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> or the same maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
@@ -6368,7 +6368,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_e1574e1ac3ef07203070d2b26f16d95e.svg" alt="Latex diagram"></p>
+<p><img src="latex_1e2a80f16d5336a0d44d9f15f971de43.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6382,7 +6382,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_53c893391216c07af9f8de3775d06143.svg" alt="Latex diagram"></p>
+<p><img src="latex_ca288c2e5353225b304b5eba43ad674e.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6396,7 +6396,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_0784a922e97a185ba2e846e9445bf34d.svg" alt="Latex diagram"></p>
+<p><img src="latex_0aea5207a0049622a832cb627aefd745.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6422,14 +6422,14 @@ G  0  0  0  1
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_27773d4be8b637af58a0006e34a092f9.svg" alt="Latex diagram"></p>
+<p><img src="latex_411a81d52b9bbc66bf209759a27352b3.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c13031bb1502fb17dc7e4bd8f6512043.svg" alt="Latex diagram"></p>
+<p><img src="latex_fb3972ed3670dbad36033f290d0a8bca.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
