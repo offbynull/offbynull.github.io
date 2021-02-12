@@ -16,40 +16,40 @@ class ReverseSweeper:
         self.w_node_count = len(w) + 1
         self.weight_lookup = weight_lookup
         self.col_fronttrack = col_fronttrack
-        self.matrix_w_end_idx = self.w_node_count - 1  # col
+        self.matrix_v_end_idx = self.v_node_count - 1  # col
         self.matrix = []
         self._reset()
 
     def _reset(self):
-        self.matrix_w_end_idx = self.w_node_count - 1  # col
-        col = [-1.0] * self.v_node_count
+        self.matrix_v_end_idx = self.v_node_count - 1  # col
+        col = [-1.0] * self.w_node_count
         col[-1] = 0.0  # source node weight is 0
-        for v_idx in range(self.v_node_count - 2, -1, -1):  # from 2nd last to 0
-            col[v_idx] = col[v_idx + 1] + self.weight_lookup.lookup(self.v[v_idx - 1], None)
+        for w_idx in range(self.w_node_count - 2, -1, -1):  # from 2nd last to 0
+            col[w_idx] = col[w_idx + 1] + self.weight_lookup.lookup(None, self.w[w_idx - 1])
         self.matrix = [col]
 
     def _step(self):
-        prev_col = [-9999.0] * self.v_node_count
-        prev_w_idx = self.matrix_w_end_idx - len(self.matrix)
+        prev_col = [-9999.0] * self.w_node_count
+        prev_v_idx = self.matrix_v_end_idx - len(self.matrix)
         if len(self.matrix) == self.col_fronttrack:
             self.matrix.pop()
-            self.matrix_w_end_idx -= 1
+            self.matrix_v_end_idx -= 1
         self.matrix.insert(0, prev_col)
-        self.matrix[0][-1] = self.matrix[1][-1] + self.weight_lookup.lookup(None, self.w[prev_w_idx])  # left penalty for first row of new col
-        for v_idx in range(self.v_node_count - 2, -1, -1):  # from 2nd last to 0
-            self.matrix[0][v_idx] = max(
-                self.matrix[1][v_idx] + self.weight_lookup.lookup(self.v[v_idx], None),             # left score
-                self.matrix[0][v_idx+1] + self.weight_lookup.lookup(None, self.w[prev_w_idx]),          # up score
-                self.matrix[1][v_idx+1] + self.weight_lookup.lookup(self.v[v_idx], self.w[prev_w_idx])  # diag score
+        self.matrix[0][-1] = self.matrix[1][-1] + self.weight_lookup.lookup(self.v[prev_v_idx], None)  # left penalty for first row of new col
+        for w_idx in range(self.w_node_count - 2, -1, -1):  # from 2nd last to 0
+            self.matrix[0][w_idx] = max(
+                self.matrix[1][w_idx] + self.weight_lookup.lookup(None, self.w[w_idx]),                 # left score
+                self.matrix[0][w_idx+1] + self.weight_lookup.lookup(self.v[prev_v_idx], None),          # up score
+                self.matrix[1][w_idx+1] + self.weight_lookup.lookup(self.v[prev_v_idx], self.w[w_idx])  # diag score
             )
 
     def get_col(self, idx: int):
-        if idx > self.matrix_w_end_idx:
+        if idx > self.matrix_v_end_idx:
             self._reset()
-        closest_stored_idx = self.matrix_w_end_idx - len(self.matrix)
+        closest_stored_idx = self.matrix_v_end_idx - len(self.matrix)
         for _ in range(closest_stored_idx, idx - 1, -1):  # from closest_stored_idx to idx
             self._step()
-        start_idx = self.matrix_w_end_idx - len(self.matrix) + 1
+        start_idx = self.matrix_v_end_idx - len(self.matrix) + 1
         offset_idx = idx - start_idx
         return list(self.matrix[offset_idx])
 # MARKDOWN
@@ -91,14 +91,14 @@ def main():
         s1_node_count = len(s1) + 1
         s2_node_count = len(s2) + 1
         cols = []
-        for c in range(s2_node_count):
+        for c in range(s1_node_count):
             cols += [forward_sweeper.get_col(c)]
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         print(f'... the node weights are ...', end="\n\n")
         print(f'````')
-        for r in range(s1_node_count):
-            for c in range(s2_node_count):
+        for r in range(s2_node_count):
+            for c in range(s1_node_count):
                 print('{:6}'.format(cols[c][r]), end='')
             print('')
         print(f'````', end="\n\n")

@@ -5775,7 +5775,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_63eb1a2085a5f6141c243c4ce3943941.svg" alt="Dot diagram"></p>
+<p><img src="dot_35b49b989eeebea13725b551c98bd3f6.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5833,7 +5833,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_908f2e7df71e56c66ef49549ea8e3030.svg" alt="Dot diagram"></p>
+<p><img src="dot_56633e725a1d1b20c518d59304174b25.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5981,13 +5981,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_aa0cbb52198dcdb4904452cb45f7721f.svg" alt="Dot diagram"></p>
+<p><img src="dot_547cb8315193231ce1f77c049f0432b0.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_4782f14dfc7db738f66a09a25f7ac04e.svg" alt="Dot diagram"></p>
+<p><img src="dot_f6c34858d720dd9c62975e732a9eb906.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6024,7 +6024,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_e6516e56ed3d6a14bbac3e442a5561e5.svg" alt="Latex diagram"></p>
+<p><img src="latex_9f271aab1979cee3e8e3ba60093592f1.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6035,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_d23332867aeda052897b54336c065495.svg" alt="Latex diagram"></p>
+<p><img src="latex_68f663aa758e3afc9641111f5ca07952.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6096,9 +6096,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_667f958e99f9a49a93dd28b06c199ef2.svg" alt="Latex diagram"></p>
+<p><img src="latex_55de6e33de0a85395b635df9cdd4cd3e.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
--GAT
+GA-T
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6227,44 +6227,44 @@ G  0  0  0  1
         self.w_node_count = len(w) + <span class="hljs-number">1</span>
         self.weight_lookup = weight_lookup
         self.col_backtrack = col_backtrack
-        self.matrix_w_start_idx = <span class="hljs-number">0</span>  <span class="hljs-comment"># col</span>
+        self.matrix_v_start_idx = <span class="hljs-number">0</span>  <span class="hljs-comment"># col</span>
         self.matrix = []
         self._reset()
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_reset</span>(<span class="hljs-params">self</span>):</span>
-        self.matrix_w_start_idx = <span class="hljs-number">0</span>  <span class="hljs-comment"># col</span>
-        col = [<span class="hljs-number">-1.0</span>] * self.v_node_count
+        self.matrix_v_start_idx = <span class="hljs-number">0</span>  <span class="hljs-comment"># col</span>
+        col = [<span class="hljs-number">-1.0</span>] * self.w_node_count
         col[<span class="hljs-number">0</span>] = <span class="hljs-number">0.0</span>  <span class="hljs-comment"># source node weight is 0</span>
-        <span class="hljs-keyword">for</span> v_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, self.v_node_count):
-            col[v_idx] = col[v_idx - <span class="hljs-number">1</span>] + self.weight_lookup.lookup(self.v[v_idx - <span class="hljs-number">1</span>], <span class="hljs-literal">None</span>)
+        <span class="hljs-keyword">for</span> w_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, self.w_node_count):
+            col[w_idx] = col[w_idx - <span class="hljs-number">1</span>] + self.weight_lookup.lookup(<span class="hljs-literal">None</span>, self.w[w_idx - <span class="hljs-number">1</span>])
         self.matrix = [col]
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_step</span>(<span class="hljs-params">self</span>):</span>
-        next_col = [<span class="hljs-number">-1.0</span>] * self.v_node_count
-        next_w_idx = self.matrix_w_start_idx + len(self.matrix)
+        next_col = [<span class="hljs-number">-1.0</span>] * self.w_node_count
+        next_v_idx = self.matrix_v_start_idx + len(self.matrix)
         <span class="hljs-keyword">if</span> len(self.matrix) == self.col_backtrack:
             self.matrix.pop(<span class="hljs-number">0</span>)
-            self.matrix_w_start_idx += <span class="hljs-number">1</span>
+            self.matrix_v_start_idx += <span class="hljs-number">1</span>
         self.matrix += [next_col]
-        self.matrix[<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>] = self.matrix[<span class="hljs-number">-2</span>][<span class="hljs-number">0</span>] + self.weight_lookup.lookup(<span class="hljs-literal">None</span>, self.w[next_w_idx - <span class="hljs-number">1</span>])  <span class="hljs-comment"># right penalty for first row of new col</span>
-        <span class="hljs-keyword">for</span> v_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, len(self.v) + <span class="hljs-number">1</span>):
-            self.matrix[<span class="hljs-number">-1</span>][v_idx] = max(
-                self.matrix[<span class="hljs-number">-2</span>][v_idx] + self.weight_lookup.lookup(self.v[v_idx - <span class="hljs-number">1</span>], <span class="hljs-literal">None</span>),                     <span class="hljs-comment"># right score</span>
-                self.matrix[<span class="hljs-number">-1</span>][v_idx<span class="hljs-number">-1</span>] + self.weight_lookup.lookup(<span class="hljs-literal">None</span>, self.w[next_w_idx - <span class="hljs-number">1</span>]),              <span class="hljs-comment"># down score</span>
-                self.matrix[<span class="hljs-number">-2</span>][v_idx<span class="hljs-number">-1</span>] + self.weight_lookup.lookup(self.v[v_idx - <span class="hljs-number">1</span>], self.w[next_w_idx - <span class="hljs-number">1</span>])  <span class="hljs-comment"># diag score</span>
+        self.matrix[<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>] = self.matrix[<span class="hljs-number">-2</span>][<span class="hljs-number">0</span>] + self.weight_lookup.lookup(self.v[next_v_idx - <span class="hljs-number">1</span>], <span class="hljs-literal">None</span>)  <span class="hljs-comment"># right penalty for first row of new col</span>
+        <span class="hljs-keyword">for</span> w_idx <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, len(self.w) + <span class="hljs-number">1</span>):
+            self.matrix[<span class="hljs-number">-1</span>][w_idx] = max(
+                self.matrix[<span class="hljs-number">-2</span>][w_idx] + self.weight_lookup.lookup(<span class="hljs-literal">None</span>, self.w[w_idx - <span class="hljs-number">1</span>]),                     <span class="hljs-comment"># right score</span>
+                self.matrix[<span class="hljs-number">-1</span>][w_idx<span class="hljs-number">-1</span>] + self.weight_lookup.lookup(self.v[next_v_idx - <span class="hljs-number">1</span>], <span class="hljs-literal">None</span>),              <span class="hljs-comment"># down score</span>
+                self.matrix[<span class="hljs-number">-2</span>][w_idx<span class="hljs-number">-1</span>] + self.weight_lookup.lookup(self.v[next_v_idx - <span class="hljs-number">1</span>], self.w[w_idx - <span class="hljs-number">1</span>])  <span class="hljs-comment"># diag score</span>
             )
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_col</span>(<span class="hljs-params">self, idx: int</span>):</span>
-        <span class="hljs-keyword">if</span> idx &lt; self.matrix_w_start_idx:
+        <span class="hljs-keyword">if</span> idx &lt; self.matrix_v_start_idx:
             self._reset()
-        furthest_stored_idx = self.matrix_w_start_idx + len(self.matrix) - <span class="hljs-number">1</span>
+        furthest_stored_idx = self.matrix_v_start_idx + len(self.matrix) - <span class="hljs-number">1</span>
         <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(furthest_stored_idx, idx):
             self._step()
-        <span class="hljs-keyword">return</span> list(self.matrix[idx - self.matrix_w_start_idx])
+        <span class="hljs-keyword">return</span> list(self.matrix[idx - self.matrix_v_start_idx])
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given the sequences GAT and TAAT and the score matrix...</p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
 <pre><code>INDEL=-1.0
    A  C  T  G
 A  1  0  0  0
@@ -6277,9 +6277,11 @@ G  0  0  0  1
 <pre><code>   0.0  -1.0  -2.0  -3.0  -4.0
   -1.0   0.0  -1.0  -2.0  -3.0
   -2.0  -1.0   1.0   0.0  -1.0
-  -3.0  -1.0   0.0   1.0   1.0
+  -3.0  -2.0   0.0   2.0   1.0
+  -4.0  -3.0  -1.0   1.0   2.0
+  -5.0  -3.0  -2.0   0.0   2.0
 </code></pre>
-<p>The sink node weight (maximum alignment path weight) is 1.0</p>
+<p>The sink node weight (maximum alignment path weight) is 2.0</p>
 </div>
 <p></p>
 <p>The second idea is that, for a column, it's possible to find out which node in that column a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through without knowing that path beforehand.</p>
@@ -6311,7 +6313,7 @@ G  0  0  0  1
 <p>ADD SUBDIVISION CODE HERE</p>
 <p>ADD SUBDIVISION CODE HERE</p>
 <p>ADD SUBDIVISION CODE HERE</p>
-<p>To understand how to find which node in a column a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, consider what happens when edge directions are reversed in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. When edge directions are reversed, the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> essentially becomes the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for the reversed <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, reversing the edges for the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> of AJAX and SNACK is essentially the same as the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...</p>
+<p>To understand how to find which node in a column a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, consider what happens when edge directions are reversed in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. When edge directions are reversed, the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> essentially becomes the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for the reversed <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, reversing the edges for the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> of SNACK and AJAX is essentially the same as the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for KCANS (reverse of SNACK) and XAJA (reverse of AJAX)...</p>
 <p><img src="svgbob_da8db26052b32c600c5e011bfc6c5cac06910718.svg" alt="Kroki diagram output"></p>
 <p>Between an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and its reversed edge variant, a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> should travel through the same set of nodes. Notice how in the following example, ...</p>
 <ol>
@@ -6330,7 +6332,7 @@ G  0  0  0  1
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_0fa2bea486eccc1948b6c6d57a23341e.svg" alt="Latex diagram"></p>
+<p><img src="latex_ddcbb8b58008bb1c199fd4877aa130e2.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6338,10 +6340,42 @@ G  0  0  0  1
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f7f8b28722d0760498495a75d572e2c0.svg" alt="Latex diagram"></p>
+<p><img src="latex_c9cba7b408afd7f2818480282357a5eb.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Given that there may be multiple maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> or the same maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
+<p><a href="ch5_code/src/Global_SweepCombiner.py">ch5_code/src/Global_SweepCombiner.py</a> (lines 10 to 19):</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SweepCombiner</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup</span>):</span>
+        self.forward_sweeper = ForwardSweeper(v, w, weight_lookup)
+        self.reverse_sweeper = ReverseSweeper(v, w, weight_lookup)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_col</span>(<span class="hljs-params">self, idx: int</span>):</span>
+        fcol = self.forward_sweeper.get_col(idx)
+        rcol = self.reverse_sweeper.get_col(idx)
+        <span class="hljs-keyword">return</span> [a + b <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> zip(fcol, rcol)]
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+
+</code></pre>
+<p>... the combined node weights at column 3 are ...</p>
+<pre><code>  -6.0
+  -4.0
+  -1.0
+   2.0
+   2.0
+  -1.0
+</code></pre>
+</div>
+<p></p>
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
@@ -6368,7 +6402,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1e2a80f16d5336a0d44d9f15f971de43.svg" alt="Latex diagram"></p>
+<p><img src="latex_5a59405c4664e659f215e2c6c40e7c40.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6382,7 +6416,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ca288c2e5353225b304b5eba43ad674e.svg" alt="Latex diagram"></p>
+<p><img src="latex_dada60b09da2e8bc85ce36f07a726499.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6396,7 +6430,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_0aea5207a0049622a832cb627aefd745.svg" alt="Latex diagram"></p>
+<p><img src="latex_b6391d6cf0b3e1ed590807fe5266f937.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6422,14 +6456,14 @@ G  0  0  0  1
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_411a81d52b9bbc66bf209759a27352b3.svg" alt="Latex diagram"></p>
+<p><img src="latex_97bf0510707e8e59301c8f26db8146ff.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_fb3972ed3670dbad36033f290d0a8bca.svg" alt="Latex diagram"></p>
+<p><img src="latex_f0c5e783f0309cb3a290062aa859a85d.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>

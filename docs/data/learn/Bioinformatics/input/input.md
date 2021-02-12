@@ -3495,8 +3495,8 @@ python
 
 ```{ch5}
 Global_ForwardSweeper
-GAT
-TAAT
+TACT
+GACGT
 embedded_score_matrix
 -1
    A  C  T  G
@@ -3639,7 +3639,7 @@ ADD SUBDIVISION CODE HERE
 ADD SUBDIVISION CODE HERE
 
 
-To understand how to find which node in a column a maximum alignment path travels through, consider what happens when edge directions are reversed in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed sequences. For example, reversing the edges for the alignment graph of AJAX and SNACK is essentially the same as the alignment graph for XAJA (reverse of AJAX) and KCANS (reverse of SNACK)...
+To understand how to find which node in a column a maximum alignment path travels through, consider what happens when edge directions are reversed in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed sequences. For example, reversing the edges for the alignment graph of SNACK and AJAX is essentially the same as the alignment graph for KCANS (reverse of SNACK) and XAJA (reverse of AJAX)...
 
 ```{svgbob}
         "Original"                     "Reversed strings"              "Reversed edges"      
@@ -3745,6 +3745,26 @@ G  0  0  0  1
 ```
 
 Given that there may be multiple maximum alignment paths for an alignment graph, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum alignment path or the same maximum alignment path.
+
+```{output}
+ch5_code/src/Global_SweepCombiner.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+Global_SweepCombiner
+TACT
+GACGT
+3
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
 
 CONTINUE HERE
 

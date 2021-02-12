@@ -15,40 +15,40 @@ class ForwardSweeper:
         self.w_node_count = len(w) + 1
         self.weight_lookup = weight_lookup
         self.col_backtrack = col_backtrack
-        self.matrix_w_start_idx = 0  # col
+        self.matrix_v_start_idx = 0  # col
         self.matrix = []
         self._reset()
 
     def _reset(self):
-        self.matrix_w_start_idx = 0  # col
-        col = [-1.0] * self.v_node_count
+        self.matrix_v_start_idx = 0  # col
+        col = [-1.0] * self.w_node_count
         col[0] = 0.0  # source node weight is 0
-        for v_idx in range(1, self.v_node_count):
-            col[v_idx] = col[v_idx - 1] + self.weight_lookup.lookup(self.v[v_idx - 1], None)
+        for w_idx in range(1, self.w_node_count):
+            col[w_idx] = col[w_idx - 1] + self.weight_lookup.lookup(None, self.w[w_idx - 1])
         self.matrix = [col]
 
     def _step(self):
-        next_col = [-1.0] * self.v_node_count
-        next_w_idx = self.matrix_w_start_idx + len(self.matrix)
+        next_col = [-1.0] * self.w_node_count
+        next_v_idx = self.matrix_v_start_idx + len(self.matrix)
         if len(self.matrix) == self.col_backtrack:
             self.matrix.pop(0)
-            self.matrix_w_start_idx += 1
+            self.matrix_v_start_idx += 1
         self.matrix += [next_col]
-        self.matrix[-1][0] = self.matrix[-2][0] + self.weight_lookup.lookup(None, self.w[next_w_idx - 1])  # right penalty for first row of new col
-        for v_idx in range(1, len(self.v) + 1):
-            self.matrix[-1][v_idx] = max(
-                self.matrix[-2][v_idx] + self.weight_lookup.lookup(self.v[v_idx - 1], None),                     # right score
-                self.matrix[-1][v_idx-1] + self.weight_lookup.lookup(None, self.w[next_w_idx - 1]),              # down score
-                self.matrix[-2][v_idx-1] + self.weight_lookup.lookup(self.v[v_idx - 1], self.w[next_w_idx - 1])  # diag score
+        self.matrix[-1][0] = self.matrix[-2][0] + self.weight_lookup.lookup(self.v[next_v_idx - 1], None)  # right penalty for first row of new col
+        for w_idx in range(1, len(self.w) + 1):
+            self.matrix[-1][w_idx] = max(
+                self.matrix[-2][w_idx] + self.weight_lookup.lookup(None, self.w[w_idx - 1]),                     # right score
+                self.matrix[-1][w_idx-1] + self.weight_lookup.lookup(self.v[next_v_idx - 1], None),              # down score
+                self.matrix[-2][w_idx-1] + self.weight_lookup.lookup(self.v[next_v_idx - 1], self.w[w_idx - 1])  # diag score
             )
 
     def get_col(self, idx: int):
-        if idx < self.matrix_w_start_idx:
+        if idx < self.matrix_v_start_idx:
             self._reset()
-        furthest_stored_idx = self.matrix_w_start_idx + len(self.matrix) - 1
+        furthest_stored_idx = self.matrix_v_start_idx + len(self.matrix) - 1
         for _ in range(furthest_stored_idx, idx):
             self._step()
-        return list(self.matrix[idx - self.matrix_w_start_idx])
+        return list(self.matrix[idx - self.matrix_v_start_idx])
 # MARKDOWN
 
 
@@ -79,14 +79,14 @@ def main():
         s1_node_count = len(s1) + 1
         s2_node_count = len(s2) + 1
         cols = []
-        for c in range(s2_node_count):
+        for c in range(s1_node_count):
             cols += [forward_sweeper.get_col(c)]
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         print(f'... the node weights are ...', end="\n\n")
         print(f'````')
-        for r in range(s1_node_count):
-            for c in range(s2_node_count):
+        for r in range(s2_node_count):
+            for c in range(s1_node_count):
                 print('{:6}'.format(cols[c][r]), end='')
             print('')
         print(f'````', end="\n\n")
