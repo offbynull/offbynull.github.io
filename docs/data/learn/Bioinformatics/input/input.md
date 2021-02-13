@@ -3711,7 +3711,7 @@ o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀--
   "last column and half 2's first column are both column 2)."
 ```
 
-Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum alignment path travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split alignment graph (insight #3 above).
+Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum alignment path travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split alignment graph (insight #3 above).
 
 ```{ch5}
 GlobalAlignment_DivideAndConquer_Visualize_SplitAdd
@@ -3727,7 +3727,14 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
+One way to think of what's happening above is that the algorithm is converging on to the same answer but at a different spot in the alignment graph. That is, normally the algorithm converges on to the bottom-right node of the alignment graph. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.
+
 Given that there may be multiple maximum alignment paths for an alignment graph, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum alignment path or the same maximum alignment path.
+
+Ultimately, this entire process may be combined with the first idea (only keep 2 columns in memory) such that the algorithm requires much lower memory requirements. That is, to find the nodes in a column which maximum alignment paths travel through, the...
+
+ * forward sweep only requires holding on to the weights from column n-1.
+ * reverse sweep only requires holding on to the weights from column n+1.
 
 ```{output}
 ch5_code/src/Global_SweepCombiner.py
@@ -3749,6 +3756,10 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
+The full divide-and-conquer algorithm may be thought of as follows: For the middle column in an alignment graph, find a node that a maximum alignment path travels through. Then, sub-divide the alignment graph based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum alignment path.
+
+Once all nodes for a maximum alignment path are found, the edges between them need to be found as well. This may be done by finding a maximum alignment path between each found node and its neighbouring found node. Concatenate the resulting edges to construct the path.
+
 ```{output}
 ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py
 python
@@ -3769,30 +3780,6 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
-
 ```{output}
 ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py
 python
@@ -3812,49 +3799,9 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-CONTINUE HERE
+A slightly more complicated but also more elegant / efficient solution is to find the _edges_ that a maximum alignment path travels through. That is, rather than finding just the nodes that a maximum alignment path travels through, find the edges where those nodes are the edge source (node that the edge starts from). These likely won't be all the edges in the final alignment path.
 
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-CONTINUE HERE
-
-FIND  ALIGNMENT PATH EDGE AT COLUMN
-
-FIND  ALIGNMENT PATH EDGE AT COLUMN
-
-FIND  ALIGNMENT PATH EDGE AT COLUMN
-
-FIND  ALIGNMENT PATH EDGE AT COLUMN
-
-FIND  ALIGNMENT PATH EDGE AT COLUMN
-
-FIND  ALIGNMENT PATH EDGE AT COLUMN
+The overall algorithm is the same, except rather than just converging to column n, the algorithm converges to both column n and column n + 1. The node weights from both columns are needed to find an edge.
 
 ```{output}
 ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py
@@ -3876,17 +3823,27 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+Once the edges are found, the remaining edges are all guaranteed to be vertical or horizontal.
 
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+ENSURE THIS IS CORRECT LOGIC / REASONING
 
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+ENSURE THIS IS CORRECT LOGIC / REASONING
 
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+ENSURE THIS IS CORRECT LOGIC / REASONING
 
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+ENSURE THIS IS CORRECT LOGIC / REASONING
 
-CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+ENSURE THIS IS CORRECT LOGIC / REASONING
+
+ENSURE THIS IS CORRECT LOGIC / REASONING
+
+ENSURE THIS IS CORRECT LOGIC / REASONING
+
+ENSURE THIS IS CORRECT LOGIC / REASONING
+
+ENSURE THIS IS CORRECT LOGIC / REASONING
+
+ENSURE THIS IS CORRECT LOGIC / REASONING
 
 ```{output}
 ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py

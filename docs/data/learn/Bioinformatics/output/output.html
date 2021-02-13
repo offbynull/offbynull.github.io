@@ -6368,13 +6368,19 @@ GACGT
 <p></p>
 <p>Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
 <p><img src="svgbob_072c713f2836b876275a7dbf010669c022d1b6a1.svg" alt="Kroki diagram output"></p>
-<p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
+<p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
 <p><img src="latex_cdd8d78b454f5349a6f8336f9a41bb86.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
+<p>One way to think of what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. That is, normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
 <p>Given that there may be multiple maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> or the same maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
+<p>Ultimately, this entire process may be combined with the first idea (only keep 2 columns in memory) such that the algorithm requires much lower memory requirements. That is, to find the nodes in a column which maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travel through, the...</p>
+<ul>
+<li>forward sweep only requires holding on to the weights from column n-1.</li>
+<li>reverse sweep only requires holding on to the weights from column n+1.</li>
+</ul>
 <p><a href="ch5_code/src/Global_SweepCombiner.py">ch5_code/src/Global_SweepCombiner.py</a> (lines 10 to 19):</p>
 <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SweepCombiner</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup</span>):</span>
@@ -6407,6 +6413,8 @@ G  0  0  0  1
 </code></pre>
 </div>
 <p></p>
+<p>The full divide-and-conquer algorithm may be thought of as follows: For the middle column in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, find a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through. Then, sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
+<p>Once all nodes for a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> are found, the edges between them need to be found as well. This may be done by finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> between each found node and its neighbouring found node. Concatenate the resulting edges to construct the path.</p>
 <p><a href="ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 29):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_node_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6442,18 +6450,6 @@ G  0  0  0  1
 <p>... a maximum alignment path is guaranteed to travel through (3, 3).</p>
 </div>
 <p></p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
 <p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_nodes</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6503,28 +6499,8 @@ GACGT
 <p>Weight: 2.0</p>
 </div>
 <p></p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>CONTINUE HERE</p>
-<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
-<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
-<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
-<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
-<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
-<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
+<p>A slightly more complicated but also more elegant / efficient solution is to find the <em>edges</em> that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through. That is, rather than finding just the nodes that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, find the edges where those nodes are the edge source (node that the edge starts from). These likely won't be all the edges in the final <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
+<p>The overall algorithm is the same, except rather than just converging to column n, the algorithm converges to both column n and column n + 1. The node weights from both columns are needed to find an edge.</p>
 <p><a href="ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 51):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_edge_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6582,12 +6558,17 @@ G  0  0  0  1
 <p>... a maximum alignment path is guaranteed to travel through the edge (3, 3), (3, 4).</p>
 </div>
 <p></p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
-<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
+<p>Once the edges are found, the remaining edges are all guaranteed to be vertical or horizontal.</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
+<p>ENSURE THIS IS CORRECT LOGIC / REASONING</p>
 <p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py</a> (lines 13 to 83):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_edges</span>(<span class="hljs-params">
         v: List[ELEM],
