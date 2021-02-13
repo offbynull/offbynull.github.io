@@ -5775,7 +5775,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_35b49b989eeebea13725b551c98bd3f6.svg" alt="Dot diagram"></p>
+<p><img src="dot_ab84aa35fde2f93daddd72efc6c90379.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5833,7 +5833,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_56633e725a1d1b20c518d59304174b25.svg" alt="Dot diagram"></p>
+<p><img src="dot_a73fe96dbe3e99fef7c3a99d19756f25.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5981,13 +5981,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_547cb8315193231ce1f77c049f0432b0.svg" alt="Dot diagram"></p>
+<p><img src="dot_d1f49431f22939986c8e92133c95aa70.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_f6c34858d720dd9c62975e732a9eb906.svg" alt="Dot diagram"></p>
+<p><img src="dot_3e4f81177cd45c1f1b9dd792a9f05ea3.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6024,7 +6024,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_9f271aab1979cee3e8e3ba60093592f1.svg" alt="Latex diagram"></p>
+<p><img src="latex_86868e49039e004a540e92fc8b59e1aa.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6035,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_68f663aa758e3afc9641111f5ca07952.svg" alt="Latex diagram"></p>
+<p><img src="latex_9af76ee605542385ec4c2bffe1456056.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6096,9 +6096,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_55de6e33de0a85395b635df9cdd4cd3e.svg" alt="Latex diagram"></p>
+<p><img src="latex_c5f50ae181010a16e74c53a1e94a7c87.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
-GA-T
+-GAT
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6295,24 +6295,55 @@ G  0  0  0  1
 </ul>
 <p><img src="svgbob_815a14880ebbf3762e4296097e5c5e165e003b0c.svg" alt="Kroki diagram output"></p>
 <p>For each sub-graph, find a node that the maximum path travels through and repeat the process. Repeat this process until all nodes in the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> are found.</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
-<p>ADD SUBDIVISION CODE HERE</p>
+<p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_nodes</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        buffer: List[Tuple[int, int]],
+        v_offset: int = <span class="hljs-number">0</span>,
+        w_offset: int = <span class="hljs-number">0</span></span>) -&gt; <span class="hljs-keyword">None</span>:</span>
+    <span class="hljs-keyword">if</span> len(v) == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> len(w) == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span>
+    c, r = find_node_that_max_alignment_path_travels_through_at_middle_col(v, w, weight_lookup)
+    find_max_alignment_path_nodes(v[:c<span class="hljs-number">-1</span>], w[:r<span class="hljs-number">-1</span>], weight_lookup, buffer, v_offset=<span class="hljs-number">0</span>, w_offset=<span class="hljs-number">0</span>)
+    buffer.append((v_offset + c, w_offset + r))
+    find_max_alignment_path_nodes(v[c:], w[r:], weight_lookup, buffer, v_offset=v_offset+c, w_offset=v_offset+r)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    nodes = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)]
+    find_max_alignment_path_nodes(v, w, weight_lookup, nodes)
+    weight = <span class="hljs-number">0.0</span>
+    alignment = []
+    <span class="hljs-keyword">for</span> (v_idx1, w_idx1), (v_idx2, w_idx2) <span class="hljs-keyword">in</span> zip(nodes, nodes[<span class="hljs-number">1</span>:]):
+        sub_weight, sub_alignment = GlobalAlignment_Matrix.global_alignment(v[v_idx1:v_idx2], w[w_idx1:w_idx2], weight_lookup)
+        weight += sub_weight
+        alignment += sub_alignment
+    <span class="hljs-keyword">return</span> weight, alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<pre><code>TAC-T
+GACGT
+</code></pre>
+<p>Weight: 2.0</p>
+</div>
+<p></p>
 <p>To understand how to find which node in a column a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, consider what happens when edge directions are reversed in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. When edge directions are reversed, the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> essentially becomes the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for the reversed <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, reversing the edges for the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> of SNACK and AJAX is essentially the same as the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> for KCANS (reverse of SNACK) and XAJA (reverse of AJAX)...</p>
 <p><img src="svgbob_da8db26052b32c600c5e011bfc6c5cac06910718.svg" alt="Kroki diagram output"></p>
 <p>Between an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> and its reversed edge variant, a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> should travel through the same set of nodes. Notice how in the following example, ...</p>
@@ -6332,7 +6363,7 @@ G  0  0  0  1
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ddcbb8b58008bb1c199fd4877aa130e2.svg" alt="Latex diagram"></p>
+<p><img src="latex_46589c5d46be9ac311bbcb8e5b83520f.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6340,7 +6371,7 @@ G  0  0  0  1
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). This maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c9cba7b408afd7f2818480282357a5eb.svg" alt="Latex diagram"></p>
+<p><img src="latex_cdd8d78b454f5349a6f8336f9a41bb86.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Given that there may be multiple maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> or the same maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
@@ -6376,6 +6407,102 @@ G  0  0  0  1
 </code></pre>
 </div>
 <p></p>
+<p><a href="ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 29):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_node_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        col: int
+</span>) -&gt; Tuple[int, int]:</span>
+    col_vals = SweepCombiner(v, w, weight_lookup).get_col(col)
+    row, _ = max(enumerate(col_vals), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">return</span> col, row
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_node_that_max_alignment_path_travels_through_at_middle_col</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[int, int]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    middle_col_idx = v_node_count // <span class="hljs-number">2</span>
+    <span class="hljs-keyword">return</span> find_node_that_max_alignment_path_travels_through_at_col(v, w, weight_lookup, middle_col_idx)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+
+</code></pre>
+<p>... a maximum alignment path is guaranteed to travel through (3, 3).</p>
+</div>
+<p></p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT NODES</p>
+<p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_nodes</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        buffer: List[Tuple[int, int]],
+        v_offset: int = <span class="hljs-number">0</span>,
+        w_offset: int = <span class="hljs-number">0</span></span>) -&gt; <span class="hljs-keyword">None</span>:</span>
+    <span class="hljs-keyword">if</span> len(v) == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> len(w) == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span>
+    c, r = find_node_that_max_alignment_path_travels_through_at_middle_col(v, w, weight_lookup)
+    find_max_alignment_path_nodes(v[:c<span class="hljs-number">-1</span>], w[:r<span class="hljs-number">-1</span>], weight_lookup, buffer, v_offset=<span class="hljs-number">0</span>, w_offset=<span class="hljs-number">0</span>)
+    buffer.append((v_offset + c, w_offset + r))
+    find_max_alignment_path_nodes(v[c:], w[r:], weight_lookup, buffer, v_offset=v_offset+c, w_offset=v_offset+r)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    nodes = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)]
+    find_max_alignment_path_nodes(v, w, weight_lookup, nodes)
+    weight = <span class="hljs-number">0.0</span>
+    alignment = []
+    <span class="hljs-keyword">for</span> (v_idx1, w_idx1), (v_idx2, w_idx2) <span class="hljs-keyword">in</span> zip(nodes, nodes[<span class="hljs-number">1</span>:]):
+        sub_weight, sub_alignment = GlobalAlignment_Matrix.global_alignment(v[v_idx1:v_idx2], w[w_idx1:w_idx2], weight_lookup)
+        weight += sub_weight
+        alignment += sub_alignment
+    <span class="hljs-keyword">return</span> weight, alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<pre><code>TAC-T
+GACGT
+</code></pre>
+<p>Weight: 2.0</p>
+</div>
+<p></p>
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
@@ -6392,6 +6519,165 @@ G  0  0  0  1
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
 <p>CONTINUE HERE</p>
+<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
+<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
+<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
+<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
+<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
+<p>FIND  <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> EDGE AT COLUMN</p>
+<p><a href="ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 51):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_edge_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        col: int
+</span>) -&gt; Tuple[Tuple[int, int], Tuple[int, int]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    sc = SweepCombiner(v, w, weight_lookup)
+    <span class="hljs-comment"># Get max node in column -- max alignment path guaranteed to go through here.</span>
+    col_vals = sc.get_col(col)
+    row, _ = max(enumerate(col_vals), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
+    <span class="hljs-comment"># Check node immediately to the right, down, right-down (diag) -- the one with the max value forms the edge. Recall</span>
+    <span class="hljs-comment"># that the max value will be the same max value as the one from col_vals (weight of the final alignment path / sink</span>
+    <span class="hljs-comment"># node in the full alignment graph).</span>
+    neighbours = []
+    next_col_vals = sc.get_col(col + <span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> col + <span class="hljs-number">1</span> &lt; v_node_count <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># very quick due to prev call to get_col()</span>
+    <span class="hljs-keyword">if</span> col + <span class="hljs-number">1</span> &lt; v_node_count:
+        right_weight = next_col_vals[row]
+        right_node = (col + <span class="hljs-number">1</span>, row)
+        neighbours += [(right_weight, right_node)]
+    <span class="hljs-keyword">if</span> row + <span class="hljs-number">1</span> &lt; w_node_count:
+        down_weight = col_vals[row + <span class="hljs-number">1</span>]
+        down_node = (col, row + <span class="hljs-number">1</span>)
+        neighbours += [(down_weight, down_node)]
+    <span class="hljs-keyword">if</span> col + <span class="hljs-number">1</span> &lt; v_node_count <span class="hljs-keyword">and</span> row + <span class="hljs-number">1</span> &lt; w_node_count:
+        downright_weight = next_col_vals[row + <span class="hljs-number">1</span>]
+        downright_node = (col + <span class="hljs-number">1</span>, row + <span class="hljs-number">1</span>)
+        neighbours += [(downright_weight, downright_node)]
+    _, (col2, row2) = max(neighbours, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">return</span> (col, row), (col2, row2)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_edge_that_max_alignment_path_travels_through_at_middle_col</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[Tuple[int, int], Tuple[int, int]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    middle_col_idx = (v_node_count - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>
+    <span class="hljs-keyword">return</span> find_edge_that_max_alignment_path_travels_through_at_col(v, w, weight_lookup, middle_col_idx)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+
+</code></pre>
+<p>... a maximum alignment path is guaranteed to travel through the edge (3, 3), (3, 4).</p>
+</div>
+<p></p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
+<p>CONSTRUCT <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">ALIGNMENT PATH</a> FROM ALIGNMENT EDGES</p>
+<p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py</a> (lines 13 to 83):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_edges</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        top: int,
+        bottom: int,
+        left: int,
+        right: int,
+        output: List[str]</span>):</span>
+    <span class="hljs-keyword">if</span> left == right:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(top, bottom):
+            output += [<span class="hljs-string">'↓'</span>]
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">if</span> top == bottom:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(left, right):
+            output += [<span class="hljs-string">'→'</span>]
+        <span class="hljs-keyword">return</span>
+
+    (col1, row1), (col2, row2) = find_edge_that_max_alignment_path_travels_through_at_middle_col(v[left:right], w[top:bottom], weight_lookup)
+    middle_col = left + col1
+    middle_row = top + row1
+    find_max_alignment_path_edges(v, w, weight_lookup, top, middle_row, left, middle_col, output)
+    <span class="hljs-keyword">if</span> row1 + <span class="hljs-number">1</span> == row2 <span class="hljs-keyword">and</span> col1 + <span class="hljs-number">1</span> == col2:
+        edge_dir = <span class="hljs-string">'↘'</span>
+    <span class="hljs-keyword">elif</span> row1 == row2 <span class="hljs-keyword">and</span> col1 + <span class="hljs-number">1</span> == col2:
+        edge_dir = <span class="hljs-string">'→'</span>
+    <span class="hljs-keyword">elif</span> row1 + <span class="hljs-number">1</span> == row2 <span class="hljs-keyword">and</span> col1 == col2:
+        edge_dir = <span class="hljs-string">'↓'</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">raise</span> ValueError()
+    <span class="hljs-keyword">if</span> edge_dir == <span class="hljs-string">'→'</span> <span class="hljs-keyword">or</span> edge_dir == <span class="hljs-string">'↘'</span>:
+        middle_col += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> edge_dir == <span class="hljs-string">'↓'</span> <span class="hljs-keyword">or</span> edge_dir == <span class="hljs-string">'↘'</span>:
+        middle_row += <span class="hljs-number">1</span>
+    output += [edge_dir]
+    find_max_alignment_path_edges(v, w, weight_lookup, middle_row, bottom, middle_col, right, output)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    edges = []
+    find_max_alignment_path_edges(v, w, weight_lookup, <span class="hljs-number">0</span>, len(w), <span class="hljs-number">0</span>, len(v), edges)
+    weight = <span class="hljs-number">0.0</span>
+    alignment = []
+    v_idx = <span class="hljs-number">0</span>
+    w_idx = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> edges:
+        <span class="hljs-keyword">if</span> edge == <span class="hljs-string">'→'</span>:
+            v_elem = v[v_idx]
+            w_elem = <span class="hljs-literal">None</span>
+            alignment.append((v_elem, w_elem))
+            weight += weight_lookup.lookup(v_elem, w_elem)
+            v_idx += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> edge == <span class="hljs-string">'↓'</span>:
+            v_elem = <span class="hljs-literal">None</span>
+            w_elem = w[w_idx]
+            alignment.append((v_elem, w_elem))
+            weight += weight_lookup.lookup(v_elem, w_elem)
+            w_idx += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> edge == <span class="hljs-string">'↘'</span>:
+            v_elem = v[v_idx]
+            w_elem = w[w_idx]
+            alignment.append((v_elem, w_elem))
+            weight += weight_lookup.lookup(v_elem, w_elem)
+            v_idx += <span class="hljs-number">1</span>
+            w_idx += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> weight, alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<pre><code>TAC-T
+GACGT
+</code></pre>
+<p>Weight: 2.0</p>
+</div>
+<p></p>
 <a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6402,7 +6688,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_5a59405c4664e659f215e2c6c40e7c40.svg" alt="Latex diagram"></p>
+<p><img src="latex_cb280cda53e432a134d41ff446154d36.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6416,7 +6702,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_dada60b09da2e8bc85ce36f07a726499.svg" alt="Latex diagram"></p>
+<p><img src="latex_1772568bf7d23b651c95e1956a59ed01.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6430,7 +6716,7 @@ G  0  0  0  1
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_b6391d6cf0b3e1ed590807fe5266f937.svg" alt="Latex diagram"></p>
+<p><img src="latex_ef29b779263b82e43af88571a7f3a5df.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6456,14 +6742,14 @@ G  0  0  0  1
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_97bf0510707e8e59301c8f26db8146ff.svg" alt="Latex diagram"></p>
+<p><img src="latex_bdd9f52a2b497a6f3e891ae9a6196218.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f0c5e783f0309cb3a290062aa859a85d.svg" alt="Latex diagram"></p>
+<p><img src="latex_6830509cf05ac9983facb523480bc358.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>

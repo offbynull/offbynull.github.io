@@ -1,6 +1,8 @@
 from typing import TypeVar, List, Tuple
 
 import GlobalAlignment_Matrix
+from Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn import \
+    find_edge_that_max_alignment_path_travels_through_at_middle_col
 from Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn import \
     find_node_that_max_alignment_path_travels_through_at_middle_col
 from WeightLookup import WeightLookup, Table2DWeightLookup
@@ -8,19 +10,42 @@ from WeightLookup import WeightLookup, Table2DWeightLookup
 ELEM = TypeVar('ELEM')
 
 # MARKDOWN
-def find_max_alignment_path_nodes(
+def find_max_alignment_path_edges(
         v: List[ELEM],
         w: List[ELEM],
         weight_lookup: WeightLookup,
-        buffer: List[Tuple[int, int]],
-        v_offset: int = 0,
-        w_offset: int = 0) -> None:
-    if len(v) == 0 or len(w) == 0:
+        top: int,
+        bottom: int,
+        left: int,
+        right: int,
+        output: List[str]):
+    if left == right:
+        for i in range(top, bottom):
+            output += ['↓']
         return
-    c, r = find_node_that_max_alignment_path_travels_through_at_middle_col(v, w, weight_lookup)
-    find_max_alignment_path_nodes(v[:c-1], w[:r-1], weight_lookup, buffer, v_offset=0, w_offset=0)
-    buffer.append((v_offset + c, w_offset + r))
-    find_max_alignment_path_nodes(v[c:], w[r:], weight_lookup, buffer, v_offset=v_offset+c, w_offset=v_offset+r)
+    if top == bottom:
+        for i in range(left, right):
+            output += ['→']
+        return
+
+    (col1, row1), (col2, row2) = find_edge_that_max_alignment_path_travels_through_at_middle_col(v[left:right], w[top:bottom], weight_lookup)
+    middle_col = left + col1
+    middle_row = top + row1
+    find_max_alignment_path_edges(v, w, weight_lookup, top, middle_row, left, middle_col, output)
+    if row1 + 1 == row2 and col1 + 1 == col2:
+        edge_dir = '↘'
+    elif row1 == row2 and col1 + 1 == col2:
+        edge_dir = '→'
+    elif row1 + 1 == row2 and col1 == col2:
+        edge_dir = '↓'
+    else:
+        raise ValueError()
+    if edge_dir == '→' or edge_dir == '↘':
+        middle_col += 1
+    if edge_dir == '↓' or edge_dir == '↘':
+        middle_row += 1
+    output += [edge_dir]
+    find_max_alignment_path_edges(v, w, weight_lookup, middle_row, bottom, middle_col, right, output)
 
 
 def global_alignment(
@@ -28,14 +53,32 @@ def global_alignment(
         w: List[ELEM],
         weight_lookup: WeightLookup
 ) -> Tuple[float, List[Tuple[ELEM, ELEM]]]:
-    nodes = [(0, 0)]
-    find_max_alignment_path_nodes(v, w, weight_lookup, nodes)
+    edges = []
+    find_max_alignment_path_edges(v, w, weight_lookup, 0, len(w), 0, len(v), edges)
     weight = 0.0
     alignment = []
-    for (v_idx1, w_idx1), (v_idx2, w_idx2) in zip(nodes, nodes[1:]):
-        sub_weight, sub_alignment = GlobalAlignment_Matrix.global_alignment(v[v_idx1:v_idx2], w[w_idx1:w_idx2], weight_lookup)
-        weight += sub_weight
-        alignment += sub_alignment
+    v_idx = 0
+    w_idx = 0
+    for edge in edges:
+        if edge == '→':
+            v_elem = v[v_idx]
+            w_elem = None
+            alignment.append((v_elem, w_elem))
+            weight += weight_lookup.lookup(v_elem, w_elem)
+            v_idx += 1
+        elif edge == '↓':
+            v_elem = None
+            w_elem = w[w_idx]
+            alignment.append((v_elem, w_elem))
+            weight += weight_lookup.lookup(v_elem, w_elem)
+            w_idx += 1
+        elif edge == '↘':
+            v_elem = v[v_idx]
+            w_elem = w[w_idx]
+            alignment.append((v_elem, w_elem))
+            weight += weight_lookup.lookup(v_elem, w_elem)
+            v_idx += 1
+            w_idx += 1
     return weight, alignment
 # MARKDOWN
 

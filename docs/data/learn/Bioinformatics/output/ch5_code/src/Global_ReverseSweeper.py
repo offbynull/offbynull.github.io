@@ -55,7 +55,7 @@ class ReverseSweeper:
 # MARKDOWN
 
 
-# Does the same thing as ReverseSweeper, but uses ForwardSwepper and instead reverses the strings
+# Does the same thing as ReverseSweeper, but uses ForwardSweeper and instead reverses the strings
 class ReverseSweeperWrapped:
     def __init__(self, v: List[str], w: List[str], weight_lookup: WeightLookup, col_fronttrack: int = 2):
         self.backing = ForwardSweeper(v[::-1], w[::-1], weight_lookup, col_fronttrack)

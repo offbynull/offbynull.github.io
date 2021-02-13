@@ -3602,41 +3602,24 @@ o---▶o---▶o---▶o---▶o---▶o                                           o
 
 For each sub-graph, find a node that the maximum path travels through and repeat the process. Repeat this process until all nodes in the maximum alignment path are found.
 
-ADD SUBDIVISION CODE HERE
+```{output}
+ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
-
-ADD SUBDIVISION CODE HERE
+```{ch5}
+GlobalAlignment_DivideAndConquer_NodeVariant
+TACT
+GACGT
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
 
 
 To understand how to find which node in a column a maximum alignment path travels through, consider what happens when edge directions are reversed in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed sequences. For example, reversing the edges for the alignment graph of SNACK and AJAX is essentially the same as the alignment graph for KCANS (reverse of SNACK) and XAJA (reverse of AJAX)...
@@ -3766,7 +3749,68 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-CONTINUE HERE
+```{output}
+ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn
+TACT
+GACGT
+3
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT NODES
+
+```{output}
+ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+GlobalAlignment_DivideAndConquer_NodeVariant
+TACT
+GACGT
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
 
 CONTINUE HERE
 
@@ -3797,6 +3841,71 @@ CONTINUE HERE
 CONTINUE HERE
 
 CONTINUE HERE
+
+CONTINUE HERE
+
+FIND  ALIGNMENT PATH EDGE AT COLUMN
+
+FIND  ALIGNMENT PATH EDGE AT COLUMN
+
+FIND  ALIGNMENT PATH EDGE AT COLUMN
+
+FIND  ALIGNMENT PATH EDGE AT COLUMN
+
+FIND  ALIGNMENT PATH EDGE AT COLUMN
+
+FIND  ALIGNMENT PATH EDGE AT COLUMN
+
+```{output}
+ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn
+TACT
+GACGT
+3
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+
+CONSTRUCT ALIGNMENT PATH FROM ALIGNMENT EDGES
+
+```{output}
+ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+GlobalAlignment_DivideAndConquer_EdgeVariant
+TACT
+GACGT
+embedded_score_matrix
+-1
+   A  C  T  G
+A  1  0  0  0
+C  0  1  0  0
+T  0  0  1  0
+G  0  0  0  1
+```
 
 ### Local Alignment
 
