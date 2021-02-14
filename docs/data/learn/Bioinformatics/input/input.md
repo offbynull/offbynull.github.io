@@ -3799,9 +3799,17 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-A slightly more complicated but also more elegant / efficient solution is to find the _edges_ that a maximum alignment path travels through. That is, rather than finding just the nodes that a maximum alignment path travels through, find the edges where those nodes are the edge source (node that the edge starts from). These likely won't be all the edges in the final alignment path.
+A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes it finds. That is, rather than finding just the nodes that a maximum alignment path travels through, find the edges where those nodes are the edge source (node that the edge starts from). 
+
+These likely won't be all the edges in the final alignment path.
 
 The overall algorithm is the same, except rather than just converging to column n, the algorithm converges to both column n and column n + 1. The node weights from both columns are needed to find an edge.
+
+SHOW DIAGRAM HERE
+
+SHOW DIAGRAM HERE
+
+SHOW DIAGRAM HERE
 
 ```{output}
 ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py
@@ -3823,27 +3831,23 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-Once the edges are found, the remaining edges are all guaranteed to be vertical or horizontal.
+Finding the maximum alignment path from edges provides two distinct advantages over the previous method of finding the maximum alignment path from nodes:
 
-ENSURE THIS IS CORRECT LOGIC / REASONING
+ 1. each sub-division results in one of the sub-graphs being smaller.
+   
+    SHOW DIAGRAM HERE
 
-ENSURE THIS IS CORRECT LOGIC / REASONING
+    SHOW DIAGRAM HERE
 
-ENSURE THIS IS CORRECT LOGIC / REASONING
+    SHOW DIAGRAM HERE
 
-ENSURE THIS IS CORRECT LOGIC / REASONING
+ 2. the step that path finds between two neighbouring found nodes is no longer required (once the edges are found, the remaining edges are all guaranteed to be vertical or horizontal).
 
-ENSURE THIS IS CORRECT LOGIC / REASONING
+    SHOW DIAGRAM HERE
 
-ENSURE THIS IS CORRECT LOGIC / REASONING
+    SHOW DIAGRAM HERE
 
-ENSURE THIS IS CORRECT LOGIC / REASONING
-
-ENSURE THIS IS CORRECT LOGIC / REASONING
-
-ENSURE THIS IS CORRECT LOGIC / REASONING
-
-ENSURE THIS IS CORRECT LOGIC / REASONING
+    SHOW DIAGRAM HERE
 
 ```{output}
 ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py
@@ -3853,8 +3857,8 @@ python
 
 ```{ch5}
 GlobalAlignment_DivideAndConquer_EdgeVariant
-TACT
-GACGT
+AA
+TTT
 embedded_score_matrix
 -1
    A  C  T  G

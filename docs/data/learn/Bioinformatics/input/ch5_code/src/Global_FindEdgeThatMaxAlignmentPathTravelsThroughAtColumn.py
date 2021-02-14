@@ -19,24 +19,36 @@ def find_edge_that_max_alignment_path_travels_through_at_col(
     # Get max node in column -- max alignment path guaranteed to go through here.
     col_vals = sc.get_col(col)
     row, _ = max(enumerate(col_vals), key=lambda x: x[1])
-    # Check node immediately to the right, down, right-down (diag) -- the one with the max value forms the edge. Recall
-    # that the max value will be the same max value as the one from col_vals (weight of the final alignment path / sink
-    # node in the full alignment graph).
+    # Check node immediately to the right, down, right-down (diag) -- the ones with the max value MAY form the edge that
+    # the max alignment path goes through. Recall that the max value will be the same max value as the one from col_vals
+    # (weight of the final alignment path / sink node in the full alignment graph).
+    #
+    # Of the ones WITH the max value, check the edge weights. The ones with the max edge_weight.
     neighbours = []
     next_col_vals = sc.get_col(col + 1) if col + 1 < v_node_count else None  # very quick due to prev call to get_col()
     if col + 1 < v_node_count:
         right_weight = next_col_vals[row]
         right_node = (col + 1, row)
-        neighbours += [(right_weight, right_node)]
+        v_elem = v[col - 1]
+        w_elem = None
+        edge_weight = weight_lookup.lookup(v_elem, w_elem)
+        neighbours += [(right_weight, edge_weight, right_node)]
     if row + 1 < w_node_count:
         down_weight = col_vals[row + 1]
         down_node = (col, row + 1)
-        neighbours += [(down_weight, down_node)]
+        v_elem = None
+        w_elem = w[row - 1]
+        edge_weight = weight_lookup.lookup(v_elem, w_elem)
+        neighbours += [(down_weight, edge_weight, down_node)]
     if col + 1 < v_node_count and row + 1 < w_node_count:
         downright_weight = next_col_vals[row + 1]
         downright_node = (col + 1, row + 1)
-        neighbours += [(downright_weight, downright_node)]
-    _, (col2, row2) = max(neighbours, key=lambda x: x[0])
+        v_elem = v[col - 1]
+        w_elem = w[row - 1]
+        edge_weight = weight_lookup.lookup(v_elem, w_elem)
+        neighbours += [(downright_weight, edge_weight, downright_node)]
+    neighbours.sort(key=lambda x: x[:2])  # sort by weight, then edge weight
+    _, _, (col2, row2) = neighbours[-1]
     return (col, row), (col2, row2)
 
 
