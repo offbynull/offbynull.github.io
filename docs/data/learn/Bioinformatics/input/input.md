@@ -3387,7 +3387,7 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 
 **ALGORITHM**:
 
-The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix where each element in the matrix represents a node in the alignment graph. The node weights are then populated in a predefined topological order and backtracking is used find the maximum path.
+The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix where each element in the matrix represents a node in the alignment graph. The elements are then populated in a predefined topological order, where each element gets populated with the node weight and the chosen backtracking edge.
 
 Since the alignment graph is a grid, the node weights may be populated either...
 
@@ -3442,20 +3442,22 @@ G  0  0  0  1
 
 #### Divide-and-Conquer Algorithm
 
-`{bm} /(Algorithms\/Sequence Alignment\/Global Alignment\/Matrix Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Alignment\/Global Alignment\/Divide-and-Conquer Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
 Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
 
-The following algorithm extends the matrix algorithm such that it can process much larger graphs at the expense of more computation time. It relies on two ideas.
+The following algorithm extends the matrix algorithm such that it can process much larger graphs at the expense of duplicating some computation work (trading time for space). It relies on two ideas.
 
-Recall that in the matrix implementation of global alignment, node weights are populated in a predefined topological order (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column. The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.
+Recall that in the matrix implementation of global alignment, node weights are populated in a pre-defined topological order (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column.
 
-In other words, the only data needed to calculate the weights of the next column is the weights in the previous column. Any columns behind the previous column may be discarded.
+The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.
+
+In other words, the only data needed to calculate the weights of the next column is the weights in the previous column.
 
 ```{svgbob}
        "Calc col 1"                     "Calc col 2"                     "Calc col 3"                     "Calc col 4"       
@@ -3509,73 +3511,42 @@ G  0  0  0  1
 The second idea is that, for a column, it's possible to find out which node in that column a maximum alignment path travels through without knowing that path beforehand.
 
 ```{svgbob}
+  0    1    2    3    4    5
+0 o---▶o---▶o---▶o---▶o---▶o
+  |\   |\   |\   |\   |\   |
+  | \  | \  | \  | \  | \  |
+  |  \ |  \ |  \ |  \ |  \ |
+  ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+1 o---▶o---▶o---▶o---▶o---▶o
+  |\   |\   |\   |\   |\   |
+  | \  | \  | \  | \  | \  |
+  |  \ |  \ |  \ |  \ |  \ |
+  ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+2 o---▶o---▶O---▶o---▶o---▶o
+  |\   |\   |\   |\   |\   |
+  | \  | \  | \  | \  | \  |
+  |  \ |  \ |  \ |  \ |  \ |
+  ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+3 o---▶o---▶o---▶o---▶o---▶o
+  |\   |\   |\   |\   |\   |
+  | \  | \  | \  | \  | \  |
+  |  \ |  \ |  \ |  \ |  \ |
+  ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
+4 o---▶o---▶o---▶o---▶o---▶o
+
 * "I don't know what the maximum alignment path is, but"
-  "I know it travels through the node at row 1 column 2"
-  "(denoted by a larger circle)."
-
-o---▶o---▶o---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶o---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶O---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶o---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |
-| \  | \  | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶o---▶o---▶o---▶o
+  "I know it travels through the node at (2, 2) (denoted by"
+  "a larger circle)."
 ```
 
-Knowing this, a divide-and-conquer algorithm may be used to find that maximum alignment path. Any alignment path must travel from the source node (top-left) to the sink node (bottom-right). If you're able to find a node between the source node and sink node that the maximum alignment path travels through, you can sub-divide the alignment graph into 2.
+Knowing this, a divide-and-conquer algorithm may be used to find that maximum alignment path. Any alignment path must travel from the source node (top-left) to the sink node (bottom-right). If you're able to find a node between the source node and sink node that a maximum alignment path travels through, you can sub-divide the alignment graph into 2.
 
-```{svgbob}
-* "I know the maximum alignment path travels through"
-  "the node at row 2 column 2 (denoted by a larger"
-  "circle). Sub-divide the graph at that node."
-
-o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
-| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
-| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶O---▶o---▶o---▶o "sub-divide to..."         o---▶o---▶O    O---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
-| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
-|\   |\   |\   |\   |\   |                            |\   |\   |    |\   |\   |\   |
-| \  | \  | \  | \  | \  |                            | \  | \  |    | \  | \  | \  |
-|  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |    |  \ |  \ |  \ |
-▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼    ▼   ▼▼   ▼▼   ▼▼
-o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o    o---▶o---▶o---▶o
-                                                      "sub-graph1"     "sub-graph 2"   
-```
-
-Since the alignment graph flows from top-left to bottom-right, those sub-graphs can be made smaller. That is, if you know that an alignment path travels through some node, it's guaranteed that...
+That is, if you know that a maximum alignment path travels through some node, it's guaranteed that...
 
  * prior parts of the path travel through the region that's to the top-left of that node.
  * subsequent parts of that path travel through the region that's to the bottom-right of that node.
 
 ```{svgbob}
-* "Prior parts of the path must travel through the top-left, while"
-  "subsequent parts must travel through the bottom-right."
-
 o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o                  
 |\   |\   |\   |\   |\   |                            |\   |\   |                  
 | \  | \  | \  | \  | \  |                            | \  | \  |                  
@@ -3597,10 +3568,22 @@ o---▶o---▶o---▶o---▶o---▶o                                           o
 |  \ |  \ |  \ |  \ |  \ |                                           |  \ |  \ |  \ |
 ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                                           ▼   ▼▼   ▼▼   ▼▼
 o---▶o---▶o---▶o---▶o---▶o                                           o---▶o---▶o---▶o
-                                                                       "sub-graph 2"   
+                                                                        "sub-graph2" 
+
+* "I know the maximum alignment path travels through the node at (2, 2)"
+  "(denoted by a larger circle). Sub-divide the graph at that node. Prior"
+  "parts of the path must travel through the top-left, while subsequent"
+  "parts must travel through the bottom-right.""
 ```
 
-For each sub-graph, find a node that the maximum path travels through and repeat the process. Repeat this process until all nodes in the maximum alignment path are found.
+By recursively performing this operation, you can pull out all nodes that make up a maximum alignment path:
+
+ * Pick a column, find a node, and sub-divide.
+ * For each sub-division from last step, pick a column, find a node, and sub-divide. 
+ * For each sub-division from last step, pick a column, find a node, and sub-divide. 
+ * etc..
+
+Finding the edges between these nodes yields the maximum alignment path. To find the edges between the node found at column n and the node found at column n + 1, isolate the alignment graph between those nodes and perform the standard matrix variant of global alignment. The graph will likely be very small, so the computation and space requirements will likely be very low.
 
 ```{output}
 ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py
@@ -3620,7 +3603,6 @@ C  0  1  0  0
 T  0  0  1  0
 G  0  0  0  1
 ```
-
 
 To understand how to find which node in a column a maximum alignment path travels through, consider what happens when edge directions are reversed in an alignment graph. When edge directions are reversed, the alignment graph essentially becomes the alignment graph for the reversed sequences. For example, reversing the edges for the alignment graph of SNACK and AJAX is essentially the same as the alignment graph for KCANS (reverse of SNACK) and XAJA (reverse of AJAX)...
 
@@ -3679,7 +3661,7 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an alignment graph getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...
+Insights #3 and #4 in the list above are the key for this algorithm. Consider an alignment graph getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...
 
 ```{svgbob}
 0    1    2    3    4    5           0    1    2     2    3    4    5
@@ -3711,7 +3693,7 @@ o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀--
   "last column and half 2's first column are both column 2)."
 ```
 
-Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum alignment path travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split alignment graph (insight #3 above).
+Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum alignment path travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split alignment graph (insight #3 above).
 
 ```{ch5}
 GlobalAlignment_DivideAndConquer_Visualize_SplitAdd
@@ -3727,11 +3709,11 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-One way to think of what's happening above is that the algorithm is converging on to the same answer but at a different spot in the alignment graph. That is, normally the algorithm converges on to the bottom-right node of the alignment graph. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.
+One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the alignment graph. Normally the algorithm converges on to the bottom-right node of the alignment graph. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.
 
-Given that there may be multiple maximum alignment paths for an alignment graph, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum alignment path or the same maximum alignment path.
+Given that there may be multiple maximum alignment paths for an alignment graph, there may be multiple nodes found per column. Each found node may be for a different maximum alignment path or the same maximum alignment path.
 
-Ultimately, this entire process may be combined with the first idea (only keep 2 columns in memory) such that the algorithm requires much lower memory requirements. That is, to find the nodes in a column which maximum alignment paths travel through, the...
+Ultimately, this entire process may be combined with the first idea (only need the previous column in memory to calculate the next column) such that the algorithm requires much lower memory requirements. That is, to find the nodes in a column which maximum alignment paths travel through, the...
 
  * forward sweep only requires holding on to the weights from column n-1.
  * reverse sweep only requires holding on to the weights from column n+1.
@@ -3756,9 +3738,7 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-The full divide-and-conquer algorithm may be thought of as follows: For the middle column in an alignment graph, find a node that a maximum alignment path travels through. Then, sub-divide the alignment graph based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum alignment path.
-
-Once all nodes for a maximum alignment path are found, the edges between them need to be found as well. This may be done by finding a maximum alignment path between each found node and its neighbouring found node. Concatenate the resulting edges to construct the path.
+To recap, the full divide-and-conquer algorithm is as follows: For the middle column in an alignment graph, find a node that a maximum alignment path travels through. Then, sub-divide the alignment graph based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum alignment path. The edges between these found nodes can be determined by finding a maximum alignment path between each found node and its neighbouring found node. Concatenate these edges to construct the path.
 
 ```{output}
 ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py
@@ -3799,17 +3779,15 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes it finds. That is, rather than finding just the nodes that a maximum alignment path travels through, find the edges where those nodes are the edge source (node that the edge starts from). 
+A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes that it finds. In other words, rather than finding just nodes that maximum alignment paths travel through, find the edges where those nodes are the edge source (node that the edge starts from). 
 
-These likely won't be all the edges in the final alignment path.
+The algorithm finds all nodes that a maximum alignment paths travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of it's immediate neighbours is also a found node. It may be that the node immediately to the ...
 
-The overall algorithm is the same, except rather than just converging to column n, the algorithm converges to both column n and column n + 1. The node weights from both columns are needed to find an edge.
+ * right of it (same row but column n + 1) is also a found node.
+ * bottom of it (1 row down and column n) is also a found node.
+ * bottom-right of it (1 row down and column n + 1) is also a found node.
 
-SHOW DIAGRAM HERE
-
-SHOW DIAGRAM HERE
-
-SHOW DIAGRAM HERE
+Of the immediate neighbours that are also found nodes, the one forming the edge with the highest weight is the edge that a maximum alignment path travels through.
 
 ```{output}
 ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py
@@ -3831,23 +3809,41 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-Finding the maximum alignment path from edges provides two distinct advantages over the previous method of finding the maximum alignment path from nodes:
+The recursive sub-division process happens just as before, but this time with edges. Finding the maximum alignment path from edges provides two distinct advantages over the previous method of finding the maximum alignment path from nodes:
 
- 1. each sub-division results in one of the sub-graphs being smaller.
+ * Each sub-division results in one of the sub-graphs being smaller.
    
-    SHOW DIAGRAM HERE
+   ```{svgbob}
+   o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o               
+   |\   |\   |\   |\   |\   |                            |\   |\   |               
+   | \  | \  | \  | \  | \  |                            | \  | \  |               
+   |  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |               
+   ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼               
+   o---▶o---▶o---▶o---▶o---▶o                            o---▶o---▶o               
+   |\   |\   |\   |\   |\   |                            |\   |\   |               
+   | \  | \  | \  | \  | \  |                            | \  | \  |               
+   |  \ |  \ |  \ |  \ |  \ |                            |  \ |  \ |               
+   ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                            ▼   ▼▼   ▼▼               
+   o---▶o---▶O---▶o---▶o---▶o "sub-divide to..."         o---▶o---▶O               
+   |\   |\   |\   |\   |\   |                            "sub-graph1"              
+   | \  | \  | \  | \  | \  |                                                      
+   |  \ |  \ |  \ |  \ |  \ |                                                      
+   ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                                                      
+   o---▶o---▶o---▶O---▶o---▶o                                           O---▶o---▶o
+   |\   |\   |\   |\   |\   |                                           |\   |\   |
+   | \  | \  | \  | \  | \  |                                           | \  | \  |
+   |  \ |  \ |  \ |  \ |  \ |                                           |  \ |  \ |
+   ▼   ▼▼   ▼▼   ▼▼   ▼▼   ▼▼                                           ▼   ▼▼   ▼▼
+   o---▶o---▶o---▶o---▶o---▶o                                           o---▶o---▶o
+                                                                        "sub-graph2"
 
-    SHOW DIAGRAM HERE
+   * "I know the maximum alignment path travels through the edge at (2, 2) (3, 2)"
+     "(denoted by larger circles). This is what the sub-division based on that edge"
+     "looks like. Imagine the size of sub-graph 2 if it sub-division was based on"
+     "just the node at (2,2) or (3, 2)."
+   ```
 
-    SHOW DIAGRAM HERE
-
- 2. the step that path finds between two neighbouring found nodes is no longer required (once the edges are found, the remaining edges are all guaranteed to be vertical or horizontal).
-
-    SHOW DIAGRAM HERE
-
-    SHOW DIAGRAM HERE
-
-    SHOW DIAGRAM HERE
+ * Since edges are being pulled out, the step that path finds between two neighbouring found nodes is no longer required. This is because sub-division of the alignment graph happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.
 
 ```{output}
 ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py
@@ -3857,8 +3853,8 @@ python
 
 ```{ch5}
 GlobalAlignment_DivideAndConquer_EdgeVariant
-AA
-TTT
+TACT
+GACGT
 embedded_score_matrix
 -1
    A  C  T  G

@@ -23,7 +23,9 @@ def find_edge_that_max_alignment_path_travels_through_at_col(
     # the max alignment path goes through. Recall that the max value will be the same max value as the one from col_vals
     # (weight of the final alignment path / sink node in the full alignment graph).
     #
-    # Of the ones WITH the max value, check the edge weights. The ones with the max edge_weight.
+    # Of the ones WITH the max value, check the weights formed by each edge. The one with the highest edge weight is the
+    # edge that the max alignment path goes through (if there's more than 1, it means there's more than 1 max alignment
+    # path -- one is picked at random).
     neighbours = []
     next_col_vals = sc.get_col(col + 1) if col + 1 < v_node_count else None  # very quick due to prev call to get_col()
     if col + 1 < v_node_count:

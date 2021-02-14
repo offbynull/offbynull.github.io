@@ -267,7 +267,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -399,12 +399,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>TTAAA = 6 occurrences</li>
-<li>GATCA = 6 occurrences</li>
 <li>AAGGG = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>CCCTT = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>TTAAA = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>GATCA = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -478,18 +478,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1622,7 +1622,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>AAAGA<br>AAAGA<br>AAAGA</p>
+<p>ATAAT<br>ATAAT<br>ATAAT</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2145,7 +2145,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2206,7 +2206,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2882,22 +2882,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
 </ul>
 </div>
 <p></p>
@@ -5775,7 +5775,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_64ffabdab6661dce5f5251b791d19b94.svg" alt="Dot diagram"></p>
+<p><img src="dot_739a2db9162f6496d402b18a4c8663fe.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5833,7 +5833,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_9242f46f529260b451dc9d42358ca6f2.svg" alt="Dot diagram"></p>
+<p><img src="dot_fade5da785698a2e87f650914e514816.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5981,13 +5981,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_6afe8e168a3a3841de596306ca2a1304.svg" alt="Dot diagram"></p>
+<p><img src="dot_b178786d2d32e2cce962bb477a7231f2.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_fd25d2c0699996d499dae070b47ba295.svg" alt="Dot diagram"></p>
+<p><img src="dot_952e0724cab17bb226459558152f7507.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6024,7 +6024,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_d0adf377173e6da1363b4c30a9bca008.svg" alt="Latex diagram"></p>
+<p><img src="latex_bfa1d1aa81b3aa5ce6d5cdc5cf7b4950.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6035,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_d453502e9ea82685c3ba88ada4776361.svg" alt="Latex diagram"></p>
+<p><img src="latex_1378c90f95cd287b489c25d6979d3ea6.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6096,7 +6096,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_a4c7e546f602ce0638c834d78fc657d0.svg" alt="Latex diagram"></p>
+<p><img src="latex_f2161afd6b7ef11a801fe80e3fe7bbed.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 GA-T
 </code></pre>
@@ -6113,7 +6113,7 @@ GA-T
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is represented as a 2D matrix where each element in the matrix represents a node in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. The node weights are then populated in a predefined <a href="#BM_(topological%20order)%2Fi">topological order</a> and backtracking is used find the maximum path.</p>
+<p>The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is represented as a 2D matrix where each element in the matrix represents a node in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. The elements are then populated in a predefined <a href="#BM_(topological%20order)%2Fi">topological order</a>, where each element gets populated with the node weight and the chosen backtracking edge.</p>
 <p>Since the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is a grid, the node weights may be populated either...</p>
 <ul>
 <li>row-by-row, starting from the left column and walking to the right column.</li>
@@ -6205,18 +6205,19 @@ G  0  0  0  1
 </div>
 <p></p>
 <a name="H_Divide-and-Conquer%20Algorithm"></a><h4>Divide-and-Conquer Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FDivide-and-Conquer%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm</a></li>
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a></li>
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm extends the matrix algorithm such that it can process much larger graphs at the expense of more computation time. It relies on two ideas.</p>
-<p>Recall that in the matrix implementation of global alignment, node weights are populated in a predefined <a href="#BM_(topological%20order)%2Fi">topological order</a> (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column. The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.</p>
-<p>In other words, the only data needed to calculate the weights of the next column is the weights in the previous column. Any columns behind the previous column may be discarded.</p>
+<p>The following algorithm extends the matrix algorithm such that it can process much larger graphs at the expense of duplicating some computation work (trading time for space). It relies on two ideas.</p>
+<p>Recall that in the matrix implementation of global alignment, node weights are populated in a pre-defined <a href="#BM_(topological%20order)%2Fi">topological order</a> (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column.</p>
+<p>The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.</p>
+<p>In other words, the only data needed to calculate the weights of the next column is the weights in the previous column.</p>
 <p><img src="svgbob_a778e17c20ba10aa76e0c0375a70cc19614cd870.svg" alt="Kroki diagram output"></p>
 <p><a href="ch5_code/src/Global_ForwardSweeper.py">ch5_code/src/Global_ForwardSweeper.py</a> (lines 10 to 52):</p>
 <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForwardSweeper</span>:</span>
@@ -6285,16 +6286,22 @@ G  0  0  0  1
 </div>
 <p></p>
 <p>The second idea is that, for a column, it's possible to find out which node in that column a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through without knowing that path beforehand.</p>
-<p><img src="svgbob_af2aa575649104b978bd2887fa4b6da2f8a39cc8.svg" alt="Kroki diagram output"></p>
-<p>Knowing this, a divide-and-conquer algorithm may be used to find that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. Any <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> must travel from the source node (top-left) to the sink node (bottom-right). If you're able to find a node between the source node and sink node that the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, you can sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> into 2.</p>
-<p><img src="svgbob_067c335c22bb7359e9fc69ed9492b1bbcda9818f.svg" alt="Kroki diagram output"></p>
-<p>Since the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> flows from top-left to bottom-right, those sub-graphs can be made smaller. That is, if you know that an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through some node, it's guaranteed that...</p>
+<p><img src="svgbob_a4f324dc13bf528a19be5bedcd757c10e373b382.svg" alt="Kroki diagram output"></p>
+<p>Knowing this, a divide-and-conquer algorithm may be used to find that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. Any <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> must travel from the source node (top-left) to the sink node (bottom-right). If you're able to find a node between the source node and sink node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, you can sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> into 2.</p>
+<p>That is, if you know that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through some node, it's guaranteed that...</p>
 <ul>
 <li>prior parts of the path travel through the region that's to the top-left of that node.</li>
 <li>subsequent parts of that path travel through the region that's to the bottom-right of that node.</li>
 </ul>
-<p><img src="svgbob_815a14880ebbf3762e4296097e5c5e165e003b0c.svg" alt="Kroki diagram output"></p>
-<p>For each sub-graph, find a node that the maximum path travels through and repeat the process. Repeat this process until all nodes in the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> are found.</p>
+<p><img src="svgbob_a1e221ef894490d6a8b4252ca52d056518189ffd.svg" alt="Kroki diagram output"></p>
+<p>By recursively performing this operation, you can pull out all nodes that make up a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>:</p>
+<ul>
+<li>Pick a column, find a node, and sub-divide.</li>
+<li>For each sub-division from last step, pick a column, find a node, and sub-divide.</li>
+<li>For each sub-division from last step, pick a column, find a node, and sub-divide.</li>
+<li>etc..</li>
+</ul>
+<p>Finding the edges between these nodes yields the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. To find the edges between the node found at column n and the node found at column n + 1, isolate the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> between those nodes and perform the standard matrix variant of global alignment. The graph will likely be very small, so the computation and space requirements will likely be very low.</p>
 <p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_nodes</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6363,20 +6370,20 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c178dc43f3db99e6a76b2713026ee859.svg" alt="Latex diagram"></p>
+<p><img src="latex_041ae32cb0e6c8a512f9e36c16e90c19.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
-<p>Items 3 and 4 in the list above are the key pieces of insight for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
+<p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
 <p><img src="svgbob_072c713f2836b876275a7dbf010669c022d1b6a1.svg" alt="Kroki diagram output"></p>
-<p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, sum together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
+<p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_11bf450346001da99b844faca7abef8d.svg" alt="Latex diagram"></p>
+<p><img src="latex_d152722753befe5e89983aed9a3e7640.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
-<p>One way to think of what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. That is, normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
-<p>Given that there may be multiple maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, there may be multiple maximum weight nodes found per column. Each maximum weight node may be for a different maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> or the same maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
-<p>Ultimately, this entire process may be combined with the first idea (only keep 2 columns in memory) such that the algorithm requires much lower memory requirements. That is, to find the nodes in a column which maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travel through, the...</p>
+<p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
+<p>Given that there may be multiple maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s for an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, there may be multiple nodes found per column. Each found node may be for a different maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> or the same maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
+<p>Ultimately, this entire process may be combined with the first idea (only need the previous column in memory to calculate the next column) such that the algorithm requires much lower memory requirements. That is, to find the nodes in a column which maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travel through, the...</p>
 <ul>
 <li>forward sweep only requires holding on to the weights from column n-1.</li>
 <li>reverse sweep only requires holding on to the weights from column n+1.</li>
@@ -6413,8 +6420,7 @@ G  0  0  0  1
 </code></pre>
 </div>
 <p></p>
-<p>The full divide-and-conquer algorithm may be thought of as follows: For the middle column in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, find a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through. Then, sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
-<p>Once all nodes for a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> are found, the edges between them need to be found as well. This may be done by finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> between each found node and its neighbouring found node. Concatenate the resulting edges to construct the path.</p>
+<p>To recap, the full divide-and-conquer algorithm is as follows: For the middle column in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, find a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through. Then, sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. The edges between these found nodes can be determined by finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> between each found node and its neighbouring found node. Concatenate these edges to construct the path.</p>
 <p><a href="ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 29):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_node_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6499,13 +6505,15 @@ GACGT
 <p>Weight: 2.0</p>
 </div>
 <p></p>
-<p>A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes it finds. That is, rather than finding just the nodes that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through, find the edges where those nodes are the edge source (node that the edge starts from).</p>
-<p>These likely won't be all the edges in the final <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</p>
-<p>The overall algorithm is the same, except rather than just converging to column n, the algorithm converges to both column n and column n + 1. The node weights from both columns are needed to find an edge.</p>
-<p>SHOW DIAGRAM HERE</p>
-<p>SHOW DIAGRAM HERE</p>
-<p>SHOW DIAGRAM HERE</p>
-<p><a href="ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 63):</p>
+<p>A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes that it finds. In other words, rather than finding just nodes that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travel through, find the edges where those nodes are the edge source (node that the edge starts from).</p>
+<p>The algorithm finds all nodes that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of it's immediate neighbours is also a found node. It may be that the node immediately to the ...</p>
+<ul>
+<li>right of it (same row but column n + 1) is also a found node.</li>
+<li>bottom of it (1 row down and column n) is also a found node.</li>
+<li>bottom-right of it (1 row down and column n + 1) is also a found node.</li>
+</ul>
+<p>Of the immediate neighbours that are also found nodes, the one forming the edge with the highest weight is the edge that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through.</p>
+<p><a href="ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 65):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_edge_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6522,7 +6530,9 @@ GACGT
     <span class="hljs-comment"># the max alignment path goes through. Recall that the max value will be the same max value as the one from col_vals</span>
     <span class="hljs-comment"># (weight of the final alignment path / sink node in the full alignment graph).</span>
     <span class="hljs-comment">#</span>
-    <span class="hljs-comment"># Of the ones WITH the max value, check the edge weights. The ones with the max edge_weight.</span>
+    <span class="hljs-comment"># Of the ones WITH the max value, check the weights formed by each edge. The one with the highest edge weight is the</span>
+    <span class="hljs-comment"># edge that the max alignment path goes through (if there's more than 1, it means there's more than 1 max alignment</span>
+    <span class="hljs-comment"># path -- one is picked at random).</span>
     neighbours = []
     next_col_vals = sc.get_col(col + <span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> col + <span class="hljs-number">1</span> &lt; v_node_count <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># very quick due to prev call to get_col()</span>
     <span class="hljs-keyword">if</span> col + <span class="hljs-number">1</span> &lt; v_node_count:
@@ -6574,21 +6584,16 @@ G  0  0  0  1
 <p>... a maximum alignment path is guaranteed to travel through the edge (3, 3), (3, 4).</p>
 </div>
 <p></p>
-<p>Finding the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> from edges provides two distinct advantages over the previous method of finding the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> from nodes:</p>
-<ol>
+<p>The recursive sub-division process happens just as before, but this time with edges. Finding the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> from edges provides two distinct advantages over the previous method of finding the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> from nodes:</p>
+<ul>
 <li>
-<p>each sub-division results in one of the sub-graphs being smaller.</p>
-<p>SHOW DIAGRAM HERE</p>
-<p>SHOW DIAGRAM HERE</p>
-<p>SHOW DIAGRAM HERE</p>
+<p>Each sub-division results in one of the sub-graphs being smaller.</p>
+<p><img src="svgbob_def434ced3ea4e8029ed4f1fcf7d6675a8c9259e.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p>the step that path finds between two neighbouring found nodes is no longer required (once the edges are found, the remaining edges are all guaranteed to be vertical or horizontal).</p>
-<p>SHOW DIAGRAM HERE</p>
-<p>SHOW DIAGRAM HERE</p>
-<p>SHOW DIAGRAM HERE</p>
+<p>Since edges are being pulled out, the step that path finds between two neighbouring found nodes is no longer required. This is because sub-division of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.</p>
 </li>
-</ol>
+</ul>
 <p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py</a> (lines 13 to 83):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_edges</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6663,7 +6668,7 @@ G  0  0  0  1
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given the sequences AA and TTT and the score matrix...</p>
+<p>Given the sequences TACT and GACGT and the score matrix...</p>
 <pre><code>INDEL=-1.0
    A  C  T  G
 A  1  0  0  0
@@ -6673,10 +6678,10 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<pre><code>AA-
-TTT
+<pre><code>TAC-T
+GACGT
 </code></pre>
-<p>Weight: -1.0</p>
+<p>Weight: 2.0</p>
 </div>
 <p></p>
 <a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
@@ -6689,7 +6694,7 @@ TTT
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_74949a0af03c0eb54db0f8ab220f04ba.svg" alt="Latex diagram"></p>
+<p><img src="latex_273defb2d00405754f42103326f275ea.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6703,7 +6708,7 @@ TTT
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_24ed0f315ffd348767363de1f0ca1712.svg" alt="Latex diagram"></p>
+<p><img src="latex_97eeef78e270183ee443ece4e550f37d.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6717,7 +6722,7 @@ TTT
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_e89c391cb6b2cc95b4f66c785131962b.svg" alt="Latex diagram"></p>
+<p><img src="latex_a24210050a080d8edc07fd31a3cdea58.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
@@ -6743,14 +6748,14 @@ TTT
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c17eb664d073c9a7742f51579e0a5d0a.svg" alt="Latex diagram"></p>
+<p><img src="latex_8d041d3f5677eaec56a544e80c5e1683.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_cbb0cf9b30a0a27e530738b988277904.svg" alt="Latex diagram"></p>
+<p><img src="latex_a164b2123cdcf322f8b0606728b37d87.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6849,8 +6854,8 @@ TTT
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -6868,19 +6873,19 @@ TTT
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -6892,12 +6897,12 @@ TTT
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -6958,8 +6963,8 @@ TTT
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 18</p>
+<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 21</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>
