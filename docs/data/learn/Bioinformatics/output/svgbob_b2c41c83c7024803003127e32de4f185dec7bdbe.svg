@@ -82,7 +82,7 @@ tspan.head{
 </g>
 <g>
 <text x="17" y="380">
-I know the maximum alignment path travels through the edge at (2, 2) (3, 2)
+I know the maximum alignment path travels through the edge at (2, 2) (3, 3)
 </text>
 </g>
 <g>
@@ -97,7 +97,7 @@ looks like. Imagine the size of sub-graph 2 if it sub-division was based on
 </g>
 <g>
 <text x="17" y="428">
-just the node at (2,2) or (3, 2).
+just the node at (2,2) or (3, 3).
 </text>
 </g>
 <g>

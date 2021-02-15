@@ -3579,8 +3579,8 @@ o---▶o---▶o---▶o---▶o---▶o                                           o
 By recursively performing this operation, you can pull out all nodes that make up a maximum alignment path:
 
  * Pick a column, find a node, and sub-divide.
- * For each sub-division from last step, pick a column, find a node, and sub-divide. 
- * For each sub-division from last step, pick a column, find a node, and sub-divide. 
+ * For each sub-division from last step: Pick a column, find a node, and sub-divide. 
+ * For each sub-division from last step: Pick a column, find a node, and sub-divide. 
  * etc..
 
 Finding the edges between these nodes yields the maximum alignment path. To find the edges between the node found at column n and the node found at column n + 1, isolate the alignment graph between those nodes and perform the standard matrix variant of global alignment. The graph will likely be very small, so the computation and space requirements will likely be very low.
@@ -3837,10 +3837,10 @@ The recursive sub-division process happens just as before, but this time with ed
    o---▶o---▶o---▶o---▶o---▶o                                           o---▶o---▶o
                                                                         "sub-graph2"
 
-   * "I know the maximum alignment path travels through the edge at (2, 2) (3, 2)"
+   * "I know the maximum alignment path travels through the edge at (2, 2) (3, 3)"
      "(denoted by larger circles). This is what the sub-division based on that edge"
      "looks like. Imagine the size of sub-graph 2 if it sub-division was based on"
-     "just the node at (2,2) or (3, 2)."
+     "just the node at (2,2) or (3, 3)."
    ```
 
  * Since edges are being pulled out, the step that path finds between two neighbouring found nodes is no longer required. This is because sub-division of the alignment graph happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.

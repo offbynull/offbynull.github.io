@@ -6297,8 +6297,8 @@ G  0  0  0  1
 <p>By recursively performing this operation, you can pull out all nodes that make up a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>:</p>
 <ul>
 <li>Pick a column, find a node, and sub-divide.</li>
-<li>For each sub-division from last step, pick a column, find a node, and sub-divide.</li>
-<li>For each sub-division from last step, pick a column, find a node, and sub-divide.</li>
+<li>For each sub-division from last step: Pick a column, find a node, and sub-divide.</li>
+<li>For each sub-division from last step: Pick a column, find a node, and sub-divide.</li>
 <li>etc..</li>
 </ul>
 <p>Finding the edges between these nodes yields the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. To find the edges between the node found at column n and the node found at column n + 1, isolate the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> between those nodes and perform the standard matrix variant of global alignment. The graph will likely be very small, so the computation and space requirements will likely be very low.</p>
@@ -6588,7 +6588,7 @@ G  0  0  0  1
 <ul>
 <li>
 <p>Each sub-division results in one of the sub-graphs being smaller.</p>
-<p><img src="svgbob_def434ced3ea4e8029ed4f1fcf7d6675a8c9259e.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_b2c41c83c7024803003127e32de4f185dec7bdbe.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p>Since edges are being pulled out, the step that path finds between two neighbouring found nodes is no longer required. This is because sub-division of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.</p>
