@@ -764,7 +764,7 @@ Using this profile, the probability that a k-mer conforms to the motif matrix is
  * ATGCAC conforms to the example profile above is calculated as 1\*1\*0.5\*1\*1\*1 = 0.5
  * TTGCAC conforms to the example profile above is calculated as 0\*1\*0.5\*1\*1\*1 = 0
 
-Of the these two k-mers, ...
+Of these two k-mers, ...
 
  * all positions in the first (ATGCAC) have been seen before in the motif matrix.
  * all but one position in the second (TTGCAC) have been seen before in the motif matrix (index 0).
@@ -1004,7 +1004,7 @@ However, if at least one motif member were selected when creating the initial mo
 
 Such a profile would lead to a better scoring motif matrix where that better scoring motif matrix contains the other member_MOTIFs of the motif.
 
-In practice, this algorithm may trip up on real-world data. Real-world sequences don't actually contain random noise. The hope is that the only k-mers that are highly similar to each other in the sequences are member_MOTIFs of the motif. It's possible that the sequences contain other sets of k-mers that are similar to each other but vastly different than the motif members. In such cases, even if a motif member were to be selected when creating the initial motif matrix, the algorithm may converge to a motif matrix that isn't for the motif.
+In practice, this algorithm may trip up on real-world data. Real-world sequences don't actually contain random noise. The hope is that the only k-mers that are highly similar to each other in the sequences are member_MOTIFs of the motif. It's possible that the sequences contain other sets of k-mers that are similar to each other but vastly different from the motif members. In such cases, even if a motif member were to be selected when creating the initial motif matrix, the algorithm may converge to a motif matrix that isn't for the motif.
 
 This is a monte carlo algorithm. It uses randomness to deliver an approximate solution. While this may not lead to the globally optimal motif matrix, it's fast and as such can be run multiple times. The run with the best motif matrix will likely be a good enough solution (it captures most of the motif members, or parts of the motif members if k was too small, or etc..).
 
@@ -1570,7 +1570,7 @@ Sequencers produce fragment_SEQs, but fragment_SEQs by themselves typically aren
  * Fragment_SEQs may be stitch-able in more than one way (multiple genome reconstruction guesses).
  * Fragment_SEQs may take a long time to stitch (computationally intensive).
 
-Never the less, in an ideal world where most of these problems don't exist, an overlap graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. An overlap graph assumes that the fragment_SEQs it's operating on ...
+Nevertheless, in an ideal world where most of these problems don't exist, an overlap graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. An overlap graph assumes that the fragment_SEQs it's operating on ...
 
  * are from a single-strand of DNA,
  * have correct occurrence counts (no missing or extra),
@@ -1705,7 +1705,7 @@ Sequencers produce fragment_SEQs, but fragment_SEQs by themselves typically aren
  * Fragment_SEQs may be stitch-able in more than one way (multiple genome reconstruction guesses).
  * Fragment_SEQs may take a long time to stitch (computationally intensive).
 
-Never the less, in an ideal world where most of these problems don't exist, a de Bruijn graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. A de Bruijn graph assumes that the fragment_SEQs it's operating on ...
+Nevertheless, in an ideal world where most of these problems don't exist, a de Bruijn graph is a good way to guess the single-strand of DNA that a set of fragment_SEQs came from. A de Bruijn graph assumes that the fragment_SEQs it's operating on ...
 
  * are from a single-strand of DNA,
  * have correct occurrence counts (no missing or extra),
@@ -1736,7 +1736,7 @@ ACTT
 CTTA
 ```
 
-Note how the graph above is both balanced_GRAPH and strongly connected. In most cases, non-circular genomes won't generate a balanced graph like the one above. Instead, a non-circular genome will very likely generate a graph that's nearly balanced_GRAPH: Nearly balanced graphs are graphs that are would be balanced_GRAPH if not for a few unbalanced nodes (usually root and tail nodes). They can artificially be made to become balanced_GRAPH by finding imbalanced nodes and creating artificial edges between them until they become balanced nodes.
+Note how the graph above is both balanced_GRAPH and strongly connected. In most cases, non-circular genomes won't generate a balanced graph like the one above. Instead, a non-circular genome will very likely generate a graph that's nearly balanced_GRAPH: Nearly balanced graphs are graphs that would be balanced_GRAPH if not for a few unbalanced nodes (usually root and tail nodes). They can artificially be made to become balanced_GRAPH by finding imbalanced nodes and creating artificial edges between them until they become balanced nodes.
 
 ```{note}
 Circular genomes are genomes that wrap around (e.g. bacterial genomes). They don't have a beginning / end.
@@ -2661,7 +2661,7 @@ Note that a theoretical spectrum may have multiple masses with the same value bu
 |-----------|-----|-------|-------|-------|-------|-------|-------|
 | Mass      | 0Da | 57D a | 71Da  | 128Da | 128Da | 199Da | 256Da |
 
-K and GA both have a mass of 128Da. Since, experimental spectrums don't distinguish between where masses come from, an experimental spectrum for this linear peptide will only have 1 entry for 128Da.
+K and GA both have a mass of 128Da. Since experimental spectrums don't distinguish between where masses come from, an experimental spectrum for this linear peptide will only have 1 entry for 128Da.
 
 ```{note}
 The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on non-ribosomal peptide sequencing). As such, it might not be entirely correct / there may be better ways to do this.
@@ -2826,7 +2826,7 @@ Algorithms/Peptide Sequence/Spectrum Sequence/Bruteforce Algorithm_TOPIC
 
 **ALGORITHM**:
 
-This algorithm extends the bruteforce algorithm into a more efficient branch-and-bound algorithm by adding one extra step: After each branch, any candidates peptides deemed to be untenable are discarded. In this case, untenable means that there's no chance / little chance of the peptide branching out to a correct solution.
+This algorithm extends the bruteforce algorithm into a more efficient branch-and-bound algorithm by adding one extra step: After each branch, any candidate peptides deemed to be untenable are discarded. In this case, untenable means that there's no chance / little chance of the peptide branching out to a correct solution.
 
 Imagine if experimental spectrums were perfect just like theoretical spectrums: no missing masses, no faulty masses, no noise, and preserved repeat masses. For such an experimental spectrum, an untenable candidate peptide has a theoretical spectrum with at least one mass that don't exist in the experimental spectrum. For example, the peptide 57-71-128 has the theoretical spectrum [0Da, 57Da, 71Da, 128Da, 128Da, 199Da, 256Da]. If 71Da were missing from the experimental spectrum, that peptide would be untenable (won't move forward).
 
@@ -3072,7 +3072,7 @@ The Pevzner book mentions a non-biology related problem to help illustrate align
 
 **WHAT**: Given an arbitrary directed acyclic graph where each edge has a weight, find the path with the maximum weight between two nodes.
 
-**WHY**: Finding a maximum path between nodes is fundamental to sequence alignments. That is, regardless of what type of sequence alignment is being performed, at its core it boils down to finding the maximum weight between two nodes in the alignment graph.
+**WHY**: Finding a maximum path between nodes is fundamental to sequence alignments. That is, regardless of what type of sequence alignment is being performed, at its core it boils down to finding the maximum weight between two nodes in an alignment graph.
 
 #### Bruteforce Algorithm
 
@@ -3236,7 +3236,7 @@ Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
 
 **ALGORITHM**:
 
-Determining the best scoring pairwise alignment can be done by generating a DAG of all possible operations at all possible positions in each sequence. Specifically, each operation (indel, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower eights (e.g. a match is typically more favourable than an indel).
+Determining the best scoring pairwise alignment can be done by generating a DAG of all possible operations at all possible positions in each sequence. Specifically, each operation (indel, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower weights (e.g. a match is typically more favourable than an indel).
 
 For example, consider a DAG that pits FOUR against CHOIR...
 
@@ -3392,7 +3392,7 @@ The following algorithm is essentially the same as the graph algorithm, except t
 Since the alignment graph is a grid, the node weights may be populated either...
 
  * row-by-row, starting from the left column and walking to the right column.
- * column-by-column, starting form the top row and walking to the bottom row.
+ * column-by-column, starting from the top row and walking to the bottom row.
 
 In either case, the nodes being walked are guaranteed to have their parent node weights already set.
 
@@ -3781,7 +3781,7 @@ G  0  0  0  1
 
 A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes that it finds. In other words, rather than finding just nodes that maximum alignment paths travel through, find the edges where those nodes are the edge source (node that the edge starts from). 
 
-The algorithm finds all nodes that a maximum alignment paths travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of it's immediate neighbours is also a found node. It may be that the node immediately to the ...
+The algorithm finds all nodes that a maximum alignment path travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of its immediate neighbours is also a found node. It may be that the node immediately to the ...
 
  * right of it (same row but column n + 1) is also a found node.
  * bottom of it (1 row down and column n) is also a found node.
@@ -3872,6 +3872,8 @@ G  0  0  0  1
 Algorithms/Sequence Alignment/Global Alignment_TOPIC
 ```
 
+#### Graph Algorithm
+
 ```{ch5}
 LocalAlignment_Visualize
 TAAT
@@ -3885,6 +3887,21 @@ C  0  1  0  0
 T  0  0  1  0
 G  0  0  0  1
 ```
+
+```{ch5}
+LocalAlignment_Graph
+TAAGAACT
+CGAAG
+embedded_score_matrix
+-1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+```
+
+#### Matrix Algorithm
 
 ### Fitting Alignment
 
@@ -3906,6 +3923,19 @@ A  1  0  0  0
 C  0  1  0  0
 T  0  0  1  0
 G  0  0  0  1
+```
+
+```{ch5}
+FittingAlignment_Graph
+AGAC
+TAAGAACT
+embedded_score_matrix
+-1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
 ```
 
 ### Overlap Alignment
@@ -3930,6 +3960,19 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
+```{ch5}
+OverlapAlignment_Graph
+AGACAAAT
+GGGGAAAC
+embedded_score_matrix
+-1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+```
+
 ### Protein Scoring
 
 `{bm} /(Algorithms\/Sequence Alignment\/Protein Scoring)_TOPIC/`
@@ -3941,13 +3984,70 @@ Algorithms/Sequence Alignment/Fitting Alignment_TOPIC
 Algorithms/Sequence Alignment/Overlap Alignment_TOPIC
 ```
 
-**WHAT**: Given a pair of sequences, score an element from sequence 1 against sequence 2 based on how similar they are. The type of biological sequence defines how it should be scored, where things such as evolution are mutation probability are used.
+**WHAT**: Given a pair of protein sequences, score those sequences against each other based on the similarity of the amino acids. In this case, similarity is defined as how probable it is that one amino acid mutates to the other while still having the protein remain functional.
 
-**WHY**: Before performing a pair-wise sequence alignment, there needs to be a baseline for how elements within those sequences measure up against each other. In the simplest case, you can compare elements directly against each other. For example, if the sequences are words, it may be enough to compare the letters such that a matching letter scores 1 while a mismatch or indel scores 0. A more complex way to compare words may be to use the phonetics. For example, rather than treating letters as the sequence elements, break up the words by what groups of letters may sound like. For example, the sound made by "ea" and "ee" may be the same depending on the word (e.g. leak vs leek) and as such will score higher.
+**WHY**: Before performing a pair-wise sequence alignment, there needs to be some baseline for how elements within those sequences measure up against each other. In the simplest case, elements are compared using equality: matching elements score 1, while mismatches or indels score 0. However, there are many other cases where element equality isn't a good measure.
+
+Protein sequences are one such case. Biological sequences such as proteins and DNA undergo mutation. Two proteins may be very closely related (e.g. evolved from same parent protein, perform the same function, etc..) but their sequences may have mutated to a point where they appear as being wildly different. To appropriately align protein sequences, amino acid mutation probabilities need to be derived and factored into scoring. For example, there may be good odds that some random protein would still continue to function as-is if some of its Y amino acids were swapped with F.
 
 #### PAM Scoring Matrix
 
+Point accepted mutation (PAM) is a scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA sequence that encode some protein may change the resulting amino acid sequence for that protein. Those mutations that...
+
+ * impair the ability of the protein to function aren't likely to survive, and as such are given a low score. 
+ * keep the protein functional are likely to survive, and as such are given a normal or high score.
+ 
+PAM matrices are developed iteratively. An initial PAM matrix is calculated by aligning extremely similar protein sequences using a simple scoring model (1 for match, 0 for mismatch / indel). That sequence alignment then provides the scoring model for the next iteration. For example, the alignment for the initial iteration may have determined that D may be a suitable substitution for W. As such, the sequence alignment for the next iteration will score more than 0 (e.g. 1) if it encounters D being compared to W.
+
+Other factors are also brought into the mix when developing scores for PAM matrices. For example, the ...
+
+ * likelihood of amino acid mutations (e.g. Cys and Trp are the least mutable amino acids).
+ * speed of evolution (e.g. some mutations were more probably in species 100 million years ago vs 1 million years ago).
+
+It's said that PAM is focused on tracking the evolutionary origins of proteins. Sequences that are 99% similar are said to be 1 PAM unit diverged, where a PAM unit is the amount of time it takes an "average" protein to mutate 1% of its amino acids. PAM1 (the initial scoring matrix) was defined by performing many sequence alignments between proteins that are 99% similar (1 PAM unit diverged).
+
+```{note}
+[Here](http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html) and [here](https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&oldid=1002281881#Comparing_PAM_and_BLOSUM) both seem to say that BLOSUM supersedes PAM as a scoring matrix for protein sequences.
+
+> Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degrees the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
+
+> Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known member_NORMs of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.
+```
+
+PAM250 is the most commonly used variant:
+
+```{output}
+ch5_code/src/PAM250.txt
+
+([\s\S]+)
+```
+
+```{note}
+The above matrix was supplied by the Pevzner book. You can find it online [here](https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml), but the indel scores on that website are set to -8 where as in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if PAM250 defines a constant for indels.
+```
+
 #### BLOSUM Scoring Matrix
+
+Blocks amino acid substitution matrix (BLOSUM) is a scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for indels (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.
+
+Several sets of BLOSUM matrices exist, each identified by a different number. This number defines the similarity of the sequences used to create the matrix: The protein database sequences used to derive the matrix are filtered such that only those with >= n% similarity are used, where n is the number. For example, ...
+   
+ * BLOSUM80 is created from sequences that are >= 80% similar.
+ * BLOSUM45 is created from sequences that are >= 45% similar.
+    
+As such, BLOSUM matrices with higher numbers are designed to compare more closely related sequences while those with lower numbers are designed to score more distant related sequences.
+
+BLOSUM62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":
+
+```{output}
+ch5_code/src/BLOSUM62.txt
+
+([\s\S]+)
+```
+
+```{note}
+The above matrix was supplied by the Pevzner book. You can find it online [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt), but the indel scores on that website are set to -4 where as in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if BLOSUM62 defines a constant for indels.
+```
 
 ### Affine Gap Scoring
 
@@ -4492,7 +4592,7 @@ The external conditions of sunlight and temperature causes the saturation of som
 Algorithms/Motif/Find Motif Matrix_TOPIC
 ```
 
-Given a organism, it's suspected that some physical change in that organism is linked to a transcription factor. However, it isn't known ...
+Given an organism, it's suspected that some physical change in that organism is linked to a transcription factor. However, it isn't known ...
 
  * which transcription factor (if any).
  * what the regulatory motif for that transcription factor is.
@@ -4786,7 +4886,7 @@ cyclic
    * Reverse half-strand is the same as leading half-strand.
    ```
 
- * `{bm} leading half-strand` / `{bm} lagging half-strand` - Given the 2 strands tha make up a DNA molecule, the strand that goes in the...
+ * `{bm} leading half-strand` / `{bm} lagging half-strand` - Given the 2 strands that make up a DNA molecule, the strand that goes in the...
 
    * reverse direction (3' to 5') is called the leading half-strand.
    * forward direction (5' to 3') is called the lagging half-strand.
@@ -4851,7 +4951,7 @@ cyclic
                "(gene product)"
    ```
 
- * `{bm} regulatory gene` / `{bm} regulatory protein` - The proteins encoded by these genes effect gene expression for certain other genes. That is, a regulatory protein can cause certain other genes to be expressed more (promote gene expression) or less (repress gene expression).
+ * `{bm} regulatory gene` / `{bm} regulatory protein` - The proteins encoded by these genes affect gene expression for certain other genes. That is, a regulatory protein can cause certain other genes to be expressed more (promote gene expression) or less (repress gene expression).
 
    Regulatory genes are often controlled by external factors (e.g. sunlight, nutrients, temperature, etc..)
 
@@ -4964,12 +5064,12 @@ cyclic
  
    For example, imagine a chess playing AI that had a strategy of trying to eliminate the other player's most valuable piece at each turn. It would be considered greedy because it only looks 1 move ahead before taking action. Normal chess AIs / players look many moves ahead before taking action. As such, the greedy AI may be fast but it would very likely lose most matches. 
   
- * `{bm} Cromwell's rule` - When a probability is based off past events, 0.0 and 1.0 shouldn't be used. That is, if you've...
+ * `{bm} Cromwell's rule` - When a probability is based on past events, 0.0 and 1.0 shouldn't be used. That is, if you've...
  
    * never seen an even occur in the past, it doesn't mean that there's a 0.0 probability of it occurring next.
    * always seen an event occur in the past, it doesn't mean that there's a 1.0 probability of it occurring next.
  
-   Unless you're dealing with hard logical statements where prior occurrences don't come in to play (e.g. 1+1=2), you should include a small chance that some extremely unlikely event may happen. The example tossed around is "the probability that the sun will not rise tomorrow." Prior recorded observations show that sun has always risen, but that doesn't mean that there's a 1.0 probability of the sun rising tomorrow (e.g. some extremely unlikely cataclysmic event may prevent the sun from rising).
+   Unless you're dealing with hard logical statements where prior occurrences don't come in to play (e.g. 1+1=2), you should include a small chance that some extremely unlikely event may happen. The example tossed around is "the probability that the sun will not rise tomorrow." Prior recorded observations show that the sun has always risen, but that doesn't mean that there's a 1.0 probability of the sun rising tomorrow (e.g. some extremely unlikely cataclysmic event may prevent the sun from rising).
 
  * `{bm} Laplace's rule of succession/(Laplace's rule of succession|Laplace's rule)/i` - If some independent true/false event occurs n times, and s of those n times were successes, it's natural for people to assume the probability of success is `{kt} \frac{s}{n}`. However, if the number of successes is 0, the probability would be 0.0. Cromwell's rule states that when a probability is based off past events, 0.0 and 1.0 shouldn't be used. As such, a more appropriate / meaningful measure of probability is `{kt} \frac{s+1}{n+2}`.
 
@@ -5536,7 +5636,7 @@ cyclic
    See also: read-pair breaking.
 
    ```{note}
-   What purpose does this actually serve? Mimicking 1 long read_SEQ as n shorter read_SEQs isn't equivalent to actually having sequenced those n shorter read_SEQs. For example, what if the longer read_SEQ being broken up has an error? That error replicates when breaking into n shorter read_SEQs, which gives a false sense of having good coverage_SEQ and makes it seems as if it wasn't an error.
+   What purpose does this actually serve? Mimicking 1 long read_SEQ as n shorter read_SEQs isn't equivalent to actually having sequenced those n shorter read_SEQs. For example, what if the longer read_SEQ being broken up has an error? That error replicates when breaking into n shorter read_SEQs, which gives a false sense of having good coverage_SEQ and makes it seem as if it wasn't an error.
    ```
 
  * `{bm} read-pair breaking/(read-pair breaking|read pair breaking|breaking read-pairs|breaking read pairs)/i` - The concept of taking multiple read-pairs and breaking them up into read-pairs with a smaller k.
@@ -5570,7 +5670,7 @@ cyclic
    See also: read breaking.
 
    ```{note}
-   What purpose does this actually serve? Mimicking 1 long read-pair as n shorter read-pairs isn't equivalent to actually having sequenced those n shorter read-pairs. For example, what if the longer read-pair being broken up has an error? That error replicates when breaking into n shorter read-pairs, which gives a false sense of having good coverage_SEQ and makes it seems as if it wasn't an error.
+   What purpose does this actually serve? Mimicking 1 long read-pair as n shorter read-pairs isn't equivalent to actually having sequenced those n shorter read-pairs. For example, what if the longer read-pair being broken up has an error? That error replicates when breaking into n shorter read-pairs, which gives a false sense of having good coverage_SEQ and makes it seem as if it wasn't an error.
    ```
 
  * `{bm} contig/(contig)s?\b/i/true/true` - An unambiguous stretch of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1). Each stretch will be a path that's either  ...
@@ -5754,7 +5854,7 @@ cyclic
 
    As such, these plots aren't exact.
 
- * `{bm} experimental spectrum` - List of potential fragment_NORM masses derived from a spectrum_MS. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.
+ * `{bm} experimental spectrum` - List of potential fragment_NORM masses derived from a spectrum_MS. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted to a set of potential masses.
  
    The masses in an experimental spectrum ...
 
@@ -6020,7 +6120,7 @@ cyclic
 
    A path in this graph from source (top-left) to sink (bottom-right) represents an alignment.
 
- * `{bm} alignment path/(sequence alignment graph path|sequence alignment path|alignment graph path|alignment path)/i` - A path in an alignment graph that represents one possible sequence alignment. For example, given the following alignment path ...
+ * `{bm} alignment path/(sequence alignment graph path|sequence alignment path|alignment graph path|alignment path)/i` - A path in an alignment graph that represents one possible sequence alignment. For example, the following alignment path ...
    
    ```{svgbob}
       T    A    B    L    E
@@ -6052,7 +6152,7 @@ cyclic
     o    o    o    o    o    o
    ```
 
-   is represent as the alignment...
+   is for the sequence alignment...
 
    |          | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
    |----------|---|---|---|---|---|---|---|---|
@@ -6093,7 +6193,7 @@ cyclic
    | String 2 | A | G | T | T | T | C | T | T |
    | Results  | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ |
 
- * `{bm} dynamic programming/(dynamic programming algorithm|dynamic programming)/i` - An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again (essentially trading space for speed). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.
+ * `{bm} dynamic programming/(dynamic programming algorithm|dynamic programming)/i` - An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again (essentially trading space for speed). The lookup table may be created beforehand or as a cache that gets filled as the algorithm runs.
  
    For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use recursion to find the minimum number of coins to represent some monetary value such as $0.17:
    
@@ -6144,152 +6244,54 @@ cyclic
 
 
    ```{svgbob}
-           8   7   6   5           3
-                         
-           A   A   A   A           A
-           v   v   v   v           v
-           e   e   e   e           e
-         o-->o-->o-->o-->o- - - -o-->o
-         |   |   |   |   |       |   |
-   59 St |   |   |   |   |       |   |
-         |   |   |   |   |       |   |
-         v   v   v   v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
-         |   | T |   | T |       |   |
-   57 St |   |   |   |   |       |   |
-         |   |   |   |   |       |   |
-         v   v   v   v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
-         |   |   |   |   |       |   |
-   55 St |   |  T|   |   |       |   |
-         |   |   |   |   |       |   |
-         v   v   v   v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
-         |   |   |   |   |       |   |
-   53 St |   |   |   |   |       |   |
-         |   |   |   |   |       |   |
-         v   v   v   v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
-         |   |   |   | T |       |   |
-   51 St |   |   |   |   |       |   |
-         |   |   |   |   |       |   |
-         v   v   v   v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
-         :   :   :   :   :       :   :
-         :   :   :   :   :       :   :
-         :   :   :   :   :       :   :
-         :   :   :   :   :       :   :
-         :   :   :   :   :       :   :
-         v   v   v   v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
-         | T |   |   |   |       |   |
-   43 St |   |   |   |   |       |   |
-         |   |   |   |   |       |   |
-         v   v   v T v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
-         |   |   |   |   |       |   |
-   42 St |   |   |   |   |       |   |
-         |   |   |   |   |       |   |
-         v   v   v   v   v       v   v
-         o-->o-->o-->o-->o- - - -o-->o
+                             L
+                             e
+         8   7   6   5       x   3
+                       
+         A   A   A   A       A   A
+         v   v   v   v       v   v
+         e   e   e   e       e   e
+   59 St o-->o-->o-->o- - - -o-->o 
+         |   |   |   |       |   |
+         |   |   |   |       |   |
+         |   |   |   |       |   |
+         v   v   v   v       v   v
+   57 St o-->o-->o-->o- - - -o-->o
+         |   | T |   |       |   |
+         |   |   |   |       |   |
+         |   |   |   |       |   |
+         v   v   v   v       v   v
+   55 St o-->o-->o-->o- - - -o-->o
+         |   |   |   |       |   |
+         |   |  T|   |       |   |
+         |   |   |   |       |   |
+         v   v   v   v       v   v
+   53 St o-->o-->o-->o- - - -o-->o
+         |   |   |   |       |   |
+         |   |   |   |       |   |
+         |   |   |   |       |   |
+         v   v   v   v       v   v
+   51 St o-->o-->o-->o- - - -o-->o
+         :   :   :   :       :   :
+         :   :   :   :       :   :
+         :   :   :   :       :   :
+         :   :   :   :       :   :
+         :   :   :   :       :   :
+         v   v   v   v       v   v
+   43 St o-->o-->o-->o- - - -o-->o
+         | T |   |   |       |   |
+         |   |   |   |       |   |
+         |   |   |   |       |   |
+         v   v   v T v       v   v
+   42 St o-->o-->o-->o- - - -o-->o
    ```
 
  * `{bm} point accepted mutation/(point accepted mutation|percent accepted mutation)/i` `{bm} /\b(PAM)\d*\b//false/true` - A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA sequence that encode some protein may change the resulting amino acid sequence for that protein. Those mutations that...
 
     * impair the ability of the protein to function aren't likely to survive, and as such are given a low score. 
     * keep the protein functional are likely to survive, and as such are given a normal or high score.
- 
-   PAM matrices are developed iteratively. An initial PAM matrix is calculated by aligning extremely similar protein sequences using a simple scoring model (1 for match, 0 for mismatch / indel). That sequence alignment then provides the scoring model for the next iteration. For example, the alignment for the initial iteration may have determined that D may be a suitable substitution for W. As such, the sequence alignment for the next iteration will score more than 0 (e.g. 1) if it encounters D being compared to W.
-
-   Other factors are also brought into the mix when developing scores for PAM matrices. For example, the ...
-
-    * likelihood of amino acid mutations (e.g. Cys and Trp are the least mutable amino acids).
-    * speed of evolution (e.g. some mutations were more probably in species 100 million years ago vs 1 million years ago).
-
-   It's said that PAM is focused on tracking the evolutionary origins of proteins. Sequences that are 99% similar are said to be 1 PAM unit diverged, where a PAM unit is the amount of time it takes an "average" protein to mutate 1% of its amino acids. PAM1 (the initial scoring matrix) was defined by performing many sequence alignments between proteins that are 99% similar (1 PAM unit diverged).
-
-   ```{note}
-   [Here](http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html) and [here](https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&oldid=1002281881#Comparing_PAM_and_BLOSUM) both seem to say that BLOSUM supersedes PAM as a scoring matrix for protein sequences.
-
-   > Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degrees the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
-
-   > Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known member_NORMs of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.
-   ```
-
-   PAM250 is the most commonly used variant:
-
-   |   |  A |  R |  N |  D |  C |  Q |  E |  G |  H |  I |  L |  K |  M |  F |  P |  S |  T |  W |  Y |  V |  B |  Z |  X |  - |
-   |---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
-   | A |  2 | -2 |  0 |  0 | -2 |  0 |  0 |  1 | -1 | -1 | -2 | -1 | -1 | -3 |  1 |  1 |  1 | -6 | -3 |  0 |  0 |  0 |  0 | -8 |
-   | R | -2 |  6 |  0 | -1 | -4 |  1 | -1 | -3 |  2 | -2 | -3 |  3 |  0 | -4 |  0 |  0 | -1 |  2 | -4 | -2 | -1 |  0 | -1 | -8 |
-   | N |  0 |  0 |  2 |  2 | -4 |  1 |  1 |  0 |  2 | -2 | -3 |  1 | -2 | -3 |  0 |  1 |  0 | -4 | -2 | -2 |  2 |  1 |  0 | -8 |
-   | D |  0 | -1 |  2 |  4 | -5 |  2 |  3 |  1 |  1 | -2 | -4 |  0 | -3 | -6 | -1 |  0 |  0 | -7 | -4 | -2 |  3 |  3 | -1 | -8 |
-   | C | -2 | -4 | -4 | -5 | 12 | -5 | -5 | -3 | -3 | -2 | -6 | -5 | -5 | -4 | -3 |  0 | -2 | -8 |  0 | -2 | -4 | -5 | -3 | -8 |
-   | Q |  0 |  1 |  1 |  2 | -5 |  4 |  2 | -1 |  3 | -2 | -2 |  1 | -1 | -5 |  0 | -1 | -1 | -5 | -4 | -2 |  1 |  3 | -1 | -8 |
-   | E |  0 | -1 |  1 |  3 | -5 |  2 |  4 |  0 |  1 | -2 | -3 |  0 | -2 | -5 | -1 |  0 |  0 | -7 | -4 | -2 |  3 |  3 | -1 | -8 |
-   | G |  1 | -3 |  0 |  1 | -3 | -1 |  0 |  5 | -2 | -3 | -4 | -2 | -3 | -5 |  0 |  1 |  0 | -7 | -5 | -1 |  0 |  0 | -1 | -8 |
-   | H | -1 |  2 |  2 |  1 | -3 |  3 |  1 | -2 |  6 | -2 | -2 |  0 | -2 | -2 |  0 | -1 | -1 | -3 |  0 | -2 |  1 |  2 | -1 | -8 |
-   | I | -1 | -2 | -2 | -2 | -2 | -2 | -2 | -3 | -2 |  5 |  2 | -2 |  2 |  1 | -2 | -1 |  0 | -5 | -1 |  4 | -2 | -2 | -1 | -8 |
-   | L | -2 | -3 | -3 | -4 | -6 | -2 | -3 | -4 | -2 |  2 |  6 | -3 |  4 |  2 | -3 | -3 | -2 | -2 | -1 |  2 | -3 | -3 | -1 | -8 |
-   | K | -1 |  3 |  1 |  0 | -5 |  1 |  0 | -2 |  0 | -2 | -3 |  5 |  0 | -5 | -1 |  0 |  0 | -3 | -4 | -2 |  1 |  0 | -1 | -8 |
-   | M | -1 |  0 | -2 | -3 | -5 | -1 | -2 | -3 | -2 |  2 |  4 |  0 |  6 |  0 | -2 | -2 | -1 | -4 | -2 |  2 | -2 | -2 | -1 | -8 |
-   | F | -3 | -4 | -3 | -6 | -4 | -5 | -5 | -5 | -2 |  1 |  2 | -5 |  0 |  9 | -5 | -3 | -3 |  0 |  7 | -1 | -4 | -5 | -2 | -8 |
-   | P |  1 |  0 |  0 | -1 | -3 |  0 | -1 |  0 |  0 | -2 | -3 | -1 | -2 | -5 |  6 |  1 |  0 | -6 | -5 | -1 | -1 |  0 | -1 | -8 |
-   | S |  1 |  0 |  1 |  0 |  0 | -1 |  0 |  1 | -1 | -1 | -3 |  0 | -2 | -3 |  1 |  2 |  1 | -2 | -3 | -1 |  0 |  0 |  0 | -8 |
-   | T |  1 | -1 |  0 |  0 | -2 | -1 |  0 |  0 | -1 |  0 | -2 |  0 | -1 | -3 |  0 |  1 |  3 | -5 | -3 |  0 |  0 | -1 |  0 | -8 |
-   | W | -6 |  2 | -4 | -7 | -8 | -5 | -7 | -7 | -3 | -5 | -2 | -3 | -4 |  0 | -6 | -2 | -5 | 17 |  0 | -6 | -5 | -6 | -4 | -8 |
-   | Y | -3 | -4 | -2 | -4 |  0 | -4 | -4 | -5 |  0 | -1 | -1 | -4 | -2 |  7 | -5 | -3 | -3 |  0 | 10 | -2 | -3 | -4 | -2 | -8 |
-   | V |  0 | -2 | -2 | -2 | -2 | -2 | -2 | -1 | -2 |  4 |  2 | -2 |  2 | -1 | -1 | -1 |  0 | -6 | -2 |  4 | -2 | -2 | -1 | -8 |
-   | B |  0 | -1 |  2 |  3 | -4 |  1 |  3 |  0 |  1 | -2 | -3 |  1 | -2 | -4 | -1 |  0 |  0 | -5 | -3 | -2 |  3 |  2 | -1 | -8 |
-   | Z |  0 |  0 |  1 |  3 | -5 |  3 |  3 |  0 |  2 | -2 | -3 |  0 | -2 | -5 |  0 |  0 | -1 | -6 | -4 | -2 |  2 |  3 | -1 | -8 |
-   | X |  0 | -1 |  0 | -1 | -3 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -2 | -1 |  0 |  0 | -4 | -2 | -1 | -1 | -1 | -1 | -8 |
-   | - | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 |    |
-
-   ```{note}
-   The above matrix was extracted from [here](https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml). The indel scores on that matrix are set to -8, but I've also seen them set to -5. I don't know if PAM250 defines a constant for indels?
-   ```
 
  * `{bm} blocks amino acid substitution matrix/(blocks substitution matrix|blocks substitution matrices|blocks amino acid substitution matrices|blocks amino acid substitution matrix)/i` `{bm} /\b(BLOSUM)\d*\b//false/true` - A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for indels (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.
-
-   Several sets of BLOSUM matrices exist, each identified by a different number. This number defines the similarity of the sequences used to create the matrix: The protein database sequences used to derive the matrix are filtered such that only those with >= n% similarity are used, where n is the number. For example, ...
-   
-    * BLOSUM80 is created from sequences that are >= 80% similar.
-    * BLOSUM45 is created from sequences that are >= 45% similar.
-    
-   As such, BLOSUM matrices with higher numbers are designed to compare more closely related sequences while those with lower numbers are designed to score more distant related sequences.
-
-   BLOSUM62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":
-
-   |   |  A |  R |  N |  D |  C |  Q |  E |  G |  H |  I |  L |  K |  M |  F |  P |  S |  T |  W |  Y |  V |  B |  Z |  X |  - |
-   |---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
-   | A |  4 | -1 | -2 | -2 |  0 | -1 | -1 |  0 | -2 | -1 | -1 | -1 | -1 | -2 | -1 |  1 |  0 | -3 | -2 |  0 | -2 | -1 |  0 | -4 | 
-   | R | -1 |  5 |  0 | -2 | -3 |  1 |  0 | -2 |  0 | -3 | -2 |  2 | -1 | -3 | -2 | -1 | -1 | -3 | -2 | -3 | -1 |  0 | -1 | -4 | 
-   | N | -2 |  0 |  6 |  1 | -3 |  0 |  0 |  0 |  1 | -3 | -3 |  0 | -2 | -3 | -2 |  1 |  0 | -4 | -2 | -3 |  3 |  0 | -1 | -4 | 
-   | D | -2 | -2 |  1 |  6 | -3 |  0 |  2 | -1 | -1 | -3 | -4 | -1 | -3 | -3 | -1 |  0 | -1 | -4 | -3 | -3 |  4 |  1 | -1 | -4 | 
-   | C |  0 | -3 | -3 | -3 |  9 | -3 | -4 | -3 | -3 | -1 | -1 | -3 | -1 | -2 | -3 | -1 | -1 | -2 | -2 | -1 | -3 | -3 | -2 | -4 | 
-   | Q | -1 |  1 |  0 |  0 | -3 |  5 |  2 | -2 |  0 | -3 | -2 |  1 |  0 | -3 | -1 |  0 | -1 | -2 | -1 | -2 |  0 |  3 | -1 | -4 | 
-   | E | -1 |  0 |  0 |  2 | -4 |  2 |  5 | -2 |  0 | -3 | -3 |  1 | -2 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  1 |  4 | -1 | -4 | 
-   | G |  0 | -2 |  0 | -1 | -3 | -2 | -2 |  6 | -2 | -4 | -4 | -2 | -3 | -3 | -2 |  0 | -2 | -2 | -3 | -3 | -1 | -2 | -1 | -4 | 
-   | H | -2 |  0 |  1 | -1 | -3 |  0 |  0 | -2 |  8 | -3 | -3 | -1 | -2 | -1 | -2 | -1 | -2 | -2 |  2 | -3 |  0 |  0 | -1 | -4 | 
-   | I | -1 | -3 | -3 | -3 | -1 | -3 | -3 | -4 | -3 |  4 |  2 | -3 |  1 |  0 | -3 | -2 | -1 | -3 | -1 |  3 | -3 | -3 | -1 | -4 | 
-   | L | -1 | -2 | -3 | -4 | -1 | -2 | -3 | -4 | -3 |  2 |  4 | -2 |  2 |  0 | -3 | -2 | -1 | -2 | -1 |  1 | -4 | -3 | -1 | -4 | 
-   | K | -1 |  2 |  0 | -1 | -3 |  1 |  1 | -2 | -1 | -3 | -2 |  5 | -1 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  0 |  1 | -1 | -4 | 
-   | M | -1 | -1 | -2 | -3 | -1 |  0 | -2 | -3 | -2 |  1 |  2 | -1 |  5 |  0 | -2 | -1 | -1 | -1 | -1 |  1 | -3 | -1 | -1 | -4 | 
-   | F | -2 | -3 | -3 | -3 | -2 | -3 | -3 | -3 | -1 |  0 |  0 | -3 |  0 |  6 | -4 | -2 | -2 |  1 |  3 | -1 | -3 | -3 | -1 | -4 | 
-   | P | -1 | -2 | -2 | -1 | -3 | -1 | -1 | -2 | -2 | -3 | -3 | -1 | -2 | -4 |  7 | -1 | -1 | -4 | -3 | -2 | -2 | -1 | -2 | -4 | 
-   | S |  1 | -1 |  1 |  0 | -1 |  0 |  0 |  0 | -1 | -2 | -2 |  0 | -1 | -2 | -1 |  4 |  1 | -3 | -2 | -2 |  0 |  0 |  0 | -4 | 
-   | T |  0 | -1 |  0 | -1 | -1 | -1 | -1 | -2 | -2 | -1 | -1 | -1 | -1 | -2 | -1 |  1 |  5 | -2 | -2 |  0 | -1 | -1 |  0 | -4 | 
-   | W | -3 | -3 | -4 | -4 | -2 | -2 | -3 | -2 | -2 | -3 | -2 | -3 | -1 |  1 | -4 | -3 | -2 | 11 |  2 | -3 | -4 | -3 | -2 | -4 | 
-   | Y | -2 | -2 | -2 | -3 | -2 | -1 | -2 | -3 |  2 | -1 | -1 | -2 | -1 |  3 | -3 | -2 | -2 |  2 |  7 | -1 | -3 | -2 | -1 | -4 | 
-   | V |  0 | -3 | -3 | -3 | -1 | -2 | -2 | -3 | -3 |  3 |  1 | -2 |  1 | -1 | -2 | -2 |  0 | -3 | -1 |  4 | -3 | -2 | -1 | -4 | 
-   | B | -2 | -1 |  3 |  4 | -3 |  0 |  1 | -1 |  0 | -3 | -4 |  0 | -3 | -3 | -2 |  0 | -1 | -4 | -3 | -3 |  4 |  1 | -1 | -4 | 
-   | Z | -1 |  0 |  0 |  1 | -3 |  3 |  4 | -2 |  0 | -3 | -3 |  1 | -1 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  1 |  4 | -1 | -4 | 
-   | X |  0 | -1 | -1 | -1 | -2 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -2 |  0 |  0 | -2 | -1 | -1 | -1 | -1 | -1 | -4 | 
-   | - | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 |    | 
-
-   ```{note}
-   The above matrix was extracted from [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt). The indel scores on that matrix are set to -4, but I've also seen them set to -5. I don't know if BLOSUM62 defines a constant for indels?
-   ```
 
  * `{bm} point mutation` - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.
 

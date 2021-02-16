@@ -10,6 +10,7 @@ from helpers.Utils import unique_id_generator, latex_escape
 
 ELEM = TypeVar('ELEM')
 
+
 class NodeData:
     def __init__(self):
         self.weight = None
@@ -241,7 +242,7 @@ def main():
         )
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
-        print(f'... the global alignment is...', end="\n\n")
+        print(f'... the local alignment is...', end="\n\n")
         print(f'````{{latex}}\n{output}\n````', end='\n\n')
         print(f'````')
         print(f'{"".join("-" if e[0] is None else e[0] for e in elems)}')

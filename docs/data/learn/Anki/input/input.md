@@ -1585,100 +1585,10 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
 
     * impair the ability of the protein to function aren't likely to survive, and as such are given a low score. 
     * keep the protein functional are likely to survive, and as such are given a normal or high score.
- 
-   PAM matrices are developed iteratively. An initial PAM matrix is calculated by aligning extremely similar protein sequences using a simple scoring model (1 for match, 0 for mismatch / indel). That sequence alignment then provides the scoring model for the next iteration. For example, the alignment for the initial iteration may have determined that D may be a suitable substitution for W. As such, the sequence alignment for the next iteration will score more than 0 (e.g. 1) if it encounters D being compared to W.
-
-   Other factors are also brought into the mix when developing scores for PAM matrices. For example, the ...
-
-    * likelihood of amino acid mutations (e.g. Cys and Trp are the least mutable amino acids).
-    * speed of evolution (e.g. some mutations were more probably in species 100 million years ago vs 1 million years ago).
-
-   It's said that PAM is focused on tracking the evolutionary origins of proteins. Sequences that are 99% similar are said to be 1 PAM unit diverged, where a PAM unit is the amount of time it takes an "average" protein to mutate 1% of its amino acids. PAM1 (the initial scoring matrix) was defined by performing many sequence alignments between proteins that are 99% similar (1 PAM unit diverged).
-
-   ```{note}
-   [Here](http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html) and [here](https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&oldid=1002281881#Comparing_PAM_and_BLOSUM) both seem to say that BLOSUM supersedes PAM as a scoring matrix for protein sequences.
-
-   > Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degrees the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
-
-   > Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known member_NORMs of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.
-   ```
-
-   PAM250 is the most commonly used variant:
-
-   |   |  A |  R |  N |  D |  C |  Q |  E |  G |  H |  I |  L |  K |  M |  F |  P |  S |  T |  W |  Y |  V |  B |  Z |  X |  - |
-   |---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
-   | A |  2 | -2 |  0 |  0 | -2 |  0 |  0 |  1 | -1 | -1 | -2 | -1 | -1 | -3 |  1 |  1 |  1 | -6 | -3 |  0 |  0 |  0 |  0 | -8 |
-   | R | -2 |  6 |  0 | -1 | -4 |  1 | -1 | -3 |  2 | -2 | -3 |  3 |  0 | -4 |  0 |  0 | -1 |  2 | -4 | -2 | -1 |  0 | -1 | -8 |
-   | N |  0 |  0 |  2 |  2 | -4 |  1 |  1 |  0 |  2 | -2 | -3 |  1 | -2 | -3 |  0 |  1 |  0 | -4 | -2 | -2 |  2 |  1 |  0 | -8 |
-   | D |  0 | -1 |  2 |  4 | -5 |  2 |  3 |  1 |  1 | -2 | -4 |  0 | -3 | -6 | -1 |  0 |  0 | -7 | -4 | -2 |  3 |  3 | -1 | -8 |
-   | C | -2 | -4 | -4 | -5 | 12 | -5 | -5 | -3 | -3 | -2 | -6 | -5 | -5 | -4 | -3 |  0 | -2 | -8 |  0 | -2 | -4 | -5 | -3 | -8 |
-   | Q |  0 |  1 |  1 |  2 | -5 |  4 |  2 | -1 |  3 | -2 | -2 |  1 | -1 | -5 |  0 | -1 | -1 | -5 | -4 | -2 |  1 |  3 | -1 | -8 |
-   | E |  0 | -1 |  1 |  3 | -5 |  2 |  4 |  0 |  1 | -2 | -3 |  0 | -2 | -5 | -1 |  0 |  0 | -7 | -4 | -2 |  3 |  3 | -1 | -8 |
-   | G |  1 | -3 |  0 |  1 | -3 | -1 |  0 |  5 | -2 | -3 | -4 | -2 | -3 | -5 |  0 |  1 |  0 | -7 | -5 | -1 |  0 |  0 | -1 | -8 |
-   | H | -1 |  2 |  2 |  1 | -3 |  3 |  1 | -2 |  6 | -2 | -2 |  0 | -2 | -2 |  0 | -1 | -1 | -3 |  0 | -2 |  1 |  2 | -1 | -8 |
-   | I | -1 | -2 | -2 | -2 | -2 | -2 | -2 | -3 | -2 |  5 |  2 | -2 |  2 |  1 | -2 | -1 |  0 | -5 | -1 |  4 | -2 | -2 | -1 | -8 |
-   | L | -2 | -3 | -3 | -4 | -6 | -2 | -3 | -4 | -2 |  2 |  6 | -3 |  4 |  2 | -3 | -3 | -2 | -2 | -1 |  2 | -3 | -3 | -1 | -8 |
-   | K | -1 |  3 |  1 |  0 | -5 |  1 |  0 | -2 |  0 | -2 | -3 |  5 |  0 | -5 | -1 |  0 |  0 | -3 | -4 | -2 |  1 |  0 | -1 | -8 |
-   | M | -1 |  0 | -2 | -3 | -5 | -1 | -2 | -3 | -2 |  2 |  4 |  0 |  6 |  0 | -2 | -2 | -1 | -4 | -2 |  2 | -2 | -2 | -1 | -8 |
-   | F | -3 | -4 | -3 | -6 | -4 | -5 | -5 | -5 | -2 |  1 |  2 | -5 |  0 |  9 | -5 | -3 | -3 |  0 |  7 | -1 | -4 | -5 | -2 | -8 |
-   | P |  1 |  0 |  0 | -1 | -3 |  0 | -1 |  0 |  0 | -2 | -3 | -1 | -2 | -5 |  6 |  1 |  0 | -6 | -5 | -1 | -1 |  0 | -1 | -8 |
-   | S |  1 |  0 |  1 |  0 |  0 | -1 |  0 |  1 | -1 | -1 | -3 |  0 | -2 | -3 |  1 |  2 |  1 | -2 | -3 | -1 |  0 |  0 |  0 | -8 |
-   | T |  1 | -1 |  0 |  0 | -2 | -1 |  0 |  0 | -1 |  0 | -2 |  0 | -1 | -3 |  0 |  1 |  3 | -5 | -3 |  0 |  0 | -1 |  0 | -8 |
-   | W | -6 |  2 | -4 | -7 | -8 | -5 | -7 | -7 | -3 | -5 | -2 | -3 | -4 |  0 | -6 | -2 | -5 | 17 |  0 | -6 | -5 | -6 | -4 | -8 |
-   | Y | -3 | -4 | -2 | -4 |  0 | -4 | -4 | -5 |  0 | -1 | -1 | -4 | -2 |  7 | -5 | -3 | -3 |  0 | 10 | -2 | -3 | -4 | -2 | -8 |
-   | V |  0 | -2 | -2 | -2 | -2 | -2 | -2 | -1 | -2 |  4 |  2 | -2 |  2 | -1 | -1 | -1 |  0 | -6 | -2 |  4 | -2 | -2 | -1 | -8 |
-   | B |  0 | -1 |  2 |  3 | -4 |  1 |  3 |  0 |  1 | -2 | -3 |  1 | -2 | -4 | -1 |  0 |  0 | -5 | -3 | -2 |  3 |  2 | -1 | -8 |
-   | Z |  0 |  0 |  1 |  3 | -5 |  3 |  3 |  0 |  2 | -2 | -3 |  0 | -2 | -5 |  0 |  0 | -1 | -6 | -4 | -2 |  2 |  3 | -1 | -8 |
-   | X |  0 | -1 |  0 | -1 | -3 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -2 | -1 |  0 |  0 | -4 | -2 | -1 | -1 | -1 | -1 | -8 |
-   | - | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 | -8 |    |
-
-   ```{note}
-   The above matrix was extracted from [here](https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml). The indel scores on that matrix are set to -8, but I've also seen them set to -5. I don't know if PAM250 defines a constant for indels?
-   ```
 
    Point accepted mutation, abbreviated to PAM.
 
  * `{ankiAnswer} (blocks substitution matrix|blocks substitution matrices|blocks amino acid substitution matrices|blocks amino acid substitution matrix)/i` `{ankiAnswer} \b(BLOSUM)\d*\b//false/true` - A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for indels (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.
-
-   Several sets of BLOSUM matrices exist, each identified by a different number. This number defines the similarity of the sequences used to create the matrix: The protein database sequences used to derive the matrix are filtered such that only those with >= n% similarity are used, where n is the number. For example, ...
-   
-    * BLOSUM80 is created from sequences that are >= 80% similar.
-    * BLOSUM45 is created from sequences that are >= 45% similar.
-    
-   As such, BLOSUM matrices higher numbers are designed to compare more closely related sequences while those with lower numbers are designed to score more distant related sequences.
-
-   BLOSUM62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":
-
-   |   |  A |  R |  N |  D |  C |  Q |  E |  G |  H |  I |  L |  K |  M |  F |  P |  S |  T |  W |  Y |  V |  B |  Z |  X |  - |
-   |---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
-   | A |  4 | -1 | -2 | -2 |  0 | -1 | -1 |  0 | -2 | -1 | -1 | -1 | -1 | -2 | -1 |  1 |  0 | -3 | -2 |  0 | -2 | -1 |  0 | -4 | 
-   | R | -1 |  5 |  0 | -2 | -3 |  1 |  0 | -2 |  0 | -3 | -2 |  2 | -1 | -3 | -2 | -1 | -1 | -3 | -2 | -3 | -1 |  0 | -1 | -4 | 
-   | N | -2 |  0 |  6 |  1 | -3 |  0 |  0 |  0 |  1 | -3 | -3 |  0 | -2 | -3 | -2 |  1 |  0 | -4 | -2 | -3 |  3 |  0 | -1 | -4 | 
-   | D | -2 | -2 |  1 |  6 | -3 |  0 |  2 | -1 | -1 | -3 | -4 | -1 | -3 | -3 | -1 |  0 | -1 | -4 | -3 | -3 |  4 |  1 | -1 | -4 | 
-   | C |  0 | -3 | -3 | -3 |  9 | -3 | -4 | -3 | -3 | -1 | -1 | -3 | -1 | -2 | -3 | -1 | -1 | -2 | -2 | -1 | -3 | -3 | -2 | -4 | 
-   | Q | -1 |  1 |  0 |  0 | -3 |  5 |  2 | -2 |  0 | -3 | -2 |  1 |  0 | -3 | -1 |  0 | -1 | -2 | -1 | -2 |  0 |  3 | -1 | -4 | 
-   | E | -1 |  0 |  0 |  2 | -4 |  2 |  5 | -2 |  0 | -3 | -3 |  1 | -2 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  1 |  4 | -1 | -4 | 
-   | G |  0 | -2 |  0 | -1 | -3 | -2 | -2 |  6 | -2 | -4 | -4 | -2 | -3 | -3 | -2 |  0 | -2 | -2 | -3 | -3 | -1 | -2 | -1 | -4 | 
-   | H | -2 |  0 |  1 | -1 | -3 |  0 |  0 | -2 |  8 | -3 | -3 | -1 | -2 | -1 | -2 | -1 | -2 | -2 |  2 | -3 |  0 |  0 | -1 | -4 | 
-   | I | -1 | -3 | -3 | -3 | -1 | -3 | -3 | -4 | -3 |  4 |  2 | -3 |  1 |  0 | -3 | -2 | -1 | -3 | -1 |  3 | -3 | -3 | -1 | -4 | 
-   | L | -1 | -2 | -3 | -4 | -1 | -2 | -3 | -4 | -3 |  2 |  4 | -2 |  2 |  0 | -3 | -2 | -1 | -2 | -1 |  1 | -4 | -3 | -1 | -4 | 
-   | K | -1 |  2 |  0 | -1 | -3 |  1 |  1 | -2 | -1 | -3 | -2 |  5 | -1 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  0 |  1 | -1 | -4 | 
-   | M | -1 | -1 | -2 | -3 | -1 |  0 | -2 | -3 | -2 |  1 |  2 | -1 |  5 |  0 | -2 | -1 | -1 | -1 | -1 |  1 | -3 | -1 | -1 | -4 | 
-   | F | -2 | -3 | -3 | -3 | -2 | -3 | -3 | -3 | -1 |  0 |  0 | -3 |  0 |  6 | -4 | -2 | -2 |  1 |  3 | -1 | -3 | -3 | -1 | -4 | 
-   | P | -1 | -2 | -2 | -1 | -3 | -1 | -1 | -2 | -2 | -3 | -3 | -1 | -2 | -4 |  7 | -1 | -1 | -4 | -3 | -2 | -2 | -1 | -2 | -4 | 
-   | S |  1 | -1 |  1 |  0 | -1 |  0 |  0 |  0 | -1 | -2 | -2 |  0 | -1 | -2 | -1 |  4 |  1 | -3 | -2 | -2 |  0 |  0 |  0 | -4 | 
-   | T |  0 | -1 |  0 | -1 | -1 | -1 | -1 | -2 | -2 | -1 | -1 | -1 | -1 | -2 | -1 |  1 |  5 | -2 | -2 |  0 | -1 | -1 |  0 | -4 | 
-   | W | -3 | -3 | -4 | -4 | -2 | -2 | -3 | -2 | -2 | -3 | -2 | -3 | -1 |  1 | -4 | -3 | -2 | 11 |  2 | -3 | -4 | -3 | -2 | -4 | 
-   | Y | -2 | -2 | -2 | -3 | -2 | -1 | -2 | -3 |  2 | -1 | -1 | -2 | -1 |  3 | -3 | -2 | -2 |  2 |  7 | -1 | -3 | -2 | -1 | -4 | 
-   | V |  0 | -3 | -3 | -3 | -1 | -2 | -2 | -3 | -3 |  3 |  1 | -2 |  1 | -1 | -2 | -2 |  0 | -3 | -1 |  4 | -3 | -2 | -1 | -4 | 
-   | B | -2 | -1 |  3 |  4 | -3 |  0 |  1 | -1 |  0 | -3 | -4 |  0 | -3 | -3 | -2 |  0 | -1 | -4 | -3 | -3 |  4 |  1 | -1 | -4 | 
-   | Z | -1 |  0 |  0 |  1 | -3 |  3 |  4 | -2 |  0 | -3 | -3 |  1 | -1 | -3 | -1 |  0 | -1 | -3 | -2 | -2 |  1 |  4 | -1 | -4 | 
-   | X |  0 | -1 | -1 | -1 | -2 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -1 | -2 |  0 |  0 | -2 | -1 | -1 | -1 | -1 | -1 | -4 | 
-   | - | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 | -4 |    | 
-
-   ```{note}
-   The above matrix was extracted from [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt). The indel scores on that matrix are set to -5, but I've also seen them set to -5. I don't know if BLOSUM62 defines a constant for indels?
-   ```
 
    Blocks substitution matrix, abbreviated to BLOSUM.
 

@@ -93,6 +93,10 @@
 <li><a href="#H_Divide-and-Conquer%20Algorithm">Divide-and-Conquer Algorithm</a></li>
 </ul>
 <li><a href="#H_Local%20Alignment">Local Alignment</a></li>
+<ul>
+<li><a href="#H1_Graph%20Algorithm">Graph Algorithm</a></li>
+<li><a href="#H1_Matrix%20Algorithm">Matrix Algorithm</a></li>
+</ul>
 <li><a href="#H_Fitting%20Alignment">Fitting Alignment</a></li>
 <li><a href="#H_Overlap%20Alignment">Overlap Alignment</a></li>
 <li><a href="#H_Protein%20Scoring">Protein Scoring</a></li>
@@ -1392,7 +1396,7 @@ SSSII
 <li>ATGCAC conforms to the example profile above is calculated as 1*1*0.5*1*1*1 = 0.5</li>
 <li>TTGCAC conforms to the example profile above is calculated as 0*1*0.5*1*1*1 = 0</li>
 </ul>
-<p>Of the these two <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, ...</p>
+<p>Of these two <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, ...</p>
 <ul>
 <li>all positions in the first (ATGCAC) have been seen before in the <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a>.</li>
 <li>all but one position in the second (TTGCAC) have been seen before in the <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> (index 0).</li>
@@ -2042,7 +2046,7 @@ SSSII
 </tbody>
 </table>
 <p>Such a profile would lead to a better scoring <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> where that better scoring <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> contains the other <a href="#BM_%5Cb(member)_MOTIF%2Fi">member</a>s of the <a href="#BM_(motif)%2Fi">motif</a>.</p>
-<p>In practice, this algorithm may trip up on real-world data. Real-world <a href="#BM_(sequence)%2Fi">sequence</a>s don't actually contain random noise. The hope is that the only <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that are highly similar to each other in the <a href="#BM_(sequence)%2Fi">sequence</a>s are <a href="#BM_%5Cb(member)_MOTIF%2Fi">member</a>s of the <a href="#BM_(motif)%2Fi">motif</a>. It's possible that the <a href="#BM_(sequence)%2Fi">sequence</a>s contain other sets of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that are similar to each other but vastly different than the <a href="#BM_(motif%20member)%2Fi">motif member</a>s. In such cases, even if a <a href="#BM_(motif%20member)%2Fi">motif member</a> were to be selected when creating the initial <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a>, the algorithm may converge to a <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> that isn't for the <a href="#BM_(motif)%2Fi">motif</a>.</p>
+<p>In practice, this algorithm may trip up on real-world data. Real-world <a href="#BM_(sequence)%2Fi">sequence</a>s don't actually contain random noise. The hope is that the only <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that are highly similar to each other in the <a href="#BM_(sequence)%2Fi">sequence</a>s are <a href="#BM_%5Cb(member)_MOTIF%2Fi">member</a>s of the <a href="#BM_(motif)%2Fi">motif</a>. It's possible that the <a href="#BM_(sequence)%2Fi">sequence</a>s contain other sets of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that are similar to each other but vastly different from the <a href="#BM_(motif%20member)%2Fi">motif member</a>s. In such cases, even if a <a href="#BM_(motif%20member)%2Fi">motif member</a> were to be selected when creating the initial <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a>, the algorithm may converge to a <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> that isn't for the <a href="#BM_(motif)%2Fi">motif</a>.</p>
 <p>This is a <a href="#BM_(Monte%20Carlo%20algorithm)%2Fi">monte carlo algorithm</a>. It uses randomness to deliver an approximate solution. While this may not lead to the globally optimal <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a>, it's fast and as such can be run multiple times. The run with the best <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> will likely be a good enough solution (it captures most of the <a href="#BM_(motif%20member)%2Fi">motif member</a>s, or parts of the <a href="#BM_(motif%20member)%2Fi">motif member</a>s if k was too small, or etc..).</p>
 <p><a href="ch2_code/src/RandomizedMotifMatrixSearchWithPsuedocounts.py">ch2_code/src/RandomizedMotifMatrixSearchWithPsuedocounts.py</a> (lines 13 to 32):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">randomized_motif_search_with_psuedocounts</span>(<span class="hljs-params">k: int, dnas: List[str]</span>) -&gt; List[str]:</span>
@@ -2800,7 +2804,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be stitch-able in more than one way (multiple <a href="#BM_(genome)%2Fi">genome</a> reconstruction guesses).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may take a long time to stitch (computationally intensive).</li>
 </ul>
-<p>Never the less, in an ideal world where most of these problems don't exist, an <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a> is a good way to guess the single-strand of DNA that a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s came from. An <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a> assumes that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s it's operating on ...</p>
+<p>Nevertheless, in an ideal world where most of these problems don't exist, an <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a> is a good way to guess the single-strand of DNA that a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s came from. An <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a> assumes that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s it's operating on ...</p>
 <ul>
 <li>are from a single-strand of DNA,</li>
 <li>have correct occurrence counts (no missing or extra),</li>
@@ -2949,7 +2953,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be stitch-able in more than one way (multiple <a href="#BM_(genome)%2Fi">genome</a> reconstruction guesses).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may take a long time to stitch (computationally intensive).</li>
 </ul>
-<p>Never the less, in an ideal world where most of these problems don't exist, a <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a> is a good way to guess the single-strand of DNA that a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s came from. A <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a> assumes that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s it's operating on ...</p>
+<p>Nevertheless, in an ideal world where most of these problems don't exist, a <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a> is a good way to guess the single-strand of DNA that a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s came from. A <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a> assumes that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s it's operating on ...</p>
 <ul>
 <li>are from a single-strand of DNA,</li>
 <li>have correct occurrence counts (no missing or extra),</li>
@@ -2975,7 +2979,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_fc6c4f4bf004838f81f7a6343b7d2e19.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Note how the graph above is both <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a> and <a href="#BM_(strongly%20connected)%2Fi">strongly connected</a>. In most cases, non-circular <a href="#BM_(genome)%2Fi">genome</a>s won't generate a <a href="#BM_(balanced%20graph)%2Fi">balanced graph</a> like the one above. Instead, a non-circular <a href="#BM_(genome)%2Fi">genome</a> will very likely generate a graph that's nearly <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a>: Nearly <a href="#BM_(balanced%20graph)%2Fi">balanced graph</a>s are graphs that are would be <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a> if not for a few un<a href="#BM_(balanced%20node)%2Fi">balanced node</a>s (usually root and tail nodes). They can artificially be made to become <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a> by finding im<a href="#BM_(balanced%20node)%2Fi">balanced node</a>s and creating artificial edges between them until they become <a href="#BM_(balanced%20node)%2Fi">balanced node</a>s.</p>
+<p>Note how the graph above is both <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a> and <a href="#BM_(strongly%20connected)%2Fi">strongly connected</a>. In most cases, non-circular <a href="#BM_(genome)%2Fi">genome</a>s won't generate a <a href="#BM_(balanced%20graph)%2Fi">balanced graph</a> like the one above. Instead, a non-circular <a href="#BM_(genome)%2Fi">genome</a> will very likely generate a graph that's nearly <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a>: Nearly <a href="#BM_(balanced%20graph)%2Fi">balanced graph</a>s are graphs that would be <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a> if not for a few un<a href="#BM_(balanced%20node)%2Fi">balanced node</a>s (usually root and tail nodes). They can artificially be made to become <a href="#BM_(balanced)_GRAPH%2Fi">balanced</a> by finding im<a href="#BM_(balanced%20node)%2Fi">balanced node</a>s and creating artificial edges between them until they become <a href="#BM_(balanced%20node)%2Fi">balanced node</a>s.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Circular <a href="#BM_(genome)%2Fi">genome</a>s are <a href="#BM_(genome)%2Fi">genome</a>s that wrap around (e.g. bacterial <a href="#BM_(genome)%2Fi">genome</a>s). They don't have a beginning / end.</p>
@@ -4569,7 +4573,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </tr>
 </tbody>
 </table>
-<p>K and GA both have a mass of 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Since, <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s don't distinguish between where masses come from, an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for this <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> will only have 1 entry for 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</p>
+<p>K and GA both have a mass of 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>. Since <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s don't distinguish between where masses come from, an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for this <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> will only have 1 entry for 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The following section isn't from the Pevzner book or any online resources. I came up with it in an effort to solve the final assignment for Chapter 4 (the chapter on <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>). As such, it might not be entirely correct / there may be better ways to do this.</p>
@@ -5019,7 +5023,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm extends the bruteforce algorithm into a more efficient <a href="#BM_(branch-and-bound%20algorithm%7Cbranch%20and%20bound%20algorithm)%2Fi">branch-and-bound algorithm</a> by adding one extra step: After each branch, any candidates <a href="#BM_(peptide)%2Fi">peptide</a>s deemed to be untenable are discarded. In this case, untenable means that there's no chance / little chance of the <a href="#BM_(peptide)%2Fi">peptide</a> branching out to a correct solution.</p>
+<p>This algorithm extends the bruteforce algorithm into a more efficient <a href="#BM_(branch-and-bound%20algorithm%7Cbranch%20and%20bound%20algorithm)%2Fi">branch-and-bound algorithm</a> by adding one extra step: After each branch, any candidate <a href="#BM_(peptide)%2Fi">peptide</a>s deemed to be untenable are discarded. In this case, untenable means that there's no chance / little chance of the <a href="#BM_(peptide)%2Fi">peptide</a> branching out to a correct solution.</p>
 <p>Imagine if <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>s were perfect just like <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a>s: no missing masses, no faulty masses, no noise, and preserved repeat masses. For such an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, an untenable candidate <a href="#BM_(peptide)%2Fi">peptide</a> has a <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> with at least one mass that don't exist in the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>. For example, the <a href="#BM_(peptide)%2Fi">peptide</a> 57-71-128 has the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> [0<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 57<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 128<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 199<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>, 256<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a>]. If 71<a href="#BM_%5Cb%5Cd%2B(%3F%3A%5C.%5Cd%2B)%3F(Da)%5Cb%2Fi">Da</a> were missing from the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a>, that <a href="#BM_(peptide)%2Fi">peptide</a> would be untenable (won't move forward).</p>
 <p>When testing if a candidate <a href="#BM_(peptide)%2Fi">peptide</a> should move forward, the candidate <a href="#BM_(peptide)%2Fi">peptide</a> be treated as a <a href="#BM_(linear%20peptide)%2Fi">linear peptide</a> even if the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> is for a <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a>. For example, testing the <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a> NQYQ against the <a href="#BM_(theoretical%20spectrum)%2Fi">theoretical spectrum</a> for candidate <a href="#BM_(cyclopeptide%7Ccyclic%20peptide)%2Fi">cyclic peptide</a> NQY...</p>
 <table>
@@ -5735,7 +5739,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <a name="H_Find%20Maximum%20Path"></a><h3>Find Maximum Path</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given an arbitrary <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> where each edge has a weight, find the path with the maximum weight between two nodes.</p>
-<p><strong>WHY</strong>: Finding a maximum path between nodes is fundamental to <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s. That is, regardless of what type of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> is being performed, at its core it boils down to finding the maximum weight between two nodes in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>.</p>
+<p><strong>WHY</strong>: Finding a maximum path between nodes is fundamental to <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s. That is, regardless of what type of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> is being performed, at its core it boils down to finding the maximum weight between two nodes in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>.</p>
 <a name="H4_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBruteforce%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -5775,7 +5779,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_739a2db9162f6496d402b18a4c8663fe.svg" alt="Dot diagram"></p>
+<p><img src="dot_aedf70ea37c1b9beacdc14d898089842.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5833,7 +5837,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_fade5da785698a2e87f650914e514816.svg" alt="Dot diagram"></p>
+<p><img src="dot_a43ff5f4af5599db691d6628eb03f479.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5981,13 +5985,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_b178786d2d32e2cce962bb477a7231f2.svg" alt="Dot diagram"></p>
+<p><img src="dot_178cd453d55fd535b5488d28b529a0c2.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_952e0724cab17bb226459558152f7507.svg" alt="Dot diagram"></p>
+<p><img src="dot_8f5145677b3b43173a1c8ef136163426.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6013,7 +6017,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <a name="H_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>Determining the best scoring pairwise alignment can be done by generating a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> of all possible operations at all possible positions in each <a href="#BM_(sequence)%2Fi">sequence</a>. Specifically, each operation (<a href="#BM_(indel)%2Fi">indel</a>, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower eights (e.g. a match is typically more favourable than an <a href="#BM_(indel)%2Fi">indel</a>).</p>
+<p>Determining the best scoring pairwise alignment can be done by generating a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> of all possible operations at all possible positions in each <a href="#BM_(sequence)%2Fi">sequence</a>. Specifically, each operation (<a href="#BM_(indel)%2Fi">indel</a>, match, mismatch) is represented as an edge in the graph, where that edge has a weight. Operations with higher weights are more desirable operations compared to operations with lower weights (e.g. a match is typically more favourable than an <a href="#BM_(indel)%2Fi">indel</a>).</p>
 <p>For example, consider a <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> that pits FOUR against CHOIR...</p>
 <p><img src="svgbob_7e9d5fecdf93cf9ff7f6e6f7938c78ce6bc03d89.svg" alt="Kroki diagram output"></p>
 <p>Given this graph, each ...</p>
@@ -6024,7 +6028,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_bfa1d1aa81b3aa5ce6d5cdc5cf7b4950.svg" alt="Latex diagram"></p>
+<p><img src="latex_65785f6e49dd98de623925742b0eb12b.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6035,7 +6039,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1378c90f95cd287b489c25d6979d3ea6.svg" alt="Latex diagram"></p>
+<p><img src="latex_1a99652f56b30278567da95a5d75c9bb.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6096,9 +6100,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_f2161afd6b7ef11a801fe80e3fe7bbed.svg" alt="Latex diagram"></p>
+<p><img src="latex_8fa2130383160330ba9b26f7cfd2a5ec.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
-GA-T
+G-AT
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6117,7 +6121,7 @@ GA-T
 <p>Since the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is a grid, the node weights may be populated either...</p>
 <ul>
 <li>row-by-row, starting from the left column and walking to the right column.</li>
-<li>column-by-column, starting form the top row and walking to the bottom row.</li>
+<li>column-by-column, starting from the top row and walking to the bottom row.</li>
 </ul>
 <p>In either case, the nodes being walked are guaranteed to have their parent node weights already set.</p>
 <p><img src="svgbob_a0c3678c1817dbc609f6127b83938d7cb4bcd9d1.svg" alt="Kroki diagram output"></p>
@@ -6370,7 +6374,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_041ae32cb0e6c8a512f9e36c16e90c19.svg" alt="Latex diagram"></p>
+<p><img src="latex_6adcfc0e184e3b5bdcff24a4a2ee639d.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6378,7 +6382,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_d152722753befe5e89983aed9a3e7640.svg" alt="Latex diagram"></p>
+<p><img src="latex_0b493165a7e523b143f3867aa2b25b50.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6506,7 +6510,7 @@ GACGT
 </div>
 <p></p>
 <p>A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes that it finds. In other words, rather than finding just nodes that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travel through, find the edges where those nodes are the edge source (node that the edge starts from).</p>
-<p>The algorithm finds all nodes that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of it's immediate neighbours is also a found node. It may be that the node immediately to the ...</p>
+<p>The algorithm finds all nodes that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of its immediate neighbours is also a found node. It may be that the node immediately to the ...</p>
 <ul>
 <li>right of it (same row but column n + 1) is also a found node.</li>
 <li>bottom of it (1 row down and column n) is also a found node.</li>
@@ -6692,12 +6696,33 @@ GACGT
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
 </ul>
 </div>
+<a name="H1_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_273defb2d00405754f42103326f275ea.svg" alt="Latex diagram"></p>
+<p><img src="latex_fa43b4c47bd354d28cbeff4c4903bc21.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
 </div>
 <p></p>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TAAGAACT and CGAAG and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the local alignment is...</p>
+<p><img src="latex_53a868520e17d6a8990324c71c2ca9e6.svg" alt="Latex diagram"></p>
+<pre><code>GAA
+GAA
+</code></pre>
+<p>Weight: 3.0</p>
+</div>
+<p></p>
+<a name="H1_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
 <a name="H_Fitting%20Alignment"></a><h3>Fitting Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6708,8 +6733,27 @@ GACGT
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_97eeef78e270183ee443ece4e550f37d.svg" alt="Latex diagram"></p>
+<p><img src="latex_7aa05db95d8c4ffca657499fb6684d7f.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
+</div>
+<p></p>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences AGAC and TAAGAACT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<p><img src="latex_5e1599a5e315f8998354af4e6ee897dc.svg" alt="Latex diagram"></p>
+<pre><code>AGA-C
+AGAAC
+</code></pre>
+<p>Weight: 3.0</p>
 </div>
 <p></p>
 <a name="H_Overlap%20Alignment"></a><h3>Overlap Alignment</h3>
@@ -6722,8 +6766,27 @@ GACGT
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_a24210050a080d8edc07fd31a3cdea58.svg" alt="Latex diagram"></p>
+<p><img src="latex_ea65765ef2ba3b37fd79cc173360ac87.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.</p>
+</div>
+<p></p>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences AGACAAAT and GGGGAAAC and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<p><img src="latex_a413ea5af423c5aa594923081d1aa490.svg" alt="Latex diagram"></p>
+<pre><code>AGAC
+A-AC
+</code></pre>
+<p>Weight: 2.0</p>
 </div>
 <p></p>
 <a name="H_Protein%20Scoring"></a><h3>Protein Scoring</h3>
@@ -6737,10 +6800,96 @@ GACGT
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Overlap Alignment</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a pair of <a href="#BM_(sequence)%2Fi">sequence</a>s, score an element from <a href="#BM_(sequence)%2Fi">sequence</a> 1 against <a href="#BM_(sequence)%2Fi">sequence</a> 2 based on how similar they are. The type of biological <a href="#BM_(sequence)%2Fi">sequence</a> defines how it should be scored, where things such as evolution are mutation probability are used.</p>
-<p><strong>WHY</strong>: Before performing a pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, there needs to be a baseline for how elements within those <a href="#BM_(sequence)%2Fi">sequence</a>s measure up against each other. In the simplest case, you can compare elements directly against each other. For example, if the <a href="#BM_(sequence)%2Fi">sequence</a>s are words, it may be enough to compare the letters such that a matching letter scores 1 while a mismatch or <a href="#BM_(indel)%2Fi">indel</a> scores 0. A more complex way to compare words may be to use the phonetics. For example, rather than treating letters as the <a href="#BM_(sequence)%2Fi">sequence</a> elements, break up the words by what groups of letters may sound like. For example, the sound made by "ea" and "ee" may be the same depending on the word (e.g. leak vs leek) and as such will score higher.</p>
+<p><strong>WHAT</strong>: Given a pair of protein <a href="#BM_(sequence)%2Fi">sequence</a>s, score those <a href="#BM_(sequence)%2Fi">sequence</a>s against each other based on the similarity of the <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s. In this case, similarity is defined as how probable it is that one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mutates to the other while still having the protein remain functional.</p>
+<p><strong>WHY</strong>: Before performing a pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, there needs to be some baseline for how elements within those <a href="#BM_(sequence)%2Fi">sequence</a>s measure up against each other. In the simplest case, elements are compared using equality: matching elements score 1, while mismatches or <a href="#BM_(indel)%2Fi">indel</a>s score 0. However, there are many other cases where element equality isn't a good measure.</p>
+<p>Protein <a href="#BM_(sequence)%2Fi">sequence</a>s are one such case. Biological <a href="#BM_(sequence)%2Fi">sequence</a>s such as proteins and DNA undergo mutation. Two proteins may be very closely related (e.g. evolved from same parent protein, perform the same function, etc..) but their <a href="#BM_(sequence)%2Fi">sequence</a>s may have mutated to a point where they appear as being wildly different. To appropriately align protein <a href="#BM_(sequence)%2Fi">sequence</a>s, <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mutation probabilities need to be derived and factored into scoring. For example, there may be good odds that some random protein would still continue to function as-is if some of its Y <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s were swapped with F.</p>
 <a name="H_PAM%20Scoring%20Matrix"></a><h4>PAM Scoring Matrix</h4>
+<p><a href="#BM_(point%20accepted%20mutation%7Cpercent%20accepted%20mutation)%2Fi">Point accepted mutation</a> (<a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>) is a scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA <a href="#BM_(sequence)%2Fi">sequence</a> that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a> some protein may change the resulting <a href="#BM_(amino%20acid)%2Fi">amino acid</a> <a href="#BM_(sequence)%2Fi">sequence</a> for that protein. Those mutations that...</p>
+<ul>
+<li>impair the ability of the protein to function aren't likely to survive, and as such are given a low score.</li>
+<li>keep the protein functional are likely to survive, and as such are given a normal or high score.</li>
+</ul>
+<p><a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices are developed iteratively. An initial <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrix is calculated by aligning extremely similar protein <a href="#BM_(sequence)%2Fi">sequence</a>s using a simple scoring model (1 for match, 0 for mismatch / <a href="#BM_(indel)%2Fi">indel</a>). That <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> then provides the scoring model for the next iteration. For example, the alignment for the initial iteration may have determined that D may be a suitable substitution for W. As such, the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for the next iteration will score more than 0 (e.g. 1) if it encounters D being compared to W.</p>
+<p>Other factors are also brought into the mix when developing scores for <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices. For example, the ...</p>
+<ul>
+<li>likelihood of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mutations (e.g. Cys and Trp are the least mutable <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s).</li>
+<li>speed of evolution (e.g. some mutations were more probably in species 100 million years ago vs 1 million years ago).</li>
+</ul>
+<p>It's said that <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> is focused on tracking the evolutionary origins of proteins. <a href="#BM_(sequence)%2Fi">Sequence</a>s that are 99% similar are said to be 1 <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> unit diverged, where a <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> unit is the amount of time it takes an "average" protein to mutate 1% of its <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s. <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>1 (the initial scoring matrix) was defined by performing many <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s between proteins that are 99% similar (1 <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> unit diverged).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html">Here</a> and <a href="https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&amp;oldid=1002281881#Comparing_PAM_and_BLOSUM">here</a> both seem to say that <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> supersedes <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> as a scoring matrix for protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<blockquote>
+<p>Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices were generated directly from the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> differences in aligned blocks that have diverged to varying degrees the <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices reflect the extrapolation of evolutionary information based on closely related <a href="#BM_(sequence)%2Fi">sequence</a>s to longer timescales</p>
+</blockquote>
+<blockquote>
+<p>Henikoff and Henikoff [16] have compared the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices to <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>, PET, Overington, Gonnet [17] and multiple <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices by evaluating how effectively the matrices can detect known members of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> 62 matrix is the most effective.</p>
+</blockquote>
+</div>
+<p><a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 is the most commonly used variant:</p>
+<p><a href="ch5_code/src/PAM250.txt">ch5_code/src/PAM250.txt</a> (lines 2 to 22):</p>
+<pre><code class="language-([\s\S]+)">   A  C  D  E  F  G  H  I  K  L  M  N  P  Q  R  S  T  V  W  Y
+A  2 -2  0  0 -3  1 -1 -1 -1 -2 -1  0  1  0 -2  1  1  0 -6 -3
+C -2 12 -5 -5 -4 -3 -3 -2 -5 -6 -5 -4 -3 -5 -4  0 -2 -2 -8  0
+D  0 -5  4  3 -6  1  1 -2  0 -4 -3  2 -1  2 -1  0  0 -2 -7 -4
+E  0 -5  3  4 -5  0  1 -2  0 -3 -2  1 -1  2 -1  0  0 -2 -7 -4
+F -3 -4 -6 -5  9 -5 -2  1 -5  2  0 -3 -5 -5 -4 -3 -3 -1  0  7
+G  1 -3  1  0 -5  5 -2 -3 -2 -4 -3  0  0 -1 -3  1  0 -1 -7 -5
+H -1 -3  1  1 -2 -2  6 -2  0 -2 -2  2  0  3  2 -1 -1 -2 -3  0
+I -1 -2 -2 -2  1 -3 -2  5 -2  2  2 -2 -2 -2 -2 -1  0  4 -5 -1
+K -1 -5  0  0 -5 -2  0 -2  5 -3  0  1 -1  1  3  0  0 -2 -3 -4
+L -2 -6 -4 -3  2 -4 -2  2 -3  6  4 -3 -3 -2 -3 -3 -2  2 -2 -1
+M -1 -5 -3 -2  0 -3 -2  2  0  4  6 -2 -2 -1  0 -2 -1  2 -4 -2
+N  0 -4  2  1 -3  0  2 -2  1 -3 -2  2  0  1  0  1  0 -2 -4 -2
+P  1 -3 -1 -1 -5  0  0 -2 -1 -3 -2  0  6  0  0  1  0 -1 -6 -5
+Q  0 -5  2  2 -5 -1  3 -2  1 -2 -1  1  0  4  1 -1 -1 -2 -5 -4
+R -2 -4 -1 -1 -4 -3  2 -2  3 -3  0  0  0  1  6  0 -1 -2  2 -4
+S  1  0  0  0 -3  1 -1 -1  0 -3 -2  1  1 -1  0  2  1 -1 -2 -3
+T  1 -2  0  0 -3  0 -1  0  0 -2 -1  0  0 -1 -1  1  3  0 -5 -3
+V  0 -2 -2 -2 -1 -1 -2  4 -2  2  2 -2 -1 -2 -2 -1  0  4 -6 -2
+W -6 -8 -7 -7  0 -7 -3 -5 -3 -2 -4 -4 -6 -5  2 -2 -5 -6 17  0
+Y -3  0 -4 -4  7 -5  0 -1 -4 -1 -2 -2 -5 -4 -4 -3 -3 -2  0 10
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -8 where as in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
+</div>
 <a name="H_BLOSUM%20Scoring%20Matrix"></a><h4>BLOSUM Scoring Matrix</h4>
+<p><a href="#BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi">Blocks amino acid substitution matrix</a> (<a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>) is a scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
+<p>Several sets of <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices exist, each identified by a different number. This number defines the similarity of the <a href="#BM_(sequence)%2Fi">sequence</a>s used to create the matrix: The protein database <a href="#BM_(sequence)%2Fi">sequence</a>s used to derive the matrix are filtered such that only those with &gt;= n% similarity are used, where n is the number. For example, ...</p>
+<ul>
+<li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 is created from <a href="#BM_(sequence)%2Fi">sequence</a>s that are &gt;= 80% similar.</li>
+<li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>45 is created from <a href="#BM_(sequence)%2Fi">sequence</a>s that are &gt;= 45% similar.</li>
+</ul>
+<p>As such, <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices with higher numbers are designed to compare more closely related <a href="#BM_(sequence)%2Fi">sequence</a>s while those with lower numbers are designed to score more distant related <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":</p>
+<p><a href="ch5_code/src/BLOSUM62.txt">ch5_code/src/BLOSUM62.txt</a> (lines 2 to 22):</p>
+<pre><code class="language-([\s\S]+)">   A  C  D  E  F  G  H  I  K  L  M  N  P  Q  R  S  T  V  W  Y
+A  4  0 -2 -1 -2  0 -2 -1 -1 -1 -1 -2 -1 -1 -1  1  0  0 -3 -2
+C  0  9 -3 -4 -2 -3 -3 -1 -3 -1 -1 -3 -3 -3 -3 -1 -1 -1 -2 -2
+D -2 -3  6  2 -3 -1 -1 -3 -1 -4 -3  1 -1  0 -2  0 -1 -3 -4 -3
+E -1 -4  2  5 -3 -2  0 -3  1 -3 -2  0 -1  2  0  0 -1 -2 -3 -2
+F -2 -2 -3 -3  6 -3 -1  0 -3  0  0 -3 -4 -3 -3 -2 -2 -1  1  3
+G  0 -3 -1 -2 -3  6 -2 -4 -2 -4 -3  0 -2 -2 -2  0 -2 -3 -2 -3
+H -2 -3 -1  0 -1 -2  8 -3 -1 -3 -2  1 -2  0  0 -1 -2 -3 -2  2
+I -1 -1 -3 -3  0 -4 -3  4 -3  2  1 -3 -3 -3 -3 -2 -1  3 -3 -1
+K -1 -3 -1  1 -3 -2 -1 -3  5 -2 -1  0 -1  1  2  0 -1 -2 -3 -2
+L -1 -1 -4 -3  0 -4 -3  2 -2  4  2 -3 -3 -2 -2 -2 -1  1 -2 -1
+M -1 -1 -3 -2  0 -3 -2  1 -1  2  5 -2 -2  0 -1 -1 -1  1 -1 -1
+N -2 -3  1  0 -3  0  1 -3  0 -3 -2  6 -2  0  0  1  0 -3 -4 -2
+P -1 -3 -1 -1 -4 -2 -2 -3 -1 -3 -2 -2  7 -1 -2 -1 -1 -2 -4 -3
+Q -1 -3  0  2 -3 -2  0 -3  1 -2  0  0 -1  5  1  0 -1 -2 -2 -1
+R -1 -3 -2  0 -3 -2  0 -3  2 -2 -1  0 -2  1  5 -1 -1 -3 -3 -2
+S  1 -1  0  0 -2  0 -1 -2  0 -2 -1  1 -1  0 -1  4  1 -2 -3 -2
+T  0 -1 -1 -1 -2 -2 -2 -1 -1 -1 -1  0 -1 -1 -1  1  5  0 -2 -2
+V  0 -1 -3 -2 -1 -3 -3  3 -2  1  1 -3 -2 -2 -3 -2  0  4 -3 -1
+W -3 -2 -4 -3  1 -2 -2 -3 -3 -2 -1 -4 -4 -2 -3 -3 -2 -3 11  2
+Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -4 where as in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
+</div>
 <a name="H_Affine%20Gap%20Scoring"></a><h3>Affine Gap Scoring</h3>
 <a name="H_Basic%20Algorithm"></a><h4>Basic Algorithm</h4>
 <p><img src="svgbob_a78c6b3a04fd87c8fe19f92513598ddfb1734507.svg" alt="Kroki diagram output"></p>
@@ -6748,14 +6897,14 @@ GACGT
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_8d041d3f5677eaec56a544e80c5e1683.svg" alt="Latex diagram"></p>
+<p><img src="latex_80e2516eb29470a74a19e7efe517ee1e.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_a164b2123cdcf322f8b0606728b37d87.svg" alt="Latex diagram"></p>
+<p><img src="latex_3e2f59b0523d8e63cb597a8688be1486.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6936,7 +7085,7 @@ GACGT
 <li><a href="#BM_(Algorithms%5C%2FMotif%2FFind%20Motif%20Matrix)_TOPIC%2F">Algorithms/Motif/Find Motif Matrix</a></li>
 </ul>
 </div>
-<p>Given a organism, it's suspected that some physical change in that organism is linked to a <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>. However, it isn't known ...</p>
+<p>Given an organism, it's suspected that some physical change in that organism is linked to a <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>. However, it isn't known ...</p>
 <ul>
 <li>which <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a> (if any).</li>
 <li>what the <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a> for that <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a> is.</li>
@@ -7239,7 +7388,7 @@ GACGT
 </div>
 </li>
 <li>
-<p><a name="BM_(leading%20half-strand)%2Fi"></a><strong>leading half-strand</strong> / <a name="BM_(lagging%20half-strand)%2Fi"></a><strong>lagging half-strand</strong> - Given the 2 strands tha make up a DNA molecule, the strand that goes in the...</p>
+<p><a name="BM_(leading%20half-strand)%2Fi"></a><strong>leading half-strand</strong> / <a name="BM_(lagging%20half-strand)%2Fi"></a><strong>lagging half-strand</strong> - Given the 2 strands that make up a DNA molecule, the strand that goes in the...</p>
 <ul>
 <li>reverse direction (<a href="#BM_(3')%2Fi">3'</a> to <a href="#BM_(5')%2Fi">5'</a>) is called the <a href="#BM_(leading%20half-strand)%2Fi">leading half-strand</a>.</li>
 <li>forward direction (<a href="#BM_(5')%2Fi">5'</a> to <a href="#BM_(3')%2Fi">3'</a>) is called the <a href="#BM_(lagging%20half-strand)%2Fi">lagging half-strand</a>.</li>
@@ -7293,7 +7442,7 @@ GACGT
 <p><img src="svgbob_78b3833e37ddc45358bf3ebf79daba1a9e2604eb.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(regulatory%20gene)%2Fi"></a><strong>regulatory gene</strong> / <a name="BM_(regulatory%20protein)%2Fi"></a><strong>regulatory protein</strong> - The proteins <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by these <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> effect <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>. That is, a <a href="#BM_(regulatory%20protein)%2Fi">regulatory protein</a> can cause certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> to be expressed more (promote <a href="#BM_(gene%20expression)%2Fi">gene expression</a>) or less (repress <a href="#BM_(gene%20expression)%2Fi">gene expression</a>).</p>
+<p><a name="BM_(regulatory%20gene)%2Fi"></a><strong>regulatory gene</strong> / <a name="BM_(regulatory%20protein)%2Fi"></a><strong>regulatory protein</strong> - The proteins <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by these <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> affect <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>. That is, a <a href="#BM_(regulatory%20protein)%2Fi">regulatory protein</a> can cause certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> to be expressed more (promote <a href="#BM_(gene%20expression)%2Fi">gene expression</a>) or less (repress <a href="#BM_(gene%20expression)%2Fi">gene expression</a>).</p>
 <p><a href="#BM_(regulatory%20gene)%2Fi">Regulatory gene</a>s are often controlled by external factors (e.g. sunlight, nutrients, temperature, etc..)</p>
 </li>
 <li>
@@ -7408,12 +7557,12 @@ GACGT
 <p>For example, imagine a chess playing AI that had a strategy of trying to eliminate the other player's most valuable piece at each turn. It would be considered greedy because it only looks 1 move ahead before taking action. Normal chess AIs / players look many moves ahead before taking action. As such, the greedy AI may be fast but it would very likely lose most matches.</p>
 </li>
 <li>
-<p><a name="BM_(Cromwell's%20rule)%2Fi"></a><strong>Cromwell's rule</strong> - When a probability is based off past events, 0.0 and 1.0 shouldn't be used. That is, if you've...</p>
+<p><a name="BM_(Cromwell's%20rule)%2Fi"></a><strong>Cromwell's rule</strong> - When a probability is based on past events, 0.0 and 1.0 shouldn't be used. That is, if you've...</p>
 <ul>
 <li>never seen an even occur in the past, it doesn't mean that there's a 0.0 probability of it occurring next.</li>
 <li>always seen an event occur in the past, it doesn't mean that there's a 1.0 probability of it occurring next.</li>
 </ul>
-<p>Unless you're dealing with hard logical statements where prior occurrences don't come in to play (e.g. 1+1=2), you should include a small chance that some extremely unlikely event may happen. The example tossed around is "the probability that the sun will not rise tomorrow." Prior recorded observations show that sun has always risen, but that doesn't mean that there's a 1.0 probability of the sun rising tomorrow (e.g. some extremely unlikely cataclysmic event may prevent the sun from rising).</p>
+<p>Unless you're dealing with hard logical statements where prior occurrences don't come in to play (e.g. 1+1=2), you should include a small chance that some extremely unlikely event may happen. The example tossed around is "the probability that the sun will not rise tomorrow." Prior recorded observations show that the sun has always risen, but that doesn't mean that there's a 1.0 probability of the sun rising tomorrow (e.g. some extremely unlikely cataclysmic event may prevent the sun from rising).</p>
 </li>
 <li>
 <p><a name="BM_(Laplace's%20rule%20of%20succession%7CLaplace's%20rule)%2Fi"></a><strong>Laplace's rule of succession</strong> - If some independent true/false event occurs n times, and s of those n times were successes, it's natural for people to assume the probability of success is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>s</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{s}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>. However, if the number of successes is 0, the probability would be 0.0. <a href="#BM_(Cromwell's%20rule)%2Fi">Cromwell's rule</a> states that when a probability is based off past events, 0.0 and 1.0 shouldn't be used. As such, a more appropriate / meaningful measure of probability is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{s+1}{n+2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
@@ -8105,7 +8254,7 @@ GACGT
 <p>See also: <a href="#BM_(read-pair%20breaking%7Cread%20pair%20breaking%7Cbreaking%20read-pairs%7Cbreaking%20read%20pairs)%2Fi">read-pair breaking</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>What purpose does this actually serve? Mimicking 1 long <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> as n shorter <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s isn't equivalent to actually having <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> those n shorter <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s. For example, what if the longer <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> being broken up has an error? That error replicates when breaking into n shorter <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, which gives a false sense of having good <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> and makes it seems as if it wasn't an error.</p>
+<p>What purpose does this actually serve? Mimicking 1 long <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> as n shorter <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s isn't equivalent to actually having <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> those n shorter <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s. For example, what if the longer <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> being broken up has an error? That error replicates when breaking into n shorter <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, which gives a false sense of having good <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> and makes it seem as if it wasn't an error.</p>
 </div>
 </li>
 <li>
@@ -8120,7 +8269,7 @@ GACGT
 <p>See also: <a href="#BM_(read%20breaking%7Cread-breaking%7Cbreaking%20reads)%2Fi">read breaking</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>What purpose does this actually serve? Mimicking 1 long <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a> as n shorter <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s isn't equivalent to actually having <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> those n shorter <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s. For example, what if the longer <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a> being broken up has an error? That error replicates when breaking into n shorter <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s, which gives a false sense of having good <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> and makes it seems as if it wasn't an error.</p>
+<p>What purpose does this actually serve? Mimicking 1 long <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a> as n shorter <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s isn't equivalent to actually having <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> those n shorter <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s. For example, what if the longer <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a> being broken up has an error? That error replicates when breaking into n shorter <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s, which gives a false sense of having good <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> and makes it seem as if it wasn't an error.</p>
 </div>
 </li>
 <li>
@@ -8374,7 +8523,7 @@ GACGT
 <p>As such, these plots aren't exact.</p>
 </li>
 <li>
-<p><a name="BM_(experimental%20spectrum)%2Fi"></a><strong>experimental spectrum</strong> - List of potential fragment masses derived from a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a>. That is, the molecules fed into the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> were randomly fragmented and each fragment had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.</p>
+<p><a name="BM_(experimental%20spectrum)%2Fi"></a><strong>experimental spectrum</strong> - List of potential fragment masses derived from a <a href="#BM_(spectrum)_MS%2Fi">spectrum</a>. That is, the molecules fed into the <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> were randomly fragmented and each fragment had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted to a set of potential masses.</p>
 <p>The masses in an <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> ...</p>
 <ul>
 <li>may not capture all possible fragments for the intended molecule (missing masses).</li>
@@ -8836,9 +8985,9 @@ GACGT
 <p>A path in this graph from source (top-left) to sink (bottom-right) represents an alignment.</p>
 </li>
 <li>
-<p><a name="BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi"></a><strong>alignment path</strong> - A path in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> that represents one possible <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>. For example, given the following <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> ...</p>
+<p><a name="BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi"></a><strong>alignment path</strong> - A path in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> that represents one possible <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>. For example, the following <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> ...</p>
 <p><img src="svgbob_dab8cfd9932f94ef62dada363fa927912ddc6a7d.svg" alt="Kroki diagram output"></p>
-<p>is represent as the alignment...</p>
+<p>is for the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>...</p>
 <table>
 <thead>
 <tr>
@@ -9030,7 +9179,7 @@ GACGT
 </table>
 </li>
 <li>
-<p><a name="BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi"></a><strong>dynamic programming</strong> - An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again (essentially trading space for speed). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.</p>
+<p><a name="BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi"></a><strong>dynamic programming</strong> - An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again (essentially trading space for speed). The lookup table may be created beforehand or as a cache that gets filled as the algorithm runs.</p>
 <p>For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use recursion to find the minimum number of coins to represent some monetary value such as $0.17:</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">min_coins</span>(<span class="hljs-params">value</span>):</span>
   <span class="hljs-keyword">if</span> value == <span class="hljs-number">0.01</span> <span class="hljs-keyword">or</span> value == <span class="hljs-number">0.12</span> <span class="hljs-keyword">or</span> value == <span class="hljs-number">0.13</span>:
@@ -9054,7 +9203,7 @@ GACGT
 <li>The sink node is the intersection of 42nd St and 3rd Ave.</li>
 <li>The number of tourist sights from one intersection to the next is the weight of an edge.</li>
 </ul>
-<p><img src="svgbob_d97ecce5abf34fc49b4c08c082e77841e4fd50b3.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_903ed0d46089376b0a56d7285560ca67078091e7.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(point%20accepted%20mutation%7Cpercent%20accepted%20mutation)%2Fi"></a><strong>point accepted mutation</strong> <a name="BM_%5Cb(PAM)%5Cd*%5Cb%2F"></a><strong></strong> - A scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA <a href="#BM_(sequence)%2Fi">sequence</a> that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a> some protein may change the resulting <a href="#BM_(amino%20acid)%2Fi">amino acid</a> <a href="#BM_(sequence)%2Fi">sequence</a> for that protein. Those mutations that...</p>
@@ -9062,1404 +9211,9 @@ GACGT
 <li>impair the ability of the protein to function aren't likely to survive, and as such are given a low score.</li>
 <li>keep the protein functional are likely to survive, and as such are given a normal or high score.</li>
 </ul>
-<p><a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices are developed iteratively. An initial <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrix is calculated by aligning extremely similar protein <a href="#BM_(sequence)%2Fi">sequence</a>s using a simple scoring model (1 for match, 0 for mismatch / <a href="#BM_(indel)%2Fi">indel</a>). That <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> then provides the scoring model for the next iteration. For example, the alignment for the initial iteration may have determined that D may be a suitable substitution for W. As such, the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for the next iteration will score more than 0 (e.g. 1) if it encounters D being compared to W.</p>
-<p>Other factors are also brought into the mix when developing scores for <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices. For example, the ...</p>
-<ul>
-<li>likelihood of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mutations (e.g. Cys and Trp are the least mutable <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s).</li>
-<li>speed of evolution (e.g. some mutations were more probably in species 100 million years ago vs 1 million years ago).</li>
-</ul>
-<p>It's said that <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> is focused on tracking the evolutionary origins of proteins. <a href="#BM_(sequence)%2Fi">Sequence</a>s that are 99% similar are said to be 1 <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> unit diverged, where a <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> unit is the amount of time it takes an "average" protein to mutate 1% of its <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s. <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>1 (the initial scoring matrix) was defined by performing many <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s between proteins that are 99% similar (1 <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> unit diverged).</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><a href="http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html">Here</a> and <a href="https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&amp;oldid=1002281881#Comparing_PAM_and_BLOSUM">here</a> both seem to say that <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> supersedes <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> as a scoring matrix for protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
-<blockquote>
-<p>Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices were generated directly from the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> differences in aligned blocks that have diverged to varying degrees the <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices reflect the extrapolation of evolutionary information based on closely related <a href="#BM_(sequence)%2Fi">sequence</a>s to longer timescales</p>
-</blockquote>
-<blockquote>
-<p>Henikoff and Henikoff [16] have compared the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices to <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>, PET, Overington, Gonnet [17] and multiple <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices by evaluating how effectively the matrices can detect known members of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> 62 matrix is the most effective.</p>
-</blockquote>
-</div>
-<p><a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 is the most commonly used variant:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>A</th>
-<th>R</th>
-<th>N</th>
-<th>D</th>
-<th>C</th>
-<th>Q</th>
-<th>E</th>
-<th>G</th>
-<th>H</th>
-<th>I</th>
-<th>L</th>
-<th>K</th>
-<th>M</th>
-<th>F</th>
-<th>P</th>
-<th>S</th>
-<th>T</th>
-<th>W</th>
-<th>Y</th>
-<th>V</th>
-<th>B</th>
-<th>Z</th>
-<th>X</th>
-<th>-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>2</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>-6</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>R</td>
-<td>-2</td>
-<td>6</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-<td>1</td>
-<td>-1</td>
-<td>-3</td>
-<td>2</td>
-<td>-2</td>
-<td>-3</td>
-<td>3</td>
-<td>0</td>
-<td>-4</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>2</td>
-<td>-4</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>N</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>2</td>
-<td>-4</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>2</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>-4</td>
-<td>-2</td>
-<td>-2</td>
-<td>2</td>
-<td>1</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>D</td>
-<td>0</td>
-<td>-1</td>
-<td>2</td>
-<td>4</td>
-<td>-5</td>
-<td>2</td>
-<td>3</td>
-<td>1</td>
-<td>1</td>
-<td>-2</td>
-<td>-4</td>
-<td>0</td>
-<td>-3</td>
-<td>-6</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-7</td>
-<td>-4</td>
-<td>-2</td>
-<td>3</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>C</td>
-<td>-2</td>
-<td>-4</td>
-<td>-4</td>
-<td>-5</td>
-<td>12</td>
-<td>-5</td>
-<td>-5</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-6</td>
-<td>-5</td>
-<td>-5</td>
-<td>-4</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-8</td>
-<td>0</td>
-<td>-2</td>
-<td>-4</td>
-<td>-5</td>
-<td>-3</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>Q</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>-5</td>
-<td>4</td>
-<td>2</td>
-<td>-1</td>
-<td>3</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>-1</td>
-<td>-5</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-5</td>
-<td>-4</td>
-<td>-2</td>
-<td>1</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>E</td>
-<td>0</td>
-<td>-1</td>
-<td>1</td>
-<td>3</td>
-<td>-5</td>
-<td>2</td>
-<td>4</td>
-<td>0</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-5</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-7</td>
-<td>-4</td>
-<td>-2</td>
-<td>3</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>G</td>
-<td>1</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>5</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>-3</td>
-<td>-5</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>-7</td>
-<td>-5</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>H</td>
-<td>-1</td>
-<td>2</td>
-<td>2</td>
-<td>1</td>
-<td>-3</td>
-<td>3</td>
-<td>1</td>
-<td>-2</td>
-<td>6</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>1</td>
-<td>2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>I</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>5</td>
-<td>2</td>
-<td>-2</td>
-<td>2</td>
-<td>1</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>-5</td>
-<td>-1</td>
-<td>4</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>L</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-4</td>
-<td>-6</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>2</td>
-<td>6</td>
-<td>-3</td>
-<td>4</td>
-<td>2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>K</td>
-<td>-1</td>
-<td>3</td>
-<td>1</td>
-<td>0</td>
-<td>-5</td>
-<td>1</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>5</td>
-<td>0</td>
-<td>-5</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>1</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>M</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-5</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>2</td>
-<td>4</td>
-<td>0</td>
-<td>6</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-<td>-2</td>
-<td>2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>F</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>-6</td>
-<td>-4</td>
-<td>-5</td>
-<td>-5</td>
-<td>-5</td>
-<td>-2</td>
-<td>1</td>
-<td>2</td>
-<td>-5</td>
-<td>0</td>
-<td>9</td>
-<td>-5</td>
-<td>-3</td>
-<td>-3</td>
-<td>0</td>
-<td>7</td>
-<td>-1</td>
-<td>-4</td>
-<td>-5</td>
-<td>-2</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>P</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-5</td>
-<td>6</td>
-<td>1</td>
-<td>0</td>
-<td>-6</td>
-<td>-5</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>S</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>2</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>T</td>
-<td>1</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>-5</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>W</td>
-<td>-6</td>
-<td>2</td>
-<td>-4</td>
-<td>-7</td>
-<td>-8</td>
-<td>-5</td>
-<td>-7</td>
-<td>-7</td>
-<td>-3</td>
-<td>-5</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>0</td>
-<td>-6</td>
-<td>-2</td>
-<td>-5</td>
-<td>17</td>
-<td>0</td>
-<td>-6</td>
-<td>-5</td>
-<td>-6</td>
-<td>-4</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>Y</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>-4</td>
-<td>0</td>
-<td>-4</td>
-<td>-4</td>
-<td>-5</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-<td>-2</td>
-<td>7</td>
-<td>-5</td>
-<td>-3</td>
-<td>-3</td>
-<td>0</td>
-<td>10</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>V</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>4</td>
-<td>2</td>
-<td>-2</td>
-<td>2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-6</td>
-<td>-2</td>
-<td>4</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>B</td>
-<td>0</td>
-<td>-1</td>
-<td>2</td>
-<td>3</td>
-<td>-4</td>
-<td>1</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>-2</td>
-<td>-4</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-5</td>
-<td>-3</td>
-<td>-2</td>
-<td>3</td>
-<td>2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>Z</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>-5</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>2</td>
-<td>-2</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-5</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-6</td>
-<td>-4</td>
-<td>-2</td>
-<td>2</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>X</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-4</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>-</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above matrix was extracted from <a href="https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml">here</a>. The <a href="#BM_(indel)%2Fi">indel</a> scores on that matrix are set to -8, but I've also seen them set to -5. I don't know if <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s?</p>
-</div>
 </li>
 <li>
 <p><a name="BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi"></a><strong>blocks amino acid substitution matrix</strong> <a name="BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F"></a><strong></strong> - A scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
-<p>Several sets of <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices exist, each identified by a different number. This number defines the similarity of the <a href="#BM_(sequence)%2Fi">sequence</a>s used to create the matrix: The protein database <a href="#BM_(sequence)%2Fi">sequence</a>s used to derive the matrix are filtered such that only those with &gt;= n% similarity are used, where n is the number. For example, ...</p>
-<ul>
-<li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 is created from <a href="#BM_(sequence)%2Fi">sequence</a>s that are &gt;= 80% similar.</li>
-<li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>45 is created from <a href="#BM_(sequence)%2Fi">sequence</a>s that are &gt;= 45% similar.</li>
-</ul>
-<p>As such, <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices with higher numbers are designed to compare more closely related <a href="#BM_(sequence)%2Fi">sequence</a>s while those with lower numbers are designed to score more distant related <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
-<p><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>A</th>
-<th>R</th>
-<th>N</th>
-<th>D</th>
-<th>C</th>
-<th>Q</th>
-<th>E</th>
-<th>G</th>
-<th>H</th>
-<th>I</th>
-<th>L</th>
-<th>K</th>
-<th>M</th>
-<th>F</th>
-<th>P</th>
-<th>S</th>
-<th>T</th>
-<th>W</th>
-<th>Y</th>
-<th>V</th>
-<th>B</th>
-<th>Z</th>
-<th>X</th>
-<th>-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>4</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>1</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>R</td>
-<td>-1</td>
-<td>5</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>N</td>
-<td>-2</td>
-<td>0</td>
-<td>6</td>
-<td>1</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>-3</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>1</td>
-<td>0</td>
-<td>-4</td>
-<td>-2</td>
-<td>-3</td>
-<td>3</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>D</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>6</td>
-<td>-3</td>
-<td>0</td>
-<td>2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-4</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-3</td>
-<td>4</td>
-<td>1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>C</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>9</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>Q</td>
-<td>-1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>-3</td>
-<td>5</td>
-<td>2</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>1</td>
-<td>0</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>0</td>
-<td>3</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>E</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>-4</td>
-<td>2</td>
-<td>5</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>4</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>G</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>6</td>
-<td>-2</td>
-<td>-4</td>
-<td>-4</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>H</td>
-<td>-2</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>8</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>2</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>I</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>4</td>
-<td>2</td>
-<td>-3</td>
-<td>1</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>L</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>2</td>
-<td>4</td>
-<td>-2</td>
-<td>2</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>K</td>
-<td>-1</td>
-<td>2</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>1</td>
-<td>1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>5</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>M</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>1</td>
-<td>2</td>
-<td>-1</td>
-<td>5</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>F</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-3</td>
-<td>0</td>
-<td>6</td>
-<td>-4</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>3</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>P</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-4</td>
-<td>7</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>S</td>
-<td>1</td>
-<td>-1</td>
-<td>1</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>4</td>
-<td>1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>T</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>1</td>
-<td>5</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>W</td>
-<td>-3</td>
-<td>-3</td>
-<td>-4</td>
-<td>-4</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-2</td>
-<td>11</td>
-<td>2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>-2</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>Y</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>2</td>
-<td>7</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>V</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>3</td>
-<td>1</td>
-<td>-2</td>
-<td>1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-1</td>
-<td>4</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>B</td>
-<td>-2</td>
-<td>-1</td>
-<td>3</td>
-<td>4</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>0</td>
-<td>-3</td>
-<td>-4</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-3</td>
-<td>4</td>
-<td>1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>Z</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>-3</td>
-<td>3</td>
-<td>4</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>4</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>X</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>-</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above matrix was extracted from <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>. The <a href="#BM_(indel)%2Fi">indel</a> scores on that matrix are set to -4, but I've also seen them set to -5. I don't know if <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s?</p>
-</div>
 </li>
 <li>
 <p><a name="BM_(point%20mutation)%2Fi"></a><strong>point mutation</strong> - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.</p>
