@@ -1629,3 +1629,7 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
    ```
 
    Directed acyclic graph, abbreviated to DAG.
+
+ * `{ankiAnswer} (divide-and-conquer algorithm|divide and conquer algorithm)/i` `{ankiHide} dynamic programming` - An algorithm that solves a problem by recursively breaking it down into two or more smaller sub-problems, up until the point where each sub-problem is small enough / simple enough to solve. Examples include quicksort and merge sort.
+
+   See dynamic programming.

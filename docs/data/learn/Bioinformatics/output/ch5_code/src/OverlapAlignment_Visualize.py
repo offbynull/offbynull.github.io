@@ -37,7 +37,7 @@ def main():
             edge_highlights
         )
         print(f'````{{latex}}\n{output}\n````', end='\n\n')
-        print(f'NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.', end='\n\n')
+        print(f'NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.', end='\n\n')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

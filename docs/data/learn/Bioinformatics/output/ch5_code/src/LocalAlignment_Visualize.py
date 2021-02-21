@@ -33,7 +33,7 @@ def main():
                 for t1, prefix, t2 in s.split('->'):
                     row1, col1 = t1.split(',')
                     row2, col2 = t2.split(',')
-                    found = [e for e in graph.get_edges() if e.startswith(prefix) and graph.get_edge_from(e) == (row1, col1) and graph.get_edge_to() == (row2, col2)]
+                    found = [e for e in graph.get_edges() if e.startswith(prefix) and graph.get_edge_from(e) == (row1, col1) and graph.get_edge_to(e) == (row2, col2)]
                     if found:
                         edge_highlights.add(found[0])
         output = graph_to_tikz(
@@ -41,7 +41,7 @@ def main():
             edge_highlights
         )
         print(f'````{{latex}}\n{output}\n````', end='\n\n')
-        print(f'NOTE: Orange edges are free rides from source / Purple edges are free rides to sink. No text associated with free rides.', end='\n\n')
+        print(f'NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.', end='\n\n')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

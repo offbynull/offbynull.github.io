@@ -3228,7 +3228,7 @@ Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
 
 **WHAT**: Given two sequences, perform sequence alignment and pull out the highest scoring alignment.
 
-**WHY**: A strongly matching global alignment means that the sequences may be homologous.
+**WHY**: A strongly matching global alignment indicates that the sequences are likely homologous / related.
 
 #### Graph Algorithm
 
@@ -3387,7 +3387,7 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 
 **ALGORITHM**:
 
-The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix where each element in the matrix represents a node in the alignment graph. The elements are then populated in a predefined topological order, where each element gets populated with the node weight and the chosen backtracking edge.
+The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix where each element in the matrix represents a node in the alignment graph. The elements are then populated in a predefined topological order, where each element gets populated with the node weight, the chosen backtracking edge, and the elements for that backtracking edge.
 
 Since the alignment graph is a grid, the node weights may be populated either...
 
@@ -3709,7 +3709,7 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
-One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the alignment graph. Normally the algorithm converges on to the bottom-right node of the alignment graph. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.
+One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the alignment graph (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the alignment graph. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.
 
 Given that there may be multiple maximum alignment paths for an alignment graph, there may be multiple nodes found per column. Each found node may be for a different maximum alignment path or the same maximum alignment path.
 
@@ -3869,10 +3869,40 @@ G  0  0  0  1
 `{bm} /(Algorithms\/Sequence Alignment\/Local Alignment)_TOPIC/`
 
 ```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 Algorithms/Sequence Alignment/Global Alignment_TOPIC
 ```
 
+**WHAT**: Given two sequences, for all possible substrings of those sequences, pull out the highest scoring alignment. For example, given the sequences GGTTTTTAA and CCTTCTTAA, it may be that the substrings with the highest scoring alignment are TTTTT and TTCTT ...
+
+```
+TTC-TT
+TT-TTT
+```
+
+**WHY**: Two biological sequences may have strongly related parts rather than being strongly related in their entirety. For example, a class of proteins called NRP synthetase output peptides without going through a ribosome (non-ribosomal peptides). Each NRP synthetase outputs a specific peptide, where each amino acid in that peptide is pumped out by the unique part of the NRP synthetase responsible for it.
+
+These unique parts are referred to adenylation domains (multiple adenylation domains, 1 per amino acid in peptide). While the overall sequence between two types of NRP synthetase differ greatly, the sequences between their adenylation domains are similar -- only a handful of positions in an adenylation domain sequence define the type of amino acid it pumps out. As such, local alignment may be used to identify these adenylation domains across different types of NRP synthetase.
+
+```{note}
+The WHY section above is giving a high-level use-case for local alignment. If you actually want to perform that use-case you need to get familiar with the protein scoring section: Algorithms/Sequence Alignment/Protein Scoring_TOPIC.
+```
+
 #### Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Local Alignment\/Graph Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+The graph algorithm for local alignment is an extension of the graph algorithm for global alignment. Construct the DAG as you would for global alignment, but for each node...
+
+* that isn't the source node, construct a 0 weight edge from the source node to that node.
+* that isn't the sink node, construct a 0 weight edge from that node to the sink node.
 
 ```{ch5}
 LocalAlignment_Visualize
@@ -3888,9 +3918,16 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
+These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. When finding a maximum alignment path, they make it so that if either the...
+
+* prefix of the path sinks the path's weight below zero, there's a "free ride" from the source node that'll supersede it and as such that prefix will get skipped.
+* suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.
+
+In other words, the maximum alignment path chosen can never go below 0: When selecting a backtracking edge, the "free-ride" edge will always be chosen over other edges with make the total weight of the path negative. 
+
 ```{ch5}
 LocalAlignment_Graph
-TAAGAACT
+TAGAACT
 CGAAG
 embedded_score_matrix
 -1
@@ -3908,8 +3945,34 @@ G  -1  -1  -1   1
 `{bm} /(Algorithms\/Sequence Alignment\/Fitting Alignment)_TOPIC/`
 
 ```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 Algorithms/Sequence Alignment/Global Alignment_TOPIC
 ```
+
+**WHAT**: Given two sequences, for all possible substrings of the first sequence, pull out the highest scoring alignment between that substring that the second sequence. In other words, find the best place within the second sequence where the first sequence fits.
+
+For example, given the sequences GGTTTTTAA and TTCTT, it may be that TTCTT has the highest scoring alignment with the substring TTTTT...
+
+```
+TTC-TT
+TT-TTT
+```
+
+**WHY**: Imagine trying to find a gene's sequence in some larger segment of genome. Due to mutation, the gene sequence being searched for is slightly off from the gene sequence in the genome. A standard search will fail where a fitting alignment will still be able to find that gene.
+
+#### Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Fitting Alignment\/Graph Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm_TOPIC
+```
+
+The graph algorithm for fitting alignment is an extension of the graph algorithm for global alignment. Construct the DAG as you would for global alignment, but for each node...
+
+* in the first column that isn't the source node, construct a 0 weight edge from the source node to that node.
+* in the last column that isn't the sink node, construct a 0 weight edge from that node to the sink node.
 
 ```{ch5}
 FittingAlignment_Visualize
@@ -3925,6 +3988,13 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
+These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. When finding a maximum alignment path, they make it so that if either the...
+
+* prefix of the path sinks the path's weight below zero, there's a "free ride" from the source node that'll supersede it and as such that prefix will get skipped.
+* suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.
+
+In other words, the maximum alignment path chosen can never go below 0: When selecting a backtracking edge, the "free-ride" edge will always be chosen over other edges with make the total weight of the path negative. 
+
 ```{ch5}
 FittingAlignment_Graph
 AGAC
@@ -3938,13 +4008,52 @@ T  -1  -1   1  -1
 G  -1  -1  -1   1
 ```
 
+#### Matrix Algorithm
+
 ### Overlap Alignment
 
 `{bm} /(Algorithms\/Sequence Alignment\/Overlap Alignment)_TOPIC/`
 
 ```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 Algorithms/Sequence Alignment/Global Alignment_TOPIC
+Algorithms/DNA Assembly/Stitch Reads_TOPIC
 ```
+
+**WHAT**: Given two sequences, for all possible substrings ...
+
+ * ending at the first sequence (tail)
+ * starting at the second sequence (head)
+
+... , pull out the highest scoring alignment. In other words, find the best possible overlap between the two sequences.
+
+For example, given the sequences CCAAGGCT and GGTTTTTAA, it may be that the substrings with the highest scoring alignment are GGCT (tail of the first sequence) and GGT (head of the second sequence)...
+
+```
+GGCT
+GG-T
+```
+
+**WHY**: DNA sequencers frequently produce fragment_SEQs with sequencing errors. Overlap alignments may be used to detect if those fragment_SEQ overlap even...
+
+ * if they are partial overlaps
+ * in the presence of sequencing errors / minor mutations
+
+... making assembly less tedious (overlap graphs / de Bruijn graphs may be less tangled).
+
+#### Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Overlap Alignment\/Graph Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm_TOPIC
+```
+
+The graph algorithm for overlap alignment is an extension of the graph algorithm for global alignment. Construct the DAG as you would for global alignment, but for each node...
+
+* in the first column that isn't the source node, construct a 0 weight edge from the source node to that node.
+* in the last row that isn't the sink node, construct a 0 weight edge from that node to the sink node.
 
 ```{ch5}
 OverlapAlignment_Visualize
@@ -3960,6 +4069,16 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
+These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. For the destination nodes of these edges, node weights can never go below 0: When selecting a backtracking edge, the "free-ride" edge will always be chosen over other edges with make the total weight of the path negative. 
+
+When finding a maximum alignment path, these "free rides" make it so that the path ...
+
+* starts from the most appropriate part of the second sequence
+* stops at the most appropriate part of the first sequence
+
+such that if there is a matching overlap between the sequences, that maximum alignment path will be targeted in such a way that maximizes that overlap.
+ 
+
 ```{ch5}
 OverlapAlignment_Graph
 AGACAAAT
@@ -3972,6 +4091,8 @@ C  -1   1  -1  -1
 T  -1  -1   1  -1
 G  -1  -1  -1   1
 ```
+
+#### Matrix Algorithm
 
 ### Protein Scoring
 
@@ -6328,6 +6449,10 @@ cyclic
                 |
                 `-----> E 
    ```
+
+ * `{bm} divide-and-conquer algorithm/(divide-and-conquer algorithm|divide and conquer algorithm)/i` - An algorithm that solves a problem by recursively breaking it down into two or more smaller sub-problems, up until the point where each sub-problem is small enough / simple enough to solve. Examples include quicksort and merge sort.
+
+   See dynamic programming.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
