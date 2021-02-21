@@ -5795,7 +5795,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_9869e28a598a830be109fdd371404e2b.svg" alt="Dot diagram"></p>
+<p><img src="dot_509f1c55b5b43f6525bfadac9911b892.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5853,7 +5853,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_000bacb11a1651241e16e505830ab31e.svg" alt="Dot diagram"></p>
+<p><img src="dot_9869e28a598a830be109fdd371404e2b.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6001,13 +6001,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_01bcd3f1033382ace377db30252d4545.svg" alt="Dot diagram"></p>
+<p><img src="dot_6e020580b6e05f2718fb92d4d4e1ac18.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_6dbc41a1800d46216656490d39cb8c46.svg" alt="Dot diagram"></p>
+<p><img src="dot_ebd12390e93072dc93c9f3e88788c79a.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6044,7 +6044,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_b87ae0003135fb014f8ef965f0a291ac.svg" alt="Latex diagram"></p>
+<p><img src="latex_ae1ee9d9a3706c77ed284c49b85e5cff.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6055,7 +6055,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_536d3df6d019a46714afb004d6025c81.svg" alt="Latex diagram"></p>
+<p><img src="latex_1a52df9be7ee975bb17a3b4bd4857c34.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6116,7 +6116,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_bcb6e9c9cf71cb8f7d5ea1727a936fe0.svg" alt="Latex diagram"></p>
+<p><img src="latex_e48c664c532f06c99a29d86a12e06b4d.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 GA-T
 </code></pre>
@@ -6390,7 +6390,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_891d7478ef7fa13c777df0bcd1d078b9.svg" alt="Latex diagram"></p>
+<p><img src="latex_a7f0254edbce580ebd362da87ce303a0.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6398,7 +6398,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_3d8d28a9f11dd00ee8f43b6ead66ae97.svg" alt="Latex diagram"></p>
+<p><img src="latex_1835d6257133c466653162305f4fb63f.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6736,7 +6736,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c44e7e82755efa9e3a465c75f5de1caf.svg" alt="Latex diagram"></p>
+<p><img src="latex_662857c29366404de66111e7dbd61f45.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6746,7 +6746,7 @@ TT-TTT
 <li>starts from the most appropriate part of the second <a href="#BM_(sequence)%2Fi">sequence</a></li>
 <li>stops at the most appropriate part of the second <a href="#BM_(sequence)%2Fi">sequence</a></li>
 </ul>
-<p>such that if the first <a href="#BM_(sequence)%2Fi">sequence</a> is wedged somewhere the second <a href="#BM_(sequence)%2Fi">sequence</a>, that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes in on it.</p>
+<p>such that if the first <a href="#BM_(sequence)%2Fi">sequence</a> is wedged somewhere within the second <a href="#BM_(sequence)%2Fi">sequence</a>, that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes in on it.</p>
 <p><a href="ch5_code/src/FittingAlignment_Graph.py">ch5_code/src/FittingAlignment_Graph.py</a> (lines 37 to 95):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_fitting_alignment_graph</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6819,14 +6819,127 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_161c9fb83233eb01143abc89ce736f8b.svg" alt="Latex diagram"></p>
-<pre><code>AG-AC
+<p><img src="latex_fa618341c0006a1c948ec9a82071882d.svg" alt="Latex diagram"></p>
+<pre><code>AGA-C
 AGAAC
 </code></pre>
 <p>Weight: 3.0</p>
 </div>
 <p></p>
 <a name="H1_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Fitting Alignment/Graph Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by fitting alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
+<p><a href="ch5_code/src/FittingAlignment_Matrix.py">ch5_code/src/FittingAlignment_Matrix.py</a> (lines 10 to 93):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
+        node_matrix: List[List[Any]]
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_idx = len(node_matrix) - <span class="hljs-number">1</span>
+    w_node_idx = len(node_matrix[<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>
+    final_weight = node_matrix[v_node_idx][w_node_idx][<span class="hljs-number">0</span>]
+    alignment = []
+    <span class="hljs-keyword">while</span> v_node_idx != <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> w_node_idx != <span class="hljs-number">0</span>:
+        _, elems, backtrack_ptr = node_matrix[v_node_idx][w_node_idx]
+        <span class="hljs-keyword">if</span> backtrack_ptr == <span class="hljs-string">'↓'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'→'</span>:
+            w_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'↘'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+            w_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> isinstance(backtrack_ptr, tuple):
+            v_node_idx = backtrack_ptr[<span class="hljs-number">0</span>]
+            w_node_idx = backtrack_ptr[<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> final_weight, alignment[::<span class="hljs-number">-1</span>]
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fitting_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    node_matrix = []
+    <span class="hljs-keyword">for</span> v_node_idx <span class="hljs-keyword">in</span> range(v_node_count):
+        row = []
+        <span class="hljs-keyword">for</span> w_node_idx <span class="hljs-keyword">in</span> range(w_node_count):
+            row.append([<span class="hljs-number">-1.0</span>, (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>), <span class="hljs-string">'?'</span>])
+        node_matrix.append(row)
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0.0</span>           <span class="hljs-comment"># source node weight</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>)  <span class="hljs-comment"># source node elements (elements don't matter for source node)</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">2</span>] = <span class="hljs-string">'↘'</span>           <span class="hljs-comment"># source node backtracking edge (direction doesn't matter for source node)</span>
+    <span class="hljs-keyword">for</span> v_node_idx, w_node_idx <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+        parents = []
+        <span class="hljs-keyword">if</span> v_node_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> w_node_idx &gt; <span class="hljs-number">0</span>:
+            v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+            w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, w_elem),
+                (v_elem, w_elem),
+                <span class="hljs-string">'↘'</span>
+            ])
+        <span class="hljs-keyword">if</span> v_node_idx &gt; <span class="hljs-number">0</span>:
+            v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, <span class="hljs-literal">None</span>),
+                (v_elem, <span class="hljs-literal">None</span>),
+                <span class="hljs-string">'↓'</span>
+            ])
+        <span class="hljs-keyword">if</span> w_node_idx &gt; <span class="hljs-number">0</span>:
+            w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(<span class="hljs-literal">None</span>, w_elem),
+                (<span class="hljs-literal">None</span>, w_elem),
+                <span class="hljs-string">'→'</span>
+            ])
+        <span class="hljs-comment"># If first column but not source node, consider free-ride from source node</span>
+        <span class="hljs-keyword">if</span> v_node_idx == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> w_node_idx != <span class="hljs-number">0</span>:
+            parents.append([
+                <span class="hljs-number">0.0</span>,
+                (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>),
+                (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)  <span class="hljs-comment"># jump to source</span>
+            ])
+        <span class="hljs-comment"># If sink node, consider free-rides coming from every node in last column that isn't sink node</span>
+        <span class="hljs-keyword">if</span> v_node_idx == v_node_count - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> w_node_idx == w_node_count - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">for</span> w_node_idx_from <span class="hljs-keyword">in</span> range(w_node_count - <span class="hljs-number">1</span>):
+                parents.append([
+                    node_matrix[v_node_idx][w_node_idx_from][<span class="hljs-number">0</span>] + <span class="hljs-number">0.0</span>,
+                    (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>),
+                    (v_node_idx, w_node_idx_from)  <span class="hljs-comment"># jump to this position</span>
+                ])
+        <span class="hljs-keyword">if</span> parents:  <span class="hljs-comment"># parents will be empty if v_node_idx and w_node_idx were both 0</span>
+            node_matrix[v_node_idx][w_node_idx] = max(parents, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">return</span> backtrack(node_matrix)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences AGAC and TAAGAACT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the fitting alignment is...</p>
+<pre><code>AG-AC
+AGAAC
+</code></pre>
+<p>Weight: 3.0</p>
+</div>
+<p></p>
 <a name="H_Overlap%20Alignment"></a><h3>Overlap Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6864,7 +6977,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_5814246d9f864e5585ca7c7f97213f32.svg" alt="Latex diagram"></p>
+<p><img src="latex_68590ef3a9f08179acd1bc9c4bf53782.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6947,7 +7060,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_6f8e0667d04add8779918d715d9318f1.svg" alt="Latex diagram"></p>
+<p><img src="latex_d91c476d7c00d5092f5a17c2509c2579.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
 A-AC
 </code></pre>
@@ -6955,6 +7068,119 @@ A-AC
 </div>
 <p></p>
 <a name="H2_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Overlap Alignment/Graph Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by overlap alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
+<p><a href="ch5_code/src/OverlapAlignment_Matrix.py">ch5_code/src/OverlapAlignment_Matrix.py</a> (lines 10 to 93):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
+        node_matrix: List[List[Any]]
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_idx = len(node_matrix) - <span class="hljs-number">1</span>
+    w_node_idx = len(node_matrix[<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>
+    final_weight = node_matrix[v_node_idx][w_node_idx][<span class="hljs-number">0</span>]
+    alignment = []
+    <span class="hljs-keyword">while</span> v_node_idx != <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> w_node_idx != <span class="hljs-number">0</span>:
+        _, elems, backtrack_ptr = node_matrix[v_node_idx][w_node_idx]
+        <span class="hljs-keyword">if</span> backtrack_ptr == <span class="hljs-string">'↓'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'→'</span>:
+            w_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'↘'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+            w_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> isinstance(backtrack_ptr, tuple):
+            v_node_idx = backtrack_ptr[<span class="hljs-number">0</span>]
+            w_node_idx = backtrack_ptr[<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> final_weight, alignment[::<span class="hljs-number">-1</span>]
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overlap_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    node_matrix = []
+    <span class="hljs-keyword">for</span> v_node_idx <span class="hljs-keyword">in</span> range(v_node_count):
+        row = []
+        <span class="hljs-keyword">for</span> w_node_idx <span class="hljs-keyword">in</span> range(w_node_count):
+            row.append([<span class="hljs-number">-1.0</span>, (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>), <span class="hljs-string">'?'</span>])
+        node_matrix.append(row)
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0.0</span>           <span class="hljs-comment"># source node weight</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>)  <span class="hljs-comment"># source node elements (elements don't matter for source node)</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">2</span>] = <span class="hljs-string">'↘'</span>           <span class="hljs-comment"># source node backtracking edge (direction doesn't matter for source node)</span>
+    <span class="hljs-keyword">for</span> v_node_idx, w_node_idx <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+        parents = []
+        <span class="hljs-keyword">if</span> v_node_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> w_node_idx &gt; <span class="hljs-number">0</span>:
+            v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+            w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, w_elem),
+                (v_elem, w_elem),
+                <span class="hljs-string">'↘'</span>
+            ])
+        <span class="hljs-keyword">if</span> v_node_idx &gt; <span class="hljs-number">0</span>:
+            v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, <span class="hljs-literal">None</span>),
+                (v_elem, <span class="hljs-literal">None</span>),
+                <span class="hljs-string">'↓'</span>
+            ])
+        <span class="hljs-keyword">if</span> w_node_idx &gt; <span class="hljs-number">0</span>:
+            w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(<span class="hljs-literal">None</span>, w_elem),
+                (<span class="hljs-literal">None</span>, w_elem),
+                <span class="hljs-string">'→'</span>
+            ])
+        <span class="hljs-comment"># If first column but not source node, consider free-ride from source node</span>
+        <span class="hljs-keyword">if</span> v_node_idx == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> w_node_idx != <span class="hljs-number">0</span>:
+            parents.append([
+                <span class="hljs-number">0.0</span>,
+                (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>),
+                (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)  <span class="hljs-comment"># jump to source</span>
+            ])
+        <span class="hljs-comment"># If sink node, consider free-rides coming from every node in last row that isn't sink node</span>
+        <span class="hljs-keyword">if</span> v_node_idx == v_node_count - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> w_node_idx == w_node_count - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">for</span> v_node_idx_from <span class="hljs-keyword">in</span> range(v_node_count - <span class="hljs-number">1</span>):
+                parents.append([
+                    node_matrix[v_node_idx_from][w_node_idx][<span class="hljs-number">0</span>] + <span class="hljs-number">0.0</span>,
+                    (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>),
+                    (v_node_idx_from, w_node_idx)  <span class="hljs-comment"># jump to this position</span>
+                ])
+        <span class="hljs-keyword">if</span> parents:  <span class="hljs-comment"># parents will be empty if v_node_idx and w_node_idx were both 0</span>
+            node_matrix[v_node_idx][w_node_idx] = max(parents, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">return</span> backtrack(node_matrix)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences AGACAAAT and GGGGAAAC and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the overlap alignment is...</p>
+<pre><code>AGAC
+AAAC
+</code></pre>
+<p>Weight: 2.0</p>
+</div>
+<p></p>
 <a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6991,7 +7217,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_68730549a12f46f293c57ccb07e211bd.svg" alt="Latex diagram"></p>
+<p><img src="latex_f46c6cf1c4766ae0c66862cc5ff1b6b7.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7074,7 +7300,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_e082c4c15919916749ef7723824218ca.svg" alt="Latex diagram"></p>
+<p><img src="latex_20f20180df4aa5c9dea28e38941278f7.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7082,6 +7308,121 @@ GAA
 </div>
 <p></p>
 <a name="H3_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Local Alignment/Graph Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by local alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
+<p><a href="ch5_code/src/LocalAlignment_Matrix.py">ch5_code/src/LocalAlignment_Matrix.py</a> (lines 10 to 95):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
+        node_matrix: List[List[Any]]
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_idx = len(node_matrix) - <span class="hljs-number">1</span>
+    w_node_idx = len(node_matrix[<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>
+    final_weight = node_matrix[v_node_idx][w_node_idx][<span class="hljs-number">0</span>]
+    alignment = []
+    <span class="hljs-keyword">while</span> v_node_idx != <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> w_node_idx != <span class="hljs-number">0</span>:
+        _, elems, backtrack_ptr = node_matrix[v_node_idx][w_node_idx]
+        <span class="hljs-keyword">if</span> backtrack_ptr == <span class="hljs-string">'↓'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'→'</span>:
+            w_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> backtrack_ptr == <span class="hljs-string">'↘'</span>:
+            v_node_idx -= <span class="hljs-number">1</span>
+            w_node_idx -= <span class="hljs-number">1</span>
+            alignment.append(elems)
+        <span class="hljs-keyword">elif</span> isinstance(backtrack_ptr, tuple):
+            v_node_idx = backtrack_ptr[<span class="hljs-number">0</span>]
+            w_node_idx = backtrack_ptr[<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> final_weight, alignment[::<span class="hljs-number">-1</span>]
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">local_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    node_matrix = []
+    <span class="hljs-keyword">for</span> v_node_idx <span class="hljs-keyword">in</span> range(v_node_count):
+        row = []
+        <span class="hljs-keyword">for</span> w_node_idx <span class="hljs-keyword">in</span> range(w_node_count):
+            row.append([<span class="hljs-number">-1.0</span>, (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>), <span class="hljs-string">'?'</span>])
+        node_matrix.append(row)
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0.0</span>           <span class="hljs-comment"># source node weight</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>)  <span class="hljs-comment"># source node elements (elements don't matter for source node)</span>
+    node_matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">2</span>] = <span class="hljs-string">'↘'</span>           <span class="hljs-comment"># source node backtracking edge (direction doesn't matter for source node)</span>
+    <span class="hljs-keyword">for</span> v_node_idx, w_node_idx <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+        parents = []
+        <span class="hljs-keyword">if</span> v_node_idx &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> w_node_idx &gt; <span class="hljs-number">0</span>:
+            v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+            w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, w_elem),
+                (v_elem, w_elem),
+                <span class="hljs-string">'↘'</span>
+            ])
+        <span class="hljs-keyword">if</span> v_node_idx &gt; <span class="hljs-number">0</span>:
+            v_elem = v[v_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx - <span class="hljs-number">1</span>][w_node_idx][<span class="hljs-number">0</span>] + weight_lookup.lookup(v_elem, <span class="hljs-literal">None</span>),
+                (v_elem, <span class="hljs-literal">None</span>),
+                <span class="hljs-string">'↓'</span>
+            ])
+        <span class="hljs-keyword">if</span> w_node_idx &gt; <span class="hljs-number">0</span>:
+            w_elem = w[w_node_idx - <span class="hljs-number">1</span>]
+            parents.append([
+                node_matrix[v_node_idx][w_node_idx - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + weight_lookup.lookup(<span class="hljs-literal">None</span>, w_elem),
+                (<span class="hljs-literal">None</span>, w_elem),
+                <span class="hljs-string">'→'</span>
+            ])
+        <span class="hljs-comment"># If not source node, consider free-ride from source node</span>
+        <span class="hljs-keyword">if</span> v_node_idx != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> w_node_idx != <span class="hljs-number">0</span>:
+            parents.append([
+                <span class="hljs-number">0.0</span>,
+                (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>),
+                (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)  <span class="hljs-comment"># jump to source</span>
+            ])
+        <span class="hljs-comment"># If sink node, consider free-rides coming from every node that isn't sink node</span>
+        <span class="hljs-keyword">if</span> v_node_idx == v_node_count - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> w_node_idx == w_node_count - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">for</span> v_node_idx_from, w_node_idx_from <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+                <span class="hljs-keyword">if</span> v_node_idx_from == v_node_count - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> w_node_idx_from == w_node_count - <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">continue</span>
+                parents.append([
+                    node_matrix[v_node_idx_from][w_node_idx_from][<span class="hljs-number">0</span>] + <span class="hljs-number">0.0</span>,
+                    (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>),
+                    (v_node_idx_from, w_node_idx_from)  <span class="hljs-comment"># jump to this position</span>
+                ])
+        <span class="hljs-keyword">if</span> parents:  <span class="hljs-comment"># parents will be empty if v_node_idx and w_node_idx were both 0</span>
+            node_matrix[v_node_idx][w_node_idx] = max(parents, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">return</span> backtrack(node_matrix)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TAGAACT and CGAAG and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the local alignment is...</p>
+<pre><code>GAA
+GAA
+</code></pre>
+<p>Weight: 3.0</p>
+</div>
+<p></p>
 <a name="H_Protein%20Scoring"></a><h3>Protein Scoring</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -7190,14 +7531,14 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_2885e138e5f05147d3ea233f556bbbc0.svg" alt="Latex diagram"></p>
+<p><img src="latex_7cb7832af5287abcbbe0c2575ba7b88b.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_872521f63466651913c8f3f3406cc66a.svg" alt="Latex diagram"></p>
+<p><img src="latex_ae3ca815256ad44b81f9f77508b292e9.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>

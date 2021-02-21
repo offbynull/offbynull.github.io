@@ -3929,7 +3929,7 @@ When finding a maximum alignment path, these "free rides" make it so that the pa
  * starts from the most appropriate part of the second sequence
  * stops at the most appropriate part of the second sequence
 
-such that if the first sequence is wedged somewhere the second sequence, that maximum alignment path will be targeted in such a way that it homes in on it.
+such that if the first sequence is wedged somewhere within the second sequence, that maximum alignment path will be targeted in such a way that it homes in on it.
 
 ```{output}
 ch5_code/src/FittingAlignment_Graph.py
@@ -3951,6 +3951,36 @@ G  -1  -1  -1   1
 ```
 
 #### Matrix Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Fitting Alignment\/Matrix Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Fitting Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by fitting alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.
+
+```{output}
+ch5_code/src/FittingAlignment_Matrix.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+FittingAlignment_Matrix
+AGAC
+TAAGAACT
+embedded_score_matrix
+-1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+```
 
 ### Overlap Alignment
 
@@ -4036,6 +4066,35 @@ G  -1  -1  -1   1
 
 #### Matrix Algorithm
 
+`{bm} /(Algorithms\/Sequence Alignment\/Overlap Alignment\/Matrix Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Overlap Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by overlap alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.
+
+```{output}
+ch5_code/src/OverlapAlignment_Matrix.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+OverlapAlignment_Matrix
+AGACAAAT
+GGGGAAAC
+embedded_score_matrix
+-1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+```
 
 ### Local Alignment
 
@@ -4120,6 +4179,36 @@ G  -1  -1  -1   1
 ```
 
 #### Matrix Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Local Alignment\/Matrix Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Local Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by local alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.
+
+```{output}
+ch5_code/src/LocalAlignment_Matrix.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+LocalAlignment_Matrix
+TAGAACT
+CGAAG
+embedded_score_matrix
+-1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+```
 
 ### Protein Scoring
 
