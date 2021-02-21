@@ -6747,6 +6747,66 @@ TT-TTT
 <li>stops at the most appropriate part of the second <a href="#BM_(sequence)%2Fi">sequence</a></li>
 </ul>
 <p>such that if the first <a href="#BM_(sequence)%2Fi">sequence</a> is wedged somewhere the second <a href="#BM_(sequence)%2Fi">sequence</a>, that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes in on it.</p>
+<p><a href="ch5_code/src/FittingAlignment_Graph.py">ch5_code/src/FittingAlignment_Graph.py</a> (lines 37 to 95):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_fitting_alignment_graph</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Graph[Tuple[int, ...], NodeData, str, EdgeData]:</span>
+    graph = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], weight_lookup.lookup(*elems))
+    )
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    source_node = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    source_create_free_ride_edge_id_func = unique_id_generator(<span class="hljs-string">'FREE_RIDE_SOURCE'</span>)
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> product([<span class="hljs-number">0</span>], range(w_node_count)):
+        <span class="hljs-keyword">if</span> node == source_node:
+            <span class="hljs-keyword">continue</span>
+        e = source_create_free_ride_edge_id_func()
+        graph.insert_edge(e, source_node, node, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+    sink_node = v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>
+    sink_create_free_ride_edge_id_func = unique_id_generator(<span class="hljs-string">'FREE_RIDE_SINK'</span>)
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> product([v_node_count - <span class="hljs-number">1</span>], range(w_node_count)):
+        <span class="hljs-keyword">if</span> node == sink_node:
+            <span class="hljs-keyword">continue</span>
+        e = sink_create_free_ride_edge_id_func()
+        graph.insert_edge(e, node, sink_node, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+    <span class="hljs-keyword">return</span> graph
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fitting_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    graph = create_fitting_alignment_graph(v, w, weight_lookup)
+    from_node = (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    to_node = (v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>)
+    populate_weights_and_backtrack_pointers(
+        graph,
+        from_node,
+        <span class="hljs-keyword">lambda</span> n_id, weight, e_id: graph.get_node_data(n_id).set_weight_and_backtracking_edge(weight, e_id),
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        <span class="hljs-keyword">lambda</span> e_id: graph.get_edge_data(e_id).weight
+    )
+    final_weight = graph.get_node_data(to_node).weight
+    edges = backtrack(
+        graph,
+        to_node,
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
+    )
+    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    alignment = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        ed = graph.get_edge_data(e)
+        alignment.append((ed.v_elem, ed.w_elem))
+    <span class="hljs-keyword">return</span> final_weight, edges, alignment
+</code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the sequences AGAC and TAAGAACT and the score matrix...</p>
@@ -6815,6 +6875,66 @@ GG-T
 <li>stops at the most appropriate part of the first <a href="#BM_(sequence)%2Fi">sequence</a></li>
 </ul>
 <p>such that if there is a matching overlap between the <a href="#BM_(sequence)%2Fi">sequence</a>s, that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that maximizes that overlap.</p>
+<p><a href="ch5_code/src/OverlapAlignment_Graph.py">ch5_code/src/OverlapAlignment_Graph.py</a> (lines 37 to 95):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_overlap_alignment_graph</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Graph[Tuple[int, ...], NodeData, str, EdgeData]:</span>
+    graph = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], weight_lookup.lookup(*elems))
+    )
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    source_node = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    source_create_free_ride_edge_id_func = unique_id_generator(<span class="hljs-string">'FREE_RIDE_SOURCE'</span>)
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> product([<span class="hljs-number">0</span>], range(w_node_count)):
+        <span class="hljs-keyword">if</span> node == source_node:
+            <span class="hljs-keyword">continue</span>
+        e = source_create_free_ride_edge_id_func()
+        graph.insert_edge(e, source_node, node, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+    sink_node = v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>
+    sink_create_free_ride_edge_id_func = unique_id_generator(<span class="hljs-string">'FREE_RIDE_SINK'</span>)
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> product(range(v_node_count), [w_node_count - <span class="hljs-number">1</span>]):
+        <span class="hljs-keyword">if</span> node == sink_node:
+            <span class="hljs-keyword">continue</span>
+        e = sink_create_free_ride_edge_id_func()
+        graph.insert_edge(e, node, sink_node, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+    <span class="hljs-keyword">return</span> graph
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overlap_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    graph = create_overlap_alignment_graph(v, w, weight_lookup)
+    from_node = (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    to_node = (v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>)
+    populate_weights_and_backtrack_pointers(
+        graph,
+        from_node,
+        <span class="hljs-keyword">lambda</span> n_id, weight, e_id: graph.get_node_data(n_id).set_weight_and_backtracking_edge(weight, e_id),
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        <span class="hljs-keyword">lambda</span> e_id: graph.get_edge_data(e_id).weight
+    )
+    final_weight = graph.get_node_data(to_node).weight
+    edges = backtrack(
+        graph,
+        to_node,
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
+    )
+    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    alignment = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        ed = graph.get_edge_data(e)
+        alignment.append((ed.v_elem, ed.w_elem))
+    <span class="hljs-keyword">return</span> final_weight, edges, alignment
+</code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the sequences AGACAAAT and GGGGAAAC and the score matrix...</p>
@@ -6882,6 +7002,66 @@ TT-TTT
 <li>suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.</li>
 </ul>
 <p>The maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes on the <a href="#BM_(substring)%2Fi">substring</a> within each <a href="#BM_(sequence)%2Fi">sequence</a> that produces the highest scoring alignment.</p>
+<p><a href="ch5_code/src/LocalAlignment_Graph.py">ch5_code/src/LocalAlignment_Graph.py</a> (lines 38 to 96):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_local_alignment_graph</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Graph[Tuple[int, ...], NodeData, str, EdgeData]:</span>
+    graph = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], weight_lookup.lookup(*elems))
+    )
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    source_node = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    source_create_free_ride_edge_id_func = unique_id_generator(<span class="hljs-string">'FREE_RIDE_SOURCE'</span>)
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+        <span class="hljs-keyword">if</span> node == source_node:
+            <span class="hljs-keyword">continue</span>
+        e = source_create_free_ride_edge_id_func()
+        graph.insert_edge(e, source_node, node, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+    sink_node = v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>
+    sink_create_free_ride_edge_id_func = unique_id_generator(<span class="hljs-string">'FREE_RIDE_SINK'</span>)
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+        <span class="hljs-keyword">if</span> node == sink_node:
+            <span class="hljs-keyword">continue</span>
+        e = sink_create_free_ride_edge_id_func()
+        graph.insert_edge(e, node, sink_node, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+    <span class="hljs-keyword">return</span> graph
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">local_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup
+</span>) -&gt; Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    graph = create_local_alignment_graph(v, w, weight_lookup)
+    from_node = (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    to_node = (v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>)
+    populate_weights_and_backtrack_pointers(
+        graph,
+        from_node,
+        <span class="hljs-keyword">lambda</span> n_id, weight, e_id: graph.get_node_data(n_id).set_weight_and_backtracking_edge(weight, e_id),
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        <span class="hljs-keyword">lambda</span> e_id: graph.get_edge_data(e_id).weight
+    )
+    final_weight = graph.get_node_data(to_node).weight
+    edges = backtrack(
+        graph,
+        to_node,
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
+    )
+    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    alignment = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        ed = graph.get_edge_data(e)
+        alignment.append((ed.v_elem, ed.w_elem))
+    <span class="hljs-keyword">return</span> final_weight, edges, alignment
+</code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the sequences TAGAACT and CGAAG and the score matrix...</p>

@@ -3931,6 +3931,12 @@ When finding a maximum alignment path, these "free rides" make it so that the pa
 
 such that if the first sequence is wedged somewhere the second sequence, that maximum alignment path will be targeted in such a way that it homes in on it.
 
+```{output}
+ch5_code/src/FittingAlignment_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
 ```{ch5}
 FittingAlignment_Graph
 AGAC
@@ -4008,7 +4014,12 @@ When finding a maximum alignment path, these "free rides" make it so that the pa
 * stops at the most appropriate part of the first sequence
 
 such that if there is a matching overlap between the sequences, that maximum alignment path will be targeted in such a way that maximizes that overlap.
- 
+
+```{output}
+ch5_code/src/OverlapAlignment_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
 ```{ch5}
 OverlapAlignment_Graph
@@ -4088,6 +4099,12 @@ When finding a maximum alignment path, these "free rides" make it so that if eit
 * suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.
 
 The maximum alignment path will be targeted in such a way that it homes on the substring within each sequence that produces the highest scoring alignment.
+
+```{output}
+ch5_code/src/LocalAlignment_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
 ```{ch5}
 LocalAlignment_Graph
