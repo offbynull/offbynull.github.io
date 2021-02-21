@@ -3093,13 +3093,13 @@ This algorithm finds a maximum path using recursion. To calculate the maximum pa
 This is too slow to be used on anything but small DAGs.
 
 ```{output}
-ch5_code/src/FindMaxPath_Bruteforce.py
+ch5_code/src/find_max_path/FindMaxPath_Bruteforce.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-FindMaxPath_Bruteforce
+find_max_path.FindMaxPath_Bruteforce
 A B 1, A C 1, B C 1, C D 1, C E 1
 A
 E
@@ -3118,13 +3118,13 @@ Algorithms/Sequence Alignment/Find Maximum Path/Bruteforce Algorithm_TOPIC
 This algorithm extends the bruteforce algorithm using dynamic programming: A technique that breaks down a problem into recursive sub-problems, where the result of each sub-problem is stored in some lookup table (cache) such that it can be re-used if that sub-problem were ever encountered again. The bruteforce algorithm already breaks down into recursive sub-problems. As such, the only change here is that the result of each sub-problem computation is cached such that it can be re-used if it were ever encountered again.
 
 ```{output}
-ch5_code/src/FindMaxPath_DPCache.py
+ch5_code/src/find_max_path/FindMaxPath_DPCache.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-FindMaxPath_DPCache
+find_max_path.FindMaxPath_DPCache
 A B 1, A C 1, B C 1, C D 1, C E 1
 A
 E
@@ -3205,13 +3205,13 @@ This variant of the dynamic programming algorithm uses less memory than the firs
  * this variant only caches a weight and backtracking edge.
 
 ```{output}
-ch5_code/src/FindMaxPath_DPBacktrack.py
+ch5_code/src/find_max_path/FindMaxPath_DPBacktrack.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-FindMaxPath_DPBacktrack
+find_max_path.FindMaxPath_DPBacktrack
 A B 1, A C 3, B C 1, C D 2, C E 1
 A
 E
@@ -3281,7 +3281,7 @@ Given this graph, each ...
  * vertical edge is an indel where the left is kept.
 
 ```{ch5}
-GlobalAlignment_Graph_Visualize
+global_alignment.GlobalAlignment_Graph_Visualize
 CHOIR
 FOUR
 
@@ -3326,7 +3326,7 @@ CH-OIR
 ... is as follows...
 
 ```{ch5}
-GlobalAlignment_Graph_Visualize
+global_alignment.GlobalAlignment_Graph_Visualize
 CHOIR
 FOUR
 0,0->0,1|0,1->0,2|0,2->1,2|1,2->2,3|2,3->3,4|3,4->4,5
@@ -3366,13 +3366,13 @@ The weight of an alignment path is the sum of its operation weights. Since opera
 The highlighted path in the example path above has a weight of -1: -1 + -1 + -1 + 1 + 0 + 1.
 
 ```{output}
-ch5_code/src/GlobalAlignment_Graph.py
+ch5_code/src/global_alignment/GlobalAlignment_Graph.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-GlobalAlignment_Graph
+global_alignment.GlobalAlignment_Graph
 TAAT
 GAT
 embedded_score_matrix
@@ -3395,7 +3395,7 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 
 **ALGORITHM**:
 
-The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix where each element in the matrix represents a node in the alignment graph. The elements are then populated in a predefined topological order, where each element gets populated with the node weight, the chosen backtracking edge, and the elements for that backtracking edge.
+The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as a 2D matrix where each element in the matrix represents a node in the alignment graph. The elements are then populated in a predefined topological order, where each element gets populated with the node weight, the chosen backtracking edge, and the elements from that backtracking edge.
 
 Since the alignment graph is a grid, the node weights may be populated either...
 
@@ -3430,13 +3430,13 @@ In either case, the nodes being walked are guaranteed to have their parent node 
 ```
 
 ```{output}
-ch5_code/src/GlobalAlignment_Matrix.py
+ch5_code/src/global_alignment/GlobalAlignment_Matrix.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-GlobalAlignment_Matrix
+global_alignment.GlobalAlignment_Matrix
 TATTATTAT
 AAA
 embedded_score_matrix
@@ -3498,13 +3498,13 @@ o---▶*---▶*---▶*---▶*---▶*       o---▶o---▶*---▶*---▶*---▶* 
 ```
 
 ```{output}
-ch5_code/src/Global_ForwardSweeper.py
+ch5_code/src/global_alignment/Global_ForwardSweeper.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-Global_ForwardSweeper
+global_alignment.Global_ForwardSweeper
 TACT
 GACGT
 embedded_score_matrix
@@ -3594,13 +3594,13 @@ By recursively performing this operation, you can pull out all nodes that make u
 Finding the edges between these nodes yields the maximum alignment path. To find the edges between the node found at column n and the node found at column n + 1, isolate the alignment graph between those nodes and perform the standard matrix variant of global alignment. The graph will likely be very small, so the computation and space requirements will likely be very low.
 
 ```{output}
-ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py
+ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-GlobalAlignment_DivideAndConquer_NodeVariant
+global_alignment.GlobalAlignment_DivideAndConquer_NodeVariant
 TACT
 GACGT
 embedded_score_matrix
@@ -3657,7 +3657,7 @@ Between an alignment graph and its reversed edge variant, a maximum alignment pa
  4. for any node that the maximum alignment path *DOES NOT* travel through, taking the weight of that node from both alignment graphs and adding them together results in *LESS THAN* the sink node weight.
 
 ```{ch5}
-GlobalAlignment_DivideAndConquer_Visualize_EdgeReverseAdd
+global_alignment.GlobalAlignment_DivideAndConquer_Visualize_EdgeReverseAdd
 TACT
 GACGT
 embedded_score_matrix
@@ -3704,7 +3704,7 @@ o---▶o---▶o---▶o---▶o---▶o           o---▶o---▶o     o◀---o◀--
 Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum alignment path travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split alignment graph (insight #3 above).
 
 ```{ch5}
-GlobalAlignment_DivideAndConquer_Visualize_SplitAdd
+global_alignment.GlobalAlignment_DivideAndConquer_Visualize_SplitAdd
 TACT
 GACGT
 3
@@ -3727,13 +3727,13 @@ Ultimately, this entire process may be combined with the first idea (only need t
  * reverse sweep only requires holding on to the weights from column n+1.
 
 ```{output}
-ch5_code/src/Global_SweepCombiner.py
+ch5_code/src/global_alignment/Global_SweepCombiner.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-Global_SweepCombiner
+global_alignment.Global_SweepCombiner
 TACT
 GACGT
 3
@@ -3749,13 +3749,13 @@ G  0  0  0  1
 To recap, the full divide-and-conquer algorithm is as follows: For the middle column in an alignment graph, find a node that a maximum alignment path travels through. Then, sub-divide the alignment graph based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum alignment path. The edges between these found nodes can be determined by finding a maximum alignment path between each found node and its neighbouring found node. Concatenate these edges to construct the path.
 
 ```{output}
-ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py
+ch5_code/src/global_alignment/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn
+global_alignment.Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn
 TACT
 GACGT
 3
@@ -3769,13 +3769,13 @@ G  0  0  0  1
 ```
 
 ```{output}
-ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py
+ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-GlobalAlignment_DivideAndConquer_NodeVariant
+global_alignment.GlobalAlignment_DivideAndConquer_NodeVariant
 TACT
 GACGT
 embedded_score_matrix
@@ -3798,13 +3798,13 @@ The algorithm finds all nodes that a maximum alignment path travels through at b
 Of the immediate neighbours that are also found nodes, the one forming the edge with the highest weight is the edge that a maximum alignment path travels through.
 
 ```{output}
-ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py
+ch5_code/src/global_alignment/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn
+global_alignment.Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn
 TACT
 GACGT
 3
@@ -3854,13 +3854,13 @@ The recursive sub-division process happens just as before, but this time with ed
  * Since edges are being pulled out, the step that path finds between two neighbouring found nodes is no longer required. This is because sub-division of the alignment graph happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.
 
 ```{output}
-ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py
+ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_EdgeVariant.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-GlobalAlignment_DivideAndConquer_EdgeVariant
+global_alignment.GlobalAlignment_DivideAndConquer_EdgeVariant
 TACT
 GACGT
 embedded_score_matrix
@@ -3909,7 +3909,7 @@ The graph algorithm for fitting alignment is an extension of the graph algorithm
 * in the last column that isn't the sink node, construct a 0 weight edge from that node to the sink node.
 
 ```{ch5}
-FittingAlignment_Visualize
+fitting_alignment.FittingAlignment_Visualize
 TAAT
 GAAG
 
@@ -3932,13 +3932,13 @@ When finding a maximum alignment path, these "free rides" make it so that the pa
 such that if the first sequence is wedged somewhere within the second sequence, that maximum alignment path will be targeted in such a way that it homes in on it.
 
 ```{output}
-ch5_code/src/FittingAlignment_Graph.py
+ch5_code/src/fitting_alignment/FittingAlignment_Graph.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-FittingAlignment_Graph
+fitting_alignment.FittingAlignment_Graph
 AGAC
 TAAGAACT
 embedded_score_matrix
@@ -3964,13 +3964,13 @@ Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
 The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by fitting alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.
 
 ```{output}
-ch5_code/src/FittingAlignment_Matrix.py
+ch5_code/src/fitting_alignment/FittingAlignment_Matrix.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-FittingAlignment_Matrix
+fitting_alignment.FittingAlignment_Matrix
 AGAC
 TAAGAACT
 embedded_score_matrix
@@ -4023,7 +4023,7 @@ The graph algorithm for overlap alignment is an extension of the graph algorithm
 * in the last row that isn't the sink node, construct a 0 weight edge from that node to the sink node.
 
 ```{ch5}
-OverlapAlignment_Visualize
+overlap_alignment.OverlapAlignment_Visualize
 TAGT
 GAGG
 
@@ -4046,13 +4046,13 @@ When finding a maximum alignment path, these "free rides" make it so that the pa
 such that if there is a matching overlap between the sequences, that maximum alignment path will be targeted in such a way that maximizes that overlap.
 
 ```{output}
-ch5_code/src/OverlapAlignment_Graph.py
+ch5_code/src/overlap_alignment/OverlapAlignment_Graph.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-OverlapAlignment_Graph
+overlap_alignment.OverlapAlignment_Graph
 AGACAAAT
 GGGGAAAC
 embedded_score_matrix
@@ -4078,13 +4078,13 @@ Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
 The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by overlap alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.
 
 ```{output}
-ch5_code/src/OverlapAlignment_Matrix.py
+ch5_code/src/overlap_alignment/OverlapAlignment_Matrix.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-OverlapAlignment_Matrix
+overlap_alignment.OverlapAlignment_Matrix
 AGACAAAT
 GGGGAAAC
 embedded_score_matrix
@@ -4137,7 +4137,7 @@ The graph algorithm for local alignment is an extension of the graph algorithm f
 * that isn't the sink node, construct a 0 weight edge from that node to the sink node.
 
 ```{ch5}
-LocalAlignment_Visualize
+local_alignment.LocalAlignment_Visualize
 TAAT
 GAAG
 
@@ -4160,13 +4160,13 @@ When finding a maximum alignment path, these "free rides" make it so that if eit
 The maximum alignment path will be targeted in such a way that it homes on the substring within each sequence that produces the highest scoring alignment.
 
 ```{output}
-ch5_code/src/LocalAlignment_Graph.py
+ch5_code/src/local_alignment/LocalAlignment_Graph.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-LocalAlignment_Graph
+local_alignment.LocalAlignment_Graph
 TAGAACT
 CGAAG
 embedded_score_matrix
@@ -4192,13 +4192,13 @@ Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
 The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by local alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.
 
 ```{output}
-ch5_code/src/LocalAlignment_Matrix.py
+ch5_code/src/local_alignment/LocalAlignment_Matrix.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch5}
-LocalAlignment_Matrix
+local_alignment.LocalAlignment_Matrix
 TAGAACT
 CGAAG
 embedded_score_matrix
@@ -4311,22 +4311,16 @@ G| \  | \  | \  |
 ```
 
 ```{svgbob}
-"Row before:"
-
-    T       A       A
-o------▶o------▶o------▶o
-
-
-"Row after:"
-
-           TAA
-   ,-----------------.
-  /     TA            \
- /  ,-------.   AA     \
-,  /       ,-\-------.  .
-| /       /   \       \ |
-|/  T    /  A  ▼    A  ▼▼
-o------▶o------▶o------▶o
+"Row before:"                    "Row after:"
+                                 
+    T       A       A                       TAA
+o------▶o------▶o------▶o           ,-----------------.
+                                   /     TA            \
+                                  /  ,-------.   AA     \
+                                 ,  /       ,-\-------.  .
+                                 | /       /   \       \ |
+                                 |/  T    /  A  ▼    A  ▼▼
+                                 o------▶o------▶o------▶o
 ```
 
 ```{svgbob}
@@ -4351,7 +4345,7 @@ G|                   G|  .   /
 ```
 
 ```{ch5}
-AffineGapAlignment_Basic_Visualize
+affine_gap_alignment.AffineGapAlignment_Basic_Visualize
 TGAT
 GAGG
 
@@ -4368,7 +4362,7 @@ G  0  0  0  1
 #### Layer Algorithm
 
 ```{ch5}
-AffineGapAlignment_Layer_Visualize
+affine_gap_alignment.AffineGapAlignment_Layer_Visualize
 TGAT
 GAGG
 

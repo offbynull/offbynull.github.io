@@ -1,4 +1,4 @@
-from Graph import Graph
+from graph.Graph import Graph
 
 g = Graph()
 g.insert_node('n0', -1)

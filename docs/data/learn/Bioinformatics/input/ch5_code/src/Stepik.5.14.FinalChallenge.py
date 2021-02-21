@@ -60,7 +60,7 @@
 import time
 from itertools import product
 
-from GlobalAlignment_Matrix import global_alignment, get_score
+from global_alignment.GlobalAlignment_Matrix import global_alignment, get_score
 
 with open('Marahiel_data.csv', mode='r', encoding='utf-8') as f:
     data = f.read()

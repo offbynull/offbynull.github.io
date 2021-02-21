@@ -1,5 +1,7 @@
 if __name__ == '__main__':
+    import importlib
+
     module_name = input()
-    module = __import__(module_name)
+    module = importlib.import_module(module_name)
     module.main()
 

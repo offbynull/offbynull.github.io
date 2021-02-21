@@ -1,4 +1,4 @@
-from GlobalAlignment_Graph import global_alignment
+from global_alignment.GlobalAlignment_Graph import global_alignment
 from WeightLookup import Table2DWeightLookup
 
 with open('/home/user/Downloads/dataset_240305_3(1).txt', mode='r', encoding='utf-8') as f:

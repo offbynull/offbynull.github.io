@@ -5761,7 +5761,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p><strong>ALGORITHM</strong>:</p>
 <p>This algorithm finds a maximum path using recursion. To calculate the maximum path between two nodes, iterate over each of the source node's children and calculate <code>edge_weight + max_path(child, destination).weight</code>. The iteration with the highest value is the one with the maximum path to the destination node.</p>
 <p>This is too slow to be used on anything but small DAGs.</p>
-<p><a href="ch5_code/src/FindMaxPath_Bruteforce.py">ch5_code/src/FindMaxPath_Bruteforce.py</a> (lines 21 to 50):</p>
+<p><a href="ch5_code/src/find_max_path/FindMaxPath_Bruteforce.py">ch5_code/src/find_max_path/FindMaxPath_Bruteforce.py</a> (lines 21 to 50):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
         graph: Graph[N, ND, E, ED],
         current_node: N,
@@ -5795,7 +5795,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_509f1c55b5b43f6525bfadac9911b892.svg" alt="Dot diagram"></p>
+<p><img src="dot_5647c257f364d60064c519cb7026dffa.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5813,7 +5813,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>This algorithm extends the bruteforce algorithm using <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>: A technique that breaks down a problem into recursive sub-problems, where the result of each sub-problem is stored in some lookup table (cache) such that it can be re-used if that sub-problem were ever encountered again. The bruteforce algorithm already breaks down into recursive sub-problems. As such, the only change here is that the result of each sub-problem computation is cached such that it can be re-used if it were ever encountered again.</p>
-<p><a href="ch5_code/src/FindMaxPath_DPCache.py">ch5_code/src/FindMaxPath_DPCache.py</a> (lines 21 to 56):</p>
+<p><a href="ch5_code/src/find_max_path/FindMaxPath_DPCache.py">ch5_code/src/find_max_path/FindMaxPath_DPCache.py</a> (lines 21 to 56):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_path</span>(<span class="hljs-params">
         graph: Graph[N, ND, E, ED],
         current_node: N,
@@ -5853,7 +5853,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_9869e28a598a830be109fdd371404e2b.svg" alt="Dot diagram"></p>
+<p><img src="dot_cfba01e3e0d0eba5c8fdbfc7a720d0fb.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5894,7 +5894,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <li>the first variant caches a path to the destination.</li>
 <li>this variant only caches a weight and backtracking edge.</li>
 </ul>
-<p><a href="ch5_code/src/FindMaxPath_DPBacktrack.py">ch5_code/src/FindMaxPath_DPBacktrack.py</a> (lines 41 to 143):</p>
+<p><a href="ch5_code/src/find_max_path/FindMaxPath_DPBacktrack.py">ch5_code/src/find_max_path/FindMaxPath_DPBacktrack.py</a> (lines 41 to 143):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">populate_weights_and_backtrack_pointers</span>(<span class="hljs-params">
         g: Graph[N, ND, E, ED],
         from_node: N,
@@ -6001,13 +6001,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_6e020580b6e05f2718fb92d4d4e1ac18.svg" alt="Dot diagram"></p>
+<p><img src="dot_e5f7eae11e245a99b96aa9fa3522f717.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_ebd12390e93072dc93c9f3e88788c79a.svg" alt="Dot diagram"></p>
+<p><img src="dot_d065f07fd688e7f71926cb1e11249850.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6044,7 +6044,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ae1ee9d9a3706c77ed284c49b85e5cff.svg" alt="Latex diagram"></p>
+<p><img src="latex_5f3c0b66e8ea0379dd0f45557f1ea7ef.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6055,13 +6055,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1a52df9be7ee975bb17a3b4bd4857c34.svg" alt="Latex diagram"></p>
+<p><img src="latex_2fd3e71539c26a7e6bf1bcdd8621a6fc.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <p>The weight of an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> is the sum of its operation weights. Since operations with higher weights are more desirable than those with lower weights, <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s with higher weights are more desirable than those with lower weights. As such, out of all the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s possible, the one with the highest weight is the one with the most desirable set of operations.</p>
 <p>The highlighted path in the example path above has a weight of -1: -1 + -1 + -1 + 1 + 0 + 1.</p>
-<p><a href="ch5_code/src/GlobalAlignment_Graph.py">ch5_code/src/GlobalAlignment_Graph.py</a> (lines 38 to 79):</p>
+<p><a href="ch5_code/src/global_alignment/GlobalAlignment_Graph.py">ch5_code/src/global_alignment/GlobalAlignment_Graph.py</a> (lines 37 to 78):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_global_alignment_graph</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6116,7 +6116,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_e48c664c532f06c99a29d86a12e06b4d.svg" alt="Latex diagram"></p>
+<p><img src="latex_2932c02d17b53f527218aeaafb6e757f.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 GA-T
 </code></pre>
@@ -6133,7 +6133,7 @@ GA-T
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is represented as a 2D matrix where each element in the matrix represents a node in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. The elements are then populated in a predefined <a href="#BM_(topological%20order)%2Fi">topological order</a>, where each element gets populated with the node weight, the chosen backtracking edge, and the elements for that backtracking edge.</p>
+<p>The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is represented as a 2D matrix where each element in the matrix represents a node in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. The elements are then populated in a predefined <a href="#BM_(topological%20order)%2Fi">topological order</a>, where each element gets populated with the node weight, the chosen backtracking edge, and the elements from that backtracking edge.</p>
 <p>Since the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is a grid, the node weights may be populated either...</p>
 <ul>
 <li>row-by-row, starting from the left column and walking to the right column.</li>
@@ -6141,7 +6141,7 @@ GA-T
 </ul>
 <p>In either case, the nodes being walked are guaranteed to have their parent node weights already set.</p>
 <p><img src="svgbob_a0c3678c1817dbc609f6127b83938d7cb4bcd9d1.svg" alt="Kroki diagram output"></p>
-<p><a href="ch5_code/src/GlobalAlignment_Matrix.py">ch5_code/src/GlobalAlignment_Matrix.py</a> (lines 10 to 73):</p>
+<p><a href="ch5_code/src/global_alignment/GlobalAlignment_Matrix.py">ch5_code/src/global_alignment/GlobalAlignment_Matrix.py</a> (lines 10 to 73):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
         node_matrix: List[List[Any]]
 </span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
@@ -6239,7 +6239,7 @@ G  0  0  0  1
 <p>The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.</p>
 <p>In other words, the only data needed to calculate the weights of the next column is the weights in the previous column.</p>
 <p><img src="svgbob_a778e17c20ba10aa76e0c0375a70cc19614cd870.svg" alt="Kroki diagram output"></p>
-<p><a href="ch5_code/src/Global_ForwardSweeper.py">ch5_code/src/Global_ForwardSweeper.py</a> (lines 10 to 52):</p>
+<p><a href="ch5_code/src/global_alignment/Global_ForwardSweeper.py">ch5_code/src/global_alignment/Global_ForwardSweeper.py</a> (lines 10 to 52):</p>
 <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForwardSweeper</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup, col_backtrack: int = <span class="hljs-number">2</span></span>):</span>
         self.v = v
@@ -6322,7 +6322,7 @@ G  0  0  0  1
 <li>etc..</li>
 </ul>
 <p>Finding the edges between these nodes yields the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. To find the edges between the node found at column n and the node found at column n + 1, isolate the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> between those nodes and perform the standard matrix variant of global alignment. The graph will likely be very small, so the computation and space requirements will likely be very low.</p>
-<p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
+<p><a href="ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_nodes</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6390,7 +6390,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_a7f0254edbce580ebd362da87ce303a0.svg" alt="Latex diagram"></p>
+<p><img src="latex_1bade424605e794c66a297bf1342343c.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6398,7 +6398,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1835d6257133c466653162305f4fb63f.svg" alt="Latex diagram"></p>
+<p><img src="latex_33d9e7d823a7438d378f018b08ee879c.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6408,7 +6408,7 @@ GACGT
 <li>forward sweep only requires holding on to the weights from column n-1.</li>
 <li>reverse sweep only requires holding on to the weights from column n+1.</li>
 </ul>
-<p><a href="ch5_code/src/Global_SweepCombiner.py">ch5_code/src/Global_SweepCombiner.py</a> (lines 10 to 19):</p>
+<p><a href="ch5_code/src/global_alignment/Global_SweepCombiner.py">ch5_code/src/global_alignment/Global_SweepCombiner.py</a> (lines 10 to 19):</p>
 <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SweepCombiner</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup</span>):</span>
         self.forward_sweeper = ForwardSweeper(v, w, weight_lookup)
@@ -6441,7 +6441,7 @@ G  0  0  0  1
 </div>
 <p></p>
 <p>To recap, the full <a href="#BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi">divide-and-conquer algorithm</a> is as follows: For the middle column in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, find a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through. Then, sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. The edges between these found nodes can be determined by finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> between each found node and its neighbouring found node. Concatenate these edges to construct the path.</p>
-<p><a href="ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 29):</p>
+<p><a href="ch5_code/src/global_alignment/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/global_alignment/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 29):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_node_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6476,7 +6476,7 @@ G  0  0  0  1
 <p>... a maximum alignment path is guaranteed to travel through (3, 3).</p>
 </div>
 <p></p>
-<p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
+<p><a href="ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_nodes</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6533,7 +6533,7 @@ GACGT
 <li>bottom-right of it (1 row down and column n + 1) is also a found node.</li>
 </ul>
 <p>Of the immediate neighbours that are also found nodes, the one forming the edge with the highest weight is the edge that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through.</p>
-<p><a href="ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 65):</p>
+<p><a href="ch5_code/src/global_alignment/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/global_alignment/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 65):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_edge_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6614,7 +6614,7 @@ G  0  0  0  1
 <p>Since edges are being pulled out, the step that path finds between two neighbouring found nodes is no longer required. This is because sub-division of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.</p>
 </li>
 </ul>
-<p><a href="ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py">ch5_code/src/GlobalAlignment_DivideAndConquer_EdgeVariant.py</a> (lines 13 to 83):</p>
+<p><a href="ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_EdgeVariant.py">ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_EdgeVariant.py</a> (lines 10 to 80):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_edges</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6736,7 +6736,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_662857c29366404de66111e7dbd61f45.svg" alt="Latex diagram"></p>
+<p><img src="latex_d0a43222f33b1414af637f612cab007a.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6747,7 +6747,7 @@ TT-TTT
 <li>stops at the most appropriate part of the second <a href="#BM_(sequence)%2Fi">sequence</a></li>
 </ul>
 <p>such that if the first <a href="#BM_(sequence)%2Fi">sequence</a> is wedged somewhere within the second <a href="#BM_(sequence)%2Fi">sequence</a>, that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes in on it.</p>
-<p><a href="ch5_code/src/FittingAlignment_Graph.py">ch5_code/src/FittingAlignment_Graph.py</a> (lines 37 to 95):</p>
+<p><a href="ch5_code/src/fitting_alignment/FittingAlignment_Graph.py">ch5_code/src/fitting_alignment/FittingAlignment_Graph.py</a> (lines 37 to 95):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_fitting_alignment_graph</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -6819,7 +6819,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_fa618341c0006a1c948ec9a82071882d.svg" alt="Latex diagram"></p>
+<p><img src="latex_eee2139d35527a76982f9bb0ed71d406.svg" alt="Latex diagram"></p>
 <pre><code>AGA-C
 AGAAC
 </code></pre>
@@ -6837,7 +6837,7 @@ AGAAC
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by fitting alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
-<p><a href="ch5_code/src/FittingAlignment_Matrix.py">ch5_code/src/FittingAlignment_Matrix.py</a> (lines 10 to 93):</p>
+<p><a href="ch5_code/src/fitting_alignment/FittingAlignment_Matrix.py">ch5_code/src/fitting_alignment/FittingAlignment_Matrix.py</a> (lines 10 to 93):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
         node_matrix: List[List[Any]]
 </span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
@@ -6977,7 +6977,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_68590ef3a9f08179acd1bc9c4bf53782.svg" alt="Latex diagram"></p>
+<p><img src="latex_757a8c9300521bb6b42446d5311f68af.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6988,7 +6988,7 @@ GG-T
 <li>stops at the most appropriate part of the first <a href="#BM_(sequence)%2Fi">sequence</a></li>
 </ul>
 <p>such that if there is a matching overlap between the <a href="#BM_(sequence)%2Fi">sequence</a>s, that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that maximizes that overlap.</p>
-<p><a href="ch5_code/src/OverlapAlignment_Graph.py">ch5_code/src/OverlapAlignment_Graph.py</a> (lines 37 to 95):</p>
+<p><a href="ch5_code/src/overlap_alignment/OverlapAlignment_Graph.py">ch5_code/src/overlap_alignment/OverlapAlignment_Graph.py</a> (lines 37 to 95):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_overlap_alignment_graph</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -7060,7 +7060,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_d91c476d7c00d5092f5a17c2509c2579.svg" alt="Latex diagram"></p>
+<p><img src="latex_2d1f8ea5fe40b61c95905d56b1f5a2cd.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
 A-AC
 </code></pre>
@@ -7078,7 +7078,7 @@ A-AC
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by overlap alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
-<p><a href="ch5_code/src/OverlapAlignment_Matrix.py">ch5_code/src/OverlapAlignment_Matrix.py</a> (lines 10 to 93):</p>
+<p><a href="ch5_code/src/overlap_alignment/OverlapAlignment_Matrix.py">ch5_code/src/overlap_alignment/OverlapAlignment_Matrix.py</a> (lines 10 to 93):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
         node_matrix: List[List[Any]]
 </span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
@@ -7217,7 +7217,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f46c6cf1c4766ae0c66862cc5ff1b6b7.svg" alt="Latex diagram"></p>
+<p><img src="latex_251b6700954f9ebc57356245d94d9bde.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7228,7 +7228,7 @@ TT-TTT
 <li>suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.</li>
 </ul>
 <p>The maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes on the <a href="#BM_(substring)%2Fi">substring</a> within each <a href="#BM_(sequence)%2Fi">sequence</a> that produces the highest scoring alignment.</p>
-<p><a href="ch5_code/src/LocalAlignment_Graph.py">ch5_code/src/LocalAlignment_Graph.py</a> (lines 38 to 96):</p>
+<p><a href="ch5_code/src/local_alignment/LocalAlignment_Graph.py">ch5_code/src/local_alignment/LocalAlignment_Graph.py</a> (lines 38 to 96):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_local_alignment_graph</span>(<span class="hljs-params">
         v: List[ELEM],
         w: List[ELEM],
@@ -7300,7 +7300,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_20f20180df4aa5c9dea28e38941278f7.svg" alt="Latex diagram"></p>
+<p><img src="latex_886f259e41ae2830af5b6dbc9c717f66.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7318,7 +7318,7 @@ GAA
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by local alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
-<p><a href="ch5_code/src/LocalAlignment_Matrix.py">ch5_code/src/LocalAlignment_Matrix.py</a> (lines 10 to 95):</p>
+<p><a href="ch5_code/src/local_alignment/LocalAlignment_Matrix.py">ch5_code/src/local_alignment/LocalAlignment_Matrix.py</a> (lines 10 to 95):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
         node_matrix: List[List[Any]]
 </span>) -&gt; Tuple[float, List[Tuple[ELEM, ELEM]]]:</span>
@@ -7527,18 +7527,18 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <a name="H_Affine%20Gap%20Scoring"></a><h3>Affine Gap Scoring</h3>
 <a name="H_Basic%20Algorithm"></a><h4>Basic Algorithm</h4>
 <p><img src="svgbob_a78c6b3a04fd87c8fe19f92513598ddfb1734507.svg" alt="Kroki diagram output"></p>
-<p><img src="svgbob_1e4af5f411d32c77ebda3a253b28c6a1903e5719.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_d61e1d9fea9db6aca581f7969df6c3ff3bb50887.svg" alt="Kroki diagram output"></p>
 <p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_7cb7832af5287abcbbe0c2575ba7b88b.svg" alt="Latex diagram"></p>
+<p><img src="latex_be6cdc9b16a27a5e767122159d36e0e9.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ae3ca815256ad44b81f9f77508b292e9.svg" alt="Latex diagram"></p>
+<p><img src="latex_58052b44eada08e6d82c0d640540e996.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>

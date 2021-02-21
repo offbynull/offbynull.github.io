@@ -1,7 +1,7 @@
 from collections import Counter
 from typing import Dict, Tuple
 
-from Graph import Graph
+from graph.Graph import Graph
 from helpers.Utils import slide_window
 
 #

@@ -1,8 +1,6 @@
 from collections import Counter
-from itertools import product
-from typing import Dict, Tuple
 
-from Graph import Graph
+from graph.Graph import Graph
 from helpers.Utils import slide_window
 
 with open('/home/user/Downloads/dataset_240306_3(1).txt', mode='r', encoding='utf-8') as f:

@@ -1,4 +1,4 @@
-from Graph import Graph
+from graph.Graph import Graph
 
 with open('/home/user/Downloads/dataset_240312_3.txt', mode='r', encoding='utf-8') as f:
     data = f.read()

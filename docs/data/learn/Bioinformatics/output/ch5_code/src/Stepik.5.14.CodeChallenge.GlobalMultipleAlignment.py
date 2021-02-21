@@ -1,8 +1,6 @@
 import itertools
-from typing import Dict, Tuple
 
-from Graph import Graph
-from helpers.Utils import slide_window
+from graph.Graph import Graph
 
 #
 # Load scoring matrix
