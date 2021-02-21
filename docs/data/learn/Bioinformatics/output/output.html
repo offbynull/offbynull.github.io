@@ -92,17 +92,17 @@
 <li><a href="#H_Matrix%20Algorithm">Matrix Algorithm</a></li>
 <li><a href="#H_Divide-and-Conquer%20Algorithm">Divide-and-Conquer Algorithm</a></li>
 </ul>
-<li><a href="#H_Local%20Alignment">Local Alignment</a></li>
+<li><a href="#H_Fitting%20Alignment">Fitting Alignment</a></li>
 <ul>
 <li><a href="#H1_Graph%20Algorithm">Graph Algorithm</a></li>
 <li><a href="#H1_Matrix%20Algorithm">Matrix Algorithm</a></li>
 </ul>
-<li><a href="#H_Fitting%20Alignment">Fitting Alignment</a></li>
+<li><a href="#H_Overlap%20Alignment">Overlap Alignment</a></li>
 <ul>
 <li><a href="#H2_Graph%20Algorithm">Graph Algorithm</a></li>
 <li><a href="#H2_Matrix%20Algorithm">Matrix Algorithm</a></li>
 </ul>
-<li><a href="#H_Overlap%20Alignment">Overlap Alignment</a></li>
+<li><a href="#H_Local%20Alignment">Local Alignment</a></li>
 <ul>
 <li><a href="#H3_Graph%20Algorithm">Graph Algorithm</a></li>
 <li><a href="#H3_Matrix%20Algorithm">Matrix Algorithm</a></li>
@@ -2353,6 +2353,10 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>Stitched [GAAA, AAAT, AATC] to GAAATC</p>
 </div>
 <p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See also: <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Overlap Alignment</a></p>
+</div>
 <a name="H_Stitch%20Read-Pairs"></a><h3>Stitch Read-Pairs</h3>
 <p><a name="BM_(Algorithms%5C%2FDNA%20Assembly%2FStitch%20Read-Pairs)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -2569,6 +2573,10 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>Stitched [ATG---CCG, TGT---CGT, GTT---GTT, TTA---TTC] to ATGTTACCGTTC</p>
 </div>
 <p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See also: <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Overlap Alignment</a></p>
+</div>
 <a name="H_Break%20Reads"></a><h3>Break Reads</h3>
 <p><a name="BM_(Algorithms%5C%2FDNA%20Assembly%2FBreak%20Reads)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given a set of <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s that arbitrarily overlap, each <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> can be broken into many smaller <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s that overlap better. For example, given 4 <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">10-mer</a>s that arbitrarily overlap, you can break them into better overlapping <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">5-mer</a>s...</p>
@@ -6696,72 +6704,6 @@ GACGT
 <p>Weight: 2.0</p>
 </div>
 <p></p>
-<a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a></li>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
-</ul>
-</div>
-<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, for all possible <a href="#BM_(substring)%2Fi">substring</a>s of those <a href="#BM_(sequence)%2Fi">sequence</a>s, pull out the highest scoring alignment. For example, given the <a href="#BM_(sequence)%2Fi">sequence</a>s GGTTTTTAA and CCTTCTTAA, it may be that the <a href="#BM_(substring)%2Fi">substring</a>s with the highest scoring alignment are TTTTT and TTCTT ...</p>
-<pre><code>TTC-TT
-TT-TTT
-</code></pre>
-<p><strong>WHY</strong>: Two biological <a href="#BM_(sequence)%2Fi">sequence</a>s may have strongly related parts rather than being strongly related in their entirety. For example, a class of proteins called <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> output <a href="#BM_(peptide)%2Fi">peptide</a>s without going through a ribosome (<a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s). Each <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> outputs a specific <a href="#BM_(peptide)%2Fi">peptide</a>, where each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in that <a href="#BM_(peptide)%2Fi">peptide</a> is pumped out by the unique part of the <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> responsible for it.</p>
-<p>These unique parts are referred to <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s (multiple <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s, 1 per <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in <a href="#BM_(peptide)%2Fi">peptide</a>). While the overall <a href="#BM_(sequence)%2Fi">sequence</a> between two types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> differ greatly, the <a href="#BM_(sequence)%2Fi">sequence</a>s between their <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s are similar -- only a handful of positions in an <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a> <a href="#BM_(sequence)%2Fi">sequence</a> define the type of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> it pumps out. As such, local alignment may be used to identify these <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s across different types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The WHY section above is giving a high-level use-case for local alignment. If you actually want to perform that use-case you need to get familiar with the protein scoring section: <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a>.</p>
-</div>
-<a name="H1_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path</a></li>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm</a></li>
-</ul>
-</div>
-<p><strong>ALGORITHM</strong>:</p>
-<p>The graph algorithm for local alignment is an extension of the graph algorithm for global alignment. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for global alignment, but for each node...</p>
-<ul>
-<li>that isn't the source node, construct a 0 weight edge from the source node to that node.</li>
-<li>that isn't the sink node, construct a 0 weight edge from that node to the sink node.</li>
-</ul>
-<div style="border:1px solid black;">
-<p></p>
-<p><img src="latex_68730549a12f46f293c57ccb07e211bd.svg" alt="Latex diagram"></p>
-<p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
-</div>
-<p></p>
-<p>These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. When finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>, they make it so that if either the...</p>
-<ul>
-<li>prefix of the path sinks the path's weight below zero, there's a "free ride" from the source node that'll supersede it and as such that prefix will get skipped.</li>
-<li>suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.</li>
-</ul>
-<p>In other words, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> chosen can never go below 0: When selecting a backtracking edge, the "free-ride" edge will always be chosen over other edges with make the total weight of the path negative.</p>
-<div style="border:1px solid black;">
-<p></p>
-<p>Given the sequences TAGAACT and CGAAG and the score matrix...</p>
-<pre><code>INDEL=-1.0
-    A   C   T   G
-A   1  -1  -1  -1
-C  -1   1  -1  -1
-T  -1  -1   1  -1
-G  -1  -1  -1   1
-
-</code></pre>
-<p>... the local alignment is...</p>
-<p><img src="latex_e082c4c15919916749ef7723824218ca.svg" alt="Latex diagram"></p>
-<pre><code>GAA
-GAA
-</code></pre>
-<p>Weight: 3.0</p>
-</div>
-<p></p>
-<a name="H1_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
 <a name="H_Fitting%20Alignment"></a><h3>Fitting Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6771,13 +6713,14 @@ GAA
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, for all possible <a href="#BM_(substring)%2Fi">substring</a>s of the first <a href="#BM_(sequence)%2Fi">sequence</a>, pull out the highest scoring alignment between that <a href="#BM_(substring)%2Fi">substring</a> that the second <a href="#BM_(sequence)%2Fi">sequence</a>. In other words, find the best place within the second <a href="#BM_(sequence)%2Fi">sequence</a> where the first <a href="#BM_(sequence)%2Fi">sequence</a> fits.</p>
-<p>For example, given the <a href="#BM_(sequence)%2Fi">sequence</a>s GGTTTTTAA and TTCTT, it may be that TTCTT has the highest scoring alignment with the <a href="#BM_(substring)%2Fi">substring</a> TTTTT...</p>
+<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, for all possible <a href="#BM_(substring)%2Fi">substring</a>s of the first <a href="#BM_(sequence)%2Fi">sequence</a>, pull out the highest scoring alignment between that <a href="#BM_(substring)%2Fi">substring</a> that the second <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p>In other words, find the <a href="#BM_(substring)%2Fi">substring</a> within the second <a href="#BM_(sequence)%2Fi">sequence</a> that produces the highest scoring alignment with the first <a href="#BM_(sequence)%2Fi">sequence</a>. For example, given the <a href="#BM_(sequence)%2Fi">sequence</a>s GGTTTTTAA and TTCTT, it may be that TTCTT (second <a href="#BM_(sequence)%2Fi">sequence</a>) has the highest scoring alignment with TTTTT (<a href="#BM_(substring)%2Fi">substring</a> of the first <a href="#BM_(sequence)%2Fi">sequence</a>)...</p>
 <pre><code>TTC-TT
 TT-TTT
 </code></pre>
-<p><strong>WHY</strong>: Imagine trying to find a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s <a href="#BM_(sequence)%2Fi">sequence</a> in some larger segment of <a href="#BM_(genome)%2Fi">genome</a>. Due to mutation, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(sequence)%2Fi">sequence</a> being searched for is slightly off from the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(sequence)%2Fi">sequence</a> in the <a href="#BM_(genome)%2Fi">genome</a>. A standard search will fail where a fitting alignment will still be able to find that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>.</p>
-<a name="H2_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<p><strong>WHY</strong>: Searching for a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s <a href="#BM_(sequence)%2Fi">sequence</a> in some larger <a href="#BM_(genome)%2Fi">genome</a> may be problematic because of mutation. The <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(sequence)%2Fi">sequence</a> being searched for may be slightly off from the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(sequence)%2Fi">sequence</a> in the <a href="#BM_(genome)%2Fi">genome</a>.</p>
+<p>In the presence of minor mutations, a standard search will fail where a fitting alignment will still be able to find that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>.</p>
+<a name="H1_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -6797,12 +6740,13 @@ TT-TTT
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
-<p>These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. When finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>, they make it so that if either the...</p>
+<p>These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. The nodes at the destination of each one of these edges will never go below 0: When selecting a backtracking edge, the "free ride" edge will always be chosen over other edges that make the node weight negative.</p>
+<p>When finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>, these "free rides" make it so that the path ...</p>
 <ul>
-<li>prefix of the path sinks the path's weight below zero, there's a "free ride" from the source node that'll supersede it and as such that prefix will get skipped.</li>
-<li>suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.</li>
+<li>starts from the most appropriate part of the second <a href="#BM_(sequence)%2Fi">sequence</a></li>
+<li>stops at the most appropriate part of the second <a href="#BM_(sequence)%2Fi">sequence</a></li>
 </ul>
-<p>In other words, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> chosen can never go below 0: When selecting a backtracking edge, the "free-ride" edge will always be chosen over other edges with make the total weight of the path negative.</p>
+<p>such that if the first <a href="#BM_(sequence)%2Fi">sequence</a> is wedged somewhere the second <a href="#BM_(sequence)%2Fi">sequence</a>, that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes in on it.</p>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the sequences AGAC and TAAGAACT and the score matrix...</p>
@@ -6822,7 +6766,7 @@ AGAAC
 <p>Weight: 3.0</p>
 </div>
 <p></p>
-<a name="H2_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
+<a name="H1_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
 <a name="H_Overlap%20Alignment"></a><h3>Overlap Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6830,26 +6774,21 @@ AGAAC
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a></li>
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDNA%20Assembly%2FStitch%20Reads)_TOPIC%2F">Algorithms/DNA Assembly/Stitch Reads</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDNA%20Assembly)_TOPIC%2F">Algorithms/DNA Assembly</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, for all possible <a href="#BM_(substring)%2Fi">substring</a>s ...</p>
+<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, for all possible <a href="#BM_(substring)%2Fi">substring</a>s that ...</p>
 <ul>
-<li>ending at the first <a href="#BM_(sequence)%2Fi">sequence</a> (tail)</li>
-<li>starting at the second <a href="#BM_(sequence)%2Fi">sequence</a> (head)</li>
+<li>end at the first <a href="#BM_(sequence)%2Fi">sequence</a> (tail)</li>
+<li>start at the second <a href="#BM_(sequence)%2Fi">sequence</a> (head)</li>
 </ul>
-<p>... , pull out the highest scoring alignment. In other words, find the best possible overlap between the two <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
-<p>For example, given the <a href="#BM_(sequence)%2Fi">sequence</a>s CCAAGGCT and GGTTTTTAA, it may be that the <a href="#BM_(substring)%2Fi">substring</a>s with the highest scoring alignment are GGCT (tail of the first <a href="#BM_(sequence)%2Fi">sequence</a>) and GGT (head of the second <a href="#BM_(sequence)%2Fi">sequence</a>)...</p>
+<p>... , pull out the highest scoring alignment.</p>
+<p>In other words, find the overlap between the two <a href="#BM_(sequence)%2Fi">sequence</a>s that produces the highest scoring alignment. For example, given the <a href="#BM_(sequence)%2Fi">sequence</a>s CCAAGGCT and GGTTTTTAA, it may be that the <a href="#BM_(substring)%2Fi">substring</a>s with the highest scoring alignment are GGCT (tail of the first <a href="#BM_(sequence)%2Fi">sequence</a>) and GGT (head of the second <a href="#BM_(sequence)%2Fi">sequence</a>)...</p>
 <pre><code>GGCT
 GG-T
 </code></pre>
-<p><strong>WHY</strong>: DNA <a href="#BM_(sequencer)%2Fi">sequencer</a>s frequently produce <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s with <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. Overlap alignments may be used to detect if those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> overlap even...</p>
-<ul>
-<li>if they are partial overlaps</li>
-<li>in the presence of <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s / minor mutations</li>
-</ul>
-<p>... making <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> less tedious (<a href="#BM_(overlap%20graph)%2Fi">overlap graph</a>s / <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a>s may be less tangled).</p>
-<a name="H3_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<p><strong>WHY</strong>: DNA <a href="#BM_(sequencer)%2Fi">sequencer</a>s frequently produce <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s with <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. Overlap alignments may be used to detect if those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> overlap even in the presence of <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s and minor mutations, making <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> less tedious (<a href="#BM_(overlap%20graph)%2Fi">overlap graph</a>s / <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a>s may turn out less tangled).</p>
+<a name="H2_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -6869,7 +6808,7 @@ GG-T
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
-<p>These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. For the destination nodes of these edges, node weights can never go below 0: When selecting a backtracking edge, the "free-ride" edge will always be chosen over other edges with make the total weight of the path negative.</p>
+<p>These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. The nodes at the destination of each one of these edges will never go below 0: When selecting a backtracking edge, the "free ride" edge will always be chosen over other edges that make the node weight negative.</p>
 <p>When finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>, these "free rides" make it so that the path ...</p>
 <ul>
 <li>starts from the most appropriate part of the second <a href="#BM_(sequence)%2Fi">sequence</a></li>
@@ -6893,6 +6832,73 @@ G  -1  -1  -1   1
 A-AC
 </code></pre>
 <p>Weight: 2.0</p>
+</div>
+<p></p>
+<a name="H2_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
+<a name="H_Local%20Alignment"></a><h3>Local Alignment</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, for all possible <a href="#BM_(substring)%2Fi">substring</a>s of those <a href="#BM_(sequence)%2Fi">sequence</a>s, pull out the highest scoring alignment. For example, given the <a href="#BM_(sequence)%2Fi">sequence</a>s GGTTTTTAA and CCTTCTTAA, it may be that the <a href="#BM_(substring)%2Fi">substring</a>s with the highest scoring alignment are TTTTT (<a href="#BM_(substring)%2Fi">substring</a> of first <a href="#BM_(sequence)%2Fi">sequence</a>) and TTCTT (<a href="#BM_(substring)%2Fi">substring</a> of second <a href="#BM_(sequence)%2Fi">sequence</a>) ...</p>
+<pre><code>TTC-TT
+TT-TTT
+</code></pre>
+<p><strong>WHY</strong>: Two biological <a href="#BM_(sequence)%2Fi">sequence</a>s may have strongly related parts rather than being strongly related in their entirety. For example, a class of proteins called <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> creates <a href="#BM_(peptide)%2Fi">peptide</a>s without going through a ribosome (<a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s). Each <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> outputs a specific <a href="#BM_(peptide)%2Fi">peptide</a>, where each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in that <a href="#BM_(peptide)%2Fi">peptide</a> is pumped out by the unique part of the <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> responsible for it.</p>
+<p>These unique parts are referred to <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s (multiple <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s, 1 per <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in created <a href="#BM_(peptide)%2Fi">peptide</a>). While the overall <a href="#BM_(sequence)%2Fi">sequence</a> between two types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> differ greatly, the <a href="#BM_(sequence)%2Fi">sequence</a>s between their <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s are similar -- only a handful of positions in an <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a> <a href="#BM_(sequence)%2Fi">sequence</a> define the type of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> it pumps out. As such, local alignment may be used to identify these <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s across different types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The WHY section above is giving a high-level use-case for local alignment. If you actually want to perform that use-case you need to get familiar with the protein scoring section: <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a>.</p>
+</div>
+<a name="H3_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The graph algorithm for local alignment is an extension of the graph algorithm for global alignment. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for global alignment, but for each node...</p>
+<ul>
+<li>that isn't the source node, construct a 0 weight edge from the source node to that node.</li>
+<li>that isn't the sink node, construct a 0 weight edge from that node to the sink node.</li>
+</ul>
+<div style="border:1px solid black;">
+<p></p>
+<p><img src="latex_68730549a12f46f293c57ccb07e211bd.svg" alt="Latex diagram"></p>
+<p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
+</div>
+<p></p>
+<p>These newly added edges represent hops in the graph -- 0 weight "free rides" to other nodes. The nodes at the destination of each one of these edges will never go below 0: When selecting a backtracking edge, the "free ride" edge will always be chosen over other edges that make the node weight negative.</p>
+<p>When finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>, these "free rides" make it so that if either the...</p>
+<ul>
+<li>prefix of the path sinks the path's weight below zero, there's a "free ride" from the source node that'll supersede it and as such that prefix will get skipped.</li>
+<li>suffix of the path sinks the path's weight below zero, there's a "free ride" to the sink node that'll supersede it and as such that suffix will get skipped.</li>
+</ul>
+<p>The maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will be targeted in such a way that it homes on the <a href="#BM_(substring)%2Fi">substring</a> within each <a href="#BM_(sequence)%2Fi">sequence</a> that produces the highest scoring alignment.</p>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TAGAACT and CGAAG and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the local alignment is...</p>
+<p><img src="latex_e082c4c15919916749ef7723824218ca.svg" alt="Latex diagram"></p>
+<pre><code>GAA
+GAA
+</code></pre>
+<p>Weight: 3.0</p>
 </div>
 <p></p>
 <a name="H3_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
