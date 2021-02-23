@@ -48,10 +48,10 @@ def create_affine_gap_alignment_graph(
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
     horizontal_indel_hop_edge_id_func = unique_id_generator('HORIZONTAL_INDEL_HOP')
-    for r, from_c in product(range(v_node_count), range(w_node_count)):
-        from_node_id = r, from_c
-        for to_c in range(from_c + 2, w_node_count):
-            to_node_id = r, to_c
+    for from_c, r in product(range(v_node_count), range(w_node_count)):
+        from_node_id = from_c, r
+        for to_c in range(from_c + 2, v_node_count):
+            to_node_id = to_c, r
             edge_id = horizontal_indel_hop_edge_id_func()
             v_elems = v[from_c:to_c]
             w_elems = [None] * len(v_elems)
@@ -59,10 +59,10 @@ def create_affine_gap_alignment_graph(
             weight = weight_lookup.lookup(v_elems[0], w_elems[0]) + (hop_count - 1) * extended_gap_weight
             graph.insert_edge(edge_id, from_node_id, to_node_id, EdgeData(v_elems, w_elems, weight))
     vertical_indel_hop_edge_id_func = unique_id_generator('VERTICAL_INDEL_HOP')
-    for from_r, c in product(range(v_node_count), range(w_node_count)):
-        from_node_id = from_r, c
+    for c, from_r in product(range(v_node_count), range(w_node_count)):
+        from_node_id = c, from_r
         for to_r in range(from_r + 2, w_node_count):
-            to_node_id = to_r, c
+            to_node_id = c, to_r
             edge_id = vertical_indel_hop_edge_id_func()
             w_elems = w[from_r:to_r]
             v_elems = [None] * len(w_elems)
@@ -81,8 +81,8 @@ def affine_gap_alignment(
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
     graph = create_affine_gap_alignment_graph(v, w, weight_lookup, extended_gap_weight)
-    from_node = (1, 0, 0)
-    to_node = (1, v_node_count - 1, w_node_count - 1)
+    from_node = (0, 0)
+    to_node = (v_node_count - 1, w_node_count - 1)
     populate_weights_and_backtrack_pointers(
         graph,
         from_node,
@@ -177,7 +177,7 @@ def graph_to_tikz(
                     edge_params[3] = 'green'
                 if edge_id.startswith('E'):
                     edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
-                if not edge_id.startswith('E'):
+                if not edge_id.startswith('E') or edge_id not in highlight_edges:
                     ret += f'        \\begin{{pgfonlayer}}{{bg}}\n'
                 ret += f'        \\draw[{", ".join(p for p in edge_params if p is not None)}]' \
                        f' ({node_id_to_latex_id[node_id]})' \
@@ -185,7 +185,7 @@ def graph_to_tikz(
                        f' [{", ".join(p for p in edge_to_params if p is not None)}]' \
                        f' node [align=center, midway, color=black] {{{edge_label}}}' \
                        f' ({node_id_to_latex_id[child_node_id]});\n'
-                if not edge_id.startswith('E'):
+                if not edge_id.startswith('E') or edge_id not in highlight_edges:
                     ret += f'        \\end{{pgfonlayer}}\n'
     ret += dedent('''
         \\end{tikzpicture}
@@ -246,13 +246,19 @@ def main():
             graph,
             set(edges)
         )
+        elems_flattened = []
+        for e1, e2 in elems:
+            if type(e1) == list:  # if one is a list, both are lists
+                elems_flattened += [x for x in zip(e1, e2)]
+            else:
+                elems_flattened += [(e1, e2)]
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         print(f'... the global alignment is...', end="\n\n")
         print(f'````{{latex}}\n{output}\n````', end='\n\n')
         print(f'````')
-        print(f'{"".join("-" if e[0] is None else e[0] for e in elems)}')
-        print(f'{"".join("-" if e[1] is None else e[1] for e in elems)}')
+        print(f'{"".join("-" if e[0] is None else e[0] for e in elems_flattened)}')
+        print(f'{"".join("-" if e[1] is None else e[1] for e in elems_flattened)}')
         print(f'````', end='\n\n')
         print(f'Weight: {weight}')
     finally:

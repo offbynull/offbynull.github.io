@@ -87,9 +87,9 @@ def local_alignment(
         to_node,
         lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
     )
-    edges = list(filter(lambda e: not e.startswith('FREE_RIDE'), edges))  # remove free rides from list
+    alignment_edges = list(filter(lambda e: not e.startswith('FREE_RIDE'), edges))  # remove free rides from list
     alignment = []
-    for e in edges:
+    for e in alignment_edges:
         ed = graph.get_edge_data(e)
         alignment.append((ed.v_elem, ed.w_elem))
     return final_weight, edges, alignment
@@ -170,7 +170,7 @@ def graph_to_tikz(
                     edge_params[3] = 'green'
                 if edge_id.startswith('E'):
                     edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
-                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK'):
+                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK') or edge_id not in highlight_edges:
                     ret += f'        \\begin{{pgfonlayer}}{{bg}}\n'
                 ret += f'        \\draw[{", ".join(p for p in edge_params if p is not None)}]' \
                        f' ({node_id_to_latex_id[node_id]})' \
@@ -178,7 +178,7 @@ def graph_to_tikz(
                        f' [{", ".join(p for p in edge_to_params if p is not None)}]' \
                        f' node [align=center, midway, color=black] {{{edge_label}}}' \
                        f' ({node_id_to_latex_id[child_node_id]});\n'
-                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK'):
+                if edge_id.startswith('FREE_RIDE_SOURCE') or edge_id.startswith('FREE_RIDE_SINK') or edge_id not in highlight_edges:
                     ret += f'        \\end{{pgfonlayer}}\n'
     ret += dedent('''
         \\end{tikzpicture}

@@ -112,9 +112,9 @@
 <li><a href="#H_PAM%20Scoring%20Matrix">PAM Scoring Matrix</a></li>
 <li><a href="#H_BLOSUM%20Scoring%20Matrix">BLOSUM Scoring Matrix</a></li>
 </ul>
-<li><a href="#H_Affine%20Gap%20Scoring">Affine Gap Scoring</a></li>
+<li><a href="#H_Extended%20Gap%20Scoring">Extended Gap Scoring</a></li>
 <ul>
-<li><a href="#H_Basic%20Algorithm">Basic Algorithm</a></li>
+<li><a href="#H_Naive%20Algorithm">Naive Algorithm</a></li>
 <li><a href="#H_Layer%20Algorithm">Layer Algorithm</a></li>
 </ul>
 <li><a href="#H_Multiple%20Alignment">Multiple Alignment</a></li>
@@ -279,7 +279,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -411,12 +411,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>AAGGG = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
+<li>AAGGG = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -490,18 +490,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1634,7 +1634,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>ATAAT<br>ATAAT<br>ATAAT</p>
+<p>AAAGA<br>AAAGA<br>AAAGA</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2157,7 +2157,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2218,7 +2218,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2902,22 +2902,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 </ul>
 </div>
 <p></p>
@@ -5795,7 +5795,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_5647c257f364d60064c519cb7026dffa.svg" alt="Dot diagram"></p>
+<p><img src="dot_44a96800747a53a69c9cdf44d30bdb2b.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5853,7 +5853,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_cfba01e3e0d0eba5c8fdbfc7a720d0fb.svg" alt="Dot diagram"></p>
+<p><img src="dot_3f90af474a14f04d030a763d71451cd0.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6001,13 +6001,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_e5f7eae11e245a99b96aa9fa3522f717.svg" alt="Dot diagram"></p>
+<p><img src="dot_5505c8f0fcc178e382049da8c070bc25.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_d065f07fd688e7f71926cb1e11249850.svg" alt="Dot diagram"></p>
+<p><img src="dot_a5638fda94d363fb0ad234df76d03bc2.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6044,7 +6044,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_5f3c0b66e8ea0379dd0f45557f1ea7ef.svg" alt="Latex diagram"></p>
+<p><img src="latex_5adf99cc8337577c4f094dfd9594ae07.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6055,7 +6055,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_2fd3e71539c26a7e6bf1bcdd8621a6fc.svg" alt="Latex diagram"></p>
+<p><img src="latex_3d4160bd7b3c3b7f15dc353f4384962f.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6116,7 +6116,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_2932c02d17b53f527218aeaafb6e757f.svg" alt="Latex diagram"></p>
+<p><img src="latex_9f2a6c17b74b6082d30f53a5da229e88.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 GA-T
 </code></pre>
@@ -6390,7 +6390,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1bade424605e794c66a297bf1342343c.svg" alt="Latex diagram"></p>
+<p><img src="latex_e6dcf9419157929197af1b87b2ea30d8.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6398,7 +6398,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_33d9e7d823a7438d378f018b08ee879c.svg" alt="Latex diagram"></p>
+<p><img src="latex_61ee8fd51e316ed5f83b88d99035de65.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6736,7 +6736,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_d0a43222f33b1414af637f612cab007a.svg" alt="Latex diagram"></p>
+<p><img src="latex_9c5e30c29856d556fa14481e0f75d1ab.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6800,9 +6800,9 @@ TT-TTT
         to_node,
         <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
     )
-    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    alignment_edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
     alignment = []
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> alignment_edges:
         ed = graph.get_edge_data(e)
         alignment.append((ed.v_elem, ed.w_elem))
     <span class="hljs-keyword">return</span> final_weight, edges, alignment
@@ -6819,7 +6819,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_eee2139d35527a76982f9bb0ed71d406.svg" alt="Latex diagram"></p>
+<p><img src="latex_80cf14df2f1d65a56e4c19a849cfa67d.svg" alt="Latex diagram"></p>
 <pre><code>AGA-C
 AGAAC
 </code></pre>
@@ -6977,7 +6977,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_757a8c9300521bb6b42446d5311f68af.svg" alt="Latex diagram"></p>
+<p><img src="latex_b78ac5d35826de446f109653116ac137.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7041,9 +7041,9 @@ GG-T
         to_node,
         <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
     )
-    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    alignment_edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
     alignment = []
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> alignment_edges:
         ed = graph.get_edge_data(e)
         alignment.append((ed.v_elem, ed.w_elem))
     <span class="hljs-keyword">return</span> final_weight, edges, alignment
@@ -7060,7 +7060,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_2d1f8ea5fe40b61c95905d56b1f5a2cd.svg" alt="Latex diagram"></p>
+<p><img src="latex_38018d94146ce66f193caef26de86ed8.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
 A-AC
 </code></pre>
@@ -7217,7 +7217,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_251b6700954f9ebc57356245d94d9bde.svg" alt="Latex diagram"></p>
+<p><img src="latex_d93a2fd2ab7f54658d78ec21a1e9a99f.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7281,9 +7281,9 @@ TT-TTT
         to_node,
         <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
     )
-    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    alignment_edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'FREE_RIDE'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
     alignment = []
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> alignment_edges:
         ed = graph.get_edge_data(e)
         alignment.append((ed.v_elem, ed.w_elem))
     <span class="hljs-keyword">return</span> final_weight, edges, alignment
@@ -7300,7 +7300,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_886f259e41ae2830af5b6dbc9c717f66.svg" alt="Latex diagram"></p>
+<p><img src="latex_b7c1a332b57a965113d31a46bb990b35.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7524,22 +7524,289 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -4 where as in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
 </div>
-<a name="H_Affine%20Gap%20Scoring"></a><h3>Affine Gap Scoring</h3>
-<a name="H_Basic%20Algorithm"></a><h4>Basic Algorithm</h4>
+<a name="H_Extended%20Gap%20Scoring"></a><h3>Extended Gap Scoring</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FExtended%20Gap%20Scoring)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Local Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Fitting Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Overlap Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: When performing <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, prefer contiguous <a href="#BM_(indel)%2Fi">indel</a>s in a <a href="#BM_(sequence)%2Fi">sequence</a> vs individual <a href="#BM_(indel)%2Fi">indel</a>s. This is done by scoring contiguous <a href="#BM_(indel)%2Fi">indel</a>s differently than individual <a href="#BM_(indel)%2Fi">indel</a>s:</p>
+<ul>
+<li>Individual <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -5).</li>
+<li>Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1).</li>
+</ul>
+<p>For example, given an alignment region where one of the <a href="#BM_(sequence)%2Fi">sequence</a>s has 3 contiguous <a href="#BM_(indel)%2Fi">indel</a>s, the traditional method would assign a score of -15 (-5 for each <a href="#BM_(indel)%2Fi">indel</a>) while this method would assign a score of -5.2 (-5 for starting <a href="#BM_(indel)%2Fi">indel</a>, -0.1 for each subsequent <a href="#BM_(indel)%2Fi">indel</a>)...</p>
+<pre><code>AAATTTAATA
+AAA---AA-A
+
+Score from indels using traditional scoring:   -5   + -5   + -5   + -5   = -20
+Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
+</code></pre>
+<p><strong>WHY</strong>: DNA mutations are more likely to happen in chunks rather than <a href="#BM_(point%20mutation)%2Fi">point mutation</a>s (e.g. <a href="#BM_(transposon%7Ctransposable%20element%7Cjumping%20gene)%2Fi">transposon</a>s). Extended gap scoring helps account for that fact. Since DNA <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a> proteins (<a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s), this effects proteins as well.</p>
+<a name="H_Naive%20Algorithm"></a><h4>Naive Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FExtended%20Gap%20Scoring%2FNaive%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The naive way to perform extended gap scoring is to introduce a new edge for each contiguous <a href="#BM_(indel)%2Fi">indel</a>. For example, given the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>...</p>
 <p><img src="svgbob_a78c6b3a04fd87c8fe19f92513598ddfb1734507.svg" alt="Kroki diagram output"></p>
+<ul>
+<li>
+<p>each row would have an edge added to represent a contiguous <a href="#BM_(indel)%2Fi">indel</a>s.</p>
 <p><img src="svgbob_d61e1d9fea9db6aca581f7969df6c3ff3bb50887.svg" alt="Kroki diagram output"></p>
-<p><img src="svgbob_49a2c740a1d9e58bb58bc8111bc4f626a8ffb210.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>each column would have an edge added to represent a contiguous <a href="#BM_(indel)%2Fi">indel</a>s.</p>
+<p><img src="svgbob_39b1828786374ffdfc0a696685b7bbb7c95fc275.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_be6cdc9b16a27a5e767122159d36e0e9.svg" alt="Latex diagram"></p>
-<p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
+<p><img src="latex_fb31ab79efc8aebae0101a87620a41d5.svg" alt="Latex diagram"></p>
+<p>NOTE: Purple and red edges are extended indel edges.</p>
+</div>
+<p></p>
+<p>The problem with this algorithm is that as the <a href="#BM_(sequence)%2Fi">sequence</a> lengths grow, the number of added edges explodes. It isn't practical for anything other than short <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p><a href="ch5_code/src/affine_gap_alignment/AffineGapAlignment_Basic_Graph.py">ch5_code/src/affine_gap_alignment/AffineGapAlignment_Basic_Graph.py</a> (lines 37 to 104):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_affine_gap_alignment_graph</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        extended_gap_weight: float
+</span>) -&gt; Graph[Tuple[int, ...], NodeData, str, EdgeData]:</span>
+    graph = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], weight_lookup.lookup(*elems))
+    )
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    horizontal_indel_hop_edge_id_func = unique_id_generator(<span class="hljs-string">'HORIZONTAL_INDEL_HOP'</span>)
+    <span class="hljs-keyword">for</span> from_c, r <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+        from_node_id = from_c, r
+        <span class="hljs-keyword">for</span> to_c <span class="hljs-keyword">in</span> range(from_c + <span class="hljs-number">2</span>, v_node_count):
+            to_node_id = to_c, r
+            edge_id = horizontal_indel_hop_edge_id_func()
+            v_elems = v[from_c:to_c]
+            w_elems = [<span class="hljs-literal">None</span>] * len(v_elems)
+            hop_count = to_c - from_c
+            weight = weight_lookup.lookup(v_elems[<span class="hljs-number">0</span>], w_elems[<span class="hljs-number">0</span>]) + (hop_count - <span class="hljs-number">1</span>) * extended_gap_weight
+            graph.insert_edge(edge_id, from_node_id, to_node_id, EdgeData(v_elems, w_elems, weight))
+    vertical_indel_hop_edge_id_func = unique_id_generator(<span class="hljs-string">'VERTICAL_INDEL_HOP'</span>)
+    <span class="hljs-keyword">for</span> c, from_r <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count)):
+        from_node_id = c, from_r
+        <span class="hljs-keyword">for</span> to_r <span class="hljs-keyword">in</span> range(from_r + <span class="hljs-number">2</span>, w_node_count):
+            to_node_id = c, to_r
+            edge_id = vertical_indel_hop_edge_id_func()
+            w_elems = w[from_r:to_r]
+            v_elems = [<span class="hljs-literal">None</span>] * len(w_elems)
+            hop_count = to_r - from_r
+            weight = weight_lookup.lookup(v_elems[<span class="hljs-number">0</span>], w_elems[<span class="hljs-number">0</span>]) + (hop_count - <span class="hljs-number">1</span>) * extended_gap_weight
+            graph.insert_edge(edge_id, from_node_id, to_node_id, EdgeData(v_elems, w_elems, weight))
+    <span class="hljs-keyword">return</span> graph
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">affine_gap_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        extended_gap_weight: float
+</span>) -&gt; Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    graph = create_affine_gap_alignment_graph(v, w, weight_lookup, extended_gap_weight)
+    from_node = (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    to_node = (v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>)
+    populate_weights_and_backtrack_pointers(
+        graph,
+        from_node,
+        <span class="hljs-keyword">lambda</span> n_id, weight, e_id: graph.get_node_data(n_id).set_weight_and_backtracking_edge(weight, e_id),
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        <span class="hljs-keyword">lambda</span> e_id: graph.get_edge_data(e_id).weight
+    )
+    final_weight = graph.get_node_data(to_node).weight
+    edges = backtrack(
+        graph,
+        to_node,
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
+    )
+    alignment = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        ed = graph.get_edge_data(e)
+        alignment.append((ed.v_elem, ed.w_elem))
+    <span class="hljs-keyword">return</span> final_weight, edges, alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TAGGCGGAT and TACCCCCAT and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<p><img src="latex_5cc4a7b3f1cd6c0aad484df41c006e9f.svg" alt="Latex diagram"></p>
+<pre><code>TAGGCGG----AT
+TA--C--CCCCAT
+</code></pre>
+<p>Weight: 1.4999999999999998</p>
 </div>
 <p></p>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FExtended%20Gap%20Scoring%2FLayer%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FExtended%20Gap%20Scoring%2FNaive%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Extended Gap Scoring/Naive Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Recall that the problem with the naive algorithm algorithm is that as the <a href="#BM_(sequence)%2Fi">sequence</a> lengths grow, the number of added edges explodes. It isn't practical for anything other than short <a href="#BM_(sequence)%2Fi">sequence</a>s. A better algorithm that achieves the exact same result is the layer algorithm. The layer algorithm breaks an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> into 3 distinct layers:</p>
+<ol>
+<li>horizontal edges go into their own layer.</li>
+<li>diagonal edges go into their own layer.</li>
+<li>vertical edges go into their own layer.</li>
+</ol>
+<p>The edge weights in the horizontal and diagonal layers are updated such that they use the <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. -0.1). Then, for each node (x, y) in the diagonal layer, ...</p>
+<ul>
+<li>an edge is added to node (x+1, y) in the horizontal layer with a normal <a href="#BM_(indel)%2Fi">indel</a> score (e.g. -5).</li>
+<li>an edge is added to node (x, y+1) in the vertical layer with a normal <a href="#BM_(indel)%2Fi">indel</a> score (e.g. -5).</li>
+</ul>
+<p>Similarly, for each node (x, y) in both the horizontal and vertical layers that an edge from the diagonal layer points to, create a 0 weight "free ride" edge back to node (x, y) in the diagonal layer. These "free ride" edges are the same as the "free ride" edges in local alignment / fitting alignment / overlap alignment -- they hop across the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> without adding anything to the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>.</p>
+<p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_58052b44eada08e6d82c0d640540e996.svg" alt="Latex diagram"></p>
-<p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
+<p><img src="latex_bec53b208953387de52f4e8a696cac24.svg" alt="Latex diagram"></p>
+<p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
+</div>
+<p></p>
+<p>The way to think about this layered structure <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is that the hop from a node in the diagonal layer to a node in the horizontal/vertical layer will always have a normal <a href="#BM_(indel)%2Fi">indel</a> score (e.g. -5). From there it either has the option to hop back to the diagonal layer (via the "free ride" edge) or continue pushing through <a href="#BM_(indel)%2Fi">indel</a>s using the less penalizing <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. -0.1).</p>
+<p>This layered structure produces 3 times the number of nodes, but for longer <a href="#BM_(sequence)%2Fi">sequence</a>s it has far less edges than the naive method.</p>
+<p><a href="ch5_code/src/affine_gap_alignment/AffineGapAlignment_Layer_Graph.py">ch5_code/src/affine_gap_alignment/AffineGapAlignment_Layer_Graph.py</a> (lines 37 to 135):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_affine_gap_alignment_graph</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        extended_gap_weight: float
+</span>) -&gt; Graph[Tuple[int, ...], NodeData, str, EdgeData]:</span>
+    graph_low = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], extended_gap_weight) <span class="hljs-keyword">if</span> offset == (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>) <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+    )
+    graph_mid = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], weight_lookup.lookup(*elems)) <span class="hljs-keyword">if</span> offset == (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>) <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+    )
+    graph_high = create_grid_graph(
+        [v, w],
+        <span class="hljs-keyword">lambda</span> n_id: NodeData(),
+        <span class="hljs-keyword">lambda</span> src_n_id, dst_n_id, offset, elems: EdgeData(elems[<span class="hljs-number">0</span>], elems[<span class="hljs-number">1</span>], extended_gap_weight) <span class="hljs-keyword">if</span> offset == (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>) <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+    )
+
+    graph_merged = Graph()
+    create_edge_id_func = unique_id_generator(<span class="hljs-string">'E'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge</span>(<span class="hljs-params">from_graph, n_prefix</span>):</span>
+        <span class="hljs-keyword">for</span> n_id <span class="hljs-keyword">in</span> from_graph.get_nodes():
+            n_data = from_graph.get_node_data(n_id)
+            graph_merged.insert_node(n_prefix + n_id, n_data)
+        <span class="hljs-keyword">for</span> e_id <span class="hljs-keyword">in</span> from_graph.get_edges():
+            from_n_id, to_n_id, e_data = from_graph.get_edge(e_id)
+            graph_merged.insert_edge(create_edge_id_func(), n_prefix + from_n_id, n_prefix + to_n_id, e_data)
+
+    merge(graph_low, (<span class="hljs-string">'high'</span>, ))
+    merge(graph_mid, (<span class="hljs-string">'mid'</span>,))
+    merge(graph_high, (<span class="hljs-string">'low'</span>,))
+
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    mid_to_low_edge_id_func = unique_id_generator(<span class="hljs-string">'MID_TO_LOW'</span>)
+    <span class="hljs-keyword">for</span> r, c <span class="hljs-keyword">in</span> product(range(v_node_count - <span class="hljs-number">1</span>), range(w_node_count)):
+        from_n_id = <span class="hljs-string">'mid'</span>, r, c
+        to_n_id = <span class="hljs-string">'high'</span>, r + <span class="hljs-number">1</span>, c
+        e = mid_to_low_edge_id_func()
+        graph_merged.insert_edge(e, from_n_id, to_n_id, EdgeData(v[r], <span class="hljs-literal">None</span>, weight_lookup.lookup(v[r], <span class="hljs-literal">None</span>)))
+    low_to_mid_edge_id_func = unique_id_generator(<span class="hljs-string">'HIGH_TO_MID'</span>)
+    <span class="hljs-keyword">for</span> r, c <span class="hljs-keyword">in</span> product(range(<span class="hljs-number">1</span>, v_node_count), range(w_node_count)):
+        from_n_id = <span class="hljs-string">'high'</span>, r, c
+        to_n_id = <span class="hljs-string">'mid'</span>, r, c
+        e = low_to_mid_edge_id_func()
+        graph_merged.insert_edge(e, from_n_id, to_n_id, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+    mid_to_high_edge_id_func = unique_id_generator(<span class="hljs-string">'MID_TO_HIGH'</span>)
+    <span class="hljs-keyword">for</span> r, c <span class="hljs-keyword">in</span> product(range(v_node_count), range(w_node_count - <span class="hljs-number">1</span>)):
+        from_n_id = <span class="hljs-string">'mid'</span>, r, c
+        to_n_id = <span class="hljs-string">'low'</span>, r, c + <span class="hljs-number">1</span>
+        e = mid_to_high_edge_id_func()
+        graph_merged.insert_edge(e, from_n_id, to_n_id, EdgeData(<span class="hljs-literal">None</span>, w[c], weight_lookup.lookup(<span class="hljs-literal">None</span>, w[c])))
+    high_to_mid_edge_id_func = unique_id_generator(<span class="hljs-string">'LOW_TO_MID'</span>)
+    <span class="hljs-keyword">for</span> r, c <span class="hljs-keyword">in</span> product(range(v_node_count), range(<span class="hljs-number">1</span>, w_node_count)):
+        from_n_id = <span class="hljs-string">'low'</span>, r, c
+        to_n_id = <span class="hljs-string">'mid'</span>, r, c
+        e = high_to_mid_edge_id_func()
+        graph_merged.insert_edge(e, from_n_id, to_n_id, EdgeData(<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>))
+
+    <span class="hljs-keyword">return</span> graph_merged
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">affine_gap_alignment</span>(<span class="hljs-params">
+        v: List[ELEM],
+        w: List[ELEM],
+        weight_lookup: WeightLookup,
+        extended_gap_weight: float
+</span>) -&gt; Tuple[float, List[str], List[Tuple[ELEM, ELEM]]]:</span>
+    v_node_count = len(v) + <span class="hljs-number">1</span>
+    w_node_count = len(w) + <span class="hljs-number">1</span>
+    graph = create_affine_gap_alignment_graph(v, w, weight_lookup, extended_gap_weight)
+    from_node = (<span class="hljs-string">'mid'</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    to_node = (<span class="hljs-string">'mid'</span>, v_node_count - <span class="hljs-number">1</span>, w_node_count - <span class="hljs-number">1</span>)
+    populate_weights_and_backtrack_pointers(
+        graph,
+        from_node,
+        <span class="hljs-keyword">lambda</span> n_id, weight, e_id: graph.get_node_data(n_id).set_weight_and_backtracking_edge(weight, e_id),
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge(),
+        <span class="hljs-keyword">lambda</span> e_id: graph.get_edge_data(e_id).weight
+    )
+    final_weight = graph.get_node_data(to_node).weight
+    edges = backtrack(
+        graph,
+        to_node,
+        <span class="hljs-keyword">lambda</span> n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
+    )
+    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'LOW_TO_MID'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    edges = list(filter(<span class="hljs-keyword">lambda</span> e: <span class="hljs-keyword">not</span> e.startswith(<span class="hljs-string">'HIGH_TO_MID'</span>), edges))  <span class="hljs-comment"># remove free rides from list</span>
+    alignment = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        ed = graph.get_edge_data(e)
+        alignment.append((ed.v_elem, ed.w_elem))
+    <span class="hljs-keyword">return</span> final_weight, edges, alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences TGGCGG and TCCCCC and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<p><img src="latex_0cdda15d81ef31ca2f19877c08b401c9.svg" alt="Latex diagram"></p>
+<pre><code>TGGC----GG
+T--CCCCC--
+</code></pre>
+<p>Weight: -1.5</p>
 </div>
 <p></p>
 <a name="H_Multiple%20Alignment"></a><h3>Multiple Alignment</h3>
@@ -7637,8 +7904,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -7656,19 +7923,19 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -7680,12 +7947,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -7746,8 +8013,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 21</p>
+<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 18</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>

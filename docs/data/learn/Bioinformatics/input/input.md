@@ -4286,9 +4286,42 @@ ch5_code/src/BLOSUM62.txt
 The above matrix was supplied by the Pevzner book. You can find it online [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt), but the indel scores on that website are set to -4 where as in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if BLOSUM62 defines a constant for indels.
 ```
 
-### Affine Gap Scoring
+### Extended Gap Scoring
 
-#### Basic Algorithm
+`{bm} /(Algorithms\/Sequence Alignment\/Extended Gap Scoring)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+Algorithms/Sequence Alignment/Local Alignment_TOPIC
+Algorithms/Sequence Alignment/Fitting Alignment_TOPIC
+Algorithms/Sequence Alignment/Overlap Alignment_TOPIC
+Algorithms/Sequence Alignment/Protein Scoring_TOPIC
+```
+
+**WHAT**: When performing sequence alignment, prefer contiguous indels in a sequence vs individual indels. This is done by scoring contiguous indels differently than individual indels:
+
+ * Individual indels are penalized by choosing the normal indel score (e.g. score of -5).
+ * Contiguous indels are penalized by choosing the normal indel score for the first indel in the list (e.g. score of -5), then all other indels are scored using a better *extended* indel score (e.g. score of -0.1).
+
+For example, given an alignment region where one of the sequences has 3 contiguous indels, the traditional method would assign a score of -15 (-5 for each indel) while this method would assign a score of -5.2 (-5 for starting indel, -0.1 for each subsequent indel)...
+
+```
+AAATTTAATA
+AAA---AA-A
+
+Score from indels using traditional scoring:   -5   + -5   + -5   + -5   = -20
+Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
+```
+
+**WHY**: DNA mutations are more likely to happen in chunks rather than point mutations (e.g. transposons). Extended gap scoring helps account for that fact. Since DNA encode proteins (codons), this effects proteins as well.
+
+#### Naive Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Extended Gap Scoring\/Naive Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+The naive way to perform extended gap scoring is to introduce a new edge for each contiguous indel. For example, given the alignment graph...
 
 ```{svgbob}
    T    A    A   
@@ -4310,44 +4343,50 @@ G| \  | \  | \  |
  o---▶o---▶o---▶o
 ```
 
-```{svgbob}
-"Row before:"                    "Row after:"
-                                 
-    T       A       A                       TAA
-o------▶o------▶o------▶o           ,-----------------.
-                                   /     TA            \
-                                  /  ,-------.   AA     \
-                                 ,  /       ,-\-------.  .
-                                 | /       /   \       \ |
-                                 |/  T    /  A  ▼    A  ▼▼
-                                 o------▶o------▶o------▶o
-```
+ * each row would have an edge added to represent a contiguous indels.
 
-```{svgbob}
-"Column before:"     "Column after:"
-                     
- o                    o---.
- |                    |\   \
-G|                   G| \   \
- |                    |  \   \
- ▼                    ▼   .   . 
- o                    o   |GA |
- |                    |\  ,   |
-A|                   A| \/    |GAG 
- |                    | /.    |
- ▼                    ▼▼ |    |
- o                    o  |AG  |
- |                    |  |    .
-G|                   G|  .   /
- |                    | /   /
- ▼                    ▼▼   /
- o                    o◀--'
-```
+   ```{svgbob}
+   "Row before:"                    "Row after:"
+                                    
+       T       A       A                       TAA
+   o------▶o------▶o------▶o           ,-----------------.
+                                      /     TA            \
+                                     /  ,-------.   AA     \
+                                    ,  /       ,-\-------.  .
+                                    | /       /   \       \ |
+                                    |/  T    /  A  ▼    A  ▼▼
+                                    o------▶o------▶o------▶o
+   ```
+
+ * each column would have an edge added to represent a contiguous indels.
+
+   ```{svgbob}
+   "Column before:"     "Column after:"
+                        
+    o                    o---.
+    |                    |\   \
+   G|                   G| \   \
+    |                    |  \   \
+    ▼                    ▼   .   .
+    o                    o   |GA |
+    |                    |\  ,   |
+   A|                   A| \/    |GAG 
+    |                    | /.    |
+    ▼                    ▼▼ |    |
+    o                    o  |AG  |
+    |                    |  |    .
+   G|                   G|  .   /
+    |                    | /   /
+    ▼                    ▼▼   /
+    o                    o◀--'
+   ```
+
+Each added edge represents a contiguous set of indels. Contiguous indels are penalized by choosing the normal indel score for the first indel in the list (e.g. score of -5), then all other indels are scored using a better *extended* indel score (e.g. score of -0.1). As such, the maximum alignment path will choose one of these contiguous indel edges over individual indel edges or poor substitution choices such as those in PAM / BLOSUM scoring matrices.
 
 ```{ch5}
 affine_gap_alignment.AffineGapAlignment_Basic_Visualize
-TGAT
-GAGG
+TAA
+GAG
 
 embedded_score_matrix
 -1
@@ -4357,14 +4396,59 @@ A  1  0  0  0
 C  0  1  0  0
 T  0  0  1  0
 G  0  0  0  1
+```
+
+The problem with this algorithm is that as the sequence lengths grow, the number of added edges explodes. It isn't practical for anything other than short sequences.
+
+```{output}
+ch5_code/src/affine_gap_alignment/AffineGapAlignment_Basic_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+affine_gap_alignment.AffineGapAlignment_Basic_Graph
+TAGGCGGAT
+TACCCCCAT
+embedded_score_matrix
+-1
+-0.1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
 ```
 
 #### Layer Algorithm
 
+`{bm} /(Algorithms\/Sequence Alignment\/Extended Gap Scoring\/Layer Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Extended Gap Scoring/Naive Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+Recall that the problem with the naive algorithm algorithm is that as the sequence lengths grow, the number of added edges explodes. It isn't practical for anything other than short sequences. A better algorithm that achieves the exact same result is the layer algorithm. The layer algorithm breaks an alignment graph into 3 distinct layers:
+
+ 1. horizontal edges go into their own layer.
+ 2. diagonal edges go into their own layer.
+ 3. vertical edges go into their own layer.
+
+The edge weights in the horizontal and diagonal layers are updated such that they use the *extended* indel score (e.g. -0.1). Then, for each node (x, y) in the diagonal layer, ...
+
+ * an edge is added to node (x+1, y) in the horizontal layer with a normal indel score (e.g. -5).
+ * an edge is added to node (x, y+1) in the vertical layer with a normal indel score (e.g. -5).
+
+Similarly, for each node (x, y) in both the horizontal and vertical layers that an edge from the diagonal layer points to, create a 0 weight "free ride" edge back to node (x, y) in the diagonal layer. These "free ride" edges are the same as the "free ride" edges in local alignment / fitting alignment / overlap alignment -- they hop across the alignment graph without adding anything to the sequence alignment.
+
+The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.
+
 ```{ch5}
 affine_gap_alignment.AffineGapAlignment_Layer_Visualize
-TGAT
-GAGG
+TAA
+GAG
 
 embedded_score_matrix
 -1
@@ -4375,6 +4459,31 @@ C  0  1  0  0
 T  0  0  1  0
 G  0  0  0  1
 ```
+
+The way to think about this layered structure alignment graph is that the hop from a node in the diagonal layer to a node in the horizontal/vertical layer will always have a normal indel score (e.g. -5). From there it either has the option to hop back to the diagonal layer (via the "free ride" edge) or continue pushing through indels using the less penalizing *extended* indel score (e.g. -0.1).
+
+This layered structure produces 3 times the number of nodes, but for longer sequences it has far less edges than the naive method.
+
+```{output}
+ch5_code/src/affine_gap_alignment/AffineGapAlignment_Layer_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+affine_gap_alignment.AffineGapAlignment_Layer_Graph
+TGGCGG
+TCCCCC
+embedded_score_matrix
+-1
+-0.1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+```
+
 
 ### Multiple Alignment
 

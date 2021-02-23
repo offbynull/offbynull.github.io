@@ -110,8 +110,8 @@ def affine_gap_alignment(
     v_node_count = len(v) + 1
     w_node_count = len(w) + 1
     graph = create_affine_gap_alignment_graph(v, w, weight_lookup, extended_gap_weight)
-    from_node = (1, 0, 0)
-    to_node = (1, v_node_count - 1, w_node_count - 1)
+    from_node = ('mid', 0, 0)
+    to_node = ('mid', v_node_count - 1, w_node_count - 1)
     populate_weights_and_backtrack_pointers(
         graph,
         from_node,
@@ -125,6 +125,8 @@ def affine_gap_alignment(
         to_node,
         lambda n_id: graph.get_node_data(n_id).get_weight_and_backtracking_edge()
     )
+    edges = list(filter(lambda e: not e.startswith('LOW_TO_MID'), edges))  # remove free rides from list
+    edges = list(filter(lambda e: not e.startswith('HIGH_TO_MID'), edges))  # remove free rides from list
     alignment = []
     for e in edges:
         ed = graph.get_edge_data(e)
@@ -215,7 +217,7 @@ def graph_to_tikz(
                     edge_params[3] = 'green'
                 if edge_id.startswith('E'):
                     edge_label = f'{"—" if edge_data.v_elem is None else edge_data.v_elem}\\\\ {"—" if edge_data.w_elem is None else edge_data.w_elem}\\\\ {edge_data.weight}'
-                if not edge_id.startswith('E'):
+                if not edge_id.startswith('E') or edge_id not in highlight_edges:
                     ret += f'        \\begin{{pgfonlayer}}{{bg}}\n'
                 ret += f'        \\draw[{", ".join(p for p in edge_params if p is not None)}]' \
                        f' ({node_id_to_latex_id[node_id]})' \
@@ -223,7 +225,7 @@ def graph_to_tikz(
                        f' [{", ".join(p for p in edge_to_params if p is not None)}]' \
                        f' node [align=center, midway, color=black] {{{edge_label}}}' \
                        f' ({node_id_to_latex_id[child_node_id]});\n'
-                if not edge_id.startswith('E'):
+                if not edge_id.startswith('E') or edge_id not in highlight_edges:
                     ret += f'        \\end{{pgfonlayer}}\n'
     ret += dedent('''
         \\end{tikzpicture}

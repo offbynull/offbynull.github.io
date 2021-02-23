@@ -36,7 +36,7 @@ def main():
             set(filter(lambda e: (graph.get_edge_from(e), graph.get_edge_to(e)) in edge_highlights, graph.get_edges()))
         )
         print(f'````{{latex}}\n{output}\n````', end='\n\n')
-        print(f'NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.', end='\n\n')
+        print(f'NOTE: Purple and red edges are extended indel edges.', end='\n\n')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
