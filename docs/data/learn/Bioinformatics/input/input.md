@@ -3236,7 +3236,7 @@ Algorithms/Sequence Alignment/Find Maximum Path_TOPIC
 
 **WHAT**: Given two sequences, perform sequence alignment and pull out the highest scoring alignment.
 
-**WHY**: A strongly matching global alignment indicates that the sequences are likely homologous / related.
+**WHY**: A strong global alignment indicates that the sequences are likely homologous / related.
 
 #### Graph Algorithm
 
@@ -4420,6 +4420,10 @@ T  -1  -1   1  -1
 G  -1  -1  -1   1
 ```
 
+```{note}
+The algorithm above was applied on global alignment, but it should be obvious how to apply it to the other alignment types discussed.
+```
+
 #### Layer Algorithm
 
 `{bm} /(Algorithms\/Sequence Alignment\/Extended Gap Scoring\/Layer Algorithm)_TOPIC/`
@@ -4484,27 +4488,63 @@ T  -1  -1   1  -1
 G  -1  -1  -1   1
 ```
 
+```{note}
+The algorithm above was applied on global alignment, but it should be obvious how to apply it to the other alignment types discussed.
+```
 
 ### Multiple Alignment
 
-```{svgbob}
-+---------+
-|         |
-|         |
-|         |
-|         |
-+---------+
+`{bm} /(Algorithms\/Sequence Alignment\/Mutliple Alignment)_TOPIC/`
 
-   +---------+
-  /|        /|
- / |       / |
-+--+------+  |
-|  |      |  |
-|  +------+--+
-| /       | /
-|/        |/
-+---------+
+```{prereq}
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+Algorithms/Sequence Alignment/Local Alignment_TOPIC
+Algorithms/Sequence Alignment/Fitting Alignment_TOPIC
+Algorithms/Sequence Alignment/Overlap Alignment_TOPIC
+Algorithms/Sequence Alignment/Protein Scoring_TOPIC
+Algorithms/Sequence Alignment/Extended Gap Scoring_TOPIC
 ```
+
+**WHAT**: Given *more than* two sequences, perform sequence alignment and pull out the highest scoring alignment.
+
+**WHY**: Proteins that perform the same function but are distantly related are likely to have similar regions. The problem is that sequence alignment against a pair of sequences may have a hard time identifying those similar regions, where as sequence alignments against more than 2 sequences will likely reveal much more / more accurate regions.
+
+```{note}
+Quote from Pevzner book: "Bioinformaticians sometimes say that pairwise alignment whispers and multiple alignment shouts."
+```
+
+**ALGORITHM**:
+
+Thinking about sequence alignment geometrically, adding another sequence to a sequence alignment graph is akin to adding a new dimension. For example, a sequence alignment graph with...
+
+ * 2 sequences is represented as a 2D square.
+ * 3 sequences is represented as a 3D cube.
+ * 4 sequences is represented as a 4D hypercube.
+ * etc..
+
+```{svgbob}
+                  "3 sequences"
+                    +---------+
+"2 sequences"      /|        /|
+                  / |       / |
++---------+      +--+------+  |
+|         |      |  |      |  |
+|         |      |  +------+--+
+|         |      | /       | /
+|         |      |/        |/
++---------+      +---------+
+```
+
+The alignment possibilities at each step of a sequence alignment may be thought of as a vertex shooting out edges to all other vertices in the geometry. For example, in a sequence alignment with 2 sequences, the vertex (0, 0) shoots out an edge to vertices ...
+
+ * (1, 0) - represents keep first but skip second.
+ * (0, 1) - represents skip first but keep second.
+ * (1, 1) - represents keep both.
+
+The vertex coordinates may be thought of as analogs of whether to keep or skip an element. Each coordinate position corresponds to a sequence element (first coordinate = first sequence's element, second coordinate = second sequence's element). If a coordinate is set to ...
+
+ * 1, the element is kept.
+ * 0, the element is skipped.
 
 ```{latex}
 \documentclass{standalone}
@@ -4526,6 +4566,8 @@ G  -1  -1  -1   1
     \end{tikzpicture}
 \end{document}
 ```
+
+This same logic extends to sequence alignment with 3 or more sequences. For example, in a sequence alignment with 3 sequences, the vertex (0, 0, 0) shoots out an edge to all other vertices in the cube. The vertex coordinates define which sequence elements should be kept or skipped based on the same rules described above.
 
 ```{latex}
 \documentclass{standalone}
@@ -4561,6 +4603,44 @@ G  -1  -1  -1   1
         \draw[line width = 1px, black, dotted] (N100) -- (N110);
     \end{tikzpicture}
 \end{document}
+```
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+TODO: INSERT CODE HERE
+
+```{output}
+ch5_code/src/graph/GraphGridCreate.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{note}
+The algorithm above was applied on global alignment, but it should be obvious how to apply it to most of the other alignment types discussed.
 ```
 
 ### Multiple Alignment Scoring

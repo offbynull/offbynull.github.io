@@ -27,6 +27,7 @@ ON_NEW_EDGE_FUNC_TYPE =\
     ]
 
 
+# MARKDOWN
 def create_grid_graph(
         sequences: List[List[ELEM]],
         on_new_node: ON_NEW_NODE_FUNC_TYPE,
@@ -54,6 +55,7 @@ def create_grid_graph(
                 edge_id = create_edge_id_func()
                 graph.insert_edge(edge_id, src_grid_coord, dst_grid_coord, edge_data)
     return graph
+# MARKDOWN
 
 
 if __name__ == '__main__':
