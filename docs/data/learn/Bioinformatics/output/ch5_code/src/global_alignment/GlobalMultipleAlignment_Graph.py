@@ -21,13 +21,12 @@ class NodeData:
 
 
 class EdgeData:
-    def __init__(self, v_elem: Optional[ELEM], w_elem: Optional[ELEM], weight: float):
-        self.v_elem = v_elem
-        self.w_elem = w_elem
+    def __init__(self, elems: Tuple[Optional[ELEM], ...], weight: float):
+        self.elems = elems
         self.weight = weight
 
-    def get_elements(self) -> Tuple[Optional[ELEM], Optional[ELEM]]:
-        return self.v_elem, self.w_elem
+    def get_elements(self) -> Tuple[Optional[ELEM], ...]:
+        return self.elems
 
 
 # MARKDOWN
@@ -38,7 +37,7 @@ def create_global_alignment_graph(
     graph = create_grid_graph(
         seqs,
         lambda n_id: NodeData(),
-        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems[0], elems[1], weight_lookup.lookup(*elems))
+        lambda src_n_id, dst_n_id, offset, elems: EdgeData(elems, weight_lookup.lookup(*elems))
     )
     return graph
 
@@ -47,7 +46,7 @@ def global_alignment(
         seqs: List[List[ELEM]],
         weight_lookup: WeightLookup
 ) -> Tuple[float, List[str], List[Tuple[ELEM, ...]]]:
-    seq_node_counts = [len(s) + 1 for s in seqs]
+    seq_node_counts = [len(s) for s in seqs]
     graph = create_global_alignment_graph(seqs, weight_lookup)
     from_node = tuple([0] * len(seqs))
     to_node = tuple(seq_node_counts)
@@ -67,7 +66,7 @@ def global_alignment(
     alignment = []
     for e in edges:
         ed = graph.get_edge_data(e)
-        alignment.append((ed.v_elem, ed.w_elem))
+        alignment.append(ed.elems)
     return final_weight, edges, alignment
 # MARKDOWN
 
@@ -78,25 +77,6 @@ def main():
     try:
         dims = int(input())
         seqs = [list(input()) for _ in range(dims)]
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
-        FIX ME: MATRIX TYPE IS 3D
         matrix_type = input()
         if matrix_type == 'embedded_score_matrix':
             indel_weight = float(input())
@@ -113,11 +93,19 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
+        weights_data = weights_data.strip()
+        parsed_weights_data = dict()
+        for line in weights_data.split('\n'):
+            line_split = line.split()
+            elems = tuple(line_split[:-1])
+            weight = float(line_split[-1])
+            parsed_weights_data[elems] = weight
+        weight_lookup = Table2DWeightLookup(parsed_weights_data, indel_weight)
         weight, edges, elems = global_alignment(seqs, weight_lookup)
-        print(f'Given the sequences {seqs} and the score matrix...', end="\n\n")
+        print(f'Given the sequences {["".join(s) for s in seqs]} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         print(f'... the global alignment is...', end="\n\n")
+        print(f'````', end='\n')
         for i in range(dims):
             print(f'{"".join("-" if e[i] is None else e[i] for e in elems)}')
         print(f'````', end='\n\n')

@@ -41,7 +41,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
+        weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         sweep_combiner = SweepCombiner(s1, s2, weight_lookup)
         s1_node_count = len(s1) + 1
         s2_node_count = len(s2) + 1

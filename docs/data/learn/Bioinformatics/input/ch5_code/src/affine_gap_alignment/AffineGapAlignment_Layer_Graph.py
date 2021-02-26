@@ -279,7 +279,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
+        weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         weight, edges, elems = affine_gap_alignment(s1, s2, weight_lookup, extended_gap_weight)
         graph = create_affine_gap_alignment_graph(s1, s2, weight_lookup, extended_gap_weight)
         output = graph_to_tikz(

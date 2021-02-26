@@ -88,7 +88,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_str(weights_data, indel_weight)
+        weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         node1, node2 = find_edge_that_max_alignment_path_travels_through_at_col(s1, s2, weight_lookup, col_idx)
         print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")

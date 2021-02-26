@@ -24,18 +24,18 @@ class Constant2DWeightLookup(WeightLookup):
 
 
 class Table2DWeightLookup(WeightLookup):
-    def __init__(self, weight_lookup: Dict[Tuple[ELEM, ELEM], float], indel_weight: float):
+    def __init__(self, weight_lookup: Dict[Tuple[ELEM, ...], float], indel_weight: float):
         self.weight_lookup = weight_lookup
         self.indel_weight = indel_weight
 
     @staticmethod
-    def create_from_file(weight_lookup_path: str, indel_weight: float):
+    def create_from_2d_matrix_file(weight_lookup_path: str, indel_weight: float):
         with open(weight_lookup_path, mode='r', encoding='utf-8') as f:
             data = f.read()
-        return Table2DWeightLookup.create_from_str(data, indel_weight)
+        return Table2DWeightLookup.create_from_2d_matrix_str(data, indel_weight)
 
     @staticmethod
-    def create_from_str(data: str, indel_weight: float):
+    def create_from_2d_matrix_str(data: str, indel_weight: float):
         weight_lookup = {}
         lines = data.strip().split('\n')
         aa_row = lines[0].strip().split()
@@ -48,13 +48,13 @@ class Table2DWeightLookup(WeightLookup):
         return Table2DWeightLookup(weight_lookup, indel_weight)
 
     def lookup(self, *elements: Tuple[Optional[ELEM]]):
-        if elements[0] is None or elements[1] is None:
+        if None in elements:
             return self.indel_weight
         return self.weight_lookup[elements]
 
 
 if __name__ == '__main__':
-    x = Table2DWeightLookup.create_from_file('PAM250.txt', -5.0)
+    x = Table2DWeightLookup.create_from_2d_matrix_file('PAM250.txt', -5.0)
     print(f'{x.lookup("S", "A")}')
     print(f'{x.lookup("S", None)}')
     print(f'{x.lookup(None, "A")}')

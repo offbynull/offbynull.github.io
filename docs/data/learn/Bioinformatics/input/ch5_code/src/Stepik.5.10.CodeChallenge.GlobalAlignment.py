@@ -8,7 +8,7 @@ lines = data.strip().split('\n')
 
 s1 = list(lines[0].strip())
 s2 = list(lines[1].strip())
-weight_lookup = Table2DWeightLookup.create_from_file('BLOSUM62.txt', -5)
+weight_lookup = Table2DWeightLookup.create_from_2d_matrix_file('BLOSUM62.txt', -5)
 final_weight, alignment = global_alignment(s1, s2, weight_lookup)
 
 print(f'{int(final_weight)}')
