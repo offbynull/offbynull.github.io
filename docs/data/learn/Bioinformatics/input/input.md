@@ -4494,7 +4494,7 @@ The algorithm above was applied on global alignment, but it should be obvious ho
 
 ### Multiple Alignment
 
-`{bm} /(Algorithms\/Sequence Alignment\/Mutliple Alignment)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Alignment/Global Alignment_TOPIC
@@ -4692,10 +4692,42 @@ G G G 1
 ```
 
 ```{note}
-The algorithm above was applied on global alignment, but it should be obvious how to apply it to most of the other alignment types discussed.
+The algorithm above was applied on global alignment, but it should be obvious how to apply it to most of the other alignment types discussed. Similarly, it should be obvious how to convert the algorithm to matrix form and divide-and-conquer form.
 ```
 
 ### Multiple Alignment Scoring
+
+`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment Scoring)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Protein Scoring_TOPIC
+Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
+```
+
+**WHAT**: 
+
+**WHY**: 
+
+#### Sum-of-Pairs Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment Scoring\/Sum-of-Pairs Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Protein Scoring_TOPIC
+Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
+```
+
+**ALGORITHM**:
+
+#### Entropy Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment Scoring\/Entropy Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Motif/Motif Matrix Score/Entropy Algorithm_TOPIC
+```
+
+**ALGORITHM**:
 
 # Stories
 

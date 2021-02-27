@@ -119,6 +119,10 @@
 </ul>
 <li><a href="#H_Multiple%20Alignment">Multiple Alignment</a></li>
 <li><a href="#H_Multiple%20Alignment%20Scoring">Multiple Alignment Scoring</a></li>
+<ul>
+<li><a href="#H_Sum-of-Pairs%20Algorithm">Sum-of-Pairs Algorithm</a></li>
+<li><a href="#H1_Entropy%20Algorithm">Entropy Algorithm</a></li>
+</ul>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -7818,7 +7822,7 @@ T--CCCCC--
 <p>The algorithm above was applied on global alignment, but it should be obvious how to apply it to the other alignment types discussed.</p>
 </div>
 <a name="H_Multiple%20Alignment"></a><h3>Multiple Alignment</h3>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMutliple%20Alignment)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -8007,9 +8011,38 @@ GATTATGATT--AT
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The algorithm above was applied on global alignment, but it should be obvious how to apply it to most of the other alignment types discussed.</p>
+<p>The algorithm above was applied on global alignment, but it should be obvious how to apply it to most of the other alignment types discussed. Similarly, it should be obvious how to convert the algorithm to matrix form and divide-and-conquer form.</p>
 </div>
 <a name="H_Multiple%20Alignment%20Scoring"></a><h3>Multiple Alignment Scoring</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%20Scoring)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>:</p>
+<p><strong>WHY</strong>:</p>
+<a name="H_Sum-of-Pairs%20Algorithm"></a><h4>Sum-of-Pairs Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%20Scoring%2FSum-of-Pairs%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<a name="H1_Entropy%20Algorithm"></a><h4>Entropy Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%20Scoring%2FEntropy%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FMotif%2FMotif%20Matrix%20Score%2FEntropy%20Algorithm)_TOPIC%2F">Algorithms/Motif/Motif Matrix Score/Entropy Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
