@@ -1,5 +1,5 @@
 from fitting_alignment.FittingAlignment_Graph import create_fitting_alignment_graph, graph_to_tikz
-from WeightLookup import Table2DWeightLookup
+from scoring.WeightLookup import Table2DWeightLookup
 
 
 def main():

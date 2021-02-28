@@ -118,11 +118,8 @@
 <li><a href="#H_Layer%20Algorithm">Layer Algorithm</a></li>
 </ul>
 <li><a href="#H_Multiple%20Alignment">Multiple Alignment</a></li>
-<li><a href="#H_Multiple%20Alignment%20Scoring">Multiple Alignment Scoring</a></li>
-<ul>
-<li><a href="#H_Sum-of-Pairs%20Algorithm">Sum-of-Pairs Algorithm</a></li>
-<li><a href="#H1_Entropy%20Algorithm">Entropy Algorithm</a></li>
-</ul>
+<li><a href="#H_Sum-of-Pairs%20Scoring">Sum-of-Pairs Scoring</a></li>
+<li><a href="#H_Entropy%20Scoring">Entropy Scoring</a></li>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -283,7 +280,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -415,12 +412,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>TTAAA = 6 occurrences</li>
-<li>GATCA = 6 occurrences</li>
 <li>AAGGG = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>CCCTT = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>TTAAA = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>GATCA = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -494,18 +491,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1638,7 +1635,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>AAAGA<br>AAAGA<br>AAAGA</p>
+<p>ATAAT<br>ATAAT<br>ATAAT</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2161,7 +2158,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2222,7 +2219,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2906,22 +2903,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
 </ul>
 </div>
 <p></p>
@@ -5799,7 +5796,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_2560033f250ce8a4763bf859adc4eaef.svg" alt="Dot diagram"></p>
+<p><img src="dot_908f2e7df71e56c66ef49549ea8e3030.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5857,7 +5854,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_12e6ac9a57792aa94f6bfc719d73517f.svg" alt="Dot diagram"></p>
+<p><img src="dot_9c06a89515a55141e2e8e33e8eb7058b.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6005,13 +6002,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_ce07284a742638d33a760641cc8853b1.svg" alt="Dot diagram"></p>
+<p><img src="dot_4d51b8071eb235b4baecc4243ade7fa2.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_aab8fd307ed1b6125e12604916c36cc6.svg" alt="Dot diagram"></p>
+<p><img src="dot_53e6cfc264560d917aac53f2d71e4a2e.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6048,7 +6045,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_8b6d48a336a412d1f3d51e914727bb18.svg" alt="Latex diagram"></p>
+<p><img src="latex_3186733778dfdc8ab216bcaec5c19be4.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6059,7 +6056,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_0aee87437f2b70ad8c1e77fd2ce34945.svg" alt="Latex diagram"></p>
+<p><img src="latex_94d8c3d8a9626085a15a543d5c325d81.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6120,7 +6117,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_64149ad7f0e52a63116516e39766a764.svg" alt="Latex diagram"></p>
+<p><img src="latex_a4b643a916229a53b1e51787598b7b30.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 GA-T
 </code></pre>
@@ -6243,7 +6240,7 @@ G  0  0  0  1
 <p>The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.</p>
 <p>In other words, the only data needed to calculate the weights of the next column is the weights in the previous column.</p>
 <p><img src="svgbob_a778e17c20ba10aa76e0c0375a70cc19614cd870.svg" alt="Kroki diagram output"></p>
-<p><a href="ch5_code/src/global_alignment/Global_ForwardSweeper.py">ch5_code/src/global_alignment/Global_ForwardSweeper.py</a> (lines 10 to 52):</p>
+<p><a href="ch5_code/src/global_alignment/Global_ForwardSweeper.py">ch5_code/src/global_alignment/Global_ForwardSweeper.py</a> (lines 9 to 51):</p>
 <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForwardSweeper</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, v: List[ELEM], w: List[ELEM], weight_lookup: WeightLookup, col_backtrack: int = <span class="hljs-number">2</span></span>):</span>
         self.v = v
@@ -6394,7 +6391,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_9e9200d87c0db66305bc5300a66508b8.svg" alt="Latex diagram"></p>
+<p><img src="latex_eeeee27806c281d0d1b6487545de15e4.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6402,7 +6399,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_359cdbc54fe05b73a3278a5823de29ee.svg" alt="Latex diagram"></p>
+<p><img src="latex_2335b21e658d3cfd6ef58b6880fab824.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6740,7 +6737,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c179ef53987b78880ea22fa474626e2f.svg" alt="Latex diagram"></p>
+<p><img src="latex_e986d453b69397408b98260576700180.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6823,8 +6820,8 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_442a932ff645df848ecb2249b1ace7f0.svg" alt="Latex diagram"></p>
-<pre><code>AGA-C
+<p><img src="latex_24a0fbc31e0b9bb36f7a292e67af5657.svg" alt="Latex diagram"></p>
+<pre><code>AG-AC
 AGAAC
 </code></pre>
 <p>Weight: 3.0</p>
@@ -6981,7 +6978,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_327b5d9a3cf1d257396c3f9e63afd677.svg" alt="Latex diagram"></p>
+<p><img src="latex_2d75e1c10576c1e4cf13ce26a46b5297.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7064,9 +7061,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_f352a9af9670cf3c5e46ba230993e152.svg" alt="Latex diagram"></p>
+<p><img src="latex_3bc816ac75fbce4ae38da5f0c9980fe8.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
-AAAC
+A-AC
 </code></pre>
 <p>Weight: 2.0</p>
 </div>
@@ -7221,7 +7218,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_4ce8651119081b669f1d88464de7fa15.svg" alt="Latex diagram"></p>
+<p><img src="latex_2f1dae586fda49e4dd0b4e9cfabf29e9.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7304,7 +7301,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_597453d94dd72e583efb0c3c626bb418.svg" alt="Latex diagram"></p>
+<p><img src="latex_dd08c159eca4461cd523b298258b5d8c.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7571,7 +7568,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ceb13f700b96611d350a482828864473.svg" alt="Latex diagram"></p>
+<p><img src="latex_e82143d55c821bfebd425cfef42ea2d1.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7657,7 +7654,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_51930a37e1feea156f5e426612c5fbc6.svg" alt="Latex diagram"></p>
+<p><img src="latex_bd8f925d501ff5740890e4a16b777280.svg" alt="Latex diagram"></p>
 <pre><code>TAGGC----GGAT
 TA--CCCCC--AT
 </code></pre>
@@ -7692,7 +7689,7 @@ TA--CCCCC--AT
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_5ecdd4e914818eefdf99166d5c8f9fb9.svg" alt="Latex diagram"></p>
+<p><img src="latex_b43a7828580c50c5e187a1b738e8bd12.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7810,7 +7807,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_eabe63e47ae4ae0edf3c9fb68617d2e4.svg" alt="Latex diagram"></p>
+<p><img src="latex_7775339170759115916fdbd97b31506d.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -7835,7 +7832,7 @@ T--CCCCC--
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given <em>more than</em> two <a href="#BM_(sequence)%2Fi">sequence</a>s, perform <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> and pull out the highest scoring alignment.</p>
-<p><strong>WHY</strong>: Proteins that perform the same function but are distantly related are likely to have similar regions. The problem is that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> against a pair of <a href="#BM_(sequence)%2Fi">sequence</a>s may have a hard time identifying those similar regions, where as <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s against more than 2 <a href="#BM_(sequence)%2Fi">sequence</a>s will likely reveal much more / more accurate regions.</p>
+<p><strong>WHY</strong>: Proteins that perform the same function but are distantly related are likely to have similar regions. The problem is that a 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> may have a hard time identifying those similar regions, where as an n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> (n &gt; 2) will likely reveal much more / more accurate regions.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Quote from Pevzner book: "Bioinformaticians sometimes say that pairwise alignment whispers and multiple alignment shouts."</p>
@@ -8011,10 +8008,10 @@ GATTATGATT--AT
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The algorithm above was applied on global alignment, but it should be obvious how to apply it to most of the other alignment types discussed. Similarly, it should be obvious how to convert the algorithm to matrix form and divide-and-conquer form.</p>
+<p>The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment) / implements (e.g. matrix or divide-and-conquer) discussed.</p>
 </div>
-<a name="H_Multiple%20Alignment%20Scoring"></a><h3>Multiple Alignment Scoring</h3>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%20Scoring)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Sum-of-Pairs%20Scoring"></a><h3>Sum-of-Pairs Scoring</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FSum-of-Pairs%20Scoring)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -8022,27 +8019,79 @@ GATTATGATT--AT
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>:</p>
-<p><strong>WHY</strong>:</p>
-<a name="H_Sum-of-Pairs%20Algorithm"></a><h4>Sum-of-Pairs Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%20Scoring%2FSum-of-Pairs%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
+<p><strong>WHAT</strong>: If a scoring model already exists for 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s, that scoring model can be used as the basis for n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s (where n &gt; 2). For a possible alignment position, generate all possible pairs between the elements at that position and score them. Then, sum those scores to get the final score for that alignment position.</p>
+<p><strong>WHY</strong>: Traditionally, scoring an n-way alignment requires an n-dimensional scoring matrix. For example, protein <a href="#BM_(sequence)%2Fi">sequence</a>s have 20 possible element types (1 for each <a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a>). That means a...</p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a></li>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment</a></li>
+<li>2-way alignment with protein <a href="#BM_(sequence)%2Fi">sequence</a>s requires <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msup><mn>0</mn><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">20^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> scores.</li>
+<li>3-way alignment with protein <a href="#BM_(sequence)%2Fi">sequence</a>s requires <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msup><mn>0</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">20^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span> scores.</li>
+<li>4-way alignment with protein <a href="#BM_(sequence)%2Fi">sequence</a>s requires <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msup><mn>0</mn><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">20^4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span> scores.</li>
+<li>5-way alignment with protein <a href="#BM_(sequence)%2Fi">sequence</a>s requires <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msup><mn>0</mn><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">20^5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span></span></span> scores.</li>
+<li>...</li>
 </ul>
-</div>
+<p>Creating probabilistic scoring models such a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> and <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> for n-way alignments where n &gt; 2 is impractical. Sum-of-pairs scoring is a viable alternative.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<a name="H1_Entropy%20Algorithm"></a><h4>Entropy Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%20Scoring%2FEntropy%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a href="ch5_code/src/scoring/SumOfPairsWeightLookup.py">ch5_code/src/scoring/SumOfPairsWeightLookup.py</a> (lines 8 to 14):</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SumOfPairsWeightLookup</span>(<span class="hljs-params">WeightLookup</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, backing_2d_lookup: WeightLookup</span>):</span>
+        self.backing_wl = backing_2d_lookup
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lookup</span>(<span class="hljs-params">self, *elements: Tuple[Optional[ELEM]]</span>):</span>
+        <span class="hljs-keyword">return</span> sum(self.backing_wl.lookup(a, b) <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> combinations(elements, r=<span class="hljs-number">2</span>))
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the elements ['M', 'E', 'A', None, 'L', 'Y'] and the backing score matrix...</p>
+<pre><code>INDEL=-1.0
+   A  C  D  E  F  G  H  I  K  L  M  N  P  Q  R  S  T  V  W  Y
+A  4  0 -2 -1 -2  0 -2 -1 -1 -1 -1 -2 -1 -1 -1  1  0  0 -3 -2
+C  0  9 -3 -4 -2 -3 -3 -1 -3 -1 -1 -3 -3 -3 -3 -1 -1 -1 -2 -2
+D -2 -3  6  2 -3 -1 -1 -3 -1 -4 -3  1 -1  0 -2  0 -1 -3 -4 -3
+E -1 -4  2  5 -3 -2  0 -3  1 -3 -2  0 -1  2  0  0 -1 -2 -3 -2
+F -2 -2 -3 -3  6 -3 -1  0 -3  0  0 -3 -4 -3 -3 -2 -2 -1  1  3
+G  0 -3 -1 -2 -3  6 -2 -4 -2 -4 -3  0 -2 -2 -2  0 -2 -3 -2 -3
+H -2 -3 -1  0 -1 -2  8 -3 -1 -3 -2  1 -2  0  0 -1 -2 -3 -2  2
+I -1 -1 -3 -3  0 -4 -3  4 -3  2  1 -3 -3 -3 -3 -2 -1  3 -3 -1
+K -1 -3 -1  1 -3 -2 -1 -3  5 -2 -1  0 -1  1  2  0 -1 -2 -3 -2
+L -1 -1 -4 -3  0 -4 -3  2 -2  4  2 -3 -3 -2 -2 -2 -1  1 -2 -1
+M -1 -1 -3 -2  0 -3 -2  1 -1  2  5 -2 -2  0 -1 -1 -1  1 -1 -1
+N -2 -3  1  0 -3  0  1 -3  0 -3 -2  6 -2  0  0  1  0 -3 -4 -2
+P -1 -3 -1 -1 -4 -2 -2 -3 -1 -3 -2 -2  7 -1 -2 -1 -1 -2 -4 -3
+Q -1 -3  0  2 -3 -2  0 -3  1 -2  0  0 -1  5  1  0 -1 -2 -2 -1
+R -1 -3 -2  0 -3 -2  0 -3  2 -2 -1  0 -2  1  5 -1 -1 -3 -3 -2
+S  1 -1  0  0 -2  0 -1 -2  0 -2 -1  1 -1  0 -1  4  1 -2 -3 -2
+T  0 -1 -1 -1 -2 -2 -2 -1 -1 -1 -1  0 -1 -1 -1  1  5  0 -2 -2
+V  0 -1 -3 -2 -1 -3 -3  3 -2  1  1 -3 -2 -2 -3 -2  0  4 -3 -1
+W -3 -2 -4 -3  1 -2 -2 -3 -3 -2 -1 -4 -4 -2 -3 -3 -2 -3 11  2
+Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
+</code></pre>
+<p>... the sum-of-pairs score for these elements is -17.0.</p>
+</div>
+<p></p>
+<a name="H_Entropy%20Scoring"></a><h3>Entropy Scoring</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FEntropy%20Scoring)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FMotif%2FMotif%20Matrix%20Score%2FEntropy%20Algorithm)_TOPIC%2F">Algorithms/Motif/Motif Matrix Score/Entropy Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment</a></li>
 </ul>
 </div>
+<p><strong>WHAT</strong>: When performing an n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, score each possible alignment position based on <a href="#BM_(entropy)%2Fi">entropy</a>.</p>
+<p><strong>WHY</strong>: <a href="#BM_(entropy)%2Fi">Entropy</a> is a measure of uncertainty. The idea is that the more "certain" an alignment position is, the more likely it is to be correct.</p>
 <p><strong>ALGORITHM</strong>:</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
+<p>TODO: IMPLEMENT</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
@@ -8133,8 +8182,8 @@ GATTATGATT--AT
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -8152,19 +8201,19 @@ GATTATGATT--AT
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -8176,12 +8225,12 @@ GATTATGATT--AT
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -8242,8 +8291,8 @@ GATTATGATT--AT
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 18</p>
+<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 21</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>

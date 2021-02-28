@@ -10,7 +10,6 @@ class WeightLookup(ABC):
         ...
 
 
-
 class Constant2DWeightLookup(WeightLookup):
     def __init__(self, match_weight: float, mismatch_weight: float, indel_weight: float):
         self.match_weight = match_weight
@@ -54,7 +53,7 @@ class Table2DWeightLookup(WeightLookup):
 
 
 if __name__ == '__main__':
-    x = Table2DWeightLookup.create_from_2d_matrix_file('PAM250.txt', -5.0)
+    x = Table2DWeightLookup.create_from_2d_matrix_file('../PAM250.txt', -5.0)
     print(f'{x.lookup("S", "A")}')
     print(f'{x.lookup("S", None)}')
     print(f'{x.lookup(None, "A")}')

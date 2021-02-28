@@ -3,7 +3,7 @@ from typing import TypeVar, List, Tuple
 from global_alignment import GlobalAlignment_Matrix
 from global_alignment.Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn import \
     find_node_that_max_alignment_path_travels_through_at_middle_col
-from WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
 
 ELEM = TypeVar('ELEM')
 

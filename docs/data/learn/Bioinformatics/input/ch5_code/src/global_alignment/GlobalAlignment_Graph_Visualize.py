@@ -1,5 +1,5 @@
 from global_alignment.GlobalAlignment_Graph import create_global_alignment_graph, graph_to_tikz
-from WeightLookup import Table2DWeightLookup
+from scoring.WeightLookup import Table2DWeightLookup
 
 
 def main():

@@ -4507,7 +4507,7 @@ Algorithms/Sequence Alignment/Extended Gap Scoring_TOPIC
 
 **WHAT**: Given *more than* two sequences, perform sequence alignment and pull out the highest scoring alignment.
 
-**WHY**: Proteins that perform the same function but are distantly related are likely to have similar regions. The problem is that sequence alignment against a pair of sequences may have a hard time identifying those similar regions, where as sequence alignments against more than 2 sequences will likely reveal much more / more accurate regions.
+**WHY**: Proteins that perform the same function but are distantly related are likely to have similar regions. The problem is that a 2-way sequence alignment may have a hard time identifying those similar regions, where as an n-way sequence alignment (n > 2) will likely reveal much more / more accurate regions.
 
 ```{note}
 Quote from Pevzner book: "Bioinformaticians sometimes say that pairwise alignment whispers and multiple alignment shouts."
@@ -4692,42 +4692,92 @@ G G G 1
 ```
 
 ```{note}
-The algorithm above was applied on global alignment, but it should be obvious how to apply it to most of the other alignment types discussed. Similarly, it should be obvious how to convert the algorithm to matrix form and divide-and-conquer form.
+The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment) / implements (e.g. matrix or divide-and-conquer) discussed.
 ```
 
-### Multiple Alignment Scoring
+### Sum-of-Pairs Scoring
 
-`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment Scoring)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Alignment\/Sum-of-Pairs Scoring)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Alignment/Protein Scoring_TOPIC
 Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
 ```
 
-**WHAT**: 
+**WHAT**: If a scoring model already exists for 2-way sequence alignments, that scoring model can be used as the basis for n-way sequence alignments (where n > 2). For a possible alignment position, generate all possible pairs between the elements at that position and score them. Then, sum those scores to get the final score for that alignment position.
 
-**WHY**: 
+**WHY**: Traditionally, scoring an n-way alignment requires an n-dimensional scoring matrix. For example, protein sequences have 20 possible element types (1 for each proteinogenic amino acid). That means a...
 
-#### Sum-of-Pairs Algorithm
+ * 2-way alignment with protein sequences requires `{kt} 20^2` scores.
+ * 3-way alignment with protein sequences requires `{kt} 20^3` scores.
+ * 4-way alignment with protein sequences requires `{kt} 20^4` scores.
+ * 5-way alignment with protein sequences requires `{kt} 20^5` scores.
+ * ...
 
-`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment Scoring\/Sum-of-Pairs Algorithm)_TOPIC/`
-
-```{prereq}
-Algorithms/Sequence Alignment/Protein Scoring_TOPIC
-Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
-```
+Creating probabilistic scoring models such a BLOSUM and PAM for n-way alignments where n > 2 is impractical. Sum-of-pairs scoring is a viable alternative.
 
 **ALGORITHM**:
 
-#### Entropy Algorithm
+```{output}
+ch5_code/src/scoring/SumOfPairsWeightLookup.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment Scoring\/Entropy Algorithm)_TOPIC/`
+```{ch5}
+scoring.SumOfPairsWeightLookup
+6
+M
+E
+A
+
+L
+Y
+file_score_matrix
+-1
+BLOSUM62.txt
+```
+
+### Entropy Scoring
+
+`{bm} /(Algorithms\/Sequence Alignment\/Entropy Scoring)_TOPIC/`
 
 ```{prereq}
 Algorithms/Motif/Motif Matrix Score/Entropy Algorithm_TOPIC
+Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
 ```
 
+**WHAT**: When performing an n-way sequence alignment, score each possible alignment position based on entropy.
+
+**WHY**: Entropy is a measure of uncertainty. The idea is that the more "certain" an alignment position is, the more likely it is to be correct.
+
 **ALGORITHM**:
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
+
+TODO: IMPLEMENT
 
 # Stories
 

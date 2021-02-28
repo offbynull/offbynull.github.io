@@ -1,7 +1,7 @@
 from typing import TypeVar, List, Tuple
 
 from global_alignment.Global_SweepCombiner import SweepCombiner
-from WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
 
 ELEM = TypeVar('ELEM')
 

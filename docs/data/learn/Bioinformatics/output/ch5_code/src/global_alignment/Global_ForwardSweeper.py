@@ -1,7 +1,6 @@
-from itertools import product
-from typing import List, Any, TypeVar, Tuple
+from typing import List, TypeVar
 
-from WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
 
 ELEM = TypeVar('ELEM')
 

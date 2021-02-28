@@ -5,7 +5,7 @@ from typing import Tuple, Set
 from find_max_path.FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from global_alignment.GlobalAlignment_Graph import create_global_alignment_graph, NodeData, EdgeData
 from graph.Graph import Graph
-from WeightLookup import Table2DWeightLookup
+from scoring.WeightLookup import Table2DWeightLookup
 from helpers.Utils import latex_escape
 
 

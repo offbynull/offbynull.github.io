@@ -1,6 +1,6 @@
 from typing import List, Optional, TypeVar, Tuple
 
-from WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
 from find_max_path.FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from graph.Graph import Graph
 from graph.GraphGridCreate import create_grid_graph

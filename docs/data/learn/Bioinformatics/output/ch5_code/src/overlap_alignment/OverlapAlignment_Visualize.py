@@ -1,6 +1,6 @@
 from overlap_alignment.OverlapAlignment_Graph import create_overlap_alignment_graph
 from overlap_alignment.OverlapAlignment_Graph import graph_to_tikz
-from WeightLookup import Table2DWeightLookup
+from scoring.WeightLookup import Table2DWeightLookup
 
 
 def main():

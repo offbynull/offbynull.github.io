@@ -1,5 +1,5 @@
 from local_alignment.LocalAlignment_Graph import create_local_alignment_graph, graph_to_tikz
-from WeightLookup import Table2DWeightLookup
+from scoring.WeightLookup import Table2DWeightLookup
 
 
 def main():
