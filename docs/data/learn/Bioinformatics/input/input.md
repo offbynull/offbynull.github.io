@@ -4753,31 +4753,22 @@ Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
 
 **ALGORITHM**:
 
-TODO: IMPLEMENT
+```{output}
+ch5_code/src/scoring/EntropyWeightLookup.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
-
-TODO: IMPLEMENT
+```{ch5}
+scoring.EntropyWeightLookup
+5
+A
+A
+A
+A
+C
+-2
+```
 
 # Stories
 

@@ -16,7 +16,7 @@ class Constant2DWeightLookup(WeightLookup):
         self.misatch_weight = mismatch_weight
         self.indel_weight = indel_weight
 
-    def lookup(self, *elements: Tuple[Optional[ELEM]]):
+    def lookup(self, *elements: Tuple[Optional[ELEM], ...]):
         if elements[0] is None or elements[1] is None:
             return self.indel_weight
         return self.match_weight if elements[0] == elements[1] else self.misatch_weight
@@ -46,7 +46,7 @@ class Table2DWeightLookup(WeightLookup):
                 weight_lookup[(aa1, aa2)] = float(weight)
         return Table2DWeightLookup(weight_lookup, indel_weight)
 
-    def lookup(self, *elements: Tuple[Optional[ELEM]]):
+    def lookup(self, *elements: Tuple[Optional[ELEM], ...]):
         if None in elements:
             return self.indel_weight
         return self.weight_lookup[elements]
