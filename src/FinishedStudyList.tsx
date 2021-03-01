@@ -57,38 +57,42 @@ export class FinishedStudyItem extends React.Component<FinishedStudyItemProps, F
 
     public render() {
         const year = this.props.entry.year || 'WIP';
-        switch (this.props.entry.source.type) {
-            case 'book': {
-                return (
-                    <li>
-                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year}, book <a href={'https://openlibrary.org/isbn/' + this.props.entry.source.isbn}>ISBN</a>
-                        {this.props.entry.source.url === undefined ? null : <span> and <a href={this.props.entry.source.url}>website</a></span>})
-                    </li>
-                );
-            }
-            case 'course': {
-                return (
-                    <li>
-                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year}, course <a href={this.props.entry.source.url}>website</a>)
-                    </li>
-                );
-            }
-            case 'document': {
-                return (
-                    <li>
-                        <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year}, document <a href={this.props.entry.source.url}>website</a>)
-                    </li>
-                );
-            }
-            default:
-                throw new Error('This should never happen');
-        }
-
+        return (
+            <li>
+                <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year})
+            </li>
+        );
+        // switch (this.props.entry.source.type) {
+        //     case 'book': {
+        //         return (
+        //             <li>
+        //                 <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a>{/* ({year}, book <a href={'https://openlibrary.org/isbn/' + this.props.entry.source.isbn}>ISBN</a>
+        //                 {this.props.entry.source.url === undefined ? null : <span> and <a href={this.props.entry.source.url}>website</a></span>}) */}
+        //             </li>
+        //         );
+        //     }
+        //     case 'course': {
+        //         return (
+        //             <li>
+        //                 <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a>{/* ({year}, course <a href={this.props.entry.source.url}>website</a>) */}
+        //             </li>
+        //         );
+        //     }
+        //     case 'document': {
+        //         return (
+        //             <li>
+        //                 <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a>{/* ({year}, document <a href={this.props.entry.source.url}>website</a>) */}
+        //             </li>
+        //         );
+        //     }
+        //     default:
+        //         throw new Error('This should never happen');
+        // }
     }
 }
 
 
-
+const SourceTypeV = t.union([BookV, CourseV, DocumentV]);
 
 export const FinishedStudyEntryV =
     t.readonly(
@@ -99,7 +103,10 @@ export const FinishedStudyEntryV =
             ]),
             name: t.string,
             notesUrl: t.string,
-            source: t.union([BookV, CourseV, DocumentV])
+            source: t.union([
+                SourceTypeV,
+                t.readonlyArray(SourceTypeV)
+            ])
         })
     );
 

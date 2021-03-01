@@ -1,7 +1,7 @@
 {
     "finishedStudyList": [
         {
-            "name": "Bioinformatics Algorithms 3rd Edition: An Active Learning Approach",
+            "name": "Bioinformatics Algorithms",
             "notesUrl": "data/learn/Bioinformatics/output/output.html",
             "source": {
                 "type": "book",
@@ -10,7 +10,7 @@
             }
         },
         {
-            "name": "OpenStax Prealgebra",
+            "name": "Prealgebra",
             "notesUrl": "data/learn/Math/output/output.html",
             "source": {
                 "type": "book",
@@ -20,7 +20,7 @@
         },
         {
             "year": 2018,
-            "name": "The Definitive ANTLR 4 Reference",
+            "name": "ANTLR 4",
             "notesUrl": "data/learn/ANTLR%204.pdf",
             "source": {
                 "type": "book",
@@ -29,7 +29,7 @@
         },
         {
             "year": 2018,
-            "name": "Numerical Computing with IEEE Floating Point Arithmetic",
+            "name": "Floating Point Arithmetic",
             "notesUrl": "data/learn/Floating%20Point%20Arithmetic.pdf",
             "source": {
                 "type": "book",
@@ -38,34 +38,48 @@
         },
         {
             "year": 2018,
-            "name": "Your First Day of Rotoscoping in NUKE",
-            "notesUrl": "data/learn/Nuke%2011%20Rotoscoping.pdf",
+            "name": "NUKE 11",
+            "notesUrl": "data/learn/Nuke%2011.pdf",
+            "source": [
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/nuke-fundamentals"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/nuke-channel-fundamentals"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/your-first-day-tracking-nuke-1206"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/your-first-day-rotoscoping-nuke-1217"
+                }
+            ]
+        },
+        {
+            "year": 2018,
+            "name": "Protocol Buffers 3",
+            "notesUrl": "data/learn/Protocol%20Buffers%203.pdf",
             "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/your-first-day-rotoscoping-nuke-1217"
+                "type": "document",
+                "url": "https://developers.google.com/protocol-buffers/docs/proto3"
             }
         },
         {
             "year": 2018,
-            "name": "Your First Day of Tracking in NUKE",
-            "notesUrl": "data/learn/Nuke%2011%20Tracking.pdf",
+            "name": "Typescript 2",
+            "notesUrl": "data/learn/Typescript%202.pdf",
             "source": {
                 "type": "course",
-                "url": "https://www.pluralsight.com/courses/your-first-day-tracking-nuke-1206"
-            }
-        },
-        {
-            "year": 2018,
-            "name": "NUKE Channel Fundamentals",
-            "notesUrl": "data/learn/Nuke%2011%20Channels%20and%20Layers.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/nuke-channel-fundamentals"
+                "url": "https://www.pluralsight.com/courses/typescript-in-depth"
             }
         },
         {
             "year": 2017,
-            "name": "Introduction to Parallel Programming CUDA",
+            "name": "CUDA Parallel Algorithms",
             "notesUrl": "data/learn/CUDA.pdf",
             "source": {
                 "type": "course",
@@ -74,70 +88,53 @@
         },
         {
             "year": 2017,
-            "name": "NUKE Fundamentals",
-            "notesUrl": "data/learn/Nuke%2011.pdf",
+            "name": "Node 8",
+            "notesUrl": "data/learn/Node%208.pdf",
+            "source": []
+        },
+        {
+            "year": 2017,
+            "name": "Redis 3",
+            "notesUrl": "data/learn/Redis%203.pdf",
             "source": {
                 "type": "course",
-                "url": "https://www.pluralsight.com/courses/nuke-fundamentals"
+                "url": "https://developer.nvidia.com/udacity-cs344-intro-parallel-programming"
             }
         },
         {
             "year": 2017,
-            "name": "Introduction to Houdini 15",
+            "name": "Houdini 16",
             "notesUrl": "data/learn/Houdini%2016.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/introduction-houdini-15-2334"
-            }
+            "source": [
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/introduction-houdini-15-2334"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/introduction-collisions-houdini-2006"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/introduction-fluid-simulations-houdini-2078"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/intro-dynamic-oceans-houdini-2116"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/introduction-particles-houdini-900"
+                },
+                {
+                    "type": "course",
+                    "url": "https://www.pluralsight.com/courses/houdini-15-hair-fur-introduction"
+                }
+            ]
         },
         {
             "year": 2017,
-            "name": "Introduction to Collision in Houdini",
-            "notesUrl": "data/learn/Houdini%2016%20Objects%20and%20Collisions.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/introduction-collisions-houdini-2006"
-            }
-        },
-        {
-            "year": 2017,
-            "name": "Introduction to Fluid Simulations in Houdini",
-            "notesUrl": "data/learn/Houdini%2016%20Fluids.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/introduction-fluid-simulations-houdini-2078"
-            }
-        },
-        {
-            "year": 2017,
-            "name": "Introduction to Dynamic Oceans in Houdini",
-            "notesUrl": "data/learn/Houdini%2016%20Oceans.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/intro-dynamic-oceans-houdini-2116"
-            }
-        },
-        {
-            "year": 2017,
-            "name": "Introduction to Particles in Houdini",
-            "notesUrl": "data/learn/Houdini%2016%20Particles.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/introduction-particles-houdini-900"
-            }
-        },
-        {
-            "year": 2017,
-            "name": "Introduction to Hair and Fur in Houdini",
-            "notesUrl": "data/learn/Houdini%2016%20Hair%20and%20Fur.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/houdini-15-hair-fur-introduction"
-            }
-        },
-        {
-            "year": 2017,
-            "name": "Introduction to Maya 2015: Interface and Modeling",
+            "name": "Maya 2015",
             "notesUrl": "data/learn/Maya%202015.pdf",
             "source": {
                 "type": "course",
@@ -146,39 +143,21 @@
         },
         {
             "year": 2017,
-            "name": "Introduction to Maya 2015: Materials",
-            "notesUrl": "data/learn/Maya%202015%20Materials.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/intro-maya-2015-1572"
-            }
+            "name": "Pandas",
+            "notesUrl": "data/learn/Pandas.pdf",
+            "source": []
         },
         {
             "year": 2017,
-            "name": "Introduction to Maya 2015: Rigging",
-            "notesUrl": "data/learn/Maya%202015%20Rigging.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/intro-maya-2015-1572"
-            }
+            "name": "Numpy",
+            "notesUrl": "data/learn/Numpy.pdf",
+            "source": []
         },
         {
             "year": 2017,
-            "name": "Introduction to Maya 2015: Animation",
-            "notesUrl": "data/learn/Maya%202015%20Animation.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/intro-maya-2015-1572"
-            }
-        },
-        {
-            "year": 2017,
-            "name": "Introduction to Maya 2015: Rendering",
-            "notesUrl": "data/learn/Maya%202015%20Rendering.pdf",
-            "source": {
-                "type": "course",
-                "url": "https://www.pluralsight.com/courses/intro-maya-2015-1572"
-            }
+            "name": "Matplotlib",
+            "notesUrl": "data/learn/Matplotlib.pdf",
+            "source": []
         }
     ],
     "pendingStudyList": [
