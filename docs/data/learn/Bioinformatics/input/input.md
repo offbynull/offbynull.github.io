@@ -4513,6 +4513,10 @@ Algorithms/Sequence Alignment/Extended Gap Scoring_TOPIC
 Quote from Pevzner book: "Bioinformaticians sometimes say that pairwise alignment whispers and multiple alignment shouts."
 ```
 
+#### Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment\/Graph Algorithm)_TOPIC/`
+
 **ALGORITHM**:
 
 Thinking about sequence alignment geometrically, adding another sequence to a sequence alignment graph is akin to adding a new dimension. For example, a sequence alignment graph with...
@@ -4692,8 +4696,173 @@ G G G 1
 ```
 
 ```{note}
-The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment) / implements (e.g. matrix or divide-and-conquer) discussed.
+The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment).
 ```
+
+#### Matrix Algorithm
+
+`{bm} /(Algorithms\/Sequence Alignment\/Multiple Alignment\/Matrix Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Multiple Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm_TOPIC
+```
+
+The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The alignment graph is represented as an N-dimensional matrix where each element in the matrix represents a node in the alignment graph. This is similar to the 2D matrix used for global alignment's matrix implementation.
+
+```{output}
+ch5_code/src/global_alignment/GlobalMultipleAlignment_Matrix.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch5}
+global_alignment.GlobalMultipleAlignment_Matrix
+3
+TATTATTAT
+GATTATGATTAT
+TACCATTACAT
+embedded_score_matrix
+-1
+A A A 1
+A A C -1
+A A T -1
+A A G -1
+A C A -1
+A C C -1
+A C T -1
+A C G -1
+A T A -1
+A T C -1
+A T T -1
+A T G -1
+A G A -1
+A G C -1
+A G T -1
+A G G -1
+C A A -1
+C A C -1
+C A T -1
+C A G -1
+C C A -1
+C C C 1
+C C T -1
+C C G -1
+C T A -1
+C T C -1
+C T T -1
+C T G -1
+C G A -1
+C G C -1
+C G T -1
+C G G -1
+T A A -1
+T A C -1
+T A T -1
+T A G -1
+T C A -1
+T C C -1
+T C T -1
+T C G -1
+T T A -1
+T T C -1
+T T T 1
+T T G -1
+T G A -1
+T G C -1
+T G T -1
+T G G -1
+G A A -1
+G A C -1
+G A T -1
+G A G -1
+G C A -1
+G C C -1
+G C T -1
+G C G -1
+G T A -1
+G T C -1
+G T T -1
+G T G -1
+G G A -1
+G G C -1
+G G T -1
+G G G 1
+```
+
+```{note}
+The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment). With a little bit of effort it can also be converted to using the divide-and-conquer algorithm discussed earlier (there aren't that many leaps in logic).
+```
+
+#### Greedy Algorithm
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
+
+TODO: IMPLEMENT ME
 
 ### Sum-of-Pairs Scoring
 

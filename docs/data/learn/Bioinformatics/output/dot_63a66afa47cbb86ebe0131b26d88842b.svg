@@ -15,7 +15,7 @@
 <text text-anchor="middle" x="41.5" y="-188.3" font-family="Times,serif" font-size="14.00" fill="#000000">B (1.0)</text>
 </g>
 <!-- C -->
-<g id="node3" class="node">
+<g id="node2" class="node">
 <title>C</title>
 <text text-anchor="middle" x="77.5" y="-101.3" font-family="Times,serif" font-size="14.00" fill="#000000">C (3.0)</text>
 </g>
@@ -26,32 +26,32 @@
 <polygon fill="#000000" stroke="#000000" points="69.4608,-133.5818 70.0503,-123.0034 62.9927,-130.9053 69.4608,-133.5818"/>
 <text text-anchor="middle" x="74" y="-144.8" font-family="Times,serif" font-size="14.00" fill="#000000">1.0</text>
 </g>
-<!-- D -->
-<g id="node2" class="node">
-<title>D</title>
-<text text-anchor="middle" x="34.5" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">D (5.0)</text>
-</g>
-<!-- C&#45;&gt;D -->
-<g id="edge4" class="edge">
-<title>C&#45;&gt;D</title>
-<path fill="none" stroke="#0000ff" d="M68.5904,-86.9735C62.5942,-74.8418 54.5808,-58.6287 47.8299,-44.9698"/>
-<polygon fill="#0000ff" stroke="#0000ff" points="50.9668,-43.4173 43.3982,-36.0034 44.6915,-46.519 50.9668,-43.4173"/>
-<text text-anchor="middle" x="71" y="-57.8" font-family="Times,serif" font-size="14.00" fill="#000000">2.0</text>
-</g>
 <!-- E -->
 <g id="node4" class="node">
 <title>E</title>
-<text text-anchor="middle" x="121.5" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">E (4.0)</text>
+<text text-anchor="middle" x="34.5" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">E (4.0)</text>
 </g>
 <!-- C&#45;&gt;E -->
 <g id="edge5" class="edge">
 <title>C&#45;&gt;E</title>
+<path fill="none" stroke="#0000ff" d="M68.5904,-86.9735C62.5942,-74.8418 54.5808,-58.6287 47.8299,-44.9698"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="50.9668,-43.4173 43.3982,-36.0034 44.6915,-46.519 50.9668,-43.4173"/>
+<text text-anchor="middle" x="71" y="-57.8" font-family="Times,serif" font-size="14.00" fill="#000000">1.0</text>
+</g>
+<!-- D -->
+<g id="node5" class="node">
+<title>D</title>
+<text text-anchor="middle" x="121.5" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">D (5.0)</text>
+</g>
+<!-- C&#45;&gt;D -->
+<g id="edge4" class="edge">
+<title>C&#45;&gt;D</title>
 <path fill="none" stroke="#0000ff" d="M86.6168,-86.9735C92.7524,-74.8418 100.9522,-58.6287 107.8601,-44.9698"/>
 <polygon fill="#0000ff" stroke="#0000ff" points="111.005,-46.5066 112.3949,-36.0034 104.7584,-43.3474 111.005,-46.5066"/>
-<text text-anchor="middle" x="113" y="-57.8" font-family="Times,serif" font-size="14.00" fill="#000000">1.0</text>
+<text text-anchor="middle" x="113" y="-57.8" font-family="Times,serif" font-size="14.00" fill="#000000">2.0</text>
 </g>
 <!-- A -->
-<g id="node5" class="node">
+<g id="node3" class="node">
 <title>A</title>
 <text text-anchor="middle" x="77.5" y="-275.3" font-family="Times,serif" font-size="14.00" fill="#000000">A (0.0)</text>
 </g>

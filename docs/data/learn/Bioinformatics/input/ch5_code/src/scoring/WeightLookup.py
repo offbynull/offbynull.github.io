@@ -6,20 +6,20 @@ ELEM = TypeVar('ELEM')
 
 class WeightLookup(ABC):
     @abstractmethod
-    def lookup(self, *elements: Tuple[Optional[ELEM]]):
+    def lookup(self, *elements: Tuple[Optional[ELEM], ...]):
         ...
 
 
-class Constant2DWeightLookup(WeightLookup):
+class ConstantWeightLookup(WeightLookup):
     def __init__(self, match_weight: float, mismatch_weight: float, indel_weight: float):
         self.match_weight = match_weight
         self.misatch_weight = mismatch_weight
         self.indel_weight = indel_weight
 
     def lookup(self, *elements: Tuple[Optional[ELEM], ...]):
-        if elements[0] is None or elements[1] is None:
+        if None in elements:
             return self.indel_weight
-        return self.match_weight if elements[0] == elements[1] else self.misatch_weight
+        return self.match_weight if len(set(elements)) == 1 else self.misatch_weight
 
 
 class Table2DWeightLookup(WeightLookup):
