@@ -3,6 +3,10 @@ from collections import Counter
 from graph.Graph import Graph
 from helpers.Utils import slide_window
 
+# DON'T USE THIS -- THERE ARE CLEAN IMPLEMENTATIONS OF THE DIFFERENT ALGORITHMS IN THE SUBDIRECTORIES.
+# DON'T USE THIS -- THERE ARE CLEAN IMPLEMENTATIONS OF THE DIFFERENT ALGORITHMS IN THE SUBDIRECTORIES.
+# DON'T USE THIS -- THERE ARE CLEAN IMPLEMENTATIONS OF THE DIFFERENT ALGORITHMS IN THE SUBDIRECTORIES.
+
 with open('/home/user/Downloads/dataset_240306_3(1).txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 
