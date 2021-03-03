@@ -1,6 +1,6 @@
 from typing import List, Optional, TypeVar, Tuple
 
-from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, TableWeightLookup
 from find_max_path.FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from graph.Graph import Graph
 from graph.GraphGridCreate import create_grid_graph
@@ -100,7 +100,7 @@ def main():
             elems = tuple(line_split[:-1])
             weight = float(line_split[-1])
             parsed_weights_data[elems] = weight
-        weight_lookup = Table2DWeightLookup(parsed_weights_data, indel_weight)
+        weight_lookup = TableWeightLookup(parsed_weights_data, indel_weight)
         weight, edges, elems = global_alignment(seqs, weight_lookup)
         print(f'Given the sequences {["".join(s) for s in seqs]} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")

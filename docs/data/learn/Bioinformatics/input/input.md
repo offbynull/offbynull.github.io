@@ -4796,73 +4796,64 @@ The multiple alignment algorithm displayed above was specifically for on global 
 
 #### Greedy Algorithm
 
-TODO: IMPLEMENT ME
+```{prereq}
+Algorithms/Sequence Alignment/Multiple Alignment/Graph Algorithm_TOPIC
+Algorithms/Sequence Alignment/Multiple Alignment/Matrix Algorithm_TOPIC
+Algorithms/Sequence Alignment/Sum-of-Pairs Scoring_TOPIC
+Algorithms/Sequence Alignment/Global Alignment/Divide-and-Conquer Algorithm_TOPIC
+Algorithms/Motif/Motif Matrix Profile_TOPIC
+```
 
-TODO: IMPLEMENT ME
+```{note}
+The Pevzner book challenged you to come up with a greedy algorithm using profile matrices. This is what I was able to come up with on short notice. I have no idea if my logic is correct / optimal, but with toy sequences that are highly related it seems to perform well. 
+```
 
-TODO: IMPLEMENT ME
+For an n-way sequence alignment, the greedy algorithm starts by finding the 2 sequences that produce the highest scoring 2-way sequence alignment. That alignment is then used to build a profile matrix. For example, the alignment of TRELLO and MELLOW results in the following alignment:
 
-TODO: IMPLEMENT ME
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| T | R | E | L | L | O | - |
+| - | M | E | L | L | O | W |
 
-TODO: IMPLEMENT ME
+That alignment then turns into the following profile matrix:
 
-TODO: IMPLEMENT ME
+|                  |  0  |  1  |  2  |  3  |  4  |  5  |  6  |
+|------------------|-----|-----|-----|-----|-----|-----|-----|
+| Probability of T | 0.5 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+| Probability of R | 0.0 | 0.5 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+| Probability of M | 0.0 | 0.5 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+| Probability of E | 0.0 | 0.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+| Probability of L | 0.0 | 0.0 | 0.0 | 1.0 | 1.0 | 0.0 | 0.0 |
+| Probability of O | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 1.0 | 0.0 |
+| Probability of W | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.5 |
 
-TODO: IMPLEMENT ME
+Then, 2-way sequence alignments are performed between the *profile matrix* and the remaining sequences. For example, if the letter M is scored against column 2 of the profile matrix, the algorithm would score M against each letter stored in the profile matrix using the same scoring matrix as the initial 2-way sequence alignment. Each score would then get weighted by the corresponding probability in column 2 and the highest one would be chosen as the final score.
 
-TODO: IMPLEMENT ME
+Of all the remaining sequences, the one with the highest scoring alignment is removed and its alignment is added to the profile matrix. The process repeats until no more sequences are left.
 
-TODO: IMPLEMENT ME
+For n-way sequence alignments where n is large (e.g. n=300) and the sequences are highly related, the greedy algorithm performs well but it may produce sub-optimal results. In contrast, the amount of memory and computation required for an n-way sequence alignment using the standard graph algorithm goes up exponentially as n grows linearly. For realistic biological sequences, the normal algorithm will likely fail for any n past 3 or 4. Adapting the divide-and-conquer algorithm for n-way sequence alignment will help, but even that only allows for targeting a slightly larger n (e.g. n=6).
 
-TODO: IMPLEMENT ME
+```{output}
+ch5_code/src/global_alignment/GlobalMultipleAlignment_Greedy.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
-
-TODO: IMPLEMENT ME
+```{ch5}
+global_alignment.GlobalMultipleAlignment_Greedy
+4
+TATTATTAT
+GATTATGATTAT
+TACCATTACAT
+CTATTAGGAT
+embedded_score_matrix
+-1
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+```
 
 ### Sum-of-Pairs Scoring
 

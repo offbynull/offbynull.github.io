@@ -3,7 +3,8 @@ from itertools import combinations
 from typing import List, TypeVar, Tuple, Optional, Union
 
 from global_alignment import GlobalAlignment_Matrix
-from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.SumOfPairsWeightLookup import SumOfPairsWeightLookup
+from scoring.WeightLookup import WeightLookup, TableWeightLookup
 
 ELEM = TypeVar('ELEM')
 ELEM_OR_COLUMN = Union[
@@ -112,15 +113,9 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weights_data = weights_data.strip()
-        parsed_weights_data = dict()
-        for line in weights_data.split('\n'):
-            line_split = line.split()
-            elems = tuple(line_split[:-1])
-            weight = float(line_split[-1])
-            parsed_weights_data[elems] = weight
-        weight_lookup = Table2DWeightLookup(parsed_weights_data, indel_weight)
-        weight, elems = global_alignment(seqs, weight_lookup)
+        weight_lookup_2way = TableWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
+        weight_lookup_final = SumOfPairsWeightLookup(weight_lookup_2way)
+        weight, elems = global_alignment(seqs, weight_lookup_2way, weight_lookup_final)
         print(f'Given the sequences {["".join(s) for s in seqs]} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         print(f'... the global alignment is...', end="\n\n")

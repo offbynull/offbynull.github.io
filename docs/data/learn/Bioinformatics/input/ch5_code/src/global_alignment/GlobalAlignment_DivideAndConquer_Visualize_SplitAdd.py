@@ -5,7 +5,7 @@ from typing import Tuple, Set
 from find_max_path.FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers
 from global_alignment.GlobalAlignment_Graph import create_global_alignment_graph, NodeData, EdgeData
 from graph.Graph import Graph
-from scoring.WeightLookup import Table2DWeightLookup
+from scoring.WeightLookup import TableWeightLookup
 from helpers.Utils import latex_escape
 
 
@@ -145,7 +145,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
+        weight_lookup = TableWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         # print(f'Given the sequences {"".join(s1)} and {"".join(s2)} and the score matrix...', end="\n\n")
         # print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
         graph_h1 = create_global_alignment_graph(s1[:split_col], s2, weight_lookup)

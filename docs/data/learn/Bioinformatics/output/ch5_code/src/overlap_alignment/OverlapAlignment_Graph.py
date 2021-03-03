@@ -5,7 +5,7 @@ from typing import List, Optional, TypeVar, Tuple, Set
 from find_max_path.FindMaxPath_DPBacktrack import populate_weights_and_backtrack_pointers, backtrack
 from graph.Graph import Graph
 from graph.GraphGridCreate import create_grid_graph
-from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, TableWeightLookup
 from helpers.Utils import unique_id_generator, latex_escape
 
 ELEM = TypeVar('ELEM')
@@ -232,7 +232,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
+        weight_lookup = TableWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         weight, edges, elems = overlap_alignment(s1, s2, weight_lookup)
         graph = create_overlap_alignment_graph(s1, s2, weight_lookup)
         output = graph_to_tikz(

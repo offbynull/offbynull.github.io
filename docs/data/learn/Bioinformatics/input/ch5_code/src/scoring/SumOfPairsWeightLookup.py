@@ -1,7 +1,7 @@
 from itertools import combinations
 from typing import Tuple, Optional
 
-from scoring.WeightLookup import WeightLookup, ELEM, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, ELEM, TableWeightLookup
 
 
 # MARKDOWN
@@ -37,7 +37,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        backing_weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
+        backing_weight_lookup = TableWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         weight_lookup = SumOfPairsWeightLookup(backing_weight_lookup)
         print(f'Given the elements {[e for e in seq_elems]} and the backing score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")

@@ -1,6 +1,6 @@
 from typing import List, TypeVar
 
-from scoring.WeightLookup import WeightLookup, Table2DWeightLookup
+from scoring.WeightLookup import WeightLookup, TableWeightLookup
 
 ELEM = TypeVar('ELEM')
 
@@ -73,7 +73,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
+        weight_lookup = TableWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         forward_sweeper = ForwardSweeper(s1, s2, weight_lookup)
         s1_node_count = len(s1) + 1
         s2_node_count = len(s2) + 1

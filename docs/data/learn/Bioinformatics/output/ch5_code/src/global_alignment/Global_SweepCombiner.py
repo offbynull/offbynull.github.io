@@ -2,7 +2,7 @@ from typing import TypeVar, List
 
 from global_alignment.Global_ForwardSweeper import ForwardSweeper
 from global_alignment.Global_ReverseSweeper import ReverseSweeper
-from scoring.WeightLookup import Table2DWeightLookup, WeightLookup
+from scoring.WeightLookup import TableWeightLookup, WeightLookup
 
 ELEM = TypeVar('ELEM')
 
@@ -41,7 +41,7 @@ def main():
                 weights_data = f.read()
         else:
             raise ValueError('Bad score matrix type')
-        weight_lookup = Table2DWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
+        weight_lookup = TableWeightLookup.create_from_2d_matrix_str(weights_data, indel_weight)
         sweep_combiner = SweepCombiner(s1, s2, weight_lookup)
         s1_node_count = len(s1) + 1
         s2_node_count = len(s2) + 1

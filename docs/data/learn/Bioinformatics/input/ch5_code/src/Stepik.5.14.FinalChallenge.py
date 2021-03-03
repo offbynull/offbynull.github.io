@@ -65,7 +65,7 @@ from typing import Dict, List
 
 from global_alignment import GlobalAlignment_Matrix, GlobalMultipleAlignment_Matrix, GlobalMultipleAlignment_Greedy
 from scoring.SumOfPairsWeightLookup import SumOfPairsWeightLookup
-from scoring.WeightLookup import Table2DWeightLookup
+from scoring.WeightLookup import TableWeightLookup
 
 ####
 #### GET BEST PAIRWISE ALIGNMENTS
@@ -132,7 +132,7 @@ lines = lines[1:]  # remove header
 lines = set(lines)  # remove dupes (they exist)
 seqs = [list(s.upper()) for s in lines]
 
-weight_lookup_2way = Table2DWeightLookup.create_from_2d_matrix_file('BLOSUM62.txt', -5)
+weight_lookup_2way = TableWeightLookup.create_from_2d_matrix_file('BLOSUM62.txt', -5)
 weight_lookup_final = SumOfPairsWeightLookup(weight_lookup_2way)
 weight, elems = GlobalMultipleAlignment_Greedy.global_alignment(seqs, weight_lookup_2way, weight_lookup_final)
 

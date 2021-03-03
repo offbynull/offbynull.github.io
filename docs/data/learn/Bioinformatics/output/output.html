@@ -285,7 +285,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -417,12 +417,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>AAGGG = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
+<li>AAGGG = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -496,18 +496,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1640,7 +1640,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>ATAAT<br>ATAAT<br>ATAAT</p>
+<p>AAAGA<br>AAAGA<br>AAAGA</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2163,7 +2163,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2224,7 +2224,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2908,22 +2908,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 </ul>
 </div>
 <p></p>
@@ -5801,7 +5801,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_afd9f1bd543aba420b08a607c3398e9a.svg" alt="Dot diagram"></p>
+<p><img src="dot_5c6e77c49b93eebf11f5e64cb3d1a347.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5859,7 +5859,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_d074979486eca22899b22587d9fe98ea.svg" alt="Dot diagram"></p>
+<p><img src="dot_581710c731d35da73f2517be1ca0b68e.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6007,13 +6007,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_b7cdb79c6cb784b1d4d688395147ef4f.svg" alt="Dot diagram"></p>
+<p><img src="dot_11e571e4556cbdf1cea75641e23438f0.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_63a66afa47cbb86ebe0131b26d88842b.svg" alt="Dot diagram"></p>
+<p><img src="dot_b8ea111c0b57fb2352975b33b9c7c6ef.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6050,7 +6050,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_31ea08f338841e8e168fb604fd585af1.svg" alt="Latex diagram"></p>
+<p><img src="latex_f9fa376b9642deaae508bb27bd1da7fa.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6061,7 +6061,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_96b32864bdb24209ca36a6d698f38b5a.svg" alt="Latex diagram"></p>
+<p><img src="latex_b319587f55ab5875d59fb2c978214db6.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6122,9 +6122,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_11e04609e15892503161115d5ba1785c.svg" alt="Latex diagram"></p>
+<p><img src="latex_09ace2b603b7064a18247dc6a576df85.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
-GA-T
+-GAT
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6396,7 +6396,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_7797037e253c04e5b0e1412835611ccc.svg" alt="Latex diagram"></p>
+<p><img src="latex_465ec418f64084c34e6bde1b1b7c999b.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6404,7 +6404,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_5585c1a49dd297d72b1133e5472e69ad.svg" alt="Latex diagram"></p>
+<p><img src="latex_3254d58abcd264b607e2b9071f0915c9.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6742,7 +6742,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ac6e03b1ec2eb40dcff58d7d07b6f705.svg" alt="Latex diagram"></p>
+<p><img src="latex_27e4ce28f0ffa8f84fba714811f15aa4.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6825,7 +6825,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_cfd2cdb1c4e5098e4f4489d2210ad8ce.svg" alt="Latex diagram"></p>
+<p><img src="latex_1d507852a660725d48aaf69ae362ab85.svg" alt="Latex diagram"></p>
 <pre><code>AG-AC
 AGAAC
 </code></pre>
@@ -6983,7 +6983,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_4f29f0e3a10fbfd6f1072c213ce25f3d.svg" alt="Latex diagram"></p>
+<p><img src="latex_1513499522f82ce851dbdf5c5e8e4610.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7066,9 +7066,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_7b97160986b6ad7900503c3e4d4cbfde.svg" alt="Latex diagram"></p>
+<p><img src="latex_ab38fc78b3df3a48ea8bec0c6897af39.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
-A-AC
+AAAC
 </code></pre>
 <p>Weight: 2.0</p>
 </div>
@@ -7223,7 +7223,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1ed9d87c48044785d3cd94d0d17e0e66.svg" alt="Latex diagram"></p>
+<p><img src="latex_827f6fe1fdddaa043731568bf717528b.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7306,7 +7306,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_ce8ebf9732d819e0f5ad2a3e08868d4e.svg" alt="Latex diagram"></p>
+<p><img src="latex_f0df4e942fbf50970126306705f50171.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7573,7 +7573,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_625040921b394ffc134e170d287b44b9.svg" alt="Latex diagram"></p>
+<p><img src="latex_f873374588a54d8bfd3916ba2185dba1.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7659,7 +7659,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_c29b8a0e9f1414f98131451430713754.svg" alt="Latex diagram"></p>
+<p><img src="latex_670718dfe9e68f55ea6312b0b4fc6e02.svg" alt="Latex diagram"></p>
 <pre><code>TAGGCGG----AT
 TA--C--CCCCAT
 </code></pre>
@@ -7694,7 +7694,7 @@ TA--C--CCCCAT
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_aa1a0e7385058db009b709ffb56d85e4.svg" alt="Latex diagram"></p>
+<p><img src="latex_be84c4abead7a357df8cfac716cbe260.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7812,7 +7812,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_dae01367d1fc33754bb2da3c917732e2.svg" alt="Latex diagram"></p>
+<p><img src="latex_fdd0c4807172c7b67494a85c9422f38a.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -8178,40 +8178,233 @@ GATTATGATTA--T
 <p>The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment). With a little bit of effort it can also be converted to using the <a href="#BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi">divide-and-conquer algorithm</a> discussed earlier (there aren't that many leaps in logic).</p>
 </div>
 <a name="H1_Greedy%20Algorithm"></a><h4>Greedy Algorithm</h4>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment/Graph Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment/Matrix Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FSum-of-Pairs%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Sum-of-Pairs Scoring</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FDivide-and-Conquer%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Divide-and-Conquer Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FMotif%2FMotif%20Matrix%20Profile)_TOPIC%2F">Algorithms/Motif/Motif Matrix Profile</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book challenged you to come up with a <a href="#BM_(greedy%20algorithm)%2Fi">greedy algorithm</a> using profile matrices. This is what I was able to come up with on short notice. I have no idea if my logic is correct / optimal, but with toy <a href="#BM_(sequence)%2Fi">sequence</a>s that are highly related it seems to perform well.</p>
+</div>
+<p>For an n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, the <a href="#BM_(greedy%20algorithm)%2Fi">greedy algorithm</a> starts by finding the 2 <a href="#BM_(sequence)%2Fi">sequence</a>s that produce the highest scoring 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>. That alignment is then used to build a profile matrix. For example, the alignment of TRELLO and MELLOW results in the following alignment:</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-</td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+</tbody>
+</table>
+<p>That alignment then turns into the following profile matrix:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Probability of T</td>
+<td>0.5</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>Probability of R</td>
+<td>0.0</td>
+<td>0.5</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>Probability of M</td>
+<td>0.0</td>
+<td>0.5</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>Probability of E</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>Probability of L</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>Probability of O</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>Probability of W</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.5</td>
+</tr>
+</tbody>
+</table>
+<p>Then, 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are performed between the <em>profile matrix</em> and the remaining <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, if the letter M is scored against column 2 of the profile matrix, the algorithm would score M against each letter stored in the profile matrix using the same scoring matrix as the initial 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>. Each score would then get weighted by the corresponding probability in column 2 and the highest one would be chosen as the final score.</p>
+<p>Of all the remaining <a href="#BM_(sequence)%2Fi">sequence</a>s, the one with the highest scoring alignment is removed and its alignment is added to the profile matrix. The process repeats until no more <a href="#BM_(sequence)%2Fi">sequence</a>s are left.</p>
+<p>For n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s where n is large (e.g. n=300) and the <a href="#BM_(sequence)%2Fi">sequence</a>s are highly related, the <a href="#BM_(greedy%20algorithm)%2Fi">greedy algorithm</a> performs well but it may produce sub-optimal results. In contrast, the amount of memory and computation required for an n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> using the standard graph algorithm goes up exponentially as n grows linearly. For realistic biological <a href="#BM_(sequence)%2Fi">sequence</a>s, the normal algorithm will likely fail for any n past 3 or 4. Adapting the <a href="#BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi">divide-and-conquer algorithm</a> for n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> will help, but even that only allows for targeting a slightly larger n (e.g. n=6).</p>
+<p><a href="ch5_code/src/global_alignment/GlobalMultipleAlignment_Greedy.py">ch5_code/src/global_alignment/GlobalMultipleAlignment_Greedy.py</a> (lines 17 to 84):</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProfileWeightLookup</span>(<span class="hljs-params">WeightLookup</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, total_seqs: int, backing_2d_lookup: WeightLookup</span>):</span>
+        self.total_seqs = total_seqs
+        self.backing_wl = backing_2d_lookup
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lookup</span>(<span class="hljs-params">self, *elements: Tuple[ELEM_OR_COLUMN, ...]</span>):</span>
+        col: Tuple[ELEM, ...] = elements[<span class="hljs-number">0</span>]
+        elem: ELEM = elements[<span class="hljs-number">1</span>]
+
+        <span class="hljs-keyword">if</span> col <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> self.backing_wl.lookup(elem, <span class="hljs-literal">None</span>)  <span class="hljs-comment"># should map to indel score</span>
+        <span class="hljs-keyword">elif</span> elem <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> self.backing_wl.lookup(<span class="hljs-literal">None</span>, col[<span class="hljs-number">0</span>])  <span class="hljs-comment"># should map to indel score</span>
+        <span class="hljs-keyword">else</span>:
+            probs = {elem: count / self.total_seqs <span class="hljs-keyword">for</span> elem, count <span class="hljs-keyword">in</span> Counter(e <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> col <span class="hljs-keyword">if</span> e <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>).items()}
+            ret = <span class="hljs-number">0.0</span>
+            <span class="hljs-keyword">for</span> p_elem, prob <span class="hljs-keyword">in</span> probs.items():
+                val = self.backing_wl.lookup(elem, p_elem) * prob
+                ret = max(val, ret)
+            <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_alignment</span>(<span class="hljs-params">
+        seqs: List[List[ELEM]],
+        weight_lookup_2way: WeightLookup,
+        weight_lookup_multi: WeightLookup
+</span>) -&gt; Tuple[float, List[Tuple[ELEM, ...]]]:</span>
+    seqs = seqs[:]  <span class="hljs-comment"># copy</span>
+    <span class="hljs-comment"># Get initial best 2-way alignment</span>
+    highest_res = <span class="hljs-literal">None</span>
+    highest_seqs = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> s1, s2 <span class="hljs-keyword">in</span> combinations(seqs, r=<span class="hljs-number">2</span>):
+        <span class="hljs-keyword">if</span> s1 <span class="hljs-keyword">is</span> s2:
+            <span class="hljs-keyword">continue</span>
+        res = GlobalAlignment_Matrix.global_alignment(s1, s2, weight_lookup_2way)
+        <span class="hljs-keyword">if</span> highest_res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> res[<span class="hljs-number">0</span>] &gt; highest_res[<span class="hljs-number">0</span>]:
+            highest_res = res
+            highest_seqs = s1, s2
+    seqs.remove(highest_seqs[<span class="hljs-number">0</span>])
+    seqs.remove(highest_seqs[<span class="hljs-number">1</span>])
+    total_seqs = <span class="hljs-number">2</span>
+    final_alignment = highest_res[<span class="hljs-number">1</span>]
+    <span class="hljs-comment"># Build out profile matrix from alignment and continually add to it using 2-way alignment</span>
+    <span class="hljs-keyword">if</span> seqs:
+        s1 = highest_res[<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">while</span> seqs:
+            profile_weight_lookup = ProfileWeightLookup(total_seqs, weight_lookup_2way)
+            _, alignment = max(
+                [GlobalAlignment_Matrix.global_alignment(s1, s2, profile_weight_lookup) <span class="hljs-keyword">for</span> s2 <span class="hljs-keyword">in</span> seqs],
+                key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>]
+            )
+            <span class="hljs-comment"># pull out s1 from alignment and flatten for next cycle</span>
+            s1 = []
+            <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> alignment:
+                <span class="hljs-keyword">if</span> e[<span class="hljs-number">0</span>] <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                    s1 += [((<span class="hljs-literal">None</span>, ) * total_seqs) + (e[<span class="hljs-number">1</span>], )]
+                <span class="hljs-keyword">else</span>:
+                    s1 += [(*e[<span class="hljs-number">0</span>], e[<span class="hljs-number">1</span>])]
+            <span class="hljs-comment"># pull out s2 from alignment and remove from seqs</span>
+            s2 = [e <span class="hljs-keyword">for</span> _, e <span class="hljs-keyword">in</span> alignment <span class="hljs-keyword">if</span> e <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>]
+            seqs.remove(s2)
+            <span class="hljs-comment"># increase seq count</span>
+            total_seqs += <span class="hljs-number">1</span>
+        final_alignment = s1
+    <span class="hljs-comment"># Recalculate score based on multi weight lookup</span>
+    final_weight = sum(weight_lookup_multi.lookup(*elems) <span class="hljs-keyword">for</span> elems <span class="hljs-keyword">in</span> final_alignment)
+    <span class="hljs-keyword">return</span> final_weight, final_alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the sequences ['TATTATTAT', 'GATTATGATTAT', 'TACCATTACAT', 'CTATTAGGAT'] and the score matrix...</p>
+<pre><code>INDEL=-1.0
+    A   C   T   G
+A   1  -1  -1  -1
+C  -1   1  -1  -1
+T  -1  -1   1  -1
+G  -1  -1  -1   1
+
+</code></pre>
+<p>... the global alignment is...</p>
+<pre><code>---TATTATTAT
+GATTATGATTAT
+TACCATTA-CAT
+--CTATTAGGAT
+</code></pre>
+<p>Weight: 8.0</p>
+</div>
+<p></p>
 <a name="H_Sum-of-Pairs%20Scoring"></a><h3>Sum-of-Pairs Scoring</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FSum-of-Pairs%20Scoring)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -8400,8 +8593,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -8419,19 +8612,19 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -8443,12 +8636,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -8509,8 +8702,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 21</p>
+<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 18</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>

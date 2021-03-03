@@ -3,7 +3,7 @@ from copy import deepcopy
 from itertools import product
 from typing import List, Any, TypeVar, Tuple, Iterable
 
-from scoring.WeightLookup import WeightLookup, Table2DWeightLookup, ConstantWeightLookup
+from scoring.WeightLookup import WeightLookup, TableWeightLookup, ConstantWeightLookup
 
 ELEM = TypeVar('ELEM')
 
@@ -108,7 +108,7 @@ def main():
             elems = tuple(line_split[:-1])
             weight = float(line_split[-1])
             parsed_weights_data[elems] = weight
-        weight_lookup = Table2DWeightLookup(parsed_weights_data, indel_weight)
+        weight_lookup = TableWeightLookup(parsed_weights_data, indel_weight)
         weight, elems = global_alignment(seqs, weight_lookup)
         print(f'Given the sequences {["".join(s) for s in seqs]} and the score matrix...', end="\n\n")
         print(f'```\nINDEL={indel_weight}\n{weights_data}\n````', end="\n\n")
