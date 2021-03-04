@@ -1,7 +1,7 @@
 <!DOCTYPE html><html><head>
             <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
             <meta content="utf-8" http-equiv="encoding">
-          <link href="katex/katex.min.css" rel="stylesheet"><title>Bioinformatics
+          <link href="katex/katex.min.css" rel="stylesheet"><title>Bioinformatics Algorithms
 </title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
           <body class="markdown-body"><div class="toc">
 <ul>
@@ -5801,7 +5801,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_5c6e77c49b93eebf11f5e64cb3d1a347.svg" alt="Dot diagram"></p>
+<p><img src="dot_f8473f05f555d74876e71fc3454ccdf0.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5859,7 +5859,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_581710c731d35da73f2517be1ca0b68e.svg" alt="Dot diagram"></p>
+<p><img src="dot_793fa6007758001da9eac797e5993505.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6007,13 +6007,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_11e571e4556cbdf1cea75641e23438f0.svg" alt="Dot diagram"></p>
+<p><img src="dot_9717ea48fac4cd10fb03d5066dd72549.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_b8ea111c0b57fb2352975b33b9c7c6ef.svg" alt="Dot diagram"></p>
+<p><img src="dot_7aaabe588f1e9d84620b5c43e2bda746.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6035,7 +6035,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given two <a href="#BM_(sequence)%2Fi">sequence</a>s, perform <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> and pull out the highest scoring alignment.</p>
-<p><strong>WHY</strong>: A strong global alignment indicates that the <a href="#BM_(sequence)%2Fi">sequence</a>s are likely homologous / related.</p>
+<p><strong>WHY</strong>: A strong <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> indicates that the <a href="#BM_(sequence)%2Fi">sequence</a>s are likely homologous / related.</p>
 <a name="H_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -6050,7 +6050,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f9fa376b9642deaae508bb27bd1da7fa.svg" alt="Latex diagram"></p>
+<p><img src="latex_629392f0c827d8b3ad3c49dcbf78bec3.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6061,7 +6061,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_b319587f55ab5875d59fb2c978214db6.svg" alt="Latex diagram"></p>
+<p><img src="latex_14f014a1cad7975f24a6544fcff8dbc6.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6122,7 +6122,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_09ace2b603b7064a18247dc6a576df85.svg" alt="Latex diagram"></p>
+<p><img src="latex_ac8fa91e979e8429ff59d7d8c7d7cc9d.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 -GAT
 </code></pre>
@@ -6230,6 +6230,10 @@ G  0  0  0  1
 <p>Weight: -3.0</p>
 </div>
 <p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The standard <a href="#BM_(levenshtein%20distance%7Cstring%20distance)%2Fi">Levenshtein distance</a> algorithm using a 2D array you remember from over a decade ago is this algorithm: Matrix-based <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> where matches score 0 but mismatches and <a href="#BM_(indel)%2Fi">indel</a>s score -1. The final weight of the alignment is the minimum number of operations required to convert one <a href="#BM_(sequence)%2Fi">sequence</a> to another (e.g. swap, insert, delete) -- it'll be negative, ignore the sign.</p>
+</div>
 <a name="H_Divide-and-Conquer%20Algorithm"></a><h4>Divide-and-Conquer Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FDivide-and-Conquer%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6241,7 +6245,7 @@ G  0  0  0  1
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following algorithm extends the matrix algorithm such that it can process much larger graphs at the expense of duplicating some computation work (trading time for space). It relies on two ideas.</p>
-<p>Recall that in the matrix implementation of global alignment, node weights are populated in a pre-defined <a href="#BM_(topological%20order)%2Fi">topological order</a> (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column.</p>
+<p>Recall that in the matrix implementation of <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>, node weights are populated in a pre-defined <a href="#BM_(topological%20order)%2Fi">topological order</a> (either row-by-row or column-by-column). Imagine that you've chosen to populate the matrix column-by-column.</p>
 <p>The first idea is that, if all you care about is the final weight of the sink node, the matrix implementation technically only needs to keep 2 columns in memory: the column having its node weights populated as well as the previous column.</p>
 <p>In other words, the only data needed to calculate the weights of the next column is the weights in the previous column.</p>
 <p><img src="svgbob_a778e17c20ba10aa76e0c0375a70cc19614cd870.svg" alt="Kroki diagram output"></p>
@@ -6327,7 +6331,7 @@ G  0  0  0  1
 <li>For each sub-division from last step: Pick a column, find a node, and sub-divide.</li>
 <li>etc..</li>
 </ul>
-<p>Finding the edges between these nodes yields the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. To find the edges between the node found at column n and the node found at column n + 1, isolate the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> between those nodes and perform the standard matrix variant of global alignment. The graph will likely be very small, so the computation and space requirements will likely be very low.</p>
+<p>Finding the edges between these nodes yields the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. To find the edges between the node found at column n and the node found at column n + 1, isolate the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> between those nodes and perform the standard matrix variant of <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>. The graph will likely be very small, so the computation and space requirements will likely be very low.</p>
 <p><a href="ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py">ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_NodeVariant.py</a> (lines 11 to 40):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_max_alignment_path_nodes</span>(<span class="hljs-params">
         v: List[ELEM],
@@ -6396,7 +6400,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_465ec418f64084c34e6bde1b1b7c999b.svg" alt="Latex diagram"></p>
+<p><img src="latex_18a020ced7222e944abafffc00af61d5.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6404,7 +6408,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_3254d58abcd264b607e2b9071f0915c9.svg" alt="Latex diagram"></p>
+<p><img src="latex_a989c3d758a3d8716c96c7876326329e.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6725,7 +6729,7 @@ GACGT
 TT-TTT
 </code></pre>
 <p><strong>WHY</strong>: Searching for a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s <a href="#BM_(sequence)%2Fi">sequence</a> in some larger <a href="#BM_(genome)%2Fi">genome</a> may be problematic because of mutation. The <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(sequence)%2Fi">sequence</a> being searched for may be slightly off from the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(sequence)%2Fi">sequence</a> in the <a href="#BM_(genome)%2Fi">genome</a>.</p>
-<p>In the presence of minor mutations, a standard search will fail where a fitting alignment will still be able to find that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>.</p>
+<p>In the presence of minor mutations, a standard search will fail where a <a href="#BM_(fitting%20alignment%7Cfitting%20sequence%20alignment)%2Fi">fitting alignment</a> will still be able to find that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>.</p>
 <a name="H1_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFitting%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6735,14 +6739,14 @@ TT-TTT
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm</a></li>
 </ul>
 </div>
-<p>The graph algorithm for fitting alignment is an extension of the graph algorithm for global alignment. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for global alignment, but for each node...</p>
+<p>The graph algorithm for <a href="#BM_(fitting%20alignment%7Cfitting%20sequence%20alignment)%2Fi">fitting alignment</a> is an extension of the graph algorithm for <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>, but for each node...</p>
 <ul>
 <li>in the first column that isn't the source node, construct a 0 weight edge from the source node to that node.</li>
 <li>in the last column that isn't the sink node, construct a 0 weight edge from that node to the sink node.</li>
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_27e4ce28f0ffa8f84fba714811f15aa4.svg" alt="Latex diagram"></p>
+<p><img src="latex_ff8fa263b7c576ff8712e2bb4338a42d.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6825,7 +6829,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_1d507852a660725d48aaf69ae362ab85.svg" alt="Latex diagram"></p>
+<p><img src="latex_0b0b38880efbb360fd67d12792c9b186.svg" alt="Latex diagram"></p>
 <pre><code>AG-AC
 AGAAC
 </code></pre>
@@ -6842,7 +6846,7 @@ AGAAC
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by fitting alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
+<p>The following algorithm is an extension to <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>'s matrix algorithm to properly account for the "free ride" edges required by <a href="#BM_(fitting%20alignment%7Cfitting%20sequence%20alignment)%2Fi">fitting alignment</a>. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
 <p><a href="ch5_code/src/fitting_alignment/FittingAlignment_Matrix.py">ch5_code/src/fitting_alignment/FittingAlignment_Matrix.py</a> (lines 10 to 93):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
         node_matrix: List[List[Any]]
@@ -6966,7 +6970,7 @@ AGAAC
 <pre><code>GGCT
 GG-T
 </code></pre>
-<p><strong>WHY</strong>: DNA <a href="#BM_(sequencer)%2Fi">sequencer</a>s frequently produce <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s with <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. Overlap alignments may be used to detect if those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> overlap even in the presence of <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s and minor mutations, making <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> less tedious (<a href="#BM_(overlap%20graph)%2Fi">overlap graph</a>s / <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a>s may turn out less tangled).</p>
+<p><strong>WHY</strong>: DNA <a href="#BM_(sequencer)%2Fi">sequencer</a>s frequently produce <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s with <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. <a href="#BM_(overlap%20alignment%7Coverlap%20sequence%20alignment)%2Fi">Overlap alignment</a>s may be used to detect if those <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> overlap even in the presence of <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s and minor mutations, making <a href="#BM_(assembly%7Cassemble)%2Fi">assembly</a> less tedious (<a href="#BM_(overlap%20graph)%2Fi">overlap graph</a>s / <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a>s may turn out less tangled).</p>
 <a name="H2_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FOverlap%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6976,14 +6980,14 @@ GG-T
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Graph Algorithm</a></li>
 </ul>
 </div>
-<p>The graph algorithm for overlap alignment is an extension of the graph algorithm for global alignment. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for global alignment, but for each node...</p>
+<p>The graph algorithm for <a href="#BM_(overlap%20alignment%7Coverlap%20sequence%20alignment)%2Fi">overlap alignment</a> is an extension of the graph algorithm for <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>, but for each node...</p>
 <ul>
 <li>in the first column that isn't the source node, construct a 0 weight edge from the source node to that node.</li>
 <li>in the last row that isn't the sink node, construct a 0 weight edge from that node to the sink node.</li>
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_1513499522f82ce851dbdf5c5e8e4610.svg" alt="Latex diagram"></p>
+<p><img src="latex_010f342c3e7ac2222af7010917f42bc1.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7066,7 +7070,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_ab38fc78b3df3a48ea8bec0c6897af39.svg" alt="Latex diagram"></p>
+<p><img src="latex_9b70ffdb8e41db824d61e69138d34077.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
 AAAC
 </code></pre>
@@ -7083,7 +7087,7 @@ AAAC
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by overlap alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
+<p>The following algorithm is an extension to <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>'s matrix algorithm to properly account for the "free ride" edges required by <a href="#BM_(overlap%20alignment%7Coverlap%20sequence%20alignment)%2Fi">overlap alignment</a>. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
 <p><a href="ch5_code/src/overlap_alignment/OverlapAlignment_Matrix.py">ch5_code/src/overlap_alignment/OverlapAlignment_Matrix.py</a> (lines 10 to 93):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
         node_matrix: List[List[Any]]
@@ -7201,10 +7205,10 @@ AAAC
 TT-TTT
 </code></pre>
 <p><strong>WHY</strong>: Two biological <a href="#BM_(sequence)%2Fi">sequence</a>s may have strongly related parts rather than being strongly related in their entirety. For example, a class of proteins called <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> creates <a href="#BM_(peptide)%2Fi">peptide</a>s without going through a ribosome (<a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a>s). Each <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> outputs a specific <a href="#BM_(peptide)%2Fi">peptide</a>, where each <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in that <a href="#BM_(peptide)%2Fi">peptide</a> is pumped out by the unique part of the <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> responsible for it.</p>
-<p>These unique parts are referred to <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s (multiple <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s, 1 per <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in created <a href="#BM_(peptide)%2Fi">peptide</a>). While the overall <a href="#BM_(sequence)%2Fi">sequence</a> between two types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> differ greatly, the <a href="#BM_(sequence)%2Fi">sequence</a>s between their <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s are similar -- only a handful of positions in an <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a> <a href="#BM_(sequence)%2Fi">sequence</a> define the type of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> it pumps out. As such, local alignment may be used to identify these <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s across different types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a>.</p>
+<p>These unique parts are referred to <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s (multiple <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s, 1 per <a href="#BM_(amino%20acid)%2Fi">amino acid</a> in created <a href="#BM_(peptide)%2Fi">peptide</a>). While the overall <a href="#BM_(sequence)%2Fi">sequence</a> between two types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a> differ greatly, the <a href="#BM_(sequence)%2Fi">sequence</a>s between their <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s are similar -- only a handful of positions in an <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a> <a href="#BM_(sequence)%2Fi">sequence</a> define the type of <a href="#BM_(amino%20acid)%2Fi">amino acid</a> it pumps out. As such, <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a> may be used to identify these <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">adenylation domain</a>s across different types of <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The WHY section above is giving a high-level use-case for local alignment. If you actually want to perform that use-case you need to get familiar with the protein scoring section: <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a>.</p>
+<p>The WHY section above is giving a high-level use-case for <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>. If you actually want to perform that use-case you need to get familiar with the protein scoring section: <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring</a>.</p>
 </div>
 <a name="H3_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FLocal%20Alignment%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -7216,14 +7220,14 @@ TT-TTT
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The graph algorithm for local alignment is an extension of the graph algorithm for global alignment. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for global alignment, but for each node...</p>
+<p>The graph algorithm for <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a> is an extension of the graph algorithm for <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>. Construct the <a href="#BM_%5Cb(DAG)%5Cb%2F">DAG</a> as you would for <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>, but for each node...</p>
 <ul>
 <li>that isn't the source node, construct a 0 weight edge from the source node to that node.</li>
 <li>that isn't the sink node, construct a 0 weight edge from that node to the sink node.</li>
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_827f6fe1fdddaa043731568bf717528b.svg" alt="Latex diagram"></p>
+<p><img src="latex_f193c0ad0ad6829501270332344001cf.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7306,7 +7310,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_f0df4e942fbf50970126306705f50171.svg" alt="Latex diagram"></p>
+<p><img src="latex_c2508a18f2c929c946989da0143f5da6.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7323,7 +7327,7 @@ GAA
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The following algorithm is an extension to global alignment's matrix algorithm to properly account for the "free ride" edges required by local alignment. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
+<p>The following algorithm is an extension to <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>'s matrix algorithm to properly account for the "free ride" edges required by <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>. It's essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware.</p>
 <p><a href="ch5_code/src/local_alignment/LocalAlignment_Matrix.py">ch5_code/src/local_alignment/LocalAlignment_Matrix.py</a> (lines 10 to 95):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backtrack</span>(<span class="hljs-params">
         node_matrix: List[List[Any]]
@@ -7463,7 +7467,7 @@ GAA
 <p>Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices were generated directly from the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> differences in aligned blocks that have diverged to varying degrees the <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices reflect the extrapolation of evolutionary information based on closely related <a href="#BM_(sequence)%2Fi">sequence</a>s to longer timescales</p>
 </blockquote>
 <blockquote>
-<p>Henikoff and Henikoff [16] have compared the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices to <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>, PET, Overington, Gonnet [17] and multiple <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices by evaluating how effectively the matrices can detect known members of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> 62 matrix is the most effective.</p>
+<p>Henikoff and Henikoff [16] have compared the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices to <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>, PET, Overington, Gonnet [17] and multiple <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices by evaluating how effectively the matrices can detect known members of a protein family from a database when searching with the ungapped <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a> program BLAST [18]. They conclude that overall the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> 62 matrix is the most effective.</p>
 </blockquote>
 </div>
 <p><a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 is the most commonly used variant:</p>
@@ -7495,7 +7499,7 @@ Y -3  0 -4 -4  7 -5  0 -1 -4 -1 -2 -2 -5 -4 -4 -3 -3 -2  0 10
 <p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -8 where as in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
 </div>
 <a name="H_BLOSUM%20Scoring%20Matrix"></a><h4>BLOSUM Scoring Matrix</h4>
-<p><a href="#BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi">Blocks amino acid substitution matrix</a> (<a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>) is a scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
+<p><a href="#BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi">Blocks amino acid substitution matrix</a> (<a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>) is a scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>s without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
 <p>Several sets of <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices exist, each identified by a different number. This number defines the similarity of the <a href="#BM_(sequence)%2Fi">sequence</a>s used to create the matrix: The protein database <a href="#BM_(sequence)%2Fi">sequence</a>s used to derive the matrix are filtered such that only those with &gt;= n% similarity are used, where n is the number. For example, ...</p>
 <ul>
 <li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 is created from <a href="#BM_(sequence)%2Fi">sequence</a>s that are &gt;= 80% similar.</li>
@@ -7573,7 +7577,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f873374588a54d8bfd3916ba2185dba1.svg" alt="Latex diagram"></p>
+<p><img src="latex_c7abac9e4d1b6f35c66088ea5812722b.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7659,7 +7663,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_670718dfe9e68f55ea6312b0b4fc6e02.svg" alt="Latex diagram"></p>
+<p><img src="latex_b9d948c90a11a706337d753cf15a0de6.svg" alt="Latex diagram"></p>
 <pre><code>TAGGCGG----AT
 TA--C--CCCCAT
 </code></pre>
@@ -7668,7 +7672,7 @@ TA--C--CCCCAT
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The algorithm above was applied on global alignment, but it should be obvious how to apply it to the other alignment types discussed.</p>
+<p>The algorithm above was applied on <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>, but it should be obvious how to apply it to the other alignment types discussed.</p>
 </div>
 <a name="H_Layer%20Algorithm"></a><h4>Layer Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FExtended%20Gap%20Scoring%2FLayer%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -7690,11 +7694,11 @@ TA--C--CCCCAT
 <li>an edge is added to node (x+1, y) in the horizontal layer with a normal <a href="#BM_(indel)%2Fi">indel</a> score (e.g. -5).</li>
 <li>an edge is added to node (x, y+1) in the vertical layer with a normal <a href="#BM_(indel)%2Fi">indel</a> score (e.g. -5).</li>
 </ul>
-<p>Similarly, for each node (x, y) in both the horizontal and vertical layers that an edge from the diagonal layer points to, create a 0 weight "free ride" edge back to node (x, y) in the diagonal layer. These "free ride" edges are the same as the "free ride" edges in local alignment / fitting alignment / overlap alignment -- they hop across the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> without adding anything to the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>.</p>
+<p>Similarly, for each node (x, y) in both the horizontal and vertical layers that an edge from the diagonal layer points to, create a 0 weight "free ride" edge back to node (x, y) in the diagonal layer. These "free ride" edges are the same as the "free ride" edges in <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a> / <a href="#BM_(fitting%20alignment%7Cfitting%20sequence%20alignment)%2Fi">fitting alignment</a> / <a href="#BM_(overlap%20alignment%7Coverlap%20sequence%20alignment)%2Fi">overlap alignment</a> -- they hop across the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> without adding anything to the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>.</p>
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_be84c4abead7a357df8cfac716cbe260.svg" alt="Latex diagram"></p>
+<p><img src="latex_f89eb3e0e4bed050d955e4c0cee388e4.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7812,7 +7816,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_fdd0c4807172c7b67494a85c9422f38a.svg" alt="Latex diagram"></p>
+<p><img src="latex_ab1231c7c6371a4805506ee7906e694b.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -7821,7 +7825,7 @@ T--CCCCC--
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The algorithm above was applied on global alignment, but it should be obvious how to apply it to the other alignment types discussed.</p>
+<p>The algorithm above was applied on <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>, but it should be obvious how to apply it to the other alignment types discussed.</p>
 </div>
 <a name="H_Multiple%20Alignment"></a><h3>Multiple Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F"></a><strong></strong></p>
@@ -8006,8 +8010,8 @@ G G T -1
 G G G 1
 </code></pre>
 <p>... the global alignment is...</p>
-<pre><code>--T-ATTATTA--T
-GATTATGATTA--T
+<pre><code>--T-ATTATT--AT
+GATTATGATT--AT
 --T-ACCATTACAT
 </code></pre>
 <p>Weight: 0.0</p>
@@ -8015,7 +8019,7 @@ GATTATGATTA--T
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment).</p>
+<p>The multiple alignment algorithm displayed above was specifically for on <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>).</p>
 </div>
 <a name="H4_Matrix%20Algorithm"></a><h4>Matrix Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -8026,7 +8030,7 @@ GATTATGATTA--T
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment%2FMatrix%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment/Matrix Algorithm</a></li>
 </ul>
 </div>
-<p>The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is represented as an N-dimensional matrix where each element in the matrix represents a node in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. This is similar to the 2D matrix used for global alignment's matrix implementation.</p>
+<p>The following algorithm is essentially the same as the graph algorithm, except that the implementation is much more sympathetic to modern hardware. The <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is represented as an N-dimensional matrix where each element in the matrix represents a node in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. This is similar to the 2D matrix used for <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>'s matrix implementation.</p>
 <p><a href="ch5_code/src/global_alignment/GlobalMultipleAlignment_Matrix.py">ch5_code/src/global_alignment/GlobalMultipleAlignment_Matrix.py</a> (lines 12 to 79):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_matrix</span>(<span class="hljs-params">seq_node_counts: List[int]</span>) -&gt; List[Any]:</span>
     last_buffer = [[<span class="hljs-number">-1.0</span>, (<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>), <span class="hljs-string">'?'</span>] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(seq_node_counts[<span class="hljs-number">-1</span>])]  <span class="hljs-comment"># row</span>
@@ -8175,7 +8179,7 @@ GATTATGATTA--T
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The multiple alignment algorithm displayed above was specifically for on global alignment on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. local alignment). With a little bit of effort it can also be converted to using the <a href="#BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi">divide-and-conquer algorithm</a> discussed earlier (there aren't that many leaps in logic).</p>
+<p>The multiple alignment algorithm displayed above was specifically for on <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> on a graph implementation, but it should be obvious how to apply it to most of the other alignment types (e.g. <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>). With a little bit of effort it can also be converted to using the <a href="#BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi">divide-and-conquer algorithm</a> discussed earlier (there aren't that many leaps in logic).</p>
 </div>
 <a name="H1_Greedy%20Algorithm"></a><h4>Greedy Algorithm</h4>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -8190,7 +8194,8 @@ GATTATGATTA--T
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The Pevzner book challenged you to come up with a <a href="#BM_(greedy%20algorithm)%2Fi">greedy algorithm</a> using profile matrices. This is what I was able to come up with on short notice. I have no idea if my logic is correct / optimal, but with toy <a href="#BM_(sequence)%2Fi">sequence</a>s that are highly related it seems to perform well.</p>
+<p>The Pevzner book challenged you to come up with a <a href="#BM_(greedy%20algorithm)%2Fi">greedy algorithm</a> for multiple alignment using profile matrices. This is what I was able to come up with. I have no idea if my logic is correct / optimal, but with toy <a href="#BM_(sequence)%2Fi">sequence</a>s that are highly related it seems to perform well.</p>
+<p>UPDATE: This algorithm seems to work well for the final assignment. ~380 <a href="#BM_(adenylation%20domain%7CA%20domain%7CA-domain)%2Fi">a-domain</a> <a href="#BM_(sequence)%2Fi">sequence</a>s were aligned in about 2 days and it produced an okay/good looking alignment. Aligning those <a href="#BM_(sequence)%2Fi">sequence</a>s using normal multiple alignment would be impossible -- nowhere near enough memory or speed available.</p>
 </div>
 <p>For an n-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, the <a href="#BM_(greedy%20algorithm)%2Fi">greedy algorithm</a> starts by finding the 2 <a href="#BM_(sequence)%2Fi">sequence</a>s that produce the highest scoring 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>. That alignment is then used to build a profile matrix. For example, the alignment of TRELLO and MELLOW results in the following alignment:</p>
 <table>
@@ -10785,7 +10790,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, <code>min_coins(3)</code> is independently computed 5 times. With <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>, it would only be computed once and the result would be re-used each subsequent time <code>min_coins(3)</code> gets encountered.</p>
 </li>
 <li>
-<p><a name="BM_(manhattan%20tourist%20problem)%2Fi"></a><strong>manhattan tourist problem</strong> - The <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> is an allegory to help explain <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">sequence alignment graph</a>s. Where as in <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s you're finding a path through the graph from source to sink that has the maximum weight, in the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as global alignment:</p>
+<p><a name="BM_(manhattan%20tourist%20problem)%2Fi"></a><strong>manhattan tourist problem</strong> - The <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> is an allegory to help explain <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">sequence alignment graph</a>s. Where as in <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s you're finding a path through the graph from source to sink that has the maximum weight, in the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>:</p>
 <ul>
 <li>The graph is the street layout of Manhattan.</li>
 <li>The only options at each intersection are to move right or down.</li>
@@ -10803,7 +10808,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 </li>
 <li>
-<p><a name="BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi"></a><strong>blocks amino acid substitution matrix</strong> <a name="BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F"></a><strong></strong> - A scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
+<p><a name="BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi"></a><strong>blocks amino acid substitution matrix</strong> <a name="BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F"></a><strong></strong> - A scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>s without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
 </li>
 <li>
 <p><a name="BM_(point%20mutation)%2Fi"></a><strong>point mutation</strong> - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.</p>
@@ -10820,6 +10825,184 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>
 <p><a name="BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi"></a><strong>divide-and-conquer algorithm</strong> - An algorithm that solves a problem by recursively breaking it down into two or more smaller sub-problems, up until the point where each sub-problem is small enough / simple enough to solve. Examples include quicksort and merge sort.</p>
 <p>See <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>.</p>
+</li>
+<li>
+<p><a name="BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi"></a><strong>global alignment</strong> - A form of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> that finds the highest scoring alignment between a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. The <a href="#BM_(sequence)%2Fi">sequence</a>s are aligned in their entirety. For example, the <a href="#BM_(sequence)%2Fi">sequence</a>s TRELLO and MELLOW have the following <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-</td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+</tbody>
+</table>
+<p>This is the form of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> that most people think about when they hear "<a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>."</p>
+</li>
+<li>
+<p><a name="BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi"></a><strong>local alignment</strong> - A form of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> that isolates the alignment to a <a href="#BM_(substring)%2Fi">substring</a> of each <a href="#BM_(sequence)%2Fi">sequence</a>. The <a href="#BM_(substring)%2Fi">substring</a>s that score the highest are the ones selected. For example, the <a href="#BM_(sequence)%2Fi">sequence</a>s TRELLO and MELLOW have the following <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+</tr>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>... because out of all <a href="#BM_(substring)%2Fi">substring</a>s in TRELLO and all <a href="#BM_(substring)%2Fi">substring</a>s in MELLOW, ELLO (from TRELLO) scores the highest against ELLO (from MELLOW).</p>
+</li>
+<li>
+<p><a name="BM_(fitting%20alignment%7Cfitting%20sequence%20alignment)%2Fi"></a><strong>fitting alignment</strong> - A form of 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> that isolates the alignment such that the entirety of one <a href="#BM_(sequence)%2Fi">sequence</a> is aligned against a <a href="#BM_(substring)%2Fi">substring</a> of the other <a href="#BM_(sequence)%2Fi">sequence</a>. The <a href="#BM_(substring)%2Fi">substring</a> producing the highest score is the one that's selected. For example, the <a href="#BM_(sequence)%2Fi">sequence</a>s ELO and MELLOW have the following <a href="#BM_(fitting%20alignment%7Cfitting%20sequence%20alignment)%2Fi">fitting alignment</a>...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>-</td>
+<td>O</td>
+</tr>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>... because out of all the <a href="#BM_(substring)%2Fi">substring</a>s in MELLOW, the <a href="#BM_(substring)%2Fi">substring</a> ELLO scores the highest against ELO.</p>
+</li>
+<li>
+<p><a name="BM_(overlap%20alignment%7Coverlap%20sequence%20alignment)%2Fi"></a><strong>overlap alignment</strong> - A form of 2-way <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> that isolates the alignment to a suffix of the first <a href="#BM_(sequence)%2Fi">sequence</a>s and a prefix of the second <a href="#BM_(sequence)%2Fi">sequence</a>. The prefix and suffix producing the highest score are the ones selected . For example, the <a href="#BM_(sequence)%2Fi">sequence</a>s BURRITO and RICOTTA have the following <a href="#BM_(overlap%20alignment%7Coverlap%20sequence%20alignment)%2Fi">overlap alignment</a>...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R</td>
+<td>I</td>
+<td>T</td>
+<td>-</td>
+<td>O</td>
+</tr>
+<tr>
+<td>R</td>
+<td>I</td>
+<td>-</td>
+<td>C</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>... because out of all the suffixes in BURRITO and the prefixes in RICOTTA, RITO and RICO score the highest.</p>
+</li>
+<li>
+<p><a name="BM_(levenshtein%20distance%7Cstring%20distance)%2Fi"></a><strong>Levenshtein distance</strong> - An application of <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> where the final weight represents the minimum number of operations required to transform one <a href="#BM_(sequence)%2Fi">sequence</a> to another (via swaps, insertions, and deletions). Matches are scored 0, while mismatches and <a href="#BM_(indel)%2Fi">indel</a>s are scored -1. For example, TRELLO and MELLOW have the <a href="#BM_(levenshtein%20distance%7Cstring%20distance)%2Fi">Levenshtein distance</a> of 3...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>T</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>-</td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+<td></td>
+</tr>
+<tr>
+<td>Score</td>
+<td>-1</td>
+<td>-1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>-1</td>
+<td>Total: -3</td>
+</tr>
+</tbody>
+</table>
+<p>Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.</p>
 </li>
 </ul>
 <p>

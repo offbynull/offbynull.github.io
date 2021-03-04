@@ -45,8 +45,7 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(k-mer|kmer)/i"></span></p>
-<p>A substring of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:</p>
+<p><span class="anki-answerpattern" data-pattern="(k-mer|kmer)/i"></span> - A substring of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:</p>
 <table>
 <thead>
 <tr>
@@ -83,38 +82,31 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(kd-mer|kdmer|\(k,\s*d\)-mer)/i"></span> <span class="anki-hidepattern" data-pattern="(\(\d+,\s*\d+\)-mer)/i"></span></p>
-<p>A substring of length 2k + d within some larger biological sequence (e.g. DNA or amino acid chain) where the first k elements and the last k elements are known but the d elements in between isn't known.</p>
+<p><span class="anki-answerpattern" data-pattern="(kd-mer|kdmer|\(k,\s*d\)-mer)/i"></span> <span class="anki-hidepattern" data-pattern="(\(\d+,\s*\d+\)-mer)/i"></span> - A substring of length 2k + d within some larger biological sequence (e.g. DNA or amino acid chain) where the first k elements and the last k elements are known but the d elements in between isn't known.</p>
 <p>When identifying a kd-mer with a specific k and d, the proper syntax is (k, d)-mer. For example, (1, 2)-mer represents a kd-mer with k=1 and d=2. In the DNA sequence GAAATC, the following (1, 2)-mer's exist: <code>G--A</code>, <code>A--T</code>, <code>A--C</code>.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(5'|5 prime)/i"></span> <span class="anki-answerpattern" data-pattern="(3'|3 prime)/i"></span></p>
-<p>5' (5 prime) and 3' (3 prime) describe the opposite ends of DNA. The chemical structure at each end is what defines if it's 5' or 3' -- each end is guaranteed to be different from the other. The forward direction on DNA is defined as 5' to 3', while the backwards direction is 3' to 5'.</p>
+<p><span class="anki-answerpattern" data-pattern="(5'|5 prime)/i"></span> <span class="anki-answerpattern" data-pattern="(3'|3 prime)/i"></span> - 5' (5 prime) and 3' (3 prime) describe the opposite ends of DNA. The chemical structure at each end is what defines if it's 5' or 3' -- each end is guaranteed to be different from the other. The forward direction on DNA is defined as 5' to 3', while the backwards direction is 3' to 5'.</p>
 <p>Two complementing DNA strands will always be attached in opposite directions.</p>
 <p><img src="svgbob_17a210d3487024b39998105bb2cf073cdd5d23a1.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="DNA polymerase"></span></p>
-<p>An enzyme that replicates a strand of DNA. That is, DNA polymerase walks over a single strand of DNA bases (not the strand of base pairs) and  generates a strand of complements. Before DNA polymerase can attach itself and start replicating DNA, it requires a primer.</p>
+<p><span class="anki-answerpattern" data-pattern="DNA polymerase"></span> - An enzyme that replicates a strand of DNA. That is, DNA polymerase walks over a single strand of DNA bases (not the strand of base pairs) and  generates a strand of complements. Before DNA polymerase can attach itself and start replicating DNA, it requires a primer.</p>
 <p><img src="svgbob_4dc3db657aeeb2dd3bd7644d409f31aacad64536.svg" alt="Kroki diagram output"></p>
 <p>DNA polymerase is unidirectional, meaning that it can only walk a DNA strand in one direction: reverse (3' to 5')</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="replication fork"></span></p>
-<p>The process of DNA replication requires that DNA's 2 complementing strands be unwound and split open. The area where the DNA starts to  split is called the replication fork. In bacteria, the replication fork starts at the replication origin and keeps expanding until it reaches the replication terminus.  Special enzymes called DNA polymerases walk over each unwound strand and create complementing strands.</p>
+<p><span class="anki-answerpattern" data-pattern="replication fork"></span> - The process of DNA replication requires that DNA's 2 complementing strands be unwound and split open. The area where the DNA starts to  split is called the replication fork. In bacteria, the replication fork starts at the replication origin and keeps expanding until it reaches the replication terminus.  Special enzymes called DNA polymerases walk over each unwound strand and create complementing strands.</p>
 <p><img src="svgbob_fc7cf2c734fa0cab15b5746e25ad07e25f85ec64.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="replication origin"></span> <span class="anki-answerpattern" data-pattern="ori"></span></p>
-<p>The point in DNA at which replication starts. May be shortened to ori.</p>
+<p><span class="anki-answerpattern" data-pattern="replication origin"></span> <span class="anki-answerpattern" data-pattern="ori"></span> - The point in DNA at which replication starts. May be shortened to ori.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="replication terminus"></span> <span class="anki-answerpattern" data-pattern="ter"></span></p>
-<p>The point in DNA at which replication ends. May be shortened to ter.</p>
+<p><span class="anki-answerpattern" data-pattern="replication terminus"></span> <span class="anki-answerpattern" data-pattern="ter"></span> - The point in DNA at which replication ends. May be shortened to ter.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="forward half-strand"></span> <span class="anki-answerpattern" data-pattern="(reverse half-strand|backward half-strand|backwards half-strand)/i"></span> <span class="anki-answerpattern" data-pattern="lagging half-strand"></span> <span class="anki-answerpattern" data-pattern="leading half-strand"></span></p>
-<p>Bacteria are known to have a single chromosome of circular / looping DNA. In this DNA, the replication origin (ori) is the region of DNA where replication starts, while the replication terminus (ter) is where replication ends.</p>
+<p><span class="anki-answerpattern" data-pattern="forward half-strand"></span> <span class="anki-answerpattern" data-pattern="(reverse half-strand|backward half-strand|backwards half-strand)/i"></span> <span class="anki-answerpattern" data-pattern="lagging half-strand"></span> <span class="anki-answerpattern" data-pattern="leading half-strand"></span> - Bacteria are known to have a single chromosome of circular / looping DNA. In this DNA, the replication origin (ori) is the region of DNA where replication starts, while the replication terminus (ter) is where replication ends.</p>
 <p><img src="svgbob_fb9438945a109c884df7ccc79d1d8051fd358a87.svg" alt="Kroki diagram output"></p>
 <p>If you split up the DNA based on ori and ter being cutting points, you end up with 4 distinct strands. Given that the direction of a strand is 5' to 3', if the direction of the strand starts at...</p>
 <ul>
@@ -135,43 +127,34 @@
 <p>This nomenclature has to do with DNA polymerase. Since DNA polymerase can only walk in the reverse direction (3' to 5'), it synthesizes the leading half-strand in one shot. For the lagging half-strand (5' to 3'), multiple DNA polymerases have to used to synthesize DNA, each binding to the lagging strand and walking backwards a small amount to generate a small fragment of DNA (Okazaki fragment). the process is much slower for the lagging half-strand, that's why it's called lagging.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="Okazaki fragment"></span></p>
-<p>A small fragment of DNA generated by DNA polymerase for forward half-strands. DNA synthesis for the forward half-strands can only happen in small pieces. As the fork open ups every ~2000 nucleotides, DNA polymerase attaches to the end of the fork on the forward half-strand and walks in reverse to generate that small segment (DNA polymerase can only walk in the reverse direction).</p>
+<p><span class="anki-answerpattern" data-pattern="Okazaki fragment"></span> - A small fragment of DNA generated by DNA polymerase for forward half-strands. DNA synthesis for the forward half-strands can only happen in small pieces. As the fork open ups every ~2000 nucleotides, DNA polymerase attaches to the end of the fork on the forward half-strand and walks in reverse to generate that small segment (DNA polymerase can only walk in the reverse direction).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="DNA ligase"></span></p>
-<p>An enzyme that sews together short segments of DNA called Okazaki fragments by binding the phosphate group on the end of one strand with the deoxyribose group on the other strand.</p>
+<p><span class="anki-answerpattern" data-pattern="DNA ligase"></span> - An enzyme that sews together short segments of DNA called Okazaki fragments by binding the phosphate group on the end of one strand with the deoxyribose group on the other strand.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="DnaA box"></span></p>
-<p>A sequence in the ori that the DnaA protein (responsible for DNA replication) binds to.</p>
+<p><span class="anki-answerpattern" data-pattern="DnaA box"></span> - A sequence in the ori that the DnaA protein (responsible for DNA replication) binds to.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="reverse complement"></span></p>
-<p>Two strands of DNA bound together, where each strand is the reverse complement of the other.</p>
+<p><span class="anki-answerpattern" data-pattern="reverse complement"></span> - Two strands of DNA bound together, where each strand is the reverse complement of the other.</p>
 <p><img src="svgbob_b05df825cb791aaf67d96b4e629e42c02b75f509.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="gene"></span></p>
-<p>A segment of DNA that contains the instructions for either a protein or functional RNA.</p>
+<p><span class="anki-answerpattern" data-pattern="gene"></span> - A segment of DNA that contains the instructions for either a protein or functional RNA.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="gene product"></span></p>
-<p>The final synthesized material resulting from the instructions that make up a gene. That synthesized material either being a protein or functional RNA.</p>
+<p><span class="anki-answerpattern" data-pattern="gene product"></span> - The final synthesized material resulting from the instructions that make up a gene. That synthesized material either being a protein or functional RNA.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(transcription|transcribed|transcribe)/i"></span></p>
-<p>The process of copying a gene to mRNA. Specifically, the enzyme RNA polymerase copies the segment of DNA that makes up that gene to a strand of RNA.</p>
+<p><span class="anki-answerpattern" data-pattern="(transcription|transcribed|transcribe)/i"></span> - The process of copying a gene to mRNA. Specifically, the enzyme RNA polymerase copies the segment of DNA that makes up that gene to a strand of RNA.</p>
 <p><img src="svgbob_0fed5f4215fb0a5da3d93da589650b84df3f9c09.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(translation|translated|translate)/i"></span></p>
-<p>The process of turning mRNA to protein. Specifically, a ribosome takes in the mRNA generated by transcription and outputs the protein that it codes for.</p>
+<p><span class="anki-answerpattern" data-pattern="(translation|translated|translate)/i"></span> - The process of turning mRNA to protein. Specifically, a ribosome takes in the mRNA generated by transcription and outputs the protein that it codes for.</p>
 <p><img src="svgbob_aeaffd032a869fcce0f71f969f22f2191880a88c.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="gene expression"></span></p>
-<p>The process by which a gene is synthesized into a gene product. When the gene product is...</p>
+<p><span class="anki-answerpattern" data-pattern="gene expression"></span> - The process by which a gene is synthesized into a gene product. When the gene product is...</p>
 <ul>
 <li>a protein, the gene is transcribed to mRNA and translated to a protein.</li>
 <li>functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).</li>
@@ -179,13 +162,11 @@
 <p><img src="svgbob_78b3833e37ddc45358bf3ebf79daba1a9e2604eb.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(regulatory gene|regulatory protein)/i"></span></p>
-<p>The proteins encoded by these genes effect gene expression for certain other genes. That is, a regulatory protein can cause certain other genes to be expressed more (promote gene expression) or less (repress gene expression).</p>
+<p><span class="anki-answerpattern" data-pattern="(regulatory gene|regulatory protein)/i"></span> - The proteins encoded by these genes effect gene expression for certain other genes. That is, a regulatory protein can cause certain other genes to be expressed more (promote gene expression) or less (repress gene expression).</p>
 <p>Regulatory genes are often controlled by external factors (e.g. sunlight, nutrients, temperature, etc..)</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="negative feedback loop"></span> <span class="anki-answerpattern" data-pattern="positive feedback loop"></span> <span class="anki-answerpattern" data-pattern="feedback loop"></span></p>
-<p>A feedback loop is a system where the output (or some part of the output) is fed back into the system to either promote or repress further outputs.</p>
+<p><span class="anki-answerpattern" data-pattern="negative feedback loop"></span> <span class="anki-answerpattern" data-pattern="positive feedback loop"></span> <span class="anki-answerpattern" data-pattern="feedback loop"></span> - A feedback loop is a system where the output (or some part of the output) is fed back into the system to either promote or repress further outputs.</p>
 <p><img src="svgbob_3ba8fa4d05a4b9ef40e13dd6d9c7d60ecb9705ad.svg" alt="Kroki diagram output"></p>
 <p>A positive feedback loop amplifies the output while a negative feedback loop regulates the output. Negative feedback loops in particular are important in biology because they allow organisms to maintain homeostasis / equilibrium (keep a consistent internal state). For example, the system that regulates core temperatures in a human is a negative feedback loop. If a human's core temperature gets too...</p>
 <ul>
@@ -196,32 +177,25 @@
 <p><img src="svgbob_894d108e9621a523aaed2c3a3d5d13d20871f1f3.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(circadian clock|circadian oscillator)/i"></span></p>
-<p>A biological clock that synchronizes roughly around the earth's day-night cycle. This internal clock helps many species regulate their physical and behavioural attributes. For example, hunt during the night vs sleep during the day (e.g. nocturnal owls).</p>
+<p><span class="anki-answerpattern" data-pattern="(circadian clock|circadian oscillator)/i"></span> - A biological clock that synchronizes roughly around the earth's day-night cycle. This internal clock helps many species regulate their physical and behavioural attributes. For example, hunt during the night vs sleep during the day (e.g. nocturnal owls).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="upstream region"></span></p>
-<p>The area just before some interval of DNA. Since the direction of DNA is 5' to 3', this area is towards the 5' end (upper end).</p>
+<p><span class="anki-answerpattern" data-pattern="upstream region"></span> - The area just before some interval of DNA. Since the direction of DNA is 5' to 3', this area is towards the 5' end (upper end).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="downstream region"></span></p>
-<p>The area just after some interval of DNA. Since the direction of DNA is 5' to 3', this area is towards the 3' end (lower end).</p>
+<p><span class="anki-answerpattern" data-pattern="downstream region"></span> - The area just after some interval of DNA. Since the direction of DNA is 5' to 3', this area is towards the 3' end (lower end).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="transcription factor"></span></p>
-<p>A regulatory protein that controls the rate of transcription for some gene that it has influence over (the copying of DNA to mRNA). The protein binds to a specific sequence in the gene's upstream region.</p>
+<p><span class="anki-answerpattern" data-pattern="transcription factor"></span> - A regulatory protein that controls the rate of transcription for some gene that it has influence over (the copying of DNA to mRNA). The protein binds to a specific sequence in the gene's upstream region.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="motif"></span></p>
-<p>A pattern that matches against many different k-mers, where those matched k-mers have some shared biological significance. The pattern matches a fixed k where each position may have alternate forms. The simplest way to think of a motif is a regex pattern without quantifiers. For example, the regex <code>[AT]TT[GC]C</code> may match to ATTGC, ATTCC, TTTGC, and TTTCC.</p>
+<p><span class="anki-answerpattern" data-pattern="motif"></span> - A pattern that matches against many different k-mers, where those matched k-mers have some shared biological significance. The pattern matches a fixed k where each position may have alternate forms. The simplest way to think of a motif is a regex pattern without quantifiers. For example, the regex <code>[AT]TT[GC]C</code> may match to ATTGC, ATTCC, TTTGC, and TTTCC.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="motif member"></span></p>
-<p>A specific nucleotide sequence that matches a motif. For example, given a motif represented by the regex <code>[AT]TT[GC]C</code>, the sequences ATTGC, ATTCC, TTTGC, and TTTCC would be its motif members.</p>
+<p><span class="anki-answerpattern" data-pattern="motif member"></span> - A specific nucleotide sequence that matches a motif. For example, given a motif represented by the regex <code>[AT]TT[GC]C</code>, the sequences ATTGC, ATTCC, TTTGC, and TTTCC would be its motif members.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(motif matrix|motif matrices)/i"></span></p>
-<p>A set of k-mers stacked on top of each other in a matrix, where the k-mers are either...</p>
+<p><span class="anki-answerpattern" data-pattern="(motif matrix|motif matrices)/i"></span> - A set of k-mers stacked on top of each other in a matrix, where the k-mers are either...</p>
 <ul>
 <li>motif members of the same motif,</li>
 <li>or suspected motif members of the same motif.</li>
@@ -270,27 +244,23 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="regulatory motif"></span></p>
-<p>The motif of a transcription factor, typically 8 to 12 nucleotides in length.</p>
+<p><span class="anki-answerpattern" data-pattern="regulatory motif"></span> - The motif of a transcription factor, typically 8 to 12 nucleotides in length.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="transcription factor binding site"></span></p>
-<p>The physical binding site for a transcription factor. A gene that's regulated by a transcription factor needs a sequence located in its upstream region that the transcription factor can bind to: a motif member of that transcription factor's regulatory motif.</p>
+<p><span class="anki-answerpattern" data-pattern="transcription factor binding site"></span> - The physical binding site for a transcription factor. A gene that's regulated by a transcription factor needs a sequence located in its upstream region that the transcription factor can bind to: a motif member of that transcription factor's regulatory motif.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>A gene's upstream region is the 600 to 1000 nucleotides preceding the start of the gene.</p>
 </div>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(cDNA|complementary DNA)/i"></span></p>
-<p>A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.</p>
+<p><span class="anki-answerpattern" data-pattern="(cDNA|complementary DNA)/i"></span> - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.</p>
 <p><img src="svgbob_a4a2743464f6da803a8d9d15a554dd4c6b62734d.svg" alt="Kroki diagram output"></p>
 <p>The mRNA portion breaks off, leaving the single-stranded DNA.</p>
 <p><img src="svgbob_e663fd58e09eb0df87cbfcdd76f15efdc0a142ec.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(DNA microarray|DNA array)/i"></span></p>
-<p>A device used to compare gene expression. This works by measuring 2 mRNA samples against each other: a control sample and an experimental sample. The samples could be from...</p>
+<p><span class="anki-answerpattern" data-pattern="(DNA microarray|DNA array)/i"></span> - A device used to compare gene expression. This works by measuring 2 mRNA samples against each other: a control sample and an experimental sample. The samples could be from...</p>
 <ul>
 <li>the same organism but at different times.</li>
 <li>diseased and healthy versions of the same organism.</li>
@@ -303,13 +273,11 @@
 <p>The idea is that once the experimental cDNA is introduced to that region, it should bind to the control cDNA that's been printed to form double-stranded DNA. The color emitted in a region should correspond to the amount of gene expression for the gene that region represents. For example, if a region on the sheet is fully yellow, it means that the gene expression for that gene is roughly equal (red mixed with green is yellow).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="greedy algorithm"></span></p>
-<p>An algorithm that tries to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
+<p><span class="anki-answerpattern" data-pattern="greedy algorithm"></span> - An algorithm that tries to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
 <p>For example, imagine a chess playing AI that had a strategy of trying to eliminate the other player's most valuable piece at each turn. It would be considered greedy because it only looks 1 move ahead before taking action. Normal chess AIs / players look many moves ahead before taking action. As such, the greedy AI may be fast but it would very likely lose most matches.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(Cromwell'?s? rule)/i"></span></p>
-<p>When a probability is based off past events, 0.0 and 1.0 shouldn't be used. That is, if you've...</p>
+<p><span class="anki-answerpattern" data-pattern="(Cromwell'?s? rule)/i"></span> - When a probability is based off past events, 0.0 and 1.0 shouldn't be used. That is, if you've...</p>
 <ul>
 <li>never seen an even occur in the past, it doesn't mean that there's a 0.0 probability of it occurring next.</li>
 <li>always seen an event occur in the past, it doesn't mean that there's a 1.0 probability of it occurring next.</li>
@@ -317,29 +285,24 @@
 <p>Unless you're dealing with hard logical statements where prior occurrences don't come in to play (e.g. 1+1=2), you should include a small chance that some extremely unlikely event may happen. The example tossed around is "the probability that the sun will not rise tomorrow." Prior recorded observations show that sun has always risen, but that doesn't mean that there's a 1.0 probability of the sun rising tomorrow (e.g. some extremely unlikely cataclysmic event may prevent the sun from rising).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(Laplace'?s? rule of succession|Laplace'?s? rule)/i"></span></p>
-<p>If some independent true/false event occurs n times, and s of those n times were successes, it's natural for people to assume the probability of success is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>s</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{s}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>. However, if the number of successes is 0, the probability would be 0.0. Cromwell's rule states that when a probability is based off past events, 0.0 and 1.0 shouldn't be used. As such, a more appropriate / meaningful measure of probability is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{s+1}{n+2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
+<p><span class="anki-answerpattern" data-pattern="(Laplace'?s? rule of succession|Laplace'?s? rule)/i"></span> - If some independent true/false event occurs n times, and s of those n times were successes, it's natural for people to assume the probability of success is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>s</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{s}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>. However, if the number of successes is 0, the probability would be 0.0. Cromwell's rule states that when a probability is based off past events, 0.0 and 1.0 shouldn't be used. As such, a more appropriate / meaningful measure of probability is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{s+1}{n+2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
 <p>For example, imagine you're sitting on a park bench having lunch. Of the 8 birds you've seen since starting your lunch, all have been pigeons. If you were to calculate the probability that the next bird you'll see a crow, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>0</mn><mn>8</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{0}{8}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">8</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span> would be flawed because it states that there's no chance that the next bird will be a crow (there obviously is a chance, but it may be a small chance). Instead, applying Laplace's rule allows for the small probability that a crow may be seen next: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>0</mn><mo>+</mo><mn>1</mn></mrow><mrow><mn>8</mn><mo>+</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{0+1}{8+2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">8</span><span class="mbin mtight">+</span><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
 <p>Laplace's rule of succession is more meaningful when the number of trials (n) is small.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="pseudocount"></span></p>
-<p>When a zero is replaced with a small number to prevent unfair scoring. See Laplace's rule of succession.</p>
+<p><span class="anki-answerpattern" data-pattern="pseudocount"></span> - When a zero is replaced with a small number to prevent unfair scoring. See Laplace's rule of succession.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="Las Vegas algorithm"></span></p>
-<p>A randomized algorithm that delivers a guaranteed exact solution. That is, even though the algorithm makes random decisions it is guaranteed to converge on the exact solution to the problem its trying to solve (not an approximate solution).</p>
+<p><span class="anki-answerpattern" data-pattern="Las Vegas algorithm"></span> - A randomized algorithm that delivers a guaranteed exact solution. That is, even though the algorithm makes random decisions it is guaranteed to converge on the exact solution to the problem its trying to solve (not an approximate solution).</p>
 <p>An example of a Las Vegas algorithm is randomized quicksort (randomness is applied when choosing the pivot).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="Monte Carlo algorithm"></span></p>
-<p>A randomized algorithm that delivers an approximate solution. Because these algorithms are quick, they're typically run many times. The approximation considered the best out of all runs is the one that gets chosen as the solution.</p>
+<p><span class="anki-answerpattern" data-pattern="Monte Carlo algorithm"></span> - A randomized algorithm that delivers an approximate solution. Because these algorithms are quick, they're typically run many times. The approximation considered the best out of all runs is the one that gets chosen as the solution.</p>
 <p>An example of a Monte Carlo algorithm is a genetic algorithm to optimize the weights of a deep neural network. That is, a step of the optimization requires running n different neural networks to see which gives the best result, then replacing those n networks with n copies of the best performing network where each copy has randomly tweaked weights. At some point the algorithm will stop producing incrementally better results.</p>
 <p>Perform the optimization (the entire thing, not just a single step) thousands of times and pick the best network.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(consensus string|consensus sequence|consensus)/i"></span></p>
-<p>The k-mer generated by selecting the most abundant column at each index of a motif matrix.</p>
+<p><span class="anki-answerpattern" data-pattern="(consensus string|consensus sequence|consensus)/i"></span> - The k-mer generated by selecting the most abundant column at each index of a motif matrix.</p>
 <table>
 <thead>
 <tr>
@@ -405,25 +368,21 @@
 <p>The generated k-mer may also use a hybrid alphabet. The consensus string for the same matrix above using IUPAC nucleotide codes: <code>WTTSS</code>.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="entropy"></span></p>
-<p>The uncertainty associated with a random variable. Given some set of outcomes for a variable, it's calculated as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mi>P</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>P</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">-\sum_{i=1}^{n} P(x_i) log P(x_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>.</p>
+<p><span class="anki-answerpattern" data-pattern="entropy"></span> - The uncertainty associated with a random variable. Given some set of outcomes for a variable, it's calculated as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mi>P</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>P</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">-\sum_{i=1}^{n} P(x_i) log P(x_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>.</p>
 <p>This definition is for information theory. In other contexts (e.g. physics, economics), this term has a different meaning.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="genome"></span></p>
-<p>All of the DNA for some organism.</p>
+<p><span class="anki-answerpattern" data-pattern="genome"></span> - All of the DNA for some organism.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="sequence"></span></p>
-<p>The ordered elements that make up some biological entity. For example, a ...</p>
+<p><span class="anki-answerpattern" data-pattern="sequence"></span> - The ordered elements that make up some biological entity. For example, a ...</p>
 <ul>
 <li>DNA sequence contains the set of nucleotides and their positions for that DNA strand.</li>
 <li>peptide sequence contains the set of amino acids and their positions for that peptide.</li>
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(sequencing|sequenced)/i"></span></p>
-<p>The process of determining which nucleotides are assigned to which positions in a strand of DNA or RNA.</p>
+<p><span class="anki-answerpattern" data-pattern="(sequencing|sequenced)/i"></span> - The process of determining which nucleotides are assigned to which positions in a strand of DNA or RNA.</p>
 <p>The machinery used for DNA sequencing is called a sequencer. A sequencer takes multiple copies of the same DNA, breaks that DNA up into smaller fragments, and scans in those fragments. Each fragment is typically the same length but has a unique starting offset. Because the starting offsets are all different, the original larger DNA sequence can be guessed at by finding fragment with overlapping regions and stitching them together.</p>
 <table>
 <thead>
@@ -524,12 +483,10 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="sequencer"></span></p>
-<p>A machine that performs DNA or RNA sequencing.</p>
+<p><span class="anki-answerpattern" data-pattern="sequencer"></span> - A machine that performs DNA or RNA sequencing.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(sequencing error|sequencer error)/i"></span></p>
-<p>An error caused by a sequencer returning a fragment where a nucleotide was misinterpreted at one or more positions (e.g. offset 3 was actually a C but it got scanned in as a G).</p>
+<p><span class="anki-answerpattern" data-pattern="(sequencing error|sequencer error)/i"></span> - An error caused by a sequencer returning a fragment where a nucleotide was misinterpreted at one or more positions (e.g. offset 3 was actually a C but it got scanned in as a G).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This term may also be used in reference to homopolymer errors, known to happen with nanopore technology. From <a href="https://news.ycombinator.com/item?id=25459670">here</a>...</p>
@@ -539,26 +496,21 @@
 </div>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="read"></span></p>
-<p>A segment of genome scanned in during the process of sequencing.</p>
+<p><span class="anki-answerpattern" data-pattern="read"></span> - A segment of genome scanned in during the process of sequencing.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(read-pair|read pair)/i"></span></p>
-<p>A segment of genome scanning in during the process of sequencing, where the middle of the segment is unknown. That is, the first k elements and the last k elements are known, but the d elements in between aren't known. The total size of the segment is 2k + d.</p>
+<p><span class="anki-answerpattern" data-pattern="(read-pair|read pair)/i"></span> - A segment of genome scanning in during the process of sequencing, where the middle of the segment is unknown. That is, the first k elements and the last k elements are known, but the d elements in between aren't known. The total size of the segment is 2k + d.</p>
 <p>Sequencers provide read-pairs as an alternative to longer reads because the longer a read is the more errors it contains.</p>
 <p>See kd-mer.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="fragment"></span></p>
-<p>A scanned sequence returned by a sequencer. Represented as either a read or a read-pair.</p>
+<p><span class="anki-answerpattern" data-pattern="fragment"></span> - A scanned sequence returned by a sequencer. Represented as either a read or a read-pair.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(assembly|assemble)/i"></span></p>
-<p>The process of stitching together overlapping fragments to guess the sequence of the original larger DNA sequence that those fragments came from.</p>
+<p><span class="anki-answerpattern" data-pattern="(assembly|assemble)/i"></span> - The process of stitching together overlapping fragments to guess the sequence of the original larger DNA sequence that those fragments came from.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(hybrid alphabet|alternate alphabet|alternative alphabet)/i"></span></p>
-<p>When representing a sequence that isn't fully conserved, it may be more appropriate to use an alphabet where each letter can represent more than 1 nucleotide. For example, the IUPAC nucleotide codes provides the following alphabet:</p>
+<p><span class="anki-answerpattern" data-pattern="(hybrid alphabet|alternate alphabet|alternative alphabet)/i"></span> - When representing a sequence that isn't fully conserved, it may be more appropriate to use an alphabet where each letter can represent more than 1 nucleotide. For example, the IUPAC nucleotide codes provides the following alphabet:</p>
 <ul>
 <li>A = A</li>
 <li>C = C</li>
@@ -573,8 +525,7 @@
 <p>If the sequence being represented can be either AAAC or AATT, it may be easier to represent a single string of AAWY.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(IUPAC nucleotide code|IUPAC)/i"></span></p>
-<p>A hybrid alphabet with the following mapping:</p>
+<p><span class="anki-answerpattern" data-pattern="(IUPAC nucleotide code|IUPAC)/i"></span> - A hybrid alphabet with the following mapping:</p>
 <table>
 <thead>
 <tr>
@@ -651,15 +602,13 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(logo|sequence logo|motif logo)/i"></span></p>
-<p>A graphical representation of how conserved a sequence's positions are. Each position has its possible nucleotides stacked on top of each other, where the height of each nucleotide is based on how conserved it is. The more conserved a position is, the taller that column will be.</p>
+<p><span class="anki-answerpattern" data-pattern="(logo|sequence logo|motif logo)/i"></span> - A graphical representation of how conserved a sequence's positions are. Each position has its possible nucleotides stacked on top of each other, where the height of each nucleotide is based on how conserved it is. The more conserved a position is, the taller that column will be.</p>
 <p>Typically applied to DNA or RNA, and May also be applied to other biological sequence types (e.g. amino acids).</p>
 <p>The following is an example of a logo generated from a motif sequence:</p>
 <p><img src="motif_logo.svg" alt="Example Image"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(transposon|transposable element|jumping gene)/i"></span></p>
-<p>A DNA sequence that can change its position within a genome, altering the genome size. They come in two flavours:</p>
+<p><span class="anki-answerpattern" data-pattern="(transposon|transposable element|jumping gene)/i"></span> - A DNA sequence that can change its position within a genome, altering the genome size. They come in two flavours:</p>
 <ul>
 <li>Class I (retrotransposon) - Behaves similarly to copy-and-paste where the sequence is duplicated. DNA is transcribed to RNA, followed by that RNA being reverse transcribed back to DNA by an enzyme called reverse transcriptase.</li>
 <li>Class II (DNA transposon) - Behaves similarly to cut-and-paste where the sequence is moved. DNA is physically cut out by an enzyme called transposases and placed back in at some other location.</li>
@@ -671,8 +620,7 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="adjacency list"></span></p>
-<p>An internal representation of a graph where each node has a list of pointers to other nodes that it can forward to.</p>
+<p><span class="anki-answerpattern" data-pattern="adjacency list"></span> - An internal representation of a graph where each node has a list of pointers to other nodes that it can forward to.</p>
 <p><img src="svgbob_5b40f65c78645193c91742f02934854ae8846ede.svg" alt="Kroki diagram output"></p>
 <p>The graph above represented as an adjacency list would be...</p>
 <table>
@@ -711,8 +659,7 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="adjacency matrix"></span></p>
-<p>An internal representation of a graph where a matrix defines the number of times that each node forwards to every other node.</p>
+<p><span class="anki-answerpattern" data-pattern="adjacency matrix"></span> - An internal representation of a graph where a matrix defines the number of times that each node forwards to every other node.</p>
 <p><img src="svgbob_5b40f65c78645193c91742f02934854ae8846ede.svg" alt="Kroki diagram output"></p>
 <p>The graph above represented as an adjacency matrix would be...</p>
 <table>
@@ -786,27 +733,23 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(Hamiltonian path|Hamilton path)/i"></span></p>
-<p>A path in a graph that visits every node exactly once.</p>
+<p><span class="anki-answerpattern" data-pattern="(Hamiltonian path|Hamilton path)/i"></span> - A path in a graph that visits every node exactly once.</p>
 <p>The graph below has the Hamiltonian path ABCEDF.</p>
 <p><img src="svgbob_5b40f65c78645193c91742f02934854ae8846ede.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="Eulerian path"></span></p>
-<p>A path in a graph that visits every edge exactly once.</p>
+<p><span class="anki-answerpattern" data-pattern="Eulerian path"></span> - A path in a graph that visits every edge exactly once.</p>
 <p>In the graph below, the Eulerian path is (A,B), (B,C), (C,D), (D,E), (E,C), (C,D), (D,F).</p>
 <p><img src="svgbob_87660b191d813d39c396985391b70507c8c1236b.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="Eulerian cycle"></span></p>
-<p>An Eulerian path that forms a cycle. That is, a path in a graph that is a cycle and visits every edge exactly once.</p>
+<p><span class="anki-answerpattern" data-pattern="Eulerian cycle"></span> - An Eulerian path that forms a cycle. That is, a path in a graph that is a cycle and visits every edge exactly once.</p>
 <p>The graph below has an Eulerian cycle of (A,B), (B,C) (C,D), (D,F), (F,C), (C,A).</p>
 <p><img src="svgbob_244dd1930eb16ef58be2261f1ffb9277ad2d793a.svg" alt="Kroki diagram output"></p>
 <p>If a graph contains an Eulerian cycle, it's said to be an Eulerian graph.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="Eulerian graph"></span> <span class="anki-answerpattern" data-pattern="Eulerian cycle"></span></p>
-<p>For a graph to be a Eulerian graph, it must have an Eulerian cycle: a path in a graph that is a cycle and visits every edge exactly once. For a graph to have an Eulerian cycle, it must be both balanced and strongly connected.</p>
+<p><span class="anki-answerpattern" data-pattern="Eulerian graph"></span> <span class="anki-answerpattern" data-pattern="Eulerian cycle"></span> - For a graph to be a Eulerian graph, it must have an Eulerian cycle: a path in a graph that is a cycle and visits every edge exactly once. For a graph to have an Eulerian cycle, it must be both balanced and strongly connected.</p>
 <p><img src="svgbob_d0af75d07c2969afc5f4088d18d3b7a327f26ef2.svg" alt="Kroki diagram output"></p>
 <p>Note how in the graph above, ...</p>
 <ul>
@@ -870,8 +813,7 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="disconnected"></span> <span class="anki-answerpattern" data-pattern="connected"></span></p>
-<p>A graph is disconnected if you can break it out into 2 or more distinct sub-graphs without breaking any paths. In other words, the graph contains at least two nodes which aren't contained in any path.</p>
+<p><span class="anki-answerpattern" data-pattern="disconnected"></span> <span class="anki-answerpattern" data-pattern="connected"></span> - A graph is disconnected if you can break it out into 2 or more distinct sub-graphs without breaking any paths. In other words, the graph contains at least two nodes which aren't contained in any path.</p>
 <p>The graph below is disconnected because there is no path that contains E, F, G, or H and A, B, C, or D.</p>
 <p><img src="svgbob_754a446a49b8209971f339d76f4fcc492acbb615.svg" alt="Kroki diagram output"></p>
 <p>The graph below is connected.</p>
@@ -885,20 +827,17 @@
 <p><img src="svgbob_244dd1930eb16ef58be2261f1ffb9277ad2d793a.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="indegree"></span> <span class="anki-answerpattern" data-pattern="outdegree"></span></p>
-<p>The number of edges leading into / out of a node of a directed graph.</p>
+<p><span class="anki-answerpattern" data-pattern="indegree"></span> <span class="anki-answerpattern" data-pattern="outdegree"></span> - The number of edges leading into / out of a node of a directed graph.</p>
 <p>The node below has an indegree of 3 and an outdegree of 1.</p>
 <p><img src="svgbob_7159ebaf654fe57b46d2f14a29a73d50e280afe6.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="balanced node"></span></p>
-<p>A node of a directed graph that has an equal indegree and outdegree. That is, the number of edges coming in is equal to the number of edges going out.</p>
+<p><span class="anki-answerpattern" data-pattern="balanced node"></span> - A node of a directed graph that has an equal indegree and outdegree. That is, the number of edges coming in is equal to the number of edges going out.</p>
 <p>The node below has an indegree and outdegree of 1. It is a balanced node.</p>
 <p><img src="svgbob_7c49a4fbe8fc85173147545e7a459bca61c84f26.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="balanced graph"></span></p>
-<p>A directed graph where ever node is balanced.</p>
+<p><span class="anki-answerpattern" data-pattern="balanced graph"></span> - A directed graph where ever node is balanced.</p>
 <p>The graph below is balanced graph because each node has an equal indegree and outdegree.</p>
 <p><img src="svgbob_244dd1930eb16ef58be2261f1ffb9277ad2d793a.svg" alt="Kroki diagram output"></p>
 <table>
@@ -939,8 +878,7 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="overlap graph"></span></p>
-<p>A graph representing the k-mers making up a string. Specifically, the graph is built in 2 steps:</p>
+<p><span class="anki-answerpattern" data-pattern="overlap graph"></span> - A graph representing the k-mers making up a string. Specifically, the graph is built in 2 steps:</p>
 <ol>
 <li>
 <p>Each node is a fragment.</p>
@@ -958,8 +896,7 @@
 <p>Overlap graphs used for genome assembly.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="de Bruijn graph"></span></p>
-<p>A special graph representing the k-mers making up a string. Specifically, the graph is built in 2 steps:</p>
+<p><span class="anki-answerpattern" data-pattern="de Bruijn graph"></span> - A special graph representing the k-mers making up a string. Specifically, the graph is built in 2 steps:</p>
 <ol>
 <li>
 <p>Each k-mer is represented as an edge connecting 2 nodes. The ...</p>
@@ -981,8 +918,7 @@
 <p>De Bruijn graphs were originally invented to solve the k-universal string problem.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(k-universal string|k-universal)/i"></span></p>
-<p>For some alphabet and k, a string is considered k-universal if it contains every k-mer for that alphabet exactly once. For example, for an alphabet containing only 0 and 1 (binary) and k=3, a 3-universal string would be 0001110100 because it contains every 3-mer exactly once:</p>
+<p><span class="anki-answerpattern" data-pattern="(k-universal string|k-universal)/i"></span> - For some alphabet and k, a string is considered k-universal if it contains every k-mer for that alphabet exactly once. For example, for an alphabet containing only 0 and 1 (binary) and k=3, a 3-universal string would be 0001110100 because it contains every 3-mer exactly once:</p>
 <ul>
 <li>000: <strong>000</strong>1110100</li>
 <li>001: 0<strong>001</strong>110100</li>
@@ -1010,13 +946,11 @@
 <p>For larger values of k (e.g. 20), finding k-universal strings would be too computationally intensive without De Bruijn graphs and Eulerian cycles.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="coverage"></span></p>
-<p>Given a substring from some larger sequence that was reconstructed from a set of fragments, the coverage of that substring is the number of reads used to construct it. The substring length is typically 1: the coverage for each position of the sequence.</p>
+<p><span class="anki-answerpattern" data-pattern="coverage"></span> - Given a substring from some larger sequence that was reconstructed from a set of fragments, the coverage of that substring is the number of reads used to construct it. The substring length is typically 1: the coverage for each position of the sequence.</p>
 <p><img src="svgbob_327ff8af96b87d3be0b99ef88935217e60fa80cf.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(read breaking|read-breaking|breaking reads)/i"></span></p>
-<p>The concept of taking multiple reads and breaking them up into smaller reads.</p>
+<p><span class="anki-answerpattern" data-pattern="(read breaking|read-breaking|breaking reads)/i"></span> - The concept of taking multiple reads and breaking them up into smaller reads.</p>
 <p><img src="svgbob_d9e103b16312cfe660d19df9305a9361ac1241ac.svg" alt="Kroki diagram output"></p>
 <p>When read breaking, smaller k-mers result in better coverage but also make the de Bruijn graph more tangled. The more tangled the de Bruijn graph is, the harder it is to infer the full sequence.</p>
 <p>In the example above, the average coverage...</p>
@@ -1031,8 +965,7 @@
 </div>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(read-pair breaking|read pair breaking|breaking read-pairs|breaking read pairs)/i"></span></p>
-<p>The concept of taking multiple read-pairs and breaking them up into read-pairs with a smaller k.</p>
+<p><span class="anki-answerpattern" data-pattern="(read-pair breaking|read pair breaking|breaking read-pairs|breaking read pairs)/i"></span> - The concept of taking multiple read-pairs and breaking them up into read-pairs with a smaller k.</p>
 <p><img src="svgbob_eb8f1251b4e293a9662ade2c0a4452a7c7884f2f.svg" alt="Kroki diagram output"></p>
 <p>When read-pair breaking, a smaller k results in better coverage but also make the de Bruijn graph more tangled. The more tangled the de Bruijn graph is, the harder it is to infer the full sequence.</p>
 <p>In the example above, the average coverage...</p>
@@ -1047,8 +980,7 @@
 </div>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="contig"></span></p>
-<p>An unambiguous stretch of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1). Each stretch will be a path that's either  ...</p>
+<p><span class="anki-answerpattern" data-pattern="contig"></span> - An unambiguous stretch of DNA derived by searching an overlap graph / de Bruijn graph for paths that are the longest possible stretches of non-branching nodes (indegree and outdegree of 1). Each stretch will be a path that's either  ...</p>
 <ul>
 <li>
 <p>a line: each node has an indegree and outdegree of 1.</p>
@@ -1072,8 +1004,7 @@
 <p><img src="svgbob_db2c0ed38b3144b9db68bc5e39f4b97ce471f510.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="ribonucleotide"></span></p>
-<p>Elements that make up RNA, similar to how nucleotides are the elements that make up DNA.</p>
+<p><span class="anki-answerpattern" data-pattern="ribonucleotide"></span> - Elements that make up RNA, similar to how nucleotides are the elements that make up DNA.</p>
 <ul>
 <li>A = Adenine (same as nucleotide)</li>
 <li>C = Cytosine (same as nucleotide)</li>
@@ -1082,20 +1013,17 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="antibiotic"></span></p>
-<p>A substance (typically an enzyme) for killing, preventing, or inhibiting the grow of bacterial infections.</p>
+<p><span class="anki-answerpattern" data-pattern="antibiotic"></span> - A substance (typically an enzyme) for killing, preventing, or inhibiting the grow of bacterial infections.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="amino acid"></span></p>
-<p>The building blocks of peptides / proteins, similar to how nucleotides are the building blocks of DNA.</p>
+<p><span class="anki-answerpattern" data-pattern="amino acid"></span> - The building blocks of peptides / proteins, similar to how nucleotides are the building blocks of DNA.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Answer shouldn't be plural.</p>
 </div>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="proteinogenic amino acid"></span></p>
-<p>Amino acids that are used during translation. These are the 20 amino acids that the ribosome translates from codons. In contrast, there are many other non-proteinogenic amino acids that are used for non-ribosomal peptides.</p>
+<p><span class="anki-answerpattern" data-pattern="proteinogenic amino acid"></span> - Amino acids that are used during translation. These are the 20 amino acids that the ribosome translates from codons. In contrast, there are many other non-proteinogenic amino acids that are used for non-ribosomal peptides.</p>
 <p>The term "proteinogenic" means "protein creating".</p>
 <table>
 <thead>
@@ -1235,31 +1163,25 @@
 </div>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="peptide"></span></p>
-<p>A short amino acid chain of at least size two. Peptides are considered miniature proteins, but when something should be called a peptide vs a protein is loosely defined: the cut-off is anywhere between 50 to 100 amino acids.</p>
+<p><span class="anki-answerpattern" data-pattern="peptide"></span> - A short amino acid chain of at least size two. Peptides are considered miniature proteins, but when something should be called a peptide vs a protein is loosely defined: the cut-off is anywhere between 50 to 100 amino acids.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="polypeptide"></span></p>
-<p>A peptide of at least size 10.</p>
+<p><span class="anki-answerpattern" data-pattern="polypeptide"></span> - A peptide of at least size 10.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(amino acid residue|residue)/i"></span></p>
-<p>The part of an amino acid that makes it unique from all others.</p>
+<p><span class="anki-answerpattern" data-pattern="(amino acid residue|residue)/i"></span> - The part of an amino acid that makes it unique from all others.</p>
 <p>When two or more amino acids combine to make a peptide/protein, specific elements are removed from each amino acid. What remains of each amino acid is the amino acid residue.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(cyclopeptide|cyclic peptide)/i"></span></p>
-<p>A peptide that doesn't have a start / end. It loops.</p>
+<p><span class="anki-answerpattern" data-pattern="(cyclopeptide|cyclic peptide)/i"></span> - A peptide that doesn't have a start / end. It loops.</p>
 <p><img src="svgbob_0de8076d92d299650e3473fc869328891e1ef452.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="linear peptide"></span></p>
-<p>A peptide that has a start and an end. It doesn't loop.</p>
+<p><span class="anki-answerpattern" data-pattern="linear peptide"></span> - A peptide that has a start and an end. It doesn't loop.</p>
 <p><img src="svgbob_1a5d3942fce4284a9ad77c8e4624b7b21573543d.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="subpeptide"></span></p>
-<p>A peptide derived taking some contiguous piece of a larger peptide.</p>
+<p><span class="anki-answerpattern" data-pattern="subpeptide"></span> - A peptide derived taking some contiguous piece of a larger peptide.</p>
 <p>A subpeptide can have a length == 1 where a peptide must have a length &gt; 1. As such, in the case where the subpeptide has a length ...</p>
 <ul>
 <li>== 1, it isn't considered a peptide.</li>
@@ -1267,13 +1189,11 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="central dogma of molecular biology"></span></p>
-<p>The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).</p>
+<p><span class="anki-answerpattern" data-pattern="central dogma of molecular biology"></span> - The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).</p>
 <p>Most, not all, peptides are synthesized as described above. Non-ribosomal peptides are synthesized outside of the transcription and translation.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="non-ribosomal peptide"></span></p>
-<p>A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.</p>
+<p><span class="anki-answerpattern" data-pattern="non-ribosomal peptide"></span> - A peptide that was synthesized by a protein called NRP synthetase rather than synthesized by a ribosome. NRP synthetase builds peptides one amino acid at a time without relying on transcription or translation.</p>
 <p>Non-ribosomal peptides may be cyclic. Common use-cases for non-ribosomal peptides:</p>
 <ul>
 <li>antibiotics</li>
@@ -1283,17 +1203,14 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(non-ribosomal peptide synthetase|NRP synthetase)/i"></span></p>
-<p>A protein responsible for the production of a non-ribosomal peptide.</p>
+<p><span class="anki-answerpattern" data-pattern="(non-ribosomal peptide synthetase|NRP synthetase)/i"></span> - A protein responsible for the production of a non-ribosomal peptide.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="adenylation domain"></span> <span class="anki-answerpattern" data-pattern="(A[\s-]domain)/i"></span></p>
-<p>A segment of an NRP synthetase protein responsible for the outputting a single amino acid. For example, the NRP synthetase responsible for producing Tyrocidine has 10 adenylation domains, each of which is responsible for outputting a single amino acid of Tyrocidine.</p>
-<p>May also be shortened to A-domain.</p>
+<p><span class="anki-answerpattern" data-pattern="adenylation domain"></span> <span class="anki-answerpattern" data-pattern="(A[\s-]domain)/i"></span> - A segment of an NRP synthetase protein responsible for the outputting a single amino acid. For example, the NRP synthetase responsible for producing Tyrocidine has 10 adenylation domains, each of which is responsible for outputting a single amino acid of Tyrocidine.</p>
+<p>Adenylation domain may be shortened to A-domain.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(mass spectrometer|mass spectrometry)/i"></span></p>
-<p>A device that randomly shatters molecules into pieces and measures the mass-to-charge of those pieces. The output of the device is a plot called a spectrum.</p>
+<p><span class="anki-answerpattern" data-pattern="(mass spectrometer|mass spectrometry)/i"></span> - A device that randomly shatters molecules into pieces and measures the mass-to-charge of those pieces. The output of the device is a plot called a spectrum.</p>
 <p>Note that mass spectrometers have various real-world practical problems. Specifically, they ...</p>
 <ul>
 <li>may not capture all possible pieces from the intended molecules (missing mass-to-charge ratios).</li>
@@ -1302,8 +1219,7 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(spectrum)/i"></span></p>
-<p>The output of a mass spectrometer. The...</p>
+<p><span class="anki-answerpattern" data-pattern="(spectrum)/i"></span> - The output of a mass spectrometer. The...</p>
 <ul>
 <li>x-axis is the mass-to-charge ratio.</li>
 <li>y-axis is the intensity of that mass-to-charge ratio (how much more / less did that mass-to-charge appear compared to the others).</li>
@@ -1328,8 +1244,7 @@
 <p><img src="svgbob_431bd1b9afda2c818011f2bb4b03a8d0c60b7fe5.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="experimental spectrum"></span></p>
-<p>List of potential fragment masses derived from a spectrum. That is, the molecules fed into the mass spectrometer were randomly fragmented and each fragment had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.</p>
+<p><span class="anki-answerpattern" data-pattern="experimental spectrum"></span> - List of potential fragment masses derived from a spectrum. That is, the molecules fed into the mass spectrometer were randomly fragmented and each fragment had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted a set of potential masses.</p>
 <p>The masses in an experimental spectrum ...</p>
 <ul>
 <li>may not capture all possible fragments for the intended molecule (missing masses).</li>
@@ -1339,13 +1254,11 @@
 <p>In the context of peptides, the mass spectrometer is expected to fragment based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses, Y and NQ missing).</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="theoretical spectrum"></span></p>
-<p>List of all of possible fragment masses for a molecule in addition to 0 and the mass of the entire molecule. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.</p>
+<p><span class="anki-answerpattern" data-pattern="theoretical spectrum"></span> - List of all of possible fragment masses for a molecule in addition to 0 and the mass of the entire molecule. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.</p>
 <p>In the context of peptides, the mass spectrometer is expected to fragment based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the theoretical spectrum will include the masses for [0, N, Q, Y, NQ, QY, NQY]. It shouldn't include masses for partial amino acids. For example, it shouldn't include NQY breaking into 2 pieces by splitting Q, such that one half has N and part of Q, and the other has the remaining part of Q with Y.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="spectrum convolution"></span></p>
-<p>An operation used to derive amino acid masses that probably come from the peptide used to generate that experimental spectrum. That is, it generates a list of amino acid masses that could have been for the peptide that generated the experimental spectrum.</p>
+<p><span class="anki-answerpattern" data-pattern="spectrum convolution"></span> - An operation used to derive amino acid masses that probably come from the peptide used to generate that experimental spectrum. That is, it generates a list of amino acid masses that could have been for the peptide that generated the experimental spectrum.</p>
 <p>The operation derives amino acid masses by subtracting experimental spectrum masses from each other. For example, the following experimental spectrum is for the linear peptide NQY: [113.9, 115.1, 136.2, 162.9, 242.0, 311.1, 346.0, 405.2]. Performing 242.0 - 113.9 results in 128.1, which is very close to the mass for amino acid Y.</p>
 <p>Note how the mass for Y was derived from the masses in experimental spectrum even though it's missing from the experimental spectrum itself:</p>
 <ul>
@@ -1355,12 +1268,10 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="dalton"></span></p>
-<p>A unit of measurement used in physics and chemistry. 1 Dalton is approximately the mass of a single proton / neutron, derived by taking the mass of a carbon-12 atom and dividing it by 12.</p>
+<p><span class="anki-answerpattern" data-pattern="dalton"></span> - A unit of measurement used in physics and chemistry. 1 Dalton is approximately the mass of a single proton / neutron, derived by taking the mass of a carbon-12 atom and dividing it by 12.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(codon)/i"></span></p>
-<p>A sequence of 3 ribonucleotides that maps to an amino acid or a stop marker. During translation, the ribosome translates the RNA to a protein 3 ribonucleotides at a time:</p>
+<p><span class="anki-answerpattern" data-pattern="(codon)/i"></span> - A sequence of 3 ribonucleotides that maps to an amino acid or a stop marker. During translation, the ribosome translates the RNA to a protein 3 ribonucleotides at a time:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The stop marker tells the ribosome to stop translating / the protein is complete.</p>
@@ -1509,8 +1420,7 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="reading frame"></span></p>
-<p>The different ways of dividing a DNA string into codons. Specifically, there are 6 different ways that a DNA string can be divided into codons:</p>
+<p><span class="anki-answerpattern" data-pattern="reading frame"></span> - The different ways of dividing a DNA string into codons. Specifically, there are 6 different ways that a DNA string can be divided into codons:</p>
 <ul>
 <li>You can start dividing at index 0, 1, or 2.</li>
 <li>You can divide either the DNA string itself or the reverse complementing DNA string.</li>
@@ -1577,26 +1487,22 @@
 </div>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(encode)/i"></span></p>
-<p>When a DNA string or its reverse complement is made up of the codons required for an amino acid sequence. For example, ACAGTA encodes for the amino acid sequence...</p>
+<p><span class="anki-answerpattern" data-pattern="(encode)/i"></span> - When a DNA string or its reverse complement is made up of the codons required for an amino acid sequence. For example, ACAGTA encodes for the amino acid sequence...</p>
 <ul>
 <li>Threonine-Valine</li>
 <li>Tyrosine-Cysteine (derived from reverse complement)</li>
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(branch-and-bound algorithm|branch and bound algorithm|branch-and-bound|branch and bound|branch-and-bound)/i"></span></p>
-<p>A bruteforce algorithm that enumerates candidates to explore at each step but also discards untenable candidates using various checks. The enumeration of candidates is the branching step, while the culling of untenable candidates is the bounding step.</p>
+<p><span class="anki-answerpattern" data-pattern="(branch-and-bound algorithm|branch and bound algorithm|branch-and-bound|branch and bound|branch-and-bound)/i"></span> - A bruteforce algorithm that enumerates candidates to explore at each step but also discards untenable candidates using various checks. The enumeration of candidates is the branching step, while the culling of untenable candidates is the bounding step.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="subsequence"></span></p>
-<p>A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. For example, can is a subsequence of cation.</p>
+<p><span class="anki-answerpattern" data-pattern="subsequence"></span> - A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. For example, can is a subsequence of cation.</p>
 <p><img src="svgbob_c25309d3982681fa348879d4c3fe065899f82016.svg" alt="Kroki diagram output"></p>
 <p>Not to be confused with substring. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="substring"></span></p>
-<p>A sequence derived by taking a contiguous part of some other sequence (order of elements maintained). For example, cat is a substring of cation.</p>
+<p><span class="anki-answerpattern" data-pattern="substring"></span> - A sequence derived by taking a contiguous part of some other sequence (order of elements maintained). For example, cat is a substring of cation.</p>
 <p><img src="svgbob_1c969351b840ffdbd3172ad117673e5506efbd17.svg" alt="Kroki diagram output"></p>
 <p>Not to be confused with subsequence. A substring may also be a subsequence, but a subsequence won't necessarily be a substring.</p>
 </li>
@@ -1609,15 +1515,13 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(topological ordering|topological order|topological)/i"></span></p>
-<p>A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.</p>
+<p><span class="anki-answerpattern" data-pattern="(topological ordering|topological order|topological)/i"></span> - A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.</p>
 <p>For example, the graph ...</p>
 <p><img src="svgbob_6a2f3c0925fa0e1b69f5e2c59e731dc23f8c54e5.svg" alt="Kroki diagram output"></p>
 <p>... the topological order is either [A, B, C, D, E] or [A, B, C, E, D]. Both are correct.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="longest common subsequence"></span></p>
-<p>A common subsequence between a set of strings of which is the longest out of all possible common subsequences. There may be more than one per set.</p>
+<p><span class="anki-answerpattern" data-pattern="longest common subsequence"></span> - A common subsequence between a set of strings of which is the longest out of all possible common subsequences. There may be more than one per set.</p>
 <p>For example, AACCTTGG and ACACTGTGA share a longest common subsequence of...</p>
 <ul>
 <li>
@@ -1634,8 +1538,7 @@
 </ul>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="sequence alignment"></span> <span class="anki-hidepattern" data-pattern="alignment"></span> <span class="anki-hidepattern" data-pattern="align"></span></p>
-<p>Given a set of sequences, a sequence alignment is a set of operations applied to each position in an effort to line up the sequences. These operations include:</p>
+<p><span class="anki-answerpattern" data-pattern="sequence alignment"></span> <span class="anki-hidepattern" data-pattern="alignment"></span> <span class="anki-hidepattern" data-pattern="align"></span> - Given a set of sequences, a sequence alignment is a set of operations applied to each position in an effort to line up the sequences. These operations include:</p>
 <ul>
 <li>insert/delete (indel for short).</li>
 <li>replace (also referred to as mismatch).</li>
@@ -1803,23 +1706,15 @@
 </tr>
 </tbody>
 </table>
-<p>Typically, all possible sequence alignments are represented using an alignment graph. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...</p>
-<p><img src="svgbob_ce1ac3439fefb865a1d70920bc1a29d0ee7c2308.svg" alt="Kroki diagram output"></p>
-<p>A path in this graph from source (top-left) to sink (bottom-right) is called an alignment path. An alignment path represents a sequence alignment. Often times the best sequence alignment is either the one that has the ...</p>
-<ul>
-<li>smallest number of operations.</li>
-<li>set of operations with the least cost (e.g. some replacements can be considered more costly than an indel).</li>
-</ul>
+<p>All possible sequence alignments are represented using an alignment graph. A path through the alignment graph (called alignment path) represents one possible way to align the set of sequences.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(alignment graph|sequence alignment graph)/i"></span></p>
-<p>A directed graph representing all possible sequence alignments for some set of sequences. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...</p>
+<p><span class="anki-answerpattern" data-pattern="(alignment graph|sequence alignment graph)/i"></span> - A directed graph representing all possible sequence alignments for some set of sequences. For example, the graph showing all the different ways that MAPLE and TABLE may be aligned ...</p>
 <p><img src="svgbob_ce1ac3439fefb865a1d70920bc1a29d0ee7c2308.svg" alt="Kroki diagram output"></p>
 <p>A path in this graph from source (top-left) to sink (bottom-right) represents an alignment.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(sequence alignment graph path|sequence alignment path|alignment graph path|alignment path)/i"></span></p>
-<p>A path in an alignment graph that represents one possible sequence alignment. For example, given the following alignment path ...</p>
+<p><span class="anki-answerpattern" data-pattern="(sequence alignment graph path|sequence alignment path|alignment graph path|alignment path)/i"></span> - A path in an alignment graph that represents one possible sequence alignment. For example, given the following alignment path ...</p>
 <p><img src="svgbob_6133c15854b867ec6d44f9a55c046bd9f5afd9d8.svg" alt="Kroki diagram output"></p>
 <p>is represent as the alignment...</p>
 <table>
@@ -1863,8 +1758,7 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="indel"></span></p>
-<p>In the context of sequence alignment, indel is short-hand for insert/delete. For example, the following sequence alignment has 2 indels in the very beginning...</p>
+<p><span class="anki-answerpattern" data-pattern="indel"></span> - In the context of sequence alignment, indel is short-hand for insert/delete. For example, the following sequence alignment has 2 indels in the very beginning...</p>
 <table>
 <thead>
 <tr>
@@ -1957,17 +1851,14 @@
 </table>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="oncogene"></span></p>
-<p>A gene that has the potential to cause cancer. In tumor cells, these genes are often mutated or expressed at higher levels.</p>
+<p><span class="anki-answerpattern" data-pattern="oncogene"></span> - A gene that has the potential to cause cancer. In tumor cells, these genes are often mutated or expressed at higher levels.</p>
 <p>Most normal cells will undergo apoptosis when critical functions are altered and malfunctioning. Activated oncogenes may cause those cells to survive and proliferate instead.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="hamming distance"></span></p>
-<p>Given two strings, the hamming distance is the number of positional mismatches between them. For example, the hamming distance between TABLE and MAPLE is 2.</p>
+<p><span class="anki-answerpattern" data-pattern="hamming distance"></span> - Given two strings, the hamming distance is the number of positional mismatches between them. For example, the hamming distance between TABLE and MAPLE is 2.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(dynamic programming algorithm|dynamic programming)/i"></span></p>
-<p>An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again (essentially trading space for speed). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.</p>
+<p><span class="anki-answerpattern" data-pattern="(dynamic programming algorithm|dynamic programming)/i"></span> - An algorithm that solves a problem by recursively breaking it down into smaller sub-problems, where the result of each recurrence computation is stored in some lookup table such that it can be re-used if it were ever encountered again (essentially trading space for speed). The lookup table may be created before hand or as a cache that gets filled as the algorithm runs.</p>
 <p>For example, imagine a money system where coins are represented in 1, 12, and 13 cent denominations. You can use recursion to find the minimum number of coins to represent some monetary value such as $0.17:</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">min_coins</span>(<span class="hljs-params">value</span>):</span>
   <span class="hljs-keyword">if</span> value == <span class="hljs-number">0.01</span> <span class="hljs-keyword">or</span> value == <span class="hljs-number">0.12</span> <span class="hljs-keyword">or</span> value == <span class="hljs-number">0.13</span>:
@@ -1983,8 +1874,7 @@
 <p>The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, <code>min_coins(3)</code> is independently computed 5 times. With dynamic programming, it would only be computed once and the result would be re-used each subsequent time <code>min_coins(3)</code> gets encountered.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="manhattan tourist problem"></span> <span class="anki-answerpattern" data-pattern="(sequence alignment graph|sequence alignment)/i"></span> <span class="anki-hidepattern" data-pattern="global alignment"></span></p>
-<p>The Manhattan tourist problem is an allegory to help explain sequence alignment graphs. Where as in sequence alignments you're finding a path through the graph from source to sink that has the maximum weight, in the Manhattan tourist problem you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially almost the same problem as global alignment (diagonal edges are missing):</p>
+<p><span class="anki-answerpattern" data-pattern="manhattan tourist problem"></span> <span class="anki-answerpattern" data-pattern="(sequence alignment graph|sequence alignment)/i"></span> <span class="anki-hidepattern" data-pattern="global alignment"></span> - The Manhattan tourist problem is an allegory to help explain sequence alignment graphs. Where as in sequence alignments you're finding a path through the graph from source to sink that has the maximum weight, in the Manhattan tourist problem you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially almost the same problem as global alignment (diagonal edges are missing):</p>
 <ul>
 <li>The graph is the street layout of Manhattan.</li>
 <li>The only options at each intersection are to move right or down.</li>
@@ -1995,1416 +1885,338 @@
 <p><img src="svgbob_d97ecce5abf34fc49b4c08c082e77841e4fd50b3.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(point accepted mutation|percent accepted mutation)/i"></span> <span class="anki-answerpattern" data-pattern="\b(PAM)\d*\b//false/true"></span> <span class="anki-hidepattern" data-pattern="BLOSUM"></span></p>
-<p>Point accepted mutation, short for PAM.</p>
-<p>A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA sequence that encode some protein may change the resulting amino acid sequence for that protein. Those mutations that...</p>
+<p><span class="anki-answerpattern" data-pattern="(point accepted mutation|percent accepted mutation)/i"></span> <span class="anki-answerpattern" data-pattern="\b(PAM)\d*\b//false/true"></span> <span class="anki-hidepattern" data-pattern="BLOSUM"></span> - A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA sequence that encode some protein may change the resulting amino acid sequence for that protein. Those mutations that...</p>
 <ul>
 <li>impair the ability of the protein to function aren't likely to survive, and as such are given a low score.</li>
 <li>keep the protein functional are likely to survive, and as such are given a normal or high score.</li>
 </ul>
-<p>PAM matrices are developed iteratively. An initial PAM matrix is calculated by aligning extremely similar protein sequences using a simple scoring model (1 for match, 0 for mismatch / indel). That sequence alignment then provides the scoring model for the next iteration. For example, the alignment for the initial iteration may have determined that D may be a suitable substitution for W. As such, the sequence alignment for the next iteration will score more than 0 (e.g. 1) if it encounters D being compared to W.</p>
-<p>Other factors are also brought into the mix when developing scores for PAM matrices. For example, the ...</p>
-<ul>
-<li>likelihood of amino acid mutations (e.g. Cys and Trp are the least mutable amino acids).</li>
-<li>speed of evolution (e.g. some mutations were more probably in species 100 million years ago vs 1 million years ago).</li>
-</ul>
-<p>It's said that PAM is focused on tracking the evolutionary origins of proteins. Sequences that are 99% similar are said to be 1 PAM unit diverged, where a PAM unit is the amount of time it takes an "average" protein to mutate 1% of its amino acids. PAM1 (the initial scoring matrix) was defined by performing many sequence alignments between proteins that are 99% similar (1 PAM unit diverged).</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><a href="http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html">Here</a> and <a href="https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&amp;oldid=1002281881#Comparing_PAM_and_BLOSUM">here</a> both seem to say that BLOSUM supersedes PAM as a scoring matrix for protein sequences.</p>
-<blockquote>
-<p>Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degrees the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales</p>
-</blockquote>
-<blockquote>
-<p>Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known member_NORMs of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.</p>
-</blockquote>
-</div>
-<p>PAM250 is the most commonly used variant:</p>
+<p>Point accepted mutation, abbreviated to PAM.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(blocks substitution matrix|blocks substitution matrices|blocks amino acid substitution matrices|blocks amino acid substitution matrix)/i"></span> <span class="anki-answerpattern" data-pattern="\b(BLOSUM)\d*\b//false/true"></span> - A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for indels (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
+<p>Blocks substitution matrix, abbreviated to BLOSUM.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="point mutation"></span> - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="directed acyclic graph"></span> <span class="anki-answerpattern" data-pattern="\b(DAG)\b/"></span> - A graph where the edges are directed (have a direction) and no cycles exist in the graph.</p>
+<p>For example, the following is a directed acyclic graph...</p>
+<p><img src="svgbob_d6ba29b704329aea40b096d1beeeec7da7d062f5.svg" alt="Kroki diagram output"></p>
+<p>The following graph isn't a directed acyclic graph because the edges don't have a direction (no arrowhead means you can travel in either direction)...</p>
+<p><img src="svgbob_64d614efe5a1433237c817bfba588e85082acf69.svg" alt="Kroki diagram output"></p>
+<p>The following graph isn't a directed acyclic graph because it contains a cycle between D and B...</p>
+<p><img src="svgbob_36208e0955503cf8020cbe27be7ca286ebcf55e2.svg" alt="Kroki diagram output"></p>
+<p>Directed acyclic graph, abbreviated to DAG.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(divide-and-conquer algorithm|divide and conquer algorithm)/i"></span> <span class="anki-hidepattern" data-pattern="dynamic programming"></span> - An algorithm that solves a problem by recursively breaking it down into two or more smaller sub-problems, up until the point where each sub-problem is small enough / simple enough to solve. Examples include quicksort and merge sort.</p>
+<p>See dynamic programming.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(global alignment|global sequence alignment)/i"></span> - A form of sequence alignment that finds the highest scoring alignment between a set of sequences. The sequences are aligned in their entirety. For example, the sequences TRELLO and MELLOW have the following global alignment...</p>
 <table>
 <thead>
 <tr>
-<th></th>
-<th>A</th>
-<th>R</th>
-<th>N</th>
-<th>D</th>
-<th>C</th>
-<th>Q</th>
-<th>E</th>
-<th>G</th>
-<th>H</th>
-<th>I</th>
-<th>L</th>
-<th>K</th>
-<th>M</th>
-<th>F</th>
-<th>P</th>
-<th>S</th>
-<th>T</th>
-<th>W</th>
-<th>Y</th>
-<th>V</th>
-<th>B</th>
-<th>Z</th>
-<th>X</th>
-<th>-</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>A</td>
-<td>2</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>-6</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>R</td>
-<td>-2</td>
-<td>6</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-<td>1</td>
-<td>-1</td>
-<td>-3</td>
-<td>2</td>
-<td>-2</td>
-<td>-3</td>
-<td>3</td>
-<td>0</td>
-<td>-4</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>2</td>
-<td>-4</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>N</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>2</td>
-<td>-4</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>2</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>-4</td>
-<td>-2</td>
-<td>-2</td>
-<td>2</td>
-<td>1</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>D</td>
-<td>0</td>
-<td>-1</td>
-<td>2</td>
-<td>4</td>
-<td>-5</td>
-<td>2</td>
-<td>3</td>
-<td>1</td>
-<td>1</td>
-<td>-2</td>
-<td>-4</td>
-<td>0</td>
-<td>-3</td>
-<td>-6</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-7</td>
-<td>-4</td>
-<td>-2</td>
-<td>3</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>C</td>
-<td>-2</td>
-<td>-4</td>
-<td>-4</td>
-<td>-5</td>
-<td>12</td>
-<td>-5</td>
-<td>-5</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-6</td>
-<td>-5</td>
-<td>-5</td>
-<td>-4</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-8</td>
-<td>0</td>
-<td>-2</td>
-<td>-4</td>
-<td>-5</td>
-<td>-3</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>Q</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>2</td>
-<td>-5</td>
-<td>4</td>
-<td>2</td>
-<td>-1</td>
-<td>3</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>-1</td>
-<td>-5</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-5</td>
-<td>-4</td>
-<td>-2</td>
-<td>1</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>E</td>
-<td>0</td>
-<td>-1</td>
-<td>1</td>
-<td>3</td>
-<td>-5</td>
-<td>2</td>
-<td>4</td>
-<td>0</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-5</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-7</td>
-<td>-4</td>
-<td>-2</td>
-<td>3</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>G</td>
-<td>1</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>5</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>-3</td>
-<td>-5</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>-7</td>
-<td>-5</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>H</td>
-<td>-1</td>
-<td>2</td>
-<td>2</td>
-<td>1</td>
-<td>-3</td>
-<td>3</td>
-<td>1</td>
-<td>-2</td>
-<td>6</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>1</td>
-<td>2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>I</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>5</td>
-<td>2</td>
-<td>-2</td>
-<td>2</td>
-<td>1</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>-5</td>
-<td>-1</td>
-<td>4</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>L</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-4</td>
-<td>-6</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>2</td>
-<td>6</td>
-<td>-3</td>
-<td>4</td>
-<td>2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>K</td>
-<td>-1</td>
-<td>3</td>
-<td>1</td>
-<td>0</td>
-<td>-5</td>
-<td>1</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>5</td>
-<td>0</td>
-<td>-5</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>1</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>M</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-5</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>2</td>
-<td>4</td>
-<td>0</td>
-<td>6</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-<td>-2</td>
-<td>2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>F</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>-6</td>
-<td>-4</td>
-<td>-5</td>
-<td>-5</td>
-<td>-5</td>
-<td>-2</td>
-<td>1</td>
-<td>2</td>
-<td>-5</td>
-<td>0</td>
-<td>9</td>
-<td>-5</td>
-<td>-3</td>
-<td>-3</td>
-<td>0</td>
-<td>7</td>
-<td>-1</td>
-<td>-4</td>
-<td>-5</td>
-<td>-2</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>P</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-5</td>
-<td>6</td>
-<td>1</td>
-<td>0</td>
-<td>-6</td>
-<td>-5</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>S</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>2</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
 <td>T</td>
-<td>1</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>-5</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>W</td>
-<td>-6</td>
-<td>2</td>
-<td>-4</td>
-<td>-7</td>
-<td>-8</td>
-<td>-5</td>
-<td>-7</td>
-<td>-7</td>
-<td>-3</td>
-<td>-5</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>0</td>
-<td>-6</td>
-<td>-2</td>
-<td>-5</td>
-<td>17</td>
-<td>0</td>
-<td>-6</td>
-<td>-5</td>
-<td>-6</td>
-<td>-4</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>Y</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>-4</td>
-<td>0</td>
-<td>-4</td>
-<td>-4</td>
-<td>-5</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-<td>-2</td>
-<td>7</td>
-<td>-5</td>
-<td>-3</td>
-<td>-3</td>
-<td>0</td>
-<td>10</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-2</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>V</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>4</td>
-<td>2</td>
-<td>-2</td>
-<td>2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-6</td>
-<td>-2</td>
-<td>4</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>B</td>
-<td>0</td>
-<td>-1</td>
-<td>2</td>
-<td>3</td>
-<td>-4</td>
-<td>1</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>-2</td>
-<td>-4</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-5</td>
-<td>-3</td>
-<td>-2</td>
-<td>3</td>
-<td>2</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>Z</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>-5</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>2</td>
-<td>-2</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-5</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-6</td>
-<td>-4</td>
-<td>-2</td>
-<td>2</td>
-<td>3</td>
-<td>-1</td>
-<td>-8</td>
-</tr>
-<tr>
-<td>X</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-4</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-8</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
 </tr>
 <tr>
 <td>-</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td>-8</td>
-<td></td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
 </tr>
 </tbody>
 </table>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above matrix was extracted from <a href="https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml">here</a>. The indel scores on that matrix are set to -8, but I've also seen them set to -5. I don't know if PAM250 defines a constant for indels?</p>
-</div>
+<p>This is the form of sequence alignment that most people think about when they hear "sequence alignment."</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="(blocks substitution matrix|blocks substitution matrices|blocks amino acid substitution matrices|blocks amino acid substitution matrix)/i"></span> <span class="anki-answerpattern" data-pattern="\b(BLOSUM)\d*\b//false/true"></span></p>
-<p>Blocks substitution matrix, short for BLOSUM.</p>
-<p>A scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for indels (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
-<p>Several sets of BLOSUM matrices exist, each identified by a different number. This number defines the similarity of the sequences used to create the matrix: The protein database sequences used to derive the matrix are filtered such that only those with &gt;= n% similarity are used, where n is the number. For example, ...</p>
-<ul>
-<li>BLOSUM80 is created from sequences that are &gt;= 80% similar.</li>
-<li>BLOSUM45 is created from sequences that are &gt;= 45% similar.</li>
-</ul>
-<p>As such, BLOSUM matrices higher numbers are designed to compare more closely related sequences while those with lower numbers are designed to score more distant related sequences.</p>
-<p>BLOSUM62 is the most commonly used variant since "experimentation has shown that it's among the best for detecting weak similarities":</p>
+<p><span class="anki-answerpattern" data-pattern="(local alignment|local sequence alignment)/i"></span> - A form of sequence alignment that isolates the alignment to a substring of each sequence. The substrings that score the highest are the ones selected. For example, the sequences TRELLO and MELLOW have the following local alignment...</p>
 <table>
 <thead>
 <tr>
-<th></th>
-<th>A</th>
-<th>R</th>
-<th>N</th>
-<th>D</th>
-<th>C</th>
-<th>Q</th>
-<th>E</th>
-<th>G</th>
-<th>H</th>
-<th>I</th>
-<th>L</th>
-<th>K</th>
-<th>M</th>
-<th>F</th>
-<th>P</th>
-<th>S</th>
-<th>T</th>
-<th>W</th>
-<th>Y</th>
-<th>V</th>
-<th>B</th>
-<th>Z</th>
-<th>X</th>
-<th>-</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>A</td>
-<td>4</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>1</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>0</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>R</td>
-<td>-1</td>
-<td>5</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>1</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>N</td>
-<td>-2</td>
-<td>0</td>
-<td>6</td>
-<td>1</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>-3</td>
-<td>-3</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>1</td>
-<td>0</td>
-<td>-4</td>
-<td>-2</td>
-<td>-3</td>
-<td>3</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>D</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>6</td>
-<td>-3</td>
-<td>0</td>
-<td>2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-4</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-3</td>
-<td>4</td>
-<td>1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>C</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>9</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>Q</td>
-<td>-1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>-3</td>
-<td>5</td>
-<td>2</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>1</td>
-<td>0</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>0</td>
-<td>3</td>
-<td>-1</td>
-<td>-4</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
 </tr>
 <tr>
 <td>E</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>-4</td>
-<td>2</td>
-<td>5</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>4</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>G</td>
-<td>0</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>6</td>
-<td>-2</td>
-<td>-4</td>
-<td>-4</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>0</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>H</td>
-<td>-2</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>8</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>2</td>
-<td>-3</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>I</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>4</td>
-<td>2</td>
-<td>-3</td>
-<td>1</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
 <td>L</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>2</td>
-<td>4</td>
-<td>-2</td>
-<td>2</td>
-<td>0</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>K</td>
-<td>-1</td>
-<td>2</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>1</td>
-<td>1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>5</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>M</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>1</td>
-<td>2</td>
-<td>-1</td>
-<td>5</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>F</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>-3</td>
-<td>0</td>
-<td>6</td>
-<td>-4</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>3</td>
-<td>-1</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>P</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-4</td>
-<td>7</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>S</td>
-<td>1</td>
-<td>-1</td>
-<td>1</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>4</td>
-<td>1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>T</td>
-<td>0</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>1</td>
-<td>5</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>0</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>W</td>
-<td>-3</td>
-<td>-3</td>
-<td>-4</td>
-<td>-4</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>-3</td>
-<td>-1</td>
-<td>1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-2</td>
-<td>11</td>
-<td>2</td>
-<td>-3</td>
-<td>-4</td>
-<td>-3</td>
-<td>-2</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>Y</td>
-<td>-2</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-2</td>
-<td>-3</td>
-<td>2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>3</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>2</td>
-<td>7</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>V</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>-3</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>-3</td>
-<td>-3</td>
-<td>3</td>
-<td>1</td>
-<td>-2</td>
-<td>1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-1</td>
-<td>4</td>
-<td>-3</td>
-<td>-2</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>B</td>
-<td>-2</td>
-<td>-1</td>
-<td>3</td>
-<td>4</td>
-<td>-3</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>0</td>
-<td>-3</td>
-<td>-4</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>-2</td>
-<td>0</td>
-<td>-1</td>
-<td>-4</td>
-<td>-3</td>
-<td>-3</td>
-<td>4</td>
-<td>1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>Z</td>
-<td>-1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>-3</td>
-<td>3</td>
-<td>4</td>
-<td>-2</td>
-<td>0</td>
-<td>-3</td>
-<td>-3</td>
-<td>1</td>
-<td>-1</td>
-<td>-3</td>
-<td>-1</td>
-<td>0</td>
-<td>-1</td>
-<td>-3</td>
-<td>-2</td>
-<td>-2</td>
-<td>1</td>
-<td>4</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>X</td>
-<td>0</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-2</td>
-<td>0</td>
-<td>0</td>
-<td>-2</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-1</td>
-<td>-4</td>
-</tr>
-<tr>
-<td>-</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td>-4</td>
-<td></td>
+<td>L</td>
+<td>O</td>
 </tr>
 </tbody>
 </table>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above matrix was extracted from <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>. The indel scores on that matrix are set to -5, but I've also seen them set to -5. I don't know if BLOSUM62 defines a constant for indels?</p>
-</div>
+<p>... because out of all substrings in TRELLO and all substrings in MELLOW, ELLO (from TRELLO) scores the highest against ELLO (from MELLOW).</p>
 </li>
 <li>
-<p><a name="BM_(point%20mutation)%2Fi"></a><strong>point mutation</strong> - A mutation in DNA (or RNA) where a single nucleotide base is either changed, inserted, or deleted.</p>
+<p><span class="anki-answerpattern" data-pattern="(fitting alignment|fitting sequence alignment)/i"></span> - A form of 2-way sequence alignment that isolates the alignment such that the entirety of one sequence is aligned against a substring of the other sequence. The substring producing the highest score is the one that's selected. For example, the sequences ELO and MELLOW have the following fitting alignment...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>-</td>
+<td>O</td>
+</tr>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>... because out of all the substrings in MELLOW, the substring ELLO scores the highest against ELO.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(overlap alignment|overlap sequence alignment)/i"></span> - A form of 2-way sequence alignment that isolates the alignment to a suffix of the first sequences and a prefix of the second sequence. The prefix and suffix producing the highest score are the ones selected. For example, the sequences BURRITO and RICOTTA have the following overlap alignment...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R</td>
+<td>I</td>
+<td>T</td>
+<td>-</td>
+<td>O</td>
+</tr>
+<tr>
+<td>R</td>
+<td>I</td>
+<td>-</td>
+<td>C</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>... because out of all the suffixes in BURRITO and the prefixes in RICOTTA, RITO and RICO score the highest.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(global alignment|global sequence alignment)/i"></span> <span class="anki-answerpattern" data-pattern="(local alignment|local sequence alignment)/i"></span> <span class="anki-answerpattern" data-pattern="(fitting alignment|fitting sequence alignment)/i"></span> <span class="anki-answerpattern" data-pattern="(overlap alignment|overlap sequence alignment)/i"></span></p>
+<p>Name the following forms of sequence alignment:</p>
+<ul>
+<li>
+<p>Global alignment: Finds the highest scoring alignment between a set of sequences. The sequences are aligned in their entirety. For example, the sequences TRELLO and MELLOW have the following global alignment... <span class="anki-listrandomorder"></span>
+</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-</td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Local alignment: Isolates the alignment to a substring of each sequence. The substrings that score the highest are the ones selected. For example, the sequences TRELLO and MELLOW have the following local alignment...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+</tr>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Fitting alignment: Isolates the alignment such that the entirety of one sequence is aligned against a substring of the other sequence. The substring producing the highest score is the one that's selected. For example, the sequences ELO and MELLOW have the following fitting alignment...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>-</td>
+<td>O</td>
+</tr>
+<tr>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Overlap alignment: Isolates the alignment to a suffix of the first sequences and a prefix of the second sequence. The prefix and suffix producing the highest score are the ones selected. For example, the sequences BURRITO and RICOTTA have the following overlap alignment...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R</td>
+<td>I</td>
+<td>T</td>
+<td>-</td>
+<td>O</td>
+</tr>
+<tr>
+<td>R</td>
+<td>I</td>
+<td>-</td>
+<td>C</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(levenshtein distance|string distance)/i"></span> <span class="anki-answerpattern" data-pattern="0"></span> <span class="anki-answerpattern" data-pattern="-1"></span> <span class="anki-ignorepattern" data-pattern="(0)_IGNORE/i"></span> - An application of global alignment where the final weight represents the minimum number of operations required to transform one sequence to another (via swaps, insertions, and deletions). Matches are scored as 0, while mismatches and indels are scored at -1. For example, TRELLO and MELLOW have the Levenshtein distance of 3...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0_IGNORE</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>T</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>-</td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+<td></td>
+</tr>
+<tr>
+<td>Score</td>
+<td>-1</td>
+<td>-1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>-1</td>
+<td>Total: -3</td>
+</tr>
+</tbody>
+</table>
+<p>Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.</p>
 </li>
 </ul>
 

@@ -1,5 +1,5 @@
 ```{title}
-Bioinformatics
+Bioinformatics Algorithms
 ```
 
 ```{toc}
@@ -3448,6 +3448,10 @@ T  0  0  1  0
 G  0  0  0  1
 ```
 
+```{note}
+The standard Levenshtein distance algorithm using a 2D array you remember from over a decade ago is this algorithm: Matrix-based global alignment where matches score 0 but mismatches and indels score -1. The final weight of the alignment is the minimum number of operations required to convert one sequence to another (e.g. swap, insert, delete) -- it'll be negative, ignore the sign.
+```
+
 #### Divide-and-Conquer Algorithm
 
 `{bm} /(Algorithms\/Sequence Alignment\/Global Alignment\/Divide-and-Conquer Algorithm)_TOPIC/`
@@ -4805,7 +4809,9 @@ Algorithms/Motif/Motif Matrix Profile_TOPIC
 ```
 
 ```{note}
-The Pevzner book challenged you to come up with a greedy algorithm using profile matrices. This is what I was able to come up with on short notice. I have no idea if my logic is correct / optimal, but with toy sequences that are highly related it seems to perform well. 
+The Pevzner book challenged you to come up with a greedy algorithm for multiple alignment using profile matrices. This is what I was able to come up with. I have no idea if my logic is correct / optimal, but with toy sequences that are highly related it seems to perform well. 
+
+UPDATE: This algorithm seems to work well for the final assignment. ~380 a-domain sequences were aligned in about 2 days and it produced an okay/good looking alignment. Aligning those sequences using normal multiple alignment would be impossible -- nowhere near enough memory or speed available.
 ```
 
 For an n-way sequence alignment, the greedy algorithm starts by finding the 2 sequences that produce the highest scoring 2-way sequence alignment. That alignment is then used to build a profile matrix. For example, the alignment of TRELLO and MELLOW results in the following alignment:
@@ -7037,6 +7043,52 @@ cyclic
  * `{bm} divide-and-conquer algorithm/(divide-and-conquer algorithm|divide and conquer algorithm)/i` - An algorithm that solves a problem by recursively breaking it down into two or more smaller sub-problems, up until the point where each sub-problem is small enough / simple enough to solve. Examples include quicksort and merge sort.
 
    See dynamic programming.
+
+ * `{bm} global alignment/(global alignment|global sequence alignment)/i` - A form of sequence alignment that finds the highest scoring alignment between a set of sequences. The sequences are aligned in their entirety. For example, the sequences TRELLO and MELLOW have the following global alignment...
+
+   | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+   |---|---|---|---|---|---|---|
+   | T | R | E | L | L | O | - |
+   | - | M | E | L | L | O | W |
+
+   This is the form of sequence alignment that most people think about when they hear "sequence alignment."
+
+ * `{bm} local alignment/(local alignment|local sequence alignment)/i` - A form of sequence alignment that isolates the alignment to a substring of each sequence. The substrings that score the highest are the ones selected. For example, the sequences TRELLO and MELLOW have the following local alignment...
+
+   | 0 | 1 | 2 | 3 |
+   |---|---|---|---|
+   | E | L | L | O |
+   | E | L | L | O |
+
+   ... because out of all substrings in TRELLO and all substrings in MELLOW, ELLO (from TRELLO) scores the highest against ELLO (from MELLOW).
+
+ * `{bm} fitting alignment/(fitting alignment|fitting sequence alignment)/i` - A form of 2-way sequence alignment that isolates the alignment such that the entirety of one sequence is aligned against a substring of the other sequence. The substring producing the highest score is the one that's selected. For example, the sequences ELO and MELLOW have the following fitting alignment...
+
+   | 0 | 1 | 2 | 3 |
+   |---|---|---|---|
+   | E | L | - | O |
+   | E | L | L | O |
+
+   ... because out of all the substrings in MELLOW, the substring ELLO scores the highest against ELO.
+
+ * `{bm} overlap alignment/(overlap alignment|overlap sequence alignment)/i` - A form of 2-way sequence alignment that isolates the alignment to a suffix of the first sequences and a prefix of the second sequence. The prefix and suffix producing the highest score are the ones selected . For example, the sequences BURRITO and RICOTTA have the following overlap alignment...
+
+   | 0 | 1 | 2 | 3 | 4 |
+   |---|---|---|---|---|
+   | R | I | T | - | O |
+   | R | I | - | C | O |
+  
+   ... because out of all the suffixes in BURRITO and the prefixes in RICOTTA, RITO and RICO score the highest.
+
+ * `{bm} Levenshtein distance/(levenshtein distance|string distance)/i` - An application of global alignment where the final weight represents the minimum number of operations required to transform one sequence to another (via swaps, insertions, and deletions). Matches are scored 0, while mismatches and indels are scored -1. For example, TRELLO and MELLOW have the Levenshtein distance of 3...
+
+   |       | 0  | 1  | 2  | 3  | 4  | 5  | 6  |           |
+   |-------|----|----|----|----|----|----|----|-----------|
+   |       | T  | R  | E  | L  | L  | O  | -  |           |
+   |       | -  | M  | E  | L  | L  | O  | W  |           |
+   | Score | -1 | -1 | 0  | 0  | 0  | 0  | -1 | Total: -3 |
+
+   Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

@@ -2,6 +2,11 @@ from typing import Dict, Tuple, List
 
 from helpers.Utils import range_inclusive
 
+# DON'T USE THIS -- THERE ARE CLEAN IMPLEMENTATIONS OF THE DIFFERENT ALGORITHMS IN THE SUBDIRECTORIES.
+# DON'T USE THIS -- THERE ARE CLEAN IMPLEMENTATIONS OF THE DIFFERENT ALGORITHMS IN THE SUBDIRECTORIES.
+# DON'T USE THIS -- THERE ARE CLEAN IMPLEMENTATIONS OF THE DIFFERENT ALGORITHMS IN THE SUBDIRECTORIES.
+
+
 indel_penalty = -5  # specified in problem statement
 mismatch_penalties: Dict[Tuple[str, str], int] = {}
 with open('BLOSUM62.txt', mode='r', encoding='utf-8') as f:
