@@ -7090,6 +7090,21 @@ cyclic
 
    Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
 
+ * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where a chromosome breaks at two or more locations and gets glued back together in a different order. Genomes have fragile regions where breakage is more likely to happen.
+
+ * `{bm} dosage compensation/(sex-chromosome dosage compensation|sex chromosome dosage compensation|dosage compensation)/i` - The mechanism by which sex chromosome gene expression is equalized between different sexes of the same species.
+ 
+   For example, mammals have two sexes...
+   
+    * males, identified by X and Y sex chromosomes.
+    * females, identified by two X chromosomes.
+    
+   Since females have two X chromosomes, it would make sense for females to have double the gene expression for X chromosome genes. However, many X chromosome genes have nothing to do with sex and if their expression were doubled it would lead to disease. As such, female mammals randomly shut down one of two X chromosomes so as to keep X chromosome gene expression levels roughly equivalent to that of males.
+
+   For mammals, this mechanism means that X chromosomes are mostly conserved because an X chromosome that's gone through genome rearrangement likely won't survive: If a gene jumps off an X chromosome its gene expression may double, leading to problems.
+  
+   Different species have different mechanisms for equalization. For example, some species will double the gene expression on the male's single X chromosome rather than deactivating one of the female's two X chromosomes. Other hermaphroditic species may scale down X chromosome gene expression when multiple X chromosomes are present.
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
