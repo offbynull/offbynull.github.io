@@ -7098,9 +7098,42 @@ cyclic
 
    If an organism survives genome rearrangement, the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other.
 
- * `{bm} reversal/(reversal)_GR/i` - The most common form of genome rearrangement, where an interval of a chromosome gets flipped around. Even though they're the most common form of genome rearrangement, reversal_GRs rarely stick around because they either result in the death or sterility.
+ * `{bm} reversal/(reversal)_GR/i` - The most common form of genome rearrangement, where an interval of a chromosome gets flipped around. Even though they're the most common form of genome rearrangement, reversal_GRs rarely stick around because it usually results in either death or sterility (bad mutation).
 
- * `{bm} reversal distance` - The minimum number of reversal_GRs required to transform sequence P to sequence Q. The short-hand for this is `{kt} d_{rev}(P, Q)`.
+   ```{svgbob}
+               "Scenario 1"                                      "Scenario 2"
+
+
+
+   "Original:"                                     "Original:"
+   -->-->-->-->-->-->-->-->-->-->-->-->--          -->-->-->-->-->-->-. .->-->-->-->-->-->--
+                                                                      | |                   
+                                                                  .-<-' '-<-.               
+                                                                  '->-->-->-'               
+                                                   
+   "Interval breaks:"                              "Interval breaks:"
+                ->-->-->-->-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
+   -->-->-->-->-            ->-->-->-->--                                                   
+                                                                  .-<-' '-<-.               
+                                                                  '->-->-->-'               
+                                                   
+   "Interval flips around:"                        "Interval ends re-attach in swapped order:"
+                -<--<--<--<-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
+   -->-->-->-->-            ->-->-->-->--                              X                    
+                                                                  .-<-' '-<-.               
+                                                                  '->-->-->-'
+
+   "Reversed interval re-attaches:"                                            
+   -->-->-->-->--<--<--<--<-->-->-->-->--"
+
+
+
+   " * Scenario 2 is more likely to occur."
+   ```
+
+ * `{bm} reversal distance` - The *minimum* number of reversal_GRs required to transform sequence P to sequence Q. The minimum is chosen because of parsimony. 
+ 
+   The short-hand for this is `{kt} d_{rev}(P, Q)`.
 
  * `{bm} dosage compensation/(sex-chromosome dosage compensation|sex chromosome dosage compensation|dosage compensation)/i` - The mechanism by which sex chromosome gene expression is equalized between different sexes of the same species.
  
@@ -7120,15 +7153,29 @@ cyclic
    * the same order.
      
      ```{svgbob}
-     "Region of chromosome set 1:" A1 -- B1 -- C1 -- D1 
-     "Region of chromosome set 2:" A2 -- B2 -- C2 -- D2 
+     "Region of chromosome set 1:"
+     .------------..--------..----------------..------------.
+     | > > A1 > > || > B1 > || > > > C1 > > > || > > D1 > > |
+     `------------'`--------'`----------------'`------------'
+
+     "Region of chromosome set 2:"
+     .------------..--------..------------..----------------.
+     | > > A2 > > || > B2 > || > > C2 > > || > > > D2 > > > |
+     `------------'`--------'`------------'`----------------'
      ```
 
    * reverse order.
 
      ```{svgbob}
-     "Region of chromosome set 1:" A1 -- B1 -- C1 -- D1 
-     "Region of chromosome set 2:" D2 -- C2 -- B2 -- A2 
+     "Region of chromosome set 1:"
+     .------------..--------..----------------..------------.
+     | > > A1 > > || > B1 > || > > > C1 > > > || > > D1 > > |
+     `------------'`--------'`----------------'`------------'
+     
+     "Region of chromosome set 2:"
+     .----------------..------------..--------..------------.
+     | < < < D2 < < < || < < C2 < < || < B2 < || < < A2 < < |
+     `----------------'`------------'`--------'`------------'
      ```
 
    The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangement is responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakpoints remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
