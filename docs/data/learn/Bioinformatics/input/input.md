@@ -7094,7 +7094,13 @@ cyclic
 
    Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
 
- * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes break and get glued back together in a different order. Genomes have fragile regions where breakage is more likely to happen.
+ * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes break and get glued back together in a different order. The most common form of this type of mutation is reversal_GR, where an interval of a chromosome gets flipped around.
+
+   If an organism survives genome rearrangement, the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other.
+
+ * `{bm} reversal/(reversal)_GR/i` - The most common form of genome rearrangement, where an interval of a chromosome gets flipped around. Even though they're the most common form of genome rearrangement, reversal_GRs rarely stick around because they either result in the death or sterility.
+
+ * `{bm} reversal distance` - The minimum number of reversal_GRs required to transform sequence P to sequence Q. The short-hand for this is `{kt} d_{rev}(P, Q)`.
 
  * `{bm} dosage compensation/(sex-chromosome dosage compensation|sex chromosome dosage compensation|dosage compensation)/i` - The mechanism by which sex chromosome gene expression is equalized between different sexes of the same species.
  
@@ -7108,6 +7114,26 @@ cyclic
    For mammals, this mechanism means that X chromosomes are mostly conserved because an X chromosome that's gone through genome rearrangement likely won't survive: If a gene jumps off an X chromosome its gene expression may double, leading to problems.
   
    Different species have different mechanisms for equalization. For example, some species will double the gene expression on the male's single X chromosome rather than deactivating one of the female's two X chromosomes. Other hermaphroditic species may scale down X chromosome gene expression when multiple X chromosomes are present.
+
+ * `{bm} synteny/(shared synteny|synteny block|synteny region|syntenic region|synteny|syntenic|syntenies)/i` - Intervals within two sets of chromosomes that have similar genes which are either in ...
+ 
+   * the same order.
+     
+     ```{svgbob}
+     "Region of chromosome set 1:" A1 -- B1 -- C1 -- D1 
+     "Region of chromosome set 2:" A2 -- B2 -- C2 -- D2 
+     ```
+
+   * reverse order.
+
+     ```{svgbob}
+     "Region of chromosome set 1:" A1 -- B1 -- C1 -- D1 
+     "Region of chromosome set 2:" D2 -- C2 -- B2 -- A2 
+     ```
+
+   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangement is responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakpoints remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
+
+ * `{bm} parsimony/(parsimony|parsimonious)/i` - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
@@ -7129,6 +7155,9 @@ cyclic
 
 `{bm-ignore} (spectrum)_NORM/i`
 `{bm-error} Apply suffix _NORM, _MS/(spectrum)/i`
+
+`{bm-ignore} (reversal)_NORM/i`
+`{bm-error} Apply suffix _NORM, _GR/(reversal)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 
