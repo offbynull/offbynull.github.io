@@ -7178,7 +7178,7 @@ cyclic
      `----------------'`------------'`--------'`------------'
      ```
 
-   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangement is responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakpoints remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
+   The idea is that as evolution branches out a single ancestor species to different sub-species, genome reversal_GRs are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
 
  * `{bm} parsimony/(parsimony|parsimonious)/i` - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.
 
