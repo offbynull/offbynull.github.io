@@ -4839,6 +4839,18 @@ That alignment then turns into the following profile matrix:
 
 Then, 2-way sequence alignments are performed between the *profile matrix* and the remaining sequences. For example, if the letter M is scored against column 2 of the profile matrix, the algorithm would score M against each letter stored in the profile matrix using the same scoring matrix as the initial 2-way sequence alignment. Each score would then get weighted by the corresponding probability in column 2 and the highest one would be chosen as the final score.
 
+```python
+max(
+    score('M', 'T') * profile_mat[2]['T'],
+    score('M', 'R') * profile_mat[2]['R'],
+    score('M', 'M') * profile_mat[2]['M'],
+    score('M', 'E') * profile_mat[2]['E'],
+    score('M', 'L') * profile_mat[2]['L'],
+    score('M', 'O') * profile_mat[2]['O'],
+    score('M', 'W') * profile_mat[2]['W']
+)
+```
+
 Of all the remaining sequences, the one with the highest scoring alignment is removed and its alignment is added to the profile matrix. The process repeats until no more sequences are left.
 
 For n-way sequence alignments where n is large (e.g. n=300) and the sequences are highly related, the greedy algorithm performs well but it may produce sub-optimal results. In contrast, the amount of memory and computation required for an n-way sequence alignment using the standard graph algorithm goes up exponentially as n grows linearly. For realistic biological sequences, the normal algorithm will likely fail for any n past 3 or 4. Adapting the divide-and-conquer algorithm for n-way sequence alignment will help, but even that only allows for targeting a slightly larger n (e.g. n=6).
