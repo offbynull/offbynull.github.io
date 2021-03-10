@@ -7106,44 +7106,70 @@ cyclic
 
    Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
 
- * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes break and get glued back together in a different order. The most common form of this type of mutation is reversal_GR, where an interval of a chromosome gets flipped around.
+ * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes break and get glued back together in a different order. The different classes of rearrangement include...
+ 
+   * reversal / inversion: An interval of a chromosome that gets flipped around. Even though they're the most common form of genome rearrangement, reversals rarely stick around because it usually results in either death or sterility.
+  
+     ```{svgbob}
+                 "Scenario 1"                                      "Scenario 2"
+  
+  
+  
+     "Original:"                                     "Original:"
+     -->-->-->-->-->-->-->-->-->-->-->-->--          -->-->-->-->-->-->-. .->-->-->-->-->-->--
+                                                                        | |                   
+                                                                    .-<-' '-<-.               
+                                                                    '->-->-->-'               
+                                                     
+     "Interval breaks:"                              "Interval breaks:"
+                  ->-->-->-->-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
+     -->-->-->-->-            ->-->-->-->--                                                   
+                                                                    .-<-' '-<-.               
+                                                                    '->-->-->-'               
+                                                     
+     "Interval flips around:"                        "Interval ends re-attach in swapped order:"
+                  -<--<--<--<-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
+     -->-->-->-->-            ->-->-->-->--                              X                    
+                                                                    .-<-' '-<-.               
+                                                                    '->-->-->-'
+  
+     "Reversed interval re-attaches:"                                            
+     -->-->-->-->--<--<--<--<-->-->-->-->--
+     ```
+
+   * translocation: Two intervals of chromosome get cut and re-attached in a different order. The re-ordered chromosomes may end up disrupting genes (e.g. chimeric gene) or gene regulation (e.g. regulatory motif), leading to tumors or cancers.
+
+     ```{svgbob}
+     "Original:"
+
+     A--A--A--A--A--A--A--A--A
+
+     B--B--B--B--B
+
+
+     "Chromosomes break:"
+
+     A--A-       -A--A--A--A--A--A--A
+
+     B--B--B-       -B--B
+
+
+     "Chromosomes re-attach in different order:"
+
+     A--A--B--B
+
+     B--B--B--A--A--A--A--A--A--A
+     ```
+
+   * deletion: An interval of chromosome gets cut and removed.
+
+   * duplication: An interval of chromosome gets duplicated. Duplication may happen because of DNA replication / repair errors.
 
    If an organism survives genome rearrangement, the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other.
 
- * `{bm} reversal/(reversal)_GR/i` - The most common form of genome rearrangement, where an interval of a chromosome gets flipped around. Even though they're the most common form of genome rearrangement, reversal_GRs rarely stick around because it usually results in either death or sterility (bad mutation).
+ * `{bm} chimeric gene` - A gene born from two separate genes getting fused together. A chimeric gene may have been created via genome rearrangement translocations.
 
-   ```{svgbob}
-               "Scenario 1"                                      "Scenario 2"
-
-
-
-   "Original:"                                     "Original:"
-   -->-->-->-->-->-->-->-->-->-->-->-->--          -->-->-->-->-->-->-. .->-->-->-->-->-->--
-                                                                      | |                   
-                                                                  .-<-' '-<-.               
-                                                                  '->-->-->-'               
-                                                   
-   "Interval breaks:"                              "Interval breaks:"
-                ->-->-->-->-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
-   -->-->-->-->-            ->-->-->-->--                                                   
-                                                                  .-<-' '-<-.               
-                                                                  '->-->-->-'               
-                                                   
-   "Interval flips around:"                        "Interval ends re-attach in swapped order:"
-                -<--<--<--<-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
-   -->-->-->-->-            ->-->-->-->--                              X                    
-                                                                  .-<-' '-<-.               
-                                                                  '->-->-->-'
-
-   "Reversed interval re-attaches:"                                            
-   -->-->-->-->--<--<--<--<-->-->-->-->--"
-
-
-
-   " * Scenario 2 is more likely to occur."
-   ```
-
- * `{bm} reversal distance` - The *minimum* number of reversal_GRs required to transform sequence P to sequence Q. The minimum is chosen because of parsimony. 
+ * `{bm} reversal distance` - The *minimum* number of genome rearrangement reversals required to transform sequence P to sequence Q. The minimum is chosen because of parsimony. 
  
    The short-hand for this is `{kt} d_{rev}(P, Q)`.
 
@@ -7190,7 +7216,7 @@ cyclic
      `----------------'`------------'`--------'`------------'
      ```
 
-   The idea is that as evolution branches out a single ancestor species to different sub-species, genome reversal_GRs are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
+   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangement reversals are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
 
  * `{bm} parsimony/(parsimony|parsimonious)/i` - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.
 
@@ -7214,9 +7240,6 @@ cyclic
 
 `{bm-ignore} (spectrum)_NORM/i`
 `{bm-error} Apply suffix _NORM, _MS/(spectrum)/i`
-
-`{bm-ignore} (reversal)_NORM/i`
-`{bm-error} Apply suffix _NORM, _GR/(reversal)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 

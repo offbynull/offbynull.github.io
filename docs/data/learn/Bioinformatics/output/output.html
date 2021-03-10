@@ -11019,15 +11019,30 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.</p>
 </li>
 <li>
-<p><a name="BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi"></a><strong>genome rearrangement</strong> - A type of mutation where chromosomes break and get glued back together in a different order. The most common form of this type of mutation is <a href="#BM_(reversal)_GR%2Fi">reversal</a>, where an interval of a chromosome gets flipped around.</p>
+<p><a name="BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi"></a><strong>genome rearrangement</strong> - A type of mutation where chromosomes break and get glued back together in a different order. The different classes of rearrangement include...</p>
+<ul>
+<li>
+<p>reversal / inversion: An interval of a chromosome that gets flipped around. Even though they're the most common form of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, reversals rarely stick around because it usually results in either death or sterility.</p>
+<p><img src="svgbob_5d3f0e06492c8d79250d7450ae19522b2f72a2ee.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>translocation: Two intervals of chromosome get cut and re-attached in a different order. The re-ordered chromosomes may end up disrupting <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> (e.g. <a href="#BM_(chimeric%20gene)%2Fi">chimeric gene</a>) or <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> regulation (e.g. <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>), leading to tumors or cancers.</p>
+<p><img src="svgbob_1fb63bab3b4d9e7e146fb14c75baf3bae2df2cf2.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>deletion: An interval of chromosome gets cut and removed.</p>
+</li>
+<li>
+<p>duplication: An interval of chromosome gets duplicated. Duplication may happen because of DNA replication / repair errors.</p>
+</li>
+</ul>
 <p>If an organism survives <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, the segments of the <a href="#BM_(genome)%2Fi">genome</a> that were moved around are referred to as <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by comparing two <a href="#BM_(genome)%2Fi">genome</a>s against each other.</p>
 </li>
 <li>
-<p><a name="BM_(reversal)_GR%2Fi"></a><strong>reversal</strong> - The most common form of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, where an interval of a chromosome gets flipped around. Even though they're the most common form of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, <a href="#BM_(reversal)_GR%2Fi">reversal</a>s rarely stick around because it usually results in either death or sterility (bad mutation).</p>
-<p><img src="svgbob_d6b90404ba57eada41d26ecffa8b22785ee43b88.svg" alt="Kroki diagram output"></p>
+<p><a name="BM_(chimeric%20gene)%2Fi"></a><strong>chimeric gene</strong> - A <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> born from two separate <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> getting fused together. A <a href="#BM_(chimeric%20gene)%2Fi">chimeric gene</a> may have been created via <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> translocations.</p>
 </li>
 <li>
-<p><a name="BM_(reversal%20distance)%2Fi"></a><strong>reversal distance</strong> - The <em>minimum</em> number of <a href="#BM_(reversal)_GR%2Fi">reversal</a>s required to transform <a href="#BM_(sequence)%2Fi">sequence</a> P to <a href="#BM_(sequence)%2Fi">sequence</a> Q. The minimum is chosen because of <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
+<p><a name="BM_(reversal%20distance)%2Fi"></a><strong>reversal distance</strong> - The <em>minimum</em> number of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals required to transform <a href="#BM_(sequence)%2Fi">sequence</a> P to <a href="#BM_(sequence)%2Fi">sequence</a> Q. The minimum is chosen because of <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
 <p>The short-hand for this is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>r</mi><mi>e</mi><mi>v</mi></mrow></msub><mo stretchy="false">(</mo><mi>P</mi><mo separator="true">,</mo><mi>Q</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d_{rev}(P, Q)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">Q</span><span class="mclose">)</span></span></span></span>.</p>
 </li>
 <li>
@@ -11053,14 +11068,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_76faf151c1ea3dca1b4db3d498127865235264f5.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome)%2Fi">genome</a> <a href="#BM_(reversal)_GR%2Fi">reversal</a>s are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterparts).</p>
+<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterparts).</p>
 </li>
 <li>
 <p><a name="BM_(parsimony%7Cparsimonious)%2Fi"></a><strong>parsimony</strong> - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.</p>
 </li>
 </ul>
-<p>
-</p>
 <p>
 </p>
 <p>
