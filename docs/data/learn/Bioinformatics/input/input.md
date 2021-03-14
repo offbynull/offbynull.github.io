@@ -7136,8 +7136,6 @@ cyclic
      ```{svgbob}
                  "Scenario 1"                                      "Scenario 2"
   
-  
-  
      "Original:"                                     "Original:"
      -->-->-->-->-->-->-->-->-->-->-->-->--          -->-->-->-->-->-->-. .->-->-->-->-->-->--
                                                                         | |                   
@@ -7164,33 +7162,67 @@ cyclic
 
      ```{svgbob}
      "Original:"
-
-     A--A--A--A--A--A--A--A--A
-
-     B--B--B--B--B
-
+     A1--A2--A3--A4--A5--A6--A7--A8--A9
+     B1--B2--B3--B4--B5
 
      "Chromosomes break:"
-
-     A--A-       -A--A--A--A--A--A--A
-
-     B--B--B-       -B--B
-
+     A1--A2-       -A3--A4--A5--A6--A7--A8--A9
+     B1--B2--B3-       -B4--B5
 
      "Chromosomes re-attach in different order:"
-
-     A--A--B--B
-
-     B--B--B--A--A--A--A--A--A--A
+     A1--A2--B4--B5
+     B1--B2--B3--A3--A4--A5--A6--A7--A8--A9 
      ```
 
    * deletion: An interval of chromosome gets cut and removed.
 
+     ```{svgbob}
+     "Original:"
+     A1--A2--A3--A4--A5--A6--A7--A8--A9 
+
+     "Interval removed:"
+     A1--A2--A6--A7--A8--A9
+     ```
+
    * duplication: An interval of chromosome gets duplicated. Duplication may happen because of DNA replication / repair errors.
+
+     ```{svgbob}
+     "Original:"
+     A1--A2--A3--A4--A5--A6--A7--A8--A9
+
+     "Interval duplicated:"
+          .----------------------.
+     .----+---.              ,---+----.
+     A1--A2--A3--A4--A5--A6--A1--A2--A3--A7--A8--A9 
+     ```
+
+   * chromosome fusion: Two or more chromosomes merging into a single chromosome.
+
+     ```{svgbob}
+     "Original:"
+     A1--A2--A3--A4--A5--A6
+     B1--B2--B3
+
+     "Chromosome fusion:"
+     A1--A2--A3--A4--A5--A6--B1--B2--B3
+     ```
+
+   * chromosome fission: A single chromosome breaking to become multiple chromosomes.
+
+     ```{svgbob}
+     "Original:"
+     A1--A2--A3--A4--A5--A6--A7--A8--A9
+
+     "Chromosome fission:"
+     A1--A2--A3--A4--A5--A6
+     A7--A8--A9
+     ```
 
    If an organism survives genome rearrangement, the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other.
 
  * `{bm} chimeric gene` - A gene born from two separate genes getting fused together. A chimeric gene may have been created via genome rearrangement translocations.
+
+   An example of a chimeric gene is the gene coding for ABL-BCR fusion protein: A fusion of two smaller genes (coding for ABL and BCR individually) caused by chromosomes 9 and 22 breaking and re-attaching in a different order. The ABL-BCR fusion protein has been implicated in the development of a cancer known as chronic myeloid leukemia.
 
  * `{bm} reversal distance` - The *minimum* number of genome rearrangement reversals required to transform sequence P to sequence Q. The minimum is chosen because of parsimony. 
  
@@ -7324,7 +7356,7 @@ cyclic
     * "b = breakpoint"                                 
     ```
 
-    Breakpoint_GRs are used to estimate the reversal distance. An algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of removing either 1 or 2 breakpoint_GRs for each reversal, ultimately getting it to the identity permutation permutation_GR. In the example above, reversing and negating [-7, -6, -5] does reduce the number of breakpoint_GRs by 1...
+    Breakpoint_GRs are used to estimate the reversal distance. An algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of reducing the number of breakpoint_GRs at each reversal, ultimately hoping to get it to the identity permutation permutation_GR. In the example above, the reversal of [-7, -6, -5] reduces the number of breakpoint_GRs by 1...
 
     ```{svgbob}
      bp bp bp    bp       
@@ -7337,30 +7369,39 @@ cyclic
                         (NEW)  
     
     * "a = adjacency"
-    * "b = breakpoint"                                 
+    * "b = breakpoint"
     ```
 
-    A single reversal isn't necessarily guaranteed to remove a breakpoint_GR. For example, there is no single reversal for the permutation_GR [+2, +1] that reduces the number of breakpoint_GRs...
+    In the best case, a single reversal will remove 2 breakpoint_GRs (one on each side of the reversal). In the worst case, there is no single reversal that drives down the number of breakpoint_GRs. For example, there is no single reversal for the permutation_GR [+2, +1] that reduces the number of breakpoint_GRs...
 
     ```{svgbob}
      bp bp bp                         bp bp bp
      |  |  |                          |  |  | 
      v  v  v                          v  v  v 
-    0 +2 +1 3       "reverse to"     0 -1 -2 3
-     '-----'                          '-----'
+    0 +2 +1 +3                       0 -1 -2 +3
+     '--+--'           reverse        '--+--'
+        '--------------------------------'
             
      bp bp bp                         bp bp bp
      |  |  |                          |  |  | 
      v  v  v                          v  v  v 
-    0 +2 +1 3       "reverse to"     0 -2 +1 3
-     '--'                             '--'
-            
+    0 +2 +1 +3                       0 -2 +1 +3
+     '-+'              reverse        '-+'
+       '--------------------------------'
+
      bp bp bp                         bp bp bp
      |  |  |                          |  |  | 
      v  v  v                          v  v  v 
-    0 +2 +1 3       "reverse to"     0 +2 -1 3
-        '--'                             '--'
+    0 +2 +1 +3                       0 +2 -1 +3
+        '-+'           reverse           '-+'
+          '--------------------------------'
     ```
+
+    Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
+
+ * `{bm} fusion` - The process or result of joining two or more things together to form a single entity. For example, two chromosomes to may join together (fuse) to form a single chromosome.
+
+ * `{bm} fission` - The process or result of splitting a single entity into two or more parts. For example, a single chromosome may break into multiple pieces where each piece becomes its own chromosome.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
