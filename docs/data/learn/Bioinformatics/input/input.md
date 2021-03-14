@@ -4837,21 +4837,44 @@ That alignment then turns into the following profile matrix:
 | Probability of O | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 1.0 | 0.0 |
 | Probability of W | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.5 |
 
-Then, 2-way sequence alignments are performed between the *profile matrix* and the remaining sequences. For example, if the letter M is scored against column 2 of the profile matrix, the algorithm would score M against each letter stored in the profile matrix using the same scoring matrix as the initial 2-way sequence alignment. Each score would then get weighted by the corresponding probability in column 2 and the highest one would be chosen as the final score.
+Then, 2-way sequence alignments are performed between the *profile matrix* and the remaining sequences. For example, if the letter V is scored against column 1 of the profile matrix, the algorithm would score W against each letter stored in the profile matrix using the same scoring matrix as the initial 2-way sequence alignment. Each score would then get weighted by the corresponding probability in column 2 and the highest one would be chosen as the final score.
 
 ```python
 max(
-    score('M', 'T') * profile_mat[2]['T'],
-    score('M', 'R') * profile_mat[2]['R'],
-    score('M', 'M') * profile_mat[2]['M'],
-    score('M', 'E') * profile_mat[2]['E'],
-    score('M', 'L') * profile_mat[2]['L'],
-    score('M', 'O') * profile_mat[2]['O'],
-    score('M', 'W') * profile_mat[2]['W']
+    score('W', 'T') * profile_mat[1]['T'],
+    score('W', 'R') * profile_mat[1]['R'],
+    score('W', 'M') * profile_mat[1]['M'],
+    score('W', 'E') * profile_mat[1]['E'],
+    score('W', 'L') * profile_mat[1]['L'],
+    score('W', 'O') * profile_mat[1]['O'],
+    score('W', 'W') * profile_mat[1]['W']
 )
 ```
 
 Of all the remaining sequences, the one with the highest scoring alignment is removed and its alignment is added to the profile matrix. The process repeats until no more sequences are left.
+
+````{note}
+The logic above is what was used to solve the final assignment. But, after thinking about it some more it probably isn't entirely correct. Elements that haven't been encountered yet should be left unset in the profile matrix. If this change were applied, the example above would end up looking more like this...
+
+|                  |  0  |  1  |  2  |  3  |  4  |  5  |  6  |
+|------------------|-----|-----|-----|-----|-----|-----|-----|
+| Probability of T | 0.5 |     |     |     |     |     |     |
+| Probability of R |     | 0.5 |     |     |     |     |     |
+| Probability of M |     | 0.5 |     |     |     |     |     |
+| Probability of E |     |     | 1.0 |     |     |     |     |
+| Probability of L |     |     |     | 1.0 | 1.0 |     |     |
+| Probability of O |     |     |     |     |     | 1.0 |     |
+| Probability of W |     |     |     |     |     |     | 0.5 |
+
+Then, when scoring an element against a column in the profile matrix, ignore the unset elements in the column. The score calculation in the example above would end up being...
+
+```python
+max(
+    score('W', 'R') * profile_mat[1]['R'],
+    score('W', 'M') * profile_mat[1]['M']
+)
+```
+````
 
 For n-way sequence alignments where n is large (e.g. n=300) and the sequences are highly related, the greedy algorithm performs well but it may produce sub-optimal results. In contrast, the amount of memory and computation required for an n-way sequence alignment using the standard graph algorithm goes up exponentially as n grows linearly. For realistic biological sequences, the normal algorithm will likely fail for any n past 3 or 4. Adapting the divide-and-conquer algorithm for n-way sequence alignment will help, but even that only allows for targeting a slightly larger n (e.g. n=6).
 
@@ -7200,9 +7223,14 @@ cyclic
      .------------..--------..------------..----------------.
      | > > A2 > > || > B2 > || > > C2 > > || > > > D2 > > > |
      `------------'`--------'`------------'`----------------'
+
+     * "A1 and A2 are similar genes."
+     * "B1 and B2 are similar genes."
+     * "C1 and C2 are similar genes."
+     * "D1 and D2 are similar genes."
      ```
 
-   * reverse order.
+   * reverse order, where each gene's sequence is also reversed.
 
      ```{svgbob}
      "Region of chromosome set 1:"
@@ -7214,11 +7242,125 @@ cyclic
      .----------------..------------..--------..------------.
      | < < < D2 < < < || < < C2 < < || < B2 < || < < A2 < < |
      `----------------'`------------'`--------'`------------'
+
+     * "A1 and A2 are similar genes, but with reversed sequences."
+     * "B1 and B2 are similar genes, but with reversed sequences."
+     * "C1 and C2 are similar genes, but with reversed sequences."
+     * "D1 and D2 are similar genes, but with reversed sequences."
      ```
 
-   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangement reversals are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
+   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
 
  * `{bm} parsimony/(parsimony|parsimonious)/i` - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.
+
+ * `{bm} permutation/(permutation)_GR/i` - Given two species that share synteny blocks, each synteny block is mapped as an ID (non-zero integer) and direction (+ or -). This mapping (referred to as a permutation_GR) is used to model genome rearrangement operations. For example, a ....
+    
+      * reversal on synteny blocks 4 to 5 reverses its order and direction.
+
+        ```{svgbob}
+        +1 +2 +3 +4 +5 +6 +7
+                '--+--'
+                   |
+                   |  reverse
+                .--+--.
+        +1 +2 +3 -5 -4 +6 +7
+        ```
+
+      * translocation on synteny block 4 changes its position.
+
+        ```{svgbob}
+        +1 +2 +3 +4 +5 +6 +7
+                  |
+                  `-----.  translocate
+                        |
+                        v
+        +1 +2 +3 +5 +6 +4 +7
+        ```
+      
+    If a permutation consists of all positive elements ordered ascending (1 to n), it's referred to as the identity permutation_GR. The top row in both examples above are identity permutation_GRs.
+    
+    When comparing the synteny blocks between two species, one of the species is typically represented as an identity permutation_GR. For example, given 7 synteny blocks between species A and B, mapping from the perspective of A...
+
+    ```
+    "A (source):"      +1 +2 +3 +4 +5 +6 +7
+    "B (destination):" -3 +4 +1 +2 -7 -6 -5
+    ```
+
+    Likewise, mapping from the perspective of B...
+
+    ```
+    "B (source):"      +1 +2 +3 +4 +5 +6 +7
+    "A (destination):" +3 +4 -1 +2 -7 -6 -5
+    ```
+
+    Each destination is considered a permutation_GR of the source: one of several possible variations of how the synteny blocks can be ordered and arranged.
+
+ * `{bm} breakpoint/(breakpoint)_GR/i` / `{bm} adjacency/(adjacent|adjacency)_GR/i` - Given a permutation_GR, add a prefix of 0 and a suffix of length + 1. For example, ...
+    
+    ```{svgbob}
+    Before:   +3 +4 -1 +2 -7 -6 -5
+
+    After:  0 -3 +4 +1 +2 -7 -6 -5 +8
+            ^                       ^
+            |                       |
+      "prefix of 0"      "suffix of 8 (length + 1)"
+    ```
+    
+    In this modified version of a permutation_GR, consecutive elements `{kt}(p_i, p_{i+1})` are considered a...
+
+     * adjacency_GR if `{kt}p_i + 1 = p_{i+1}`.
+     * breakpoint_GR if `{kt}p_i + 1 \neq p_{i+1}`.
+
+    ```{svgbob}
+     bp bp bp    bp       bp
+     |  |  |     |        |
+     v  v  v     v        v
+    0 -3 +4 +1 +2 -7 -6 -5 +8
+              ^     ^  ^  
+              |     |  |  
+              a     a  a     
+    
+    * "a = adjacency"
+    * "b = breakpoint"                                 
+    ```
+
+    Breakpoint_GRs are used to estimate the reversal distance. An algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of removing either 1 or 2 breakpoint_GRs for each reversal, ultimately getting it to the identity permutation permutation_GR. In the example above, reversing and negating [-7, -6, -5] does reduce the number of breakpoint_GRs by 1...
+
+    ```{svgbob}
+     bp bp bp    bp       
+     |  |  |     |        
+     v  v  v     v        
+    0 -3 +4 +1 +2 +5 +6 +7 +8
+              ^     ^  ^  ^
+              |     |  |  |
+              a     a  a  a
+                        (NEW)  
+    
+    * "a = adjacency"
+    * "b = breakpoint"                                 
+    ```
+
+    A single reversal isn't necessarily guaranteed to remove a breakpoint_GR. For example, there is no single reversal for the permutation_GR [+2, +1] that reduces the number of breakpoint_GRs...
+
+    ```{svgbob}
+     bp bp bp                         bp bp bp
+     |  |  |                          |  |  | 
+     v  v  v                          v  v  v 
+    0 +2 +1 3       "reverse to"     0 -1 -2 3
+     '-----'                          '-----'
+            
+     bp bp bp                         bp bp bp
+     |  |  |                          |  |  | 
+     v  v  v                          v  v  v 
+    0 +2 +1 3       "reverse to"     0 -2 +1 3
+     '--'                             '--'
+            
+     bp bp bp                         bp bp bp
+     |  |  |                          |  |  | 
+     v  v  v                          v  v  v 
+    0 +2 +1 3       "reverse to"     0 +2 -1 3
+        '--'                             '--'
+    ```
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
@@ -7230,16 +7372,21 @@ cyclic
 `{bm-error} Apply suffix _NORM, _GRAPH, or _NODE/(balanced)/i`
 
 `{bm-ignore} (coverage)_NORM/i`
-`{bm-error} Apply suffix _NORM, _SEQ/(coverage)/i`
+`{bm-error} Apply suffix _NORM or _SEQ/(coverage)/i`
 
 `{bm-ignore} (fragment)_NORM/i`
-`{bm-error} Apply suffix _NORM, _SEQ/(fragment)/i`
+`{bm-error} Apply suffix _NORM or _SEQ/(fragment)/i`
 
 `{bm-ignore} (Eulerian)_NORM/i`
 `{bm-error} Apply suffix _PATH, _CYCLE, _GRAPH, or _NORM/(Eulerian)/i`
+`{bm-error} Don't use a suffix here/(eulerian_PATH path|eulerian_CYCLE cycle|eulerian_GRAPH graph)/i`
 
 `{bm-ignore} (spectrum)_NORM/i`
-`{bm-error} Apply suffix _NORM, _MS/(spectrum)/i`
+`{bm-error} Apply suffix _NORM or _MS/(spectrum)/i`
+
+`{bm-ignore} (adjacent|adjacency|breakpoint)_NORM/i`
+`{bm-error} Apply suffix _NORM or _GR/(adjacent|adjacency|breakpoint)/i`
+`{bm-error} Don't use a suffix here/(adjacency_GR matrix|adjacency_GR list)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 
