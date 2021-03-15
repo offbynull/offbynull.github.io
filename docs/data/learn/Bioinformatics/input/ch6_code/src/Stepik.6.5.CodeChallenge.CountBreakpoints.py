@@ -23,6 +23,40 @@ print(f'{count_bp(signed_permutation)}')
 # permutations, and design a linear-time algorithm for computing this number.
 #
 #
+# Pick one of the perms and re-map its elements such that it becomes an entity matrix. Apply the re-mapping to the
+# other perm as well. For example, for the following perms...
+#
+#   -4 +3 -2 -1
+#    |  |  |  |
+#   +2 +1 +3 +4
+#
+# if you were to select the top perm to re-map, the mapping would be...
+#
+#   -4 to +1
+#   +3 to +2
+#   -2 to +3
+#   -1 to +4
+#
+# Using this mapping, the top perm becomes    +1 +2 +3 +4
+# Using this mapping, the bottom perm becomes -3 -4 +2 -1
+#
+# Where does the mapped bottom perm come from? For example, the first index in the top perm was -4 but it was remapped
+# to +1. That means in the bottom perm we have to find 4, and if it's...
+#   * -4, remap it to +1.
+#   * +4, remap it to -1 (negate +1).
+#
+# The number of breakpoints in the final re-mapped bottom perm is 5:
+#
+#   0 -3 -4 +2 -1 +5
+#    ^  ^  ^  ^  ^
+#
+
+
+
+# THE BLOCK BELOW IS MY PREVIOUS ANSWER, WHICH MAY OR MAY NOT BE CORRECT.
+# THE BLOCK BELOW IS MY PREVIOUS ANSWER, WHICH MAY OR MAY NOT BE CORRECT.
+# THE BLOCK BELOW IS MY PREVIOUS ANSWER, WHICH MAY OR MAY NOT BE CORRECT.
+# THE BLOCK BELOW IS MY PREVIOUS ANSWER, WHICH MAY OR MAY NOT BE CORRECT.
 #
 # If you were to try to do this in using an algorithm that DOESN'T run in linear-time, the process would involve taking
 # one of the permutations and finding+applying the necessary reversals until it ended up as the identity permutaiton. As
@@ -45,7 +79,10 @@ print(f'{count_bp(signed_permutation)}')
 #    |  |  |  |
 #   -4 -3 +1 -2
 #
-# The above has 2 breakpoints (not counting the implied 0 at the beginning and the implied n+1 at the end).
+# The above has 4 breakpoints:
+#
+#    0 -4 -3 +1 -2 +5
+#     ^     ^  ^  ^
 #
 #
 #
@@ -82,7 +119,10 @@ print(f'{count_bp(signed_permutation)}')
 #    |  |  |  |
 #   -4 -3 +1 -2
 #
-# The above has 2 breakpoints (not counting the implied 0 at the beginning and the implied n+1 at the end).
+# The above has 4 breakpoints:
+#
+#    0 -4 -3 +1 -2 +5
+#     ^     ^  ^  ^
 #
 #
 #
@@ -94,9 +134,4 @@ print(f'{count_bp(signed_permutation)}')
 #    |  |  |  |
 #   +1 +2 +3 +4
 #
-# The top permutation also ends up with 2 breakpoints (not counting the implied 0 at the beginning and the implied n+1
-# at the end).
-#
-# Assuming my reasoning is correct, do we say that there are 2 breakpoints? If you think about the example as actually
-# 3 permutations (top to identity to bottom), should the number actually be the breakpoint count  in top and bottom
-# individually?
+# The top permutation also ends up with 4 breakpoints.
