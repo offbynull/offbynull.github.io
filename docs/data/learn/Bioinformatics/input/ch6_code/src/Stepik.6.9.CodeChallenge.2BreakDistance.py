@@ -1,8 +1,8 @@
 from typing import List, Tuple
 
-from helpers.Utils import slide_window
+from GenomeGraph import GenomeGraph
 
-with open('/home/user/Downloads/test.txt', mode='r', encoding='utf-8') as f:
+with open('/home/user/Downloads/dataset_240324_4.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 
 lines = data.split('\n')
@@ -10,66 +10,41 @@ p_list1 = [[int(x) for x in s.split(' ')] for s in lines[0][1:-1].split(')(')]
 p_list2 = [[int(x) for x in s.split(' ')] for s in lines[1][1:-1].split(')(')]
 
 
-def chromosome_to_cycle(p: List[int]) -> List[int]:
-    ret = []
-    for i, chromosome in enumerate(p):
-        i += 1
-        if chromosome > 0:
-            ret.append(2*i - 1)
-            ret.append(2*i)
-        else:
-            ret.append(2*i)
-            ret.append(2*i - 1)
-    return ret
+def walk_cycle(gg: GenomeGraph, start_nid: Tuple[int, str]):
+    next_nid = start_nid
+    eids = []
+    eids_quick_lookup = set()
+    while next_nid is not None:
+        curr_nid = next_nid
+        next_nid = None
+        for eid in gg.get_edges(curr_nid):
+            if eid in eids_quick_lookup:  # don't explore if it's already been walked
+                continue
+            eids.append(eid)
+            eids_quick_lookup.add(eid)
+            nid1, nid2 = gg.get_edge_endpoints(eid)
+            if nid1 == curr_nid:
+                next_nid = nid2
+            else:
+                next_nid = nid1
+    return eids
 
 
-def colored_edges(p_list: List[List[int]]) -> List[Tuple[int, int]]:
-    edges = []
-    offset = 0
-    for p in p_list:
-        nodes = chromosome_to_cycle(p)
-        nodes = [n + offset for n in nodes]  # add offset to chromosome's node ids
-        offset += len(nodes)        # update offset used to shift next chromosome's node ids
-        nodes = nodes + nodes[0:2]  # loop around to last 2 elements to simulate a cycle
-        for x1, x2 in zip(nodes[1::2], nodes[2::2]):
-            edges.append((x1, x2))
-    return edges
+gg = GenomeGraph()
+for i, p in enumerate(p_list1):
+    gg.add_permutation(p)
+for i, p in enumerate(p_list2):
+    gg.add_permutation(p)
 
+cycles = []
+nid_queue = {nid for nid in gg.all_nodes()}
+while nid_queue:
+    nid = next(iter(nid_queue))
+    cycle = walk_cycle(gg, nid)
+    cycles.append(cycle)
+    [nid_queue.discard(n) for e in cycle for n in gg.get_edge_endpoints(e)]
 
-def count_synteny_blocks(p_list: List[List[int]]) -> int:
-    blocks = 0
-    for p in p_list:
-        blocks += len(p)
-    return blocks
+block_count = sum(1 for x in gg.all_nodes()) // 2
+cycle_count = len(cycles)
 
-
-def count_cycles(edges: List[Tuple[int, int]]) -> int:
-    cycles = 0
-    cycle_start_idx = -1
-    for i, p in enumerate(edges):
-        if cycle_start_idx == -1:
-            cycle_start_idx = i
-        elif p[1] == edges[cycle_start_idx][0] + 1 or p[1] == edges[cycle_start_idx][0] - 1:
-            cycles += 1
-            cycle_start_idx = -1
-    assert cycle_start_idx == -1
-    return cycles
-
-
-DOESNT WORK MAKE AST AND TRY AGAIN
-DOESNT WORK MAKE AST AND TRY AGAIN
-DOESNT WORK MAKE AST AND TRY AGAIN
-DOESNT WORK MAKE AST AND TRY AGAIN
-DOESNT WORK MAKE AST AND TRY AGAIN
-DOESNT WORK MAKE AST AND TRY AGAIN
-
-
-print(f'{colored_edges(p_list1)}')
-print(f'{colored_edges(p_list2)}')
-
-merged_colored_edges = colored_edges(p_list1) + colored_edges(p_list2)
-print(f'{merged_colored_edges}')
-
-print(f'{count_synteny_blocks(p_list1)}')
-print(f'{count_cycles(colored_edges(p_list1))}')
-print(f'{count_cycles(colored_edges(p_list2))}')
+print(f'{block_count - cycle_count}')
