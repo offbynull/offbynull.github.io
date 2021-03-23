@@ -46,20 +46,17 @@ class Node:
     def __str__(self):
         return str((self.id, self.end))
 
-
-class Color(Enum):
-    RED = 'red'
-    BLUE = 'blue'
+    def __repr__(self):
+        return str(self)
 
 
 class ColoredEdge:
-    def __init__(self, n1: Node, n2: Node, color: Color):
+    def __init__(self, n1: Node, n2: Node):
         assert n1 != n2
         x = [n1, n2]
         x.sort()
         self.n1 = x[0]
         self.n2 = x[1]
-        self.color = color
 
     def get_other_node(self, nid: Node):
         if nid == self.n1:
@@ -69,12 +66,24 @@ class ColoredEdge:
         else:
             raise ValueError('???')
 
+    def __eq__(self, other):
+        return self.n1 == other.n1 and self.n2 == other.n2
+
+    def __hash__(self):
+        return hash((self.n1, self.n2))
+
+    def __str__(self):
+        return str((self.n1, self.n2))
+
+    def __repr__(self):
+        return str(self)
+
 
 class BreakpointGraph:
-    def __init__(self, src: List[List[int]], dst: List[List[int]]):
+    def __init__(self, red_p_list: List[List[int]], blue_p_list: List[List[int]]):
         # Node blue edge lookup
         node_to_blue_edges = {}
-        for p in src:
+        for p in blue_p_list:
             for (s1, s2), idx in slide_window(p, 2, cyclic=True):
                 if s1 < 0 and s2 > 0:
                     n1 = Node(-s1, SyntenyEnd.HEAD)
@@ -90,13 +99,13 @@ class BreakpointGraph:
                     n2 = Node(-s2, SyntenyEnd.TAIL)
                 else:
                     raise ValueError('???')
-                e = ColoredEdge(n1, n2, Color.BLUE)
+                e = ColoredEdge(n1, n2)
                 node_to_blue_edges[n1] = e
                 node_to_blue_edges[n2] = e
 
         # Node red edge lookup
         node_to_red_edges = {}
-        for p in dst:
+        for p in red_p_list:
             for (s1, s2), idx in slide_window(p, 2, cyclic=True):
                 if s1 < 0 and s2 > 0:
                     n1 = Node(-s1, SyntenyEnd.HEAD)
@@ -112,26 +121,52 @@ class BreakpointGraph:
                     n2 = Node(-s2, SyntenyEnd.TAIL)
                 else:
                     raise ValueError('???')
-                e = ColoredEdge(n1, n2, Color.RED)
+                e = ColoredEdge(n1, n2)
                 node_to_red_edges[n1] = e
                 node_to_red_edges[n2] = e
 
         self.node_to_blue_edges = node_to_blue_edges
         self.node_to_red_edges = node_to_red_edges
-        if src[0][0] > 0:
-            self.start_nid = Node(src[0][0], SyntenyEnd.TAIL)
-        elif src[0][0] < 0:
-            self.start_nid = Node(src[0][0], SyntenyEnd.HEAD)
+        if red_p_list[0][0] > 0:
+            self.start_nid = Node(red_p_list[0][0], SyntenyEnd.TAIL)
+        elif red_p_list[0][0] < 0:
+            self.start_nid = Node(-red_p_list[0][0], SyntenyEnd.HEAD)
         else:
             raise ValueError('???')
 
-    def get_source(self) -> List[List[int]]:
-        return self._walk_to_synteny_blocks(self.node_to_blue_edges.copy())
+    def find_blue_edge_in_non_trivial_cycle(self):
+        for nid in self.node_to_blue_edges:
+            blue_edge = self.node_to_blue_edges[nid]
+            red_edge = self.node_to_red_edges[nid]
+            if blue_edge != red_edge:
+                return blue_edge
+        return None
 
-    def get_destination(self) -> List[List[int]]:
-        return self._walk_to_synteny_blocks(self.node_to_red_edges.copy())
+    def apply_2break(self, blue_edge: ColoredEdge):
+        red_edge_1 = self.node_to_red_edges[blue_edge.n1]
+        red_edge_2 = self.node_to_red_edges[blue_edge.n2]
+        if blue_edge == red_edge_1 == red_edge_2:
+            raise ValueError('Already in trivial cycle')
+        nid1 = blue_edge.n1
+        nid2 = red_edge_1.get_other_node(blue_edge.n1)
+        nid3 = blue_edge.n2
+        nid4 = red_edge_2.get_other_node(blue_edge.n2)
+        del self.node_to_red_edges[nid1]
+        del self.node_to_red_edges[nid2]
+        del self.node_to_red_edges[nid3]
+        del self.node_to_red_edges[nid4]
+        self.node_to_red_edges[nid1] = ColoredEdge(nid1, nid3)
+        self.node_to_red_edges[nid3] = ColoredEdge(nid1, nid3)
+        self.node_to_red_edges[nid2] = ColoredEdge(nid2, nid4)
+        self.node_to_red_edges[nid4] = ColoredEdge(nid2, nid4)
 
-    def _walk_to_synteny_blocks(self, remaining: Dict[Node, ColoredEdge]) -> List[List[int]]:
+    def get_blue_permutations(self) -> List[List[int]]:
+        return self._walk_to_permutations(self.node_to_blue_edges.copy())
+
+    def get_red_permutations(self) -> List[List[int]]:
+        return self._walk_to_permutations(self.node_to_red_edges.copy())
+
+    def _walk_to_permutations(self, remaining: Dict[Node, ColoredEdge]) -> List[List[int]]:
         ret = []
         nid = self.start_nid
         while True:
@@ -157,8 +192,8 @@ class BreakpointGraph:
         return ret
 
     def to_neato_graph(self):
-        src = self.get_source()
-        dst = self.get_destination()
+        src = self.get_blue_permutations()
+        dst = self.get_red_permutations()
 
         g = ''
         g += 'graph G {\n'
@@ -224,9 +259,18 @@ class BreakpointGraph:
 
 if __name__ == '__main__':
     bg = BreakpointGraph(
-        [[+9, -8, +12], [+13, +3, +4, -10, +2, -6, +11, +1, +14], [+5, +7]],
-        [[+9, -8, +12, +7, +1, -14, +13, +3, -5, -11, +6, -2, +10, -4]]
+        # [[+1, -2, -3, +4]],
+        # [[+1, +2, -4, -3]]
+        [[+9, -8, +12, +7, +1, -14, +13, +3, -5, -11, +6, -2, +10, -4]],
+        [[-11, +8, -10, -2, +3, +4, +13, +6, +12, +9, +5, +7, -14, -1]]
     )
-    print(f'{bg.get_source()}')
-    print(f'{bg.get_destination()}')
+    print(f'STARTING FROM {bg.get_red_permutations()} AND GOING TO {bg.get_blue_permutations()}')
     print(f'{bg.to_neato_graph()}')
+    print('----------------')
+    while True:
+        next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_cycle()
+        if next_blue_edge_to_break_on is None:
+            break
+        bg.apply_2break(next_blue_edge_to_break_on)
+        print(f'{bg.get_red_permutations()}')
+        # print(f'{bg.to_neato_graph()}')
