@@ -191,66 +191,58 @@ class BreakpointGraph:
                 break
         return ret
 
-    def to_neato_graph(self):
-        src = self.get_blue_permutations()
-        dst = self.get_red_permutations()
+    def _ordered_walk_over_synteny_edges(self):
+        next_nid = self.start_nid
+        while True:
+            blue_edge = self.node_to_blue_edges[next_nid]
+            other_nid = blue_edge.get_other_node(next_nid)
+            if other_nid.end == SyntenyEnd.HEAD:
+                yield Node(other_nid.id, SyntenyEnd.HEAD), Node(other_nid.id, SyntenyEnd.TAIL)
+            elif other_nid.end == SyntenyEnd.TAIL:
+                yield Node(other_nid.id, SyntenyEnd.TAIL), Node(other_nid.id, SyntenyEnd.HEAD)
+            else:
+                raise ValueError('???')
+            next_nid = other_nid.other_end()
+            if next_nid == self.start_nid:
+                break
 
+    def _ordered_walk_over_blue_edges(self):
+        next_nid = self.start_nid
+        while True:
+            blue_edge = self.node_to_blue_edges[next_nid]
+            yield blue_edge
+            other_nid = blue_edge.get_other_node(next_nid)
+            next_nid = other_nid.other_end()
+            if next_nid == self.start_nid:
+                break
+
+    def to_neato_graph(self):
         g = ''
         g += 'graph G {\n'
         g += 'node [shape=plain];\n'
 
-        node_count = sum(len(p) for p in src) * 2
+        node_count = len(self.node_to_blue_edges)
         radius = node_count ** 1/4
         node_locations = [(cos(2 * pi / node_count * x) * radius, sin(2 * pi / node_count * x) * radius) for x in range(0, node_count + 1)]
 
-        for p in src:
-            for s in p:
-                x1, y1 = node_locations.pop()
-                x2, y2 = node_locations.pop()
-                if s > 0:
-                    g += f'_{s}h_ [pos="{x1},{y1}!"];\n'
-                    g += f'_{s}t_ [pos="{x2},{y2}!"];\n'
-                elif s < 0:
-                    g += f'_{-s}t_ [pos="{x1},{y1}!"];\n'
-                    g += f'_{-s}h_ [pos="{x2},{y2}!"];\n'
+        # Set node locations
+        for n1, n2 in self._ordered_walk_over_synteny_edges():
+            x1, y1 = node_locations.pop()
+            x2, y2 = node_locations.pop()
+            g += f'_{n1.id}{n1.end.value}_ [pos="{x1},{y1}!"];\n'
+            g += f'_{n2.id}{n2.end.value}_ [pos="{x2},{y2}!"];\n'
 
-        # Draw black edges
-        for p in src:
-            for s in p:
-                if s > 0:
-                    g += f'_{s}h_ -- _{s}t_ [style=dashed, dir=forward];\n'
-                elif s < 0:
-                    g += f'_{-s}t_ -- _{-s}h_ [style=dashed, dir=back];\n'
-                else:
-                    raise ValueError('???')
+        # Set black edges representing synteny blocks
+        for n1, n2 in self._ordered_walk_over_synteny_edges():
+            g += f'_{n1.id}{n1.end.value}_ -- _{n2.id}{n2.end.value}_ [style=dashed, dir=forward];\n'
 
-        # Draw blue edges (source)
-        for p in src:
-            for (s1, s2), idx in slide_window(p, 2, cyclic=True):
-                if s1 < 0 and s2 > 0:
-                    g += f'_{-s1}h_ -- _{s2}h_ [color=blue];\n'
-                elif s1 > 0 and s2 < 0:
-                    g += f'_{s1}t_ -- _{-s2}t_ [color=blue];\n'
-                elif s1 > 0 and s2 > 0:
-                    g += f'_{s1}t_ -- _{s2}h_ [color=blue];\n'
-                elif s1 < 0 and s2 < 0:
-                    g += f'_{-s1}h_ -- _{-s2}t_ [color=blue];\n'
-                else:
-                    raise ValueError('???')
+        # Set blue edges (destination)
+        for e in self._ordered_walk_over_blue_edges():
+            g += f'_{e.n1.id}{e.n1.end.value}_ -- _{e.n2.id}{e.n2.end.value}_ [color=blue];\n'
 
-        # Draw red edges (destination)
-        for p in dst:
-            for (s1, s2), idx in slide_window(p, 2, cyclic=True):
-                if s1 < 0 and s2 > 0:
-                    g += f'_{-s1}h_ -- _{s2}h_ [color=red];\n'
-                elif s1 > 0 and s2 < 0:
-                    g += f'_{s1}t_ -- _{-s2}t_ [color=red];\n'
-                elif s1 > 0 and s2 > 0:
-                    g += f'_{s1}t_ -- _{s2}h_ [color=red];\n'
-                elif s1 < 0 and s2 < 0:
-                    g += f'_{-s1}h_ -- _{-s2}t_ [color=red];\n'
-                else:
-                    raise ValueError('???')
+        # Draw red edges (source)
+        for e in set(self.node_to_red_edges.values()):
+            g += f'_{e.n1.id}{e.n1.end.value}_ -- _{e.n2.id}{e.n2.end.value}_ [color=red];\n'
 
         g += '}'
 
@@ -259,10 +251,10 @@ class BreakpointGraph:
 
 if __name__ == '__main__':
     bg = BreakpointGraph(
-        # [[+1, -2, -3, +4]],
-        # [[+1, +2, -4, -3]]
-        [[+9, -8, +12, +7, +1, -14, +13, +3, -5, -11, +6, -2, +10, -4]],
-        [[-11, +8, -10, -2, +3, +4, +13, +6, +12, +9, +5, +7, -14, -1]]
+        [[+1, -2, -3, +4]],
+        [[+1, +2, -4, -3]]
+        # [[+9, -8, +12, +7, +1, -14, +13, +3, -5, -11, +6, -2, +10, -4]],
+        # [[-11, +8, -10, -2, +3, +4, +13, +6, +12, +9, +5, +7, -14, -1]]
     )
     print(f'STARTING FROM {bg.get_red_permutations()} AND GOING TO {bg.get_blue_permutations()}')
     print(f'{bg.to_neato_graph()}')
@@ -273,4 +265,4 @@ if __name__ == '__main__':
             break
         bg.apply_2break(next_blue_edge_to_break_on)
         print(f'{bg.get_red_permutations()}')
-        # print(f'{bg.to_neato_graph()}')
+        print(f'{bg.to_neato_graph()}')
