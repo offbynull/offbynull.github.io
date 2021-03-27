@@ -1,7 +1,6 @@
-from typing import List, Tuple
+from typing import List
 
 from BreakpointGraph import BreakpointGraph
-from GenomeGraph import GenomeGraph
 
 with open('/home/user/Downloads/dataset_240324_5.txt', mode='r', encoding='utf-8') as f:
     data = f.read()

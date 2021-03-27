@@ -79,6 +79,34 @@ class ColoredEdge:
         return str(self)
 
 
+# This class only holds on to the...
+#
+#  * blue edges (representing the graph you're trying to reach -- the good state)
+#  * red edges (representing the graph you're starting from -- the bad state)
+#
+# ..., not the synteny edges themselves. The synteny edges in the breakpoint graph are for the good state (blue edges),
+# meaning that the blue edges will ALWAYS sandwiched between the synteny edges. As such, the synteny edges can be
+# derived directly from the blue edges. For example, given the blue_p_list of [+A, -B, -C, +D], the implied synteny
+# edges are...
+#
+#  * +A: Ahead--------->Atail
+#  * -B: Btail<---------Bhead
+#  * -C  Ctail<---------Chead
+#  * +D  Dhead--------->Dtail
+#
+# The direction of the synteny block just dictates which end (head or tail) shows up first. These ends are linked
+# back-to-back with blue edges.
+#
+#       Ah---->At
+#     b           b
+#    b             b
+#  Dt               Bt
+#   ^               ^
+#   |               |
+#  Dh               Bh
+#    b             b
+#     b           b
+#       Ch---->Ct
 class BreakpointGraph:
     def __init__(self, red_p_list: List[List[int]], blue_p_list: List[List[int]]):
         # Node blue edge lookup
@@ -127,6 +155,9 @@ class BreakpointGraph:
 
         self.node_to_blue_edges = node_to_blue_edges
         self.node_to_red_edges = node_to_red_edges
+
+        # Because the red/blue edges are undirected, the start_nid defines which node to start from when traversing the
+        # graph from when dumping out the graph back into a list of lists (permutations).
         if red_p_list[0][0] > 0:
             self.start_nid = Node(red_p_list[0][0], SyntenyEnd.TAIL)
         elif red_p_list[0][0] < 0:
@@ -141,6 +172,36 @@ class BreakpointGraph:
             if blue_edge != red_edge:
                 return blue_edge
         return None
+
+    def get_red_blue_cycles(self):
+        remaining_nids = set(self.node_to_blue_edges.keys())
+        next_nid = next(iter(remaining_nids))
+        remaining_nids.remove(next_nid)
+        mode = 'blue'
+        cycles = []
+        cycle = [next_nid]
+        while True:
+            if mode == 'blue':
+                edge = self.node_to_blue_edges[next_nid]
+                mode = 'red'
+            elif mode == 'red':
+                edge = self.node_to_red_edges[next_nid]
+                mode = 'blue'
+            else:
+                raise ValueError('???')
+            next_nid = edge.get_other_node(next_nid)
+            if not remaining_nids:  # this cycle has finished + there are more remaining ids to walk over
+                cycles.append(cycle)
+                break
+            if next_nid not in remaining_nids:  # this cycle has finished, move on to the next cycle
+                cycles.append(cycle)
+                cycle = []
+                next_nid = next(iter(remaining_nids))
+                remaining_nids.remove(next_nid)
+            else:   # this cycle has NOT finished, keep to the next node
+                cycle.append(next_nid)
+                remaining_nids.remove(next_nid)
+        return cycles
 
     def apply_2break(self, blue_edge: ColoredEdge):
         red_edge_1 = self.node_to_red_edges[blue_edge.n1]
@@ -256,13 +317,14 @@ if __name__ == '__main__':
         # [[+9, -8, +12, +7, +1, -14, +13, +3, -5, -11, +6, -2, +10, -4]],
         # [[-11, +8, -10, -2, +3, +4, +13, +6, +12, +9, +5, +7, -14, -1]]
     )
-    print(f'STARTING FROM {bg.get_red_permutations()} AND GOING TO {bg.get_blue_permutations()}')
-    print(f'{bg.to_neato_graph()}')
-    print('----------------')
-    while True:
-        next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_cycle()
-        if next_blue_edge_to_break_on is None:
-            break
-        bg.apply_2break(next_blue_edge_to_break_on)
-        print(f'{bg.get_red_permutations()}')
-        print(f'{bg.to_neato_graph()}')
+    print(f'{bg.get_red_blue_cycles()}')
+    # print(f'STARTING FROM {bg.get_red_permutations()} AND GOING TO {bg.get_blue_permutations()}')
+    # print(f'{bg.to_neato_graph()}')
+    # print('----------------')
+    # while True:
+    #     next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_cycle()
+    #     if next_blue_edge_to_break_on is None:
+    #         break
+    #     bg.apply_2break(next_blue_edge_to_break_on)
+    #     print(f'{bg.get_red_permutations()}')
+    #     print(f'{bg.to_neato_graph()}')
