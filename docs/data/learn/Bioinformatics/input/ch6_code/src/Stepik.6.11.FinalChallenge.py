@@ -2,6 +2,8 @@ import lzma
 from random import randrange
 
 import matplotlib.pyplot as plt
+import matplotlib.collections as mc
+import pylab as pl
 
 with lzma.open('anchors_human_mouse.txt.xz', mode='rt', encoding='utf-8') as f:
     data = f.read()
@@ -32,27 +34,44 @@ for line in lines:
     rows.append(row)
 lines = []  # no longer required -- clear out memory
 
-m_chrs = {row[IDX_M_CHR] for row in rows}
-h_chrs = {row[IDX_H_CHR] for row in rows}
-
-points = []
-# for row in filter(lambda r: r[IDX_H_CHR] == '3', rows):
-# for row in rows:
-for row in filter(lambda r: r[IDX_M_CHR] == '2', rows):
-    h_idx = row[IDX_H_CHR_BEGIN_IDX]
-    m_idx = row[IDX_M_CHR_BEGIN_IDX]
-    m_chr = row[IDX_M_CHR]
-    points.append((m_idx, h_idx, m_chr))
-
-plt.title('All Human Chromosome (starting from 1 to n, then X and Y)')
-plt.xlabel('Mouse')
-plt.ylabel('Human')
-for m_chr in m_chrs:
-    color = f'#{randrange(0x1000000):06x}'
-    plt.scatter(
-        [m_idx for m_idx, _, _ in filter(lambda p: p[2] == m_chr, points)],
-        [h_idx for _, h_idx, _ in filter(lambda p: p[2] == m_chr, points)],
-        color=color,
-        s=1
-    )
+data = []
+color = []
+for x in filter(lambda r: r[IDX_M_CHR] == '2', rows):
+    data.append([(x[IDX_M_CHR_BEGIN_IDX], x[IDX_H_CHR_BEGIN_IDX]), (x[IDX_M_CHR_END_IDX], x[IDX_H_CHR_END_IDX])])
+    color.append((1, 0, 0, 1))
+lc = mc.LineCollection(data, colors=color, linewidths=2)
+fig, ax = pl.subplots()
+ax.add_collection(lc)
+ax.autoscale()
+ax.margins(0.1)
 plt.show()
+
+# data = []
+# for x in filter(lambda r: r[IDX_M_CHR] == '2', rows):
+#     data += [(x[IDX_M_CHR_BEGIN_IDX], x[IDX_M_CHR_END_IDX]), (x[IDX_H_CHR_BEGIN_IDX], x[IDX_H_CHR_END_IDX]), 'r']
+# plt.plot(*data)
+# plt.show()
+
+# m_chrs = {row[IDX_M_CHR] for row in rows}
+# h_chrs = {row[IDX_H_CHR] for row in rows}
+# points = []
+# # for row in filter(lambda r: r[IDX_H_CHR] == '3', rows):
+# # for row in rows:
+# for row in filter(lambda r: r[IDX_M_CHR] == '2', rows):
+#     h_idx = row[IDX_H_CHR_BEGIN_IDX]
+#     m_idx = row[IDX_M_CHR_BEGIN_IDX]
+#     m_chr = row[IDX_M_CHR]
+#     points.append((m_idx, h_idx, m_chr))
+#
+# plt.title('All Human Chromosome (starting from 1 to n, then X and Y)')
+# plt.xlabel('Mouse')
+# plt.ylabel('Human')
+# for m_chr in m_chrs:
+#     color = f'#{randrange(0x1000000):06x}'
+#     plt.scatter(
+#         [m_idx for m_idx, _, _ in filter(lambda p: p[2] == m_chr, points)],
+#         [h_idx for _, h_idx, _ in filter(lambda p: p[2] == m_chr, points)],
+#         color=color,
+#         s=1
+#     )
+# plt.show()

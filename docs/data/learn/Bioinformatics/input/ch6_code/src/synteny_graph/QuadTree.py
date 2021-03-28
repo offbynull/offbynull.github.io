@@ -23,7 +23,7 @@ class QuadTree:
         self.max_x = max_x
         self.max_y = max_y
 
-        self.points: Dict[Tuple[int, int], D] = {}
+        self.points: Optional[Dict[Tuple[int, int], List[D]]] = {}
         self.upperLeft: Optional[QuadTree] = None
         self.upperRight: Optional[QuadTree] = None
         self.lowerLeft: Optional[QuadTree] = None
@@ -37,15 +37,16 @@ class QuadTree:
 
     def add_point(self, x: int, y: int, data: D) -> None:
         assert self.in_range(x, y)
-        if self.points is not None and len(self.points) < self.subdivision_threshold:
-            if (x, y) in self.points:
-                raise ValueError(f'Point already exists: {(x, y)}')
-            self.points[(x, y)] = data
-        elif self.points is not None and len(self.points) == self.subdivision_threshold:
-            self._create_branches()
-            for (_x, _y), _data in self.points.items():
-                self._add_to_branch(_x, _y, _data)
-            self.points = None
+        if self.points is not None:
+            cnt = len(self.points)
+            if cnt < self.subdivision_threshold:
+                self.points.setdefault((x, y), []).append(data)
+            else:
+                self._create_branches()
+                for (_x, _y), _data_instances in self.points.items():
+                    for _data in _data_instances:
+                        self._add_to_branch(_x, _y, _data)
+                self.points = None
         else:
             self._add_to_branch(x, y, data)
 
@@ -93,7 +94,11 @@ class QuadTree:
 
     def get_points(self) -> Set[Tuple[int, int, D]]:
         if self.points is not None:
-            return {(x1, x2, data) for (x1, x2), data in self.points.items()}
+            ret = set()
+            for (x1, x2), data_instances in self.points.items():
+                for data in data_instances:
+                    ret.add((x1, x2, data))
+            return ret
         return self.upperLeft.get_points() | self.upperRight.get_points() | self.lowerLeft.get_points() | self.lowerRight.get_points()
 
     def get_points_within_radius(self, x, y, radius) -> Set[Tuple[int, int, D]]:
