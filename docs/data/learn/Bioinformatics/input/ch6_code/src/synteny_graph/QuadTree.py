@@ -111,7 +111,7 @@ class QuadTree:
         ret = set()
         for cell in cells:
             for point in cell.get_points():
-                if self._distance(point[0], x, point[1], y) <= radius:
+                if QuadTree.distance(point[0], x, point[1], y) <= radius:
                     ret.add(point)
         return ret
 
@@ -131,7 +131,8 @@ class QuadTree:
             cell_row = []
         return found_cells
 
-    def _distance(self, x1, x2, y1, y2) -> float:
+    @staticmethod
+    def distance(x1, x2, y1, y2) -> float:
         return (((x2 - x1) ** 2) + ((y2 - y1) ** 2)) ** 0.5
 
     def _walk_to_branch_containing(self, x, y) -> QuadTree:
@@ -156,7 +157,7 @@ if __name__ == '__main__':
 
     expected = set()
     for p in qt.get_points():
-        if qt._distance(p[0], 500, p[1], 500) <= 50:
+        if qt.distance(p[0], 500, p[1], 500) <= 50:
             expected.add(p)
 
     actual = set()
