@@ -110,10 +110,10 @@ class QuadTree(Generic[D]):
 
     def get_points_within_radius(self, x: int, y: int, radius: int) -> Set[Tuple[int, int, D]]:
         cells = self._find_confining_cells(
-            x - radius,
-            x + radius,
-            y - radius,
-            y + radius
+            max(x - radius, self.min_x),
+            min(x + radius, self.max_x),
+            max(y - radius, self.min_y),
+            min(y + radius, self.max_y)
         )
         ret = set()
         for cell in cells:
@@ -123,6 +123,8 @@ class QuadTree(Generic[D]):
         return ret
 
     def _find_confining_cells(self, min_x: int, max_x: int, min_y: int, max_y: int) -> List[QuadTree]:
+        assert min_x >= self.min_x and max_x <= self.max_x, "X is OOB"
+        assert min_y >= self.min_y and max_y <= self.max_y, "Y is OOB"
         found_cells = []
         cell_row = []
         next_x = min_x
@@ -150,7 +152,7 @@ class QuadTree(Generic[D]):
         elif self.lowerRight.in_range(x, y):
             return self.lowerRight._walk_to_branch_containing(x, y)
         else:
-            ValueError('???')
+            raise ValueError('???')
 
 
 if __name__ == '__main__':

@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import colorsys
 import lzma
+import random
 from enum import Enum
 from math import sqrt, ceil
 from typing import Iterable, Set, Dict, Optional, List
@@ -9,83 +12,44 @@ import matplotlib.pyplot as plt
 import pylab as pl
 
 from synteny_graph.GeometryUtils import distance, slope
+from synteny_graph.Match import Match, MatchType
 from synteny_graph.QuadTree import QuadTree
 
 
-class MatchType(Enum):
-    NORMAL = 'NORMAL',
-    REVERSE_COMPLEMENT = 'REVERSE_COMPLEMENT'
+class Direction(Enum):
+    FORWARD = 'FORWARD'
+    BACKWARD = 'BACKWARD'
 
 
-class Match:
-    __slots__ = ['y_axis_chromosome', 'y_axis_chromosome_min_idx', 'y_axis_chromosome_max_idx',
-                 'x_axis_chromosome', 'x_axis_chromosome_min_idx', 'x_axis_chromosome_max_idx', 'type']
-
-    def __init__(
-            self,
-            y_axis_chromosome: str,
-            y_axis_chromosome_min_idx: int,
-            y_axis_chromosome_max_idx: int,
-            x_axis_chromosome: str,
-            x_axis_chromosome_min_idx: int,
-            x_axis_chromosome_max_idx: int,
-            type: MatchType):
-        assert x_axis_chromosome_min_idx < x_axis_chromosome_max_idx
-        assert y_axis_chromosome_min_idx < y_axis_chromosome_max_idx
-        self.y_axis_chromosome = y_axis_chromosome
-        self.y_axis_chromosome_min_idx = y_axis_chromosome_min_idx
-        self.y_axis_chromosome_max_idx = y_axis_chromosome_max_idx
-        self.x_axis_chromosome = x_axis_chromosome
-        self.x_axis_chromosome_min_idx = x_axis_chromosome_min_idx
-        self.x_axis_chromosome_max_idx = x_axis_chromosome_max_idx
-        self.type = type
-
-    def get_start_point(self):
-        if self.type == MatchType.NORMAL:
-            return self.x_axis_chromosome_min_idx, self.y_axis_chromosome_min_idx
-        elif self.type == MatchType.NORMAL:
-            return self.x_axis_chromosome_min_idx, self.y_axis_chromosome_max_idx
-        else:
-            raise ValueError('???')
-
-    def get_end_point(self):
-        if self.type == MatchType.NORMAL:
-            return self.x_axis_chromosome_max_idx, self.y_axis_chromosome_max_idx
-        elif self.type == MatchType.NORMAL:
-            return self.x_axis_chromosome_max_idx, self.y_axis_chromosome_min_idx
-        else:
-            raise ValueError('???')
-
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-ENSURE THIS WORKS
-def _find_potential_matches(quadtree: QuadTree[Match], remaining: Set[Match], center_x: int, center_y: int, radius: int, slope1: float, slope2: float, type: MatchType):
+def _find_potential_matches(
+        quadtree: QuadTree[Match],
+        remaining: Set[Match],
+        x_axis_chromosome: str,
+        y_axis_chromosome: str,
+        center_x: int,
+        center_y: int,
+        radius: int,
+        slope1: float,
+        slope2: float,
+        type: MatchType,
+        direction: Direction
+):
     slope1, slope2 = sorted([slope1, slope2])
     quadtree_matches = quadtree.get_points_within_radius(center_x, center_y, radius)
     final_matches = set()
     for x, y, match in quadtree_matches:
-        if match.type != type or match not in remaining:
+        if match.type != type or match.x_axis_chromosome != x_axis_chromosome or match.y_axis_chromosome != y_axis_chromosome or match not in remaining:
             continue
-        if match.type == MatchType.NORMAL:
-            _slope = slope(center_x, x, center_y, y)
-        elif match.type == MatchType.REVERSE_COMPLEMENT:
-            _slope = slope(center_x, x, y, center_y)
+        if direction == Direction.FORWARD:
+            if x >= center_x:
+                _slope = slope(center_x, x, center_y, y)
+            else:
+                continue
+        elif direction == Direction.BACKWARD:
+            if x <= center_x:
+                _slope = slope(center_x, x, y, center_y)
+            else:
+                continue
         else:
             raise ValueError('???')
         if slope1 <= _slope <= slope2:
@@ -99,11 +63,11 @@ def _scan_norm_to_end(starting_match: Match, remaining: Set[Match], norm_start_q
     assert starting_match in remaining
     end_x, end_y = starting_match.get_end_point()
     while True:
-        potential_matches = _find_potential_matches(norm_start_quadtree, remaining, end_x, end_y, radius, 0.1, 1.0, MatchType.NORMAL)
+        potential_matches = _find_potential_matches(norm_start_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, end_x, end_y, radius, 0.1, 1.0, MatchType.NORMAL, Direction.FORWARD)
         if not potential_matches:
             break
         found_match = min(potential_matches, key=lambda x: x[1])
-        end_x, end_y = found_match[0].get_start_point()
+        end_x, end_y = found_match[0].get_end_point()
         chain.append(found_match[0])
 
 
@@ -113,44 +77,44 @@ def _scan_norm_to_start(starting_match: Match, remaining: Set[Match], norm_end_q
     start_x, start_y = starting_match.get_start_point()
     temp_chain = []
     while True:
-        potential_matches = _find_potential_matches(norm_end_quadtree, remaining, start_x, start_y, radius, 0.1, 1.0, MatchType.NORMAL)
+        potential_matches = _find_potential_matches(norm_end_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, start_x, start_y, radius, 0.1, 1.0, MatchType.NORMAL, Direction.BACKWARD)
         if not potential_matches:
             break
         found_match = min(potential_matches, key=lambda x: x[1])
-        start_x, start_y = found_match[0].get_end_point()
+        start_x, start_y = found_match[0].get_start_point()
         temp_chain.append(found_match[0])
     chain[0:0] = temp_chain[::-1]
 
 
 def _scan_rc_to_end(starting_match: Match, remaining: Set[Match], rc_start_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
-    assert starting_match.type == MatchType.NORMAL
+    assert starting_match.type == MatchType.REVERSE_COMPLEMENT
     assert starting_match in remaining
     end_x, end_y = starting_match.get_end_point()
     while remaining:
-        potential_matches = _find_potential_matches(rc_start_quadtree, remaining, end_x, end_y, radius, -0.1, -1.0, MatchType.REVERSE_COMPLEMENT)
+        potential_matches = _find_potential_matches(rc_start_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, end_x, end_y, radius, -0.1, -1.0, MatchType.REVERSE_COMPLEMENT, Direction.FORWARD)
         if not potential_matches:
             break
         found_match = min(potential_matches, key=lambda x: x[1])
-        end_x, end_y = found_match[0].get_start_point()
+        end_x, end_y = found_match[0].get_end_point()
         chain.append(found_match[0])
 
 
 def _scan_rc_to_start(starting_match: Match, remaining: Set[Match], rc_end_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
-    assert starting_match.type == MatchType.NORMAL
+    assert starting_match.type == MatchType.REVERSE_COMPLEMENT
     assert starting_match in remaining
     start_x, start_y = starting_match.get_start_point()
     temp_chain = []
     while True:
-        potential_matches = _find_potential_matches(rc_end_quadtree, remaining, start_x, start_y, radius, -0.1, -1.0, MatchType.REVERSE_COMPLEMENT)
+        potential_matches = _find_potential_matches(rc_end_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, start_x, start_y, radius, -0.1, -1.0, MatchType.REVERSE_COMPLEMENT, Direction.BACKWARD)
         if not potential_matches:
             break
         found_match = min(potential_matches, key=lambda x: x[1])
-        start_x, start_y = found_match[0].get_end_point()
+        start_x, start_y = found_match[0].get_start_point()
         temp_chain.append(found_match[0])
     chain[0:0] = temp_chain[::-1]
 
 
-def identify_synteny_blocks(matches: Iterable[Match], radius: int = 900, synteny_min_len: int = 30000):
+def identify_synteny_blocks(matches: Iterable[Match], radius: int, synteny_min_len: int):
     min_x = min(m.x_axis_chromosome_min_idx for m in matches)
     max_x = max(m.x_axis_chromosome_max_idx for m in matches)
     min_y = min(m.y_axis_chromosome_min_idx for m in matches)
@@ -180,7 +144,7 @@ def identify_synteny_blocks(matches: Iterable[Match], radius: int = 900, synteny
         rc_end_quadtree = rc_end_quadtrees[y_axis_chromosome]
         remaining = {m for m in matches if m.y_axis_chromosome == y_axis_chromosome}
         while remaining:
-            x, y, m = next(iter(remaining))
+            m = next(iter(remaining))
             if m.type == MatchType.NORMAL:
                 end_chain: List[Match] = []
                 start_chain: List[Match] = []
@@ -199,7 +163,8 @@ def identify_synteny_blocks(matches: Iterable[Match], radius: int = 900, synteny
             chain_dist = distance(chain_end_pt[0], chain_start_pt[0], chain_end_pt[1], chain_start_pt[1])
             if chain_dist >= synteny_min_len:
                 remaining.difference_update(chain)
-                ret.append(chain)
+                merged_m = Match.merge(chain)
+                ret.append(merged_m)
             else:
                 remaining.remove(m)
     return ret
@@ -271,6 +236,9 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
+
+    # matches = random.sample(matches, len(matches) // 4)
+    matches = identify_synteny_blocks(matches, radius=50000, synteny_min_len=50000 * 15)
 
     plot_raw(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()
