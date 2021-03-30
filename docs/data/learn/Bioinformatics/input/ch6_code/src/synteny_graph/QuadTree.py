@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from random import sample
-from typing import Optional, List, Tuple, Set, TypeVar, Dict
+from typing import Optional, List, Tuple, Set, TypeVar, Dict, Generic
+
+from synteny_graph.GeometryUtils import distance
 
 D = TypeVar('D')
 
 
-class QuadTree:
+class QuadTree(Generic[D]):
     def __init__(
             self,
             min_x: int,
@@ -14,7 +16,8 @@ class QuadTree:
             min_y: int,
             max_y: int,
             parent: Optional[QuadTree] = None,
-            subdivision_threshold: int = 8
+            subdivision_threshold: int = 8,
+            single_points_only: bool = True  # if true, only 1 instance of a single point may exist
     ):
         assert min_x <= max_x
         assert min_y <= max_y
@@ -31,6 +34,7 @@ class QuadTree:
 
         self.parent = parent
         self.subdivision_threshold = subdivision_threshold
+        self.single_points_only = single_points_only
 
     def in_range(self, x: int, y: int) -> bool:
         return self.min_x <= x <= self.max_x and self.min_y <= y <= self.max_y
@@ -40,7 +44,10 @@ class QuadTree:
         if self.points is not None:
             cnt = len(self.points)
             if cnt < self.subdivision_threshold:
-                self.points.setdefault((x, y), []).append(data)
+                instances = self.points.setdefault((x, y), [])
+                if len(instances) > 0 and self.single_points_only:
+                    raise ValueError(f'Attempting to insert duplicate point at ({x}, {y})')
+                instances.append(data)
             else:
                 self._create_branches()
                 for (_x, _y), _data_instances in self.points.items():
@@ -101,7 +108,7 @@ class QuadTree:
             return ret
         return self.upperLeft.get_points() | self.upperRight.get_points() | self.lowerLeft.get_points() | self.lowerRight.get_points()
 
-    def get_points_within_radius(self, x, y, radius) -> Set[Tuple[int, int, D]]:
+    def get_points_within_radius(self, x: int, y: int, radius: int) -> Set[Tuple[int, int, D]]:
         cells = self._find_confining_cells(
             x - radius,
             x + radius,
@@ -111,11 +118,11 @@ class QuadTree:
         ret = set()
         for cell in cells:
             for point in cell.get_points():
-                if QuadTree.distance(point[0], x, point[1], y) <= radius:
+                if distance(point[0], x, point[1], y) <= radius:
                     ret.add(point)
         return ret
 
-    def _find_confining_cells(self, min_x, max_x, min_y, max_y) -> List[QuadTree]:
+    def _find_confining_cells(self, min_x: int, max_x: int, min_y: int, max_y: int) -> List[QuadTree]:
         found_cells = []
         cell_row = []
         next_x = min_x
@@ -131,11 +138,7 @@ class QuadTree:
             cell_row = []
         return found_cells
 
-    @staticmethod
-    def distance(x1, x2, y1, y2) -> float:
-        return (((x2 - x1) ** 2) + ((y2 - y1) ** 2)) ** 0.5
-
-    def _walk_to_branch_containing(self, x, y) -> QuadTree:
+    def _walk_to_branch_containing(self, x: int, y: int) -> QuadTree:
         if self.points is not None:
             return self
         if self.upperLeft.in_range(x, y):
@@ -157,7 +160,7 @@ if __name__ == '__main__':
 
     expected = set()
     for p in qt.get_points():
-        if qt.distance(p[0], 500, p[1], 500) <= 50:
+        if distance(p[0], 500, p[1], 500) <= 50:
             expected.add(p)
 
     actual = set()

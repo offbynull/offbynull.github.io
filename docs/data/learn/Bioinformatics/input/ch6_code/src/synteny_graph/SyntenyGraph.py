@@ -2,12 +2,13 @@ import colorsys
 import lzma
 from enum import Enum
 from math import sqrt, ceil
-from typing import Iterable, Set, Dict, Optional
+from typing import Iterable, Set, Dict, Optional, List
 
 import matplotlib.collections as mc
 import matplotlib.pyplot as plt
 import pylab as pl
 
+from synteny_graph.GeometryUtils import distance, slope
 from synteny_graph.QuadTree import QuadTree
 
 
@@ -39,49 +40,169 @@ class Match:
         self.x_axis_chromosome_max_idx = x_axis_chromosome_max_idx
         self.type = type
 
+    def get_start_point(self):
+        if self.type == MatchType.NORMAL:
+            return self.x_axis_chromosome_min_idx, self.y_axis_chromosome_min_idx
+        elif self.type == MatchType.NORMAL:
+            return self.x_axis_chromosome_min_idx, self.y_axis_chromosome_max_idx
+        else:
+            raise ValueError('???')
 
-def identify_synteny_blocks(self, matches: Iterable[Match], radius: int = 300):
+    def get_end_point(self):
+        if self.type == MatchType.NORMAL:
+            return self.x_axis_chromosome_max_idx, self.y_axis_chromosome_max_idx
+        elif self.type == MatchType.NORMAL:
+            return self.x_axis_chromosome_max_idx, self.y_axis_chromosome_min_idx
+        else:
+            raise ValueError('???')
+
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+ENSURE THIS WORKS
+def _find_potential_matches(quadtree: QuadTree[Match], remaining: Set[Match], center_x: int, center_y: int, radius: int, slope1: float, slope2: float, type: MatchType):
+    slope1, slope2 = sorted([slope1, slope2])
+    quadtree_matches = quadtree.get_points_within_radius(center_x, center_y, radius)
+    final_matches = set()
+    for x, y, match in quadtree_matches:
+        if match.type != type or match not in remaining:
+            continue
+        if match.type == MatchType.NORMAL:
+            _slope = slope(center_x, x, center_y, y)
+        elif match.type == MatchType.REVERSE_COMPLEMENT:
+            _slope = slope(center_x, x, y, center_y)
+        else:
+            raise ValueError('???')
+        if slope1 <= _slope <= slope2:
+            dist = distance(center_x, x, center_y, y)
+            final_matches.add((match, dist))
+    return final_matches
+
+
+def _scan_norm_to_end(starting_match: Match, remaining: Set[Match], norm_start_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
+    assert starting_match.type == MatchType.NORMAL
+    assert starting_match in remaining
+    end_x, end_y = starting_match.get_end_point()
+    while True:
+        potential_matches = _find_potential_matches(norm_start_quadtree, remaining, end_x, end_y, radius, 0.1, 1.0, MatchType.NORMAL)
+        if not potential_matches:
+            break
+        found_match = min(potential_matches, key=lambda x: x[1])
+        end_x, end_y = found_match[0].get_start_point()
+        chain.append(found_match[0])
+
+
+def _scan_norm_to_start(starting_match: Match, remaining: Set[Match], norm_end_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
+    assert starting_match.type == MatchType.NORMAL
+    assert starting_match in remaining
+    start_x, start_y = starting_match.get_start_point()
+    temp_chain = []
+    while True:
+        potential_matches = _find_potential_matches(norm_end_quadtree, remaining, start_x, start_y, radius, 0.1, 1.0, MatchType.NORMAL)
+        if not potential_matches:
+            break
+        found_match = min(potential_matches, key=lambda x: x[1])
+        start_x, start_y = found_match[0].get_end_point()
+        temp_chain.append(found_match[0])
+    chain[0:0] = temp_chain[::-1]
+
+
+def _scan_rc_to_end(starting_match: Match, remaining: Set[Match], rc_start_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
+    assert starting_match.type == MatchType.NORMAL
+    assert starting_match in remaining
+    end_x, end_y = starting_match.get_end_point()
+    while remaining:
+        potential_matches = _find_potential_matches(rc_start_quadtree, remaining, end_x, end_y, radius, -0.1, -1.0, MatchType.REVERSE_COMPLEMENT)
+        if not potential_matches:
+            break
+        found_match = min(potential_matches, key=lambda x: x[1])
+        end_x, end_y = found_match[0].get_start_point()
+        chain.append(found_match[0])
+
+
+def _scan_rc_to_start(starting_match: Match, remaining: Set[Match], rc_end_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
+    assert starting_match.type == MatchType.NORMAL
+    assert starting_match in remaining
+    start_x, start_y = starting_match.get_start_point()
+    temp_chain = []
+    while True:
+        potential_matches = _find_potential_matches(rc_end_quadtree, remaining, start_x, start_y, radius, -0.1, -1.0, MatchType.REVERSE_COMPLEMENT)
+        if not potential_matches:
+            break
+        found_match = min(potential_matches, key=lambda x: x[1])
+        start_x, start_y = found_match[0].get_end_point()
+        temp_chain.append(found_match[0])
+    chain[0:0] = temp_chain[::-1]
+
+
+def identify_synteny_blocks(matches: Iterable[Match], radius: int = 900, synteny_min_len: int = 30000):
     min_x = min(m.x_axis_chromosome_min_idx for m in matches)
     max_x = max(m.x_axis_chromosome_max_idx for m in matches)
     min_y = min(m.y_axis_chromosome_min_idx for m in matches)
     max_y = max(m.y_axis_chromosome_max_idx for m in matches)
     y_axis_chromosomes: Set[str] = {m.y_axis_chromosome for m in matches}
-    quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
+    norm_start_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
+    norm_end_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
+    rc_start_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
+    rc_end_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
     for m in matches:
-        quadtrees[m.y_axis_chromosome].add_point(m.x_axis_chromosome_min_idx, m.y_axis_chromosome_min_idx, m)
-        quadtrees[m.y_axis_chromosome].add_point(m.x_axis_chromosome_max_idx, m.y_axis_chromosome_max_idx, m)
+        start_pt = m.get_start_point() + (m,)
+        end_pt = m.get_end_point() + (m,)
+        if m.type == MatchType.NORMAL:
+            norm_start_quadtrees[m.y_axis_chromosome].add_point(*start_pt)
+            norm_end_quadtrees[m.y_axis_chromosome].add_point(*end_pt)
+        elif m.type == MatchType.REVERSE_COMPLEMENT:
+            rc_start_quadtrees[m.y_axis_chromosome].add_point(*start_pt)
+            rc_end_quadtrees[m.y_axis_chromosome].add_point(*end_pt)
+        else:
+            raise ValueError('???')
 
+    ret = []
     for y_axis_chromosome in y_axis_chromosomes:
-        quadtree = quadtrees[y_axis_chromosome]
+        norm_start_quadtree = norm_start_quadtrees[y_axis_chromosome]
+        norm_end_quadtree = norm_end_quadtrees[y_axis_chromosome]
+        rc_start_quadtree = rc_start_quadtrees[y_axis_chromosome]
+        rc_end_quadtree = rc_end_quadtrees[y_axis_chromosome]
         remaining = {m for m in matches if m.y_axis_chromosome == y_axis_chromosome}
         while remaining:
             x, y, m = next(iter(remaining))
-            remaining.remove(m)
-            while True:
-                # INCOMPLETE / NOT WORKING / NOT TESTED
-                # FIX THIS: Scan forward until no more, then backward until no more, then if the distance is large enough consider it a synteny block
-                # FIX THIS: Scan forward until no more, then backward until no more, then if the distance is large enough consider it a synteny block
-                # FIX THIS: Scan forward until no more, then backward until no more, then if the distance is large enough consider it a synteny block
-                # FIX THIS: Scan forward until no more, then backward until no more, then if the distance is large enough consider it a synteny block
-                if m.type == MatchType.NORMAL:
-                    points = quadtree.get_points_within_radius(
-                        m.x_axis_chromosome_max_idx,
-                        m.y_axis_chromosome_max_idx,
-                        radius
-                    )
-                elif m.type == MatchType.REVERSE_COMPLEMENT:
-                    points = quadtree.get_points_within_radius(
-                        m.x_axis_chromosome_min_idx,
-                        m.y_axis_chromosome_min_idx,
-                        radius
-                    )
-                else:
-                    raise ValueError('???')
-                points = {(x, y, next_m) for x, y, next_m in points if next_m.type == m.type and next_m.x_axis_chromosome == m.x_axis_chromosome and (x, y, m) in remaining}
-                if not points:
-                    break
-                closest_point = min(points, key=lambda _x, _y, _: QuadTree.distance(x, _x, y, _y))
-                remaining.remove(closest_point)
+            if m.type == MatchType.NORMAL:
+                end_chain: List[Match] = []
+                start_chain: List[Match] = []
+                _scan_norm_to_end(m, remaining, norm_start_quadtree, radius, end_chain)
+                _scan_norm_to_start(m, remaining, norm_end_quadtree, radius, start_chain)
+            elif m.type == MatchType.REVERSE_COMPLEMENT:
+                end_chain: List[Match] = []
+                start_chain: List[Match] = []
+                _scan_rc_to_end(m, remaining, rc_start_quadtree, radius, end_chain)
+                _scan_rc_to_start(m, remaining, rc_end_quadtree, radius, start_chain)
+            else:
+                raise ValueError('???')
+            chain = start_chain + [m] + end_chain
+            chain_start_pt = chain[0].get_start_point()
+            chain_end_pt = chain[-1].get_end_point()
+            chain_dist = distance(chain_end_pt[0], chain_start_pt[0], chain_end_pt[1], chain_start_pt[1])
+            if chain_dist >= synteny_min_len:
+                remaining.difference_update(chain)
+                ret.append(chain)
+            else:
+                remaining.remove(m)
+    return ret
 
 
 def plot_raw(
