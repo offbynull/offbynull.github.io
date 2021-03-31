@@ -44,10 +44,10 @@ class QuadTree(Generic[D]):
         if self.points is not None:
             cnt = len(self.points)
             if cnt < self.subdivision_threshold:
-                instances = self.points.setdefault((x, y), [])
+                instances = self.points.setdefault((x, y), set())
                 if len(instances) > 0 and self.single_points_only:
                     raise ValueError(f'Attempting to insert duplicate point at ({x}, {y})')
-                instances.append(data)
+                instances.add(data)
             else:
                 self._create_branches()
                 for (_x, _y), _data_instances in self.points.items():
@@ -98,6 +98,46 @@ class QuadTree(Generic[D]):
             self.max_y,
             self
         )
+
+    def remove_point(self, x: int, y: int, data: D) -> None:
+        assert self.in_range(x, y)
+        if self.points is not None:
+            pt = (x, y)
+            if pt not in self.points:
+                raise ValueError(f'No point at ({x}, {y})')
+            instances = self.points[pt]
+            if data not in instances:
+                raise ValueError(f'Data does not exist at point ({x}, {y})')
+            instances.remove(data)
+            if not instances:
+                del self.points[pt]
+        else:
+            self._remove_from_branch(x, y, data)
+        if self.points is None:
+            self._destroy_branches()  # THIS CELL AND SOME OF ITS PARENTS MAY BE REMOVED FROM TREE AFTER THIS
+
+    def _remove_from_branch(self, x: int, y: int, data: D) -> None:
+        if self.upperLeft.in_range(x, y):
+            self.upperLeft.remove_point(x, y, data)
+        elif self.upperRight.in_range(x, y):
+            self.upperRight.remove_point(x, y, data)
+        elif self.lowerLeft.in_range(x, y):
+            self.lowerLeft.remove_point(x, y, data)
+        elif self.lowerRight.in_range(x, y):
+            self.lowerRight.remove_point(x, y, data)
+        else:
+            ValueError('???')
+
+    def _destroy_branches(self) -> None:
+        if self.upperLeft.points is not None and len(self.upperLeft.points) == 0\
+                and self.upperRight.points is not None and len(self.upperRight.points) == 0\
+                and self.lowerLeft.points is not None and len(self.lowerLeft.points) == 0\
+                and self.lowerRight.points is not None and len(self.lowerRight.points) == 0:
+            self.upperLeft = None
+            self.upperRight = None
+            self.lowerLeft = None
+            self.lowerRight = None
+            self.points = {}
 
     def get_points(self) -> Set[Tuple[int, int, D]]:
         if self.points is not None:
@@ -157,6 +197,8 @@ class QuadTree(Generic[D]):
 
 if __name__ == '__main__':
     qt = QuadTree(0, 1000, 0, 1000, subdivision_threshold=4)
+
+
     for x, y in zip(sample(range(0, 1000), 1000), sample(range(0, 1000), 1000)):
         qt.add_point(x, y, '')
 
@@ -164,13 +206,24 @@ if __name__ == '__main__':
     for p in qt.get_points():
         if distance(p[0], 500, p[1], 500) <= 50:
             expected.add(p)
-
     actual = set()
     for p in qt.get_points_within_radius(500, 500, 50):
         actual.add(p)
-
     print(f'{expected}')
     print(f'{actual}')
     print(f'{expected == actual}')
 
 
+    for p in qt.get_points():
+        qt.remove_point(p[0], p[1], p[2])
+
+    expected = set()
+    for p in qt.get_points():
+        if distance(p[0], 500, p[1], 500) <= 50:
+            expected.add(p)
+    actual = set()
+    for p in qt.get_points_within_radius(500, 500, 50):
+        actual.add(p)
+    print(f'{expected}')
+    print(f'{actual}')
+    print(f'{expected == actual}')
