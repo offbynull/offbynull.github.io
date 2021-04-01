@@ -12,4 +12,7 @@ def slope(x1, x2, y1, y2) -> float:
 def angle(x1, x2, y1, y2) -> float:
     x = x2 - x1
     y = y2 - y1
-    return degrees(atan2(y, x))
+    ret = degrees(atan2(y, x))
+    if ret < 0:
+        ret = 360.0 - -ret
+    return ret

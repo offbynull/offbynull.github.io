@@ -96,7 +96,7 @@ class MatchIndexer:
                 quadtree,
                 x, y,
                 radius,
-                10, 80
+                0, 90
             )
             if not potential_matches:
                 break
@@ -116,7 +116,7 @@ class MatchIndexer:
                 quadtree,
                 x, y,
                 radius,
-                190, 260
+                180, 270
             )
             if not potential_matches:
                 break
@@ -136,7 +136,7 @@ class MatchIndexer:
                 quadtree,
                 x, y,
                 radius,
-                280, 350
+                270, 0  # 0 degrees = 360 degrees
             )
             if not potential_matches:
                 break
@@ -156,7 +156,7 @@ class MatchIndexer:
                 quadtree,
                 x, y,
                 radius,
-                100, 170
+                90, 180
             )
             if not potential_matches:
                 break

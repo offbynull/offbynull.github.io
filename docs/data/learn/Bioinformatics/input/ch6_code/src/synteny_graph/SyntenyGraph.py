@@ -2,98 +2,16 @@ from __future__ import annotations
 
 import colorsys
 import lzma
-import random
 from math import sqrt, ceil
-from typing import Iterable, Set, Dict, Optional, List
+from typing import Iterable, Set, Optional
 
 import matplotlib.collections as mc
 import matplotlib.pyplot as plt
 import numpy
 import pylab as pl
 
-from synteny_graph.GeometryUtils import distance, angle
 from synteny_graph.Match import Match, MatchType
-from synteny_graph.QuadTree import QuadTree
-
-
-def _find_potential_matches(
-        quadtree: QuadTree[Match],
-        remaining: Set[Match],
-        x_axis_chromosome: str,
-        y_axis_chromosome: str,
-        center_x: int,
-        center_y: int,
-        radius: int,
-        min_degree: float,
-        max_degree: float,
-        type: MatchType
-):
-    quadtree_matches = quadtree.get_points_within_radius(center_x, center_y, radius)
-    final_matches = set()
-    for x, y, match in quadtree_matches:
-        if match.type != type or match.x_axis_chromosome != x_axis_chromosome or match.y_axis_chromosome != y_axis_chromosome or match not in remaining:
-            continue
-        _angle = angle(center_x, x, center_y, y)
-        if min_degree <= _angle <= max_degree:
-            dist = distance(center_x, x, center_y, y)
-            final_matches.add((match, dist))
-    return final_matches
-
-
-def _scan_norm_to_end(starting_match: Match, remaining: Set[Match], norm_start_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
-    assert starting_match.type == MatchType.NORMAL
-    assert starting_match in remaining
-    end_x, end_y = starting_match.get_end_point()
-    while True:
-        potential_matches = _find_potential_matches(norm_start_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, end_x, end_y, radius, 10, 80, MatchType.NORMAL)
-        if not potential_matches:
-            break
-        found_match = min(potential_matches, key=lambda x: x[1])
-        end_x, end_y = found_match[0].get_end_point()
-        chain.append(found_match[0])
-
-
-def _scan_norm_to_start(starting_match: Match, remaining: Set[Match], norm_end_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
-    assert starting_match.type == MatchType.NORMAL
-    assert starting_match in remaining
-    start_x, start_y = starting_match.get_start_point()
-    temp_chain = []
-    while True:
-        potential_matches = _find_potential_matches(norm_end_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, start_x, start_y, radius, 190, 260, MatchType.NORMAL)
-        if not potential_matches:
-            break
-        found_match = min(potential_matches, key=lambda x: x[1])
-        start_x, start_y = found_match[0].get_start_point()
-        temp_chain.append(found_match[0])
-    chain[0:0] = temp_chain[::-1]
-
-
-def _scan_rc_to_end(starting_match: Match, remaining: Set[Match], rc_start_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
-    assert starting_match.type == MatchType.REVERSE_COMPLEMENT
-    assert starting_match in remaining
-    end_x, end_y = starting_match.get_end_point()
-    while remaining:
-        potential_matches = _find_potential_matches(rc_start_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, end_x, end_y, radius, 280, 350, MatchType.REVERSE_COMPLEMENT)
-        if not potential_matches:
-            break
-        found_match = min(potential_matches, key=lambda x: x[1])
-        end_x, end_y = found_match[0].get_end_point()
-        chain.append(found_match[0])
-
-
-def _scan_rc_to_start(starting_match: Match, remaining: Set[Match], rc_end_quadtree: QuadTree[Match], radius: int, chain: List[Match]):
-    assert starting_match.type == MatchType.REVERSE_COMPLEMENT
-    assert starting_match in remaining
-    start_x, start_y = starting_match.get_start_point()
-    temp_chain = []
-    while True:
-        potential_matches = _find_potential_matches(rc_end_quadtree, remaining, starting_match.x_axis_chromosome, starting_match.y_axis_chromosome, start_x, start_y, radius, 100, 170, MatchType.REVERSE_COMPLEMENT)
-        if not potential_matches:
-            break
-        found_match = min(potential_matches, key=lambda x: x[1])
-        start_x, start_y = found_match[0].get_start_point()
-        temp_chain.append(found_match[0])
-    chain[0:0] = temp_chain[::-1]
+from synteny_graph.MatchIndexer import MatchIndexer
 
 
 def distance_merge(matches: Iterable[Match], radius: int, filter_min_len: int):
@@ -101,54 +19,30 @@ def distance_merge(matches: Iterable[Match], radius: int, filter_min_len: int):
     max_x = max(m.x_axis_chromosome_max_idx for m in matches)
     min_y = min(m.y_axis_chromosome_min_idx for m in matches)
     max_y = max(m.y_axis_chromosome_max_idx for m in matches)
-    y_axis_chromosomes: Set[str] = {m.y_axis_chromosome for m in matches}
-    norm_start_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
-    norm_end_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
-    rc_start_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
-    rc_end_quadtrees: Dict[str, QuadTree] = {chromosome: QuadTree(min_x, max_x, min_y, max_y) for chromosome in y_axis_chromosomes}
+    indexer = MatchIndexer(min_x, max_x, min_y, max_y)
+
     for m in matches:
-        start_pt = m.get_start_point() + (m,)
-        end_pt = m.get_end_point() + (m,)
-        if m.type == MatchType.NORMAL:
-            norm_start_quadtrees[m.y_axis_chromosome].add_point(*start_pt)
-            norm_end_quadtrees[m.y_axis_chromosome].add_point(*end_pt)
-        elif m.type == MatchType.REVERSE_COMPLEMENT:
-            rc_start_quadtrees[m.y_axis_chromosome].add_point(*start_pt)
-            rc_end_quadtrees[m.y_axis_chromosome].add_point(*end_pt)
-        else:
-            raise ValueError('???')
+        indexer.index(m)
 
     ret = []
-    for y_axis_chromosome in y_axis_chromosomes:
-        norm_start_quadtree = norm_start_quadtrees[y_axis_chromosome]
-        norm_end_quadtree = norm_end_quadtrees[y_axis_chromosome]
-        rc_start_quadtree = rc_start_quadtrees[y_axis_chromosome]
-        rc_end_quadtree = rc_end_quadtrees[y_axis_chromosome]
-        remaining = {m for m in matches if m.y_axis_chromosome == y_axis_chromosome}
-        while remaining:
-            m = next(iter(remaining))
-            if m.type == MatchType.NORMAL:
-                end_chain: List[Match] = []
-                start_chain: List[Match] = []
-                _scan_norm_to_end(m, remaining, norm_start_quadtree, radius, end_chain)
-                _scan_norm_to_start(m, remaining, norm_end_quadtree, radius, start_chain)
-            elif m.type == MatchType.REVERSE_COMPLEMENT:
-                end_chain: List[Match] = []
-                start_chain: List[Match] = []
-                _scan_rc_to_end(m, remaining, rc_start_quadtree, radius, end_chain)
-                _scan_rc_to_start(m, remaining, rc_end_quadtree, radius, start_chain)
-            else:
-                raise ValueError('???')
-            chain = start_chain + [m] + end_chain
-            chain_start_pt = chain[0].get_start_point()
-            chain_end_pt = chain[-1].get_end_point()
-            chain_dist = distance(chain_end_pt[0], chain_start_pt[0], chain_end_pt[1], chain_start_pt[1])
-            if chain_dist >= filter_min_len:
-                remaining.difference_update(chain)
-                merged_m = Match.merge(chain)
-                ret.append(merged_m)
-            else:
-                remaining.remove(m)
+    remaining = set(matches)
+    while remaining:
+        m = next(iter(remaining))
+        chain = indexer.scan(m, radius)
+        # if it didn't result in a larger chain, remove it from consideration and add it to the result set
+        if chain == [m]:
+            indexer.unindex(m)
+            remaining.remove(m)
+            if m.get_length() >= filter_min_len:
+                ret.append(m)
+            continue
+        # merge the chain, then substitute merged in for the chained matches used to create it
+        merged = Match.merge(chain)
+        for _m in chain:
+            indexer.unindex(_m)
+            remaining.remove(_m)
+        indexer.index(merged)
+        remaining.add(merged)
     return ret
 
 
@@ -218,38 +112,40 @@ if __name__ == '__main__':
         matches.append(m)
     lines = []  # no longer required -- clear out memory
 
-    matches = [m for m in matches if m.y_axis_chromosome == '1']
+    matches = [m for m in matches if m.y_axis_chromosome == '2']
     # matches = random.sample(matches, len(matches) // 10)
     print(f'{len(matches)}')
     matches = distance_merge(matches, radius=10000, filter_min_len=0)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=20000, filter_min_len=0)
+    matches = distance_merge(matches, radius=10000, filter_min_len=0)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=30000, filter_min_len=0)
+    matches = distance_merge(matches, radius=10000, filter_min_len=0)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=40000, filter_min_len=0)
+    matches = distance_merge(matches, radius=10000, filter_min_len=0)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=50000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=60000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=70000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=80000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=90000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=100000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=20000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=30000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=40000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=50000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=60000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=70000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=80000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=90000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=100000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    # print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    # print(f'{len(matches)}')
     plot_raw(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()

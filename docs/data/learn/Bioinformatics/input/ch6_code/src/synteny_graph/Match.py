@@ -4,6 +4,7 @@ from enum import Enum
 from typing import List
 
 from helpers.Utils import slide_window
+from synteny_graph.GeometryUtils import distance
 
 
 class MatchType(Enum):
@@ -42,7 +43,7 @@ class Match:
                    and forward_chain[0].type == m.type
                    for m in forward_chain), 'Chain type and/or chromosome mismatch'
         if len(forward_chain) > 2:
-            assert all(a.x_axis_chromosome_max_idx < b.x_axis_chromosome_min_idx
+            assert all(a.x_axis_chromosome_max_idx <= b.x_axis_chromosome_min_idx
                        for (a, b), _ in slide_window(forward_chain, 2)), 'Chain not ordered'
         y_axis_chromosome = forward_chain[0].y_axis_chromosome
         x_axis_chromosome = forward_chain[0].x_axis_chromosome
@@ -83,3 +84,8 @@ class Match:
             return self.x_axis_chromosome_max_idx, self.y_axis_chromosome_min_idx
         else:
             raise ValueError('???')
+
+    def get_length(self):
+        start_pt = self.get_start_point()
+        end_pt = self.get_end_point()
+        return distance(end_pt[0], start_pt[0], end_pt[1], start_pt[1])

@@ -55,6 +55,7 @@ class QuadTree(Generic[D]):
                     for _data in _data_instances:
                         self._add_to_branch(_x, _y, _data)
                 self.points = None
+                self._add_to_branch(x, y, data)
         else:
             self._add_to_branch(x, y, data)
 
@@ -164,7 +165,12 @@ class QuadTree(Generic[D]):
         return ret
 
     def is_empty(self):
-        return self.points is not None and len(self.points) == 0
+        if self.points is None:
+            return False
+        elif self.points is not None and len(self.points) == 0:
+            return True
+        else:
+            return False
 
     def _find_confining_cells(self, min_x: int, max_x: int, min_y: int, max_y: int) -> List[QuadTree]:
         assert min_x >= self.min_x and max_x <= self.max_x, "X is OOB"
