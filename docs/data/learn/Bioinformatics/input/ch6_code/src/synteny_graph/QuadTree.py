@@ -21,6 +21,7 @@ class QuadTree(Generic[D]):
     ):
         assert min_x <= max_x
         assert min_y <= max_y
+        assert subdivision_threshold > 0
         self.min_x = min_x
         self.min_y = min_y
         self.max_x = max_x
@@ -161,6 +162,9 @@ class QuadTree(Generic[D]):
                 if distance(point[0], x, point[1], y) <= radius:
                     ret.add(point)
         return ret
+
+    def is_empty(self):
+        return self.points is not None and len(self.points) == 0
 
     def _find_confining_cells(self, min_x: int, max_x: int, min_y: int, max_y: int) -> List[QuadTree]:
         assert min_x >= self.min_x and max_x <= self.max_x, "X is OOB"

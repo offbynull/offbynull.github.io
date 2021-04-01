@@ -96,7 +96,7 @@ def _scan_rc_to_start(starting_match: Match, remaining: Set[Match], rc_end_quadt
     chain[0:0] = temp_chain[::-1]
 
 
-def identify_synteny_blocks(matches: Iterable[Match], radius: int, synteny_min_len: int):
+def distance_merge(matches: Iterable[Match], radius: int, filter_min_len: int):
     min_x = min(m.x_axis_chromosome_min_idx for m in matches)
     max_x = max(m.x_axis_chromosome_max_idx for m in matches)
     min_y = min(m.y_axis_chromosome_min_idx for m in matches)
@@ -125,14 +125,6 @@ def identify_synteny_blocks(matches: Iterable[Match], radius: int, synteny_min_l
         rc_start_quadtree = rc_start_quadtrees[y_axis_chromosome]
         rc_end_quadtree = rc_end_quadtrees[y_axis_chromosome]
         remaining = {m for m in matches if m.y_axis_chromosome == y_axis_chromosome}
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
-        USING REMAINING IS NO GOOD -- WALK OVER NODES LEFT-TO-RIGHT OTHERWISE YOU MIGHT HAVE OVERLAPING SEGMENTS THAT SHOULD HAVE BEEN CONNECTED
         while remaining:
             m = next(iter(remaining))
             if m.type == MatchType.NORMAL:
@@ -151,7 +143,7 @@ def identify_synteny_blocks(matches: Iterable[Match], radius: int, synteny_min_l
             chain_start_pt = chain[0].get_start_point()
             chain_end_pt = chain[-1].get_end_point()
             chain_dist = distance(chain_end_pt[0], chain_start_pt[0], chain_end_pt[1], chain_start_pt[1])
-            if chain_dist >= synteny_min_len:
+            if chain_dist >= filter_min_len:
                 remaining.difference_update(chain)
                 merged_m = Match.merge(chain)
                 ret.append(merged_m)
@@ -228,7 +220,36 @@ if __name__ == '__main__':
 
     matches = [m for m in matches if m.y_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
-    matches = identify_synteny_blocks(matches, radius=15000, synteny_min_len=5000 * 2)
-
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=10000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=20000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=30000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=40000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=50000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=60000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=70000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=80000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=90000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=100000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
     plot_raw(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()
