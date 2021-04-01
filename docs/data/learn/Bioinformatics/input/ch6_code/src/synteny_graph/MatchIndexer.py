@@ -79,8 +79,13 @@ class MatchIndexer:
         quadtree_matches = quadtree.get_points_within_radius(center_x, center_y, radius)
         final_matches = set()
         for x, y, match in quadtree_matches:
-            degree = angle(center_x, x, center_y, y)
-            if min_degree <= degree <= max_degree:
+            exact_match = x == center_x and y == center_y
+            if exact_match:
+                allowed = True
+            else:
+                degree = angle(center_x, x, center_y, y)
+                allowed = min_degree <= degree <= max_degree
+            if allowed:
                 dist = distance(center_x, x, center_y, y)
                 final_matches.add((match, dist))
         return final_matches

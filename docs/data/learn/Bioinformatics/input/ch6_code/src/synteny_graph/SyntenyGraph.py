@@ -3,6 +3,7 @@ from __future__ import annotations
 import colorsys
 import lzma
 from math import sqrt, ceil
+from random import Random
 from typing import Iterable, Set, Optional
 
 import matplotlib.collections as mc
@@ -91,9 +92,40 @@ def plot_raw(
 
 
 if __name__ == '__main__':
+    # matches = []
+    # r = Random(111)
+    # for x, y in zip(r.sample(range(-100000, 100000), 500), r.sample(range(-100000, 100000), 500)):
+    #     match = Match('0', y, y+500, '0', x, x+500, MatchType.NORMAL)
+    #     matches.append(match)
+    # for x, y in zip(r.sample(range(-100000, 100000), 500), r.sample(range(-100000, 100000), 500)):
+    #     match = Match('0', y, y+500, '1', x, x+500, MatchType.REVERSE_COMPLEMENT)
+    #     matches.append(match)
+    # print(f'{len(matches)}')
+    # matches1 = distance_merge(matches, radius=5000, filter_min_len=0)
+    # print(f'{len(matches1)}')
+    # matches2 = distance_merge(matches, radius=5000, filter_min_len=0)
+    # print(f'{len(matches2)}')
+    # for a, b in zip(sorted(matches1, key=lambda k: k.x_axis_chromosome_min_idx), sorted(matches2, key=lambda k: k.x_axis_chromosome_min_idx)):
+    #     if a.x_axis_chromosome_min_idx != b.x_axis_chromosome_min_idx:
+    #         print(f'MISMATCH {a.get_start_point()} vs {b.get_start_point()}')
+    # matches = matches2
+
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
+    ISOLATE TO REGION FAILING TO CONNECT A GAP AND TRY TO RECREATE
     with lzma.open('../anchors_human_mouse.txt.xz', mode='rt', encoding='utf-8') as f:
         data = str(f.read())
-
     lines = data.strip().split('\n')
     lines = lines[1:]
     matches = []
@@ -111,41 +143,35 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
-
-    matches = [m for m in matches if m.y_axis_chromosome == '2']
+    matches = [m for m in matches if m.y_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
-    print(f'{len(matches)}')
     matches = distance_merge(matches, radius=10000, filter_min_len=0)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=10000, filter_min_len=0)
+    matches = distance_merge(matches, radius=20000, filter_min_len=0)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=10000, filter_min_len=0)
+    matches = distance_merge(matches, radius=30000, filter_min_len=0)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=10000, filter_min_len=0)
+    matches = distance_merge(matches, radius=40000, filter_min_len=0)
     print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=20000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=30000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=40000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=50000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=60000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=70000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=80000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=90000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=100000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=300000, filter_min_len=0)
-    # print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=50000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=60000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=70000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=80000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=90000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=100000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=300000, filter_min_len=0)
+    print(f'{len(matches)}')
     plot_raw(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()
