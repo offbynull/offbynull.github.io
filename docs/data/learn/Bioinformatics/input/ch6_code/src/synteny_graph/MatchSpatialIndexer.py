@@ -1,11 +1,11 @@
 from typing import Dict, List, Tuple
 
-from synteny_graph.GeometryUtils import angle, distance
+from synteny_graph.GeometryUtils import angle, distance, test_angle_between, normalize_degree
 from synteny_graph.Match import Match, MatchType
 from synteny_graph.QuadTree import QuadTree
 
 
-class MatchIndexer:
+class MatchSpatialIndexer:
     def __init__(self, min_x: int, max_x: int, min_y: int, max_y: int):
         assert min_x <= max_x
         assert min_y <= max_y
@@ -52,20 +52,26 @@ class MatchIndexer:
         else:
             raise ValueError('???')
 
-    def scan(self, match: Match, radius: int):
+    def scan(self, match: Match, search_radius: int, search_angle_half_maw: int = 45):
+        assert search_radius > 0
+        assert search_angle_half_maw >= 0
+        assert search_angle_half_maw <= 90, 'Half maw cannot be to this wide because it may chain with matches that' \
+                                            ' are behind when going forward / matches that are forward when going' \
+                                            ' backward'
         if match.type == MatchType.NORMAL:
             end_chain: List[Match] = []
             start_chain: List[Match] = []
-            self._scan_norm_to_end(match, radius, end_chain)
-            self._scan_norm_to_start(match, radius, start_chain)
+            self._scan_norm_to_end(match, search_radius, search_angle_half_maw, end_chain)
+            self._scan_norm_to_start(match, search_radius, search_angle_half_maw, start_chain)
         elif match.type == MatchType.REVERSE_COMPLEMENT:
             end_chain: List[Match] = []
             start_chain: List[Match] = []
-            self._scan_rc_to_end(match, radius, end_chain)
-            self._scan_rc_to_start(match, radius, start_chain)
+            self._scan_rc_to_end(match, search_radius, search_angle_half_maw, end_chain)
+            self._scan_rc_to_start(match, search_radius, search_angle_half_maw, start_chain)
         else:
             raise ValueError('???')
-        return start_chain + [match] + end_chain
+        final_chain = start_chain + [match] + end_chain
+        return final_chain
 
     @staticmethod
     def _find_potential_matches(
@@ -73,8 +79,8 @@ class MatchIndexer:
             center_x: int,
             center_y: int,
             radius: int,
-            min_degree: float,
-            max_degree: float
+            angel_start: float,
+            angle_end: float
     ):
         quadtree_matches = quadtree.get_points_within_radius(center_x, center_y, radius)
         final_matches = set()
@@ -83,25 +89,26 @@ class MatchIndexer:
             if exact_match:
                 allowed = True
             else:
-                degree = angle(center_x, x, center_y, y)
-                allowed = min_degree <= degree <= max_degree
+                _angle = angle(center_x, x, center_y, y)
+                allowed = test_angle_between(_angle, angel_start, angle_end)
             if allowed:
                 dist = distance(center_x, x, center_y, y)
                 final_matches.add((match, dist))
         return final_matches
 
-
-    def _scan_norm_to_end(self, match: Match, radius: int, chain: List[Match]):
+    def _scan_norm_to_end(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
         assert match.type == MatchType.NORMAL
+        angle_start = normalize_degree(45 - angle_maw)
+        angle_end = normalize_degree(45 + angle_maw)
         x, y = match.get_end_point()
         chr_pair = match.x_axis_chromosome, match.y_axis_chromosome
         quadtree = self.norm_start_quadtrees[chr_pair]
         while True:
-            potential_matches = MatchIndexer._find_potential_matches(
+            potential_matches = MatchSpatialIndexer._find_potential_matches(
                 quadtree,
                 x, y,
                 radius,
-                0, 90
+                angle_start, angle_end
             )
             if not potential_matches:
                 break
@@ -109,19 +116,20 @@ class MatchIndexer:
             x, y = found_match[0].get_end_point()
             chain.append(found_match[0])
 
-
-    def _scan_norm_to_start(self, match: Match, radius: int, chain: List[Match]):
+    def _scan_norm_to_start(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
         assert match.type == MatchType.NORMAL
+        angle_start = normalize_degree(225 - angle_maw)
+        angle_end = normalize_degree(225 + angle_maw)
         x, y = match.get_start_point()
         chr_pair = match.x_axis_chromosome, match.y_axis_chromosome
         quadtree = self.norm_end_quadtrees[chr_pair]
         temp_chain = []
         while True:
-            potential_matches = MatchIndexer._find_potential_matches(
+            potential_matches = MatchSpatialIndexer._find_potential_matches(
                 quadtree,
                 x, y,
                 radius,
-                180, 270
+                angle_start, angle_end
             )
             if not potential_matches:
                 break
@@ -130,18 +138,19 @@ class MatchIndexer:
             temp_chain.append(found_match[0])
         chain[0:0] = temp_chain[::-1]
 
-
-    def _scan_rc_to_end(self, match: Match, radius: int, chain: List[Match]):
+    def _scan_rc_to_end(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
         assert match.type == MatchType.REVERSE_COMPLEMENT
+        angle_start = normalize_degree(315 - angle_maw)
+        angle_end = normalize_degree(315 + angle_maw)
         x, y = match.get_end_point()
         chr_pair = match.x_axis_chromosome, match.y_axis_chromosome
         quadtree = self.rc_start_quadtrees[chr_pair]
         while True:
-            potential_matches = MatchIndexer._find_potential_matches(
+            potential_matches = MatchSpatialIndexer._find_potential_matches(
                 quadtree,
                 x, y,
                 radius,
-                270, 0  # 0 degrees = 360 degrees
+                angle_start, angle_end
             )
             if not potential_matches:
                 break
@@ -149,19 +158,20 @@ class MatchIndexer:
             x, y = found_match[0].get_end_point()
             chain.append(found_match[0])
 
-
-    def _scan_rc_to_start(self, match: Match, radius: int, chain: List[Match]):
+    def _scan_rc_to_start(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
         assert match.type == MatchType.REVERSE_COMPLEMENT
+        angle_start = normalize_degree(135 - angle_maw)
+        angle_end = normalize_degree(135 + angle_maw)
         x, y = match.get_start_point()
         chr_pair = match.x_axis_chromosome, match.y_axis_chromosome
         quadtree = self.rc_end_quadtrees[chr_pair]
         temp_chain = []
         while True:
-            potential_matches = MatchIndexer._find_potential_matches(
+            potential_matches = MatchSpatialIndexer._find_potential_matches(
                 quadtree,
                 x, y,
                 radius,
-                90, 180
+                angle_start, angle_end
             )
             if not potential_matches:
                 break
