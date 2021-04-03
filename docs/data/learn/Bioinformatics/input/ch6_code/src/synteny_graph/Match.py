@@ -9,7 +9,7 @@ import matplotlib.collections as mc
 import numpy
 import pylab as pl
 
-from synteny_graph.GeometryUtils import distance
+from helpers.GeometryUtils import distance
 
 
 class MatchType(Enum):
@@ -41,22 +41,23 @@ class Match:
         self.type = type
 
     @staticmethod
-    def merge(matches: List[Match]):
+    def merge(matches: Set[Match]):
         assert matches, 'Empty chain'
-        assert all(matches[0].y_axis_chromosome == m.y_axis_chromosome
-                   and matches[0].x_axis_chromosome == m.x_axis_chromosome
-                   and matches[0].type == m.type
+        first = next(iter(matches))
+        y_axis_chromosome = first.y_axis_chromosome
+        x_axis_chromosome = first.x_axis_chromosome
+        type = first.type
+        assert all(y_axis_chromosome == m.y_axis_chromosome
+                   and x_axis_chromosome == m.x_axis_chromosome
+                   and type == m.type
                    for m in matches), 'Chain type and/or chromosome mismatch'
         # Chain may be unordered -- this is because if the angle maw used to generate the chain extends past 90 degrees,
         # there's a chance that the next item in the chain may go BACKWARD on the x-axis rather than forward. As such,
         # extract the max extents from all the matches and use that to make the merged match.
-        y_axis_chromosome = matches[0].y_axis_chromosome
-        x_axis_chromosome = matches[0].x_axis_chromosome
         x_axis_chromosome_min_idx = min(min(c.x_axis_chromosome_min_idx, c.x_axis_chromosome_max_idx) for c in matches)
         x_axis_chromosome_max_idx = max(max(c.x_axis_chromosome_min_idx, c.x_axis_chromosome_max_idx) for c in matches)
         y_axis_chromosome_min_idx = min(min(c.y_axis_chromosome_min_idx, c.y_axis_chromosome_max_idx) for c in matches)
         y_axis_chromosome_max_idx = max(max(c.y_axis_chromosome_min_idx, c.y_axis_chromosome_max_idx) for c in matches)
-        type = matches[0].type
         new_m = Match(
             y_axis_chromosome,
             y_axis_chromosome_min_idx,
@@ -84,7 +85,7 @@ class Match:
         else:
             raise ValueError('???')
 
-    def get_length(self):
+    def length(self):
         start_pt = self.get_start_point()
         end_pt = self.get_end_point()
         return distance(end_pt[0], start_pt[0], end_pt[1], start_pt[1])

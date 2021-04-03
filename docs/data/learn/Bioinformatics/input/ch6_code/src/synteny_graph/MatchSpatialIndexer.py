@@ -1,6 +1,6 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Set
 
-from synteny_graph.GeometryUtils import angle, distance, test_angle_between, normalize_degree
+from helpers.GeometryUtils import angle, distance, test_angle_between, normalize_degree
 from synteny_graph.Match import Match, MatchType
 from synteny_graph.QuadTree import QuadTree
 
@@ -52,26 +52,19 @@ class MatchSpatialIndexer:
         else:
             raise ValueError('???')
 
-    def scan(self, match: Match, search_radius: int, search_angle_half_maw: int = 45):
+    def scan(self, match: Match, search_radius: int, search_angle_half_maw: int = 45) -> Set[Match]:
         assert search_radius > 0
-        assert search_angle_half_maw >= 0
-        assert search_angle_half_maw <= 90, 'Half maw cannot be to this wide because it may chain with matches that' \
-                                            ' are behind when going forward / matches that are forward when going' \
-                                            ' backward'
+        assert 0 <= search_angle_half_maw < 180
+        found = {match}
         if match.type == MatchType.NORMAL:
-            end_chain: List[Match] = []
-            start_chain: List[Match] = []
-            self._scan_norm_to_end(match, search_radius, search_angle_half_maw, end_chain)
-            self._scan_norm_to_start(match, search_radius, search_angle_half_maw, start_chain)
+            self._scan_norm_to_end(match, search_radius, search_angle_half_maw, found)
+            self._scan_norm_to_start(match, search_radius, search_angle_half_maw, found)
         elif match.type == MatchType.REVERSE_COMPLEMENT:
-            end_chain: List[Match] = []
-            start_chain: List[Match] = []
-            self._scan_rc_to_end(match, search_radius, search_angle_half_maw, end_chain)
-            self._scan_rc_to_start(match, search_radius, search_angle_half_maw, start_chain)
+            self._scan_rc_to_end(match, search_radius, search_angle_half_maw, found)
+            self._scan_rc_to_start(match, search_radius, search_angle_half_maw, found)
         else:
             raise ValueError('???')
-        final_chain = start_chain + [match] + end_chain
-        return final_chain
+        return found
 
     @staticmethod
     def _find_potential_matches(
@@ -96,7 +89,7 @@ class MatchSpatialIndexer:
                 final_matches.add((match, dist))
         return final_matches
 
-    def _scan_norm_to_end(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
+    def _scan_norm_to_end(self, match: Match, radius: int, angle_maw: int, found: Set[Match]):
         assert match.type == MatchType.NORMAL
         angle_start = normalize_degree(45 - angle_maw)
         angle_end = normalize_degree(45 + angle_maw)
@@ -110,20 +103,20 @@ class MatchSpatialIndexer:
                 radius,
                 angle_start, angle_end
             )
+            potential_matches = {(m, d) for m, d in potential_matches if m not in found}  # remove if already in found
             if not potential_matches:
                 break
             found_match = min(potential_matches, key=lambda x: x[1])
             x, y = found_match[0].get_end_point()
-            chain.append(found_match[0])
+            found.add(found_match[0])
 
-    def _scan_norm_to_start(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
+    def _scan_norm_to_start(self, match: Match, radius: int, angle_maw: int, found: Set[Match]):
         assert match.type == MatchType.NORMAL
         angle_start = normalize_degree(225 - angle_maw)
         angle_end = normalize_degree(225 + angle_maw)
         x, y = match.get_start_point()
         chr_pair = match.x_axis_chromosome, match.y_axis_chromosome
         quadtree = self.norm_end_quadtrees[chr_pair]
-        temp_chain = []
         while True:
             potential_matches = MatchSpatialIndexer._find_potential_matches(
                 quadtree,
@@ -131,14 +124,14 @@ class MatchSpatialIndexer:
                 radius,
                 angle_start, angle_end
             )
+            potential_matches = {(m, d) for m, d in potential_matches if m not in found}  # remove if already in found
             if not potential_matches:
                 break
             found_match = min(potential_matches, key=lambda x: x[1])
             x, y = found_match[0].get_start_point()
-            temp_chain.append(found_match[0])
-        chain[0:0] = temp_chain[::-1]
+            found.add(found_match[0])
 
-    def _scan_rc_to_end(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
+    def _scan_rc_to_end(self, match: Match, radius: int, angle_maw: int, found: Set[Match]):
         assert match.type == MatchType.REVERSE_COMPLEMENT
         angle_start = normalize_degree(315 - angle_maw)
         angle_end = normalize_degree(315 + angle_maw)
@@ -152,20 +145,20 @@ class MatchSpatialIndexer:
                 radius,
                 angle_start, angle_end
             )
+            potential_matches = {(m, d) for m, d in potential_matches if m not in found}  # remove if already in found
             if not potential_matches:
                 break
             found_match = min(potential_matches, key=lambda x: x[1])
             x, y = found_match[0].get_end_point()
-            chain.append(found_match[0])
+            found.add(found_match[0])
 
-    def _scan_rc_to_start(self, match: Match, radius: int, angle_maw: int, chain: List[Match]):
+    def _scan_rc_to_start(self, match: Match, radius: int, angle_maw: int, found: Set[Match]):
         assert match.type == MatchType.REVERSE_COMPLEMENT
         angle_start = normalize_degree(135 - angle_maw)
         angle_end = normalize_degree(135 + angle_maw)
         x, y = match.get_start_point()
         chr_pair = match.x_axis_chromosome, match.y_axis_chromosome
         quadtree = self.rc_end_quadtrees[chr_pair]
-        temp_chain = []
         while True:
             potential_matches = MatchSpatialIndexer._find_potential_matches(
                 quadtree,
@@ -173,9 +166,9 @@ class MatchSpatialIndexer:
                 radius,
                 angle_start, angle_end
             )
+            potential_matches = {(m, d) for m, d in potential_matches if m not in found}  # remove if already in found
             if not potential_matches:
                 break
             found_match = min(potential_matches, key=lambda x: x[1])
             x, y = found_match[0].get_start_point()
-            temp_chain.append(found_match[0])
-        chain[0:0] = temp_chain[::-1]
+            found.add(found_match[0])

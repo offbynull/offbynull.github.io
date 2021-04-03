@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from bisect import bisect_left
 from enum import Enum
-from typing import List, Dict, Iterator, Set
+from typing import List, Dict, Iterator, Set, Union
 
 from synteny_graph.Match import Match, MatchType
 
@@ -10,6 +10,20 @@ from synteny_graph.Match import Match, MatchType
 class Axis(Enum):
     X = 'X',
     Y = 'Y'
+
+
+class Overlap:
+    def __init__(self, before: Span, after: Span):
+        self.before = before
+        self.after = after
+        self.overlap_percentage = (before._max_bound - after._min_bound + 1) / (before.length() + after.length())
+
+
+class Engulf:
+    def __init__(self, engulfer: Span, engulfee: Span):
+        self.engulfer = engulfer
+        self.engulfee = engulfee
+        self.engulfed_percentage = engulfee.length() / engulfer.length()
 
 
 class Span:
@@ -28,12 +42,19 @@ class Span:
         self.match = match
 
     @staticmethod
-    def is_overlap(a: Span, b: Span) -> bool:
-        if a._max_bound < b._min_bound and a._max_bound < b._max_bound:
-            return True
-        if b._max_bound < a._min_bound and b._max_bound < a._max_bound:
-            return True
-        return False
+    def check_overlap(a: Span, b: Span) -> Union[Overlap, Engulf, None]:
+        if a._min_bound >= b._min_bound and a._max_bound <= b._max_bound:
+            return Engulf(b, a)
+        if b._min_bound >= a._min_bound and b._max_bound <= a._max_bound:
+            return Engulf(a, b)
+        if b._min_bound <= a._min_bound <= b._max_bound:
+            return Overlap(b, a)
+        if a._min_bound <= b._min_bound <= a._max_bound:
+            return Overlap(a, b)
+        return None
+
+    def length(self) -> int:
+        return (self._max_bound - self._min_bound) + 1  # +1 because min + max are both inclusive, e.g. 0 to 0 has a length of 1
 
     def __lt__(self, other):
         return (self._min_bound, self._max_bound) < (other._min_bound, other._max_bound)
@@ -132,12 +153,24 @@ class MatchAxisIndexer:
 
 
 if __name__ == '__main__':
-    indexer = MatchAxisIndexer(Axis.Y)
-    indexer.index(Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
-    indexer.index(Match('Y1', 2, 3, 'X1', 2, 3, MatchType.NORMAL))
-    indexer.index(Match('Y1', 4, 5, 'X1', 4, 5, MatchType.NORMAL))
-
-    indexer = MatchAxisIndexer(Axis.Y)
-    indexer.index(Match('Y1', 4, 5, 'X1', 4, 5, MatchType.NORMAL))
-    indexer.index(Match('Y1', 2, 3, 'X1', 2, 3, MatchType.NORMAL))
-    indexer.index(Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
+    s1 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
+    s2 = Span(Axis.Y, Match('Y1', 2, 3, 'X1', 2, 3, MatchType.NORMAL))
+    print(f'{Span.check_overlap(s1, s2)}')
+    print('----')
+    s1 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
+    s2 = Span(Axis.Y, Match('Y1', 1, 2, 'X1', 1, 2, MatchType.NORMAL))
+    print(f'{Span.check_overlap(s1, s2).before} / {Span.check_overlap(s1, s2).overlap_percentage}')
+    print(f'{Span.check_overlap(s1, s2).after} / {Span.check_overlap(s1, s2).after_overlap_percentage}')
+    print(f'{Span.check_overlap(s2, s1).before} / {Span.check_overlap(s2, s1).overlap_percentage}')
+    print(f'{Span.check_overlap(s2, s1).after} / {Span.check_overlap(s2, s1).after_overlap_percentage}')
+    print('----')
+    s1 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
+    s2 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
+    print(f'{Span.check_overlap(s1, s2).engulfer} / {Span.check_overlap(s1, s2).engulfee} / {Span.check_overlap(s1, s2).engulfed_percentage}')
+    print(f'{Span.check_overlap(s2, s1).engulfer} / {Span.check_overlap(s2, s1).engulfee} / {Span.check_overlap(s2, s1).engulfed_percentage}')
+    print('----')
+    s1 = Span(Axis.Y, Match('Y1', 0, 3, 'X1', 0, 3, MatchType.NORMAL))
+    s2 = Span(Axis.Y, Match('Y1', 1, 2, 'X1', 1, 2, MatchType.NORMAL))
+    print(f'{Span.check_overlap(s1, s2).engulfer} / {Span.check_overlap(s1, s2).engulfee} / {Span.check_overlap(s1, s2).engulfed_percentage}')
+    print(f'{Span.check_overlap(s2, s1).engulfer} / {Span.check_overlap(s2, s1).engulfee} / {Span.check_overlap(s2, s1).engulfed_percentage}')
+    print('----')

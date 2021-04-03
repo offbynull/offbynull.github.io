@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 import lzma
-from typing import Iterable
+from typing import Iterable, List
 
 import matplotlib.pyplot as plt
 
+from helpers.Utils import encode_int_to_alphabet
 from synteny_graph.Match import Match, MatchType
-from synteny_graph.MatchAxisIndexer import Axis, MatchAxisIndexer
+from synteny_graph.MatchAxisIndexer import Axis, MatchAxisIndexer, Span, Overlap, Engulf
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
 
 
-def distance_merge(matches: Iterable[Match], radius: int, angle_half_maw: int = 45):
+def distance_merge(matches: Iterable[Match], radius: int, angle_half_maw: int = 45) -> List[Match]:
     min_x = min(m.x_axis_chromosome_min_idx for m in matches)
     max_x = max(m.x_axis_chromosome_max_idx for m in matches)
     min_y = min(m.y_axis_chromosome_min_idx for m in matches)
@@ -18,7 +19,6 @@ def distance_merge(matches: Iterable[Match], radius: int, angle_half_maw: int = 
     indexer = MatchSpatialIndexer(min_x, max_x, min_y, max_y)
     for m in matches:
         indexer.index(m)
-
     ret = []
     remaining = set(matches)
     while remaining:
@@ -32,34 +32,46 @@ def distance_merge(matches: Iterable[Match], radius: int, angle_half_maw: int = 
     return ret
 
 
-def _encode_int_to_alphabet(number: int, alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
-    encoded = ''
-    sign = ''
-    if number < 0:
-        sign = '-'
-        number = -number
-    if 0 <= number < len(alphabet):
-        return sign + alphabet[number]
-    while number != 0:
-        number, i = divmod(number, len(alphabet))
-        encoded = alphabet[i] + encoded
-    return sign + encoded
+def check_and_filter(
+        matches: Iterable[Match],
+        min_allowable_len: float = 0.0,
+        max_allowed_overlap_percent: float = 0.05,
+        max_prunable_engulf_percent: float = 0.05
+) -> List[Match]:
+    def __do(matches, axis):
+        indexer = MatchAxisIndexer(axis)
+        for m in matches:
+            indexer.index(m)
+        ret = []
+        for c in indexer.chromosomes():
+            it = indexer.walk(c)  # returns iterator that's ordered by min of that axis
+            it = filter(lambda s: s.length() >= min_allowable_len, it)  # make iterator ignore anything < min_length
+            ret.append(next(it))  # add first iterator item
+            for s in it:
+                o = Span.check_overlap(ret[-1], s)  # check if span to be added crosses boundaries of prev span
+                if o is None:  # no crossed boundaries, skip
+                    ...
+                elif isinstance(o, Overlap):  # if overlaps, only allow it it through if its within a certain threshold
+                    if o.overlap_percentage > max_allowed_overlap_percent:
+                        raise ValueError(f'Overlap {o.overlap_percentage} >= {max_allowed_overlap_percent}: {o.before} vs {o.after}')
+                elif isinstance(o, Engulf):  # if totally engulfs, remove the one that's under a certain threshold
+                    if o.engulfed_percentage >= max_prunable_engulf_percent:
+                        raise ValueError(f'Engulfed {o.engulfed_percentage} >= {max_prunable_engulf_percent}: {o.engulfer} vs {o.engulfee}')
+                    if o.engulfee is ret[-1]:  # prev span is totally engulfed, remove it.
+                        ret.pop()
+                    elif o.engulfee is s:   # span to be added is totally engulfed, skip adding it.
+                        continue
+                    else:
+                        raise ValueError('???')
+                else:
+                    raise ValueError('???')
+                ret.append(s)
+        return [s.match for s in ret]
+    matches = __do(matches, Axis.X)
+    matches = __do(matches, Axis.Y)
+    return matches
 
 
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
-THIS WORKS, BUT IT NEEDS TO BE CLEANED UP AND BEFORE COMING IN HERE MATCHES NEED TO BE ADJUSTED/FILTERED SO THERE ARE NO OVERLAPS
 def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny_prefix: str = ''):
     x_indexer = MatchAxisIndexer(Axis.X)
     y_indexer = MatchAxisIndexer(Axis.Y)
@@ -76,7 +88,7 @@ def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny
     span_to_synteny_ids = {}
     for chr_id in ordered_indexer.chromosomes():
         for i, span in enumerate(ordered_indexer.walk(chr_id)):
-            span_to_synteny_ids[span.match] = f'{chr_id}_{_encode_int_to_alphabet(i)}'
+            span_to_synteny_ids[span.match] = f'{chr_id}_{encode_int_to_alphabet(i)}'
     # Create permutations for each species chromosome
     x_chromosome_perms = {}
     for chr_id in x_indexer.chromosomes():
@@ -116,24 +128,6 @@ def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny
 
 
 if __name__ == '__main__':
-    # matches = []
-    # r = Random(111)
-    # for x, y in zip(r.sample(range(-100000, 100000), 500), r.sample(range(-100000, 100000), 500)):
-    #     match = Match('0', y, y+500, '0', x, x+500, MatchType.NORMAL)
-    #     matches.append(match)
-    # for x, y in zip(r.sample(range(-100000, 100000), 500), r.sample(range(-100000, 100000), 500)):
-    #     match = Match('0', y, y+500, '1', x, x+500, MatchType.REVERSE_COMPLEMENT)
-    #     matches.append(match)
-    # print(f'{len(matches)}')
-    # matches1 = distance_merge(matches, radius=5000, filter_min_len=0)
-    # print(f'{len(matches1)}')
-    # matches2 = distance_merge(matches, radius=5000, filter_min_len=0)
-    # print(f'{len(matches2)}')
-    # for a, b in zip(sorted(matches1, key=lambda k: k.x_axis_chromosome_min_idx), sorted(matches2, key=lambda k: k.x_axis_chromosome_min_idx)):
-    #     if a.x_axis_chromosome_min_idx != b.x_axis_chromosome_min_idx:
-    #         print(f'MISMATCH {a.get_start_point()} vs {b.get_start_point()}')
-    # matches = matches2
-
     with lzma.open('../anchors_human_mouse.txt.xz', mode='rt', encoding='utf-8') as f:
         data = str(f.read())
     lines = data.strip().split('\n')
@@ -153,10 +147,8 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
-    matches = [m for m in matches if m.y_axis_chromosome == '16']
-    # matches = [m for m in matches if m.x_axis_chromosome == '11']
-    # matches = [m for m in matches if 57500000 <= m.x_axis_chromosome_min_idx <= 62000000]
-    # matches = [m for m in matches if 220000000 <= m.y_axis_chromosome_min_idx <= 240000000]
+    matches = [m for m in matches if m.y_axis_chromosome == '2']
+    # matches = [m for m in matches if m.x_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
     print(f'{len(matches)}')
     matches = distance_merge(matches, radius=10000)
@@ -177,21 +169,29 @@ if __name__ == '__main__':
     print(f'{len(matches)}')
     matches = distance_merge(matches, radius=90000)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=100000)
+    matches = distance_merge(matches, radius=100000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000)
+    matches = [m for m in matches if m.length() >= 100000]
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000)
+    matches = distance_merge(matches, radius=200000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000)
+    matches = distance_merge(matches, radius=300000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000)
+    matches = distance_merge(matches, radius=400000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = [m for m in matches if m.get_length() >= 300000]
+    matches = distance_merge(matches, radius=500000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=500000, angle_half_maw=90)
+    matches = distance_merge(matches, radius=600000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=1000000, angle_half_maw=90)
+    matches = distance_merge(matches, radius=700000, angle_half_maw=135)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=800000, angle_half_maw=135)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=900000, angle_half_maw=135)
+    print(f'{len(matches)}')
+    matches = distance_merge(matches, radius=1000000, angle_half_maw=135)
+    print(f'{len(matches)}')
+    matches = check_and_filter(matches, max_allowed_overlap_percent=0.1, max_prunable_engulf_percent=0.1)
     print(f'{len(matches)}')
     to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
     Match.plot(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')

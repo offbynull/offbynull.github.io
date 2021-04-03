@@ -3,7 +3,7 @@ from __future__ import annotations
 from random import sample
 from typing import Optional, List, Tuple, Set, TypeVar, Dict, Generic
 
-from synteny_graph.GeometryUtils import distance
+from helpers.GeometryUtils import distance
 
 D = TypeVar('D')
 
