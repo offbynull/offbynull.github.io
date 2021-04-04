@@ -32,6 +32,15 @@ def distance_merge(matches: Iterable[Match], radius: int, angle_half_maw: int = 
     return ret
 
 
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
+FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
 def check_and_filter(
         matches: Iterable[Match],
         min_allowable_len: float = 0.0,
@@ -191,7 +200,7 @@ if __name__ == '__main__':
     print(f'{len(matches)}')
     matches = distance_merge(matches, radius=1000000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = check_and_filter(matches, max_allowed_overlap_percent=0.1, max_prunable_engulf_percent=0.1)
+    matches = overlap_merge(matches, max_allowed_overlap_percent=0.1, max_prunable_engulf_percent=0.1)
     print(f'{len(matches)}')
     to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
     Match.plot(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')

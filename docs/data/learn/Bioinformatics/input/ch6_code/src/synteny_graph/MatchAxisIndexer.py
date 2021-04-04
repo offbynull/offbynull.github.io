@@ -11,6 +11,30 @@ class Axis(Enum):
     X = 'X',
     Y = 'Y'
 
+    def chromosome(self, match: Match):
+        if self == Axis.X:
+            return match.x_axis_chromosome
+        elif self == Axis.Y:
+            return match.y_axis_chromosome
+        else:
+            raise ValueError('???')
+
+    def min(self, match: Match):
+        if self == Axis.X:
+            return match.x_axis_chromosome_min_idx
+        elif self == Axis.Y:
+            return match.y_axis_chromosome_min_idx
+        else:
+            raise ValueError('???')
+
+    def max(self, match: Match):
+        if self == Axis.X:
+            return match.x_axis_chromosome_max_idx
+        elif self == Axis.Y:
+            return match.y_axis_chromosome_max_idx
+        else:
+            raise ValueError('???')
+
 
 class Overlap:
     def __init__(self, before: Span, after: Span):
@@ -30,14 +54,8 @@ class Span:
     __slots__ = ['_min_bound', '_max_bound', 'match']
 
     def __init__(self, axis: Axis, match: Match):
-        if axis == Axis.X:
-            self._min_bound = match.x_axis_chromosome_min_idx
-            self._max_bound = match.x_axis_chromosome_max_idx
-        elif axis == Axis.Y:
-            self._min_bound = match.y_axis_chromosome_min_idx
-            self._max_bound = match.y_axis_chromosome_max_idx
-        else:
-            raise ValueError('???')
+        self._min_bound = axis.min(match)
+        self._max_bound = axis.max(match)
         assert self._min_bound <= self._max_bound, 'This should never happen'
         self.match = match
 
@@ -72,44 +90,108 @@ class Span:
         return (self._min_bound, self._max_bound, self.match) == (other._min_bound, other._max_bound, other.match)
 
 
+class OverlapException(Exception):
+    def __init__(self, x_overlap: Union[Engulf, Overlap, None], y_overlap: Union[Engulf, Overlap, None]):
+        self.x_overlap = x_overlap
+        self.y_overlap = y_overlap
+
+
 class MatchAxisIndexer:
-    def __init__(self, axis: Axis):
-        self.axis = axis
-        self.chromosome_spans: Dict[str, List[Span]] = {}
+    def __init__(self):
+        self.chromosome_spans: Dict[Axis, Dict[str, List[Span]]] = {
+            Axis.X: {},
+            Axis.Y: {}
+        }
 
     def index(self, match: Match):
-        if self.axis == Axis.X:
-            chromosome = match.x_axis_chromosome
-        elif self.axis == Axis.Y:
-            chromosome = match.y_axis_chromosome
-        else:
-            raise ValueError('???')
-        spans = self.chromosome_spans.setdefault(chromosome, [])
-        span = Span(self.axis, match)
-        idx = bisect_left(spans, span)
-        spans.insert(idx, span)
+        # find overlaps
+        found_overlaps = {Axis.X: [], Axis.Y: []}
+        for axis, axis_chromosome_spans in self.chromosome_spans.items():
+            chromosome = axis.get_chromosome(match)
+            m_min = axis.min(match)
+            m_max = axis.max(match)
+            overlaps = self._between(axis, chromosome, m_min, m_max)
+            if overlaps:
+                found_overlaps[axis] = overlaps
+        # index overlaps so you can look them up by match
+        found_overlaps_lookup = {
+            Axis.X: {s.match: s for s in found_overlaps[Axis.X]},
+            Axis.Y: {s.match: s for s in found_overlaps[Axis.Y]}
+        }
+        # does it overlap on both axis?
+        for m in found_overlaps_lookup[Axis.X].keys() & found_overlaps_lookup[Axis.Y].keys():
+            raise OverlapException(
+                Span.check_overlap(found_overlaps_lookup[Axis.X][m], Span(Axis.X, match)),
+                Span.check_overlap(found_overlaps_lookup[Axis.Y][m], Span(Axis.Y, match))
+            )
+        # does it overlap on x axis?
+        for m in found_overlaps_lookup[Axis.X].keys():
+            raise OverlapException(
+                Span.check_overlap(found_overlaps_lookup[Axis.X][m], Span(Axis.X, match)),
+                None
+            )
+        # does it overlap on y axis?
+        for m in found_overlaps_lookup[Axis.X].keys():
+            raise OverlapException(
+                None,
+                Span.check_overlap(found_overlaps_lookup[Axis.Y][m], Span(Axis.Y, match))
+            )
+        # nothing overlaps -- add it
+        for axis, axis_chromosome_spans in self.chromosome_spans.items():
+            chromosome = axis.get_chromosome(match)
+            span = Span(axis, match)
+            spans = axis_chromosome_spans.setdefault(chromosome, [])
+            idx = bisect_left(spans, span)
+            spans.insert(idx, span)
 
     def unindex(self, match: Match):
-        if self.axis == Axis.X:
-            chromosome = match.x_axis_chromosome
-        elif self.axis == Axis.Y:
-            chromosome = match.y_axis_chromosome
-        else:
-            raise ValueError('???')
-        spans = self.chromosome_spans.setdefault(chromosome, [])
-        span = Span(self.axis, match)
-        rem_cnt = 0
-        while spans:
-            idx = bisect_left(spans, span)
-            if spans[idx].match == match:
-                spans.pop(idx)
-                rem_cnt += 1
-            else:
-                break
-        if not spans:
-            del self.chromosome_spans[chromosome]
-        if rem_cnt == 0:
-            raise ValueError('Match does not exist')
+        for axis, axis_chromosome_spans in self.chromosome_spans.items():
+            chromosome = axis.get_chromosome(match)
+            spans = axis_chromosome_spans.setdefault(chromosome, [])
+            span = Span(axis, match)
+            rem_cnt = 0
+            while spans:
+                idx = bisect_left(spans, span)
+                if spans[idx].match == match:
+                    spans.pop(idx)
+                    rem_cnt += 1
+                else:
+                    break
+            if not spans:
+                del axis_chromosome_spans[chromosome]
+            if rem_cnt == 0:
+                raise ValueError('Match does not exist')
+
+    def chromosomes(self) -> Set[str]:
+        ret = set()
+        for v in self.chromosome_spans:
+            ret |= v
+        return ret
+
+    # def find_overlaps(self) -> Dict[Match, List[Union[Overlap, Engulf]]]:
+    #     overlaps: Dict[Match, List[Union[Overlap, Engulf]]] = {}
+    #     for c in self.chromosomes():
+    #         it = self.walk(c)  # returns iterator that's ordered by min of that axis
+    #         s_max_list = [next(it)]
+    #         for s_next in it:
+    #             new_s_max_list = []
+    #             for s_max in s_max_list:
+    #                 if s_max._max_bound >= s_next._min_bound:
+    #                     new_s_max_list.append(s_max)
+    #             s_max_list = new_s_max_list
+    #             for s_max in s_max_list:
+    #                 overlap = Span.check_overlap(s_next, s_max)
+    #                 if overlap is None:
+    #                     continue
+    #                 overlaps.setdefault(s_max.match, []).append(overlap)
+    #                 overlaps.setdefault(s_next.match, []).append(overlap)
+    #             s_max_list.append(s_next)
+    #     return overlaps
+
+    def walk(self, axis: Axis, chromosome: str) -> Iterator[Span]:
+        if chromosome not in self.chromosome_spans:
+            raise ValueError('Chromosome does not exist')
+        return iter(self.chromosome_spans[chromosome])
 
     @staticmethod
     def _bisect_left_min_bound(a: List[Span], threshold):
@@ -135,21 +217,13 @@ class MatchAxisIndexer:
                 lo = mid + 1
         return lo
 
-    def between(self, chromosome: str, min_bound: int, max_bound: int) -> Iterator[Span]:
-        if chromosome not in self.chromosome_spans:
-            raise ValueError('Chromosome does not exist')
-        spans = self.chromosome_spans[chromosome]
+    def _between(self, axis: Axis, chromosome: str, min_bound: int, max_bound: int) -> List[Span]:
+        if chromosome not in self.chromosome_spans[axis]:
+            return []
+        spans = self.chromosome_spans[axis][chromosome]
         idx1 = MatchAxisIndexer._bisect_left_min_bound(spans, min_bound)
         idx2 = MatchAxisIndexer._bisect_right_max_bound(spans, max_bound)
-        return iter(self.chromosome_spans[chromosome][idx1:idx2])
-
-    def walk(self, chromosome: str) -> Iterator[Span]:
-        if chromosome not in self.chromosome_spans:
-            raise ValueError('Chromosome does not exist')
-        return iter(self.chromosome_spans[chromosome])
-
-    def chromosomes(self) -> Set[str]:
-        return set(self.chromosome_spans.keys())
+        return self.chromosome_spans[axis][chromosome][idx1:idx2]
 
 
 if __name__ == '__main__':
