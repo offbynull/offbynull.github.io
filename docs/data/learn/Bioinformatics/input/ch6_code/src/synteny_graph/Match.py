@@ -41,7 +41,7 @@ class Match:
         self.type = type
 
     @staticmethod
-    def merge(matches: Set[Match]):
+    def merge(matches: Set[Match]) -> Match:
         assert matches, 'Empty chain'
         first = next(iter(matches))
         y_axis_chromosome = first.y_axis_chromosome
@@ -89,6 +89,62 @@ class Match:
         start_pt = self.get_start_point()
         end_pt = self.get_end_point()
         return distance(end_pt[0], start_pt[0], end_pt[1], start_pt[1])
+
+    def clip_x_min(self, x: int) -> Optional[Match]:
+        assert self.x_axis_chromosome_max_idx >= x >= self.x_axis_chromosome_min_idx
+        if x == self.x_axis_chromosome_max_idx:
+            return None
+        return Match(
+            self.y_axis_chromosome,
+            self.y_axis_chromosome_min_idx,
+            self.y_axis_chromosome_max_idx,
+            self.x_axis_chromosome,
+            x,
+            self.x_axis_chromosome_max_idx,
+            self.type
+        )
+
+    def clip_x_max(self, x: int) -> Optional[Match]:
+        assert self.x_axis_chromosome_max_idx >= x >= self.x_axis_chromosome_min_idx
+        if x == self.x_axis_chromosome_min_idx:
+            return None
+        return Match(
+            self.y_axis_chromosome,
+            self.y_axis_chromosome_min_idx,
+            self.y_axis_chromosome_max_idx,
+            self.x_axis_chromosome,
+            self.x_axis_chromosome_min_idx,
+            x,
+            self.type
+        )
+
+    def clip_y_min(self, y: int) -> Optional[Match]:
+        assert self.y_axis_chromosome_max_idx >= y >= self.y_axis_chromosome_min_idx
+        if y == self.y_axis_chromosome_max_idx:
+            return None
+        return Match(
+            self.y_axis_chromosome,
+            y,
+            self.y_axis_chromosome_max_idx,
+            self.x_axis_chromosome,
+            self.x_axis_chromosome_min_idx,
+            self.x_axis_chromosome_max_idx,
+            self.type
+        )
+
+    def clip_y_max(self, y: int) -> Optional[Match]:
+        assert self.y_axis_chromosome_max_idx >= y >= self.y_axis_chromosome_min_idx
+        if y == self.y_axis_chromosome_min_idx:
+            return None
+        return Match(
+            self.y_axis_chromosome,
+            self.y_axis_chromosome_min_idx,
+            y,
+            self.x_axis_chromosome,
+            self.x_axis_chromosome_min_idx,
+            self.x_axis_chromosome_max_idx,
+            self.type
+        )
 
     def __eq__(self, o: Match) -> bool:
         return (self.y_axis_chromosome, self.y_axis_chromosome_min_idx, self.y_axis_chromosome_max_idx,
@@ -162,3 +218,15 @@ class Match:
 
         cid = fig.canvas.mpl_connect('resize_event', on_resize)
         # fig.suptitle('To Chromosomes')
+
+
+if __name__ == '__main__':
+    m = Match('Y', 0, 10, 'X', 0, 10, MatchType.NORMAL)
+    m = m.clip_x_min(2)
+    print(f'{m}')
+    m = m.clip_x_max(8)
+    print(f'{m}')
+    m = m.clip_y_min(3)
+    print(f'{m}')
+    m = m.clip_y_max(7)
+    print(f'{m}')

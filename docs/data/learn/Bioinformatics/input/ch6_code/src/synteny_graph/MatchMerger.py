@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import lzma
-from typing import Iterable, List
+from typing import Iterable, List, Set
 
 import matplotlib.pyplot as plt
 
 from helpers.Utils import encode_int_to_alphabet
 from synteny_graph.Match import Match, MatchType
-from synteny_graph.MatchAxisIndexer import Axis, MatchAxisIndexer, Span, Overlap, Engulf
+from synteny_graph.MatchOverlapIndexer import Axis, MatchOverlapIndexer, OverlapException
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
 
 
@@ -23,67 +23,48 @@ def distance_merge(matches: Iterable[Match], radius: int, angle_half_maw: int = 
     remaining = set(matches)
     while remaining:
         m = next(iter(remaining))
-        chain = indexer.scan(m, radius, angle_half_maw)
-        merged = Match.merge(chain)
-        for _m in chain:
+        found = indexer.scan(m, radius, angle_half_maw)
+        merged = Match.merge(found)
+        for _m in found:
             indexer.unindex(_m)
             remaining.remove(_m)
         ret.append(merged)
     return ret
 
 
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-FINISH FIXING UP MATCHAXISINDEXER, RENAME THIS TO OVERLAP_MERGE(), THEN REIMPLEMENT IT TO USE THE NEW MATCHAXISINDEXER
-def check_and_filter(
+def overlap_filter(
         matches: Iterable[Match],
-        min_allowable_len: float = 0.0,
-        max_allowed_overlap_percent: float = 0.05,
-        max_prunable_engulf_percent: float = 0.05
-) -> List[Match]:
-    def __do(matches, axis):
-        indexer = MatchAxisIndexer(axis)
-        for m in matches:
+        max_filter_length: float,
+        max_merge_distance: float
+) -> Set[Match]:
+    indexer = MatchOverlapIndexer()
+    remaining = set(matches)
+    while remaining:
+        m = next(iter(remaining))
+        remaining.remove(m)
+        try:
             indexer.index(m)
-        ret = []
-        for c in indexer.chromosomes():
-            it = indexer.walk(c)  # returns iterator that's ordered by min of that axis
-            it = filter(lambda s: s.length() >= min_allowable_len, it)  # make iterator ignore anything < min_length
-            ret.append(next(it))  # add first iterator item
-            for s in it:
-                o = Span.check_overlap(ret[-1], s)  # check if span to be added crosses boundaries of prev span
-                if o is None:  # no crossed boundaries, skip
-                    ...
-                elif isinstance(o, Overlap):  # if overlaps, only allow it it through if its within a certain threshold
-                    if o.overlap_percentage > max_allowed_overlap_percent:
-                        raise ValueError(f'Overlap {o.overlap_percentage} >= {max_allowed_overlap_percent}: {o.before} vs {o.after}')
-                elif isinstance(o, Engulf):  # if totally engulfs, remove the one that's under a certain threshold
-                    if o.engulfed_percentage >= max_prunable_engulf_percent:
-                        raise ValueError(f'Engulfed {o.engulfed_percentage} >= {max_prunable_engulf_percent}: {o.engulfer} vs {o.engulfee}')
-                    if o.engulfee is ret[-1]:  # prev span is totally engulfed, remove it.
-                        ret.pop()
-                    elif o.engulfee is s:   # span to be added is totally engulfed, skip adding it.
-                        continue
-                    else:
-                        raise ValueError('???')
-                else:
-                    raise ValueError('???')
-                ret.append(s)
-        return [s.match for s in ret]
-    matches = __do(matches, Axis.X)
-    matches = __do(matches, Axis.Y)
-    return matches
+        except OverlapException as e:
+            rem1, rem2 = MatchOverlapIndexer.overlap_filter_metric(m, e.match, max_filter_length)
+            if rem1 or rem2:
+                if not rem1:
+                    remaining.add(m)
+                if rem2:
+                    indexer.unindex(e.match)
+                continue
+            metric = MatchOverlapIndexer.overlap_closeness_metric(m, e.match)
+            if metric <= max_merge_distance:
+                indexer.unindex(e.match)
+                new_m = Match.merge({m, e.match})
+                remaining.add(new_m)
+            else:
+                raise e
+    return indexer.walk()
 
 
 def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny_prefix: str = ''):
-    x_indexer = MatchAxisIndexer(Axis.X)
-    y_indexer = MatchAxisIndexer(Axis.Y)
+    x_indexer = MatchOverlapIndexer(Axis.X)
+    y_indexer = MatchOverlapIndexer(Axis.Y)
     for s in matches:
         x_indexer.index(s)
         y_indexer.index(s)
@@ -156,7 +137,7 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
-    matches = [m for m in matches if m.y_axis_chromosome == '2']
+    matches = [m for m in matches if m.y_axis_chromosome == '3']
     # matches = [m for m in matches if m.x_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
     print(f'{len(matches)}')
@@ -200,8 +181,8 @@ if __name__ == '__main__':
     print(f'{len(matches)}')
     matches = distance_merge(matches, radius=1000000, angle_half_maw=135)
     print(f'{len(matches)}')
-    matches = overlap_merge(matches, max_allowed_overlap_percent=0.1, max_prunable_engulf_percent=0.1)
+    matches = overlap_filter(matches, max_filter_length=1000000, max_merge_distance=5000000)
     print(f'{len(matches)}')
-    to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
+    # to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
     Match.plot(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()
