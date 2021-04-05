@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from bisect import bisect_left
 from enum import Enum
-from typing import List, Dict, Set, Tuple, SupportsFloat
+from typing import List, Dict, Set, Tuple, SupportsFloat, Optional
 
 from helpers.GeometryUtils import slope, y_intercept, line_intercept, distance, perpendicular_line
 from synteny_graph.Match import Match, MatchType
@@ -71,8 +71,17 @@ class OverlapException(Exception):
         self.axises = axises
 
 
-class MatchOverlapIndexer:
-    def __init__(self):
+# This class makes a best effort to get rid of overlapping matches. If a match overlaps, it will the following
+# operations in the following order to reduce the overlap:
+#  1. Is one of the matches <= a certain length? If so get rid of that match (leaving a single match -- no more overlap)
+#  2. Are the overlapping matches sandwiched together closely (within a certain distance)? If so merge them together
+#     into a single match (no more overlap)
+#  3. Clip one of the overlapping matches such that the overlap no longer exists between them. The longer match is the
+#     one that gets clipped.
+class MatchOverlapClipper:
+    def __init__(self, max_filter_length: float, max_merge_distance: float):
+        self.max_filter_length = max_filter_length
+        self.max_merge_distance = max_merge_distance
         self.chromosome_spans: Dict[Axis, Dict[str, List[Span]]] = {
             Axis.X: {},
             Axis.Y: {}
@@ -88,16 +97,35 @@ class MatchOverlapIndexer:
             overlaps = self._between(axis, chromosome, m_min, m_max)
             if overlaps:
                 found_overlaps[axis] = {s.match for s in overlaps}
-        # does it overlap on both axis?
-        for m in found_overlaps[Axis.X] & found_overlaps[Axis.Y]:
-            raise OverlapException(m, {Axis.X, Axis.Y})
-        # does it overlap on x axis?
-        for m in found_overlaps[Axis.X]:
-            raise OverlapException(m, {Axis.X})
-        # does it overlap on y axis?
-        for m in found_overlaps[Axis.X]:
-            raise OverlapException(m, {Axis.Y})
-        # nothing overlaps -- add it
+        # does it overlap? -- try different heuristics until its gone
+        bad_match: Optional[Match] = next(iter(found_overlaps[Axis.X] | found_overlaps[Axis.Y]), None)
+        if bad_match is not None:  # 1. is the offending match small enough to be filtered out?
+            remove1, remove2 = MatchOverlapClipper.overlap_filter_metric(match, bad_match, self.max_filter_length)
+            if remove1 and remove2:  # don't add match and remove bad_match
+                self.unindex(bad_match)
+                return
+            if remove2:  # add match but remove bad_match
+                self.unindex(bad_match)
+                bad_match = None
+            if remove1:  # don't add match but keep bad_match
+                return
+        if bad_match is not None:  # 2. can the overlaps be merged?
+            dist = MatchOverlapClipper.overlap_closeness_metric(match, bad_match)
+            if dist <= self.max_merge_distance and match.type == bad_match.type:
+                match = Match.merge({match, bad_match})
+                self.unindex(bad_match)
+                bad_match = None
+        if bad_match is not None:  # 3. can the overlapping parts be clipped off? if so do it
+            new_match, new_bad_match = MatchOverlapClipper.best_effort_overlap_clip(match, bad_match)
+            self.unindex(bad_match)  # replace bad_match with clipped one (it may have clipped out of existence -- None)
+            if new_bad_match:
+                self.index(new_bad_match)
+            bad_match = new_bad_match
+            if new_match:  # replace match with clipped one (it may have clipped out of existence -- None, if so return)
+                match = new_match
+            else:
+                return
+        # add it in
         for axis, axis_chromosome_spans in self.chromosome_spans.items():
             chromosome = axis.chromosome(match)
             span = Span(axis, match)
@@ -169,8 +197,8 @@ class MatchOverlapIndexer:
         if chromosome not in self.chromosome_spans[axis]:
             return []
         spans = self.chromosome_spans[axis][chromosome]
-        idx1 = MatchOverlapIndexer._find_max_ge_threshold(spans, min_bound)
-        idx2 = MatchOverlapIndexer._find_min_le_threshold(spans, max_bound)
+        idx1 = MatchOverlapClipper._find_max_ge_threshold(spans, min_bound)
+        idx2 = MatchOverlapClipper._find_min_le_threshold(spans, max_bound)
         if idx1 != -1 and idx2 != -1 and idx1 <= idx2:
             return self.chromosome_spans[axis][chromosome][idx1:idx2+1]
         else:
@@ -197,13 +225,13 @@ class MatchOverlapIndexer:
     @staticmethod
     def overlap_closeness_metric(m1: Match, m2: Match) -> float:
         if m1.x_axis_chromosome_min_idx > m2.x_axis_chromosome_min_idx:
-            d1 = MatchOverlapIndexer._perpendicular_distance(m1.get_start_point(), m2)
+            d1 = MatchOverlapClipper._perpendicular_distance(m1.get_start_point(), m2)
         else:
-            d1 = MatchOverlapIndexer._perpendicular_distance(m2.get_start_point(), m1)
+            d1 = MatchOverlapClipper._perpendicular_distance(m2.get_start_point(), m1)
         if m1.x_axis_chromosome_max_idx < m2.x_axis_chromosome_max_idx:
-            d2 = MatchOverlapIndexer._perpendicular_distance(m1.get_end_point(), m2)
+            d2 = MatchOverlapClipper._perpendicular_distance(m1.get_end_point(), m2)
         else:
-            d2 = MatchOverlapIndexer._perpendicular_distance(m2.get_end_point(), m1)
+            d2 = MatchOverlapClipper._perpendicular_distance(m2.get_end_point(), m1)
         return (d1 + d2) / 2
 
     @staticmethod
@@ -217,29 +245,52 @@ class MatchOverlapIndexer:
         return False, False
 
     @staticmethod
-    def overlap_clip(m1: Match, m2: Match) -> Tuple[Match, Match]:
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
-        FINISH IMPLEMENTING THIS -- IF IT DETECTS AN OVERLAP ON AN AXIS, IT SHOULD CLIP ONE OF THE MATCHES ON THAT AXIS
+    def best_effort_overlap_clip(m1: Match, m2: Match) -> Tuple[Optional[Match], Optional[Match]]:
+        # X OVERLAP CLIP
+           # do the xs totally overlap? keep one (doesn't matter which)
+        if m1.x_axis_chromosome_min_idx == m2.x_axis_chromosome_min_idx\
+                and m1.x_axis_chromosome_max_idx == m2.x_axis_chromosome_max_idx:
+            return m1, None
+           # is x overlapped where m1 starts after m2?
         if m2.x_axis_chromosome_min_idx <= m1.x_axis_chromosome_min_idx <= m2.x_axis_chromosome_max_idx:
             if m1.length() > m2.length():
-                m1 = m1.clip_x_max(m2.x_axis_chromosome_max_idx + 1)
+                m1 = m1.clip_x_min(m2.x_axis_chromosome_max_idx + 1)
             else:
-                m2 = m2.clip_x_max(m1.x_axis_chromosome_max_idx + 1)
-        if m1.x_axis_chromosome_min_idx <= m2.x_axis_chromosome_min_idx <= m1.x_axis_chromosome_max_idx:
-            return Overlap(a, b)
+                m2 = m2.clip_x_max(m1.x_axis_chromosome_min_idx - 1)
+          # is x overlapped where m1 starts after m2?
+        elif m1.x_axis_chromosome_min_idx <= m2.x_axis_chromosome_min_idx <= m1.x_axis_chromosome_max_idx:
+            if m1.length() > m2.length():
+                m1 = m1.clip_x_max(m2.x_axis_chromosome_min_idx - 1)
+            else:
+                m2 = m2.clip_x_min(m1.x_axis_chromosome_max_idx + 1)
+          # did one of the matches get clipped to nothing? done.
+        if m1 is None or m2 is None:
+            return m1, m2
+        # Y OVERLAP CLIP
+           # do the ys totally overlap? keep one (doesn't matter which)
+        if m1.y_axis_chromosome_min_idx == m2.y_axis_chromosome_min_idx\
+                and m1.y_axis_chromosome_max_idx == m2.y_axis_chromosome_max_idx:
+            return m1, None
+           # is y overlapped where m1 starts after m2?
+        if m2.y_axis_chromosome_min_idx <= m1.y_axis_chromosome_min_idx <= m2.y_axis_chromosome_max_idx:
+            if m1.length() > m2.length():
+                m1 = m1.clip_y_min(m2.y_axis_chromosome_max_idx + 1)
+            else:
+                m2 = m2.clip_y_max(m1.y_axis_chromosome_min_idx - 1)
+          # is y overlapped where m1 starts after m2?
+        elif m1.y_axis_chromosome_min_idx <= m2.y_axis_chromosome_min_idx <= m1.y_axis_chromosome_max_idx:
+            if m1.length() > m2.length():
+                m1 = m1.clip_y_max(m2.y_axis_chromosome_min_idx - 1)
+            else:
+                m2 = m2.clip_y_min(m1.y_axis_chromosome_max_idx + 1)
+          # did one of the matches get clipped to nothing? done. -- COMMENTED OUT BECAUSE RETURN IMMEDIATELY AFTER
+        # if m1 is None or m2 is None:
+        #     return m1, m2
+        return m1, m2
 
 
 if __name__ == '__main__':
-    x = MatchOverlapIndexer()
+    x = MatchOverlapClipper()
     x.index(Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
     x.index(Match('Y1', 4, 5, 'X1', 4, 5, MatchType.NORMAL))
     x.index(Match('Y1', 2, 3, 'X1', 2, 3, MatchType.NORMAL))
@@ -250,28 +301,36 @@ if __name__ == '__main__':
     # x.index(Match('Y1', 1, 2, 'X1', 1, 2, MatchType.NORMAL))  # should overlap -- ok
     # x.index(Match('Y1', 0, 3, 'X1', 0, 3, MatchType.NORMAL))  # should overlap -- ok
 
-    m1 = Match('3', 99725203, 109775486, '16', 48857864, 58896953, MatchType.REVERSE_COMPLEMENT)
-    m2 = Match('3', 94886705, 99743622, '16', 58880039, 63295838, MatchType.REVERSE_COMPLEMENT)
-    MatchOverlapIndexer.overlap_closeness_metric(m1, m2)
+    # m1 = Match('3', 99725203, 109775486, '16', 48857864, 58896953, MatchType.REVERSE_COMPLEMENT)
+    # m2 = Match('3', 94886705, 99743622, '16', 58880039, 63295838, MatchType.REVERSE_COMPLEMENT)
+    # MatchOverlapIndexer.overlap_closeness_metric(m1, m2)
 
-    # s1 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
-    # s2 = Span(Axis.Y, Match('Y1', 2, 3, 'X1', 2, 3, MatchType.NORMAL))
-    # print(f'{Span.check_overlap(s1, s2)}')
-    # print('----')
-    # s1 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
-    # s2 = Span(Axis.Y, Match('Y1', 1, 2, 'X1', 1, 2, MatchType.NORMAL))
-    # print(f'{Span.check_overlap(s1, s2).before} / {Span.check_overlap(s1, s2).overlap_percentage}')
-    # print(f'{Span.check_overlap(s1, s2).after} / {Span.check_overlap(s1, s2).after_overlap_percentage}')
-    # print(f'{Span.check_overlap(s2, s1).before} / {Span.check_overlap(s2, s1).overlap_percentage}')
-    # print(f'{Span.check_overlap(s2, s1).after} / {Span.check_overlap(s2, s1).after_overlap_percentage}')
-    # print('----')
-    # s1 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
-    # s2 = Span(Axis.Y, Match('Y1', 0, 1, 'X1', 0, 1, MatchType.NORMAL))
-    # print(f'{Span.check_overlap(s1, s2).engulfer} / {Span.check_overlap(s1, s2).engulfee} / {Span.check_overlap(s1, s2).engulfed_percentage}')
-    # print(f'{Span.check_overlap(s2, s1).engulfer} / {Span.check_overlap(s2, s1).engulfee} / {Span.check_overlap(s2, s1).engulfed_percentage}')
-    # print('----')
-    # s1 = Span(Axis.Y, Match('Y1', 0, 3, 'X1', 0, 3, MatchType.NORMAL))
-    # s2 = Span(Axis.Y, Match('Y1', 1, 2, 'X1', 1, 2, MatchType.NORMAL))
-    # print(f'{Span.check_overlap(s1, s2).engulfer} / {Span.check_overlap(s1, s2).engulfee} / {Span.check_overlap(s1, s2).engulfed_percentage}')
-    # print(f'{Span.check_overlap(s2, s1).engulfer} / {Span.check_overlap(s2, s1).engulfee} / {Span.check_overlap(s2, s1).engulfed_percentage}')
-    # print('----')
+    m1 = Match('A', 0, 9, 'B', 0, 9, MatchType.REVERSE_COMPLEMENT)
+    m2 = Match('A', 10, 19, 'B', 5, 15, MatchType.REVERSE_COMPLEMENT)
+    m1, m2 = MatchOverlapClipper.best_effort_overlap_clip(m1, m2)
+    print(f'{m1=} {m2=}')
+
+    m1 = Match('A', 0, 9, 'B', 0, 9, MatchType.REVERSE_COMPLEMENT)
+    m2 = Match('A', 10, 19, 'B', 5, 11, MatchType.REVERSE_COMPLEMENT)
+    m1, m2 = MatchOverlapClipper.best_effort_overlap_clip(m1, m2)
+    print(f'{m1=} {m2=}')
+
+    m1 = Match('A', 8, 9, 'B', 10, 19, MatchType.REVERSE_COMPLEMENT)
+    m2 = Match('A', 0, 9, 'B', 20, 29, MatchType.REVERSE_COMPLEMENT)
+    m1, m2 = MatchOverlapClipper.best_effort_overlap_clip(m1, m2)
+    print(f'{m1=} {m2=}')
+
+    m1 = Match('A', 2, 9, 'B', 10, 19, MatchType.REVERSE_COMPLEMENT)
+    m2 = Match('A', 0, 9, 'B', 20, 29, MatchType.REVERSE_COMPLEMENT)
+    m1, m2 = MatchOverlapClipper.best_effort_overlap_clip(m1, m2)
+    print(f'{m1=} {m2=}')
+
+    m1 = Match('A', 0, 9, 'B', 10, 19, MatchType.REVERSE_COMPLEMENT)
+    m2 = Match('A', 0, 9, 'B', 20, 29, MatchType.REVERSE_COMPLEMENT)
+    m1, m2 = MatchOverlapClipper.best_effort_overlap_clip(m1, m2)
+    print(f'{m1=} {m2=}')
+
+    m1 = Match('A', 10, 19, 'B', 0, 9, MatchType.REVERSE_COMPLEMENT)
+    m2 = Match('A', 20, 29, 'B', 0, 9, MatchType.REVERSE_COMPLEMENT)
+    m1, m2 = MatchOverlapClipper.best_effort_overlap_clip(m1, m2)
+    print(f'{m1=} {m2=}')

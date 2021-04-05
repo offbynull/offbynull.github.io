@@ -3,7 +3,7 @@ from __future__ import annotations
 import colorsys
 from enum import Enum
 from math import ceil, sqrt
-from typing import List, Iterable, Optional, Set
+from typing import Iterable, Optional, Set
 
 import matplotlib.collections as mc
 import numpy

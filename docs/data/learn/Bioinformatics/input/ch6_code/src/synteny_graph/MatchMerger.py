@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from helpers.Utils import encode_int_to_alphabet
 from synteny_graph.Match import Match, MatchType
-from synteny_graph.MatchOverlapIndexer import Axis, MatchOverlapIndexer, OverlapException
+from synteny_graph.MatchOverlapClipper import Axis, MatchOverlapClipper, OverlapException
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
 
 
@@ -37,34 +37,34 @@ def overlap_filter(
         max_filter_length: float,
         max_merge_distance: float
 ) -> Set[Match]:
-    indexer = MatchOverlapIndexer()
-    remaining = set(matches)
-    while remaining:
-        m = next(iter(remaining))
-        remaining.remove(m)
-        try:
-            indexer.index(m)
-        except OverlapException as e:
-            rem1, rem2 = MatchOverlapIndexer.overlap_filter_metric(m, e.match, max_filter_length)
-            if rem1 or rem2:
-                if not rem1:
-                    remaining.add(m)
-                if rem2:
-                    indexer.unindex(e.match)
-                continue
-            metric = MatchOverlapIndexer.overlap_closeness_metric(m, e.match)
-            if metric <= max_merge_distance:
-                indexer.unindex(e.match)
-                new_m = Match.merge({m, e.match})
-                remaining.add(new_m)
-            else:
-                raise e
+    indexer = MatchOverlapClipper(max_filter_length, max_merge_distance)
+    for m in matches:
+        indexer.index(m)
     return indexer.walk()
 
 
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
+THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
 def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny_prefix: str = ''):
-    x_indexer = MatchOverlapIndexer(Axis.X)
-    y_indexer = MatchOverlapIndexer(Axis.Y)
+    x_indexer = MatchOverlapClipper(Axis.X)
+    y_indexer = MatchOverlapClipper(Axis.Y)
     for s in matches:
         x_indexer.index(s)
         y_indexer.index(s)
@@ -137,7 +137,7 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
-    matches = [m for m in matches if m.y_axis_chromosome == '3']
+    # matches = [m for m in matches if m.y_axis_chromosome == '4']
     # matches = [m for m in matches if m.x_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
     print(f'{len(matches)}')
