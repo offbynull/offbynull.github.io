@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import lzma
+from collections import defaultdict
 from typing import Iterable, List, Set
 
 import matplotlib.pyplot as plt
 
 from helpers.Utils import encode_int_to_alphabet
 from synteny_graph.Match import Match, MatchType
-from synteny_graph.MatchOverlapClipper import Axis, MatchOverlapClipper, OverlapException
+from synteny_graph.MatchOverlapClipper import Axis, MatchOverlapClipper
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
 
 
@@ -36,75 +37,63 @@ def overlap_filter(
         matches: Iterable[Match],
         max_filter_length: float,
         max_merge_distance: float
-) -> Set[Match]:
+) -> List[Match]:
     indexer = MatchOverlapClipper(max_filter_length, max_merge_distance)
     for m in matches:
         indexer.index(m)
-    return indexer.walk()
+    return list(indexer.get())
 
 
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
-THIS WORKED BUT IT NEEDS TO BE REIMPLEMENTED BECAUSE EVERYTHING CHANGED
 def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny_prefix: str = ''):
-    x_indexer = MatchOverlapClipper(Axis.X)
-    y_indexer = MatchOverlapClipper(Axis.Y)
-    for s in matches:
-        x_indexer.index(s)
-        y_indexer.index(s)
+    matches_sorted_x = sorted(matches, key=lambda m: m.x_axis_chromosome_min_idx)
+    matches_sorted_y = sorted(matches, key=lambda m: m.y_axis_chromosome_min_idx)
+    chromosome_lookup_x = defaultdict(list)
+    chromosome_lookup_y = defaultdict(list)
     # Create synteny block IDs for matches
     if ordered_axis == Axis.X:
-        ordered_indexer = x_indexer
+        ordered_matches = matches_sorted_x
+        for m in ordered_matches:
+            chromosome_lookup_x[m.x_axis_chromosome].append(m)
+            chromosome_lookup_y[m.y_axis_chromosome].append(m)
+        ordered_chromosome_lookup = chromosome_lookup_x
     elif ordered_axis == Axis.Y:
-        ordered_indexer = y_indexer
+        ordered_matches = matches_sorted_y
+        for m in ordered_matches:
+            chromosome_lookup_x[m.x_axis_chromosome].append(m)
+            chromosome_lookup_y[m.y_axis_chromosome].append(m)
+        ordered_chromosome_lookup = chromosome_lookup_y
     else:
         raise ValueError('???')
-    span_to_synteny_ids = {}
-    for chr_id in ordered_indexer.chromosomes():
-        for i, span in enumerate(ordered_indexer.walk(chr_id)):
-            span_to_synteny_ids[span.match] = f'{chr_id}_{encode_int_to_alphabet(i)}'
+    match_to_synteny_ids = {}
+    for chr_id in sorted(ordered_chromosome_lookup.keys()):
+        for i, match in enumerate(ordered_chromosome_lookup[chr_id]):
+            match_to_synteny_ids[match] = f'{chr_id}_{encode_int_to_alphabet(i)}'
     # Create permutations for each species chromosome
-    x_chromosome_perms = {}
-    for chr_id in x_indexer.chromosomes():
-        perm = x_chromosome_perms.setdefault(chr_id, [])
-        for span in x_indexer.walk(chr_id):
-            synteny_id = synteny_prefix + '_' + span_to_synteny_ids[span.match]
-            if x_indexer == ordered_indexer:
+    x_chromosome_perms = defaultdict(list)
+    for chr_id in sorted(chromosome_lookup_x.keys()):
+        perm = x_chromosome_perms[chr_id]
+        for match in chromosome_lookup_x[chr_id]:
+            synteny_id = synteny_prefix + '_' + match_to_synteny_ids[match]
+            if matches_sorted_x is ordered_matches:
                 perm.append('+' + synteny_id)
             else:
-                if span.match.type == MatchType.NORMAL:
+                if match.type == MatchType.NORMAL:
                     perm.append('+' + synteny_id)
-                elif span.match.type == MatchType.REVERSE_COMPLEMENT:
+                elif match.type == MatchType.REVERSE_COMPLEMENT:
                     perm.append('-' + synteny_id)
                 else:
                     raise ValueError('???')
-    y_chromosome_perms = {}
-    for chr_id in y_indexer.chromosomes():
+    y_chromosome_perms = defaultdict(list)
+    for chr_id in sorted(chromosome_lookup_y.keys()):
         perm = y_chromosome_perms.setdefault(chr_id, [])
-        for span in y_indexer.walk(chr_id):
-            synteny_id = synteny_prefix + '_' + span_to_synteny_ids[span.match]
-            if y_indexer == ordered_indexer:
+        for match in chromosome_lookup_y[chr_id]:
+            synteny_id = synteny_prefix + '_' + match_to_synteny_ids[match]
+            if matches_sorted_y == ordered_matches:
                 perm.append('+' + synteny_id)
             else:
-                if span.match.type == MatchType.NORMAL:
+                if match.type == MatchType.NORMAL:
                     perm.append('+' + synteny_id)
-                elif span.match.type == MatchType.REVERSE_COMPLEMENT:
+                elif match.type == MatchType.REVERSE_COMPLEMENT:
                     perm.append('-' + synteny_id)
                 else:
                     raise ValueError('???')
@@ -137,7 +126,7 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
-    # matches = [m for m in matches if m.y_axis_chromosome == '4']
+    matches = [m for m in matches if m.y_axis_chromosome in {'X'}]
     # matches = [m for m in matches if m.x_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
     print(f'{len(matches)}')
@@ -183,6 +172,8 @@ if __name__ == '__main__':
     print(f'{len(matches)}')
     matches = overlap_filter(matches, max_filter_length=1000000, max_merge_distance=5000000)
     print(f'{len(matches)}')
-    # to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
+    human_perms, mouse_perms = to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
+    print(f'{human_perms}')
+    print(f'{mouse_perms}')
     Match.plot(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()
