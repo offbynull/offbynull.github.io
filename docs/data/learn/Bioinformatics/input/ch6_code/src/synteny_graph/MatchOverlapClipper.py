@@ -66,10 +66,10 @@ class Span:
         return (self._min_bound, self._max_bound, self.match) == (other._min_bound, other._max_bound, other.match)
 
 
-class OverlapException(Exception):
-    def __init__(self, match: Match, axises: Set[Axis]):
-        self.match = match
-        self.axises = axises
+class RequestedChanges:
+    def __init__(self, existing_matches_to_replace: Dict[Match, Optional[Match]], revised_match: Optional[Match]):
+        self.existing_matches_to_replace = existing_matches_to_replace
+        self.revised_match = revised_match
 
 
 # This class makes a best effort to get rid of overlapping matches. If a match overlaps, it will the following
@@ -100,50 +100,33 @@ class MatchOverlapClipper:
                 found_overlaps[axis] = {s.match for s in overlaps}
         # does it overlap? -- try different heuristics until its gone
         found_overlaps_all = found_overlaps[Axis.X] | found_overlaps[Axis.Y]
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
-        THIS IS JUST RESOLVING AGAINST ONE OF THE OVERLAPS -- IT NEEDS TO RESOLVE ALL OF THE OVERLAPS BEFORE ADDING
         bad_match: Optional[Match] = next(iter(found_overlaps_all), None)
-        if bad_match is not None:  # 1. is the offending match small enough to be filtered out?
+        # 1. is the offending match small enough to be filtered out?
+        if bad_match is not None:
             remove1, remove2 = MatchOverlapClipper.overlap_filter_metric(match, bad_match, self.max_filter_length)
             if remove1 and remove2:  # don't add match and remove bad_match
-                self.unindex(bad_match)
-                return
+                return RequestedChanges({bad_match: None}, None)
             if remove2:  # add match but remove bad_match
-                self.unindex(bad_match)
-                bad_match = None
+                return RequestedChanges({bad_match: None}, match)
             if remove1:  # don't add match but keep bad_match
-                return
-        if bad_match is not None:  # 2. can the overlaps be merged?
+                return RequestedChanges({}, None)
+        # 2. can the overlaps be merged?
+        if bad_match is not None:
             dist = MatchOverlapClipper.overlap_closeness_metric(match, bad_match)
             if dist <= self.max_merge_distance and match.type == bad_match.type:
-                match = Match.merge({match, bad_match})
-                self.unindex(bad_match)
-                bad_match = None
-        if bad_match is not None:  # 3. can the overlapping parts be clipped off? if so do it
+                merged_match = Match.merge({match, bad_match})
+                return RequestedChanges({bad_match: None}, merged_match)  # replace bad_match with the merged version
+        # 3. can the overlapping parts be clipped off? if so do it (may have clipped out of existence -- None)
+        if bad_match is not None:
             new_match, new_bad_match = MatchOverlapClipper.best_effort_overlap_clip(match, bad_match)
-            self.unindex(bad_match)  # replace bad_match with clipped one (it may have clipped out of existence -- None)
+            if new_match and new_bad_match:
+                return RequestedChanges({bad_match: new_bad_match}, new_match)
             if new_bad_match:
-                self.index(new_bad_match)
-            bad_match = new_bad_match
-            if new_match:  # replace match with clipped one (it may have clipped out of existence -- None, if so return)
-                match = new_match
-            else:
-                return
+                return RequestedChanges({bad_match: new_bad_match}, match)
+            if new_match:
+                return RequestedChanges({bad_match: None}, new_match)
+        if bad_match is not None:
+            ValueError(f'No resolution to overlap? {match} vs {bad_match}')
         # add it in
         for axis, axis_chromosome_spans in self.chromosome_spans.items():
             chromosome = axis.chromosome(match)
@@ -151,6 +134,7 @@ class MatchOverlapClipper:
             spans = axis_chromosome_spans.setdefault(chromosome, [])
             idx = bisect_left(spans, span)
             spans.insert(idx, span)
+        return None
 
     def unindex(self, match: Match):
         for axis, axis_chromosome_spans in self.chromosome_spans.items():

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import lzma
 from collections import defaultdict
-from typing import Iterable, List, Set
+from typing import Iterable, List
 
 import matplotlib.pyplot as plt
 
@@ -38,10 +38,27 @@ def overlap_filter(
         max_filter_length: float,
         max_merge_distance: float
 ) -> List[Match]:
-    indexer = MatchOverlapClipper(max_filter_length, max_merge_distance)
+    clipper = MatchOverlapClipper(max_filter_length, max_merge_distance)
     for m in matches:
-        indexer.index(m)
-    return list(indexer.get())
+        while True:
+            # When you attempt to add a match to the clipper, the clipper may instead ask you to make a set of changes
+            # before it'll accept it. Specifically, the clipper may ask you to replace a bunch of existing matches that
+            # it's already indexed and then give you a MODIFIED version of m that it'll accept once you've applied
+            # those replacements
+            changes_requested = clipper.index(m)
+            if not changes_requested:
+                break
+            # replace existing entries in clipper
+            for from_m, to_m in changes_requested.existing_matches_to_replace.items():
+                clipper.unindex(from_m)
+                if to_m:
+                    res = clipper.index(to_m)
+                    assert res is None
+            # replace m with a revised version -- if None it means m isn't needed (its been filtered out)
+            m = changes_requested.revised_match
+            if not m:
+                break
+    return list(clipper.get())
 
 
 def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny_prefix: str = ''):
@@ -126,7 +143,7 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
-    matches = [m for m in matches if m.y_axis_chromosome in {'X'}]
+    # matches = [m for m in matches if m.y_axis_chromosome in {'2'}]
     # matches = [m for m in matches if m.x_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
     print(f'{len(matches)}')
@@ -148,27 +165,17 @@ if __name__ == '__main__':
     print(f'{len(matches)}')
     matches = distance_merge(matches, radius=90000)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=100000, angle_half_maw=135)
+    matches = distance_merge(matches, radius=100000)
     print(f'{len(matches)}')
     matches = [m for m in matches if m.length() >= 100000]
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=200000, angle_half_maw=135)
+    matches = distance_merge(matches, radius=200000)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=300000, angle_half_maw=135)
+    matches = distance_merge(matches, radius=300000)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=400000, angle_half_maw=135)
+    matches = distance_merge(matches, radius=400000)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=500000, angle_half_maw=135)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=600000, angle_half_maw=135)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=700000, angle_half_maw=135)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=800000, angle_half_maw=135)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=900000, angle_half_maw=135)
-    print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=1000000, angle_half_maw=135)
+    matches = distance_merge(matches, radius=500000)
     print(f'{len(matches)}')
     matches = overlap_filter(matches, max_filter_length=1000000, max_merge_distance=5000000)
     print(f'{len(matches)}')
