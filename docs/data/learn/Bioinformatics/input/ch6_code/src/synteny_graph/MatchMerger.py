@@ -7,6 +7,7 @@ from typing import Iterable, List
 import matplotlib.pyplot as plt
 
 from helpers.Utils import encode_int_to_alphabet
+from synteny_graph.BreakpointGraph import BreakpointGraph
 from synteny_graph.Match import Match, MatchType
 from synteny_graph.MatchOverlapClipper import Axis, MatchOverlapClipper
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
@@ -143,7 +144,7 @@ if __name__ == '__main__':
         )
         matches.append(m)
     lines = []  # no longer required -- clear out memory
-    # matches = [m for m in matches if m.y_axis_chromosome in {'2'}]
+    matches = [m for m in matches if m.y_axis_chromosome in {'1', '2'}]
     # matches = [m for m in matches if m.x_axis_chromosome == '1']
     # matches = random.sample(matches, len(matches) // 10)
     print(f'{len(matches)}')
@@ -182,5 +183,19 @@ if __name__ == '__main__':
     human_perms, mouse_perms = to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
     print(f'{human_perms}')
     print(f'{mouse_perms}')
+
+    bg = BreakpointGraph(
+        [mouse_perms[ch] for ch in sorted(mouse_perms.keys())],
+        [human_perms[ch] for ch in sorted(human_perms.keys())]
+    )
+    print(bg.to_neato_graph())
+    print(bg.get_red_permutations())
+    while True:
+        next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_cycle()
+        if next_blue_edge_to_break_on is None:
+            break
+        bg.apply_2break(next_blue_edge_to_break_on)
+        print(bg.get_red_permutations())
+
     Match.plot(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()
