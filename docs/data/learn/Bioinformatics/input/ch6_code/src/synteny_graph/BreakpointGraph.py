@@ -78,6 +78,26 @@ class ColoredEdge:
         return str(self)
 
 
+class SyntenyEdge:
+    def __init__(self, n1: Node, n2: Node):
+        assert n1.id == n2.id
+        assert n1.end != n2.end
+        self.n1 = n1
+        self.n2 = n2
+
+    def __eq__(self, other):
+        return self.n1 == other.n1 and self.n2 == other.n2
+
+    def __hash__(self):
+        return hash((self.n1, self.n2))
+
+    def __str__(self):
+        return str((self.n1, self.n2))
+
+    def __repr__(self):
+        return str(self)
+
+
 # This class only holds on to the...
 #
 #  * blue edges (representing the graph you're trying to reach -- the good state)
@@ -152,18 +172,27 @@ class BreakpointGraph:
                 node_to_red_edges[n1] = e
                 node_to_red_edges[n2] = e
 
+        # Because blue/red edges are undirected, you don't know which direction to traverse the graph when dumping out
+        # the list of lists (permutations). This block caches the original input of synteny edges, such that you know
+        # the correct direction to walk in.
+        node_to_synteny_edge = {}
+        for p in blue_p_list:
+            for s in p:
+                if s[0] == '+':
+                    n1 = Node(s[1:], SyntenyEnd.HEAD)
+                    n2 = Node(s[1:], SyntenyEnd.TAIL)
+                elif s[0] == '-':
+                    n1 = Node(s[1:], SyntenyEnd.TAIL)
+                    n2 = Node(s[1:], SyntenyEnd.HEAD)
+                else:
+                    raise ValueError('???')
+                e = SyntenyEdge(n1, n2)
+                node_to_synteny_edge[n1] = e
+                node_to_synteny_edge[n2] = e
+
         self.node_to_blue_edges = node_to_blue_edges
         self.node_to_red_edges = node_to_red_edges
-
-        # Because the red/blue edges are undirected, the start_nid defines which node to start from when traversing the
-        # graph from when dumping out the graph back into a list of lists (permutations).
-        red_p_chr1_perm1 = red_p_list[0][0]
-        if red_p_chr1_perm1[0] == '+':
-            self.start_nid = Node(red_p_chr1_perm1[1:], SyntenyEnd.TAIL)
-        elif red_p_chr1_perm1[0] == '-':
-            self.start_nid = Node(red_p_chr1_perm1[1:], SyntenyEnd.HEAD)
-        else:
-            raise ValueError('???')
+        self.node_to_synteny_edge = node_to_synteny_edge
 
     def find_blue_edge_in_non_trivial_cycle(self):
         for nid in self.node_to_blue_edges:
@@ -229,8 +258,10 @@ class BreakpointGraph:
 
     def _walk_to_permutations(self, remaining: Dict[Node, ColoredEdge]) -> List[List[str]]:
         ret = []
-        nid = self.start_nid
-        while True:
+        while (nid := next(iter(remaining), None)) is not None:
+            # output in the direction in which perms were originally input by starting from the destination of the
+            # synteny edge that nid is for
+            nid = self.node_to_synteny_edge[nid].n2
             p = []
             while nid in remaining:
                 edge = remaining[nid]
@@ -246,19 +277,11 @@ class BreakpointGraph:
                     raise ValueError('???')
                 nid = Node(other_nid.id, other_nid.end.swap())
             ret.append(p)
-            if remaining:
-                nid = next(iter(remaining))
-            else:
-                break
         return ret
 
-    # THIS HAS BEEN MODIFIED FROM WHAT IT WAS BEFORE BECAUSE IT DIDNT SUPPORT MULTIPLE CHROMOSOMES, BUT THERE'S ONLY
-    # START_NID FOR ONLY 1 CHROMOSOME -- WE NEED A START_NID FOR EVERY CHROMOSOME OR THERE'S A CHANGE IT COULD WALK
-    # A CHROMOSOME BACKWARDS?
-    FIX ME? KEEP LIST OF ORIGINAL BLUE PERMUTATIONS SO YOU KNOW WHICH END TO START WALKING FROM?
-    def _ordered_walk_over_synteny_edges(self):
+    def _ordered_walk_over_synteny_edges(self):  # in this case, ordered means ordered by blue edges
         remaining = self.node_to_blue_edges.copy()
-        nid = self.start_nid
+        nid = next(iter(remaining))
         while True:
             while nid in remaining:
                 edge = remaining[nid]
@@ -278,64 +301,40 @@ class BreakpointGraph:
             else:
                 break
 
-    def _ordered_walk_over_blue_edges(self):
-        next_nid = self.start_nid
-        while True:
-            blue_edge = self.node_to_blue_edges[next_nid]
-            yield blue_edge
-            other_nid = blue_edge.get_other_node(next_nid)
-            next_nid = other_nid.other_end()
-            if next_nid == self.start_nid:
-                break
-
     def to_neato_graph(self):
         g = ''
         g += 'graph G {\n'
         g += 'node [shape=plain];\n'
-
+        # set node locations
         node_count = len(self.node_to_blue_edges)
         radius = node_count ** 1/4
         node_locations = [(cos(2 * pi / node_count * x) * radius, sin(2 * pi / node_count * x) * radius) for x in range(0, node_count + 1)]
-
-        # Set node locations
         for n1, n2 in self._ordered_walk_over_synteny_edges():
             x1, y1 = node_locations.pop()
             x2, y2 = node_locations.pop()
             g += f'_{n1.id}_{n1.end.value}_ [pos="{x1},{y1}!"];\n'
             g += f'_{n2.id}_{n2.end.value}_ [pos="{x2},{y2}!"];\n'
-
-        # Set black edges representing synteny blocks
+        # set black edges representing synteny blocks
         for n1, n2 in self._ordered_walk_over_synteny_edges():
             g += f'_{n1.id}_{n1.end.value}_ -- _{n2.id}_{n2.end.value}_ [style=dashed, dir=forward];\n'
-
-        # Set blue edges (destination)
+        # set blue edges (destination)
         for e in set(self.node_to_blue_edges.values()):
             g += f'_{e.n1.id}_{e.n1.end.value}_ -- _{e.n2.id}_{e.n2.end.value}_ [color=blue];\n'
-
-        # Draw red edges (source)
+        # draw red edges (source)
         for e in set(self.node_to_red_edges.values()):
             g += f'_{e.n1.id}_{e.n1.end.value}_ -- _{e.n2.id}_{e.n2.end.value}_ [color=red];\n'
-
         g += '}'
-
         return g
 
 
 if __name__ == '__main__':
     bg = BreakpointGraph(
-        [['+A', '-B', '-C', '+D']],
-        [['+A', '+B', '-D', '-C']]
-        # [[+9, -8, +12, +7, +1, -14, +13, +3, -5, -11, +6, -2, +10, -4]],
-        # [[-11, +8, -10, -2, +3, +4, +13, +6, +12, +9, +5, +7, -14, -1]]
+        [['+A', '-B', '-C', '+D'], ['+E']],
+        [['+A', '+B', '-D'], ['-C', '-E']]
     )
+    # graph is cyclic, so output permutations may start anywhere in the cycle
+    # colored edges are undirected, so output permutations may come out negated+reversed
+    print(f'{bg.get_red_permutations()}')
+    print(f'{bg.get_blue_permutations()}')
     print(f'{bg.get_red_blue_cycles()}')
-    # print(f'STARTING FROM {bg.get_red_permutations()} AND GOING TO {bg.get_blue_permutations()}')
-    # print(f'{bg.to_neato_graph()}')
-    # print('----------------')
-    # while True:
-    #     next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_cycle()
-    #     if next_blue_edge_to_break_on is None:
-    #         break
-    #     bg.apply_2break(next_blue_edge_to_break_on)
-    #     print(f'{bg.get_red_permutations()}')
-    #     print(f'{bg.to_neato_graph()}')
+    print(f'{bg.to_neato_graph()}')
