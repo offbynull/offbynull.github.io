@@ -1,128 +1,13 @@
 from __future__ import annotations
-from enum import Enum
+
 from math import cos, pi, sin
-from typing import List, Dict, Tuple, Optional, Set
+from typing import List, Dict, Set
 
+from breakpoint_graph.ColoredEdge import ColoredEdge
+from breakpoint_graph.Node import Node
+from breakpoint_graph.SyntenyEdge import SyntenyEdge
+from breakpoint_graph.SyntenyEnd import SyntenyEnd
 from helpers.Utils import slide_window
-
-
-class SyntenyEnd(Enum):
-    HEAD = 'h'
-    TAIL = 't'
-
-    def __lt__(self, other):
-        return self.value < other.value
-
-    def swap(self) -> SyntenyEnd:
-        if self == SyntenyEnd.HEAD:
-            return SyntenyEnd.TAIL
-        else:
-            return SyntenyEnd.HEAD
-
-
-class Node:
-    def __init__(self, id: Optional[str], end: SyntenyEnd):
-        self.id = id
-        self.end = end
-
-    def other_end(self) -> Node:
-        return Node(self.id, self.end.swap())
-
-    def __lt__(self, other):
-        if self.id < other.id:
-            return True
-        elif self.id == other.id and self.end < other.end:
-            return True
-        else:
-            return False
-
-    def __eq__(self, other):
-        if isinstance(other, Node):
-            return self.id == other.id and self.end == other.end
-        else:
-            return False
-
-    def __hash__(self):
-        return hash((self.id, self.end))
-
-    def __str__(self):
-        return str((self.id, self.end))
-
-    def __repr__(self):
-        return str(self)
-
-
-class ColoredEdge:
-    def __init__(self, n1: Optional[Node], n2: Optional[Node]):
-        assert n1 != n2
-        if n1 and n2:
-            x = [n1, n2]
-            x.sort()
-            n1: Optional[Node] = x[0]
-            n2: Optional[Node] = x[1]
-        elif not n1 and not n2:
-            raise ValueError('At least one must be not None')
-        self.n1: Optional[Node] = n1
-        self.n2: Optional[Node] = n2
-
-    def get_other_node(self, nid: Optional[Node]):
-        if nid == self.n1:
-            return self.n2
-        elif nid == self.n2:
-            return self.n1
-        else:
-            raise ValueError('???')
-
-    def __eq__(self, other):
-        return self.n1 == other.n1 and self.n2 == other.n2
-
-    def __hash__(self):
-        return hash((self.n1, self.n2))
-
-    def __str__(self):
-        return str((self.n1, self.n2))
-
-    def __repr__(self):
-        return str(self)
-
-
-class SyntenyEdge:
-    def __init__(self, n1: Node, n2: Node):
-        assert n1.id == n2.id
-        assert n1.end != n2.end
-        self.n1 = n1
-        self.n2 = n2
-
-    @staticmethod
-    def from_str(v: str) -> Tuple[SyntenyEdge, str]:
-        if v[0] == '+':
-            return SyntenyEdge(
-                Node(v[1:], SyntenyEnd.HEAD),
-                Node(v[1:], SyntenyEnd.TAIL)
-            ), v[1:]
-        elif v[0] == '-':
-            return SyntenyEdge(
-                Node(v[1:], SyntenyEnd.TAIL),
-                Node(v[1:], SyntenyEnd.HEAD)
-            ), v[1:]
-        else:
-            raise ValueError('???')
-
-    @staticmethod
-    def id(v: str) -> str:
-        return v[1:]
-
-    def __eq__(self, other):
-        return self.n1 == other.n1 and self.n2 == other.n2
-
-    def __hash__(self):
-        return hash((self.n1, self.n2))
-
-    def __str__(self):
-        return str((self.n1, self.n2))
-
-    def __repr__(self):
-        return str(self)
 
 
 # This class only holds on to the...
@@ -236,24 +121,34 @@ class BreakpointGraph:
             paths += [path]
         return paths
 
-    def find_blue_edge_in_non_trivial_cycle(self):
+    def find_blue_edge_in_non_trivial_path(self):
         for p in self.get_red_blue_paths():
             if len(p) == 1:
                 continue
             if len(p) == 2 and self.node_to_red_edges[p[0]] == self.node_to_red_edges[p[1]]:
                 continue
-            return p
+            return self.node_to_blue_edges[p[0]]
         return None
 
     def apply_2break(self, blue_edge: ColoredEdge):
-        red_edge_1 = self.node_to_red_edges[blue_edge.n1]
-        red_edge_2 = self.node_to_red_edges[blue_edge.n2]
-        if blue_edge == red_edge_1 == red_edge_2:
-            raise ValueError('Already in trivial cycle')
-        nid1 = blue_edge.n1
-        nid2 = red_edge_1.get_other_node(blue_edge.n1)
-        nid3 = blue_edge.n2
-        nid4 = red_edge_2.get_other_node(blue_edge.n2)
+        if blue_edge.is_term():
+            non_term_nid = blue_edge.get_other_node(None)
+            red_edge_1 = self.node_to_red_edges[non_term_nid]
+            if blue_edge == red_edge_1:
+                raise ValueError('Already in trivial cycle')
+            nid1 = non_term_nid
+            nid2 = red_edge_1.get_other_node(non_term_nid)
+            nid3 = None
+            nid4 = None
+        else:
+            red_edge_1 = self.node_to_red_edges[blue_edge.n1]
+            red_edge_2 = self.node_to_red_edges[blue_edge.n2]
+            if blue_edge == red_edge_1 == red_edge_2:
+                raise ValueError('Already in trivial cycle')
+            nid1 = blue_edge.n1
+            nid2 = red_edge_1.get_other_node(blue_edge.n1)
+            nid3 = blue_edge.n2
+            nid4 = red_edge_2.get_other_node(blue_edge.n2)
         # remove
         if nid1:
             del self.node_to_red_edges[nid1]
@@ -340,17 +235,17 @@ class BreakpointGraph:
 
 if __name__ == '__main__':
     bg = BreakpointGraph(
+        # [['+A', '-B', '-D', '+C']],
+        # [['+A', '+B', '+C', '+D']]
         [['+A', '+B'], ['-D', '-C'], ['-E']],
         [['+A', '-B', '-C', '+D'], ['+E']]
     )
-    while (next_path_to_break := bg.find_blue_edge_in_non_trivial_cycle()) is not None:
+    while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
         print(f'{bg.get_red_permutations()}')
         print(f'{bg.get_blue_permutations()}')
         print(f'{bg.get_red_blue_paths()}')
         print(f'{bg.to_neato_graph()}')
-        nid = next_path_to_break[0]
-        edge = bg.node_to_blue_edges[nid]
-        bg.apply_2break(edge)
+        bg.apply_2break(next_blue_edge)
     print(f'{bg.get_red_permutations()}')
     print(f'{bg.get_blue_permutations()}')
     print(f'{bg.get_red_blue_paths()}')

@@ -7,7 +7,7 @@ from typing import Iterable, List
 import matplotlib.pyplot as plt
 
 from helpers.Utils import encode_int_to_alphabet
-from synteny_graph.CyclicBreakpointGraph import BreakpointGraph
+from breakpoint_graph.CyclicBreakpointGraph import BreakpointGraph
 from synteny_graph.Match import Match, MatchType
 from synteny_graph.MatchOverlapClipper import Axis, MatchOverlapClipper
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
