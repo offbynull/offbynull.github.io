@@ -4,7 +4,7 @@ from math import cos, pi, sin
 from typing import List, Dict
 
 from breakpoint_graph.ColoredEdge import ColoredEdge
-from breakpoint_graph.Node import Node
+from breakpoint_graph.SyntenyNode import SyntenyNode
 from breakpoint_graph.SyntenyEdge import SyntenyEdge
 from breakpoint_graph.SyntenyEnd import SyntenyEnd
 from helpers.Utils import slide_window
@@ -45,17 +45,17 @@ class BreakpointGraph:
         for p in blue_p_list:
             for (s1, s2), idx in slide_window(p, 2, cyclic=True):
                 if s1[0] == '-' and s2[0] == '+':
-                    n1 = Node(s1[1:], SyntenyEnd.HEAD)
-                    n2 = Node(s2[1:], SyntenyEnd.HEAD)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
                 elif s1[0] == '+' and s2[0] == '-':
-                    n1 = Node(s1[1:], SyntenyEnd.TAIL)
-                    n2 = Node(s2[1:], SyntenyEnd.TAIL)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
                 elif s1[0] == '+' and s2[0] == '+':
-                    n1 = Node(s1[1:], SyntenyEnd.TAIL)
-                    n2 = Node(s2[1:], SyntenyEnd.HEAD)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
                 elif s1[0] == '-' and s2[0] == '-':
-                    n1 = Node(s1[1:], SyntenyEnd.HEAD)
-                    n2 = Node(s2[1:], SyntenyEnd.TAIL)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
                 else:
                     raise ValueError('???')
                 e = ColoredEdge(n1, n2)
@@ -67,17 +67,17 @@ class BreakpointGraph:
         for p in red_p_list:
             for (s1, s2), idx in slide_window(p, 2, cyclic=True):
                 if s1[0] == '-' and s2[0] == '+':
-                    n1 = Node(s1[1:], SyntenyEnd.HEAD)
-                    n2 = Node(s2[1:], SyntenyEnd.HEAD)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
                 elif s1[0] == '+' and s2[0] == '-':
-                    n1 = Node(s1[1:], SyntenyEnd.TAIL)
-                    n2 = Node(s2[1:], SyntenyEnd.TAIL)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
                 elif s1[0] == '+' and s2[0] == '+':
-                    n1 = Node(s1[1:], SyntenyEnd.TAIL)
-                    n2 = Node(s2[1:], SyntenyEnd.HEAD)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
                 elif s1[0] == '-' and s2[0] == '-':
-                    n1 = Node(s1[1:], SyntenyEnd.HEAD)
-                    n2 = Node(s2[1:], SyntenyEnd.TAIL)
+                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
+                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
                 else:
                     raise ValueError('???')
                 e = ColoredEdge(n1, n2)
@@ -91,11 +91,11 @@ class BreakpointGraph:
         for p in blue_p_list:
             for s in p:
                 if s[0] == '+':
-                    n1 = Node(s[1:], SyntenyEnd.HEAD)
-                    n2 = Node(s[1:], SyntenyEnd.TAIL)
+                    n1 = SyntenyNode(s[1:], SyntenyEnd.HEAD)
+                    n2 = SyntenyNode(s[1:], SyntenyEnd.TAIL)
                 elif s[0] == '-':
-                    n1 = Node(s[1:], SyntenyEnd.TAIL)
-                    n2 = Node(s[1:], SyntenyEnd.HEAD)
+                    n1 = SyntenyNode(s[1:], SyntenyEnd.TAIL)
+                    n2 = SyntenyNode(s[1:], SyntenyEnd.HEAD)
                 else:
                     raise ValueError('???')
                 e = SyntenyEdge(n1, n2)
@@ -130,7 +130,7 @@ class BreakpointGraph:
                 mode = 'blue'
             else:
                 raise ValueError('???')
-            next_nid = edge.get_other_node(next_nid)
+            next_nid = edge.other_end(next_nid)
             if not remaining_nids:  # this cycle has finished + there are more remaining ids to walk over
                 cycles.append(cycle)
                 break
@@ -150,9 +150,9 @@ class BreakpointGraph:
         if blue_edge == red_edge_1 == red_edge_2:
             raise ValueError('Already in trivial cycle')
         nid1 = blue_edge.n1
-        nid2 = red_edge_1.get_other_node(blue_edge.n1)
+        nid2 = red_edge_1.other_end(blue_edge.n1)
         nid3 = blue_edge.n2
-        nid4 = red_edge_2.get_other_node(blue_edge.n2)
+        nid4 = red_edge_2.other_end(blue_edge.n2)
         del self.node_to_red_edges[nid1]
         del self.node_to_red_edges[nid2]
         del self.node_to_red_edges[nid3]
@@ -168,7 +168,7 @@ class BreakpointGraph:
     def get_red_permutations(self) -> List[List[str]]:
         return self._walk_to_permutations(self.node_to_red_edges.copy())
 
-    def _walk_to_permutations(self, remaining: Dict[Node, ColoredEdge]) -> List[List[str]]:
+    def _walk_to_permutations(self, remaining: Dict[SyntenyNode, ColoredEdge]) -> List[List[str]]:
         ret = []
         while (nid := next(iter(remaining), None)) is not None:
             # output in the direction in which perms were originally input by starting from the destination of the
@@ -180,14 +180,14 @@ class BreakpointGraph:
                 # remove both ends of synteny block to avoid walking it again
                 del remaining[nid]
                 del remaining[nid.other_end()]
-                other_nid = edge.get_other_node(nid)
+                other_nid = edge.other_end(nid)
                 if other_nid.end == SyntenyEnd.HEAD:
                     p += ['+' + other_nid.id]
                 elif other_nid.end == SyntenyEnd.TAIL:
                     p += ['-' + other_nid.id]
                 else:
                     raise ValueError('???')
-                nid = Node(other_nid.id, other_nid.end.swap())
+                nid = SyntenyNode(other_nid.id, other_nid.end.swap())
             ret.append(p)
         return ret
 
@@ -200,11 +200,11 @@ class BreakpointGraph:
                 # remove both ends of synteny block to avoid walking it again
                 del remaining[nid]
                 del remaining[nid.other_end()]
-                other_nid = edge.get_other_node(nid)
+                other_nid = edge.other_end(nid)
                 if other_nid.end == SyntenyEnd.HEAD:
-                    yield Node(other_nid.id, SyntenyEnd.HEAD), Node(other_nid.id, SyntenyEnd.TAIL)
+                    yield SyntenyNode(other_nid.id, SyntenyEnd.HEAD), SyntenyNode(other_nid.id, SyntenyEnd.TAIL)
                 elif other_nid.end == SyntenyEnd.TAIL:
-                    yield Node(other_nid.id, SyntenyEnd.TAIL), Node(other_nid.id, SyntenyEnd.HEAD)
+                    yield SyntenyNode(other_nid.id, SyntenyEnd.TAIL), SyntenyNode(other_nid.id, SyntenyEnd.HEAD)
                 else:
                     raise ValueError('???')
                 nid = other_nid.other_end()

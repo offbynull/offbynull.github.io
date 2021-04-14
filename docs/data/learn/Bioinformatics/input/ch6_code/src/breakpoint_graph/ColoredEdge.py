@@ -1,22 +1,29 @@
-from typing import Optional
+from typing import Union
 
-from breakpoint_graph.Node import Node
+from breakpoint_graph.SyntenyNode import SyntenyNode
+from breakpoint_graph.TerminalNode import TerminalNode
 
 
 class ColoredEdge:
-    def __init__(self, n1: Optional[Node], n2: Optional[Node]):
-        assert n1 != n2
-        if n1 and n2:
+    def __init__(
+            self,
+            n1: Union[SyntenyNode, TerminalNode],
+            n2: Union[SyntenyNode, TerminalNode]
+    ):
+        assert isinstance(n1, SyntenyNode) or isinstance(n2, SyntenyNode), 'Both ends cant\'t be at terminal node'
+        assert n1 != n2, 'Both ends can\'t be equal'
+        # sort such that nodes are always placed in the same order
+        if isinstance(n1, SyntenyNode) and isinstance(n2, SyntenyNode):  # both synteny nodes? n1 should be smaller
             x = [n1, n2]
             x.sort()
-            n1: Optional[Node] = x[0]
-            n2: Optional[Node] = x[1]
-        elif not n1 and not n2:
-            raise ValueError('At least one must be not None')
-        self.n1: Optional[Node] = n1
-        self.n2: Optional[Node] = n2
+            n1 = x[0]
+            n2 = x[1]
+        elif isinstance(n2, TerminalNode):  # one is term node? n1 should be the term node
+            n1, n2 = n2, n1
+        self.n1 = n1
+        self.n2 = n2
 
-    def get_other_node(self, nid: Optional[Node]):
+    def other_end(self, nid: Union[SyntenyNode, TerminalNode]):
         if nid == self.n1:
             return self.n2
         elif nid == self.n2:
@@ -24,8 +31,8 @@ class ColoredEdge:
         else:
             raise ValueError('???')
 
-    def is_term(self):
-        return self.n1 is None or self.n2 is None
+    def has_term_node(self):
+        return isinstance(self.n1, TerminalNode) or self.n2 is isinstance(self.n2, TerminalNode)
 
     def __eq__(self, other):
         return self.n1 == other.n1 and self.n2 == other.n2

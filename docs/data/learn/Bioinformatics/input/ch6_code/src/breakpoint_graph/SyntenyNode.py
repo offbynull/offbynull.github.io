@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import Optional
-
 from BreakpointGraph import SyntenyEnd
 
 
-class Node:
-    def __init__(self, id: Optional[str], end: SyntenyEnd):
+class SyntenyNode:
+    def __init__(self, id: str, end: SyntenyEnd):
         self.id = id
         self.end = end
 
-    def other_end(self) -> Node:
-        return Node(self.id, self.end.swap())
+    def other_end(self) -> SyntenyNode:
+        return SyntenyNode(self.id, self.end.swap())
 
     def __lt__(self, other):
         if self.id < other.id:
@@ -22,7 +20,7 @@ class Node:
             return False
 
     def __eq__(self, other):
-        if isinstance(other, Node):
+        if isinstance(other, SyntenyNode):
             return self.id == other.id and self.end == other.end
         else:
             return False
@@ -31,7 +29,7 @@ class Node:
         return hash((self.id, self.end))
 
     def __str__(self):
-        return str((self.id, self.end))
+        return f'{self.id}_{self.end.value}'
 
     def __repr__(self):
         return str(self)

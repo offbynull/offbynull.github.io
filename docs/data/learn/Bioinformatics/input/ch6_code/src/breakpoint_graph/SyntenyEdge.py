@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import Tuple
 
-from breakpoint_graph.Node import Node
+from breakpoint_graph.SyntenyNode import SyntenyNode
 from breakpoint_graph.SyntenyEnd import SyntenyEnd
 
 
 class SyntenyEdge:
-    def __init__(self, n1: Node, n2: Node):
+    def __init__(self, n1: SyntenyNode, n2: SyntenyNode):
         assert n1.id == n2.id
         assert n1.end != n2.end
         self.n1 = n1
@@ -17,13 +17,13 @@ class SyntenyEdge:
     def from_str(v: str) -> Tuple[SyntenyEdge, str]:
         if v[0] == '+':
             return SyntenyEdge(
-                Node(v[1:], SyntenyEnd.HEAD),
-                Node(v[1:], SyntenyEnd.TAIL)
+                SyntenyNode(v[1:], SyntenyEnd.HEAD),
+                SyntenyNode(v[1:], SyntenyEnd.TAIL)
             ), v[1:]
         elif v[0] == '-':
             return SyntenyEdge(
-                Node(v[1:], SyntenyEnd.TAIL),
-                Node(v[1:], SyntenyEnd.HEAD)
+                SyntenyNode(v[1:], SyntenyEnd.TAIL),
+                SyntenyNode(v[1:], SyntenyEnd.HEAD)
             ), v[1:]
         else:
             raise ValueError('???')

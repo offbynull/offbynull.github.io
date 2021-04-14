@@ -13,6 +13,9 @@ class SyntenyEnd(Enum):
     def __lt__(self, other):
         return self.value < other.value
 
+    def __str__(self):
+        return self.value
+
     def swap(self) -> SyntenyEnd:
         if self == SyntenyEnd.HEAD:
             return SyntenyEnd.TAIL
