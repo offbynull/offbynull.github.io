@@ -8,7 +8,7 @@ class SyntenyNode:
         self.id = id
         self.end = end
 
-    def other_end(self) -> SyntenyNode:
+    def swap_end(self) -> SyntenyNode:
         return SyntenyNode(self.id, self.end.swap())
 
     def __lt__(self, other):

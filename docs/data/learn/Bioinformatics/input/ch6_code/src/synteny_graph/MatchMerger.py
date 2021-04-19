@@ -6,8 +6,8 @@ from typing import Iterable, List
 
 import matplotlib.pyplot as plt
 
+from breakpoint_graph import LinearBreakpointGraph
 from helpers.Utils import encode_int_to_alphabet
-from breakpoint_graph.CyclicBreakpointGraph import BreakpointGraph
 from synteny_graph.Match import Match, MatchType
 from synteny_graph.MatchOverlapClipper import Axis, MatchOverlapClipper
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
@@ -184,18 +184,19 @@ if __name__ == '__main__':
     print(f'{human_perms}')
     print(f'{mouse_perms}')
 
-    bg = BreakpointGraph(
+    bg = LinearBreakpointGraph.BreakpointGraph(
         [mouse_perms[ch] for ch in sorted(mouse_perms.keys())],
         [human_perms[ch] for ch in sorted(human_perms.keys())]
     )
     print(bg.to_neato_graph())
     print(bg.get_red_permutations())
     while True:
-        next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_cycle()
+        next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_path()
         if next_blue_edge_to_break_on is None:
             break
         bg.apply_2break(next_blue_edge_to_break_on)
         print(bg.get_red_permutations())
+        print(bg.to_neato_graph())
 
     Match.plot(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')
     plt.show()

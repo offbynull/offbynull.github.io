@@ -179,7 +179,7 @@ class BreakpointGraph:
                 edge = remaining[nid]
                 # remove both ends of synteny block to avoid walking it again
                 del remaining[nid]
-                del remaining[nid.other_end()]
+                del remaining[nid.swap_end()]
                 other_nid = edge.other_end(nid)
                 if other_nid.end == SyntenyEnd.HEAD:
                     p += ['+' + other_nid.id]
@@ -199,7 +199,7 @@ class BreakpointGraph:
                 edge = remaining[nid]
                 # remove both ends of synteny block to avoid walking it again
                 del remaining[nid]
-                del remaining[nid.other_end()]
+                del remaining[nid.swap_end()]
                 other_nid = edge.other_end(nid)
                 if other_nid.end == SyntenyEnd.HEAD:
                     yield SyntenyNode(other_nid.id, SyntenyEnd.HEAD), SyntenyNode(other_nid.id, SyntenyEnd.TAIL)
@@ -207,7 +207,7 @@ class BreakpointGraph:
                     yield SyntenyNode(other_nid.id, SyntenyEnd.TAIL), SyntenyNode(other_nid.id, SyntenyEnd.HEAD)
                 else:
                     raise ValueError('???')
-                nid = other_nid.other_end()
+                nid = other_nid.swap_end()
             if remaining:
                 nid = next(iter(remaining))
             else:

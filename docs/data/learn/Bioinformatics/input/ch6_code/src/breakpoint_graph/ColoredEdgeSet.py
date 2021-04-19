@@ -28,8 +28,16 @@ class ColoredEdgeSet:
                 ret.add(found)
         return ret
 
-    def remove(self, n: SyntenyNode) -> Optional[ColoredEdge]:
-        return self.by_node.pop(n, None)
+    def remove(self, n: Union[SyntenyNode, TerminalNode]) -> Optional[ColoredEdge]:
+        if n == TerminalNode.INST:  # terminal nodes are not tracked -- always returns none
+            return None
+        e = self.by_node.pop(n, None)
+        if e is None:
+            return None
+        n = e.other_end(n)
+        if n != TerminalNode.INST:
+            self.by_node.pop(n)
+        return e
 
     def remove_edge(self, e: ColoredEdge) -> None:
         if not isinstance(e.n1, TerminalNode):
