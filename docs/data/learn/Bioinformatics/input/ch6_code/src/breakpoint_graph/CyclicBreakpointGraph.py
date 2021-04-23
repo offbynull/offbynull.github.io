@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 from math import cos, pi, sin
-from typing import List, Dict
+from typing import List
 
 from breakpoint_graph.ColoredEdge import ColoredEdge
-from breakpoint_graph.SyntenyNode import SyntenyNode
+from breakpoint_graph.ColoredEdgeSet import ColoredEdgeSet
+from breakpoint_graph.Permutation import Permutation
 from breakpoint_graph.SyntenyEdge import SyntenyEdge
-from breakpoint_graph.SyntenyEnd import SyntenyEnd
-from helpers.Utils import slide_window
 
 
 # This class only holds on to the...
@@ -38,202 +37,95 @@ from helpers.Utils import slide_window
 #    b             b
 #     b           b
 #       Ch---->Ct
+from breakpoint_graph.SyntenyEnd import SyntenyEnd
+
+
 class BreakpointGraph:
     def __init__(self, red_p_list: List[List[str]], blue_p_list: List[List[str]]):
-        # Node blue edge lookup
-        node_to_blue_edges = {}
-        for p in blue_p_list:
-            for (s1, s2), idx in slide_window(p, 2, cyclic=True):
-                if s1[0] == '-' and s2[0] == '+':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
-                elif s1[0] == '+' and s2[0] == '-':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
-                elif s1[0] == '+' and s2[0] == '+':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
-                elif s1[0] == '-' and s2[0] == '-':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
-                else:
-                    raise ValueError('???')
-                e = ColoredEdge(n1, n2)
-                node_to_blue_edges[n1] = e
-                node_to_blue_edges[n2] = e
+        self.blue_edges = ColoredEdgeSet.create(
+            ce for p in blue_p_list for ce in Permutation.from_raw(p, True).to_colored_edges()
+        )
+        self.red_edges = ColoredEdgeSet.create(
+            ce for p in red_p_list for ce in Permutation.from_raw(p, True).to_colored_edges()
+        )
 
-        # Node red edge lookup
-        node_to_red_edges = {}
-        for p in red_p_list:
-            for (s1, s2), idx in slide_window(p, 2, cyclic=True):
-                if s1[0] == '-' and s2[0] == '+':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
-                elif s1[0] == '+' and s2[0] == '-':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
-                elif s1[0] == '+' and s2[0] == '+':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.TAIL)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.HEAD)
-                elif s1[0] == '-' and s2[0] == '-':
-                    n1 = SyntenyNode(s1[1:], SyntenyEnd.HEAD)
-                    n2 = SyntenyNode(s2[1:], SyntenyEnd.TAIL)
-                else:
-                    raise ValueError('???')
-                e = ColoredEdge(n1, n2)
-                node_to_red_edges[n1] = e
-                node_to_red_edges[n2] = e
+    def get_red_blue_paths(self):
+        remaining_n_set = self.blue_edges.nodes()
+        paths = []
+        while remaining_n_set:
+            orig_n = remaining_n_set.pop()
+            walked_n_set = set()
+            path = ColoredEdgeSet.alternating_walk(orig_n, 0, [self.blue_edges, self.red_edges], walked_n_set)
+            paths += [path]
+            remaining_n_set.difference_update(walked_n_set)
+        return paths
 
-        # Because blue/red edges are undirected, you don't know which direction to traverse the graph when dumping out
-        # the list of lists (permutations). This block caches the original input of synteny edges, such that you know
-        # the correct direction to walk in.
-        node_to_synteny_edge = {}
-        for p in blue_p_list:
-            for s in p:
-                if s[0] == '+':
-                    n1 = SyntenyNode(s[1:], SyntenyEnd.HEAD)
-                    n2 = SyntenyNode(s[1:], SyntenyEnd.TAIL)
-                elif s[0] == '-':
-                    n1 = SyntenyNode(s[1:], SyntenyEnd.TAIL)
-                    n2 = SyntenyNode(s[1:], SyntenyEnd.HEAD)
-                else:
-                    raise ValueError('???')
-                e = SyntenyEdge(n1, n2)
-                node_to_synteny_edge[n1] = e
-                node_to_synteny_edge[n2] = e
-
-        self.node_to_blue_edges = node_to_blue_edges
-        self.node_to_red_edges = node_to_red_edges
-        self.node_to_synteny_edge = node_to_synteny_edge
-
-    def find_blue_edge_in_non_trivial_cycle(self):
-        for nid in self.node_to_blue_edges:
-            blue_edge = self.node_to_blue_edges[nid]
-            red_edge = self.node_to_red_edges[nid]
+    def find_blue_edge_in_non_trivial_path(self):
+        for n in self.blue_edges.nodes():
+            blue_edge = self.blue_edges.find(n)
+            red_edge = self.red_edges.find(n)
             if blue_edge != red_edge:
                 return blue_edge
         return None
 
-    def get_red_blue_cycles(self):
-        remaining_nids = set(self.node_to_blue_edges.keys())
-        next_nid = next(iter(remaining_nids))
-        remaining_nids.remove(next_nid)
-        mode = 'blue'
-        cycles = []
-        cycle = [next_nid]
-        while True:
-            if mode == 'blue':
-                edge = self.node_to_blue_edges[next_nid]
-                mode = 'red'
-            elif mode == 'red':
-                edge = self.node_to_red_edges[next_nid]
-                mode = 'blue'
-            else:
-                raise ValueError('???')
-            next_nid = edge.other_end(next_nid)
-            if not remaining_nids:  # this cycle has finished + there are more remaining ids to walk over
-                cycles.append(cycle)
-                break
-            if next_nid not in remaining_nids:  # this cycle has finished, move on to the next cycle
-                cycles.append(cycle)
-                cycle = []
-                next_nid = next(iter(remaining_nids))
-                remaining_nids.remove(next_nid)
-            else:   # this cycle has NOT finished, keep to the next node
-                cycle.append(next_nid)
-                remaining_nids.remove(next_nid)
-        return cycles
-
-    def apply_2break(self, blue_edge: ColoredEdge):
-        red_edge_1 = self.node_to_red_edges[blue_edge.n1]
-        red_edge_2 = self.node_to_red_edges[blue_edge.n2]
-        if blue_edge == red_edge_1 == red_edge_2:
-            raise ValueError('Already in trivial cycle')
-        nid1 = blue_edge.n1
-        nid2 = red_edge_1.other_end(blue_edge.n1)
-        nid3 = blue_edge.n2
-        nid4 = red_edge_2.other_end(blue_edge.n2)
-        del self.node_to_red_edges[nid1]
-        del self.node_to_red_edges[nid2]
-        del self.node_to_red_edges[nid3]
-        del self.node_to_red_edges[nid4]
-        self.node_to_red_edges[nid1] = ColoredEdge(nid1, nid3)
-        self.node_to_red_edges[nid3] = ColoredEdge(nid1, nid3)
-        self.node_to_red_edges[nid2] = ColoredEdge(nid2, nid4)
-        self.node_to_red_edges[nid4] = ColoredEdge(nid2, nid4)
+    def two_break(self, blue_edge: ColoredEdge):
+        red_edge1 = self.red_edges.remove(blue_edge.n1)
+        red_edge2 = self.red_edges.remove(blue_edge.n2)
+        # Given that you want one of the new red_edges to match blue_edge, this will return the OTHER new red edge. That
+        # is, it'll swap the ends of the existing red edges such that one of the new red_edges is blue_edge and the
+        # other new red_edge gets returned.
+        new_red_edge = ColoredEdge.swap_ends(red_edge1, red_edge2, blue_edge)
+        self.red_edges.insert(blue_edge)
+        self.red_edges.insert(new_red_edge)
 
     def get_blue_permutations(self) -> List[List[str]]:
-        return self._walk_to_permutations(self.node_to_blue_edges.copy())
+        return BreakpointGraph._walk_to_permutations(self.blue_edges)
 
     def get_red_permutations(self) -> List[List[str]]:
-        return self._walk_to_permutations(self.node_to_red_edges.copy())
+        return BreakpointGraph._walk_to_permutations(self.red_edges)
 
-    def _walk_to_permutations(self, remaining: Dict[SyntenyNode, ColoredEdge]) -> List[List[str]]:
-        ret = []
-        while (nid := next(iter(remaining), None)) is not None:
-            # output in the direction in which perms were originally input by starting from the destination of the
-            # synteny edge that nid is for
-            nid = self.node_to_synteny_edge[nid].n2
-            p = []
-            while nid in remaining:
-                edge = remaining[nid]
-                # remove both ends of synteny block to avoid walking it again
-                del remaining[nid]
-                del remaining[nid.swap_end()]
-                other_nid = edge.other_end(nid)
-                if other_nid.end == SyntenyEnd.HEAD:
-                    p += ['+' + other_nid.id]
-                elif other_nid.end == SyntenyEnd.TAIL:
-                    p += ['-' + other_nid.id]
-                else:
-                    raise ValueError('???')
-                nid = SyntenyNode(other_nid.id, other_nid.end.swap())
-            ret.append(p)
-        return ret
-
-    def _ordered_walk_over_synteny_edges(self):  # in this case, ordered means ordered by blue edges
-        remaining = self.node_to_blue_edges.copy()
-        nid = next(iter(remaining))
-        while True:
-            while nid in remaining:
-                edge = remaining[nid]
-                # remove both ends of synteny block to avoid walking it again
-                del remaining[nid]
-                del remaining[nid.swap_end()]
-                other_nid = edge.other_end(nid)
-                if other_nid.end == SyntenyEnd.HEAD:
-                    yield SyntenyNode(other_nid.id, SyntenyEnd.HEAD), SyntenyNode(other_nid.id, SyntenyEnd.TAIL)
-                elif other_nid.end == SyntenyEnd.TAIL:
-                    yield SyntenyNode(other_nid.id, SyntenyEnd.TAIL), SyntenyNode(other_nid.id, SyntenyEnd.HEAD)
-                else:
-                    raise ValueError('???')
-                nid = other_nid.swap_end()
-            if remaining:
-                nid = next(iter(remaining))
-            else:
-                break
+    @staticmethod
+    def _walk_to_permutations(colored_edges: ColoredEdgeSet) -> List[List[str]]:
+        remaining = colored_edges.edges()
+        perms = []
+        while remaining:
+            e = remaining.pop()
+            p, walked_ce_set = Permutation.from_colored_edges(colored_edges, e.n1, True)
+            p_raw = p.to_normalized_raw()
+            perms.append(p_raw)
+            remaining.difference_update(walked_ce_set)
+        return perms
 
     def to_neato_graph(self):
+        blue_edges = self.blue_edges.edges()
+        red_edges = self.red_edges.edges()
+        syn_edges = [edge for edges in self.blue_edges.walk() for edge in edges if isinstance(edge, SyntenyEdge)]
         g = ''
         g += 'graph G {\n'
+        g += 'layout=neato\n'
         g += 'node [shape=plain];\n'
         # set node locations
-        node_count = len(self.node_to_blue_edges)
+        node_count = len(syn_edges) * 2
         radius = node_count ** 1/4
         node_locations = [(cos(2 * pi / node_count * x) * radius, sin(2 * pi / node_count * x) * radius) for x in range(0, node_count + 1)]
-        for n1, n2 in self._ordered_walk_over_synteny_edges():
+        for s in syn_edges:
+            n1 = s.n1
+            n2 = s.n2
             x1, y1 = node_locations.pop()
             x2, y2 = node_locations.pop()
             g += f'_{n1.id}_{n1.end.value}_ [pos="{x1},{y1}!"];\n'
             g += f'_{n2.id}_{n2.end.value}_ [pos="{x2},{y2}!"];\n'
         # set black edges representing synteny blocks
-        for n1, n2 in self._ordered_walk_over_synteny_edges():
-            g += f'_{n1.id}_{n1.end.value}_ -- _{n2.id}_{n2.end.value}_ [style=dashed, dir=forward];\n'
+        for s in syn_edges:
+            n1 = s.n1
+            n2 = s.n2
+            dir = 'forward' if n1.end == SyntenyEnd.HEAD else 'back'
+            g += f'_{n1.id}_{n1.end.value}_ -- _{n2.id}_{n2.end.value}_ [style=dashed, dir={dir}];\n'
         # set blue edges (destination)
-        for e in set(self.node_to_blue_edges.values()):
+        for e in blue_edges:
             g += f'_{e.n1.id}_{e.n1.end.value}_ -- _{e.n2.id}_{e.n2.end.value}_ [color=blue];\n'
         # draw red edges (source)
-        for e in set(self.node_to_red_edges.values()):
+        for e in red_edges:
             g += f'_{e.n1.id}_{e.n1.end.value}_ -- _{e.n2.id}_{e.n2.end.value}_ [color=red];\n'
         g += '}'
         return g
@@ -244,9 +136,13 @@ if __name__ == '__main__':
         [['+A', '-B', '-C', '+D'], ['+E']],
         [['+A', '+B', '-D'], ['-C', '-E']]
     )
-    # graph is cyclic, so output permutations may start anywhere in the cycle
-    # colored edges are undirected, so output permutations may come out negated+reversed
+    while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
+        print(f'{bg.get_red_permutations()}')
+        print(f'{bg.get_blue_permutations()}')
+        print(f'{bg.get_red_blue_paths()}')
+        print(f'{bg.to_neato_graph()}')
+        bg.two_break(next_blue_edge)
     print(f'{bg.get_red_permutations()}')
     print(f'{bg.get_blue_permutations()}')
-    print(f'{bg.get_red_blue_cycles()}')
+    print(f'{bg.get_red_blue_paths()}')
     print(f'{bg.to_neato_graph()}')

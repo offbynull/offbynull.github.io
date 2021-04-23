@@ -189,13 +189,13 @@ if __name__ == '__main__':
         [human_perms[ch] for ch in sorted(human_perms.keys())]
     )
     print(bg.to_neato_graph())
-    print(bg.get_red_permutations())
+    print(bg.red_permutations)
     while True:
         next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_path()
         if next_blue_edge_to_break_on is None:
             break
-        bg.apply_2break(next_blue_edge_to_break_on)
-        print(bg.get_red_permutations())
+        bg.two_break(next_blue_edge_to_break_on)
+        print(bg.red_permutations)
         print(bg.to_neato_graph())
 
     Match.plot(matches, y_axis_organism_name='human', x_axis_organism_name='mouse')

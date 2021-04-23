@@ -39,7 +39,7 @@ class SyntenyEdge:
         return hash((self.n1, self.n2))
 
     def __str__(self):
-        return str((self.n1, self.n2))
+        return f'SE{(self.n1, self.n2)}'
 
     def __repr__(self):
         return str(self)

@@ -43,7 +43,7 @@ class ColoredEdge:
     # Takes e1 and e2 and swaps the ends, such that one of the swapped edges becomes desired_e. That is, e1 should have
     # an end matching one of desired_e's ends while e2 should have an end matching desired_e's other end.
     #
-    # This is basically a 2-break. The e1
+    # This is basically a 2-break.
     @staticmethod
     def swap_ends(
             e1: Optional[ColoredEdge],
@@ -88,7 +88,7 @@ class ColoredEdge:
         return hash((self.n1, self.n2))
 
     def __str__(self):
-        return str((self.n1, self.n2))
+        return f'CE{(self.n1, self.n2)}'
 
     def __repr__(self):
         return str(self)

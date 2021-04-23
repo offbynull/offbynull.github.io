@@ -49,6 +49,9 @@ class Block:
     def __repr__(self):
         return str(self)
 
+    def __hash__(self):
+        return hash((self.dir, self.id))
+
     @staticmethod
     def from_str(v: str) -> Block:
         if v[0] == '+':
@@ -113,7 +116,7 @@ class Permutation:
                 ColoredEdge(TerminalNode.INST, b.to_synteny_edge().n1)
             )
         # add normal edges
-        for (b1, b2), idx in slide_window(self.blocks, 2):
+        for (b1, b2), idx in slide_window(self.blocks, 2, cyclic=self.cyclic):
             if b1.dir == Direction.BACKWARD and b2.dir == Direction.FORWARD:
                 n1 = SyntenyNode(b1.id, SyntenyEnd.HEAD)
                 n2 = SyntenyNode(b2.id, SyntenyEnd.HEAD)
@@ -187,6 +190,15 @@ class Permutation:
             next_n = next_ce.other_end(swapped_n)
             walked_ce_set.add(next_ce)
         return Permutation(blocks, cyclic), walked_ce_set
+
+    def __str__(self):
+        return str(self.to_normalized_raw())
+
+    def __repr__(self):
+        return str(self)
+
+    def __hash__(self):
+        return hash((self.blocks, self.cyclic))
 
 
 if __name__ == '__main__':
