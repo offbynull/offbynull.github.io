@@ -12,26 +12,10 @@ from breakpoint_graph.SyntenyNode import SyntenyNode
 from breakpoint_graph.TerminalNode import TerminalNode
 
 
-# This class only holds on to the...
-#
-#  * blue edges (representing the graph you're trying to reach -- the good state)
-#  * red edges (representing the graph you're starting from -- the bad state)
-#
-# ..., not the synteny edges themselves. The synteny edges in the breakpoint graph are for the good state (blue edges),
-# meaning that the blue edges will ALWAYS sandwiched between the synteny edges. As such, the synteny edges can be
-# derived directly from the blue edges. For example, given the blue_p_list of [+A, -B, -C, +D], the implied synteny
-# edges are...
-#
-#  * +A: Ahead--------->Atail
-#  * -B: Btail<---------Bhead
-#  * -C  Ctail<---------Chead
-#  * +D  Dhead--------->Dtail
-#
-# The direction of the synteny block just dictates which end (head or tail) shows up first. These ends are linked
-# back-to-back with blue edges.
-#
-#             bbbb          bbbb          bbbb
-#   Ah----->At    Bt<-----Bh    Ct<-----Ch    Dh----->Dt
+# This is similarto CyclicBreakpointGraph, except that it's assumed that the chromosomes aren't cyclic. That is, the
+# chromosomes end at termination points rather than looping back in on themselves. The Pevzner book didn't document how
+# to extend the cyclic chromosome algorithm to linear chromosome, so I made a set of assumptions here. I'm reasonably
+# sure they're correct (the book said it's straight-forward to extend the algorithm to linear chromosomes).
 class BreakpointGraph:
     def __init__(self, red_p_list: List[List[str]], blue_p_list: List[List[str]]):
         self.blue_edges = ColoredEdgeSet.create(
@@ -75,6 +59,25 @@ class BreakpointGraph:
         self.red_edges.insert(blue_edge)
         if new_red_edge:  # It's possible both ends for new_red_edge were TERM, in which case it'll be None
             self.red_edges.insert(new_red_edge)
+
+    # IIRC, the 2 break distance is the minimum number of 2 breaks required to get red edges == blue edges. Section 6.18
+    # of The Pevzner book claims that this is hard set to Blocks(P, Q)− Cycles(P, Q) + 1:
+    #     However, the lower bound drev(P, Q) ≥ Blocks(P, Q) + 1 − Cycles(P, Q) approximates the reversal distance
+    #     between linear permutations extremely well. This intriguing performance raised the question of whether this
+    #     bound is close to an exact formula. In 1999, Hannenhalli and Pevzner found this formula by defining two
+    #     special types of breakpoint graph structures called “hurdles” and “fortresses”. Denoting the number of hurdles
+    #     and fortresses in BreakpointGraph(P, Q) by Hurdles(P, Q)and Fortresses(P, Q), respectively, they proved that
+    #     the reversal distance is given by
+    #         drev(P, Q) = Blocks(P, Q) + 1 − Cycles(P, Q) + Hurdles(P, Q) + Fortresses(P, Q).
+    #     Using this formula, they developed a polynomial algorithm for computing drev(P, Q). Nevertheless,
+    #     Hurdles(P, Q) and Fortresses(P, Q) are small for the vast majority of permutations, and so the lower bound
+    #     Blocks(P, Q) + 1 − Cycles(P, Q) is a good approximation of the reversal distance in practice.
+    # I have access to the original paper that describes the full algorithm in detail but I haven't had time to go
+    # through it.
+    def two_break_distance(self):
+        red_blue_path_cnt = len(self.get_red_blue_paths())
+        synteny_block_cnt = len([e for e in self.blue_edges.walk() if isinstance(e, SyntenyEdge)])
+        return synteny_block_cnt + 1 - red_blue_path_cnt
 
     def get_blue_permutations(self) -> List[List[str]]:
         return BreakpointGraph._walk_to_permutations(self.blue_edges)

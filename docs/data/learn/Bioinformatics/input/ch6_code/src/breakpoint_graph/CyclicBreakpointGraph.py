@@ -78,6 +78,18 @@ class BreakpointGraph:
         self.red_edges.insert(blue_edge)
         self.red_edges.insert(new_red_edge)
 
+    # IIRC, the 2 break distance is the minimum number of 2 breaks required to get red edges == blue edges. Section 6.9
+    # of The Pevzner book claims that this is hard set to Blocks(P, Q)− Cycles(P, Q):
+    #     Recall that there are permutations for which no reversal reduces the number of breakpoints, a fact that
+    #     defeated our hopes for a greedy algorithm for sorting by reversals that reduces the number of breakpoints at
+    #     each step. In the case of 2-breaks (on genomes with circular chromosomes), we now know that each 2-break can
+    #     increase Cycles(P, Q) by at most 1. But is it always possible to find a 2-break that increases Cycles(P, Q) by
+    #     1? As the following theorem illustrates, the answer is yes.
+    def two_break_distance(self):
+        red_blue_cycle_cnt = len(self.get_red_blue_paths())
+        synteny_block_cnt = len([e for e in self.blue_edges.walk() if isinstance(e, SyntenyEdge)])
+        return synteny_block_cnt - red_blue_cycle_cnt
+
     def get_blue_permutations(self) -> List[List[str]]:
         return BreakpointGraph._walk_to_permutations(self.blue_edges)
 
