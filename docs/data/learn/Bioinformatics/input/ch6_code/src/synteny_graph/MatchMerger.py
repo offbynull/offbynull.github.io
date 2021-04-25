@@ -125,61 +125,61 @@ def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny
 
 
 if __name__ == '__main__':
-    k = 45
+    k = 30
     # load
     with open('/home/user/Downloads/E_coli.txt', mode='r', encoding='utf-8') as f:
-        ecoli_data = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
-        ecoli_fwd_kmers = defaultdict(list)
-        ecoli_rev_kmers = defaultdict(list)
-        for kmer, idx in slide_window(ecoli_data, k, True):
-            ecoli_fwd_kmers[kmer].append(idx)
-            ecoli_rev_kmers[dna_reverse_complement(kmer)].append(idx)
+        data1 = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
+        fwd_kmers1 = defaultdict(list)
+        rev_kmers1 = defaultdict(list)
+        for kmer, idx in slide_window(data1, k, True):
+            fwd_kmers1[kmer].append(idx)
+            rev_kmers1[dna_reverse_complement(kmer)].append(idx)
         ecoli_data = ''  # no longer required -- clear out memory
     with open('/home/user/Downloads/Salmonella_enterica.txt', mode='r', encoding='utf-8') as f:
-        bsub_data = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
-        bsub_fwd_kmers = defaultdict(list)
-        bsub_rev_kmers = defaultdict(list)
-        for kmer, idx in slide_window(bsub_data, k, True):
-            bsub_fwd_kmers[kmer].append(idx)
-            bsub_rev_kmers[dna_reverse_complement(kmer)].append(idx)
+        data2 = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
+        fwd_kmers2 = defaultdict(list)
+        rev_kmers2 = defaultdict(list)
+        for kmer, idx in slide_window(data2, k, True):
+            fwd_kmers2[kmer].append(idx)
+            rev_kmers2[dna_reverse_complement(kmer)].append(idx)
         bsub_data = ''  # no longer required -- clear out memory
     # match
     matches = []
-    fwd_key_matches = set(ecoli_fwd_kmers.keys())
-    fwd_key_matches.intersection_update(bsub_fwd_kmers.keys())
+    fwd_key_matches = set(fwd_kmers1.keys())
+    fwd_key_matches.intersection_update(fwd_kmers2.keys())
     for kmer in fwd_key_matches:
-        ecoli_idxes = ecoli_fwd_kmers.get(kmer, [])
-        bsub_idxes = bsub_fwd_kmers.get(kmer, [])
-        for ecoli_idx, bsub_idx in product(ecoli_idxes, bsub_idxes):
+        idxes1 = fwd_kmers1.get(kmer, [])
+        idxes2 = fwd_kmers2.get(kmer, [])
+        for idx1, idx2 in product(idxes1, idxes2):
             m = Match(
                 y_axis_chromosome='0',
-                y_axis_chromosome_min_idx=ecoli_idx,
-                y_axis_chromosome_max_idx=ecoli_idx + k - 1,
+                y_axis_chromosome_min_idx=idx1,
+                y_axis_chromosome_max_idx=idx1 + k - 1,
                 x_axis_chromosome='0',
-                x_axis_chromosome_min_idx=bsub_idx,
-                x_axis_chromosome_max_idx=bsub_idx + k - 1,
+                x_axis_chromosome_min_idx=idx2,
+                x_axis_chromosome_max_idx=idx2 + k - 1,
                 type=MatchType.NORMAL
             )
             matches.append(m)
-    rev_key_matches = set(ecoli_fwd_kmers.keys())
-    rev_key_matches.intersection_update(bsub_rev_kmers.keys())
+    rev_key_matches = set(fwd_kmers1.keys())
+    rev_key_matches.intersection_update(rev_kmers2.keys())
     for kmer in rev_key_matches:
-        ecoli_idxes = ecoli_rev_kmers.get(kmer, [])
-        bsub_idxes = bsub_rev_kmers.get(kmer, [])
-        for ecoli_idx, bsub_idx in product(ecoli_idxes, bsub_idxes):
+        idxes1 = fwd_kmers1.get(kmer, [])
+        idxes2 = rev_kmers2.get(kmer, [])
+        for idx1, idx2 in product(idxes1, idxes2):
             m = Match(
                 y_axis_chromosome='0',
-                y_axis_chromosome_min_idx=ecoli_idx,
-                y_axis_chromosome_max_idx=ecoli_idx + k - 1,
+                y_axis_chromosome_min_idx=idx1,
+                y_axis_chromosome_max_idx=idx1 + k - 1,
                 x_axis_chromosome='0',
-                x_axis_chromosome_min_idx=bsub_idx,
-                x_axis_chromosome_max_idx=bsub_idx + k - 1,
+                x_axis_chromosome_min_idx=idx2,
+                x_axis_chromosome_max_idx=idx2 + k - 1,
                 type=MatchType.REVERSE_COMPLEMENT
             )
             matches.append(m)
     print(f'{len(matches)}')
-    matches = distance_merge(matches, radius=500)
-    print(f'{len(matches)}')
+    # matches = distance_merge(matches, radius=500)
+    # print(f'{len(matches)}')
     # matches = distance_merge(matches, radius=20000)
     # print(f'{len(matches)}')
     # matches = distance_merge(matches, radius=30000)

@@ -7399,6 +7399,111 @@ cyclic
 
     Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
 
+ * `{bm} genomic dot-plot/(genomic dot-plot|genomic dot plot)/i` - Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed for each shared k-mer. In this case, a shared k-mer is either a normal match or a reverse complement match. Also, shared k-mers may be fuzzily found (e.g. within some hamming distance rather than a direct match).
+    
+   For example, ...
+
+     ```{svgbob}
+     "Consider each shared 5-mer, shown as a line, to be a dot."
+     * "N = normal match"
+     * "R = reverse complement match"
+
+      3' 5'
+       A T |                                  ^            
+           |                                 /
+       C G |                                /                
+           |                               /
+       T A |                              / N: "ACTGG vs ACTGG"         
+           |                             /  
+       G C |                            /                   
+           |                           /      
+       G C |                          *                    
+           |
+       G C |                                                  ^
+           |                                                 /
+       T A |                                                /
+           |                                               /
+       C G |                                              / N: "CATGC vs CATGC"
+           |                                             /  
+     g A T |                                            /    
+     e     |                                           /      
+     n G C |                                          *        
+     o     |
+     m C G |                                                 
+     e     |
+     1 C G |*                                               
+           | \      
+       C G |  \                                            
+           |   \  
+       A T |    \ R: "AAACC vs GGTTT"                                      
+           |     \
+       A T |      \                                          
+           |       \
+       A T |        v                                     
+           |
+       G C |                                                                ^
+           |                                                               /
+       G C |                                                              / 
+           |                                                             / 
+       G C |                                                            / N: "GGGGG vs GGGGG" 
+           |                                                           /  
+       G C |                                                          /    
+           |                                                         /      
+       G C |                                                        *        
+      5' 3'|                                                                
+           +-----------------------------------------------------------------
+         5' G G T T T A G G T G A C T T A C T G G A A C A G T C T T G G G G G 3'
+         3' C C A A A T C C A C T G A A T G A C C T T G T C A G T T C C C C C 5'
+                                        genome2
+    ```
+
+
+   Genomic dot-plots are typically used in building synteny graphs: Graphs that reveal shared synteny blocks (shared stretches of DNA). Synteny blocks exist because genome rearrangements account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse and human genomes).
+
+ * `{bm} synteny graph/(synteny graph)/i` - Given the genomic dot-plot for two genomes, cluster together points so as to reveal synteny blocks. For example, ...
+
+    ```{svgbob}  
+    3'|                                                                                  3'|                                                                 
+      |  *                              *                                                  |  * h                                                            
+      |   *           *                                                                    |   \                                                             
+      |    *               *                                                               |    \                                                            
+      |      *                           *           *                                     |     \                                                           
+      |       *                                                                            |      \                                                          
+      |       *               *                                                            |     A \                                                         
+     g|        *                                                                          g|        \                                                        
+     e|          *                   *           *                                        e|         \                                                      
+     n|           *                                                                       n|          \                                                     
+     o|            *                                     *                   ------->     o|           v t                                                  
+     m|   *                        *                                         CLUSTER      m|                           ^ t                                  
+     e|                          *            *                                           e|                        B /                                      
+     1|      *                  *                                                         1|                         /                                      
+      |                        *               *         *                                 |                        * h                                        
+      |                 *                                                                  |                 * h                                             
+      |                   *                                                                |                  \                                             
+      |                    *                                                               |                 C \                                           
+      |    *                *                                                              |                    v t                                             
+      |                                           *              *                         |                                           * h                   
+      |             *              *                *                                      |                                            \                    
+      |                                              *           *                         |                                           D \                    
+    5'|       *             *                   *     *                                  5'|                                              v t                
+      +-----------------------------------------------------------------                   +-----------------------------------------------------------------
+       5'                          genome2                            3'                    5'                          genome2                            3'
+    ```
+
+    ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (B) while three are matching against their reverse complements (A, C, and D)...
+
+    ```{svgbob}
+         D        C        B           A                                A               C         B                   D   
+      <-----*  <-----*  *----->  <------------*                   *------------>     *----->   *----->             *----->
+    +-------------------------------------------+      vs       +-----------------------------------------------------------------+
+     5'                  genome1              3'                 5'                          genome2                            3'
+    ```
+
+
+ * `{bm} breakpoint graph/(breakpoint graph)_GR/i` - An undirected graph representing multiple permutation_GRs (chromosomes) in an organism. Given this graph, it's possible to take two organisms that have a shared set of synteny blocks and compute the minimum number of genome rearrangement operations (chromosome fusion, chromosome fission, and reversals) to transform one into the other. That is, this graph allows for computing a minimal path of genome rearrangement operations (there may be multiple minimal paths) that transforms organism A to organism B.
+ 
+   For example, imagine the following synteny graph...
+
  * `{bm} fusion` - The process or result of joining two or more things together to form a single entity. For example, two chromosomes to may join together (fuse) to form a single chromosome.
 
  * `{bm} fission` - The process or result of splitting a single entity into two or more parts. For example, a single chromosome may break into multiple pieces where each piece becomes its own chromosome.
@@ -7428,6 +7533,8 @@ cyclic
 `{bm-ignore} (adjacent|adjacency|breakpoint)_NORM/i`
 `{bm-error} Apply suffix _NORM or _GR/(adjacent|adjacency|breakpoint)/i`
 `{bm-error} Don't use a suffix here/(adjacency_GR matrix|adjacency_GR list)/i`
+
+`{bm-error} Use breakpoint graph_GR instead/(breakpoint_GR graph)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 

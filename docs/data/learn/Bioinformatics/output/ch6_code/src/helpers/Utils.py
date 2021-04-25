@@ -101,3 +101,17 @@ def latex_escape(v: str) -> str:
     for ch in v:
         ret += mapper[ch] if ch in mapper else ch
     return ret
+
+
+def encode_int_to_alphabet(number: int, alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
+    encoded = ''
+    sign = ''
+    if number < 0:
+        sign = '-'
+        number = -number
+    if 0 <= number < len(alphabet):
+        return sign + alphabet[number]
+    while number != 0:
+        number, i = divmod(number, len(alphabet))
+        encoded = alphabet[i] + encoded
+    return sign + encoded
