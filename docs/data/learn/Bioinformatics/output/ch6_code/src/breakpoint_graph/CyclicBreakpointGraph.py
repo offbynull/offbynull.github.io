@@ -145,8 +145,10 @@ class BreakpointGraph:
 
 if __name__ == '__main__':
     bg = BreakpointGraph(
-        [['+A', '-B', '-C', '+D'], ['+E']],
-        [['+A', '+B', '-D'], ['-C', '-E']]
+        # [['+A', '-B', '-C', '+D'], ['+E']],
+        # [['+A', '+B', '-D'], ['-C', '-E']]
+        [['-D', '-B', '+C', '-A']],
+        [['+A', '+B', '+C', '+D']]
     )
     while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
         print(f'{bg.get_red_permutations()}')

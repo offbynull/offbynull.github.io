@@ -1,4 +1,4 @@
-<svg class="bob" font-family="arial" font-size="14" height="816" width="712" xmlns="http://www.w3.org/2000/svg">
+<svg class="bob" font-family="arial" font-size="14" height="816" width="720" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
 <polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
@@ -74,22 +74,22 @@ tspan.head{
 }
     
 </style>
-<rect class="backdrop" height="816" width="712" x="0" y="0"/>
+<rect class="backdrop" height="816" width="720" x="0" y="0"/>
 <g>
-<line x1="52" x2="52" y1="80" y2="760"/>
-<line x1="52" x2="576" y1="760" y2="760"/>
+<line x1="60" x2="60" y1="80" y2="760"/>
+<line x1="60" x2="584" y1="760" y2="760"/>
 </g>
 <g>
-<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="60" x2="126" y1="440" y2="572"/>
+<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="68" x2="134" y1="440" y2="572"/>
 </g>
 <g>
-<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="268" x2="334" y1="216" y2="84"/>
+<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="276" x2="342" y1="216" y2="84"/>
 </g>
 <g>
-<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="396" x2="462" y1="376" y2="244"/>
+<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="404" x2="470" y1="376" y2="244"/>
 </g>
 <g>
-<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="508" x2="574" y1="728" y2="596"/>
+<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="516" x2="582" y1="728" y2="596"/>
 </g>
 <g>
 <text x="1" y="12">
@@ -107,48 +107,38 @@ Consider each shared 5-mer, shown as a line, to be a dot.
 </text>
 </g>
 <g>
-<text x="1" y="348">
+<text x="9" y="348">
 g
 </text>
 </g>
 <g>
-<text x="1" y="364">
+<text x="9" y="364">
 e
 </text>
 </g>
 <g>
-<text x="1" y="380">
+<text x="9" y="380">
 n
 </text>
 </g>
 <g>
-<text x="1" y="396">
+<text x="9" y="396">
 o
 </text>
 </g>
 <g>
-<text x="1" y="412">
+<text x="9" y="412">
 m
 </text>
 </g>
 <g>
-<text x="1" y="428">
+<text x="9" y="428">
 e
 </text>
 </g>
 <g>
-<text x="1" y="444">
+<text x="9" y="444">
 1
-</text>
-</g>
-<g>
-<text x="9" y="76">
-3&#39;
-</text>
-</g>
-<g>
-<text x="9" y="748">
-5&#39;
 </text>
 </g>
 <g>
@@ -162,617 +152,627 @@ R = reverse complement match
 </text>
 </g>
 <g>
-<text x="17" y="92">
-A
-</text>
-</g>
-<g>
-<text x="17" y="124">
-C
-</text>
-</g>
-<g>
-<text x="17" y="156">
-T
-</text>
-</g>
-<g>
-<text x="17" y="188">
-G
-</text>
-</g>
-<g>
-<text x="17" y="220">
-G
-</text>
-</g>
-<g>
-<text x="17" y="252">
-G
-</text>
-</g>
-<g>
-<text x="17" y="284">
-T
-</text>
-</g>
-<g>
-<text x="17" y="316">
-C
-</text>
-</g>
-<g>
-<text x="17" y="348">
-A
-</text>
-</g>
-<g>
-<text x="17" y="380">
-G
-</text>
-</g>
-<g>
-<text x="17" y="412">
-C
-</text>
-</g>
-<g>
-<text x="17" y="444">
-C
-</text>
-</g>
-<g>
-<text x="17" y="476">
-C
-</text>
-</g>
-<g>
-<text x="17" y="508">
-A
-</text>
-</g>
-<g>
-<text x="17" y="540">
-A
-</text>
-</g>
-<g>
-<text x="17" y="572">
-A
-</text>
-</g>
-<g>
-<text x="17" y="604">
-G
-</text>
-</g>
-<g>
-<text x="17" y="636">
-G
-</text>
-</g>
-<g>
-<text x="17" y="668">
-G
-</text>
-</g>
-<g>
-<text x="17" y="700">
-G
-</text>
-</g>
-<g>
-<text x="17" y="732">
-G
-</text>
-</g>
-<g>
-<text x="33" y="76">
-5&#39;
-</text>
-</g>
-<g>
-<text x="33" y="92">
-T
-</text>
-</g>
-<g>
-<text x="33" y="124">
-G
-</text>
-</g>
-<g>
-<text x="33" y="156">
-A
-</text>
-</g>
-<g>
-<text x="33" y="188">
-C
-</text>
-</g>
-<g>
-<text x="33" y="220">
-C
-</text>
-</g>
-<g>
-<text x="33" y="252">
-C
-</text>
-</g>
-<g>
-<text x="33" y="284">
-A
-</text>
-</g>
-<g>
-<text x="33" y="316">
-G
-</text>
-</g>
-<g>
-<text x="33" y="348">
-T
-</text>
-</g>
-<g>
-<text x="33" y="380">
-C
-</text>
-</g>
-<g>
-<text x="33" y="412">
-G
-</text>
-</g>
-<g>
-<text x="33" y="444">
-G
-</text>
-</g>
-<g>
-<text x="33" y="476">
-G
-</text>
-</g>
-<g>
-<text x="33" y="508">
-T
-</text>
-</g>
-<g>
-<text x="33" y="540">
-T
-</text>
-</g>
-<g>
-<text x="33" y="572">
-T
-</text>
-</g>
-<g>
-<text x="33" y="604">
-C
-</text>
-</g>
-<g>
-<text x="33" y="636">
-C
-</text>
-</g>
-<g>
-<text x="33" y="668">
-C
-</text>
-</g>
-<g>
-<text x="33" y="700">
-C
-</text>
-</g>
-<g>
-<text x="33" y="732">
-C
-</text>
-</g>
-<g>
-<text x="33" y="748">
+<text x="17" y="76">
 3&#39;
 </text>
 </g>
 <g>
-<text x="33" y="780">
+<text x="17" y="748">
 5&#39;
 </text>
 </g>
 <g>
-<text x="33" y="796">
-3&#39;
-</text>
-</g>
-<g>
-<text x="57" y="780">
-G
-</text>
-</g>
-<g>
-<text x="57" y="796">
-C
-</text>
-</g>
-<g>
-<text x="73" y="780">
-G
-</text>
-</g>
-<g>
-<text x="73" y="796">
-C
-</text>
-</g>
-<g>
-<text x="89" y="780">
-T
-</text>
-</g>
-<g>
-<text x="89" y="796">
+<text x="25" y="92">
 A
 </text>
 </g>
 <g>
-<text x="105" y="508">
+<text x="25" y="124">
+C
+</text>
+</g>
+<g>
+<text x="25" y="156">
+T
+</text>
+</g>
+<g>
+<text x="25" y="188">
+G
+</text>
+</g>
+<g>
+<text x="25" y="220">
+G
+</text>
+</g>
+<g>
+<text x="25" y="252">
+G
+</text>
+</g>
+<g>
+<text x="25" y="284">
+T
+</text>
+</g>
+<g>
+<text x="25" y="316">
+C
+</text>
+</g>
+<g>
+<text x="25" y="348">
+A
+</text>
+</g>
+<g>
+<text x="25" y="380">
+G
+</text>
+</g>
+<g>
+<text x="25" y="412">
+C
+</text>
+</g>
+<g>
+<text x="25" y="444">
+C
+</text>
+</g>
+<g>
+<text x="25" y="476">
+C
+</text>
+</g>
+<g>
+<text x="25" y="508">
+A
+</text>
+</g>
+<g>
+<text x="25" y="540">
+A
+</text>
+</g>
+<g>
+<text x="25" y="572">
+A
+</text>
+</g>
+<g>
+<text x="25" y="604">
+G
+</text>
+</g>
+<g>
+<text x="25" y="636">
+G
+</text>
+</g>
+<g>
+<text x="25" y="668">
+G
+</text>
+</g>
+<g>
+<text x="25" y="700">
+G
+</text>
+</g>
+<g>
+<text x="25" y="732">
+G
+</text>
+</g>
+<g>
+<text x="41" y="76">
+5&#39;
+</text>
+</g>
+<g>
+<text x="41" y="92">
+T
+</text>
+</g>
+<g>
+<text x="41" y="124">
+G
+</text>
+</g>
+<g>
+<text x="41" y="156">
+A
+</text>
+</g>
+<g>
+<text x="41" y="188">
+C
+</text>
+</g>
+<g>
+<text x="41" y="220">
+C
+</text>
+</g>
+<g>
+<text x="41" y="252">
+C
+</text>
+</g>
+<g>
+<text x="41" y="284">
+A
+</text>
+</g>
+<g>
+<text x="41" y="316">
+G
+</text>
+</g>
+<g>
+<text x="41" y="348">
+T
+</text>
+</g>
+<g>
+<text x="41" y="380">
+C
+</text>
+</g>
+<g>
+<text x="41" y="412">
+G
+</text>
+</g>
+<g>
+<text x="41" y="444">
+G
+</text>
+</g>
+<g>
+<text x="41" y="476">
+G
+</text>
+</g>
+<g>
+<text x="41" y="508">
+T
+</text>
+</g>
+<g>
+<text x="41" y="540">
+T
+</text>
+</g>
+<g>
+<text x="41" y="572">
+T
+</text>
+</g>
+<g>
+<text x="41" y="604">
+C
+</text>
+</g>
+<g>
+<text x="41" y="636">
+C
+</text>
+</g>
+<g>
+<text x="41" y="668">
+C
+</text>
+</g>
+<g>
+<text x="41" y="700">
+C
+</text>
+</g>
+<g>
+<text x="41" y="732">
+C
+</text>
+</g>
+<g>
+<text x="41" y="748">
+3&#39;
+</text>
+</g>
+<g>
+<text x="41" y="780">
+5&#39;
+</text>
+</g>
+<g>
+<text x="41" y="796">
+3&#39;
+</text>
+</g>
+<g>
+<text x="65" y="780">
+G
+</text>
+</g>
+<g>
+<text x="65" y="796">
+C
+</text>
+</g>
+<g>
+<text x="81" y="780">
+G
+</text>
+</g>
+<g>
+<text x="81" y="796">
+C
+</text>
+</g>
+<g>
+<text x="97" y="780">
+T
+</text>
+</g>
+<g>
+<text x="97" y="796">
+A
+</text>
+</g>
+<g>
+<text x="113" y="508">
 R:
 </text>
 </g>
 <g>
-<text x="105" y="780">
+<text x="113" y="780">
 T
 </text>
 </g>
 <g>
-<text x="105" y="796">
+<text x="113" y="796">
 A
 </text>
 </g>
 <g>
-<text x="121" y="780">
+<text x="129" y="780">
 T
 </text>
 </g>
 <g>
-<text x="121" y="796">
+<text x="129" y="796">
 A
 </text>
 </g>
 <g>
-<text x="129" y="508">
+<text x="137" y="508">
 AAACC vs GGTTT
 </text>
 </g>
 <g>
-<text x="137" y="780">
+<text x="145" y="780">
 A
 </text>
 </g>
 <g>
-<text x="137" y="796">
+<text x="145" y="796">
 T
 </text>
 </g>
 <g>
-<text x="153" y="780">
+<text x="161" y="780">
 G
 </text>
 </g>
 <g>
-<text x="153" y="796">
+<text x="161" y="796">
 C
 </text>
 </g>
 <g>
-<text x="169" y="780">
+<text x="177" y="780">
 G
 </text>
 </g>
 <g>
-<text x="169" y="796">
+<text x="177" y="796">
 C
 </text>
 </g>
 <g>
-<text x="185" y="780">
+<text x="193" y="780">
 T
 </text>
 </g>
 <g>
-<text x="185" y="796">
+<text x="193" y="796">
 A
 </text>
 </g>
 <g>
-<text x="201" y="780">
+<text x="209" y="780">
 G
 </text>
 </g>
 <g>
-<text x="201" y="796">
+<text x="209" y="796">
 C
 </text>
 </g>
 <g>
-<text x="217" y="780">
+<text x="225" y="780">
 A
 </text>
 </g>
 <g>
-<text x="217" y="796">
+<text x="225" y="796">
 T
 </text>
 </g>
 <g>
-<text x="233" y="780">
+<text x="241" y="780">
 C
 </text>
 </g>
 <g>
-<text x="233" y="796">
+<text x="241" y="796">
 G
 </text>
 </g>
 <g>
-<text x="249" y="780">
+<text x="257" y="780">
 T
 </text>
 </g>
 <g>
-<text x="249" y="796">
+<text x="257" y="796">
 A
 </text>
 </g>
 <g>
-<text x="265" y="780">
+<text x="273" y="780">
 T
 </text>
 </g>
 <g>
-<text x="265" y="796">
+<text x="273" y="796">
 A
 </text>
 </g>
 <g>
-<text x="281" y="780">
+<text x="289" y="780">
 A
 </text>
 </g>
 <g>
-<text x="281" y="796">
+<text x="289" y="796">
 T
 </text>
 </g>
 <g>
-<text x="281" y="812">
+<text x="289" y="812">
 genome2
 </text>
 </g>
 <g>
-<text x="297" y="780">
+<text x="305" y="780">
 C
 </text>
 </g>
 <g>
-<text x="297" y="796">
+<text x="305" y="796">
 G
 </text>
 </g>
 <g>
-<text x="313" y="156">
+<text x="321" y="156">
 N:
 </text>
 </g>
 <g>
-<text x="313" y="780">
+<text x="321" y="780">
 T
 </text>
 </g>
 <g>
-<text x="313" y="796">
+<text x="321" y="796">
 A
 </text>
 </g>
 <g>
-<text x="329" y="780">
+<text x="337" y="780">
 G
 </text>
 </g>
 <g>
-<text x="329" y="796">
+<text x="337" y="796">
 C
 </text>
 </g>
 <g>
-<text x="337" y="156">
+<text x="345" y="156">
 ACTGG vs ACTGG
 </text>
 </g>
 <g>
-<text x="345" y="780">
+<text x="353" y="780">
 G
 </text>
 </g>
 <g>
-<text x="345" y="796">
+<text x="353" y="796">
 C
 </text>
 </g>
 <g>
-<text x="361" y="780">
+<text x="369" y="780">
 A
 </text>
 </g>
 <g>
-<text x="361" y="796">
+<text x="369" y="796">
 T
 </text>
 </g>
 <g>
-<text x="377" y="780">
+<text x="385" y="780">
 A
 </text>
 </g>
 <g>
-<text x="377" y="796">
+<text x="385" y="796">
 T
 </text>
 </g>
 <g>
-<text x="393" y="780">
+<text x="401" y="780">
 C
 </text>
 </g>
 <g>
-<text x="393" y="796">
+<text x="401" y="796">
 G
 </text>
 </g>
 <g>
-<text x="409" y="780">
+<text x="417" y="780">
 A
 </text>
 </g>
 <g>
-<text x="409" y="796">
+<text x="417" y="796">
 T
 </text>
 </g>
 <g>
-<text x="425" y="780">
+<text x="433" y="780">
 G
 </text>
 </g>
 <g>
-<text x="425" y="796">
+<text x="433" y="796">
 C
 </text>
 </g>
 <g>
-<text x="441" y="316">
+<text x="449" y="316">
 N:
 </text>
 </g>
 <g>
-<text x="441" y="780">
+<text x="449" y="780">
 T
 </text>
 </g>
 <g>
-<text x="441" y="796">
+<text x="449" y="796">
 A
 </text>
 </g>
 <g>
-<text x="457" y="780">
+<text x="465" y="780">
 C
 </text>
 </g>
 <g>
-<text x="457" y="796">
+<text x="465" y="796">
 G
 </text>
 </g>
 <g>
-<text x="465" y="316">
+<text x="473" y="316">
 CATGC vs CATGC
 </text>
 </g>
 <g>
-<text x="473" y="780">
+<text x="481" y="780">
 T
 </text>
 </g>
 <g>
-<text x="473" y="796">
+<text x="481" y="796">
 T
 </text>
 </g>
 <g>
-<text x="489" y="780">
+<text x="497" y="780">
 T
 </text>
 </g>
 <g>
-<text x="489" y="796">
+<text x="497" y="796">
 T
 </text>
 </g>
 <g>
-<text x="505" y="780">
+<text x="513" y="780">
 G
 </text>
 </g>
 <g>
-<text x="505" y="796">
+<text x="513" y="796">
 C
 </text>
 </g>
 <g>
-<text x="521" y="780">
+<text x="529" y="780">
 G
 </text>
 </g>
 <g>
-<text x="521" y="796">
+<text x="529" y="796">
 C
 </text>
 </g>
 <g>
-<text x="537" y="780">
+<text x="545" y="780">
 G
 </text>
 </g>
 <g>
-<text x="537" y="796">
+<text x="545" y="796">
 C
 </text>
 </g>
 <g>
-<text x="553" y="668">
+<text x="561" y="668">
 N:
 </text>
 </g>
 <g>
-<text x="553" y="780">
+<text x="561" y="780">
 G
 </text>
 </g>
 <g>
-<text x="553" y="796">
+<text x="561" y="796">
 C
 </text>
 </g>
 <g>
-<text x="569" y="780">
+<text x="577" y="780">
 G
 </text>
 </g>
 <g>
-<text x="569" y="796">
+<text x="577" y="796">
 C
 </text>
 </g>
 <g>
-<text x="577" y="668">
+<text x="585" y="668">
 GGGGG vs GGGGG
 </text>
 </g>
 <g>
-<text x="585" y="780">
+<text x="593" y="780">
 3&#39;
 </text>
 </g>
 <g>
-<text x="585" y="796">
+<text x="593" y="796">
 5&#39;
 </text>
 </g>

@@ -7403,108 +7403,256 @@ cyclic
     
    For example, ...
 
-     ```{svgbob}
-     "Consider each shared 5-mer, shown as a line, to be a dot."
-     * "N = normal match"
-     * "R = reverse complement match"
+   ```{svgbob}
+   "Consider each shared 5-mer, shown as a line, to be a dot."
+   * "N = normal match"
+   * "R = reverse complement match"
 
-      3' 5'
-       A T |                                  ^            
-           |                                 /
-       C G |                                /                
-           |                               /
-       T A |                              / N: "ACTGG vs ACTGG"         
-           |                             /  
-       G C |                            /                   
-           |                           /      
-       G C |                          *                    
-           |
-       G C |                                                  ^
-           |                                                 /
-       T A |                                                /
-           |                                               /
-       C G |                                              / N: "CATGC vs CATGC"
-           |                                             /  
-     g A T |                                            /    
-     e     |                                           /      
-     n G C |                                          *        
-     o     |
-     m C G |                                                 
-     e     |
-     1 C G |*                                               
-           | \      
-       C G |  \                                            
-           |   \  
-       A T |    \ R: "AAACC vs GGTTT"                                      
-           |     \
-       A T |      \                                          
-           |       \
-       A T |        v                                     
-           |
-       G C |                                                                ^
-           |                                                               /
-       G C |                                                              / 
-           |                                                             / 
-       G C |                                                            / N: "GGGGG vs GGGGG" 
-           |                                                           /  
-       G C |                                                          /    
-           |                                                         /      
-       G C |                                                        *        
-      5' 3'|                                                                
-           +-----------------------------------------------------------------
-         5' G G T T T A G G T G A C T T A C T G G A A C A G T C T T G G G G G 3'
-         3' C C A A A T C C A C T G A A T G A C C T T G T C A G T T C C C C C 5'
-                                        genome2
-    ```
+     3' 5'
+      A T |                                  ^            
+          |                                 /
+      C G |                                /                
+          |                               /
+      T A |                              / N: "ACTGG vs ACTGG"         
+          |                             /  
+      G C |                            /                   
+          |                           /      
+      G C |                          *                    
+          |
+      G C |                                                  ^
+          |                                                 /
+      T A |                                                /
+          |                                               /
+      C G |                                              / N: "CATGC vs CATGC"
+          |                                             /  
+    g A T |                                            /    
+    e     |                                           /      
+    n G C |                                          *        
+    o     |
+    m C G |                                                 
+    e     |
+    1 C G |*                                               
+          | \      
+      C G |  \                                            
+          |   \  
+      A T |    \ R: "AAACC vs GGTTT"                                      
+          |     \
+      A T |      \                                          
+          |       \
+      A T |        v                                     
+          |
+      G C |                                                                ^
+          |                                                               /
+      G C |                                                              / 
+          |                                                             / 
+      G C |                                                            / N: "GGGGG vs GGGGG" 
+          |                                                           /  
+      G C |                                                          /    
+          |                                                         /      
+      G C |                                                        *        
+     5' 3'|                                                                
+          +-----------------------------------------------------------------
+        5' G G T T T A G G T G A C T T A C T G G A A C A G T C T T G G G G G 3'
+        3' C C A A A T C C A C T G A A T G A C C T T G T C A G T T C C C C C 5'
+                                       genome2
+   ```
 
-
-   Genomic dot-plots are typically used in building synteny graphs: Graphs that reveal shared synteny blocks (shared stretches of DNA). Synteny blocks exist because genome rearrangements account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse and human genomes).
+   Genomic dot-plots are typically used in building synteny graphs: Graphs that reveal shared synteny blocks (shared stretches of DNA). Synteny blocks exist because genome rearrangements account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse vs human).
 
  * `{bm} synteny graph/(synteny graph)/i` - Given the genomic dot-plot for two genomes, cluster together points so as to reveal synteny blocks. For example, ...
 
-    ```{svgbob}  
-    3'|                                                                                  3'|                                                                 
-      |  *                              *                                                  |  * h                                                            
-      |   *           *                                                                    |   \                                                             
-      |    *               *                                                               |    \                                                            
-      |      *                           *           *                                     |     \                                                           
-      |       *                                                                            |      \                                                          
-      |       *               *                                                            |     A \                                                         
-     g|        *                                                                          g|        \                                                        
-     e|          *                   *           *                                        e|         \                                                      
-     n|           *                                                                       n|          \                                                     
-     o|            *                                     *                   ------->     o|           v t                                                  
-     m|   *                        *                                         CLUSTER      m|                           ^ t                                  
-     e|                          *            *                                           e|                        B /                                      
-     1|      *                  *                                                         1|                         /                                      
-      |                        *               *         *                                 |                        * h                                        
-      |                 *                                                                  |                 * h                                             
-      |                   *                                                                |                  \                                             
-      |                    *                                                               |                 C \                                           
-      |    *                *                                                              |                    v t                                             
-      |                                           *              *                         |                                           * h                   
-      |             *              *                *                                      |                                            \                    
-      |                                              *           *                         |                                           D \                    
-    5'|       *             *                   *     *                                  5'|                                              v t                
-      +-----------------------------------------------------------------                   +-----------------------------------------------------------------
-       5'                          genome2                            3'                    5'                          genome2                            3'
-    ```
+   ```{svgbob}
+    * "N = normal k-mer match"
+    * "R = reverse complement k-mer match"
 
-    ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (B) while three are matching against their reverse complements (A, C, and D)...
+   3'|                                                                                  3'|                                                                 
+     |  N                              R                                                  |  *                                                              
+     |   N           N                                                                    |   \                                                             
+     |    N               R                                                               |    \                                                            
+     |      N                           R           N                                     |     \                                                           
+     |       N                                                                            |      \                                                          
+     |       N               N                                                            |     A \                                                         
+    g|        N                                                                          g|        \                                                        
+    e|          N                   R           N                                        e|         \                                                      
+    n|           N                                                                       n|          \                                                     
+    o|            N                                     R                   ------->     o|           v                                                    
+    m|   N                        R                                         CLUSTER      m|                           ^                                    
+    e|                          R            N                                           e|                        C /                                      
+    1|      N                  R                                                         1|                         /                                      
+     |                        R               N         N                                 |                        *                                          
+     |                 N                                                                  |                 *                                               
+     |                   N                                                                |                  \                                             
+     |                    N                                                               |                 B \                                           
+     |    R                N                                                              |                    v                                               
+     |                                           N              R                         |                                           *                     
+     |             N              N                N                                      |                                            \                    
+     |                                              N           R                         |                                           D \                    
+   5'|       R             R                   R     N                                  5'|                                              v                  
+     +-----------------------------------------------------------------                   +-----------------------------------------------------------------
+      5'                          genome2                            3'                    5'                          genome2                            3'
+   ```
 
-    ```{svgbob}
-         D        C        B           A                                A               C         B                   D   
-      <-----*  <-----*  *----->  <------------*                   *------------>     *----->   *----->             *----->
-    +-------------------------------------------+      vs       +-----------------------------------------------------------------+
-     5'                  genome1              3'                 5'                          genome2                            3'
-    ```
+   ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (B) while three are matching against their reverse complements (A, C, and D)...
 
+   ```{svgbob}
+        D        B        C           A                                A               B         C                   D   
+     <-----*  <-----*  *----->  <------------*                   *------------>     *----->   *----->             *----->
+   +-------------------------------------------+      vs       +-----------------------------------------------------------------+
+    5'                  genome1              3'                 5'                          genome2                            3'
+   ```
 
- * `{bm} breakpoint graph/(breakpoint graph)_GR/i` - An undirected graph representing multiple permutation_GRs (chromosomes) in an organism. Given this graph, it's possible to take two organisms that have a shared set of synteny blocks and compute the minimum number of genome rearrangement operations (chromosome fusion, chromosome fission, and reversals) to transform one into the other. That is, this graph allows for computing a minimal path of genome rearrangement operations (there may be multiple minimal paths) that transforms organism A to organism B.
- 
-   For example, imagine the following synteny graph...
+ * `{bm} breakpoint graph/(breakpoint graph)_GR/i` - An undirected graph representing the order and orientation of synteny blocks shared between two genomes. For example, the following two _circular_ genomes have 4 synteny blocks between them ...
 
- * `{bm} fusion` - The process or result of joining two or more things together to form a single entity. For example, two chromosomes to may join together (fuse) to form a single chromosome.
+   ```{svgbob}
+                  D        B        C           A         
+               <-----*  <-----*  *----->  <------------*  
+             +-------------------------------------------+
+              5'           circular genome1            3' 
+   
+                                   vs
+
+           A               B         C                   D   
+     *------------>     *----->   *----->             *----->
+   +-----------------------------------------------------------------+
+    5'                     circular genome2                        3'
+   ```
+
+   To represent the synteny blocks in the above example as a breakpoint graph_GR, ...
+
+    1. Set the ends of synteny blocks as nodes. The arrow end should have a _t_ suffix (for tail) while the non-arrow end should have a _h_ suffix (for head)...
+
+       ```{dot}
+       graph G {
+       layout=neato
+       node [shape=plain];
+       _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+       _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+       }
+       ```
+
+   2. Set the synteny blocks themselves as __undirected__ edges, represented by dashed lines.
+   
+      ```{dot}
+      graph G {
+      layout=neato
+      node [shape=plain];
+      _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+      _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+      _D_t_ -- _D_h_ [style=dashed, dir=back];
+      }
+      ```
+
+      Note that the arrows on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph. Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
+
+   3. Set the regions between synteny blocks as __undirected__ edges, represented by colored lines.
+   
+      * Blue lines represent regions of genome 2 that border a pair of synteny blocks.
+      * Red lines represent regions of genome 1 that border a pair of synteny blocks.
+
+      ```{dot}
+      graph G {
+      layout=neato
+      node [shape=plain];
+      _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+      _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
+      _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+      _B_t_ -- _C_h_ [color=blue];
+      _B_h_ -- _C_h_ [color=red];
+      }
+      ```
+
+   The full breakpoint graph_GR for the two circular genomes in the example above is as follows...
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _C_t_ [pos="2.0,-4.898587196589413e-16!"];
+   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
+   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A_t_ [pos="-2.0,2.4492935982947064e-16!"];
+   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _C_t_ -- _C_h_ [style=dashed, dir=back];
+   _B_t_ -- _B_h_ [style=dashed, dir=back];
+   _A_t_ -- _A_h_ [style=dashed, dir=back];
+   _D_t_ -- _D_h_ [style=dashed, dir=back];
+   _C_t_ -- _D_h_ [color=blue];
+   _A_h_ -- _D_t_ [color=blue];
+   _B_t_ -- _C_h_ [color=blue];
+   _A_t_ -- _B_h_ [color=blue];
+   _B_h_ -- _C_h_ [color=red];
+   _A_t_ -- _C_t_ [color=red];
+   _A_h_ -- _D_t_ [color=red];
+   _B_t_ -- _D_h_ [color=red];
+   }
+   ```
+   
+   Breakpoint graph_GRs are used to compute a parsimonious path of fusion, fission, and reversal operations (genome rearrangements) that transforms one genome into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
+   
+   Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges. Each 2-break operation is a step in a parsimonious path of genome rearrangement mutations.
+
+ * `{bm} 2-break/\b(2-break|2 break|two break|two-break)/i` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one the red edges matches the blue edge at that boundary. For example, the two red edges highlighted below share the same synteny block boundary ...
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _C_t_ [pos="2.0,-4.898587196589413e-16!"];
+   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
+   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A_t_ [pos="-2.0,2.4492935982947064e-16!"];
+   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _C_t_ -- _C_h_ [style=dashed, dir=back];
+   _B_t_ -- _B_h_ [style=dashed, dir=back];
+   _A_t_ -- _A_h_ [style=dashed, dir=back];
+   _D_t_ -- _D_h_ [style=dashed, dir=back];
+   _C_t_ -- _D_h_ [color=blue];
+   _A_h_ -- _D_t_ [color=blue];
+   _B_t_ -- _C_h_ [color=blue];
+   _A_t_ -- _B_h_ [color=blue];
+   _B_h_ -- _C_h_ [color=red];
+   _A_t_ -- _C_t_ [color=red, penwidth="4"];
+   _A_h_ -- _D_t_ [color=red];
+   _B_t_ -- _D_h_ [color=red, penwidth="4"];
+   }
+   ```
+
+   The highlighted red edges can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _C_t_ [pos="2.0,-4.898587196589413e-16!"];
+   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
+   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A_t_ [pos="-2.0,2.4492935982947064e-16!"];
+   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _C_t_ -- _C_h_ [style=dashed, dir=back];
+   _B_t_ -- _B_h_ [style=dashed, dir=back];
+   _A_t_ -- _A_h_ [style=dashed, dir=back];
+   _D_t_ -- _D_h_ [style=dashed, dir=back];
+   _C_t_ -- _D_h_ [color=blue];
+   _A_h_ -- _D_t_ [color=blue];
+   _B_t_ -- _C_h_ [color=blue];
+   _A_t_ -- _B_h_ [color=blue];
+   _B_h_ -- _C_h_ [color=red];
+   _A_t_ -- _B_t_ [color=red, penwidth="4"];
+   _A_h_ -- _D_t_ [color=red];
+   _C_t_ -- _D_h_ [color=red, penwidth="4"];
+   }
+   ```
+
+ * `{bm} fusion/(\bfusion|\bfuse)/i` - The process or result of joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome.
 
  * `{bm} fission` - The process or result of splitting a single entity into two or more parts. For example, a single chromosome may break into multiple pieces where each piece becomes its own chromosome.
 
