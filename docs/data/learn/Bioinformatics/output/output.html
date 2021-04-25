@@ -11237,11 +11237,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ol>
 <li>
 <p>Set the ends of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
-<p><img src="dot_3e728d6d2939cbf69077674aab353167.svg" alt="Dot diagram"></p>
+<p><img src="dot_0a2b976df1fe819b59828770f2a8a50d.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>Set the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
-<p><img src="dot_a59f494adebe6b8d1c3788fcd9c9fa58.svg" alt="Dot diagram"></p>
+<p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
 <p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph. Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
 </li>
 <li>
@@ -11250,19 +11250,42 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>Blue lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 2 that border a pair of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
 <li>Red lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 1 that border a pair of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
 </ul>
-<p><img src="dot_6d3a681d178c550dadbf414014e61e82.svg" alt="Dot diagram"></p>
+<p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
 </li>
 </ol>
 <p>The full <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> for the two circular <a href="#BM_(genome)%2Fi">genome</a>s in the example above is as follows...</p>
-<p><img src="dot_f8963bb7aaed876605490ad981911291.svg" alt="Dot diagram"></p>
+<p><img src="dot_b9b5219df336f8ed49e8f406c29349bc.svg" alt="Dot diagram"></p>
 <p><a href="#BM_(breakpoint%20graph)_GR%2Fi">Breakpoint graph</a>s are used to compute a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, and reversal operations (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s) that transforms one <a href="#BM_(genome)%2Fi">genome</a> into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s typically order <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s so that blue edges are uniformly sandwiched between <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / red edges get chaotically scattered around.</p>
 <p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation. By continually applying <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a>s on red edges, all red edges will eventually sync up to blue edges. Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation is a step in a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> mutations.</p>
 </li>
 <li>
-<p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one the red edges matches the blue edge at that boundary. For example, the two red edges highlighted below share the same <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary ...</p>
-<p><img src="dot_1e4fcb7da7b1979fff8a4bb10cac5cbd.svg" alt="Dot diagram"></p>
-<p>The highlighted red edges can be re-wired such that one of the edges matches the blue edge at that <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> boundary ...</p>
-<p><img src="dot_d43a917f6d7596a694b2b1d21f5682c3.svg" alt="Dot diagram"></p>
+<p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one the red edges matches the blue edge at that boundary.</p>
+<p>For example, the two red edges highlighted below share the same <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and can be re-wired such that one of the edges matches the blue edge at that <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> boundary ...</p>
+<p><img src="dot_dd1f325cba458910add13fb6a7b56d4b.svg" alt="Dot diagram"></p>
+<p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example...</p>
+<ul>
+<li>
+<p><a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a></p>
+<p><img src="svgbob_4297c76db4a8f91017039cfafcb6f9c8946928fa.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_cc30ac069e3ba8b45cbbf2769e21cfa8.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p><a href="#BM_(fission)%2Fi">fission</a></p>
+<p><img src="svgbob_0aade97b0abcb0ec855ec14f60f69c0b0745c8df.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_dc25e53d80ef295580489a46e57a55f8.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>reversal</p>
+<p><img src="svgbob_4dba488ae654129dcf7cbf003b87936448c442ee.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_58522a00d5fb169ee14b23a919d119ab.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>translocation</p>
+<p><img src="svgbob_b18652891759c2864d981a8e0ee9783532ef9529.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_949b32c8271bd32e59b4762032da6756.svg" alt="Dot diagram"></p>
+<p><img src="dot_09365d363c78ddb27ded236cf9c990ac.svg" alt="Dot diagram"></p>
+</li>
+</ul>
 </li>
 <li>
 <p><a name="BM_(%5Cbfusion%7C%5Cbfuse)%2Fi"></a><strong>fusion</strong> - The process or result of joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome.</p>

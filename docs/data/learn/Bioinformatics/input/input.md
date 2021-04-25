@@ -7525,7 +7525,7 @@ cyclic
        graph G {
        layout=neato
        node [shape=plain];
-       _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+       _D_t_ [pos="0.0,2.0!"];
        _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
        }
        ```
@@ -7536,7 +7536,7 @@ cyclic
       graph G {
       layout=neato
       node [shape=plain];
-      _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+      _D_t_ [pos="0.0,2.0!"];
       _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
       _D_t_ -- _D_h_ [style=dashed, dir=back];
       }
@@ -7554,7 +7554,7 @@ cyclic
       layout=neato
       node [shape=plain];
       _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-      _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
+      _B_t_ [pos="0.0,-2.0!"];
       _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
       _B_t_ -- _C_h_ [color=blue];
       _B_h_ -- _C_h_ [color=red];
@@ -7567,13 +7567,13 @@ cyclic
    graph G {
    layout=neato
    node [shape=plain];
-   _C_t_ [pos="2.0,-4.898587196589413e-16!"];
+   _C_t_ [pos="2.0,0.0!"];
    _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-   _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
+   _B_t_ [pos="0.0,-2.0!"];
    _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-   _A_t_ [pos="-2.0,2.4492935982947064e-16!"];
+   _A_t_ [pos="-2.0,0.0!"];
    _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-   _D_t_ [pos="1.2246467991473532e-16,2.0!"];
+   _D_t_ [pos="0.0,2.0!"];
    _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
    _C_t_ -- _C_h_ [style=dashed, dir=back];
    _B_t_ -- _B_h_ [style=dashed, dir=back];
@@ -7594,63 +7594,405 @@ cyclic
    
    Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges. Each 2-break operation is a step in a parsimonious path of genome rearrangement mutations.
 
- * `{bm} 2-break/\b(2-break|2 break|two break|two-break)/i` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one the red edges matches the blue edge at that boundary. For example, the two red edges highlighted below share the same synteny block boundary ...
+ * `{bm} 2-break/\b(2-break|2 break|two break|two-break)/i` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one the red edges matches the blue edge at that boundary.
+ 
+   For example, the two red edges highlighted below share the same synteny block boundary and can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...
 
    ```{dot}
    graph G {
    layout=neato
+   labelloc="t";
+   label="BEFORE to AFTER...";
    node [shape=plain];
-   _C_t_ [pos="2.0,-4.898587196589413e-16!"];
-   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-   _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
-   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-   _A_t_ [pos="-2.0,2.4492935982947064e-16!"];
-   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-   _D_t_ [pos="1.2246467991473532e-16,2.0!"];
-   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   _C_t_ -- _C_h_ [style=dashed, dir=back];
-   _B_t_ -- _B_h_ [style=dashed, dir=back];
-   _A_t_ -- _A_h_ [style=dashed, dir=back];
-   _D_t_ -- _D_h_ [style=dashed, dir=back];
-   _C_t_ -- _D_h_ [color=blue];
-   _A_h_ -- _D_t_ [color=blue];
-   _B_t_ -- _C_h_ [color=blue];
-   _A_t_ -- _B_h_ [color=blue];
-   _B_h_ -- _C_h_ [color=red];
-   _A_t_ -- _C_t_ [color=red, penwidth="4"];
-   _A_h_ -- _D_t_ [color=red];
-   _B_t_ -- _D_h_ [color=red, penwidth="4"];
+
+   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed, dir=back];
+   _B1_t_ -- _B1_h_ [style=dashed, dir=back];
+   _A1_t_ -- _A1_h_ [style=dashed, dir=back];
+   _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _B1_h_ -- _C1_h_ [color=red];
+   _A1_t_ -- _C1_t_ [color=red, penwidth="4"];
+   _A1_h_ -- _D1_t_ [color=red];
+   _B1_t_ -- _D1_h_ [color=red, penwidth="4"];
+
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   _C2_t_ -- _C2_h_ [style=dashed, dir=back];
+   _B2_t_ -- _B2_h_ [style=dashed, dir=back];
+   _A2_t_ -- _A2_h_ [style=dashed, dir=back];
+   _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _A2_h_ -- _D2_t_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _B2_h_ -- _C2_h_ [color=red];
+   _A2_t_ -- _B2_t_ [color=red, penwidth="4"];
+   _A2_h_ -- _D2_t_ [color=red];
+   _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
    }
    ```
 
-   The highlighted red edges can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...
+   Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation (genome rearrangement). For example...
 
-   ```{dot}
-   graph G {
-   layout=neato
-   node [shape=plain];
-   _C_t_ [pos="2.0,-4.898587196589413e-16!"];
-   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-   _B_t_ [pos="-3.6739403974420594e-16,-2.0!"];
-   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-   _A_t_ [pos="-2.0,2.4492935982947064e-16!"];
-   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-   _D_t_ [pos="1.2246467991473532e-16,2.0!"];
-   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   _C_t_ -- _C_h_ [style=dashed, dir=back];
-   _B_t_ -- _B_h_ [style=dashed, dir=back];
-   _A_t_ -- _A_h_ [style=dashed, dir=back];
-   _D_t_ -- _D_h_ [style=dashed, dir=back];
-   _C_t_ -- _D_h_ [color=blue];
-   _A_h_ -- _D_t_ [color=blue];
-   _B_t_ -- _C_h_ [color=blue];
-   _A_t_ -- _B_h_ [color=blue];
-   _B_h_ -- _C_h_ [color=red];
-   _A_t_ -- _B_t_ [color=red, penwidth="4"];
-   _A_h_ -- _D_t_ [color=red];
-   _C_t_ -- _D_h_ [color=red, penwidth="4"];
-   }
-   ```
+    * fusion
+
+      ```{svgbob}
+                                  BEFORE...
+
+
+               A        B                     C           D        
+            *----->  *----->               *----->  *------------>  
+      +----------------------------+   +----------------------------+
+       5'  circular chromosome1  3'     5'  circular chromosome2  3' 
+
+
+
+                                  AFTER...
+
+
+                  A        B           C           D        
+               *----->  *----->     *----->  *------------>  
+             +------------------------------------------------+
+              5'         fused circular chromosome          3' 
+      ```
+
+      ```{dot}
+      graph G {
+      layout=neato
+      labelloc="t";
+      label="BEFORE to AFTER...";
+      node [shape=plain];
+
+      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
+      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
+      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
+      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _D1_h_ [color=blue];
+      _A1_h_ -- _D1_t_ [color=blue];
+      _B1_t_ -- _C1_h_ [color=blue];
+      _A1_t_ -- _B1_h_ [color=blue];
+      _B1_t_ -- _A1_h_ [color=red, penwidth="4"];
+      _A1_t_ -- _B1_h_ [color=red];
+      _C1_h_ -- _D1_t_ [color=red, penwidth="4"];
+      _C1_t_ -- _D1_h_ [color=red];
+
+      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+      _D2_t_ [label="_D_t_", pos="5,2.0!"];
+      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
+      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
+      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
+      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _D2_h_ [color=blue];
+      _A2_h_ -- _D2_t_ [color=blue];
+      _B2_t_ -- _C2_h_ [color=blue];
+      _A2_t_ -- _B2_h_ [color=blue];
+      _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
+      _A2_t_ -- _B2_h_ [color=red];
+      _C2_h_ -- _B2_t_ [color=red, penwidth="4"];
+      _C2_t_ -- _D2_h_ [color=red];
+      }
+
+    * fission
+
+      ```{svgbob}
+                                  BEFORE...
+
+
+                  A        B           C           D        
+               *----->  *----->     *----->  *------------>  
+             +------------------------------------------------+
+              5'              circular chromosome           3' 
+
+
+
+                                  AFTER...
+
+
+               A        B                     C           D        
+            *----->  *----->               *----->  *------------>  
+      +----------------------------+   +----------------------------+
+       5'  circular chromosome1  3'     5'  circular chromosome2  3' 
+      ```
+
+      ```{dot}
+      graph G {
+      layout=neato
+      labelloc="t";
+      label="BEFORE to AFTER...";
+      node [shape=plain];
+
+      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
+      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
+      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
+      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _D1_h_ [color=blue];
+      _A1_h_ -- _B1_t_ [color=blue];
+      _D1_t_ -- _C1_h_ [color=blue];
+      _A1_t_ -- _B1_h_ [color=blue];
+      _D1_t_ -- _A1_h_ [color=red, penwidth="4"];
+      _A1_t_ -- _B1_h_ [color=red];
+      _C1_h_ -- _B1_t_ [color=red, penwidth="4"];
+      _C1_t_ -- _D1_h_ [color=red];
+
+      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+      _D2_t_ [label="_D_t_", pos="5,2.0!"];
+      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
+      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
+      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
+      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _D2_h_ [color=blue];
+      _A2_h_ -- _B2_t_ [color=blue];
+      _D2_t_ -- _C2_h_ [color=blue];
+      _A2_t_ -- _B2_h_ [color=blue];
+      _B2_t_ -- _A2_h_ [color=red, penwidth="4"];
+      _A2_t_ -- _B2_h_ [color=red];
+      _C2_h_ -- _D2_t_ [color=red, penwidth="4"];
+      _C2_t_ -- _D2_h_ [color=red];
+      }
+      ```
+
+    * reversal
+
+      ```{svgbob}
+                                  BEFORE...
+
+
+                  B        A           C           D        
+               <-----*  <-----*     *----->  *------------>  
+             +------------------------------------------------+
+              5'              circular chromosome           3' 
+
+
+
+                                  AFTER...
+
+
+                  A        B           C           D        
+               *----->  *----->     *----->  *------------>  
+             +------------------------------------------------+
+              5'              circular chromosome           3' 
+      ```
+
+      ```{dot}
+      graph G {
+      layout=neato
+      labelloc="t";
+      label="BEFORE to AFTER...";
+      node [shape=plain];
+
+      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
+      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
+      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
+      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _D1_h_ [color=blue];
+      _A1_h_ -- _D1_t_ [color=blue];
+      _B1_t_ -- _C1_h_ [color=blue];
+      _A1_t_ -- _B1_h_ [color=blue];
+      _A1_h_ -- _C1_h_ [color=red, penwidth="4"];
+      _A1_t_ -- _B1_h_ [color=red];
+      _D1_t_ -- _B1_t_ [color=red, penwidth="4"];
+      _C1_t_ -- _D1_h_ [color=red];
+
+      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+      _D2_t_ [label="_D_t_", pos="5,2.0!"];
+      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
+      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
+      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
+      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _D2_h_ [color=blue];
+      _A2_h_ -- _D2_t_ [color=blue];
+      _B2_t_ -- _C2_h_ [color=blue];
+      _A2_t_ -- _B2_h_ [color=blue];
+      _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
+      _A2_t_ -- _B2_h_ [color=red];
+      _C2_h_ -- _B2_t_ [color=red, penwidth="4"];
+      _C2_t_ -- _D2_h_ [color=red];
+      }
+      ```
+
+
+    * translocation
+
+      ```{svgbob}
+                                  BEFORE...
+
+
+                  C        B           A           D        
+               *----->  *----->     *----->  *------------>  
+             +------------------------------------------------+
+              5'              circular chromosome           3' 
+
+
+
+                                  AFTER...
+
+
+                  A        B           C           D        
+               *----->  *----->     *----->  *------------>  
+             +------------------------------------------------+
+              5'              circular chromosome           3' 
+      ```
+
+      ```{dot}
+      graph G {
+      layout=neato
+      labelloc="t";
+      label="Step 1: BEFORE to AFTER...";
+      node [shape=plain];
+
+      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
+      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
+      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
+      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _D1_h_ [color=blue];
+      _A1_h_ -- _D1_t_ [color=blue];
+      _B1_t_ -- _C1_h_ [color=blue];
+      _A1_t_ -- _B1_h_ [color=blue];
+      _C1_t_ -- _B1_h_ [color=red, penwidth="4"];
+      _B1_t_ -- _A1_h_ [color=red];
+      _A1_t_ -- _D1_h_ [color=red, penwidth="4"];
+      _D1_t_ -- _C1_h_ [color=red];
+
+      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+      _D2_t_ [label="_D_t_", pos="5,2.0!"];
+      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
+      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
+      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
+      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _D2_h_ [color=blue];
+      _A2_h_ -- _D2_t_ [color=blue];
+      _B2_t_ -- _C2_h_ [color=blue];
+      _A2_t_ -- _B2_h_ [color=blue];
+      _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
+      _B2_t_ -- _A2_h_ [color=red];
+      _A2_t_ -- _B2_h_ [color=red, penwidth="4"];
+      _D2_t_ -- _C2_h_ [color=red];
+      }
+      ```
+
+      ```{dot}
+      graph G {
+      layout=neato
+      labelloc="t";
+      label="Step 2: BEFORE to AFTER...";
+      node [shape=plain];
+
+      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
+      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
+      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
+      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _D1_h_ [color=blue];
+      _A1_h_ -- _D1_t_ [color=blue];
+      _B1_t_ -- _C1_h_ [color=blue];
+      _A1_t_ -- _B1_h_ [color=blue];
+      _C1_t_ -- _D1_h_ [color=red];
+      _B1_t_ -- _A1_h_ [color=red, penwidth="4"];
+      _A1_t_ -- _B1_h_ [color=red];
+      _D1_t_ -- _C1_h_ [color=red, penwidth="4"];
+
+      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+      _D2_t_ [label="_D_t_", pos="5,2.0!"];
+      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
+      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
+      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
+      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _D2_h_ [color=blue];
+      _A2_h_ -- _D2_t_ [color=blue];
+      _B2_t_ -- _C2_h_ [color=blue];
+      _A2_t_ -- _B2_h_ [color=blue];
+      _C2_t_ -- _D2_h_ [color=red];
+      _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
+      _A2_t_ -- _B2_h_ [color=red];
+      _B2_t_ -- _C2_h_ [color=red, penwidth="4"];
+      }
+      ```
 
  * `{bm} fusion/(\bfusion|\bfuse)/i` - The process or result of joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome.
 
