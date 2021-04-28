@@ -7490,6 +7490,8 @@ cyclic
    5'|       R             R                   R     N                                  5'|                                              v                  
      +-----------------------------------------------------------------                   +-----------------------------------------------------------------
       5'                          genome2                            3'                    5'                          genome2                            3'
+
+   * "Remember that the direction of DNA is 5' to 3'."
    ```
 
    ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (B) while three are matching against their reverse complements (A, C, and D)...
@@ -7654,23 +7656,18 @@ cyclic
     * fusion
 
       ```{svgbob}
-                                  BEFORE...
-
-
                A        B                     C           D        
             *----->  *----->               *----->  *------------>  
       +----------------------------+   +----------------------------+
        5'  circular chromosome1  3'     5'  circular chromosome2  3' 
 
 
-
-                                  AFTER...
-
+                         "FUSE AT [B,C] BOUNDARY..."
 
                   A        B           C           D        
                *----->  *----->     *----->  *------------>  
              +------------------------------------------------+
-              5'         fused circular chromosome          3' 
+              5'             circular chromosome            3' 
       ```
 
       ```{dot}
@@ -7726,18 +7723,13 @@ cyclic
     * fission
 
       ```{svgbob}
-                                  BEFORE...
-
-
                   A        B           C           D        
                *----->  *----->     *----->  *------------>  
              +------------------------------------------------+
               5'              circular chromosome           3' 
 
 
-
-                                  AFTER...
-
+                          "BREAK AT [B, C] BOUNDARY..."
 
                A        B                     C           D        
             *----->  *----->               *----->  *------------>  
@@ -7799,23 +7791,18 @@ cyclic
     * reversal
 
       ```{svgbob}
-                                  BEFORE...
-
-
-                  B        A           C           D        
-               <-----*  <-----*     *----->  *------------>  
-             +------------------------------------------------+
-              5'              circular chromosome           3' 
-
-
-
-                                  AFTER...
-
-
-                  A        B           C           D        
-               *----->  *----->     *----->  *------------>  
-             +------------------------------------------------+
-              5'              circular chromosome           3' 
+           B        A           C           D        
+        <-----*  <-----*     *----->  *------------>  
+      +------------------------------------------------+
+       5'              circular chromosome           3' 
+      
+      
+                      "REVERSE [B, A] ..."
+      
+           A        B           C           D        
+        *----->  *----->     *----->  *------------>  
+      +------------------------------------------------+
+       5'              circular chromosome           3' 
       ```
 
       ```{dot}
@@ -7873,23 +7860,18 @@ cyclic
     * translocation
 
       ```{svgbob}
-                                  BEFORE...
-
-
-                  C        B           A           D        
-               *----->  *----->     *----->  *------------>  
-             +------------------------------------------------+
-              5'              circular chromosome           3' 
-
-
-
-                                  AFTER...
-
-
-                  A        B           C           D        
-               *----->  *----->     *----->  *------------>  
-             +------------------------------------------------+
-              5'              circular chromosome           3' 
+           C        B           A           D        
+        *----->  *----->     *----->  *------------>  
+      +------------------------------------------------+
+       5'              circular chromosome           3' 
+      
+      
+                       "SWAP C AND A..."
+      
+           A        B           C           D        
+        *----->  *----->     *----->  *------------>  
+      +------------------------------------------------+
+       5'              circular chromosome           3' 
       ```
 
       ```{dot}
