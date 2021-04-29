@@ -109,11 +109,6 @@ tspan.head{
 </text>
 </g>
 <g>
-<text x="1" y="476">
-*
-</text>
-</g>
-<g>
 <text x="9" y="12">
 *
 </text>
@@ -159,8 +154,8 @@ e
 </text>
 </g>
 <g>
-<text x="17" y="476">
-Remember that the direction of DNA is 5&#39; to 3&#39;.
+<text x="9" y="476">
+*
 </text>
 </g>
 <g>
@@ -176,6 +171,11 @@ R = reverse complement k-mer match
 <g>
 <text x="25" y="444">
 5&#39;
+</text>
+</g>
+<g>
+<text x="25" y="476">
+Remember that the direction of DNA is 5&#39; to 3&#39;.
 </text>
 </g>
 <g>

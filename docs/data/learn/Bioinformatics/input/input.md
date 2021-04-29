@@ -7283,6 +7283,12 @@ cyclic
 
    The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
 
+   ```{svgbob}
+        Z        X        Y           W                                W               X         Y                   Z   
+   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
+    5'                  genome1              3'                 5'                          genome2                            3'
+   ```
+
  * `{bm} parsimony/(parsimony|parsimonious)/i` - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.
 
  * `{bm} permutation/(permutation)_GR/i` - Given two species that share synteny blocks, each synteny block is mapped as an ID (non-zero integer) and direction (+ or -). This mapping (referred to as a permutation_GR) is used to model genome rearrangement operations. For example, a ....
@@ -7491,35 +7497,20 @@ cyclic
      +-----------------------------------------------------------------                   +-----------------------------------------------------------------
       5'                          genome2                            3'                    5'                          genome2                            3'
 
-   * "Remember that the direction of DNA is 5' to 3'."
+    * "Remember that the direction of DNA is 5' to 3'."
    ```
 
    ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (B) while three are matching against their reverse complements (A, C, and D)...
 
    ```{svgbob}
+   * "Synteny blocks projected on to each axis."
+
         D        B        C           A                                A               B         C                   D   
-     <-----*  <-----*  *----->  <------------*                   *------------>     *----->   *----->             *----->
-   +-------------------------------------------+      vs       +-----------------------------------------------------------------+
+   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
     5'                  genome1              3'                 5'                          genome2                            3'
    ```
 
- * `{bm} breakpoint graph/(breakpoint graph)_GR/i` - An undirected graph representing the order and orientation of synteny blocks shared between two genomes. For example, the following two _circular_ genomes have 4 synteny blocks between them ...
-
-   ```{svgbob}
-                  D        B        C           A         
-               <-----*  <-----*  *----->  <------------*  
-             +-------------------------------------------+
-              5'           circular genome1            3' 
-   
-                                   vs
-
-           A               B         C                   D   
-     *------------>     *----->   *----->             *----->
-   +-----------------------------------------------------------------+
-    5'                     circular genome2                        3'
-   ```
-
-   To represent the synteny blocks in the above example as a breakpoint graph_GR, ...
+ * `{bm} breakpoint graph/(breakpoint graph)_GR/i` - An undirected graph representing the order and orientation of synteny blocks shared between two genomes.
 
     1. Set the ends of synteny blocks as nodes. The arrow end should have a _t_ suffix (for tail) while the non-arrow end should have a _h_ suffix (for head)...
 
@@ -7563,7 +7554,15 @@ cyclic
       }
       ```
 
-   The full breakpoint graph_GR for the two circular genomes in the example above is as follows...
+   For example, the following two _circular_ genomes share the synteny blocks A, B, C, and D between them ...
+
+   ```{svgbob}
+        D        B        C           A                                A               B         C                   D   
+   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
+    5'                  genome1              3'                 5'                          genome2                            3'
+   ```
+
+   The full breakpoint graph_GR for the two circular genomes above is as follows...
 
    ```{dot}
    graph G {
@@ -7591,10 +7590,42 @@ cyclic
    _B_t_ -- _D_h_ [color=red];
    }
    ```
+
+   If the genomes in the example above were linear rather than cyclic, their ends would be connected by a colored edge to a termination node. The termination node indicates that the DNA ends...
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _C_t_ [pos="2.0,0.0!"];
+   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B_t_ [pos="0.0,-2.0!"];
+   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A_t_ [pos="-2.0,0.0!"];
+   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D_t_ [pos="0.0,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   TERM [pos="-0.1,0.5!"];
+   _C_t_ -- _C_h_ [style=dashed, dir=back];
+   _B_t_ -- _B_h_ [style=dashed, dir=back];
+   _A_t_ -- _A_h_ [style=dashed, dir=back];
+   _D_t_ -- _D_h_ [style=dashed, dir=back];
+   _C_t_ -- _D_h_ [color=blue];
+   _B_t_ -- _C_h_ [color=blue];
+   _A_t_ -- _B_h_ [color=blue];
+   _A_h_ -- TERM [color=blue];
+   _D_t_ -- TERM [color=blue];
+   _B_h_ -- _C_h_ [color=red];
+   _A_t_ -- _C_t_ [color=red];
+   _B_t_ -- _D_h_ [color=red];
+   _A_h_ -- TERM [color=red];
+   _D_t_ -- TERM [color=red];
+   }
+   ```
    
    Breakpoint graph_GRs are used to compute a parsimonious path of fusion, fission, and reversal operations (genome rearrangements) that transforms one genome into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
    
-   Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges. Each 2-break operation is a step in a parsimonious path of genome rearrangement mutations.
+   Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges.
 
  * `{bm} 2-break/\b(2-break|2 break|two break|two-break)/i` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one the red edges matches the blue edge at that boundary.
  
@@ -7656,18 +7687,16 @@ cyclic
     * fusion
 
       ```{svgbob}
-               A        B                     C           D        
-            *----->  *----->               *----->  *------------>  
-      +----------------------------+   +----------------------------+
-       5'  circular chromosome1  3'     5'  circular chromosome2  3' 
+               A        B                              C           D        
+      ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
+       5'  circular chromosome1  3'              5'  circular chromosome2  3' 
 
 
-                         "FUSE AT [B,C] BOUNDARY..."
+                             "FUSE AT [B,C] BOUNDARY..."
 
-                  A        B           C           D        
-               *----->  *----->     *----->  *------------>  
-             +------------------------------------------------+
-              5'             circular chromosome            3' 
+                    A        B                  C           D        
+           ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
+            5'                 circular chromosome                   3' 
       ```
 
       ```{dot}
@@ -7723,18 +7752,16 @@ cyclic
     * fission
 
       ```{svgbob}
-                  A        B           C           D        
-               *----->  *----->     *----->  *------------>  
-             +------------------------------------------------+
-              5'              circular chromosome           3' 
+                    A        B                  C           D        
+           ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
+            5'                 circular chromosome                   3' 
 
 
                           "BREAK AT [B, C] BOUNDARY..."
 
-               A        B                     C           D        
-            *----->  *----->               *----->  *------------>  
-      +----------------------------+   +----------------------------+
-       5'  circular chromosome1  3'     5'  circular chromosome2  3' 
+               A        B                              C           D        
+      ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
+       5'  circular chromosome1  3'              5'  circular chromosome2  3' 
       ```
 
       ```{dot}
@@ -7792,16 +7819,14 @@ cyclic
 
       ```{svgbob}
            B        A           C           D        
-        <-----*  <-----*     *----->  *------------>  
-      +------------------------------------------------+
+      --<<<<<<<--<<<<<<<----->>>>>>>-->>>>>>>>>>>>>-----
        5'              circular chromosome           3' 
       
       
                       "REVERSE [B, A] ..."
       
            A        B           C           D        
-        *----->  *----->     *----->  *------------>  
-      +------------------------------------------------+
+      -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
        5'              circular chromosome           3' 
       ```
 
@@ -7856,21 +7881,18 @@ cyclic
       }
       ```
 
-
     * translocation
 
       ```{svgbob}
            C        B           A           D        
-        *----->  *----->     *----->  *------------>  
-      +------------------------------------------------+
+      -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
        5'              circular chromosome           3' 
       
       
-                       "SWAP C AND A..."
+                        "SWAP C AND A..."
       
            A        B           C           D        
-        *----->  *----->     *----->  *------------>  
-      +------------------------------------------------+
+      -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
        5'              circular chromosome           3' 
       ```
 
@@ -7976,9 +7998,85 @@ cyclic
       }
       ```
 
- * `{bm} fusion/(\bfusion|\bfuse)/i` - The process or result of joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome.
+ * `{bm} permutation/(permutation)_GRFIXMEFIXMEFIXMEFIXME/i` - A list representation of one of the genomes in a breakpoint graph_GR.
 
- * `{bm} fission` - The process or result of splitting a single entity into two or more parts. For example, a single chromosome may break into multiple pieces where each piece becomes its own chromosome.
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   FIXME
+
+   Starting from any node, walk the edges for that genome until reaching either a cycle (for circular chromosomes) or a termination node (for linear chromosomes). For each walked edge that represents a synteny block, if that edge was walked from ...
+   
+   * from head to tail, it gets included in the list with a + prefix.
+   * from tail to head, it gets included in the list with a - prefix.
+   
+   For example, given the following breakpoint graph_GR ...
+ 
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _C_t_ [pos="2.0,0.0!"];
+   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B_t_ [pos="0.0,-2.0!"];
+   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A_t_ [pos="-2.0,0.0!"];
+   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D_t_ [pos="0.0,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _C_t_ -- _C_h_ [style=dashed, dir=back];
+   _B_t_ -- _B_h_ [style=dashed, dir=back];
+   _A_t_ -- _A_h_ [style=dashed, dir=back];
+   _D_t_ -- _D_h_ [style=dashed, dir=back];
+   _C_t_ -- _D_h_ [color=blue];
+   _A_h_ -- _D_t_ [color=blue];
+   _B_t_ -- _C_h_ [color=blue];
+   _A_t_ -- _B_h_ [color=blue];
+   _B_h_ -- _C_h_ [color=red];
+   _A_t_ -- _C_t_ [color=red];
+   _A_h_ -- _D_t_ [color=red];
+   _B_t_ -- _D_h_ [color=red];
+   }
+   ```
+
+   , ... walking the edges for the red genome from node \_D_t\_ towards the ...
+
+   * right results in [-D, -B, +C, -A]
+   * left results in [+A, -C, +B, +D]
+
+   The direction of the walk is irrelevant, meaning that those lists represent the same genome. Likewise, the starting node is irrelevant, meaning that the following lists are all equivalent to the ones above ...
+
+   * [-B, +C, -A, -D]
+   * [+C, -A, -D, -B]
+   * [-A, -D, -B, +C]
+   * [-C, +B, +D, +A]
+   * [+B, +D, +A, -C]
+   * [+D, +A, -C, +B]
+
+ * `{bm} fusion/(\bfusion|\bfuse)/i` - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (genome rearrangement).
+
+ * `{bm} fission` - Splitting a single entity into two or more parts. For example, a single chromosome may break into multiple pieces where each piece becomes its own chromosome (genome rearrangement).
+
+ * `{bm} translocation` - Changing location. For example, part of a chromosome may transfer to another chromosome (genome rearrangement).
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
