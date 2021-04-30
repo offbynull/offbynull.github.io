@@ -7535,7 +7535,17 @@ cyclic
       }
       ```
 
-      Note that the arrows on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph. Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
+      Note that the arrows on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
+
+      ```{dot}
+      graph G {
+      layout=neato
+      node [shape=plain];
+      _D_t_ [pos="0.0,2.0!"];
+      _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+      _D_t_ -- _D_h_ [style=dashed];
+      }
+      ```
 
    3. Set the regions between synteny blocks as __undirected__ edges, represented by colored lines.
    
@@ -7646,10 +7656,10 @@ cyclic
    _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
    _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
    _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-   _C1_t_ -- _C1_h_ [style=dashed, dir=back];
-   _B1_t_ -- _B1_h_ [style=dashed, dir=back];
-   _A1_t_ -- _A1_h_ [style=dashed, dir=back];
-   _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
    _C1_t_ -- _D1_h_ [color=blue];
    _A1_h_ -- _D1_t_ [color=blue];
    _B1_t_ -- _C1_h_ [color=blue];
@@ -7667,10 +7677,10 @@ cyclic
    _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
    _D2_t_ [label="_D_t_", pos="5,2.0!"];
    _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-   _C2_t_ -- _C2_h_ [style=dashed, dir=back];
-   _B2_t_ -- _B2_h_ [style=dashed, dir=back];
-   _A2_t_ -- _A2_h_ [style=dashed, dir=back];
-   _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
    _C2_t_ -- _D2_h_ [color=blue];
    _A2_h_ -- _D2_t_ [color=blue];
    _B2_t_ -- _C2_h_ [color=blue];
@@ -7714,10 +7724,10 @@ cyclic
       _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
       _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
       _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
-      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
-      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
-      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _C1_h_ [style=dashed];
+      _B1_t_ -- _B1_h_ [style=dashed];
+      _A1_t_ -- _A1_h_ [style=dashed];
+      _D1_t_ -- _D1_h_ [style=dashed];
       _C1_t_ -- _D1_h_ [color=blue];
       _A1_h_ -- _D1_t_ [color=blue];
       _B1_t_ -- _C1_h_ [color=blue];
@@ -7735,10 +7745,10 @@ cyclic
       _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
       _D2_t_ [label="_D_t_", pos="5,2.0!"];
       _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
-      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
-      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
-      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _C2_h_ [style=dashed];
+      _B2_t_ -- _B2_h_ [style=dashed];
+      _A2_t_ -- _A2_h_ [style=dashed];
+      _D2_t_ -- _D2_h_ [style=dashed];
       _C2_t_ -- _D2_h_ [color=blue];
       _A2_h_ -- _D2_t_ [color=blue];
       _B2_t_ -- _C2_h_ [color=blue];
@@ -7779,10 +7789,10 @@ cyclic
       _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
       _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
       _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
-      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
-      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
-      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _C1_h_ [style=dashed];
+      _B1_t_ -- _B1_h_ [style=dashed];
+      _A1_t_ -- _A1_h_ [style=dashed];
+      _D1_t_ -- _D1_h_ [style=dashed];
       _C1_t_ -- _D1_h_ [color=blue];
       _A1_h_ -- _B1_t_ [color=blue];
       _D1_t_ -- _C1_h_ [color=blue];
@@ -7800,10 +7810,10 @@ cyclic
       _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
       _D2_t_ [label="_D_t_", pos="5,2.0!"];
       _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
-      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
-      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
-      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _C2_h_ [style=dashed];
+      _B2_t_ -- _B2_h_ [style=dashed];
+      _A2_t_ -- _A2_h_ [style=dashed];
+      _D2_t_ -- _D2_h_ [style=dashed];
       _C2_t_ -- _D2_h_ [color=blue];
       _A2_h_ -- _B2_t_ [color=blue];
       _D2_t_ -- _C2_h_ [color=blue];
@@ -7845,10 +7855,10 @@ cyclic
       _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
       _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
       _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
-      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
-      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
-      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
+      _C1_t_ -- _C1_h_ [style=dashed];
+      _B1_t_ -- _B1_h_ [style=dashed];
+      _A1_t_ -- _A1_h_ [style=dashed];
+      _D1_t_ -- _D1_h_ [style=dashed];
       _C1_t_ -- _D1_h_ [color=blue];
       _A1_h_ -- _D1_t_ [color=blue];
       _B1_t_ -- _C1_h_ [color=blue];
@@ -7866,10 +7876,10 @@ cyclic
       _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
       _D2_t_ [label="_D_t_", pos="5,2.0!"];
       _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
-      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
-      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
-      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
+      _C2_t_ -- _C2_h_ [style=dashed];
+      _B2_t_ -- _B2_h_ [style=dashed];
+      _A2_t_ -- _A2_h_ [style=dashed];
+      _D2_t_ -- _D2_h_ [style=dashed];
       _C2_t_ -- _D2_h_ [color=blue];
       _A2_h_ -- _D2_t_ [color=blue];
       _B2_t_ -- _C2_h_ [color=blue];
@@ -7881,156 +7891,130 @@ cyclic
       }
       ```
 
-    * translocation
+   Other genome rearrangements such as translocations, duplications, and deletions can't be reliably represented as a 2-break. For example, the following translocation requires two 2-breaks...
 
-      ```{svgbob}
-           C        B           A           D        
-      -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
-       5'              circular chromosome           3' 
-      
-      
-                        "SWAP C AND A..."
-      
-           A        B           C           D        
-      -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
-       5'              circular chromosome           3' 
-      ```
-
-      ```{dot}
-      graph G {
-      layout=neato
-      labelloc="t";
-      label="Step 1: BEFORE to AFTER...";
-      node [shape=plain];
-
-      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
-      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
-      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
-      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
-      _C1_t_ -- _D1_h_ [color=blue];
-      _A1_h_ -- _D1_t_ [color=blue];
-      _B1_t_ -- _C1_h_ [color=blue];
-      _A1_t_ -- _B1_h_ [color=blue];
-      _C1_t_ -- _B1_h_ [color=red, penwidth="4"];
-      _B1_t_ -- _A1_h_ [color=red];
-      _A1_t_ -- _D1_h_ [color=red, penwidth="4"];
-      _D1_t_ -- _C1_h_ [color=red];
-
-      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
-      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-      _D2_t_ [label="_D_t_", pos="5,2.0!"];
-      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
-      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
-      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
-      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
-      _C2_t_ -- _D2_h_ [color=blue];
-      _A2_h_ -- _D2_t_ [color=blue];
-      _B2_t_ -- _C2_h_ [color=blue];
-      _A2_t_ -- _B2_h_ [color=blue];
-      _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
-      _B2_t_ -- _A2_h_ [color=red];
-      _A2_t_ -- _B2_h_ [color=red, penwidth="4"];
-      _D2_t_ -- _C2_h_ [color=red];
-      }
-      ```
-
-      ```{dot}
-      graph G {
-      layout=neato
-      labelloc="t";
-      label="Step 2: BEFORE to AFTER...";
-      node [shape=plain];
-
-      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed, dir=back];
-      _B1_t_ -- _B1_h_ [style=dashed, dir=back];
-      _A1_t_ -- _A1_h_ [style=dashed, dir=back];
-      _D1_t_ -- _D1_h_ [style=dashed, dir=back];
-      _C1_t_ -- _D1_h_ [color=blue];
-      _A1_h_ -- _D1_t_ [color=blue];
-      _B1_t_ -- _C1_h_ [color=blue];
-      _A1_t_ -- _B1_h_ [color=blue];
-      _C1_t_ -- _D1_h_ [color=red];
-      _B1_t_ -- _A1_h_ [color=red, penwidth="4"];
-      _A1_t_ -- _B1_h_ [color=red];
-      _D1_t_ -- _C1_h_ [color=red, penwidth="4"];
-
-      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
-      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-      _D2_t_ [label="_D_t_", pos="5,2.0!"];
-      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed, dir=back];
-      _B2_t_ -- _B2_h_ [style=dashed, dir=back];
-      _A2_t_ -- _A2_h_ [style=dashed, dir=back];
-      _D2_t_ -- _D2_h_ [style=dashed, dir=back];
-      _C2_t_ -- _D2_h_ [color=blue];
-      _A2_h_ -- _D2_t_ [color=blue];
-      _B2_t_ -- _C2_h_ [color=blue];
-      _A2_t_ -- _B2_h_ [color=blue];
-      _C2_t_ -- _D2_h_ [color=red];
-      _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
-      _A2_t_ -- _B2_h_ [color=red];
-      _B2_t_ -- _C2_h_ [color=red, penwidth="4"];
-      }
-      ```
-
- * `{bm} permutation/(permutation)_GRFIXMEFIXMEFIXMEFIXME/i` - A list representation of one of the genomes in a breakpoint graph_GR.
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   FIXME
-
-   Starting from any node, walk the edges for that genome until reaching either a cycle (for circular chromosomes) or a termination node (for linear chromosomes). For each walked edge that represents a synteny block, if that edge was walked from ...
+   ```{svgbob}
+        C        B           A           D        
+   -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
+    5'              circular chromosome           3' 
    
-   * from head to tail, it gets included in the list with a + prefix.
-   * from tail to head, it gets included in the list with a - prefix.
    
-   For example, given the following breakpoint graph_GR ...
+                     "SWAP C AND A..."
+   
+        A        B           C           D        
+   -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
+    5'              circular chromosome           3' 
+   ```
+
+   ```{dot}
+   graph G {
+   layout=neato
+   labelloc="t";
+   label="Step 1: BEFORE to AFTER...";
+   node [shape=plain];
+
+   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _C1_t_ -- _B1_h_ [color=red, penwidth="4"];
+   _B1_t_ -- _A1_h_ [color=red];
+   _A1_t_ -- _D1_h_ [color=red, penwidth="4"];
+   _D1_t_ -- _C1_h_ [color=red];
+
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _A2_h_ -- _D2_t_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
+   _B2_t_ -- _A2_h_ [color=red];
+   _A2_t_ -- _B2_h_ [color=red, penwidth="4"];
+   _D2_t_ -- _C2_h_ [color=red];
+   }
+   ```
+
+   ```{dot}
+   graph G {
+   layout=neato
+   labelloc="t";
+   label="Step 2: BEFORE to AFTER...";
+   node [shape=plain];
+
+   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _C1_t_ -- _D1_h_ [color=red];
+   _B1_t_ -- _A1_h_ [color=red, penwidth="4"];
+   _A1_t_ -- _B1_h_ [color=red];
+   _D1_t_ -- _C1_h_ [color=red, penwidth="4"];
+
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _A2_h_ -- _D2_t_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _C2_t_ -- _D2_h_ [color=red];
+   _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
+   _A2_t_ -- _B2_h_ [color=red];
+   _B2_t_ -- _C2_h_ [color=red, penwidth="4"];
+   }
+   ```
+
+ * `{bm} permutation/(permutation)_GRFIXMEFIXMEFIXMEFIXME/i` - A list representing one of the genomes in a breakpoint graph_GR. The list representation is generated by walking that genome's edges, where each walked edge that's a synteny block is appended to the list with a ...
+   
+    * \+ prefix if it's walked from head to tail.
+    * \- prefix if it's walked from tail to head.
  
+   For example, given the following breakpoint graph_GR ...
+
    ```{dot}
    graph G {
    layout=neato
@@ -8043,10 +8027,10 @@ cyclic
    _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
    _D_t_ [pos="0.0,2.0!"];
    _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   _C_t_ -- _C_h_ [style=dashed, dir=back];
-   _B_t_ -- _B_h_ [style=dashed, dir=back];
-   _A_t_ -- _A_h_ [style=dashed, dir=back];
-   _D_t_ -- _D_h_ [style=dashed, dir=back];
+   _C_t_ -- _C_h_ [style=dashed];
+   _B_t_ -- _B_h_ [style=dashed];
+   _A_t_ -- _A_h_ [style=dashed];
+   _D_t_ -- _D_h_ [style=dashed];
    _C_t_ -- _D_h_ [color=blue];
    _A_h_ -- _D_t_ [color=blue];
    _B_t_ -- _C_h_ [color=blue];
@@ -8058,19 +8042,14 @@ cyclic
    }
    ```
 
-   , ... walking the edges for the red genome from node \_D_t\_ towards the ...
+   , ... walking the edges for the red genome from node D_t in the ...
 
-   * right results in [-D, -B, +C, -A]
-   * left results in [+A, -C, +B, +D]
+    * clockwise direction results in [-D, -B, +C, -A].
+    * counter-clockwise direction results in [+A, -C, +B, +D].
 
-   The direction of the walk is irrelevant, meaning that those lists represent the same genome. Likewise, the starting node is irrelevant, meaning that the following lists are all equivalent to the ones above ...
+   For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: [-B, +C, -A, -D], [-C, +B, +D, +A], [+C, -A, -D, -B], etc...
 
-   * [-B, +C, -A, -D]
-   * [+C, -A, -D, -B]
-   * [-A, -D, -B, +C]
-   * [-C, +B, +D, +A]
-   * [+B, +D, +A, -C]
-   * [+D, +A, -C, +B]
+   For linear chromosomes, the walk direction is irrelevant but the walk must start from a termination node (either end of the chromosome).
 
  * `{bm} fusion/(\bfusion|\bfuse)/i` - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (genome rearrangement).
 

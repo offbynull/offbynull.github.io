@@ -11241,7 +11241,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>
 <p>Set the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
 <p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
-<p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph. Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
+<p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
+<p><img src="dot_19da0e0853121f133813afea783f11f6.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>Set the regions between <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines.</p>
@@ -11264,67 +11265,45 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>
 <p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one the red edges matches the blue edge at that boundary.</p>
 <p>For example, the two red edges highlighted below share the same <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and can be re-wired such that one of the edges matches the blue edge at that <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> boundary ...</p>
-<p><img src="dot_dd1f325cba458910add13fb6a7b56d4b.svg" alt="Dot diagram"></p>
+<p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
 <p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example...</p>
 <ul>
 <li>
 <p><a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a></p>
 <p><img src="svgbob_e21db80fc874b56380515e649af6051670cedbc8.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_cc30ac069e3ba8b45cbbf2769e21cfa8.svg" alt="Dot diagram"></p>
+<p><img src="dot_28dd1f560dda20ac68734bcca00b7941.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p><a href="#BM_(fission)%2Fi">fission</a></p>
 <p><img src="svgbob_eb43c5650e1fe0b0866b0f18151aace54caa94e1.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_dc25e53d80ef295580489a46e57a55f8.svg" alt="Dot diagram"></p>
+<p><img src="dot_da1cc3fbe7558a51c166e6f3562d4272.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>reversal</p>
 <p><img src="svgbob_6aa7dc0e2ac966b80612c9fc8b64ea6eda1ab061.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_58522a00d5fb169ee14b23a919d119ab.svg" alt="Dot diagram"></p>
-</li>
-<li>
-<p><a href="#BM_(translocation)%2Fi">translocation</a></p>
-<p><img src="svgbob_9f47b87bf66cc4da20c4fee2959688c7ffa228de.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_949b32c8271bd32e59b4762032da6756.svg" alt="Dot diagram"></p>
-<p><img src="dot_09365d363c78ddb27ded236cf9c990ac.svg" alt="Dot diagram"></p>
+<p><img src="dot_ad962f4590c01b25914ecf117d94ef2d.svg" alt="Dot diagram"></p>
 </li>
 </ul>
+<p>Other <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s such as <a href="#BM_(translocation)%2Fi">translocation</a>s, duplications, and deletions can't be reliably represented as a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a>. For example, the following <a href="#BM_(translocation)%2Fi">translocation</a> requires two <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a>s...</p>
+<p><img src="svgbob_9f47b87bf66cc4da20c4fee2959688c7ffa228de.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_bc2e79b243f508a940bf67df140608f8.svg" alt="Dot diagram"></p>
+<p><img src="dot_daa5f09c12a12baad116e997fc9e1d39.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p><a name="BM_(permutation)_GRFIXMEFIXMEFIXMEFIXME%2Fi"></a><strong>permutation</strong> - A list representation of one of the <a href="#BM_(genome)%2Fi">genome</a>s in a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>.</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>FIXME</p>
-<p>Starting from any node, walk the edges for that <a href="#BM_(genome)%2Fi">genome</a> until reaching either a cycle (for circular chromosomes) or a termination node (for linear chromosomes). For each walked edge that represents a <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>, if that edge was walked from ...</p>
+<p><a name="BM_(permutation)_GRFIXMEFIXMEFIXMEFIXME%2Fi"></a><strong>permutation</strong> - A list representing one of the <a href="#BM_(genome)%2Fi">genome</a>s in a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The list representation is generated by walking that <a href="#BM_(genome)%2Fi">genome</a>'s edges, where each walked edge that's a <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is appended to the list with a ...</p>
 <ul>
-<li>from head to tail, it gets included in the list with a + prefix.</li>
-<li>from tail to head, it gets included in the list with a - prefix.</li>
+<li>+ prefix if it's walked from head to tail.</li>
+<li>- prefix if it's walked from tail to head.</li>
 </ul>
 <p>For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
-<p><img src="dot_b9b5219df336f8ed49e8f406c29349bc.svg" alt="Dot diagram"></p>
-<p>, ... walking the edges for the red <a href="#BM_(genome)%2Fi">genome</a> from node _D_t_ towards the ...</p>
+<p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
+<p>, ... walking the edges for the red <a href="#BM_(genome)%2Fi">genome</a> from node D_t in the ...</p>
 <ul>
-<li>right results in [-D, -B, +C, -A]</li>
-<li>left results in [+A, -C, +B, +D]</li>
+<li>clockwise direction results in [-D, -B, +C, -A].</li>
+<li>counter-clockwise direction results in [+A, -C, +B, +D].</li>
 </ul>
-<p>The direction of the walk is irrelevant, meaning that those lists represent the same <a href="#BM_(genome)%2Fi">genome</a>. Likewise, the starting node is irrelevant, meaning that the following lists are all equivalent to the ones above ...</p>
-<ul>
-<li>[-B, +C, -A, -D]</li>
-<li>[+C, -A, -D, -B]</li>
-<li>[-A, -D, -B, +C]</li>
-<li>[-C, +B, +D, +A]</li>
-<li>[+B, +D, +A, -C]</li>
-<li>[+D, +A, -C, +B]</li>
-</ul>
+<p>For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: [-B, +C, -A, -D], [-C, +B, +D, +A], [+C, -A, -D, -B], etc...</p>
+<p>For linear chromosomes, the walk direction is irrelevant but the walk must start from a termination node (either end of the chromosome).</p>
 </li>
 <li>
 <p><a name="BM_(%5Cbfusion%7C%5Cbfuse)%2Fi"></a><strong>fusion</strong> - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>).</p>
