@@ -4975,6 +4975,121 @@ C
 -2
 ```
 
+## Synteny
+
+`{bm} /(Algorithms\/Synteny)_TOPIC/`
+
+```{prereq}
+Algorithms/K-mer_TOPIC
+```
+
+A common form of DNA mutation, called genome rearrangement, is when fragile regions of DNA break apart and end up either ...
+
+* re-attaching in a different order (translocation, fission, fusion) / direction (reversal).
+* re-attaching but after DNA repair / synthesis systems have injected a fix (duplicate).
+* re-attaching without the broken off portion / not re-attaching at all (deletion).
+
+When a new species branches off from an existing one, genome rearrangements are responsible for at least some of the divergence. That is, the two related genomes will share long stretches of similar genes, but these long stretches will appear as if they had been randomly cut-and-paste and / or randomly reversed when compared to the other.
+
+```{svgbob}
+                                    "translocate"
+                 .---------------------------------------------------.
+                 |                              "reverse"            |
+                 |                    .---------------------------.  |
+            .----+---.        .-------+------.                    |  |
+"GENOME1:"   G1 -> G2 -> G3 -> G4 -> G5 -> G6 -> G7 -> G8 -> G9   |  |
+"GENOME2:"   G3 -> G6 <- G5 <- G4 -> G7 -> G8 -> G9 -> G1 -> G2   |  |
+                  '-------+------'                    '----+---'  |  |
+                          `--------------------------------+------'  |
+                                                           `---------'
+```
+
+These long stretches of similar genes are called synteny blocks. The example above has 4 synteny blocks:
+
+ * \[G1, G2\]
+ * \[G3\]
+ * \[G4, G5, G6\], although they're reversed
+ * \[G7, G8, G9\]
+
+
+```{svgbob}
+3'|                          
+  |                 ^       
+  |                / "[G7, G8, G9]"
+  |               /          
+ g|              *           
+ e|         *              
+ n|        / "[G4, G5, G6]"
+ o|       /                 
+ m|      v                  
+ e|  ^                     
+ 1| / "[G3]"                  
+  |*                       
+  |                       ^
+  |                      / 
+  |                     / "[G1, G2]"
+5'|                    *   
+  +--------------------------
+   5'        genome2       3'
+```
+
+Real-life examples of species that share synteny blocks include ...
+
+ * mouse and human, which share ~280 synteny blocks across their chromosomes.
+ * Escherichia coli and Salmonella enterica, which share ~5 synteny blocks.
+
+### Genomic Dot Plot
+
+`{bm} /(Algorithms\/Synteny\/Genomic Dot Plot)_TOPIC/`
+
+**WHAT**:
+
+**WHY**:
+
+**ALGORITHM**:
+
+### Synteny Graph
+
+`{bm} /(Algorithms\/Synteny\/Synteny Graph)_TOPIC/`
+
+```{prereq}
+Algorithms/Synteny/Genomic Dot Plot_TOPIC
+```
+
+**WHAT**:
+
+**WHY**:
+
+**ALGORITHM**:
+
+### Breakpoint Permutation
+
+`{bm} /(Algorithms\/Synteny\/Breakpoint Permutation)_TOPIC/`
+
+```{prereq}
+Algorithms/Synteny/Synteny Graph_TOPIC
+```
+
+**WHAT**:
+
+**WHY**:
+
+**ALGORITHM**:
+
+### Breakpoint Graph
+
+`{bm} /(Algorithms\/Synteny\/Breakpoint Graph)_TOPIC/`
+
+```{prereq}
+Algorithms/Synteny/Breakpoint Graph_TOPIC
+```
+
+**WHAT**:
+
+**WHY**:
+
+**ALGORITHM**:
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -7129,96 +7244,62 @@ cyclic
 
    Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
 
- * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes break and get glued back together in a different order. The different classes of rearrangement include...
+ * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes break and get glued back together in a different order / direction. The different classes of rearrangement include...
  
-   * reversal / inversion: An interval of a chromosome that gets flipped around. Even though they're the most common form of genome rearrangement, reversals rarely stick around because it usually results in either death or sterility.
+   * reversal / inversion:
   
      ```{svgbob}
-                 "Scenario 1"                                      "Scenario 2"
-  
-     "Original:"                                     "Original:"
-     -->-->-->-->-->-->-->-->-->-->-->-->--          -->-->-->-->-->-->-. .->-->-->-->-->-->--
-                                                                        | |                   
-                                                                    .-<-' '-<-.               
-                                                                    '->-->-->-'               
-                                                     
-     "Interval breaks:"                              "Interval breaks:"
-                  ->-->-->-->-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
-     -->-->-->-->-            ->-->-->-->--                                                   
-                                                                    .-<-' '-<-.               
-                                                                    '->-->-->-'               
-                                                     
-     "Interval flips around:"                        "Interval ends re-attach in swapped order:"
-                  -<--<--<--<-                       -->-->-->-->-->-->-. .->-->-->-->-->-->--
-     -->-->-->-->-            ->-->-->-->--                              X                    
-                                                                    .-<-' '-<-.               
-                                                                    '->-->-->-'
-  
-     "Reversed interval re-attaches:"                                            
-     -->-->-->-->--<--<--<--<-->-->-->-->--
+                                    .--------------.
+     "BEFORE:"    A1 ->  A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 ->  A2 -> A3 -> A7 <- A6 <- A5 -> A7 -> A8 -> A9
+                                    '--------------'
      ```
 
-   * translocation: Two intervals of chromosome get cut and re-attached in a different order. The re-ordered chromosomes may end up disrupting genes (e.g. chimeric gene) or gene regulation (e.g. regulatory motif), leading to tumors or cancers.
+   * translocation:
 
      ```{svgbob}
-     "Original:"
-     A1--A2--A3--A4--A5--A6--A7--A8--A9
-     B1--B2--B3--B4--B5
-
-     "Chromosomes break:"
-     A1--A2-       -A3--A4--A5--A6--A7--A8--A9
-     B1--B2--B3-       -B4--B5
-
-     "Chromosomes re-attach in different order:"
-     A1--A2--B4--B5
-     B1--B2--B3--A3--A4--A5--A6--A7--A8--A9 
+                       .--------------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 -> A5 -> A6 -> A7 -> A8 -> A2 -> A3 -> A4 -> A9
+                                               '--------------'
      ```
 
-   * deletion: An interval of chromosome gets cut and removed.
+   * deletion:
 
      ```{svgbob}
-     "Original:"
-     A1--A2--A3--A4--A5--A6--A7--A8--A9 
-
-     "Interval removed:"
-     A1--A2--A6--A7--A8--A9
+                       .--------------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 -> A5 -> A6 -> A7 -> A8 -> A9
      ```
 
-   * duplication: An interval of chromosome gets duplicated. Duplication may happen because of DNA replication / repair errors.
+   * duplication:
 
      ```{svgbob}
-     "Original:"
-     A1--A2--A3--A4--A5--A6--A7--A8--A9
-
-     "Interval duplicated:"
-          .----------------------.
-     .----+---.              ,---+----.
-     A1--A2--A3--A4--A5--A6--A1--A2--A3--A7--A8--A9 
+                       .--------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A2 -> A3 -> A9
+                                                                 '--------'
      ```
 
-   * chromosome fusion: Two or more chromosomes merging into a single chromosome.
+   * chromosome fusion:
 
      ```{svgbob}
-     "Original:"
-     A1--A2--A3--A4--A5--A6
-     B1--B2--B3
-
-     "Chromosome fusion:"
-     A1--A2--A3--A4--A5--A6--B1--B2--B3
+                                               .--------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6    B1 -> B2 -> B3
+     "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> B1 -> B2 -> B3
+                                               '--------'
      ```
 
-   * chromosome fission: A single chromosome breaking to become multiple chromosomes.
+   * chromosome fission:
 
      ```{svgbob}
-     "Original:"
-     A1--A2--A3--A4--A5--A6--A7--A8--A9
-
-     "Chromosome fission:"
-     A1--A2--A3--A4--A5--A6
-     A7--A8--A9
+                                               .--------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> B1 -> B2 -> B3
+     "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6    B1 -> B2 -> B3
+                                               '--------'
      ```
 
-   If an organism survives genome rearrangement, the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other.
+   If an organism survives genome rearrangement (it may not because the changed genome may result in sterility or death), the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other.
 
  * `{bm} chimeric gene` - A gene born from two separate genes getting fused together. A chimeric gene may have been created via genome rearrangement translocations.
 
