@@ -1,15 +1,22 @@
 from __future__ import annotations
 
 import colorsys
+import sys
+from collections import defaultdict
 from enum import Enum
+from hashlib import md5
+from itertools import product
 from math import ceil, sqrt
-from typing import Iterable, Optional, Set
+from typing import Iterable, Optional, Set, List, Dict
 
+import matplotlib.pyplot as plt
 import matplotlib.collections as mc
 import numpy
 import pylab as pl
 
+from helpers.DnaUtils import dna_reverse_complement
 from helpers.GeometryUtils import distance
+from helpers.Utils import slide_window
 
 
 class MatchType(Enum):
@@ -169,6 +176,65 @@ class Match:
     def __repr__(self):
         return str(self)
 
+    # MARKDOWN
+    @staticmethod
+    def create_from_genomes(
+            k: int,
+            cyclic: bool,  # True if chromosomes are cyclic
+            genome1: Dict[str, str],  # chromosome id -> dna string
+            genome2: Dict[str, str]   # chromosome id -> dna string
+    ) -> List[Match]:
+        # lookup tables for data1
+        fwd_kmers1 = defaultdict(list)
+        rev_kmers1 = defaultdict(list)
+        for chr_name, chr_data in genome1.items():
+            for kmer, idx in slide_window(chr_data, k, cyclic):
+                fwd_kmers1[kmer].append((chr_name, idx))
+                rev_kmers1[dna_reverse_complement(kmer)].append((chr_name, idx))
+        # lookup tables for data2
+        fwd_kmers2 = defaultdict(list)
+        rev_kmers2 = defaultdict(list)
+        for chr_name, chr_data in genome2.items():
+            for kmer, idx in slide_window(chr_data, k, cyclic):
+                fwd_kmers2[kmer].append((chr_name, idx))
+                rev_kmers2[dna_reverse_complement(kmer)].append((chr_name, idx))
+        # match
+        matches = []
+        fwd_key_matches = set(fwd_kmers1.keys())
+        fwd_key_matches.intersection_update(fwd_kmers2.keys())
+        for kmer in fwd_key_matches:
+            idxes1 = fwd_kmers1.get(kmer, [])
+            idxes2 = fwd_kmers2.get(kmer, [])
+            for (chr_name1, idx1), (chr_name2, idx2) in product(idxes1, idxes2):
+                m = Match(
+                    y_axis_chromosome=chr_name1,
+                    y_axis_chromosome_min_idx=idx1,
+                    y_axis_chromosome_max_idx=idx1 + k - 1,
+                    x_axis_chromosome=chr_name2,
+                    x_axis_chromosome_min_idx=idx2,
+                    x_axis_chromosome_max_idx=idx2 + k - 1,
+                    type=MatchType.NORMAL
+                )
+                matches.append(m)
+        rev_key_matches = set(fwd_kmers1.keys())
+        rev_key_matches.intersection_update(rev_kmers2.keys())
+        for kmer in rev_key_matches:
+            idxes1 = fwd_kmers1.get(kmer, [])
+            idxes2 = rev_kmers2.get(kmer, [])
+            for (chr_name1, idx1), (chr_name2, idx2) in product(idxes1, idxes2):
+                m = Match(
+                    y_axis_chromosome=chr_name1,
+                    y_axis_chromosome_min_idx=idx1,
+                    y_axis_chromosome_max_idx=idx1 + k - 1,
+                    x_axis_chromosome=chr_name2,
+                    x_axis_chromosome_min_idx=idx2,
+                    x_axis_chromosome_max_idx=idx2 + k - 1,
+                    type=MatchType.REVERSE_COMPLEMENT
+                )
+                matches.append(m)
+        return matches
+    # MARKDOWN
+
     @staticmethod
     def plot(
             matches: Iterable[Match],
@@ -208,6 +274,7 @@ class Match:
             ax.get_yaxis().get_major_formatter().set_scientific(False)
             ax.tick_params(axis="y", direction="in", pad=-22)
             ax.tick_params(axis="x", direction="in", pad=-15)
+            ax.set_ylim([5, 100])
             ax.add_collection(lc)
             ax.autoscale()
             # ax.margins(0.1)
@@ -220,13 +287,43 @@ class Match:
         # fig.suptitle('To Chromosomes')
 
 
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        console_input = [l.strip() for l in sys.stdin.readlines()]
+        k = int(console_input[0])
+        if console_input[1] == 'linear':
+            cyclic = False
+        elif console_input[1] == 'cyclic':
+            cyclic = True
+        else:
+            raise ValueError('2nd line must be either linear or cyclic')
+        genome1 = {}
+        for name, data in zip(*[iter(console_input[2].strip().split(', '))]*2):
+            genome1[name.strip()] = data.strip()
+        genome2 = {}
+        for name, data in zip(*[iter(console_input[3].strip().split(', '))]*2):
+            genome2[name.strip()] = data.strip()
+        print(f'Generating genomic dot plot for...\n')
+        print(f' * {k=}')
+        print(f' * {cyclic=}')
+        print(f' * {genome1=}')
+        print(f' * {genome2=}\n')
+        matches = Match.create_from_genomes(k, cyclic, genome1, genome2)
+        Match.plot(matches)
+        hasher = md5()
+        hasher.update('\n'.join(console_input).encode('utf-8'))
+        filename = 'genomicdotplot_' + hasher.hexdigest() + '.svg'
+        plt.savefig('/output/' + filename)
+        print(f'Result...\n')
+        print(f'![Genomic Dot Plot]({filename})\n')
+        for m in matches:
+            print(f' * {m}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    m = Match('Y', 0, 10, 'X', 0, 10, MatchType.NORMAL)
-    m = m.clip_x_min(2)
-    print(f'{m}')
-    m = m.clip_x_max(8)
-    print(f'{m}')
-    m = m.clip_y_min(3)
-    print(f'{m}')
-    m = m.clip_y_max(7)
-    print(f'{m}')
+    main()

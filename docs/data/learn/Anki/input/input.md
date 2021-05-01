@@ -79,6 +79,19 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
  
    When identifying a kd-mer with a specific k and d, the proper syntax is (k, d)-mer. For example, (1, 2)-mer represents a kd-mer with k=1 and d=2. In the DNA sequence GAAATC, the following (1, 2)-mer's exist: `G--A`, `A--T`, `A--C`.
 
+ * `{ankiAnswer} (reverse complement)/i` - Given double-stranded DNA, each ...
+
+    * strand's direction is opposite of the other,
+    * strand position has a nucleotide that complements the nucleotide at that same position on the other stand (A ⟷ T and C ⟷ G)
+
+   ```{svgbob}
+   3' . . . T <- T <- T <- G <- C <- T <- T <- T <- T <- G <- . . . 5'
+            |    |    |    |    |    |    |    |    |    | 
+   5' . . . A -> A -> A -> C -> G -> A -> A -> A -> A -> C -> . . . 3'    
+   ```
+
+   The reverse complement means that a stretch of single-stranded DNA has its direction reversed (5' and 3' switched) and nucleotides complemented.
+
  * `{ankiAnswer} (5'|5 prime)/i` `{ankiAnswer} (3'|3 prime)/i` - 5' (5 prime) and 3' (3 prime) describe the opposite ends of DNA. The chemical structure at each end is what defines if it's 5' or 3' -- each end is guaranteed to be different from the other. The forward direction on DNA is defined as 5' to 3', while the backwards direction is 3' to 5'.
 
    Two complementing DNA strands will always be attached in opposite directions.

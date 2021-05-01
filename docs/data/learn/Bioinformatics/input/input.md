@@ -5042,11 +5042,25 @@ Real-life examples of species that share synteny blocks include ...
 
 `{bm} /(Algorithms\/Synteny\/Genomic Dot Plot)_TOPIC/`
 
-**WHAT**:
+**WHAT**: Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. These plots are called genomic dot plots. For example, ...
 
-**WHY**:
+**WHY**: Genomic dot plots are used for identifying synteny blocks between two genomes.   
 
 **ALGORITHM**:
+
+```{output}
+ch6_code/src/synteny_graph/Match.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch6}
+synteny_graph.Match
+5
+linear
+A0, GGGGGAAACCCCATGCACTGG
+B0, GGTTTAGGTGACTTACTGGAACATGCTTGGGGG
+```
 
 ### Synteny Graph
 
@@ -5775,13 +5789,26 @@ cyclic
    5' . . . A -> A -> A -> C -> C -> G -> A -> A -> A -> C -> . . . 3'
    ```
 
- * `{bm} double stranded DNA/(double stranded DNA|double-stranded DNA|reverse complement)/i` - Two strands of DNA bound together, where each strand is the reverse complement of the other.
+ * `{bm} double stranded DNA/(double stranded DNA|double-stranded DNA)/i` - Two strands of DNA bound together, where each strand is the reverse complement of the other.
 
    ```{svgbob}
    3' . . . T <- T <- T <- G <- C <- T <- T <- T <- T <- G <- . . . 5'
             |    |    |    |    |    |    |    |    |    | 
    5' . . . A -> A -> A -> C -> G -> A -> A -> A -> A -> C -> . . . 3'    
    ```
+
+ * `{bm} reverse complement/(reverse complement)/i` - Given double-stranded DNA, each ...
+
+    * strand's direction is opposite of the other,
+    * strand position has a nucleotide that complements the nucleotide at that same position on the other stand (A ⟷ T and C ⟷ G)
+
+   ```{svgbob}
+   3' . . . T <- T <- T <- G <- C <- T <- T <- T <- T <- G <- . . . 5'
+            |    |    |    |    |    |    |    |    |    | 
+   5' . . . A -> A -> A -> C -> G -> A -> A -> A -> A -> C -> . . . 3'    
+   ```
+
+   The reverse complement means that a stretch of single-stranded DNA has its direction reversed (5' and 3' switched) and nucleotides complemented.
 
  * `{bm} gene/(\bgenes\b|\bgene\b)/i` - A segment of DNA that contains the instructions for either a protein or functional RNA.
 
@@ -7322,7 +7349,7 @@ cyclic
   
    Different species have different mechanisms for equalization. For example, some species will double the gene expression on the male's single X chromosome rather than deactivating one of the female's two X chromosomes. Other hermaphroditic species may scale down X chromosome gene expression when multiple X chromosomes are present.
 
- * `{bm} synteny/(shared synteny|synteny block|synteny region|syntenic region|synteny|syntenic|syntenies)/i` - Intervals within two sets of chromosomes that have similar genes which are either in ...
+ * `{bm} synteny/(synteny block|synteny region|syntenic region|synteny|syntenic|syntenies)/i` - Intervals within two sets of chromosomes that have similar genes which are either in ...
  
    * the same order.
      
@@ -7486,7 +7513,7 @@ cyclic
 
     Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
 
- * `{bm} genomic dot-plot/(genomic dot-plot|genomic dot plot)/i` - Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed for each shared k-mer. In this case, a shared k-mer is either a normal match or a reverse complement match. Also, shared k-mers may be fuzzily found (e.g. within some hamming distance rather than a direct match).
+ * `{bm} genomic dot-plot/(genomic dot-plot|genomic dot plot)/i` - Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. Matches may also be fuzzily found (e.g. within some hamming distance rather).
     
    For example, ...
 
@@ -7495,53 +7522,53 @@ cyclic
    * "N = normal match"
    * "R = reverse complement match"
 
-     3' 5'
-      A T |                                  ^            
-          |                                 /
-      C G |                                /                
-          |                               /
-      T A |                              / N: "ACTGG vs ACTGG"         
-          |                             /  
-      G C |                            /                   
-          |                           /      
-      G C |                          *                    
-          |
-      G C |                                                  ^
-          |                                                 /
-      T A |                                                /
-          |                                               /
-      C G |                                              / N: "CATGC vs CATGC"
-          |                                             /  
-    g A T |                                            /    
-    e     |                                           /      
-    n G C |                                          *        
-    o     |
-    m C G |                                                 
-    e     |
-    1 C G |*                                               
-          | \      
-      C G |  \                                            
-          |   \  
-      A T |    \ R: "AAACC vs GGTTT"                                      
-          |     \
-      A T |      \                                          
-          |       \
-      A T |        v                                     
-          |
-      G C |                                                                ^
-          |                                                               /
-      G C |                                                              / 
-          |                                                             / 
-      G C |                                                            / N: "GGGGG vs GGGGG" 
-          |                                                           /  
-      G C |                                                          /    
-          |                                                         /      
-      G C |                                                        *        
-     5' 3'|                                                                
-          +-----------------------------------------------------------------
-        5' G G T T T A G G T G A C T T A C T G G A A C A G T C T T G G G G G 3'
-        3' C C A A A T C C A C T G A A T G A C C T T G T C A G T T C C C C C 5'
-                                       genome2
+     3' 5'|   
+      G C |                                     ^            
+          |                                    /
+      G C |                                   /                
+          |                                  /
+      T A |                                 / N: "ACTGG vs ACTGG"         
+          |                                /  
+      C G |                               /                   
+          |                              /      
+      A T |                             *                    
+          |   
+      C C |                                                     ^
+          |                                                    /
+      G A |                                                   /
+          |                                                  /
+      T G |                                                 / N: "CATGC vs CATGC"
+          |                                                /  
+    g A T |                                               /         *
+    e     |                                              /           \
+    n C G |                                             *             \
+    o     |                                                            \
+    m C G |                                                             \ R: "CCCCA vs TGGGG"
+    e     |                                                              \
+    1 C G |   *                                                           \
+          |    \                                                           \
+      C G |     \                                                           v
+          |      \  
+      A T |       \ R: "AAACC vs GGTTT"                                      
+          |        \
+      A T |         \                                          
+          |          \
+      A T |           v                                     
+          |   
+      G C |                                                                   ^
+          |                                                                  /
+      G C |                                                                 / 
+          |                                                                / 
+      G C |                                                               / N: "GGGGG vs GGGGG" 
+          |                                                              /  
+      G C |                                                             /    
+          |                                                            /      
+      G C |                                                           *        
+     5' 3'|                                                                   
+          +-----------------------------------------------------------------------
+           5' G G T T T A G G T G A C T T A C T G G A A C A T G C T T G G G G G 3'
+           3' C C A A A T C C A C T G A A T G A C C T T G T C A G T T C C C C C 5'
+                                          genome2
    ```
 
    Genomic dot-plots are typically used in building synteny graphs: Graphs that reveal shared synteny blocks (shared stretches of DNA). Synteny blocks exist because genome rearrangements account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse vs human).

@@ -201,7 +201,7 @@
 </ul>
 <a name="H_Reverse%20Complement"></a><h3>Reverse Complement</h3>
 <p><a name="BM_(Algorithms%5C%2FK-mer%2FReverse%20Complement)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>WHAT</strong>: Given a DNA <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, calculate its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>.</p>
+<p><strong>WHAT</strong>: Given a DNA <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, calculate its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>.</p>
 <p><strong>WHY</strong>: Depending on the type of biological <a href="#BM_(sequence)%2Fi">sequence</a>, a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may have one or more alternatives. For DNA <a href="#BM_(sequence)%2Fi">sequence</a>s specifically, a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> of interest may have an alternate form. Since the DNA molecule comes as 2 strands, where ...</p>
 <ul>
 <li>each strand's direction is opposite of the other,</li>
@@ -213,7 +213,7 @@
 </li>
 </ul>
 <p><img src="svgbob_c44b72fd8e03cfe92b63a0a3b83bfe37c5551666.svg" alt="Kroki diagram output"></p>
-<p>, ... the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> of that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may be just as valid as the original <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>. For example, if an enzyme is known to bind to a specific DNA <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, it's possible that it might also bind to the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> of that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>.</p>
+<p>, ... the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> of that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may be just as valid as the original <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>. For example, if an enzyme is known to bind to a specific DNA <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, it's possible that it might also bind to the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> of that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="ch1_code/src/ReverseComplementADnaKmer.py">ch1_code/src/ReverseComplementADnaKmer.py</a> (lines 5 to 22):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reverse_complement</span>(<span class="hljs-params">strand: str</span>):</span>
@@ -304,13 +304,13 @@
 <li><a href="#BM_(Algorithms%5C%2FK-mer%2FReverse%20Complement)_TOPIC%2F">Algorithms/K-mer/Reverse Complement</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, find where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> occurs in some larger <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s variants (e.g. <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>).</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, find where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> occurs in some larger <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>).</p>
 <p><strong>WHY</strong>: Imagine that you know of a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern that serves some function in an organism. If you see that same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern appearing in some other related organism, it could be a sign that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern serves a similar function. For example, the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern could be used by 2 related types of bacteria as a <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a>.</p>
-<p>The enzyme that operates on that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may also operate on its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> as well as slight variations on that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>. For example, if an enzyme binds to AAAAAAAAA, it may also bind to its...</p>
+<p>The enzyme that operates on that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may also operate on its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> as well as slight variations on that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>. For example, if an enzyme binds to AAAAAAAAA, it may also bind to its...</p>
 <ul>
-<li><a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>: TTTTTTTTT</li>
+<li><a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>: TTTTTTTTT</li>
 <li>approximate variants: AAAAAAAAA, AAATAAAAA, AAAAAGAAA, ...</li>
-<li>approximate variants of its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>s: TTTTTTTTT, TTTTTTATT, TTCTTTTTT, ...</li>
+<li>approximate variants of its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s: TTTTTTTTT, TTTTTTATT, TTCTTTTTT, ...</li>
 </ul>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="ch1_code/src/FindLocations.py">ch1_code/src/FindLocations.py</a> (lines 11 to 32):</p>
@@ -349,7 +349,7 @@
 <li><a href="#BM_(Algorithms%5C%2FK-mer%2FFind%20Locations)_TOPIC%2F">Algorithms/K-mer/Find Locations</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, find where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> clusters in some larger <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s variants (e.g. <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>).</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, find where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> clusters in some larger <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>).</p>
 <p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.</p>
 <p>For example, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> is a special <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern used by enzymes during DNA replication. Since DNA is known to mutate, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> can be found repeating multiple times in the region of DNA known as the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>. Finding the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> clustered in a small region is a good indicator that you've found the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -385,7 +385,7 @@
 <li><a href="#BM_(Algorithms%5C%2FK-mer%2FHamming%20Distance%20Neighbourhood)_TOPIC%2F">Algorithms/K-mer/Hamming Distance Neighbourhood</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(sequence)%2Fi">sequence</a>, find clusters of unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s within that <a href="#BM_(sequence)%2Fi">sequence</a>. In other words, for each unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> that exists in the <a href="#BM_(sequence)%2Fi">sequence</a>, see if it clusters in the <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include variants of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> variants (e.g. <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>s of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s).</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(sequence)%2Fi">sequence</a>, find clusters of unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s within that <a href="#BM_(sequence)%2Fi">sequence</a>. In other words, for each unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> that exists in the <a href="#BM_(sequence)%2Fi">sequence</a>, see if it clusters in the <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include variants of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s).</p>
 <p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.</p>
 <p>For example, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> is a special <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern used by enzymes during DNA replication. Since DNA is known to mutate, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> can be found repeating multiple times in the region of DNA known as the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>. Given that you don't know the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> but you do know the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>, you can scan through the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> for repeating <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> patterns. If a pattern is found to heavily repeat, it's a good candidate that it's the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -446,7 +446,7 @@
 <li>slide a window over the cluster.</li>
 <li>for each unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> that exists in the window, see if it clusters in the <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
 </ul>
-<p>The search may potentially include variants of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> variants (e.g. <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>s of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s).</p>
+<p>The search may potentially include variants of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s).</p>
 <p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.</p>
 <p>For example, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> is a special <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern used by enzymes during DNA replication. Since DNA is known to mutate, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> can be found repeating multiple times in the region of DNA known as the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>. Given that you don't know the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> but you do know the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>, you can scan through the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> for repeating <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> patterns. If a pattern is found to heavily repeat, it's a good candidate that it's the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -669,10 +669,10 @@ SSSII
 <li>C is encountered, decrement the counter.</li>
 </ul>
 <p><strong>WHY</strong>: Given the DNA <a href="#BM_(sequence)%2Fi">sequence</a> of an organism, some segments may have lower count of Gs vs Cs.</p>
-<p>During replication, some segments of DNA stay single-stranded for a much longer time than other segments. <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">Single-stranded DNA</a> is 100 times more susceptible to mutations than <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>. Specifically, in <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, C has a greater tendency to mutate to T. When that <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a> re-binds to a neighbouring strand, the positions of any nucleotides that mutated from C to T will change on the neighbouring strand from G to A.</p>
+<p>During replication, some segments of DNA stay single-stranded for a much longer time than other segments. <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">Single-stranded DNA</a> is 100 times more susceptible to mutations than <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. Specifically, in <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, C has a greater tendency to mutate to T. When that <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a> re-binds to a neighbouring strand, the positions of any nucleotides that mutated from C to T will change on the neighbouring strand from G to A.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>s of ...</p>
+<p>Recall that the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s of ...</p>
 <ul>
 <li>C is G</li>
 <li>A is T</li>
@@ -2259,7 +2259,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><a href="#BM_(assembly%7Cassemble)%2Fi">Assembly</a> has many practical complications that prevent full <a href="#BM_(genome)%2Fi">genome</a> reconstruction from <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s:</p>
 <ul>
 <li>
-<p>Which strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double stranded DNA</a> that a <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> / <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a> comes from isn't known, which means the overlaps you find may not be accurate.</p>
+<p>Which strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double stranded DNA</a> that a <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a> / <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a> comes from isn't known, which means the overlaps you find may not be accurate.</p>
 <p><img src="svgbob_9a1e8981d7c6da721c87d87057f266ca1aeee3d2.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -2669,7 +2669,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><strong>ALGORITHM</strong>:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>For simplicity's sake, the <a href="#BM_(genome)%2Fi">genome</a> is single-stranded (not <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a> / no <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>ing stand).</p>
+<p>For simplicity's sake, the <a href="#BM_(genome)%2Fi">genome</a> is single-stranded (not <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a> / no <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>ing stand).</p>
 </div>
 <p>Imagine a <a href="#BM_(genome)%2Fi">genome</a> of ATGGATGC. A <a href="#BM_(sequencer)%2Fi">sequencer</a> runs over that single strand and generates <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">3-mer</a> <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s with roughly 30x <a href="#BM_(coverage)_SEQ%2Fi">coverage</a>. The resulting <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s are ...</p>
 <table>
@@ -2825,7 +2825,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="#BM_(sequencer)%2Fi">Sequencer</a>s produce <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s, but <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s by themselves typically aren't enough for most experiments / algorithms. In theory, stitching overlapping <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s for a single-strand of DNA should reveal that single-strand of DNA. In practice, real-world complications make revealing that single-strand of DNA nearly impossible:</p>
 <ul>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
+<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be missing (<a href="#BM_(sequencer)%2Fi">sequencer</a> didn't capture it).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may have inconsistent <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> (<a href="#BM_(sequencer)%2Fi">sequencer</a> captured it too many/few times).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be repeated (regions of the <a href="#BM_(genome)%2Fi">genome</a> may repeat).</li>
@@ -2974,7 +2974,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="#BM_(sequencer)%2Fi">Sequencer</a>s produce <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s, but <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s by themselves typically aren't enough for most experiments / algorithms. In theory, stitching overlapping <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s for a single-strand of DNA should reveal that single-strand of DNA. In practice, real-world complications make revealing that single-strand of DNA nearly impossible:</p>
 <ul>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
+<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be missing (<a href="#BM_(sequencer)%2Fi">sequencer</a> didn't capture it).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may have inconsistent <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> (<a href="#BM_(sequencer)%2Fi">sequencer</a> captured it too many/few times).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be repeated (regions of the <a href="#BM_(genome)%2Fi">genome</a> may repeat).</li>
@@ -3162,7 +3162,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>Note that just because these structures exist doesn't mean that the <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s they represent definitively have <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s. These structures could have been caused by other problems / may not be problems at all:</p>
 <ul>
 <li>Bubbles may be caused by repetitive regions of DNA: <a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s from different parts of the <a href="#BM_(genome)%2Fi">genome</a> that are the same except for a few positions will show up as bubbles.</li>
-<li>Bubbles / forks may be caused when <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>: When both strands of DNA get tangled into the same graph, it's possible that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s from different strands form bubbles or forks.</li>
+<li>Bubbles / forks may be caused when <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>: When both strands of DNA get tangled into the same graph, it's possible that <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s from different strands form bubbles or forks.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -3316,7 +3316,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="svgbob_f186de7e9649b7a39a09b48a6c55ea97a221dce1.svg" alt="Kroki diagram output"></p>
 <p><strong>WHY</strong>: An <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a> / <a href="#BM_(de%20Bruijn%20graph)%2Fi">de Bruijn graph</a> represents all the possible ways a set of <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s may be stitched together to infer the full <a href="#BM_(genome)%2Fi">genome</a>. However, real-world complications make it impractical to guess the full <a href="#BM_(genome)%2Fi">genome</a>:</p>
 <ul>
-<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
+<li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s are for both strands (strand of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a> a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>'s from isn't known).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be missing (<a href="#BM_(sequencer)%2Fi">sequencer</a> didn't capture it).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may have inconsistent <a href="#BM_(coverage)_SEQ%2Fi">coverage</a> (<a href="#BM_(sequencer)%2Fi">sequencer</a> captured it too many/few times).</li>
 <li><a href="#BM_(fragment)_SEQ%2Fi">Fragment</a>s may be repeated (regions of the <a href="#BM_(genome)%2Fi">genome</a> may repeat).</li>
@@ -3620,7 +3620,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><strong>WHAT</strong>: Given a DNA <a href="#BM_(sequence)%2Fi">sequence</a>, map each <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> to the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> it represents. In total, there are 6 different ways that a DNA <a href="#BM_(sequence)%2Fi">sequence</a> could be <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a>:</p>
 <ol>
 <li>Since the length of a <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> is 3, the <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encoding</a> of the <a href="#BM_(peptide)%2Fi">peptide</a> could start from offset 0, 1, or 2 (referred to as <a href="#BM_(reading%20frame)%2Fi">reading frame</a>s).</li>
-<li>Since DNA is double stranded, either the DNA <a href="#BM_(sequence)%2Fi">sequence</a> or its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> could represent the <a href="#BM_(peptide)%2Fi">peptide</a>.</li>
+<li>Since DNA is double stranded, either the DNA <a href="#BM_(sequence)%2Fi">sequence</a> or its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> could represent the <a href="#BM_(peptide)%2Fi">peptide</a>.</li>
 </ol>
 <p><strong>WHY</strong>: The composition of a <a href="#BM_(peptide)%2Fi">peptide</a> can be determined from the DNA <a href="#BM_(sequence)%2Fi">sequence</a> that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s it.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -8641,7 +8641,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 <p>When a new species branches off from an existing one, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s are responsible for at least some of the divergence. That is, the two related <a href="#BM_(genome)%2Fi">genome</a>s will share long stretches of similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>, but these long stretches will appear as if they had been randomly cut-and-paste and / or randomly reversed when compared to the other.</p>
 <p><img src="svgbob_d5f827e20974efd41c9ac222d75bd5443f3d190d.svg" alt="Kroki diagram output"></p>
-<p>These long stretches of similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are called <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The example above has 4 <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s:</p>
+<p>These long stretches of similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are called <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The example above has 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s:</p>
 <ul>
 <li>[G1, G2]</li>
 <li>[G3]</li>
@@ -8649,16 +8649,94 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>[G7, G8, G9]</li>
 </ul>
 <p><img src="svgbob_f80dc1439c34746ba44f61b057365ebb68442846.svg" alt="Kroki diagram output"></p>
-<p>Real-life examples of species that share <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s include ...</p>
+<p>Real-life examples of species that share <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s include ...</p>
 <ul>
-<li>mouse and human, which share ~280 <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s across their chromosomes.</li>
-<li>Escherichia coli and Salmonella enterica, which share ~5 <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
+<li>mouse and human, which share ~280 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s across their chromosomes.</li>
+<li>Escherichia coli and Salmonella enterica, which share ~5 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
 </ul>
 <a name="H_Genomic%20Dot%20Plot"></a><h3>Genomic Dot Plot</h3>
 <p><a name="BM_(Algorithms%5C%2FSynteny%2FGenomic%20Dot%20Plot)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>WHAT</strong>:</p>
-<p><strong>WHY</strong>:</p>
+<p><strong>WHAT</strong>: Given two <a href="#BM_(genome)%2Fi">genome</a>s, create a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, where a match is either a shared <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> or a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> and its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>. These plots are called <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot plot</a>s. For example, ...</p>
+<p><strong>WHY</strong>: <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">Genomic dot plot</a>s are used for identifying <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between two <a href="#BM_(genome)%2Fi">genome</a>s.</p>
 <p><strong>ALGORITHM</strong>:</p>
+<p><a href="ch6_code/src/synteny_graph/Match.py">ch6_code/src/synteny_graph/Match.py</a> (lines 180 to 236):</p>
+<pre class="hljs"><code><span class="hljs-meta">@staticmethod</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_from_genomes</span>(<span class="hljs-params">
+        k: int,
+        cyclic: bool,  <span class="hljs-comment"># True if chromosomes are cyclic</span>
+        genome1: Dict[str, str],  <span class="hljs-comment"># chromosome id -&gt; dna string</span>
+        genome2: Dict[str, str]   <span class="hljs-comment"># chromosome id -&gt; dna string</span>
+</span>) -&gt; List[Match]:</span>
+    <span class="hljs-comment"># lookup tables for data1</span>
+    fwd_kmers1 = defaultdict(list)
+    rev_kmers1 = defaultdict(list)
+    <span class="hljs-keyword">for</span> chr_name, chr_data <span class="hljs-keyword">in</span> genome1.items():
+        <span class="hljs-keyword">for</span> kmer, idx <span class="hljs-keyword">in</span> slide_window(chr_data, k, cyclic):
+            fwd_kmers1[kmer].append((chr_name, idx))
+            rev_kmers1[dna_reverse_complement(kmer)].append((chr_name, idx))
+    <span class="hljs-comment"># lookup tables for data2</span>
+    fwd_kmers2 = defaultdict(list)
+    rev_kmers2 = defaultdict(list)
+    <span class="hljs-keyword">for</span> chr_name, chr_data <span class="hljs-keyword">in</span> genome2.items():
+        <span class="hljs-keyword">for</span> kmer, idx <span class="hljs-keyword">in</span> slide_window(chr_data, k, cyclic):
+            fwd_kmers2[kmer].append((chr_name, idx))
+            rev_kmers2[dna_reverse_complement(kmer)].append((chr_name, idx))
+    <span class="hljs-comment"># match</span>
+    matches = []
+    fwd_key_matches = set(fwd_kmers1.keys())
+    fwd_key_matches.intersection_update(fwd_kmers2.keys())
+    <span class="hljs-keyword">for</span> kmer <span class="hljs-keyword">in</span> fwd_key_matches:
+        idxes1 = fwd_kmers1.get(kmer, [])
+        idxes2 = fwd_kmers2.get(kmer, [])
+        <span class="hljs-keyword">for</span> (chr_name1, idx1), (chr_name2, idx2) <span class="hljs-keyword">in</span> product(idxes1, idxes2):
+            m = Match(
+                y_axis_chromosome=chr_name1,
+                y_axis_chromosome_min_idx=idx1,
+                y_axis_chromosome_max_idx=idx1 + k - <span class="hljs-number">1</span>,
+                x_axis_chromosome=chr_name2,
+                x_axis_chromosome_min_idx=idx2,
+                x_axis_chromosome_max_idx=idx2 + k - <span class="hljs-number">1</span>,
+                type=MatchType.NORMAL
+            )
+            matches.append(m)
+    rev_key_matches = set(fwd_kmers1.keys())
+    rev_key_matches.intersection_update(rev_kmers2.keys())
+    <span class="hljs-keyword">for</span> kmer <span class="hljs-keyword">in</span> rev_key_matches:
+        idxes1 = fwd_kmers1.get(kmer, [])
+        idxes2 = rev_kmers2.get(kmer, [])
+        <span class="hljs-keyword">for</span> (chr_name1, idx1), (chr_name2, idx2) <span class="hljs-keyword">in</span> product(idxes1, idxes2):
+            m = Match(
+                y_axis_chromosome=chr_name1,
+                y_axis_chromosome_min_idx=idx1,
+                y_axis_chromosome_max_idx=idx1 + k - <span class="hljs-number">1</span>,
+                x_axis_chromosome=chr_name2,
+                x_axis_chromosome_min_idx=idx2,
+                x_axis_chromosome_max_idx=idx2 + k - <span class="hljs-number">1</span>,
+                type=MatchType.REVERSE_COMPLEMENT
+            )
+            matches.append(m)
+    <span class="hljs-keyword">return</span> matches
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Generating genomic dot plot for...</p>
+<ul>
+<li>k=5</li>
+<li>cyclic=False</li>
+<li>genome1={'A0': 'GGGGGAAACCCCATGCACTGG'}</li>
+<li>genome2={'B0': 'GGTTTAGGTGACTTACTGGAACATGCTTGGGGG'}</li>
+</ul>
+<p>Result...</p>
+<p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
+<ul>
+<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Synteny%20Graph"></a><h3>Synteny Graph</h3>
 <p><a name="BM_(Algorithms%5C%2FSynteny%2FSynteny%20Graph)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -8698,9 +8776,9 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_308a4af4e5d6864abeb06f6652581aec0ff50fb1.svg" alt="Kroki diagram output"></p>
 <p>The replication process begins by a <a href="#BM_(replication%20fork)%2Fi">replication fork</a> opening at the <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>. As replication happens, that fork widens until the point it reaches <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>...</p>
 <p><img src="svgbob_fc7cf2c734fa0cab15b5746e25ad07e25f85ec64.svg" alt="Kroki diagram output"></p>
-<p>For each forked <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a>s attach on and synthesize a new <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> strand so that it turns back into <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>....</p>
+<p>For each forked <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a>s attach on and synthesize a new <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> strand so that it turns back into <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>....</p>
 <p><img src="svgbob_971abfeff166ada9787cd484db9bfbe43120973a.svg" alt="Kroki diagram output"></p>
-<p>The process of synthesizing a <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> strand is different based on the section of DNA that <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a> is operating on. For each <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, if the direction of that DNA strand is traveling from ...</p>
+<p>The process of synthesizing a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> strand is different based on the section of DNA that <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a> is operating on. For each <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, if the direction of that DNA strand is traveling from ...</p>
 <ul>
 <li><a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> to <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>, it's called a <a href="#BM_(forward%20half-strand)%2Fi">forward half-strand</a>.</li>
 <li><a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> to <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>, it's called a <a href="#BM_(reverse%20half-strand%7Cbackward%20half-strand%7Cbackwards%20half-strand)%2Fi">reverse half-strand</a>.</li>
@@ -8710,7 +8788,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_83b0a64a4614fa906388ef166341e3fd293c6dc0.svg" alt="Kroki diagram output"></p>
 <p>For the <a href="#BM_(forward%20half-strand)%2Fi">forward half-strand</a>s, the process is much slower. Since <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a> can only walk DNA in the reverse direction, the <a href="#BM_(forward%20half-strand)%2Fi">forward half-strand</a>s get replicated in small segments. That is, as the <a href="#BM_(replication%20fork)%2Fi">replication fork</a> continues to grow, every ~2000 nucleotides a new <a href="#BM_(primer)%2Fi">primer</a> attaches to the end of the fork on the forward strands. A new <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a> attaches to each <a href="#BM_(primer)%2Fi">primer</a> and walks in the reverse direction (towards the <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) to synthesize a small segment of DNA. That small segment of DNA is called an <a href="#BM_(Okazaki%20fragment)%2Fi">Okazaki fragment</a>...</p>
 <p><img src="svgbob_4c651d9aa100c5b586103bb0d42cc91ff27da474.svg" alt="Kroki diagram output"></p>
-<p>The <a href="#BM_(replication%20fork)%2Fi">replication fork</a> will keep widening until the original 2 strands split off. <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a> will have made sure that for each separated strand, a newly synthesized <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> is paired to it. The end result is 2 daughter chromosome where each chromosome has gaps...</p>
+<p>The <a href="#BM_(replication%20fork)%2Fi">replication fork</a> will keep widening until the original 2 strands split off. <a href="#BM_(DNA%20polymerase)%2Fi">DNA polymerase</a> will have made sure that for each separated strand, a newly synthesized <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> is paired to it. The end result is 2 daughter chromosome where each chromosome has gaps...</p>
 <p><img src="svgbob_eac405c5709e835b492078d1ea557a7199d8f722.svg" alt="Kroki diagram output"></p>
 <p>The <a href="#BM_(Okazaki%20fragment)%2Fi">Okazaki fragment</a>s synthesized on the forward strands end up getting sewn together by <a href="#BM_(DNA%20ligase)%2Fi">DNA ligase</a>...</p>
 <p><img src="svgbob_5c3304d08cc6bbc226df966d6e1c119636331723.svg" alt="Kroki diagram output"></p>
@@ -8723,7 +8801,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li><a href="#BM_(Algorithms%5C%2FGC%20Skew)_TOPIC%2F">Algorithms/GC Skew</a></li>
 </ul>
 </div>
-<p>Since the <a href="#BM_(forward%20half-strand)%2Fi">forward half-strand</a> gets its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> synthesized at a much slower rate than the <a href="#BM_(reverse%20half-strand%7Cbackward%20half-strand%7Cbackwards%20half-strand)%2Fi">reverse half-strand</a>, it stays single stranded for a much longer time. <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">Single-stranded DNA</a> is 100 times more susceptible to mutations than <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>. Specifically, in <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, C has a greater tendency to mutate to T. This process of mutation is referred to as deanimation.</p>
+<p>Since the <a href="#BM_(forward%20half-strand)%2Fi">forward half-strand</a> gets its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> synthesized at a much slower rate than the <a href="#BM_(reverse%20half-strand%7Cbackward%20half-strand%7Cbackwards%20half-strand)%2Fi">reverse half-strand</a>, it stays single stranded for a much longer time. <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">Single-stranded DNA</a> is 100 times more susceptible to mutations than <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. Specifically, in <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, C has a greater tendency to mutate to T. This process of mutation is referred to as deanimation.</p>
 <p><img src="svgbob_f52124bb3b29a8388ed6a1fc5f597b26a2514f42.svg" alt="Kroki diagram output"></p>
 <p>The <a href="#BM_(reverse%20half-strand%7Cbackward%20half-strand%7Cbackwards%20half-strand)%2Fi">reverse half-strand</a> spends much less time as a <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>. As such, it experiences much less C to T mutations.</p>
 <p><img src="svgbob_7d778227822729bde64ce4a36b5cc9da206869c1.svg" alt="Kroki diagram output"></p>
@@ -8766,8 +8844,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">9-mer</a> itself.</li>
 <li>slight variations of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">9-mer</a>.</li>
-<li>the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">9-mer</a>.</li>
-<li>slight variations of the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">9-mer</a>.</li>
+<li>the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">9-mer</a>.</li>
+<li>slight variations of the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">9-mer</a>.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -9191,12 +9269,21 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><a name="BM_(DnaA%20box)%2Fi"></a><strong>DnaA box</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> in the <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> that the DnaA protein (responsible for DNA replication) binds to.</p>
 </li>
 <li>
-<p><a name="BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi"></a><strong>single stranded DNA</strong> - A single strand of DNA, not bound to a strand of its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>s.</p>
+<p><a name="BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi"></a><strong>single stranded DNA</strong> - A single strand of DNA, not bound to a strand of its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s.</p>
 <p><img src="svgbob_03d83c0a0dd86c50ead48a0a8bc87eebf4353039.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi"></a><strong>double stranded DNA</strong> - Two strands of DNA bound together, where each strand is the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> of the other.</p>
+<p><a name="BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi"></a><strong>double stranded DNA</strong> - Two strands of DNA bound together, where each strand is the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> of the other.</p>
 <p><img src="svgbob_b05df825cb791aaf67d96b4e629e42c02b75f509.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(reverse%20complement)%2Fi"></a><strong>reverse complement</strong> - Given <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>, each ...</p>
+<ul>
+<li>strand's direction is opposite of the other,</li>
+<li>strand position has a nucleotide that complements the nucleotide at that same position on the other stand (A ⟷ T and C ⟷ G)</li>
+</ul>
+<p><img src="svgbob_b05df825cb791aaf67d96b4e629e42c02b75f509.svg" alt="Kroki diagram output"></p>
+<p>The <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> means that a stretch of <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a> has its direction reversed (<a href="#BM_(5')%2Fi">5'</a> and <a href="#BM_(3')%2Fi">3'</a> switched) and nucleotides complemented.</p>
 </li>
 <li>
 <p><a name="BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi"></a><strong>gene</strong> - A segment of DNA that contains the instructions for either a protein or functional RNA.</p>
@@ -9329,7 +9416,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_6ce607591d81d0fd6c7507408e97fb8146e83baf.svg" alt="Kroki diagram output"></p>
 <p>A sheet is broken up into multiple regions, where each region has the <a href="#BM_(cDNA)%2F">cDNA</a> for one specific <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> from the control sample printed.</p>
 <p><img src="svgbob_421210658cf3b4d0040b4815e879948ebfd7ccc5.svg" alt="Kroki diagram output"></p>
-<p>The idea is that once the experimental <a href="#BM_(cDNA)%2F">cDNA</a> is introduced to that region, it should bind to the control <a href="#BM_(cDNA)%2F">cDNA</a> that's been printed to form <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a>. The color emitted in a region should correspond to the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> that region represents. For example, if a region on the sheet is fully yellow, it means that the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is roughly equal (red mixed with green is yellow).</p>
+<p>The idea is that once the experimental <a href="#BM_(cDNA)%2F">cDNA</a> is introduced to that region, it should bind to the control <a href="#BM_(cDNA)%2F">cDNA</a> that's been printed to form <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. The color emitted in a region should correspond to the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> that region represents. For example, if a region on the sheet is fully yellow, it means that the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is roughly equal (red mixed with green is yellow).</p>
 </li>
 <li>
 <p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that tries to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
@@ -10072,7 +10159,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_057bcd0e831c50ca2384b8da9ea9cd1f46186b4a.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>Real-world complications with DNA <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> make de Bruijn / <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a>s too tangled to guess a full <a href="#BM_(genome)%2Fi">genome</a>: both strands of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">double-stranded DNA</a> are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> and mixed into the graph, <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s make into the graph, repeats regions of the <a href="#BM_(genome)%2Fi">genome</a> can't be reliably handled by the graph, poor <a href="#BM_(coverage)_SEQ%2Fi">coverage</a>, etc.. As such, biologists / bioinformaticians have no choice but to settle on <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s.</p>
+<p>Real-world complications with DNA <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> make de Bruijn / <a href="#BM_(overlap%20graph)%2Fi">overlap graph</a>s too tangled to guess a full <a href="#BM_(genome)%2Fi">genome</a>: both strands of <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a> are <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> and mixed into the graph, <a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>s make into the graph, repeats regions of the <a href="#BM_(genome)%2Fi">genome</a> can't be reliably handled by the graph, poor <a href="#BM_(coverage)_SEQ%2Fi">coverage</a>, etc.. As such, biologists / bioinformaticians have no choice but to settle on <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s.</p>
 <p><img src="svgbob_db2c0ed38b3144b9db68bc5e39f4b97ce471f510.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -10481,7 +10568,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><a name="BM_(reading%20frame)%2Fi"></a><strong>reading frame</strong> - The different ways of dividing a DNA string into <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s. Specifically, there are 6 different ways that a DNA string can be divided into <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s:</p>
 <ul>
 <li>You can start dividing at index 0, 1, or 2.</li>
-<li>You can divide either the DNA string itself or the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>ing DNA string.</li>
+<li>You can divide either the DNA string itself or the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>ing DNA string.</li>
 </ul>
 <p>For example, given the string ATGTTCCATTAA, the following <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> division are possible:</p>
 <table>
@@ -10541,14 +10628,14 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>TTAATGGAACAT is the <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> of ATGTTCCATTAA.</p>
+<p>TTAATGGAACAT is the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> of ATGTTCCATTAA.</p>
 </div>
 </li>
 <li>
-<p><a name="BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi"></a><strong>encode</strong> - When a DNA string or its <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> is made up of the <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s required for an <a href="#BM_(amino%20acid)%2Fi">amino acid</a> <a href="#BM_(sequence)%2Fi">sequence</a>. For example, ACAGTA <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s for the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> <a href="#BM_(sequence)%2Fi">sequence</a>...</p>
+<p><a name="BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi"></a><strong>encode</strong> - When a DNA string or its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> is made up of the <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s required for an <a href="#BM_(amino%20acid)%2Fi">amino acid</a> <a href="#BM_(sequence)%2Fi">sequence</a>. For example, ACAGTA <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s for the <a href="#BM_(amino%20acid)%2Fi">amino acid</a> <a href="#BM_(sequence)%2Fi">sequence</a>...</p>
 <ul>
 <li>Threonine-Valine</li>
-<li>Tyrosine-Cysteine (derived from <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>)</li>
+<li>Tyrosine-Cysteine (derived from <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>)</li>
 </ul>
 </li>
 <li>
@@ -11216,7 +11303,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_2bf9b82f60b2bbaf95ba7e19855dd43c0b57008f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>If an organism survives <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> (it may not because the changed <a href="#BM_(genome)%2Fi">genome</a> may result in sterility or death), the segments of the <a href="#BM_(genome)%2Fi">genome</a> that were moved around are referred to as <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by comparing two <a href="#BM_(genome)%2Fi">genome</a>s against each other.</p>
+<p>If an organism survives <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> (it may not because the changed <a href="#BM_(genome)%2Fi">genome</a> may result in sterility or death), the segments of the <a href="#BM_(genome)%2Fi">genome</a> that were moved around are referred to as <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by comparing two <a href="#BM_(genome)%2Fi">genome</a>s against each other.</p>
 </li>
 <li>
 <p><a name="BM_(chimeric%20gene)%2Fi"></a><strong>chimeric gene</strong> - A <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> born from two separate <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> getting <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fuse</a>d together. A <a href="#BM_(chimeric%20gene)%2Fi">chimeric gene</a> may have been created via <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> <a href="#BM_(translocation)%2Fi">translocation</a>s.</p>
@@ -11238,7 +11325,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Different species have different mechanisms for equalization. For example, some species will double the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> on the male's single X chromosome rather than deactivating one of the female's two X chromosomes. Other hermaphroditic species may scale down X chromosome <a href="#BM_(gene%20expression)%2Fi">gene expression</a> when multiple X chromosomes are present.</p>
 </li>
 <li>
-<p><a name="BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi"></a><strong>synteny</strong> - Intervals within two sets of chromosomes that have similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> which are either in ...</p>
+<p><a name="BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi"></a><strong>synteny</strong> - Intervals within two sets of chromosomes that have similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> which are either in ...</p>
 <ul>
 <li>
 <p>the same order.</p>
@@ -11249,26 +11336,26 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_feb089f8283ebeb0a53ce28c3d58c61f4291646f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s (reversals, <a href="#BM_(translocation)%2Fi">translocation</a>s, etc..) are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterparts).</p>
+<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s (reversals, <a href="#BM_(translocation)%2Fi">translocation</a>s, etc..) are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterparts).</p>
 <p><img src="svgbob_4a1648189b154c1a61caff54364c883225347462.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(parsimony%7Cparsimonious)%2Fi"></a><strong>parsimony</strong> - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.</p>
 </li>
 <li>
-<p><a name="BM_(permutation)_GR%2Fi"></a><strong>permutation</strong> - Given two species that share <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s, each <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is mapped as an ID (non-zero integer) and direction (+ or -). This mapping (referred to as a <a href="#BM_(permutation)_GR%2Fi">permutation</a>) is used to model <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> operations. For example, a ....</p>
+<p><a name="BM_(permutation)_GR%2Fi"></a><strong>permutation</strong> - Given two species that share <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s, each <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is mapped as an ID (non-zero integer) and direction (+ or -). This mapping (referred to as a <a href="#BM_(permutation)_GR%2Fi">permutation</a>) is used to model <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> operations. For example, a ....</p>
 <ul>
 <li>
-<p>reversal on <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s 4 to 5 reverses its order and direction.</p>
+<p>reversal on <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s 4 to 5 reverses its order and direction.</p>
 <p><img src="svgbob_fd1bac70fa43d2bfee2fccc20094429ad29032a8.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a href="#BM_(translocation)%2Fi">translocation</a> on <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> 4 changes its position.</p>
+<p><a href="#BM_(translocation)%2Fi">translocation</a> on <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> 4 changes its position.</p>
 <p><img src="svgbob_ca8318b3186b15f42cd2ae7936843bc375402458.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 <p>If a permutation consists of all positive elements ordered ascending (1 to n), it's referred to as the identity <a href="#BM_(permutation)_GR%2Fi">permutation</a>. The top row in both examples above are identity <a href="#BM_(permutation)_GR%2Fi">permutation</a>s.</p>
-<p>When comparing the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between two species, one of the species is typically represented as an identity <a href="#BM_(permutation)_GR%2Fi">permutation</a>. For example, given 7 <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between species A and B, mapping from the perspective of A...</p>
+<p>When comparing the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between two species, one of the species is typically represented as an identity <a href="#BM_(permutation)_GR%2Fi">permutation</a>. For example, given 7 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between species A and B, mapping from the perspective of A...</p>
 <pre><code>"A (source):"      +1 +2 +3 +4 +5 +6 +7
 "B (destination):" -3 +4 +1 +2 -7 -6 -5
 </code></pre>
@@ -11276,7 +11363,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <pre><code>"B (source):"      +1 +2 +3 +4 +5 +6 +7
 "A (destination):" +3 +4 -1 +2 -7 -6 -5
 </code></pre>
-<p>Each destination is considered a <a href="#BM_(permutation)_GR%2Fi">permutation</a> of the source: one of several possible variations of how the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s can be ordered and arranged.</p>
+<p>Each destination is considered a <a href="#BM_(permutation)_GR%2Fi">permutation</a> of the source: one of several possible variations of how the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s can be ordered and arranged.</p>
 </li>
 <li>
 <p><a name="BM_(breakpoint)_GR%2Fi"></a><strong>breakpoint</strong> / <a name="BM_(adjacent%7Cadjacency)_GR%2Fi"></a><strong>adjacency</strong> - Given a <a href="#BM_(permutation)_GR%2Fi">permutation</a>, add a prefix of 0 and a suffix of length + 1. For example, ...</p>
@@ -11294,51 +11381,51 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Since each reversal can at most reduce the number of <a href="#BM_(breakpoint)_GR%2Fi">breakpoint</a>s by 2, the <a href="#BM_(reversal%20distance)%2Fi">reversal distance</a> must be at least half the number of <a href="#BM_(breakpoint)_GR%2Fi">breakpoint</a>s (lower bound): <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>r</mi><mi>e</mi><mi>v</mi></mrow></msub><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo><mo>&gt;</mo><mo>=</mo><mfrac><mrow><mi>b</mi><mi>p</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">d_{rev}(p) &gt;= \frac{bp(p)}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">p</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">b</span><span class="mord mathnormal mtight">p</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">p</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>. In other words, the minimum number of reversals to transform a <a href="#BM_(permutation)_GR%2Fi">permutation</a>s to an identity <a href="#BM_(permutation)_GR%2Fi">permutation</a> will never be less than <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>b</mi><mi>p</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{bp(p)}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">b</span><span class="mord mathnormal mtight">p</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">p</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
 </li>
 <li>
-<p><a name="BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi"></a><strong>genomic dot-plot</strong> - Given two <a href="#BM_(genome)%2Fi">genome</a>s, create a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed for each shared <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>. In this case, a shared <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is either a normal match or a <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> match. Also, shared <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s may be fuzzily found (e.g. within some <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> rather than a direct match).</p>
+<p><a name="BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi"></a><strong>genomic dot-plot</strong> - Given two <a href="#BM_(genome)%2Fi">genome</a>s, create a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, where a match is either a shared <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> or a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> and its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>. Matches may also be fuzzily found (e.g. within some <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> rather).</p>
 <p>For example, ...</p>
-<p><img src="svgbob_0d6f7f372daf3c831c71318f265b6a8fcabd7d00.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">Genomic dot-plot</a>s are typically used in building <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>s: Graphs that reveal <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">shared synteny</a> blocks (shared stretches of DNA). <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s exist because <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse vs human).</p>
+<p><img src="svgbob_3e7a2fb0e16cdd00ff9eaefd665998612d1db15c.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">Genomic dot-plot</a>s are typically used in building <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>s: Graphs that reveal shared <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s (shared stretches of DNA). <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s exist because <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse vs human).</p>
 </li>
 <li>
-<p><a name="BM_(synteny%20graph)%2Fi"></a><strong>synteny graph</strong> - Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, cluster together points so as to reveal <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, ...</p>
+<p><a name="BM_(synteny%20graph)%2Fi"></a><strong>synteny graph</strong> - Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, cluster together points so as to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, ...</p>
 <p><img src="svgbob_e0e803588b9c7f5303f4bb42a9757ecd1de2be9e.svg" alt="Kroki diagram output"></p>
-<p>... reveals that 4 <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (B) while three are matching against their <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a>s (A, C, and D)...</p>
+<p>... reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (B) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, C, and D)...</p>
 <p><img src="svgbob_7484e192b1d86fbd6a5779e904a160fcfd296fc8.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(breakpoint%20graph)_GR%2Fi"></a><strong>breakpoint graph</strong> - An undirected graph representing the order and orientation of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shared between two <a href="#BM_(genome)%2Fi">genome</a>s.</p>
+<p><a name="BM_(breakpoint%20graph)_GR%2Fi"></a><strong>breakpoint graph</strong> - An undirected graph representing the order and orientation of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shared between two <a href="#BM_(genome)%2Fi">genome</a>s.</p>
 <ol>
 <li>
-<p>Set the ends of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
+<p>Set the ends of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
 <p><img src="dot_0a2b976df1fe819b59828770f2a8a50d.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>Set the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
+<p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
 <p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
-<p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA%7Creverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
+<p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
 <p><img src="dot_19da0e0853121f133813afea783f11f6.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>Set the regions between <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines.</p>
+<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines.</p>
 <ul>
-<li>Blue lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 2 that border a pair of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
-<li>Red lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 1 that border a pair of <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
+<li>Blue lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 2 that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
+<li>Red lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 1 that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
 </ul>
 <p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
 </li>
 </ol>
-<p>For example, the following two <em>circular</em> <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them ...</p>
+<p>For example, the following two <em>circular</em> <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them ...</p>
 <p><img src="svgbob_d9c3850e434c39ca65495f2528f3b1023dc4ebfb.svg" alt="Kroki diagram output"></p>
 <p>The full <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> for the two circular <a href="#BM_(genome)%2Fi">genome</a>s above is as follows...</p>
 <p><img src="dot_b9b5219df336f8ed49e8f406c29349bc.svg" alt="Dot diagram"></p>
 <p>If the <a href="#BM_(genome)%2Fi">genome</a>s in the example above were linear rather than cyclic, their ends would be <a href="#BM_(connected)%2Fi">connected</a> by a colored edge to a termination node. The termination node indicates that the DNA ends...</p>
 <p><img src="dot_9d16d46062000e6b4dbd6e5a7716405f.svg" alt="Dot diagram"></p>
-<p><a href="#BM_(breakpoint%20graph)_GR%2Fi">Breakpoint graph</a>s are used to compute a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, and reversal operations (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s) that transforms one <a href="#BM_(genome)%2Fi">genome</a> into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s typically order <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s so that blue edges are uniformly sandwiched between <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / red edges get chaotically scattered around.</p>
+<p><a href="#BM_(breakpoint%20graph)_GR%2Fi">Breakpoint graph</a>s are used to compute a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, and reversal operations (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s) that transforms one <a href="#BM_(genome)%2Fi">genome</a> into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s typically order <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s so that blue edges are uniformly sandwiched between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / red edges get chaotically scattered around.</p>
 <p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation. By continually applying <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a>s on red edges, all red edges will eventually sync up to blue edges.</p>
 </li>
 <li>
-<p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one the red edges matches the blue edge at that boundary.</p>
-<p>For example, the two red edges highlighted below share the same <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and can be re-wired such that one of the edges matches the blue edge at that <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> boundary ...</p>
+<p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one the red edges matches the blue edge at that boundary.</p>
+<p>For example, the two red edges highlighted below share the same <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and can be re-wired such that one of the edges matches the blue edge at that <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> boundary ...</p>
 <p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
 <p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example...</p>
 <ul>
@@ -11364,7 +11451,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="dot_daa5f09c12a12baad116e997fc9e1d39.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p><a name="BM_(permutation)_GRFIXMEFIXMEFIXMEFIXME%2Fi"></a><strong>permutation</strong> - A list representing one of the <a href="#BM_(genome)%2Fi">genome</a>s in a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The list representation is generated by walking that <a href="#BM_(genome)%2Fi">genome</a>'s edges, where each walked edge that's a <a href="#BM_(shared%20synteny%7Csynteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is appended to the list with a ...</p>
+<p><a name="BM_(permutation)_GRFIXMEFIXMEFIXMEFIXME%2Fi"></a><strong>permutation</strong> - A list representing one of the <a href="#BM_(genome)%2Fi">genome</a>s in a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The list representation is generated by walking that <a href="#BM_(genome)%2Fi">genome</a>'s edges, where each walked edge that's a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is appended to the list with a ...</p>
 <ul>
 <li>+ prefix if it's walked from head to tail.</li>
 <li>- prefix if it's walked from tail to head.</li>
