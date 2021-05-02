@@ -292,7 +292,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -424,12 +424,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>AAGGG = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
+<li>AAGGG = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -503,18 +503,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1647,7 +1647,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>ATAAT<br>ATAAT<br>ATAAT</p>
+<p>AAAGA<br>AAAGA<br>AAAGA</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2170,7 +2170,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2231,7 +2231,7 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2915,22 +2915,22 @@ PEVZNER_2_16_ALPHABET[frozenset({<span class="hljs-string">'C'</span>, <span cla
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 </ul>
 </div>
 <p></p>
@@ -5808,7 +5808,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_2ec4fe4353c196bba361fe6ca5387ee0.svg" alt="Dot diagram"></p>
+<p><img src="dot_4aba33933261310cf3a28285b725a33a.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5866,7 +5866,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_b01b5dac357c22352ca791a7e4775d50.svg" alt="Dot diagram"></p>
+<p><img src="dot_fc431804212bc73d78b0dba712bf7104.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6014,13 +6014,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_cf4893fcb5ccedb6f08ee17de1c0910f.svg" alt="Dot diagram"></p>
+<p><img src="dot_01bcd3f1033382ace377db30252d4545.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_4475130e0daf7d3f4f9ab00ef4bdf8b6.svg" alt="Dot diagram"></p>
+<p><img src="dot_6dbc41a1800d46216656490d39cb8c46.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6057,7 +6057,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f53b3fb2b24db47cd1060da959588d72.svg" alt="Latex diagram"></p>
+<p><img src="latex_30f6dc8cb3a92e97e67403a891ed625c.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6068,7 +6068,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_83e45ecf8122ccb5580f07456224fee1.svg" alt="Latex diagram"></p>
+<p><img src="latex_70e656b7a83b57009025e0e3b4410a88.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6129,9 +6129,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_32970371737ccea1c9c7892289a4039d.svg" alt="Latex diagram"></p>
+<p><img src="latex_1a96cd0fb897e2273426a297aa3e9bdf.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
-GA-T
+-GAT
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6407,7 +6407,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_7e359f4877d08f2ab87b060e797a1a33.svg" alt="Latex diagram"></p>
+<p><img src="latex_c70a9c6bd84e25e06eb7858dc95280a5.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6415,7 +6415,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_3e0e7371a545f280aba628f80242cfbb.svg" alt="Latex diagram"></p>
+<p><img src="latex_3e4dce3dca6bedbf58a797fd6d73f609.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6757,7 +6757,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_2d04fe13d31153bdf453e7771bf65596.svg" alt="Latex diagram"></p>
+<p><img src="latex_a2f06bd4f512308adb85bb6993ce5fec.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6840,7 +6840,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_7068cf25700d6fb87d1eeecdb70448f4.svg" alt="Latex diagram"></p>
+<p><img src="latex_0805a7a89e8c38b2ed6e6f793d40385f.svg" alt="Latex diagram"></p>
 <pre><code>AG-AC
 AGAAC
 </code></pre>
@@ -6998,7 +6998,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_32093a8e6ec6b257707195d0c0e6bb7f.svg" alt="Latex diagram"></p>
+<p><img src="latex_26b2d96239637352ea2e79fe77f91f2d.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7081,9 +7081,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_01dcb1f06303c3e217f4aad5ebc6c8b9.svg" alt="Latex diagram"></p>
+<p><img src="latex_49da8e98f0c7a4f02feecbb298e2c292.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
-A-AC
+AAAC
 </code></pre>
 <p>Weight: 2.0</p>
 </div>
@@ -7238,7 +7238,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ee6ad4dfae0bc8c6e975560c227ab080.svg" alt="Latex diagram"></p>
+<p><img src="latex_c5d71794e3f1256584b6b55f16aa93cd.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7321,7 +7321,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_2746588f91ff6eb82732b80b94345f69.svg" alt="Latex diagram"></p>
+<p><img src="latex_9853b787869a2e042575ec8b0f9476a4.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7588,7 +7588,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ff6a9eea0b62216a514d5c34868597b9.svg" alt="Latex diagram"></p>
+<p><img src="latex_56a19f7d0b2e8ee3cb8479595561c6fe.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7674,9 +7674,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_76d3109ab035727a761d2e9af37dfcc0.svg" alt="Latex diagram"></p>
-<pre><code>TA----GGCGGAT
-TACCCC--C--AT
+<p><img src="latex_d06aad522086d04beeba8a0aad0d6b61.svg" alt="Latex diagram"></p>
+<pre><code>TAGGCGG----AT
+TA--C--CCCCAT
 </code></pre>
 <p>Weight: 1.4999999999999998</p>
 </div>
@@ -7709,7 +7709,7 @@ TACCCC--C--AT
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c293304db81fea2d551ce2f0d64e555f.svg" alt="Latex diagram"></p>
+<p><img src="latex_682f986c2f24467d590167a52e28b184.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7827,7 +7827,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_ae9dcf1624a91f1737fe0442bf1d0ece.svg" alt="Latex diagram"></p>
+<p><img src="latex_11ac7e1566be4db55095c1a192ba0769.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -8021,9 +8021,9 @@ G G T -1
 G G G 1
 </code></pre>
 <p>... the global alignment is...</p>
-<pre><code>---TATTATTA--T
+<pre><code>--T-ATTATTA--T
 GATTATGATTA--T
----TACCATTACAT
+--T-ACCATTACAT
 </code></pre>
 <p>Weight: 0.0</p>
 </div>
@@ -8765,7 +8765,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This is code I came up with to solve the ch 6 final assignment in the Pevzner book. I came up with / fleshed out the ideas myself -- the book only hinted at specific bits.</p>
 </div>
-<p><a href="ch6_code/src/synteny_graph/MatchMerger.py">ch6_code/src/synteny_graph/MatchMerger.py</a> (lines 19 to 66):</p>
+<p><a href="ch6_code/src/synteny_graph/MatchMerger.py">ch6_code/src/synteny_graph/MatchMerger.py</a> (lines 18 to 65):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">distance_merge</span>(<span class="hljs-params">matches: Iterable[Match], radius: int, angle_half_maw: int = <span class="hljs-number">45</span></span>) -&gt; List[Match]:</span>
     min_x = min(m.x_axis_chromosome_min_idx <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches)
     max_x = max(m.x_axis_chromosome_max_idx <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches)
@@ -8814,6 +8814,236 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
                 <span class="hljs-keyword">break</span>
     <span class="hljs-keyword">return</span> list(clipper.get())
 </code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Generating synteny graph for...</p>
+<ul>
+<li>k=7</li>
+<li>cyclic=False</li>
+<li>genome1={'A0': 'GGATGGTGTCCTCATCTAATGATGTCGGTAAAGAGTCTACCCCGAATGATTATCTGAGTCTCCCATGAACCAAGTCCGTGGTATAGTCCATACTCTGAACCAAAACAGATAAACCAGCAAGATACATTGCAGAAGCTTGCCACCTTAGCAGGTTGTCAGATATCCGTTTCTGGAACTCCCGGGAGGACGATCGGAAGTTGAGCACAGGTACAAACACTTCAGGAATGATCTACTAAACTTTAGGGTCCGTACCTTTTATAATCCTTGCTAGCATCATGTTGAAGGTTAGAGGATTCCGAAACCAGAAGTGGCGATCTCGCTAAAGCAGGTCACCACGGTCAGCGGGTGGCCATTTACTCGTGAAAACCATAGTCCGTGAAAGCTGGGCAACTTTAGTTGGGACCCTTAAGGCGACTGAGGGAAGCAACTATCGGAAGTATCGTACAGGTCGTAAAGTACCAGTACGGAAGAAGCAGGGAGTTATAATATTCACTACCACAATTACCCGAGTTCACTTGTTTCAATCGCCCTCCCTTGACAGAACGTGCGTTACGTAGGAGTGCTTGACATACGGCGGCCGTCTGAGCTAGGACTATCGGAGCGTAATAATGGGATTTCAAATTTACCAGTTCCAGGTTGTCCAAGGGCTTGGCGGTGAGTCGACATGGAAAGATAAATTCCTCAGGTGCTGGCGCTCCCGTGGGGCCGCAGACACTACCTATTGGAGGGTGCTTAAACTATACAGCGCGCTAATTGTTAACTACTCCTTTGTGTCATAAGGGAGGGGAAACACGCGAGGACCGCCTTTGATCTGGTTCAAACGCCTAGAAGTATCTCCATTCTGTCCATTACGCCACCGCCCCGTCGAATGGTACCGGTATCGCTTGACATCTGCTTCTATACTAGAACAACTAATGCCGGCTTCTGGAGTGAAGGCACCATCCCACCAGAGCATTGAAGATTCGCTCGTTGGATTGATAGGAGTGAATATTCTGTCATCTCCTAACTTTTTGGGCACAGCTAG'}</li>
+<li>genome2={'B0': 'CGGCATGGTGTCCTTCATGTGACCTGATGTCCGATAAGGGGGTTCTACGAAGGGCCCTCCACAGGTCCTTTGCCTAAGGATTGTTGGGTCGCATTCAACTGTTACGGAGACGTTACTAGGACGACCTAATAGAACACAACCAAGTTACGTACGCTATATCCTGTCCTGACCCAGTACCCTCTGGGTCTATATAAGTAAGCGGGTACGATTCGAGAGGGGAGCAACCAGTTACAAACACTTCAGGAATCGATCTTACTTAAACTTTTGGGTCCGATACTTTATAATCCTTGCTAGCCTACGATGTTGAGTTGAGGATTCGCGAACCAGAACAATTGCCGATACTCGCTATTAGAGGTCTCCAACGGTCACCGGGTGGGCCATTGACTCGTGAAACCAATAACCGGTGCCATTCGGACAGGGTGCTGTGGCTAGTGAAGTGAATGGCAGATTACGTCTACTGCGTTTGCAACCCAGATCCAAAGGCGTGGCTTCTACGCGTGTTTCCCATCCCTTATCACACAAGAGGGAGTAGTTAACAATTAGCGTGCTGAAGTAGTAAGCCACCCCAATGTTTAGTTCTGCGTGCCCACGGGAGCCAAGCCATCCTGAGGATTTTATGTGTCCATGTCGACAACTACACGGCAAGCACTTAGACAAGCCTGGCAACTGCGTAGAATTATGAAAGCCCACTTATTGCTCCGTATGGTCCGAGCTCAGACGGCCGCCGCTATGTCAAGCACCCCTACGGTTAACGCACGTGTTGTCCAAGGGAAGAGCGGATTGGAGACAAACGTGATCTGCGGGTTAATTGTGGTTAGTGACTATTATTAACCTCCCGTCTTCCTTCCGTCACGGGTAACCTTTACGACCTCATTACGATACTCTCCGATAGGTTGCCTTACCTTCAGTCGCCTAACGGGTCCCAATAAAGTTGCCCGCGTTCTAGGCGAATCATCGCTTGACATCTTGCTTCTTATATACAACCAACCAAATCCCGGCTTCTGGAGCTGAGGCACGCATCCCACCCAGAGGCATTGAAGATTACGCCTCGTTCGGATTGATAGTAGTGCGATATTCTGTATCTCCCTAACTATTTTCGGGCACACTACG'}</li>
+</ul>
+<p>Original genomic dot plot...</p>
+<p><img src="syntenygraphpre_75a3c683e219cc12d6ef022557670f07.svg" alt="Genomic Dot Plot"></p>
+<p>Merging radius=4 angle_half_maw=45...</p>
+<p>Merging radius=8 angle_half_maw=45...</p>
+<p>Merging radius=10 angle_half_maw=45...</p>
+<p>Merging radius=15 angle_half_maw=45...</p>
+<p>Merging radius=20 angle_half_maw=45...</p>
+<p>Final synteny graph...</p>
+<p><img src="syntenygraphpost_75a3c683e219cc12d6ef022557670f07.svg" alt="Synteny Graph"></p>
+<ul>
+<li>{'y': ('A0', 727, 733), 'x': ('B0', 734, 740), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 288, 294), 'x': ('B0', 607, 613), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 445, 451), 'x': ('B0', 120, 126), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 711, 717), 'x': ('B0', 1102, 1108), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 697, 703), 'x': ('B0', 585, 591), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 593, 599), 'x': ('B0', 884, 890), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 903, 909), 'x': ('B0', 129, 135), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 116, 122), 'x': ('B0', 963, 969), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 119, 125), 'x': ('B0', 1077, 1083), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 956, 995), 'x': ('B0', 1036, 1079), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 902, 908), 'x': ('B0', 939, 945), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 326, 332), 'x': ('B0', 18, 24), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 208, 220), 'x': ('B0', 229, 241), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 374, 380), 'x': ('B0', 386, 392), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 610, 616), 'x': ('B0', 989, 995), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 694, 700), 'x': ('B0', 832, 838), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 129, 135), 'x': ('B0', 997, 1003), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 917, 978), 'x': ('B0', 994, 1061), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 752, 790), 'x': ('B0', 499, 539), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 865, 871), 'x': ('B0', 406, 412), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 458, 464), 'x': ('B0', 170, 176), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 603, 609), 'x': ('B0', 823, 829), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 340, 346), 'x': ('B0', 197, 203), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 212, 266), 'x': ('B0', 233, 289), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 449, 469), 'x': ('B0', 843, 866), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 764, 770), 'x': ('B0', 65, 71), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 558, 564), 'x': ('B0', 643, 649), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 722, 728), 'x': ('B0', 54, 60), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 544, 582), 'x': ('B0', 715, 756), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 751, 763), 'x': ('B0', 528, 540), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 567, 573), 'x': ('B0', 698, 704), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 388, 452), 'x': ('B0', 863, 932), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 830, 836), 'x': ('B0', 1078, 1084), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 435, 441), 'x': ('B0', 336, 342), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 448, 454), 'x': ('B0', 861, 867), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 881, 887), 'x': ('B0', 955, 961), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 661, 700), 'x': ('B0', 588, 628), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 548, 554), 'x': ('B0', 143, 149), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 660, 666), 'x': ('B0', 623, 629), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 821, 827), 'x': ('B0', 942, 948), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 134, 140), 'x': ('B0', 640, 646), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 720, 726), 'x': ('B0', 779, 785), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 904, 910), 'x': ('B0', 325, 331), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 387, 414), 'x': ('B0', 907, 933), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 884, 890), 'x': ('B0', 729, 735), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 67, 73), 'x': ('B0', 137, 143), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 435, 441), 'x': ('B0', 271, 277), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 750, 756), 'x': ('B0', 805, 811), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 919, 944), 'x': ('B0', 486, 510), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 497, 503), 'x': ('B0', 805, 811), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 167, 173), 'x': ('B0', 999, 1005), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 211, 223), 'x': ('B0', 232, 244), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 289, 361), 'x': ('B0', 311, 389), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 788, 808), 'x': ('B0', 477, 501), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 97, 103), 'x': ('B0', 985, 991), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 781, 787), 'x': ('B0', 213, 219), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 593, 599), 'x': ('B0', 29, 35), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 279, 285), 'x': ('B0', 900, 906), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 255, 267), 'x': ('B0', 278, 290), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 417, 423), 'x': ('B0', 767, 773), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 443, 449), 'x': ('B0', 60, 66), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 3, 9), 'x': ('B0', 5, 11), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 411, 453), 'x': ('B0', 862, 910), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 451, 457), 'x': ('B0', 274, 280), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 747, 765), 'x': ('B0', 526, 544), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 510, 516), 'x': ('B0', 434, 440), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 259, 305), 'x': ('B0', 282, 327), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 955, 993), 'x': ('B0', 1035, 1077), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 831, 837), 'x': ('B0', 1079, 1085), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 732, 738), 'x': ('B0', 256, 262), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 385, 391), 'x': ('B0', 929, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 214, 220), 'x': ('B0', 432, 438), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 635, 641), 'x': ('B0', 759, 765), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 468, 474), 'x': ('B0', 967, 973), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 436, 451), 'x': ('B0', 864, 881), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 420, 426), 'x': ('B0', 966, 972), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 2, 8), 'x': ('B0', 4, 10), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 928, 934), 'x': ('B0', 430, 436), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 750, 762), 'x': ('B0', 529, 541), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 823, 829), 'x': ('B0', 940, 946), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 967, 973), 'x': ('B0', 357, 363), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 884, 890), 'x': ('B0', 958, 964), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 922, 958), 'x': ('B0', 999, 1038), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 921, 927), 'x': ('B0', 998, 1004), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 195, 201), 'x': ('B0', 306, 312), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 501, 507), 'x': ('B0', 852, 858), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 594, 600), 'x': ('B0', 883, 889), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 391, 397), 'x': ('B0', 571, 577), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 209, 221), 'x': ('B0', 230, 242), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 376, 382), 'x': ('B0', 679, 685), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 325, 331), 'x': ('B0', 19, 25), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 893, 899), 'x': ('B0', 487, 493), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 789, 823), 'x': ('B0', 459, 500), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 842, 848), 'x': ('B0', 619, 625), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 918, 924), 'x': ('B0', 995, 1001), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 89, 95), 'x': ('B0', 878, 884), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 564, 583), 'x': ('B0', 714, 734), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 919, 925), 'x': ('B0', 996, 1002), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 696, 702), 'x': ('B0', 586, 592), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 467, 473), 'x': ('B0', 968, 974), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 785, 791), 'x': ('B0', 498, 504), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 1004, 1010), 'x': ('B0', 259, 265), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 183, 189), 'x': ('B0', 117, 123), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 235, 241), 'x': ('B0', 926, 932), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 811, 817), 'x': ('B0', 320, 326), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 4, 10), 'x': ('B0', 6, 12), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 259, 265), 'x': ('B0', 75, 81), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 695, 701), 'x': ('B0', 587, 593), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 879, 898), 'x': ('B0', 953, 973), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 705, 711), 'x': ('B0', 796, 802), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 297, 303), 'x': ('B0', 389, 395), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 586, 592), 'x': ('B0', 115, 121), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 953, 959), 'x': ('B0', 1033, 1039), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 646, 652), 'x': ('B0', 594, 600), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 639, 645), 'x': ('B0', 763, 769), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 593, 599), 'x': ('B0', 269, 275), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 266, 272), 'x': ('B0', 288, 294), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 880, 892), 'x': ('B0', 954, 966), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 982, 988), 'x': ('B0', 435, 441), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 438, 444), 'x': ('B0', 202, 208), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 494, 500), 'x': ('B0', 808, 814), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 285, 291), 'x': ('B0', 348, 354), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 5, 25), 'x': ('B0', 7, 30), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 658, 664), 'x': ('B0', 626, 632), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 215, 221), 'x': ('B0', 547, 553), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 543, 587), 'x': ('B0', 710, 757), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 526, 532), 'x': ('B0', 53, 59), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 787, 793), 'x': ('B0', 496, 502), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 561, 567), 'x': ('B0', 956, 962), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 533, 539), 'x': ('B0', 957, 963), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 210, 222), 'x': ('B0', 231, 243), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 474, 503), 'x': ('B0', 523, 541), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 828, 834), 'x': ('B0', 272, 278), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 624, 630), 'x': ('B0', 223, 229), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 358, 364), 'x': ('B0', 386, 392), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 751, 757), 'x': ('B0', 327, 333), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 659, 665), 'x': ('B0', 624, 630), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 434, 440), 'x': ('B0', 272, 278), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 68, 74), 'x': ('B0', 138, 144), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 775, 781), 'x': ('B0', 33, 39), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 882, 888), 'x': ('B0', 731, 737), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 496, 502), 'x': ('B0', 806, 812), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 636, 642), 'x': ('B0', 760, 766), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 258, 270), 'x': ('B0', 281, 293), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 731, 737), 'x': ('B0', 255, 261), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 883, 889), 'x': ('B0', 730, 736), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 480, 486), 'x': ('B0', 278, 284), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 846, 852), 'x': ('B0', 871, 877), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 563, 584), 'x': ('B0', 713, 735), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 563, 569), 'x': ('B0', 958, 964), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 356, 362), 'x': ('B0', 384, 390), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 959, 965), 'x': ('B0', 313, 319), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 638, 644), 'x': ('B0', 762, 768), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 533, 539), 'x': ('B0', 730, 736), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 726, 732), 'x': ('B0', 735, 741), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 822, 828), 'x': ('B0', 941, 947), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 838, 844), 'x': ('B0', 1073, 1079), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 530, 548), 'x': ('B0', 752, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 1008, 1014), 'x': ('B0', 262, 268), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 545, 586), 'x': ('B0', 711, 755), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 385, 391), 'x': ('B0', 661, 667), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 495, 501), 'x': ('B0', 807, 813), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 941, 957), 'x': ('B0', 1019, 1037), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 386, 416), 'x': ('B0', 905, 934), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 600, 606), 'x': ('B0', 1040, 1046), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 179, 185), 'x': ('B0', 831, 837), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 202, 208), 'x': ('B0', 59, 65), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 920, 926), 'x': ('B0', 997, 1003), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 959, 965), 'x': ('B0', 946, 952), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 726, 732), 'x': ('B0', 417, 423), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 592, 598), 'x': ('B0', 885, 891), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 257, 269), 'x': ('B0', 280, 292), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 725, 731), 'x': ('B0', 416, 422), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 748, 792), 'x': ('B0', 497, 543), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 1011, 1017), 'x': ('B0', 582, 588), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 343, 349), 'x': ('B0', 559, 565), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 231, 237), 'x': ('B0', 570, 576), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 559, 565), 'x': ('B0', 642, 648), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 883, 889), 'x': ('B0', 957, 963), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 549, 555), 'x': ('B0', 144, 150), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 807, 813), 'x': ('B0', 793, 799), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 428, 434), 'x': ('B0', 269, 275), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 637, 643), 'x': ('B0', 761, 767), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 907, 913), 'x': ('B0', 630, 636), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 882, 888), 'x': ('B0', 956, 962), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 974, 1018), 'x': ('B0', 1057, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 562, 585), 'x': ('B0', 712, 736), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 640, 646), 'x': ('B0', 764, 770), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 301, 307), 'x': ('B0', 998, 1004), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 41, 47), 'x': ('B0', 407, 413), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 847, 853), 'x': ('B0', 1040, 1046), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 256, 268), 'x': ('B0', 279, 291), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 487, 493), 'x': ('B0', 435, 441), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 749, 761), 'x': ('B0', 530, 542), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 488, 494), 'x': ('B0', 429, 435), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 428, 434), 'x': ('B0', 29, 35), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 684, 690), 'x': ('B0', 418, 424), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 213, 239), 'x': ('B0', 234, 263), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 384, 390), 'x': ('B0', 930, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 334, 363), 'x': ('B0', 361, 391), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 848, 854), 'x': ('B0', 1041, 1047), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 810, 816), 'x': ('B0', 321, 327), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 562, 568), 'x': ('B0', 957, 963), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 645, 651), 'x': ('B0', 595, 601), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 662, 699), 'x': ('B0', 589, 627), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 115, 121), 'x': ('B0', 964, 970), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 281, 287), 'x': ('B0', 856, 862), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 658, 664), 'x': ('B0', 625, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Breakpoint%20Permutation"></a><h3>Breakpoint Permutation</h3>
 <p><a name="BM_(Algorithms%5C%2FSynteny%2FBreakpoint%20Permutation)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -8926,8 +9156,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -8945,19 +9175,19 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -8969,12 +9199,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -9035,8 +9265,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 21</p>
+<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 18</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>
