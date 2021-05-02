@@ -98,8 +98,7 @@ class Match:
         return distance(end_pt[0], start_pt[0], end_pt[1], start_pt[1])
 
     def clip_x_min(self, x: int) -> Optional[Match]:
-        assert self.x_axis_chromosome_max_idx >= x >= self.x_axis_chromosome_min_idx
-        if x == self.x_axis_chromosome_max_idx:
+        if x >= self.x_axis_chromosome_max_idx:
             return None
         return Match(
             self.y_axis_chromosome,
@@ -112,8 +111,7 @@ class Match:
         )
 
     def clip_x_max(self, x: int) -> Optional[Match]:
-        assert self.x_axis_chromosome_max_idx >= x >= self.x_axis_chromosome_min_idx
-        if x == self.x_axis_chromosome_min_idx:
+        if x <= self.x_axis_chromosome_min_idx:
             return None
         return Match(
             self.y_axis_chromosome,
@@ -126,8 +124,7 @@ class Match:
         )
 
     def clip_y_min(self, y: int) -> Optional[Match]:
-        assert self.y_axis_chromosome_max_idx >= y >= self.y_axis_chromosome_min_idx
-        if y == self.y_axis_chromosome_max_idx:
+        if y >= self.y_axis_chromosome_max_idx:
             return None
         return Match(
             self.y_axis_chromosome,
@@ -140,8 +137,7 @@ class Match:
         )
 
     def clip_y_max(self, y: int) -> Optional[Match]:
-        assert self.y_axis_chromosome_max_idx >= y >= self.y_axis_chromosome_min_idx
-        if y == self.y_axis_chromosome_min_idx:
+        if y <= self.y_axis_chromosome_min_idx:
             return None
         return Match(
             self.y_axis_chromosome,

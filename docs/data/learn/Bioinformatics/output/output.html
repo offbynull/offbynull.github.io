@@ -8660,7 +8660,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>WHY</strong>: <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">Genomic dot plot</a>s are used for identifying <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between two <a href="#BM_(genome)%2Fi">genome</a>s.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following algorithm finds direct matches. However, a better solution may be to consider anything with some <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> as a match. Doing so would require non-trivial changes to the algorithm (e.g. modifying the lookup to use bloom filters).</p>
-<p><a href="ch6_code/src/synteny_graph/Match.py">ch6_code/src/synteny_graph/Match.py</a> (lines 180 to 236):</p>
+<p><a href="ch6_code/src/synteny_graph/Match.py">ch6_code/src/synteny_graph/Match.py</a> (lines 176 to 232):</p>
 <pre class="hljs"><code><span class="hljs-meta">@staticmethod</span>
 <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_from_genomes</span>(<span class="hljs-params">
         k: int,
@@ -8763,7 +8763,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>These components are complicated and not specific to bioinformatics. As such, this section doesn't discuss them in detail but the source code is available (entrypoint is displayed below)).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This is code I came up with to solve the ch 6 final assignment in the Pevzner book. I came up with / fleshed out the ideas myself -- the book only hinted at specific bits.</p>
+<p>This is code I came up with to solve the ch 6 final assignment in the Pevzner book. I came up with / fleshed out the ideas myself -- the book only hinted at specific bits. I believe the fundamentals are correct but the implementation is finicky and requires a lot of knob twisting to get decent results.</p>
 </div>
 <p><a href="ch6_code/src/synteny_graph/MatchMerger.py">ch6_code/src/synteny_graph/MatchMerger.py</a> (lines 18 to 65):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">distance_merge</span>(<span class="hljs-params">matches: Iterable[Match], radius: int, angle_half_maw: int = <span class="hljs-number">45</span></span>) -&gt; List[Match]:</span>
@@ -8824,223 +8824,22 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>genome2={'B0': 'CGGCATGGTGTCCTTCATGTGACCTGATGTCCGATAAGGGGGTTCTACGAAGGGCCCTCCACAGGTCCTTTGCCTAAGGATTGTTGGGTCGCATTCAACTGTTACGGAGACGTTACTAGGACGACCTAATAGAACACAACCAAGTTACGTACGCTATATCCTGTCCTGACCCAGTACCCTCTGGGTCTATATAAGTAAGCGGGTACGATTCGAGAGGGGAGCAACCAGTTACAAACACTTCAGGAATCGATCTTACTTAAACTTTTGGGTCCGATACTTTATAATCCTTGCTAGCCTACGATGTTGAGTTGAGGATTCGCGAACCAGAACAATTGCCGATACTCGCTATTAGAGGTCTCCAACGGTCACCGGGTGGGCCATTGACTCGTGAAACCAATAACCGGTGCCATTCGGACAGGGTGCTGTGGCTAGTGAAGTGAATGGCAGATTACGTCTACTGCGTTTGCAACCCAGATCCAAAGGCGTGGCTTCTACGCGTGTTTCCCATCCCTTATCACACAAGAGGGAGTAGTTAACAATTAGCGTGCTGAAGTAGTAAGCCACCCCAATGTTTAGTTCTGCGTGCCCACGGGAGCCAAGCCATCCTGAGGATTTTATGTGTCCATGTCGACAACTACACGGCAAGCACTTAGACAAGCCTGGCAACTGCGTAGAATTATGAAAGCCCACTTATTGCTCCGTATGGTCCGAGCTCAGACGGCCGCCGCTATGTCAAGCACCCCTACGGTTAACGCACGTGTTGTCCAAGGGAAGAGCGGATTGGAGACAAACGTGATCTGCGGGTTAATTGTGGTTAGTGACTATTATTAACCTCCCGTCTTCCTTCCGTCACGGGTAACCTTTACGACCTCATTACGATACTCTCCGATAGGTTGCCTTACCTTCAGTCGCCTAACGGGTCCCAATAAAGTTGCCCGCGTTCTAGGCGAATCATCGCTTGACATCTTGCTTCTTATATACAACCAACCAAATCCCGGCTTCTGGAGCTGAGGCACGCATCCCACCCAGAGGCATTGAAGATTACGCCTCGTTCGGATTGATAGTAGTGCGATATTCTGTATCTCCCTAACTATTTTCGGGCACACTACG'}</li>
 </ul>
 <p>Original genomic dot plot...</p>
-<p><img src="syntenygraphpre_75a3c683e219cc12d6ef022557670f07.svg" alt="Genomic Dot Plot"></p>
-<p>Merging radius=4 angle_half_maw=45...</p>
-<p>Merging radius=8 angle_half_maw=45...</p>
+<p><img src="syntenygraphpre_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Genomic Dot Plot"></p>
 <p>Merging radius=10 angle_half_maw=45...</p>
 <p>Merging radius=15 angle_half_maw=45...</p>
-<p>Merging radius=20 angle_half_maw=45...</p>
+<p>Merging radius=25 angle_half_maw=45...</p>
+<p>Merging radius=35 angle_half_maw=45...</p>
+<p>Filtering max_filter_length=35.0 max_merge_distance=35.0...</p>
+<p>Merging radius=100 angle_half_maw=45...</p>
+<p>Filtering max_filter_length=65.0 max_merge_distance=65.0...</p>
+<p>Culling below length=15.0...</p>
 <p>Final synteny graph...</p>
-<p><img src="syntenygraphpost_75a3c683e219cc12d6ef022557670f07.svg" alt="Synteny Graph"></p>
+<p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
-<li>{'y': ('A0', 727, 733), 'x': ('B0', 734, 740), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 288, 294), 'x': ('B0', 607, 613), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 445, 451), 'x': ('B0', 120, 126), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 711, 717), 'x': ('B0', 1102, 1108), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 697, 703), 'x': ('B0', 585, 591), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 593, 599), 'x': ('B0', 884, 890), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 903, 909), 'x': ('B0', 129, 135), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 116, 122), 'x': ('B0', 963, 969), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 119, 125), 'x': ('B0', 1077, 1083), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 956, 995), 'x': ('B0', 1036, 1079), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 902, 908), 'x': ('B0', 939, 945), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 326, 332), 'x': ('B0', 18, 24), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 208, 220), 'x': ('B0', 229, 241), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 374, 380), 'x': ('B0', 386, 392), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 610, 616), 'x': ('B0', 989, 995), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 694, 700), 'x': ('B0', 832, 838), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 129, 135), 'x': ('B0', 997, 1003), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 917, 978), 'x': ('B0', 994, 1061), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 752, 790), 'x': ('B0', 499, 539), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 865, 871), 'x': ('B0', 406, 412), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 458, 464), 'x': ('B0', 170, 176), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 603, 609), 'x': ('B0', 823, 829), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 340, 346), 'x': ('B0', 197, 203), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 212, 266), 'x': ('B0', 233, 289), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 449, 469), 'x': ('B0', 843, 866), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 764, 770), 'x': ('B0', 65, 71), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 558, 564), 'x': ('B0', 643, 649), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 722, 728), 'x': ('B0', 54, 60), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 544, 582), 'x': ('B0', 715, 756), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 751, 763), 'x': ('B0', 528, 540), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 567, 573), 'x': ('B0', 698, 704), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 388, 452), 'x': ('B0', 863, 932), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 830, 836), 'x': ('B0', 1078, 1084), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 435, 441), 'x': ('B0', 336, 342), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 448, 454), 'x': ('B0', 861, 867), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 881, 887), 'x': ('B0', 955, 961), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 661, 700), 'x': ('B0', 588, 628), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 548, 554), 'x': ('B0', 143, 149), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 660, 666), 'x': ('B0', 623, 629), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 821, 827), 'x': ('B0', 942, 948), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 134, 140), 'x': ('B0', 640, 646), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 720, 726), 'x': ('B0', 779, 785), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 904, 910), 'x': ('B0', 325, 331), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 387, 414), 'x': ('B0', 907, 933), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 884, 890), 'x': ('B0', 729, 735), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 67, 73), 'x': ('B0', 137, 143), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 435, 441), 'x': ('B0', 271, 277), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 750, 756), 'x': ('B0', 805, 811), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 919, 944), 'x': ('B0', 486, 510), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 497, 503), 'x': ('B0', 805, 811), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 167, 173), 'x': ('B0', 999, 1005), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 211, 223), 'x': ('B0', 232, 244), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 289, 361), 'x': ('B0', 311, 389), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 788, 808), 'x': ('B0', 477, 501), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 97, 103), 'x': ('B0', 985, 991), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 781, 787), 'x': ('B0', 213, 219), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 593, 599), 'x': ('B0', 29, 35), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 279, 285), 'x': ('B0', 900, 906), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 255, 267), 'x': ('B0', 278, 290), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 417, 423), 'x': ('B0', 767, 773), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 443, 449), 'x': ('B0', 60, 66), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 3, 9), 'x': ('B0', 5, 11), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 411, 453), 'x': ('B0', 862, 910), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 451, 457), 'x': ('B0', 274, 280), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 747, 765), 'x': ('B0', 526, 544), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 510, 516), 'x': ('B0', 434, 440), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 259, 305), 'x': ('B0', 282, 327), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 955, 993), 'x': ('B0', 1035, 1077), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 831, 837), 'x': ('B0', 1079, 1085), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 732, 738), 'x': ('B0', 256, 262), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 385, 391), 'x': ('B0', 929, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 214, 220), 'x': ('B0', 432, 438), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 635, 641), 'x': ('B0', 759, 765), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 468, 474), 'x': ('B0', 967, 973), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 436, 451), 'x': ('B0', 864, 881), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 420, 426), 'x': ('B0', 966, 972), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 2, 8), 'x': ('B0', 4, 10), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 928, 934), 'x': ('B0', 430, 436), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 750, 762), 'x': ('B0', 529, 541), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 823, 829), 'x': ('B0', 940, 946), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 967, 973), 'x': ('B0', 357, 363), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 884, 890), 'x': ('B0', 958, 964), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 922, 958), 'x': ('B0', 999, 1038), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 921, 927), 'x': ('B0', 998, 1004), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 195, 201), 'x': ('B0', 306, 312), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 501, 507), 'x': ('B0', 852, 858), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 594, 600), 'x': ('B0', 883, 889), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 391, 397), 'x': ('B0', 571, 577), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 209, 221), 'x': ('B0', 230, 242), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 376, 382), 'x': ('B0', 679, 685), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 325, 331), 'x': ('B0', 19, 25), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 893, 899), 'x': ('B0', 487, 493), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 789, 823), 'x': ('B0', 459, 500), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 842, 848), 'x': ('B0', 619, 625), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 918, 924), 'x': ('B0', 995, 1001), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 89, 95), 'x': ('B0', 878, 884), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 564, 583), 'x': ('B0', 714, 734), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 919, 925), 'x': ('B0', 996, 1002), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 696, 702), 'x': ('B0', 586, 592), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 467, 473), 'x': ('B0', 968, 974), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 785, 791), 'x': ('B0', 498, 504), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 1004, 1010), 'x': ('B0', 259, 265), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 183, 189), 'x': ('B0', 117, 123), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 235, 241), 'x': ('B0', 926, 932), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 811, 817), 'x': ('B0', 320, 326), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 4, 10), 'x': ('B0', 6, 12), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 259, 265), 'x': ('B0', 75, 81), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 695, 701), 'x': ('B0', 587, 593), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 879, 898), 'x': ('B0', 953, 973), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 705, 711), 'x': ('B0', 796, 802), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 297, 303), 'x': ('B0', 389, 395), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 586, 592), 'x': ('B0', 115, 121), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 953, 959), 'x': ('B0', 1033, 1039), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 646, 652), 'x': ('B0', 594, 600), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 639, 645), 'x': ('B0', 763, 769), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 593, 599), 'x': ('B0', 269, 275), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 266, 272), 'x': ('B0', 288, 294), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 880, 892), 'x': ('B0', 954, 966), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 982, 988), 'x': ('B0', 435, 441), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 438, 444), 'x': ('B0', 202, 208), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 494, 500), 'x': ('B0', 808, 814), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 285, 291), 'x': ('B0', 348, 354), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 5, 25), 'x': ('B0', 7, 30), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 658, 664), 'x': ('B0', 626, 632), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 215, 221), 'x': ('B0', 547, 553), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 543, 587), 'x': ('B0', 710, 757), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 526, 532), 'x': ('B0', 53, 59), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 787, 793), 'x': ('B0', 496, 502), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 561, 567), 'x': ('B0', 956, 962), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 533, 539), 'x': ('B0', 957, 963), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 210, 222), 'x': ('B0', 231, 243), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 474, 503), 'x': ('B0', 523, 541), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 828, 834), 'x': ('B0', 272, 278), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 624, 630), 'x': ('B0', 223, 229), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 358, 364), 'x': ('B0', 386, 392), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 751, 757), 'x': ('B0', 327, 333), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 659, 665), 'x': ('B0', 624, 630), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 434, 440), 'x': ('B0', 272, 278), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 68, 74), 'x': ('B0', 138, 144), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 775, 781), 'x': ('B0', 33, 39), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 882, 888), 'x': ('B0', 731, 737), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 496, 502), 'x': ('B0', 806, 812), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 636, 642), 'x': ('B0', 760, 766), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 258, 270), 'x': ('B0', 281, 293), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 731, 737), 'x': ('B0', 255, 261), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 883, 889), 'x': ('B0', 730, 736), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 480, 486), 'x': ('B0', 278, 284), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 846, 852), 'x': ('B0', 871, 877), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 563, 584), 'x': ('B0', 713, 735), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 563, 569), 'x': ('B0', 958, 964), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 356, 362), 'x': ('B0', 384, 390), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 959, 965), 'x': ('B0', 313, 319), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 638, 644), 'x': ('B0', 762, 768), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 533, 539), 'x': ('B0', 730, 736), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 726, 732), 'x': ('B0', 735, 741), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 822, 828), 'x': ('B0', 941, 947), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 838, 844), 'x': ('B0', 1073, 1079), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 530, 548), 'x': ('B0', 752, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 1008, 1014), 'x': ('B0', 262, 268), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 545, 586), 'x': ('B0', 711, 755), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 385, 391), 'x': ('B0', 661, 667), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 495, 501), 'x': ('B0', 807, 813), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 941, 957), 'x': ('B0', 1019, 1037), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 386, 416), 'x': ('B0', 905, 934), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 600, 606), 'x': ('B0', 1040, 1046), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 179, 185), 'x': ('B0', 831, 837), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 202, 208), 'x': ('B0', 59, 65), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 920, 926), 'x': ('B0', 997, 1003), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 959, 965), 'x': ('B0', 946, 952), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 726, 732), 'x': ('B0', 417, 423), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 592, 598), 'x': ('B0', 885, 891), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 257, 269), 'x': ('B0', 280, 292), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 725, 731), 'x': ('B0', 416, 422), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 748, 792), 'x': ('B0', 497, 543), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 1011, 1017), 'x': ('B0', 582, 588), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 343, 349), 'x': ('B0', 559, 565), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 231, 237), 'x': ('B0', 570, 576), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 559, 565), 'x': ('B0', 642, 648), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 883, 889), 'x': ('B0', 957, 963), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 549, 555), 'x': ('B0', 144, 150), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 807, 813), 'x': ('B0', 793, 799), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 428, 434), 'x': ('B0', 269, 275), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 637, 643), 'x': ('B0', 761, 767), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 907, 913), 'x': ('B0', 630, 636), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 882, 888), 'x': ('B0', 956, 962), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 974, 1018), 'x': ('B0', 1057, 1104), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 562, 585), 'x': ('B0', 712, 736), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 640, 646), 'x': ('B0', 764, 770), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 301, 307), 'x': ('B0', 998, 1004), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 41, 47), 'x': ('B0', 407, 413), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 847, 853), 'x': ('B0', 1040, 1046), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 256, 268), 'x': ('B0', 279, 291), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 487, 493), 'x': ('B0', 435, 441), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 749, 761), 'x': ('B0', 530, 542), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 488, 494), 'x': ('B0', 429, 435), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 428, 434), 'x': ('B0', 29, 35), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 684, 690), 'x': ('B0', 418, 424), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 213, 239), 'x': ('B0', 234, 263), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 384, 390), 'x': ('B0', 930, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 334, 363), 'x': ('B0', 361, 391), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 848, 854), 'x': ('B0', 1041, 1047), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 810, 816), 'x': ('B0', 321, 327), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 562, 568), 'x': ('B0', 957, 963), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 645, 651), 'x': ('B0', 595, 601), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 662, 699), 'x': ('B0', 589, 627), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 115, 121), 'x': ('B0', 964, 970), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 281, 287), 'x': ('B0', 856, 862), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 658, 664), 'x': ('B0', 625, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 882, 1018), 'x': ('B0', 956, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 661, 823), 'x': ('B0', 459, 628), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 212, 362), 'x': ('B0', 233, 390), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 384, 587), 'x': ('B0', 710, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>

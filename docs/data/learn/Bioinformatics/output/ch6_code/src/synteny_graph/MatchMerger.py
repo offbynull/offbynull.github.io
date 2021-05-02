@@ -171,6 +171,10 @@ def main():
                 max_merge_distance = float(vals[2])
                 print(f'Filtering {max_filter_length=} {max_merge_distance=}...\n')
                 matches = overlap_filter(matches, max_filter_length, max_merge_distance)
+            elif vals[0] == 'cull':
+                length = float(vals[1])
+                print(f'Culling below {length=}...\n')
+                matches = [m for m in matches if m.length() >= length]
             else:
                 raise ValueError(f'Unrecognized command: {vals}')
         Match.plot(matches)

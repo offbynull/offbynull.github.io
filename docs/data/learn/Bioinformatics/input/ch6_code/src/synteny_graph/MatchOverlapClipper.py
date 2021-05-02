@@ -121,9 +121,9 @@ class MatchOverlapClipper:
             new_match, new_bad_match = MatchOverlapClipper.best_effort_overlap_clip(match, bad_match)
             if new_match and new_bad_match:
                 return RequestedChanges({bad_match: new_bad_match}, new_match)
-            if new_bad_match:
-                return RequestedChanges({bad_match: new_bad_match}, match)
-            if new_match:
+            if not new_match and new_bad_match:
+                return RequestedChanges({bad_match: new_bad_match}, None)
+            if new_match and not new_bad_match:
                 return RequestedChanges({bad_match: None}, new_match)
         if bad_match is not None:
             ValueError(f'No resolution to overlap? {match} vs {bad_match}')
