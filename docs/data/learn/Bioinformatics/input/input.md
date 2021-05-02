@@ -5042,11 +5042,13 @@ Real-life examples of species that share synteny blocks include ...
 
 `{bm} /(Algorithms\/Synteny\/Genomic Dot Plot)_TOPIC/`
 
-**WHAT**: Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. These plots are called genomic dot plots. For example, ...
+**WHAT**: Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. These plots are called genomic dot plots.
 
 **WHY**: Genomic dot plots are used for identifying synteny blocks between two genomes.   
 
 **ALGORITHM**:
+
+The following algorithm finds direct matches. However, a better solution may be to consider anything with some hamming distance as a match. Doing so would require non-trivial changes to the algorithm (e.g. modifying the lookup to use bloom filters).
 
 ```{output}
 ch6_code/src/synteny_graph/Match.py
@@ -5062,6 +5064,10 @@ A0, GGGGGAAACCCCATGCACTGG
 B0, GGTTTAGGTGACTTACTGGAACATGCTTGGGGG
 ```
 
+```{note}
+Rather than just showing dots at matches, the plot below draws a line over the entire match.
+```
+
 ### Synteny Graph
 
 `{bm} /(Algorithms\/Synteny\/Synteny Graph)_TOPIC/`
@@ -5070,11 +5076,62 @@ B0, GGTTTAGGTGACTTACTGGAACATGCTTGGGGG
 Algorithms/Synteny/Genomic Dot Plot_TOPIC
 ```
 
-**WHAT**:
+**WHAT**: Given the genomic dot-plot for two genomes, connect dots that are close together and going in the same direction. This process is commonly referred to as clustering. A clustered genomic dot plot is called a synteny graph.
 
-**WHY**:
+**WHY**:  Clustering together matches reveals synteny blocks.
+
+```{svgbob}
+ * "N = normal k-mer match"
+ * "R = reverse complement k-mer match"
+
+3'|                                                                                  3'|                                                                 
+  |  N                              R                                                  |  *                                                              
+  |   N           N                                                                    |   \                                                             
+  |    N               R                                                               |    \                                                            
+  |      N                           R           N                                     |     \                                                           
+  |       N                                                                            |      \                                                          
+  |       N               N                                                            |     A \                                                         
+ g|        N                                                                          g|        \                                                        
+ e|          N                   R           N                                        e|         \                                                      
+ n|           N                                                                       n|          \                                                     
+ o|            N                                     R                   ------->     o|           v                                                    
+ m|   N                        R                                         CLUSTER      m|                           ^                                    
+ e|                          R            N                                           e|                        C /                                      
+ 1|      N                  R                                                         1|                         /                                      
+  |                        R               N         N                                 |                        *                                          
+  |                 N                                                                  |                 *                                               
+  |                   N                                                                |                  \                                             
+  |                    N                                                               |                 B \                                           
+  |    R                N                                                              |                    v                                               
+  |                                           N              R                         |                                           *                     
+  |             N              N                N                                      |                                            \                    
+  |                                              N           R                         |                                           D \                    
+5'|       R             R                   R     N                                  5'|                                              v                  
+  +-----------------------------------------------------------------                   +-----------------------------------------------------------------
+   5'                          genome2                            3'                    5'                          genome2                            3'
+
+ * "Remember that the direction of DNA is 5' to 3'."
+```
 
 **ALGORITHM**:
+
+The following synteny graph algorithm relies on three non-trivial components:
+
+ 1. A spatial indexing algorithm bins points that are close together, such that it's fast to look up the set of dots that are within the proximity of some other dot. The spatial indexing algorithm used by this implementation is called a quad tree.
+ 2. A clustering algorithm connects dots going in the same direction to reveal synteny blocks. The clustering algorithm used by this implementation is iterative, doing multiple rounds of connecting within a set of constraints (e.g. the neighbouring dot has to be within some limit / in some angle for it to connect).
+ 3. A filtering algorithm that trims/merges overlapping synteny blocks as well as removes superfluous synteny blocks returned by the clustering algorithm. The filtering algorithm used by this implementation is simple off-the-cuff heuristics.
+
+These components are complicated and not specific to bioinformatics. As such, this section doesn't discuss them in detail but the source code is available (entrypoint is displayed below)).
+
+```{note}
+This is code I came up with to solve the ch 6 final assignment in the Pevzner book. I came up with / fleshed out the ideas myself -- the book only hinted at specific bits.
+```
+
+```{output}
+ch6_code/src/synteny_graph/MatchMerger.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
 ### Breakpoint Permutation
 

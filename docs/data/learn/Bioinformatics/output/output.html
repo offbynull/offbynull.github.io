@@ -8656,9 +8656,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 <a name="H_Genomic%20Dot%20Plot"></a><h3>Genomic Dot Plot</h3>
 <p><a name="BM_(Algorithms%5C%2FSynteny%2FGenomic%20Dot%20Plot)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>WHAT</strong>: Given two <a href="#BM_(genome)%2Fi">genome</a>s, create a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, where a match is either a shared <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> or a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> and its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>. These plots are called <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot plot</a>s. For example, ...</p>
+<p><strong>WHAT</strong>: Given two <a href="#BM_(genome)%2Fi">genome</a>s, create a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, where a match is either a shared <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> or a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> and its <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>. These plots are called <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot plot</a>s.</p>
 <p><strong>WHY</strong>: <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">Genomic dot plot</a>s are used for identifying <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between two <a href="#BM_(genome)%2Fi">genome</a>s.</p>
 <p><strong>ALGORITHM</strong>:</p>
+<p>The following algorithm finds direct matches. However, a better solution may be to consider anything with some <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> as a match. Doing so would require non-trivial changes to the algorithm (e.g. modifying the lookup to use bloom filters).</p>
 <p><a href="ch6_code/src/synteny_graph/Match.py">ch6_code/src/synteny_graph/Match.py</a> (lines 180 to 236):</p>
 <pre class="hljs"><code><span class="hljs-meta">@staticmethod</span>
 <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_from_genomes</span>(<span class="hljs-params">
@@ -8737,6 +8738,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 </div>
 <p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Rather than just showing dots at matches, the plot below draws a line over the entire match.</p>
+</div>
 <a name="H_Synteny%20Graph"></a><h3>Synteny Graph</h3>
 <p><a name="BM_(Algorithms%5C%2FSynteny%2FSynteny%20Graph)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -8745,9 +8750,70 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li><a href="#BM_(Algorithms%5C%2FSynteny%2FGenomic%20Dot%20Plot)_TOPIC%2F">Algorithms/Synteny/Genomic Dot Plot</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>:</p>
-<p><strong>WHY</strong>:</p>
+<p><strong>WHAT</strong>: Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, connect dots that are close together and going in the same direction. This process is commonly referred to as clustering. A clustered <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot plot</a> is called a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>.</p>
+<p><strong>WHY</strong>:  Clustering together matches reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p><img src="svgbob_e0e803588b9c7f5303f4bb42a9757ecd1de2be9e.svg" alt="Kroki diagram output"></p>
 <p><strong>ALGORITHM</strong>:</p>
+<p>The following <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> algorithm relies on three non-trivial components:</p>
+<ol>
+<li>A spatial indexing algorithm bins points that are close together, such that it's fast to look up the set of dots that are within the proximity of some other dot. The spatial indexing algorithm used by this implementation is called a quad tree.</li>
+<li>A clustering algorithm connects dots going in the same direction to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The clustering algorithm used by this implementation is iterative, doing multiple rounds of connecting within a set of constraints (e.g. the neighbouring dot has to be within some limit / in some angle for it to connect).</li>
+<li>A filtering algorithm that trims/merges overlapping <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as well as removes superfluous <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s returned by the clustering algorithm. The filtering algorithm used by this implementation is simple off-the-cuff heuristics.</li>
+</ol>
+<p>These components are complicated and not specific to bioinformatics. As such, this section doesn't discuss them in detail but the source code is available (entrypoint is displayed below)).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is code I came up with to solve the ch 6 final assignment in the Pevzner book. I came up with / fleshed out the ideas myself -- the book only hinted at specific bits.</p>
+</div>
+<p><a href="ch6_code/src/synteny_graph/MatchMerger.py">ch6_code/src/synteny_graph/MatchMerger.py</a> (lines 19 to 66):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">distance_merge</span>(<span class="hljs-params">matches: Iterable[Match], radius: int, angle_half_maw: int = <span class="hljs-number">45</span></span>) -&gt; List[Match]:</span>
+    min_x = min(m.x_axis_chromosome_min_idx <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches)
+    max_x = max(m.x_axis_chromosome_max_idx <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches)
+    min_y = min(m.y_axis_chromosome_min_idx <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches)
+    max_y = max(m.y_axis_chromosome_max_idx <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches)
+    indexer = MatchSpatialIndexer(min_x, max_x, min_y, max_y)
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches:
+        indexer.index(m)
+    ret = []
+    remaining = set(matches)
+    <span class="hljs-keyword">while</span> remaining:
+        m = next(iter(remaining))
+        found = indexer.scan(m, radius, angle_half_maw)
+        merged = Match.merge(found)
+        <span class="hljs-keyword">for</span> _m <span class="hljs-keyword">in</span> found:
+            indexer.unindex(_m)
+            remaining.remove(_m)
+        ret.append(merged)
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overlap_filter</span>(<span class="hljs-params">
+        matches: Iterable[Match],
+        max_filter_length: float,
+        max_merge_distance: float
+</span>) -&gt; List[Match]:</span>
+    clipper = MatchOverlapClipper(max_filter_length, max_merge_distance)
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matches:
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            <span class="hljs-comment"># When you attempt to add a match to the clipper, the clipper may instead ask you to make a set of changes</span>
+            <span class="hljs-comment"># before it'll accept it. Specifically, the clipper may ask you to replace a bunch of existing matches that</span>
+            <span class="hljs-comment"># it's already indexed and then give you a MODIFIED version of m that it'll accept once you've applied</span>
+            <span class="hljs-comment"># those replacements</span>
+            changes_requested = clipper.index(m)
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> changes_requested:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># replace existing entries in clipper</span>
+            <span class="hljs-keyword">for</span> from_m, to_m <span class="hljs-keyword">in</span> changes_requested.existing_matches_to_replace.items():
+                clipper.unindex(from_m)
+                <span class="hljs-keyword">if</span> to_m:
+                    res = clipper.index(to_m)
+                    <span class="hljs-keyword">assert</span> res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>
+            <span class="hljs-comment"># replace m with a revised version -- if None it means m isn't needed (its been filtered out)</span>
+            m = changes_requested.revised_match
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> m:
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> list(clipper.get())
+</code></pre>
 <a name="H_Breakpoint%20Permutation"></a><h3>Breakpoint Permutation</h3>
 <p><a name="BM_(Algorithms%5C%2FSynteny%2FBreakpoint%20Permutation)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">

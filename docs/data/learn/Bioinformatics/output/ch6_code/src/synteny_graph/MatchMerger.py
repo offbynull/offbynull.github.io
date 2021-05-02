@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from hashlib import md5
 from itertools import product
 from typing import Iterable, List
+import sys
 
 import matplotlib.pyplot as plt
 
@@ -13,6 +15,7 @@ from synteny_graph.MatchOverlapClipper import Axis, MatchOverlapClipper
 from synteny_graph.MatchSpatialIndexer import MatchSpatialIndexer
 
 
+# MARKDOWN
 def distance_merge(matches: Iterable[Match], radius: int, angle_half_maw: int = 45) -> List[Match]:
     min_x = min(m.x_axis_chromosome_min_idx for m in matches)
     max_x = max(m.x_axis_chromosome_max_idx for m in matches)
@@ -60,6 +63,7 @@ def overlap_filter(
             if not m:
                 break
     return list(clipper.get())
+# MARKDOWN
 
 
 def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny_prefix: str = ''):
@@ -124,109 +128,157 @@ def to_synteny_permutation(matches: Iterable[Match], ordered_axis: Axis, synteny
         raise ValueError('???')
 
 
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        console_input = [l.strip() for l in sys.stdin.readlines()]
+        k = int(console_input[0])
+        if console_input[1] == 'linear':
+            cyclic = False
+        elif console_input[1] == 'cyclic':
+            cyclic = True
+        else:
+            raise ValueError('2nd line must be either linear or cyclic')
+        genome1 = {}
+        for name, data in zip(*[iter(console_input[2].strip().split(', '))]*2):
+            genome1[name.strip()] = data.strip()
+        genome2 = {}
+        for name, data in zip(*[iter(console_input[3].strip().split(', '))]*2):
+            genome2[name.strip()] = data.strip()
+        print(f'Generating synteny graph for...\n')
+        print(f' * {k=}')
+        print(f' * {cyclic=}')
+        print(f' * {genome1=}')
+        print(f' * {genome2=}\n')
+        matches = Match.create_from_genomes(k, cyclic, genome1, genome2)
+        Match.plot(matches)
+        hasher = md5()
+        hasher.update('\n'.join(console_input).encode('utf-8'))
+        filename = 'genomicdotplot_' + hasher.hexdigest() + '.svg'
+        plt.savefig('/output/' + filename)
+        print(f'Original genomic dot plot...\n')
+        print(f'![Genomic Dot Plot]({filename})\n')
+        for l in console_input[4:]:
+            vals = l.strip().split(', ')
+            if vals[0] == 'merge':
+            elif vals[0] == 'filter':
+            else:
+                raise ValueError(f'Unrecognized command: {vals}')
+        for m in matches:
+            print(f' * {m}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    k = 30
-    # load
-    with open('/home/user/Downloads/E_coli.txt', mode='r', encoding='utf-8') as f:
-        data1 = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
-        fwd_kmers1 = defaultdict(list)
-        rev_kmers1 = defaultdict(list)
-        for kmer, idx in slide_window(data1, k, True):
-            fwd_kmers1[kmer].append(idx)
-            rev_kmers1[dna_reverse_complement(kmer)].append(idx)
-        ecoli_data = ''  # no longer required -- clear out memory
-    with open('/home/user/Downloads/Salmonella_enterica.txt', mode='r', encoding='utf-8') as f:
-        data2 = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
-        fwd_kmers2 = defaultdict(list)
-        rev_kmers2 = defaultdict(list)
-        for kmer, idx in slide_window(data2, k, True):
-            fwd_kmers2[kmer].append(idx)
-            rev_kmers2[dna_reverse_complement(kmer)].append(idx)
-        bsub_data = ''  # no longer required -- clear out memory
-    # match
-    matches = []
-    fwd_key_matches = set(fwd_kmers1.keys())
-    fwd_key_matches.intersection_update(fwd_kmers2.keys())
-    for kmer in fwd_key_matches:
-        idxes1 = fwd_kmers1.get(kmer, [])
-        idxes2 = fwd_kmers2.get(kmer, [])
-        for idx1, idx2 in product(idxes1, idxes2):
-            m = Match(
-                y_axis_chromosome='0',
-                y_axis_chromosome_min_idx=idx1,
-                y_axis_chromosome_max_idx=idx1 + k - 1,
-                x_axis_chromosome='0',
-                x_axis_chromosome_min_idx=idx2,
-                x_axis_chromosome_max_idx=idx2 + k - 1,
-                type=MatchType.NORMAL
-            )
-            matches.append(m)
-    rev_key_matches = set(fwd_kmers1.keys())
-    rev_key_matches.intersection_update(rev_kmers2.keys())
-    for kmer in rev_key_matches:
-        idxes1 = fwd_kmers1.get(kmer, [])
-        idxes2 = rev_kmers2.get(kmer, [])
-        for idx1, idx2 in product(idxes1, idxes2):
-            m = Match(
-                y_axis_chromosome='0',
-                y_axis_chromosome_min_idx=idx1,
-                y_axis_chromosome_max_idx=idx1 + k - 1,
-                x_axis_chromosome='0',
-                x_axis_chromosome_min_idx=idx2,
-                x_axis_chromosome_max_idx=idx2 + k - 1,
-                type=MatchType.REVERSE_COMPLEMENT
-            )
-            matches.append(m)
-    print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=500)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=20000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=30000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=40000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=50000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=60000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=70000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=80000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=90000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=100000)
-    # print(f'{len(matches)}')
-    # matches = [m for m in matches if m.length() >= 100000]
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=200000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=300000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=400000)
-    # print(f'{len(matches)}')
-    # matches = distance_merge(matches, radius=500000)
-    # print(f'{len(matches)}')
-    # matches = overlap_filter(matches, max_filter_length=1000000, max_merge_distance=5000000)
-    # print(f'{len(matches)}')
-    # human_perms, mouse_perms = to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
-    # print(f'{human_perms}')
-    # print(f'{mouse_perms}')
-
-    # bg = LinearBreakpointGraph.BreakpointGraph(
-    #     [mouse_perms[ch] for ch in sorted(mouse_perms.keys())],
-    #     [human_perms[ch] for ch in sorted(human_perms.keys())]
-    # )
-    # print(bg.to_neato_graph())
-    # print(bg.red_permutations)
-    # while True:
-    #     next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_path()
-    #     if next_blue_edge_to_break_on is None:
-    #         break
-    #     bg.two_break(next_blue_edge_to_break_on)
-    #     print(bg.red_permutations)
-    #     print(bg.to_neato_graph())
-
-    Match.plot(matches, y_axis_organism_name='e coli', x_axis_organism_name='b sub')
-    plt.show()
+    main()
+#
+#
+# if __name__ == '__main__':
+#     k = 30
+#     # load
+#     with open('/home/user/Downloads/E_coli.txt', mode='r', encoding='utf-8') as f:
+#         data1 = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
+#         fwd_kmers1 = defaultdict(list)
+#         rev_kmers1 = defaultdict(list)
+#         for kmer, idx in slide_window(data1, k, True):
+#             fwd_kmers1[kmer].append(idx)
+#             rev_kmers1[dna_reverse_complement(kmer)].append(idx)
+#         ecoli_data = ''  # no longer required -- clear out memory
+#     with open('/home/user/Downloads/Salmonella_enterica.txt', mode='r', encoding='utf-8') as f:
+#         data2 = ''.join(str(l) for l in f.read().splitlines() if not l.startswith('>'))
+#         fwd_kmers2 = defaultdict(list)
+#         rev_kmers2 = defaultdict(list)
+#         for kmer, idx in slide_window(data2, k, True):
+#             fwd_kmers2[kmer].append(idx)
+#             rev_kmers2[dna_reverse_complement(kmer)].append(idx)
+#         bsub_data = ''  # no longer required -- clear out memory
+#     # match
+#     matches = []
+#     fwd_key_matches = set(fwd_kmers1.keys())
+#     fwd_key_matches.intersection_update(fwd_kmers2.keys())
+#     for kmer in fwd_key_matches:
+#         idxes1 = fwd_kmers1.get(kmer, [])
+#         idxes2 = fwd_kmers2.get(kmer, [])
+#         for idx1, idx2 in product(idxes1, idxes2):
+#             m = Match(
+#                 y_axis_chromosome='0',
+#                 y_axis_chromosome_min_idx=idx1,
+#                 y_axis_chromosome_max_idx=idx1 + k - 1,
+#                 x_axis_chromosome='0',
+#                 x_axis_chromosome_min_idx=idx2,
+#                 x_axis_chromosome_max_idx=idx2 + k - 1,
+#                 type=MatchType.NORMAL
+#             )
+#             matches.append(m)
+#     rev_key_matches = set(fwd_kmers1.keys())
+#     rev_key_matches.intersection_update(rev_kmers2.keys())
+#     for kmer in rev_key_matches:
+#         idxes1 = fwd_kmers1.get(kmer, [])
+#         idxes2 = rev_kmers2.get(kmer, [])
+#         for idx1, idx2 in product(idxes1, idxes2):
+#             m = Match(
+#                 y_axis_chromosome='0',
+#                 y_axis_chromosome_min_idx=idx1,
+#                 y_axis_chromosome_max_idx=idx1 + k - 1,
+#                 x_axis_chromosome='0',
+#                 x_axis_chromosome_min_idx=idx2,
+#                 x_axis_chromosome_max_idx=idx2 + k - 1,
+#                 type=MatchType.REVERSE_COMPLEMENT
+#             )
+#             matches.append(m)
+#     print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=500)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=20000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=30000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=40000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=50000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=60000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=70000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=80000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=90000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=100000)
+#     # print(f'{len(matches)}')
+#     # matches = [m for m in matches if m.length() >= 100000]
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=200000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=300000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=400000)
+#     # print(f'{len(matches)}')
+#     # matches = distance_merge(matches, radius=500000)
+#     # print(f'{len(matches)}')
+#     # matches = overlap_filter(matches, max_filter_length=1000000, max_merge_distance=5000000)
+#     # print(f'{len(matches)}')
+#     # human_perms, mouse_perms = to_synteny_permutation(matches, Axis.Y, synteny_prefix='HUMAN')
+#     # print(f'{human_perms}')
+#     # print(f'{mouse_perms}')
+#
+#     # bg = LinearBreakpointGraph.BreakpointGraph(
+#     #     [mouse_perms[ch] for ch in sorted(mouse_perms.keys())],
+#     #     [human_perms[ch] for ch in sorted(human_perms.keys())]
+#     # )
+#     # print(bg.to_neato_graph())
+#     # print(bg.red_permutations)
+#     # while True:
+#     #     next_blue_edge_to_break_on = bg.find_blue_edge_in_non_trivial_path()
+#     #     if next_blue_edge_to_break_on is None:
+#     #         break
+#     #     bg.two_break(next_blue_edge_to_break_on)
+#     #     print(bg.red_permutations)
+#     #     print(bg.to_neato_graph())
+#
+#     Match.plot(matches, y_axis_organism_name='e coli', x_axis_organism_name='b sub')
+#     plt.show()

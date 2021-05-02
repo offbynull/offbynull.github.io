@@ -274,17 +274,10 @@ class Match:
             ax.get_yaxis().get_major_formatter().set_scientific(False)
             ax.tick_params(axis="y", direction="in", pad=-22)
             ax.tick_params(axis="x", direction="in", pad=-15)
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
-            SET AXIS FROM 0 TO MAX
             ax.add_collection(lc)
             ax.autoscale()
+            ax.set_xlim([0, max(m.x_axis_chromosome_max_idx for m in matches)])
+            ax.set_ylim([0, max(m.y_axis_chromosome_max_idx for m in matches)])
             # ax.margins(0.1)
 
         def on_resize(event):
