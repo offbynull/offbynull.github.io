@@ -5044,6 +5044,60 @@ Real-life examples of species that share synteny blocks include ...
 
 **WHAT**: Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. These plots are called genomic dot plots.
 
+```{svgbob}
+"Consider each shared 5-mer, shown as a line, to be a dot."
+* "N = normal match"
+* "R = reverse complement match"
+
+  3' 5'|   
+   G C |                                     ^            
+       |                                    /
+   G C |                                   /                
+       |                                  /
+   T A |                                 / N: "ACTGG vs ACTGG"         
+       |                                /  
+   C G |                               /                   
+       |                              /      
+   A T |                             *                    
+       |   
+   C C |                                                     ^
+       |                                                    /
+   G A |                                                   /
+       |                                                  /
+   T G |                                                 / N: "CATGC vs CATGC"
+       |                                                /  
+ g A T |                                               /         *
+ e     |                                              /           \
+ n C G |                                             *             \
+ o     |                                                            \
+ m C G |                                                             \ R: "CCCCA vs TGGGG"
+ e     |                                                              \
+ 1 C G |   *                                                           \
+       |    \                                                           \
+   C G |     \                                                           v
+       |      \  
+   A T |       \ R: "AAACC vs GGTTT"                                      
+       |        \
+   A T |         \                                          
+       |          \
+   A T |           v                                     
+       |   
+   G C |                                                                   ^
+       |                                                                  /
+   G C |                                                                 / 
+       |                                                                / 
+   G C |                                                               / N: "GGGGG vs GGGGG" 
+       |                                                              /  
+   G C |                                                             /    
+       |                                                            /      
+   G C |                                                           *        
+  5' 3'|                                                                   
+       +-----------------------------------------------------------------------
+        5' G G T T T A G G T G A C T T A C T G G A A C A T G C T T G G G G G 3'
+        3' C C A A A T C C A C T G A A T G A C C T T G T C A G T T C C C C C 5'
+                                       genome2
+```
+
 **WHY**: Genomic dot plots are used for identifying synteny blocks between two genomes.   
 
 **ALGORITHM**:
@@ -5085,28 +5139,28 @@ Algorithms/Synteny/Genomic Dot Plot_TOPIC
  * "R = reverse complement k-mer match"
 
 3'|                                                                                  3'|                                                                 
-  |  N                              R                                                  |  *                                                              
-  |   N           N                                                                    |   \                                                             
-  |    N               R                                                               |    \                                                            
-  |      N                           R           N                                     |     \                                                           
-  |       N                                                                            |      \                                                          
-  |       N               N                                                            |     A \                                                         
- g|        N                                                                          g|        \                                                        
- e|          N                   R           N                                        e|         \                                                      
- n|           N                                                                       n|          \                                                     
- o|            N                                     R                   ------->     o|           v                                                    
- m|   N                        R                                         CLUSTER      m|                           ^                                    
- e|                          R            N                                           e|                        C /                                      
- 1|      N                  R                                                         1|                         /                                      
-  |                        R               N         N                                 |                        *                                          
-  |                 N                                                                  |                 *                                               
-  |                   N                                                                |                  \                                             
-  |                    N                                                               |                 B \                                           
-  |    R                N                                                              |                    v                                               
-  |                                           N              R                         |                                           *                     
-  |             N              N                N                                      |                                            \                    
-  |                                              N           R                         |                                           D \                    
-5'|       R             R                   R     N                                  5'|                                              v                  
+  |  R                              R                                                  |  *                                                              
+  |   R           N                                                                    |   \                                                             
+  |    R               R                                                               |    \                                                            
+  |      R                           R           N                                     |     \                                                           
+  |       R                                                                            |      \                                                          
+  |       R               N                                                            |     A \                                                         
+ g|        R                                                                          g|        \                                                        
+ e|          R                   R           N                                        e|         \                                                      
+ n|           R                                                                       n|          \                                                     
+ o|            R                                     R                   ------->     o|           v                                                    
+ m|   N                        N                                         CLUSTER      m|                           ^                                    
+ e|                          N            N                                           e|                        C /                                      
+ 1|      N                  N                                                         1|                         /                                      
+  |                        N               N         N                                 |                        *                                          
+  |                 R                                                                  |                 *                                               
+  |                   R                                                                |                  \                                             
+  |                    R                                                               |                 B \                                           
+  |    R                R                                                              |                    v                                               
+  |                                           R              R                         |                                           *                     
+  |             N              N                R                                      |                                            \                    
+  |                                              R           R                         |                                           D \                    
+5'|       R             R                   R     R                                  5'|                                              v                  
   +-----------------------------------------------------------------                   +-----------------------------------------------------------------
    5'                          genome2                            3'                    5'                          genome2                            3'
 
@@ -5162,6 +5216,78 @@ Algorithms/Synteny/Synteny Graph_TOPIC
 **WHY**:
 
 **ALGORITHM**:
+
+Given a permutation_GR, add a prefix of 0 and a suffix of length + 1. For example, ...
+    
+```{svgbob}
+Before:   +3 +4 -1 +2 -7 -6 -5
+
+After:  0 -3 +4 +1 +2 -7 -6 -5 +8
+        ^                       ^
+        |                       |
+  "prefix of 0"      "suffix of 8 (length + 1)"
+```
+    
+In this modified version of a permutation_GR, consecutive elements `{kt}(p_i, p_{i+1})` are considered a...
+
+ * adjacency_GR if `{kt}p_i + 1 = p_{i+1}`.
+ * breakpoint_GR if `{kt}p_i + 1 \neq p_{i+1}`.
+
+```{svgbob}
+ bp bp bp    bp       bp
+ |  |  |     |        |
+ v  v  v     v        v
+0 -3 +4 +1 +2 -7 -6 -5 +8
+          ^     ^  ^  
+          |     |  |  
+          a     a  a     
+    
+* "a = adjacency"
+* "b = breakpoint"                                 
+```
+
+Breakpoint_GRs are used to estimate the reversal distance. An algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of reducing the number of breakpoint_GRs at each reversal, ultimately hoping to get it to the identity permutation permutation_GR. In the example above, the reversal of [-7, -6, -5] reduces the number of breakpoint_GRs by 1...
+
+```{svgbob}
+ bp bp bp    bp       
+ |  |  |     |        
+ v  v  v     v        
+0 -3 +4 +1 +2 +5 +6 +7 +8
+          ^     ^  ^  ^
+          |     |  |  |
+          a     a  a  a
+                    (NEW)  
+    
+* "a = adjacency"
+* "b = breakpoint"
+```
+
+In the best case, a single reversal will remove 2 breakpoint_GRs (one on each side of the reversal). In the worst case, there is no single reversal that drives down the number of breakpoint_GRs. For example, there is no single reversal for the permutation_GR [+2, +1] that reduces the number of breakpoint_GRs...
+
+```{svgbob}
+ bp bp bp                         bp bp bp
+ |  |  |                          |  |  | 
+ v  v  v                          v  v  v 
+0 +2 +1 +3                       0 -1 -2 +3
+ '--+--'           reverse        '--+--'
+    '--------------------------------'
+            
+ bp bp bp                         bp bp bp
+ |  |  |                          |  |  | 
+ v  v  v                          v  v  v 
+0 +2 +1 +3                       0 -2 +1 +3
+ '-+'              reverse        '-+'
+   '--------------------------------'
+
+ bp bp bp                         bp bp bp
+ |  |  |                          |  |  | 
+ v  v  v                          v  v  v 
+0 +2 +1 +3                       0 +2 -1 +3
+    '-+'           reverse           '-+'
+      '--------------------------------'
+```
+
+Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
 
 ### Breakpoint Graph
 
@@ -7472,120 +7598,6 @@ cyclic
 
  * `{bm} parsimony/(parsimony|parsimonious)/i` - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.
 
- * `{bm} permutation/(permutation)_GR/i` - Given two species that share synteny blocks, each synteny block is mapped as an ID (non-zero integer) and direction (+ or -). This mapping (referred to as a permutation_GR) is used to model genome rearrangement operations. For example, a ....
-    
-      * reversal on synteny blocks 4 to 5 reverses its order and direction.
-
-        ```{svgbob}
-        +1 +2 +3 +4 +5 +6 +7
-                '--+--'
-                   |
-                   |  reverse
-                .--+--.
-        +1 +2 +3 -5 -4 +6 +7
-        ```
-
-      * translocation on synteny block 4 changes its position.
-
-        ```{svgbob}
-        +1 +2 +3 +4 +5 +6 +7
-                  |
-                  `-----.  translocate
-                        |
-                        v
-        +1 +2 +3 +5 +6 +4 +7
-        ```
-      
-    If a permutation consists of all positive elements ordered ascending (1 to n), it's referred to as the identity permutation_GR. The top row in both examples above are identity permutation_GRs.
-    
-    When comparing the synteny blocks between two species, one of the species is typically represented as an identity permutation_GR. For example, given 7 synteny blocks between species A and B, mapping from the perspective of A...
-
-    ```
-    "A (source):"      +1 +2 +3 +4 +5 +6 +7
-    "B (destination):" -3 +4 +1 +2 -7 -6 -5
-    ```
-
-    Likewise, mapping from the perspective of B...
-
-    ```
-    "B (source):"      +1 +2 +3 +4 +5 +6 +7
-    "A (destination):" +3 +4 -1 +2 -7 -6 -5
-    ```
-
-    Each destination is considered a permutation_GR of the source: one of several possible variations of how the synteny blocks can be ordered and arranged.
-
- * `{bm} breakpoint/(breakpoint)_GR/i` / `{bm} adjacency/(adjacent|adjacency)_GR/i` - Given a permutation_GR, add a prefix of 0 and a suffix of length + 1. For example, ...
-    
-    ```{svgbob}
-    Before:   +3 +4 -1 +2 -7 -6 -5
-
-    After:  0 -3 +4 +1 +2 -7 -6 -5 +8
-            ^                       ^
-            |                       |
-      "prefix of 0"      "suffix of 8 (length + 1)"
-    ```
-    
-    In this modified version of a permutation_GR, consecutive elements `{kt}(p_i, p_{i+1})` are considered a...
-
-     * adjacency_GR if `{kt}p_i + 1 = p_{i+1}`.
-     * breakpoint_GR if `{kt}p_i + 1 \neq p_{i+1}`.
-
-    ```{svgbob}
-     bp bp bp    bp       bp
-     |  |  |     |        |
-     v  v  v     v        v
-    0 -3 +4 +1 +2 -7 -6 -5 +8
-              ^     ^  ^  
-              |     |  |  
-              a     a  a     
-    
-    * "a = adjacency"
-    * "b = breakpoint"                                 
-    ```
-
-    Breakpoint_GRs are used to estimate the reversal distance. An algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of reducing the number of breakpoint_GRs at each reversal, ultimately hoping to get it to the identity permutation permutation_GR. In the example above, the reversal of [-7, -6, -5] reduces the number of breakpoint_GRs by 1...
-
-    ```{svgbob}
-     bp bp bp    bp       
-     |  |  |     |        
-     v  v  v     v        
-    0 -3 +4 +1 +2 +5 +6 +7 +8
-              ^     ^  ^  ^
-              |     |  |  |
-              a     a  a  a
-                        (NEW)  
-    
-    * "a = adjacency"
-    * "b = breakpoint"
-    ```
-
-    In the best case, a single reversal will remove 2 breakpoint_GRs (one on each side of the reversal). In the worst case, there is no single reversal that drives down the number of breakpoint_GRs. For example, there is no single reversal for the permutation_GR [+2, +1] that reduces the number of breakpoint_GRs...
-
-    ```{svgbob}
-     bp bp bp                         bp bp bp
-     |  |  |                          |  |  | 
-     v  v  v                          v  v  v 
-    0 +2 +1 +3                       0 -1 -2 +3
-     '--+--'           reverse        '--+--'
-        '--------------------------------'
-            
-     bp bp bp                         bp bp bp
-     |  |  |                          |  |  | 
-     v  v  v                          v  v  v 
-    0 +2 +1 +3                       0 -2 +1 +3
-     '-+'              reverse        '-+'
-       '--------------------------------'
-
-     bp bp bp                         bp bp bp
-     |  |  |                          |  |  | 
-     v  v  v                          v  v  v 
-    0 +2 +1 +3                       0 +2 -1 +3
-        '-+'           reverse           '-+'
-          '--------------------------------'
-    ```
-
-    Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
-
  * `{bm} genomic dot-plot/(genomic dot-plot|genomic dot plot)/i` - Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. Matches may also be fuzzily found (e.g. within some hamming distance rather).
     
    For example, ...
@@ -7653,28 +7665,28 @@ cyclic
     * "R = reverse complement k-mer match"
 
    3'|                                                                                  3'|                                                                 
-     |  N                              R                                                  |  *                                                              
-     |   N           N                                                                    |   \                                                             
-     |    N               R                                                               |    \                                                            
-     |      N                           R           N                                     |     \                                                           
-     |       N                                                                            |      \                                                          
-     |       N               N                                                            |     A \                                                         
-    g|        N                                                                          g|        \                                                        
-    e|          N                   R           N                                        e|         \                                                      
-    n|           N                                                                       n|          \                                                     
-    o|            N                                     R                   ------->     o|           v                                                    
-    m|   N                        R                                         CLUSTER      m|                           ^                                    
-    e|                          R            N                                           e|                        C /                                      
-    1|      N                  R                                                         1|                         /                                      
-     |                        R               N         N                                 |                        *                                          
-     |                 N                                                                  |                 *                                               
-     |                   N                                                                |                  \                                             
-     |                    N                                                               |                 B \                                           
-     |    R                N                                                              |                    v                                               
-     |                                           N              R                         |                                           *                     
-     |             N              N                N                                      |                                            \                    
-     |                                              N           R                         |                                           D \                    
-   5'|       R             R                   R     N                                  5'|                                              v                  
+     |  R                              R                                                  |  *                                                              
+     |   R           N                                                                    |   \                                                             
+     |    R               R                                                               |    \                                                            
+     |      R                           R           N                                     |     \                                                           
+     |       R                                                                            |      \                                                          
+     |       R               N                                                            |     A \                                                         
+    g|        R                                                                          g|        \                                                        
+    e|          R                   R           N                                        e|         \                                                      
+    n|           R                                                                       n|          \                                                     
+    o|            R                                     R                   ------->     o|           v                                                    
+    m|   N                        N                                         CLUSTER      m|                           ^                                    
+    e|                          N            N                                           e|                        C /                                      
+    1|      N                  N                                                         1|                         /                                      
+     |                        N               N         N                                 |                        *                                          
+     |                 R                                                                  |                 *                                               
+     |                   R                                                                |                  \                                             
+     |                    R                                                               |                 B \                                           
+     |    R                R                                                              |                    v                                               
+     |                                           R              R                         |                                           *                     
+     |             N              N                R                                      |                                            \                    
+     |                                              R           R                         |                                           D \                    
+   5'|       R             R                   R     R                                  5'|                                              v                  
      +-----------------------------------------------------------------                   +-----------------------------------------------------------------
       5'                          genome2                            3'                    5'                          genome2                            3'
 
@@ -7689,6 +7701,105 @@ cyclic
         D        B        C           A                                A               B         C                   D   
    --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
     5'                  genome1              3'                 5'                          genome2                            3'
+   ```
+
+ * `{bm} breakpoint/(adjacent|adjacency|adjacencies|breakpoint)_GR/i` - Given two genomes that share synteny blocks, where one genome has the synteny blocks in desired order and direction while the other does not, an ...
+ 
+   * adjacency_GR is when two neighbouring synteny blocks in the undesired genome are following each other just as they do in the desired genome.
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other and the"
+       "tail of B is followed by the head of A, just as in the desired genome."
+
+                                .---------------------------------------------------.
+                       .--------+--------.                                 .--------+-------.                          
+             A             B         C           D                             B        C        D           A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------      vs       -->>>>>>>--->>>>>>-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                    |
+                                                                                adjacency
+     ```
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other and the"
+       "tail of B is followed by the tail of A, just as in the desired genome."
+
+                                .---------------------------------------------------.
+                       .--------+--------.                                 .--------+-------.                          
+             A             B         C           D                             B        C        D           A         
+     -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------      vs       -->>>>>>>--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                    |
+                                                                                adjacency
+     ```
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other and the"
+       "tail of B is followed by the head of A, just as in the desired genome. Note"
+       "that their placement has been swapped when compared to the desired genome."
+       "This is fine. As long as they follow each other as they do in the desired"
+       "genome, it's considered an adjacency."
+     
+                                .--------------------------------------------.
+                       .--------+--------.                          .--------+-------.                          
+             A             B         C           D                      C        B        D           A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                             |
+                                                                         adjacency
+     ```
+
+   * breakpoint_GR is when two neighbouring synteny blocks in the undesired genome don't fit the definition of an adjacency_GR: They aren't following each other just as they do in the desired genome.
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other but the"
+       "tail of B is NOT followed by the head of A, as it is in the desired genome."
+
+                                .--------------------------------------------.
+                       .--------+--------.                          .--------+-------.                          
+             A             B         C           D                      B        C        D           A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                             |
+                                                                         breakpoint
+     ```
+
+     ```{svgbob}
+     * "In this example, the undesired genome does NOT have B and C next to each"
+       "other."
+
+                                .---------------------------------------+---------------------------------.
+                       .--------+--------.                          .---+---.                         .---+---.
+             A             B         C           D                      B        D            A           C     
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<--<<<<<<<<<<<<<<-->>>>>>>--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED        ^      3' 
+                                                                             |                        |
+                                                                         breakpoint               breakpoint
+     ```
+
+   Breakpoint_GRs and adjacencies_GR are useful because they identify desirable points for reversals (genome rearrangement), giving way to algorithms that find / estimate the reversal distance. For example, a contiguous train of adjacencies_GR in an undesired genome may identify the boundaries for a single reversal that gets the undesired genome closer to the desired genome.
+
+   ```{svgbob}
+   * "The contiguous segment comprising D, C, and B may be reversed as"
+     "a single genome reversal."
+
+                                                                         breakpoint  adjacency   adjacency   breakpoint    
+                                                                             |           |           |           |         
+        A           B          C           D         E                  A    v      D    v     C     v     B     v   E     
+   -->>>>>>>----->>>>>>>---->>>>>>>----->>>>>>----->>>>>>--   vs   -->>>>>>>-----<<<<<<<----<<<<<<<-----<<<<<<----->>>>>>--
+    5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
+   ```
+   
+   The number of breakpoint_GRs and adjacencies_GR always equals to one less than the number of synteny blocks.
+
+   ```{svgbob}
+   * "1 + 2 =  4 - 1"
+
+                                                                        adjacency   breakpoint  breakpoint
+                                                                            |           |           |
+           A             B         C           D                       B    v      C    v     D     v        A         
+   -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------    vs   -->>>>>>>-----<<<<<<<---->>>>>>>-----<<<<<<<<<<<<<<--
+    5'                      DESIRED                   3'           5'               UNDESIRED                       3' 
    ```
 
  * `{bm} breakpoint graph/(breakpoint graph)_GR/i` - An undirected graph representing the order and orientation of synteny blocks shared between two genomes.
@@ -7814,7 +7925,7 @@ cyclic
    }
    ```
    
-   Breakpoint graph_GRs are used to compute a parsimonious path of fusion, fission, and reversal operations (genome rearrangements) that transforms one genome into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
+   Breakpoint graph_GRs are an extension of Breakpoint_GRs. These graphs are used to compute a parsimonious path of fusion, fission, and reversal operations (genome rearrangements) that transforms one genome into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
    
    Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges.
 
@@ -8189,7 +8300,7 @@ cyclic
    }
    ```
 
- * `{bm} permutation/(permutation)_GRFIXMEFIXMEFIXMEFIXME/i` - A list representing one of the genomes in a breakpoint graph_GR. The list representation is generated by walking that genome's edges, where each walked edge that's a synteny block is appended to the list with a ...
+ * `{bm} permutation/(permutation)_GR/i` - A list representing one of the genomes in a breakpoint graph_GR. The list representation is generated by walking that genome's edges, where each walked edge that's a synteny block is appended to the list with a ...
    
     * \+ prefix if it's walked from head to tail.
     * \- prefix if it's walked from tail to head.
@@ -8260,10 +8371,8 @@ cyclic
 `{bm-ignore} (spectrum)_NORM/i`
 `{bm-error} Apply suffix _NORM or _MS/(spectrum)/i`
 
-`{bm-ignore} (adjacent|adjacency|breakpoint)_NORM/i`
-`{bm-error} Apply suffix _NORM or _GR/(adjacent|adjacency|breakpoint)/i`
-`{bm-error} Don't use a suffix here/(adjacency_GR matrix|adjacency_GR list)/i`
-
+`{bm-ignore} (adjacent|adjacency|adjacencies|breakpoint)_NORM/i`
+`{bm-error} Apply suffix _NORM or _GR/(adjacent|adjacency|adjacencies|breakpoint)/i`
 `{bm-error} Use breakpoint graph_GR instead/(breakpoint_GR graph)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
