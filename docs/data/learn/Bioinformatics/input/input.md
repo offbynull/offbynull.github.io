@@ -5203,64 +5203,232 @@ filter, 65, 65
 cull, 15
 ```
 
-### Breakpoint Permutation
+### Reversal Path
 
-`{bm} /(Algorithms\/Synteny\/Breakpoint Permutation)_TOPIC/`
+`{bm} /(Algorithms\/Synteny\/Reversal Path)_TOPIC/`
 
 ```{prereq}
 Algorithms/Synteny/Synteny Graph_TOPIC
 ```
 
-**WHAT**:
+**WHAT**: Given two genomes that share synteny blocks, where one genome has the synteny blocks in desired form while the other does not, determine the minimum number of reversals (genome rearrangement) required to get the undesired genome's synteny blocks to match those in the desired genome.
 
-**WHY**:
+```{svgbob}
+    A      B       C        D        E                          B      C       A        D        E    
+-->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--        vs        -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--
+                DESIRED                                                     UNDESIRED
+
+
+
+                                         "Parsimonious reversal path"
+                                                                  .-----.
+                                    B      C       A        D        E    
+                                -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--
+                                
+                                 .--------------------.
+                                    B      C       A        D        E    
+                                -->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--
+                                
+                                        .-------------.
+                                    A      C       B        D        E    
+                                -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
+                                
+
+                                    A      B       C        D        E    
+                                -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--
+```
+
+**WHY**: The theory is that the genome rearrangements between two species take the parsimonious path (or close to it). Since genome reversals are the most common form of genome rearrangement operation, by calculating a minimum reversal path it's possible to get an idea of how the two species branched off. In the example above, it may be that one of the genomes in the reversal path is the parent that both genomes are based off of.
+
+```{svgbob}
+                                    A      C       B        D        E    
+                                -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
+                                                 PARENT
+
+                                                   |
+                   .-------------------------------+-------------------------------.
+                   |                                                               v
+                   |
+                   |                                         .--------------------.
+                   |                                            A      C       B        D        E    
+                   v                                        -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
+
+        .-------------.                                                                       .-----.
+    A      C       B        D        E                          B      C       A        D        E    
+-->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--                  -->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--
+
+
+    A      B       C        D        E                          B      C       A        D        E    
+-->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--                  -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--
+                DESIRED                                                     UNDESIRED
+```
+
+#### Breakpoint List Algorithm
 
 **ALGORITHM**:
 
-Given a permutation_GR, add a prefix of 0 and a suffix of length + 1. For example, ...
+This algorithm is a simple greedy heuristic to estimate the reversal path / reversal distance. It relies on the concept of breakpoint_GRs and adjacencies_GR:
+
+ * Adjacency_GR is two neighbouring synteny blocks in the undesired genome that follow each other just as they do in the desired genome.
+
+   ```{svgbob}
+   * "In this example, the undesired genome has B and C next to each other and the"
+     "tail of B is followed by the head of A, just as in the desired genome."
+
+                              .---------------------------------------------------.
+                     .--------+--------.                                 .--------+-------.                          
+           A             B         C           D                             B        C        D           A         
+   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------      vs       -->>>>>>>--->>>>>>-->>>>>>>--<<<<<<<<<<<<<<--
+    5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                  |
+                                                                              adjacency
+   ```
+
+   ```{svgbob}
+   * "In this example, the undesired genome has B and C next to each other and the"
+     "tail of B is followed by the tail of A, just as in the desired genome."
+
+                              .---------------------------------------------------.
+                     .--------+--------.                                 .--------+-------.                          
+           A             B         C           D                             B        C        D           A         
+   -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------      vs       -->>>>>>>--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+    5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                  |
+                                                                              adjacency
+   ```
+
+   ```{svgbob}
+   * "In this example, the undesired genome has B and C next to each other and the"
+     "tail of B is followed by the head of A, just as in the desired genome. Note"
+     "that their placement has been swapped when compared to the desired genome."
+     "This is fine. As long as they follow each other as they do in the desired"
+     "genome, it's considered an adjacency."
+     
+                              .--------------------------------------------.
+                     .--------+--------.                          .--------+-------.                          
+           A             B         C           D                      C        B        D           A         
+   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+    5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                           |
+                                                                       adjacency
+   ```
+
+ * Breakpoint_GR is two neighbouring synteny blocks in the undesired genome don't fit the definition of an adjacency_GR: They don't follow each other just as they do in the desired genome.
+
+   ```{svgbob}
+   * "In this example, the undesired genome has B and C next to each other but the"
+     "tail of B is NOT followed by the head of A, as it is in the desired genome."
+
+                              .--------------------------------------------.
+                     .--------+--------.                          .--------+-------.                          
+           A             B         C           D                      B        C        D           A         
+   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+    5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                           |
+                                                                       breakpoint
+   ```
+
+   ```{svgbob}
+   * "In this example, the undesired genome does NOT have B and C next to each"
+     "other."
+
+                              .---------------------------------------+---------------------------------.
+                     .--------+--------.                          .---+---.                         .---+---.
+           A             B         C           D                      B        D            A           C     
+   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<--<<<<<<<<<<<<<<-->>>>>>>--
+    5'                      DESIRED                   3'          5'       ^       UNDESIRED        ^      3' 
+                                                                           |                        |
+                                                                       breakpoint               breakpoint
+   ```
+
+Breakpoint_GRs and adjacencies_GR are useful because they identify desirable points for reversals. This algorithm takes advantage of that fact to estimate the reversal distance. For example, a contiguous train of adjacencies_GR in an undesired genome may identify the boundaries for a single reversal that gets the undesired genome closer to the desired genome.
+
+```{svgbob}
+* "The contiguous segment comprising D, C, and B may be reversed as"
+  "a single genome reversal."
+
+                                                                      breakpoint  adjacency   adjacency   breakpoint    
+                                                                          |           |           |           |         
+     A           B          C           D         E                  A    v      D    v     C     v     B     v   E     
+-->>>>>>>----->>>>>>>---->>>>>>>----->>>>>>----->>>>>>--   vs   -->>>>>>>-----<<<<<<<----<<<<<<<-----<<<<<<-----<<<<<<--
+ 5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
+```
+
+The algorithm works by assigning integers to synteny blocks. The synteny blocks in the...
+
+ * desired genome are represented as 1 to n.
+ * undesired genome are represented by the integers of the corresponding synteny block in the desired genome, where the integer is negated if the synteny block is reversed.
+
+For example, ...
+
+```{svgbob}
+    +1          +2         +3          +4         +5                +1           -4         -3         -2         -5     
+-->>>>>>>----->>>>>>>---->>>>>>>----->>>>>>-----<<<<<<--   vs   -->>>>>>>-----<<<<<<<----<<<<<<<-----<<<<<<----->>>>>>--
+ 5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
+```
+
+Both genomes in the example above may be represented as a list:
+
+ * DESIRED: [+1, +2, +3, +4, +5]
+ * UNDESIRED: [+1, -4, -3, -2, -5]
+
+Artificially add a 0 prefix and a length + 1 suffix to the undesired list...
     
 ```{svgbob}
-Before:   +3 +4 -1 +2 -7 -6 -5
+Before:   +1 -4 -3 -2 -5
 
-After:  0 -3 +4 +1 +2 -7 -6 -5 +8
-        ^                       ^
-        |                       |
-  "prefix of 0"      "suffix of 8 (length + 1)"
+After:  0 +1 -4 -3 -2 -5 +6
+        ^                 ^
+        |                 |
+    "prefix of 0"     "suffix of 6"
 ```
     
-In this modified version of a permutation_GR, consecutive elements `{kt}(p_i, p_{i+1})` are considered a...
+In this modified version of the list, consecutive elements `{kt}(p_i, p_{i+1})` are considered a...
 
  * adjacency_GR if `{kt}p_i + 1 = p_{i+1}`.
  * breakpoint_GR if `{kt}p_i + 1 \neq p_{i+1}`.
 
 ```{svgbob}
- bp bp bp    bp       bp
- |  |  |     |        |
- v  v  v     v        v
-0 -3 +4 +1 +2 -7 -6 -5 +8
-          ^     ^  ^  
-          |     |  |  
-          a     a  a     
-    
-* "a = adjacency"
-* "b = breakpoint"                                 
-```
-
-Breakpoint_GRs are used to estimate the reversal distance. An algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of reducing the number of breakpoint_GRs at each reversal, ultimately hoping to get it to the identity permutation permutation_GR. In the example above, the reversal of [-7, -6, -5] reduces the number of breakpoint_GRs by 1...
-
-```{svgbob}
- bp bp bp    bp       
- |  |  |     |        
- v  v  v     v        
-0 -3 +4 +1 +2 +5 +6 +7 +8
-          ^     ^  ^  ^
-          |     |  |  |
-          a     a  a  a
-                    (NEW)  
+    bp       bp bp
+    |        |  |
+    v        v  v
+0 +1 -4 -3 -2 -5 +6
+ ^     ^  ^
+ |     |  |
+ a     a  a     
     
 * "a = adjacency"
 * "b = breakpoint"
 ```
+
+This algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of reducing the number of breakpoint_GRs at each reversal, ultimately hoping to get it to the desired genome (ignoring the artificial prefix and suffix). In the example above, the reversal of [-4, -3, -2] reduces the number of breakpoint_GRs by 1...
+
+```{svgbob}
+             bp bp
+             |  |
+             v  v
+0 +1 +2 +3 +4 -5 +6
+ ^  ^  ^  ^
+ |  |  |  |
+ a  a  a  a
+    
+* "a = adjacency"
+* "b = breakpoint"
+```
+
+Following that up with a reversal of \[-5\] reduces the number of breakpoint_GRs by 2...
+
+```{svgbob}
+0 +1 +2 +3 +4 +5 +6
+ ^  ^  ^  ^  ^  ^
+ |  |  |  |  |  |
+ a  a  a  a  a  a
+    
+* "a = adjacency"
+* "b = breakpoint"
+```
+
+Leaving the undesired list in the same state as the desired list (ignoring the artificial prefix and suffix). As such, the reversal distance for this example is 2 reversals.
 
 In the best case, a single reversal will remove 2 breakpoint_GRs (one on each side of the reversal). In the worst case, there is no single reversal that drives down the number of breakpoint_GRs. For example, there is no single reversal for the permutation_GR [+2, +1] that reduces the number of breakpoint_GRs...
 
@@ -5289,17 +5457,13 @@ In the best case, a single reversal will remove 2 breakpoint_GRs (one on each si
 
 Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
 
-### Breakpoint Graph
+#### Breakpoint Graph Algorithm
 
 `{bm} /(Algorithms\/Synteny\/Breakpoint Graph)_TOPIC/`
 
 ```{prereq}
 Algorithms/Synteny/Breakpoint Graph_TOPIC
 ```
-
-**WHAT**:
-
-**WHY**:
 
 **ALGORITHM**:
 
@@ -8374,6 +8538,9 @@ cyclic
 `{bm-ignore} (adjacent|adjacency|adjacencies|breakpoint)_NORM/i`
 `{bm-error} Apply suffix _NORM or _GR/(adjacent|adjacency|adjacencies|breakpoint)/i`
 `{bm-error} Use breakpoint graph_GR instead/(breakpoint_GR graph)/i`
+
+`{bm-ignore} (permutation)_NORM/i`
+`{bm-error} Apply suffix _NORM or _GR/(permutation)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 
