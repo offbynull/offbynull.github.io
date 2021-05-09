@@ -5211,10 +5211,13 @@ cull, 15
 Algorithms/Synteny/Synteny Graph_TOPIC
 ```
 
-**WHAT**: Given two genomes that share synteny blocks, where one genome has the synteny blocks in desired form while the other does not, determine the minimum number of reversals (genome rearrangement) required to get the undesired genome's synteny blocks to match those in the desired genome.
+**WHAT**: Given two genomes that share synteny blocks, where one genome has the synteny blocks in desired form while the other does not, determine the minimum number of genome rearrangement reversals (reversal distance) required to get the undesired genome's synteny blocks to match those in the desired genome.
 
 ```{svgbob}
-    A      B       C        D        E                          B      C       A        D        E    
+* "Synteny blocks going in the forward direction (5' to 3') are prefixed with +."
+* "Synteny blocks going in the backward direction (3' to 5') are prefixed with -."
+
+   +A     +B      +C       +D       +E                         +B     +C       -A      +D       -E    
 -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--        vs        -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--
                 DESIRED                                                     UNDESIRED
 
@@ -5222,26 +5225,29 @@ Algorithms/Synteny/Synteny Graph_TOPIC
 
                                          "Parsimonious reversal path"
                                                                   .-----.
-                                    B      C       A        D        E    
+                                   +B     +C      -A       +D       -E    
                                 -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--
                                 
                                  .--------------------.
-                                    B      C       A        D        E    
+                                   +B     +C      -A       +D       +E    
                                 -->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--
                                 
                                         .-------------.
-                                    A      C       B        D        E    
+                                   +A     -C      -B       +D       +E    
                                 -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
                                 
 
-                                    A      B       C        D        E    
+                                   +A     +B      +C       +D       +E    
                                 -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--
 ```
 
 **WHY**: The theory is that the genome rearrangements between two species take the parsimonious path (or close to it). Since genome reversals are the most common form of genome rearrangement operation, by calculating a minimum reversal path it's possible to get an idea of how the two species branched off. In the example above, it may be that one of the genomes in the reversal path is the parent that both genomes are based off of.
 
 ```{svgbob}
-                                    A      C       B        D        E    
+* "Synteny blocks going in the forward direction (5' to 3') are prefixed with +."
+* "Synteny blocks going in the backward direction (3' to 5') are prefixed with -."
+
+                                   +A     -C      -B       +D       +E    
                                 -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
                                                  PARENT
 
@@ -5250,24 +5256,28 @@ Algorithms/Synteny/Synteny Graph_TOPIC
                    |                                                               v
                    |
                    |                                         .--------------------.
-                   |                                            A      C       B        D        E    
+                   |                                           +A     -C      -B       +D       +E    
                    v                                        -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
 
         .-------------.                                                                       .-----.
-    A      C       B        D        E                          B      C       A        D        E    
+   +A     -C      -B       +D       +E                         +B     +C      -A       +D       +E    
 -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--                  -->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--
 
 
-    A      B       C        D        E                          B      C       A        D        E    
+   +A    "+B      +C       +D       +E                         +B     +C      -A       +D       -E    
 -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--                  -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--
                 DESIRED                                                     UNDESIRED
 ```
 
 #### Breakpoint List Algorithm
 
+`{bm} /(Algorithms\/Synteny\/Reversal Path\/Breakpoint List Algorithm)_TOPIC/`
+
 **ALGORITHM**:
 
-This algorithm is a simple greedy heuristic to estimate the reversal path / reversal distance. It relies on the concept of breakpoint_GRs and adjacencies_GR:
+This algorithm is a simple best effort heuristic to estimate the parsimonious reversal path. It isn't guaranteed to generate a reversal path in every case: The point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation / provide intuition for better algorithms that determine reversal paths.
+
+It relies on the concept of breakpoint_GRs and adjacencies_GR:
 
  * Adjacency_GR is two neighbouring synteny blocks in the undesired genome that follow each other just as they do in the desired genome.
 
@@ -5277,7 +5287,7 @@ This algorithm is a simple greedy heuristic to estimate the reversal path / reve
 
                               .---------------------------------------------------.
                      .--------+--------.                                 .--------+-------.                          
-           A             B         C           D                             B        C        D           A         
+          +A            +B        +C          +D                            +B       +C       +D          -A         
    -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------      vs       -->>>>>>>--->>>>>>-->>>>>>>--<<<<<<<<<<<<<<--
     5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
                                                                                   |
@@ -5290,7 +5300,7 @@ This algorithm is a simple greedy heuristic to estimate the reversal path / reve
 
                               .---------------------------------------------------.
                      .--------+--------.                                 .--------+-------.                          
-           A             B         C           D                             B        C        D           A         
+          +A            +B        -C          +D                            +B       -C       +D          -A         
    -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------      vs       -->>>>>>>--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
     5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
                                                                                   |
@@ -5306,7 +5316,7 @@ This algorithm is a simple greedy heuristic to estimate the reversal path / reve
      
                               .--------------------------------------------.
                      .--------+--------.                          .--------+-------.                          
-           A             B         C           D                      C        B        D           A         
+          +A            +B        +C          +D                     -C       -B       +D          -A         
    -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
     5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
                                                                            |
@@ -5321,7 +5331,7 @@ This algorithm is a simple greedy heuristic to estimate the reversal path / reve
 
                               .--------------------------------------------.
                      .--------+--------.                          .--------+-------.                          
-           A             B         C           D                      B        C        D           A         
+          +A            +B        +C          +D                     +B       -C       +D          -A         
    -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
     5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
                                                                            |
@@ -5334,7 +5344,7 @@ This algorithm is a simple greedy heuristic to estimate the reversal path / reve
 
                               .---------------------------------------+---------------------------------.
                      .--------+--------.                          .---+---.                         .---+---.
-           A             B         C           D                      B        D            A           C     
+          +A            +B        +C          +D                     +B        -D         -A           +C     
    -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<--<<<<<<<<<<<<<<-->>>>>>>--
     5'                      DESIRED                   3'          5'       ^       UNDESIRED        ^      3' 
                                                                            |                        |
@@ -5349,44 +5359,40 @@ Breakpoint_GRs and adjacencies_GR are useful because they identify desirable poi
 
                                                                       breakpoint  adjacency   adjacency   breakpoint    
                                                                           |           |           |           |         
-     A           B          C           D         E                  A    v      D    v     C     v     B     v   E     
+    +A          +B         +C          +D        +E                 +A    v     -D    v    -C     v    -B     v   -E     
 -->>>>>>>----->>>>>>>---->>>>>>>----->>>>>>----->>>>>>--   vs   -->>>>>>>-----<<<<<<<----<<<<<<<-----<<<<<<-----<<<<<<--
  5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
 ```
 
-The algorithm works by assigning integers to synteny blocks. The synteny blocks in the...
+The algorithm starts by assigning integers to synteny blocks. The synteny blocks in the...
 
- * desired genome are represented as 1 to n.
+ * desired genome are represented as +1 to +n.
  * undesired genome are represented by the integers of the corresponding synteny block in the desired genome, where the integer is negated if the synteny block is reversed.
 
 For example, ...
 
 ```{svgbob}
-    +1          +2         +3          +4         +5                +1           -4         -3         -2         -5     
--->>>>>>>----->>>>>>>---->>>>>>>----->>>>>>-----<<<<<<--   vs   -->>>>>>>-----<<<<<<<----<<<<<<<-----<<<<<<----->>>>>>--
- 5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
+     +1      +2       +3       +4      +5                +1        -4      -3       -2     -5   
+-->>>>>>>-->>>>>>>-->>>>>>>-->>>>>>--<<<<<<--   vs   -->>>>>>>--<<<<<<<--<<<<<<<--<<<<<<-->>>>>>--
+ 5'                 DESIRED               3'          5'                UNDESIRED              3' 
 ```
 
-Both genomes in the example above may be represented as a list:
+The synteny blocks in each genomes of the above example may be represented as lists...
 
- * DESIRED: [+1, +2, +3, +4, +5]
- * UNDESIRED: [+1, -4, -3, -2, -5]
+ * `[+1, +2, +3, +4, +5]` (DESIRED)
+ * `[+1, -4, -3, -2, -5]` (UNDESIRED)
 
-Artificially add a 0 prefix and a length + 1 suffix to the undesired list...
-    
-```{svgbob}
-Before:   +1 -4 -3 -2 -5
+Artificially add a 0 prefix and a length + 1 suffix to both lists. In the above example, the length is 5, so each list gets a prefix of 0 and a suffix of 6...
 
-After:  0 +1 -4 -3 -2 -5 +6
-        ^                 ^
-        |                 |
-    "prefix of 0"     "suffix of 6"
-```
-    
-In this modified version of the list, consecutive elements `{kt}(p_i, p_{i+1})` are considered a...
+ * `[0, +1, +2, +3, +4, +5, +6]` (DESIRED)
+ * `[0, +1, -4, -3, -2, -5, +6]` (UNDESIRED)
+
+In this modified list, consecutive elements `{kt}(p_i, p_{i+1})` are considered a...
 
  * adjacency_GR if `{kt}p_i + 1 = p_{i+1}`.
  * breakpoint_GR if `{kt}p_i + 1 \neq p_{i+1}`.
+
+In the undesired version of the example above, the breakpoint_GRs and adjacencies_GR are...
 
 ```{svgbob}
     bp       bp bp
@@ -5401,9 +5407,11 @@ In this modified version of the list, consecutive elements `{kt}(p_i, p_{i+1})` 
 * "b = breakpoint"
 ```
 
-This algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of reducing the number of breakpoint_GRs at each reversal, ultimately hoping to get it to the desired genome (ignoring the artificial prefix and suffix). In the example above, the reversal of [-4, -3, -2] reduces the number of breakpoint_GRs by 1...
+This algorithm continually applies genome rearrangement reversal operations on portions of the list in the hopes of reducing the number of breakpoint_GRs at each reversal, ultimately hoping to get it to the desired list. It targets portions of contiguous adjacencies_GR sandwiched between breakpoint_GRs. In the example above, the reversal of `[-4, -3, -2]` reduces the number of breakpoint_GRs by 1...
 
 ```{svgbob}
+* "Genome reversal of -4 -3 -2 is +2 +3 +4"
+
              bp bp
              |  |
              v  v
@@ -5416,21 +5424,23 @@ This algorithm continually applies genome rearrangement reversal operations on p
 * "b = breakpoint"
 ```
 
-Following that up with a reversal of \[-5\] reduces the number of breakpoint_GRs by 2...
+Following that up with a reversal of `[-5]` reduces the number of breakpoint_GRs by 2...
 
 ```{svgbob}
+* "Genome reversal of -5 is +5"
+
 0 +1 +2 +3 +4 +5 +6
  ^  ^  ^  ^  ^  ^
  |  |  |  |  |  |
  a  a  a  a  a  a
-    
+
 * "a = adjacency"
 * "b = breakpoint"
 ```
 
-Leaving the undesired list in the same state as the desired list (ignoring the artificial prefix and suffix). As such, the reversal distance for this example is 2 reversals.
+Leaving the undesired list in the same state as the desired list. As such, the reversal distance for this example is 2 reversals.
 
-In the best case, a single reversal will remove 2 breakpoint_GRs (one on each side of the reversal). In the worst case, there is no single reversal that drives down the number of breakpoint_GRs. For example, there is no single reversal for the permutation_GR [+2, +1] that reduces the number of breakpoint_GRs...
+In the best case, a single reversal will remove 2 breakpoint_GRs (one on each side of the reversal). In the worst case, there is no single reversal that drives down the number of breakpoint_GRs. For example, there is no single reversal for the list `[+2, +1]` that reduces the number of breakpoint_GRs...
 
 ```{svgbob}
  bp bp bp                         bp bp bp
@@ -5455,14 +5465,52 @@ In the best case, a single reversal will remove 2 breakpoint_GRs (one on each si
       '--------------------------------'
 ```
 
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+In such worst case scenarios, the algorithm fails. The point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation for better algorithms that determine reversal paths.
+
 Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
 
 #### Breakpoint Graph Algorithm
 
-`{bm} /(Algorithms\/Synteny\/Breakpoint Graph)_TOPIC/`
+`{bm} /(Algorithms\/Synteny\/Reversal Path\/Breakpoint Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Synteny/Breakpoint Graph_TOPIC
+Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
