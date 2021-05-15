@@ -5138,6 +5138,7 @@ Algorithms/Synteny/Genomic Dot Plot_TOPIC
  * "N = normal k-mer match"
  * "R = reverse complement k-mer match"
 
+  ^                                                                                    ^
 3'|                                                                                  3'|                                                                 
   |  R                              R                                                  |  *                                                              
   |   R           N                                                                    |   \                                                             
@@ -5161,10 +5162,20 @@ Algorithms/Synteny/Genomic Dot Plot_TOPIC
   |             N              N                R                                      |                                            \                    
   |                                              R           R                         |                                           D \                    
 5'|       R             R                   R     R                                  5'|                                              v                  
-  +-----------------------------------------------------------------                   +-----------------------------------------------------------------
+  +----------------------------------------------------------------->                  +----------------------------------------------------------------->
    5'                          genome2                            3'                    5'                          genome2                            3'
 
  * "Remember that the direction of DNA is 5' to 3'."
+```
+
+```{svgbob}
+"For each genome, prefix the synteny block with..."
+* "+ if match goes in forward direction"
+* "- if match goes in forward direction"
+
+     -D        -B       +C               -A                              +A           +B       +C               +D
+--<<<<<<<<--<<<<<<<<-->>>>>>>>--<<<<<<<<<<<<<<<<<<<<--     vs.     --->>>>>>>>>>>>--->>>>>>--->>>>>>----------->>>>>>--------------
+ 5'                  genome1                       3'               5'                          genome2                         3'
 ```
 
 **ALGORITHM**:
@@ -5277,79 +5288,71 @@ Algorithms/Synteny/Synteny Graph_TOPIC
 
 This algorithm is a simple best effort heuristic to estimate the parsimonious reversal path. It isn't guaranteed to generate a reversal path in every case: The point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation / provide intuition for better algorithms that determine reversal paths.
 
-It relies on the concept of breakpoint_GRs and adjacencies_GR:
+The algorithm relies on the concept of breakpoint_GRs and adjacencies_GR...
 
- * Adjacency_GR is two neighbouring synteny blocks in the undesired genome that follow each other just as they do in the desired genome.
+ * Adjacency_GR: Two neighbouring synteny blocks in the undesired genome that follow each other just as they do in the desired genome. For example, ...
 
-   ```{svgbob}
-   * "In this example, the undesired genome has B and C next to each other and the"
-     "tail of B is followed by the head of A, just as in the desired genome."
+   * this undesired genome has B and C next to each other and the tail of B is followed by the head of C, just as in the desired genome.
+  
+     ```{svgbob}
+                                .---------------------------------------------------.
+                       .--------+--------.                                 .--------+-------.                          
+            +A            +B        +C          +D                            +B       +C       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------      vs       -->>>>>>>--->>>>>>-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                    |
+                                                                                adjacency
+     ```
+  
+   * this undesired genome has B and C next to each other and the tail of B is followed by the tail of C, just as in the desired genome.
+  
+     ```{svgbob}
+                                .---------------------------------------------------.
+                       .--------+--------.                                 .--------+-------.                          
+            +A            +B        -C          +D                            +B       -C       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------      vs       -->>>>>>>--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                    |
+                                                                                adjacency
+     ```
 
-                              .---------------------------------------------------.
-                     .--------+--------.                                 .--------+-------.                          
-          +A            +B        +C          +D                            +B       +C       +D          -A         
-   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------      vs       -->>>>>>>--->>>>>>-->>>>>>>--<<<<<<<<<<<<<<--
-    5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
-                                                                                  |
-                                                                              adjacency
-   ```
+   * this undesired genome has B and C next to each other and the tail of B is followed by the head of C, just as in the desired genome. Note that their placement has been swapped when compared to the desired genome. As long as they follow each other as they do in the desired genome, it's considered an adjacency_GR.
 
-   ```{svgbob}
-   * "In this example, the undesired genome has B and C next to each other and the"
-     "tail of B is followed by the tail of A, just as in the desired genome."
+     ```{svgbob}
+                                .--------------------------------------------.
+                       .--------+--------.                          .--------+-------.                          
+            +A            +B        +C          +D                     -C       -B       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                             |
+                                                                         adjacency
+     ```
 
-                              .---------------------------------------------------.
-                     .--------+--------.                                 .--------+-------.                          
-          +A            +B        -C          +D                            +B       -C       +D          -A         
-   -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------      vs       -->>>>>>>--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
-    5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
-                                                                                  |
-                                                                              adjacency
-   ```
+ * Breakpoint_GR: Two neighbouring synteny blocks in the undesired genome don't fit the definition of an adjacency_GR. For example, ...
 
-   ```{svgbob}
-   * "In this example, the undesired genome has B and C next to each other and the"
-     "tail of B is followed by the head of A, just as in the desired genome. Note"
-     "that their placement has been swapped when compared to the desired genome."
-     "This is fine. As long as they follow each other as they do in the desired"
-     "genome, it's considered an adjacency."
-     
-                              .--------------------------------------------.
-                     .--------+--------.                          .--------+-------.                          
-          +A            +B        +C          +D                     -C       -B       +D          -A         
-   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
-    5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
-                                                                           |
-                                                                       adjacency
-   ```
-
- * Breakpoint_GR is two neighbouring synteny blocks in the undesired genome don't fit the definition of an adjacency_GR: They don't follow each other just as they do in the desired genome.
-
-   ```{svgbob}
-   * "In this example, the undesired genome has B and C next to each other but the"
-     "tail of B is NOT followed by the head of A, as it is in the desired genome."
-
-                              .--------------------------------------------.
-                     .--------+--------.                          .--------+-------.                          
-          +A            +B        +C          +D                     +B       -C       +D          -A         
-   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
-    5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
-                                                                           |
-                                                                       breakpoint
-   ```
-
-   ```{svgbob}
-   * "In this example, the undesired genome does NOT have B and C next to each"
-     "other."
-
-                              .---------------------------------------+---------------------------------.
-                     .--------+--------.                          .---+---.                         .---+---.
-          +A            +B        +C          +D                     +B        -D         -A           +C     
-   -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<--<<<<<<<<<<<<<<-->>>>>>>--
-    5'                      DESIRED                   3'          5'       ^       UNDESIRED        ^      3' 
-                                                                           |                        |
-                                                                       breakpoint               breakpoint
-   ```
+   * this undesired genome has B and C next to each other but the tail of B is NOT followed by the head of C, as it is in the desired genome.
+  
+     ```{svgbob}
+                                .--------------------------------------------.
+                       .--------+--------.                          .--------+-------.                          
+            +A            +B        +C          +D                     +B       -C       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                             |
+                                                                         breakpoint
+     ```
+  
+   * this undesired genome does NOT have B and C next to each other.
+  
+     ```{svgbob}
+                                .---------------------------------------+---------------------------------.
+                       .--------+--------.                          .---+---.                         .---+---.
+            +A            +B        +C          +D                     +B        -D         -A           +C     
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<--<<<<<<<<<<<<<<-->>>>>>>--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED        ^      3' 
+                                                                             |                        |
+                                                                         breakpoint               breakpoint
+     ```
 
 Breakpoint_GRs and adjacencies_GR are useful because they identify desirable points for reversals. This algorithm takes advantage of that fact to estimate the reversal distance. For example, a contiguous train of adjacencies_GR in an undesired genome may identify the boundaries for a single reversal that gets the undesired genome closer to the desired genome.
 
@@ -5372,9 +5375,24 @@ The algorithm starts by assigning integers to synteny blocks. The synteny blocks
 For example, ...
 
 ```{svgbob}
+     +A      +B       +C       +D      -E                +A        -D      -C       -B     +E   
+-->>>>>>>-->>>>>>>-->>>>>>>-->>>>>>--<<<<<<--   vs   -->>>>>>>--<<<<<<<--<<<<<<<--<<<<<<-->>>>>>--
+ 5'                 DESIRED               3'          5'                UNDESIRED              3' 
+
+                                  
+                                          "CONVERTS TO..."
+
+
      +1      +2       +3       +4      +5                +1        -4      -3       -2     -5   
 -->>>>>>>-->>>>>>>-->>>>>>>-->>>>>>--<<<<<<--   vs   -->>>>>>>--<<<<<<<--<<<<<<<--<<<<<<-->>>>>>--
  5'                 DESIRED               3'          5'                UNDESIRED              3' 
+
+
+* "+A maps to +1, -A maps to -1"
+* "+B maps to +2, -B maps to -2"
+* "+C maps to +3, -C maps to -3"
+* "+D maps to +4, -D maps to -4"
+* "-E maps to +5, +E maps to -5"
 ```
 
 The synteny blocks in each genomes of the above example may be represented as lists...
@@ -5463,45 +5481,23 @@ In the best case, a single reversal will remove 2 breakpoint_GRs (one on each si
 0 +2 +1 +3                       0 +2 -1 +3
     '-+'           reverse           '-+'
       '--------------------------------'
+
+* "a = adjacency"
+* "b = breakpoint"
 ```
 
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
-TODO: ADD CODE HERE
-
 In such worst case scenarios, the algorithm fails. The point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation for better algorithms that determine reversal paths.
+
+```{output}
+ch6_code/src/breakpoint_list/BreakpointList.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch6}
+breakpoint_list.BreakpointList
++1, -4, -3, -2, -5
+```
 
 Since each reversal can at most reduce the number of breakpoint_GRs by 2, the reversal distance must be at least half the number of breakpoint_GRs (lower bound): `{kt} d_{rev}(p) >= \frac{bp(p)}{2}`. In other words, the minimum number of reversals to transform a permutation_GRs to an identity permutation_GR will never be less than `{kt} \frac{bp(p)}{2}`.
 
@@ -7803,7 +7799,7 @@ cyclic
    The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
 
    ```{svgbob}
-        Z        X        Y           W                                W               X         Y                   Z   
+       -W       -U       +V          -T                               +T              +U        +V                  +W   
    --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
     5'                  genome1              3'                 5'                          genome2                            3'
    ```
@@ -7910,7 +7906,7 @@ cyclic
    ```{svgbob}
    * "Synteny blocks projected on to each axis."
 
-        D        B        C           A                                A               B         C                   D   
+        -D       -B      +C          -A                               +A              +B        +C                  +D   
    --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
     5'                  genome1              3'                 5'                          genome2                            3'
    ```
@@ -7921,11 +7917,11 @@ cyclic
 
      ```{svgbob}
      * "In this example, the undesired genome has B and C next to each other and the"
-       "tail of B is followed by the head of A, just as in the desired genome."
+       "tail of B is followed by the head of C, just as in the desired genome."
 
                                 .---------------------------------------------------.
                        .--------+--------.                                 .--------+-------.                          
-             A             B         C           D                             B        C        D           A         
+            +A            +B        +C          +D                            +B       +C       +D          -A         
      -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------      vs       -->>>>>>>--->>>>>>-->>>>>>>--<<<<<<<<<<<<<<--
       5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
                                                                                     |
@@ -7934,11 +7930,11 @@ cyclic
 
      ```{svgbob}
      * "In this example, the undesired genome has B and C next to each other and the"
-       "tail of B is followed by the tail of A, just as in the desired genome."
+       "tail of B is followed by the tail of C, just as in the desired genome."
 
                                 .---------------------------------------------------.
                        .--------+--------.                                 .--------+-------.                          
-             A             B         C           D                             B        C        D           A         
+            +A            +B        -C          +D                            +B       -C       +D          -A         
      -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------      vs       -->>>>>>>--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
       5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
                                                                                     |
@@ -7947,14 +7943,14 @@ cyclic
 
      ```{svgbob}
      * "In this example, the undesired genome has B and C next to each other and the"
-       "tail of B is followed by the head of A, just as in the desired genome. Note"
+       "tail of B is followed by the head of C, just as in the desired genome. Note"
        "that their placement has been swapped when compared to the desired genome."
        "This is fine. As long as they follow each other as they do in the desired"
        "genome, it's considered an adjacency."
      
                                 .--------------------------------------------.
                        .--------+--------.                          .--------+-------.                          
-             A             B         C           D                      C        B        D           A         
+            +A            +B        +C          +D                     -C       -B       +D          -A         
      -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
       5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
                                                                              |
@@ -7969,7 +7965,7 @@ cyclic
 
                                 .--------------------------------------------.
                        .--------+--------.                          .--------+-------.                          
-             A             B         C           D                      B        C        D           A         
+            +A            +B        +C          +D                     +B       -C       +D          -A         
      -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
       5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
                                                                              |
@@ -7982,7 +7978,7 @@ cyclic
 
                                 .---------------------------------------+---------------------------------.
                        .--------+--------.                          .---+---.                         .---+---.
-             A             B         C           D                      B        D            A           C     
+            +A            +B        +C          +D                     +B        -D          -A          +C     
      -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<--<<<<<<<<<<<<<<-->>>>>>>--
       5'                      DESIRED                   3'          5'       ^       UNDESIRED        ^      3' 
                                                                              |                        |
@@ -7997,7 +7993,7 @@ cyclic
 
                                                                          breakpoint  adjacency   adjacency   breakpoint    
                                                                              |           |           |           |         
-        A           B          C           D         E                  A    v      D    v     C     v     B     v   E     
+       +A          +B         +C          +D         +E                +A    v     -D    v    -C     v    -B     v   +E    
    -->>>>>>>----->>>>>>>---->>>>>>>----->>>>>>----->>>>>>--   vs   -->>>>>>>-----<<<<<<<----<<<<<<<-----<<<<<<----->>>>>>--
     5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
    ```
@@ -8009,7 +8005,7 @@ cyclic
 
                                                                         adjacency   breakpoint  breakpoint
                                                                             |           |           |
-           A             B         C           D                       B    v      C    v     D     v        A         
+          +A            +B        -C          +D                      +B    v     -C    v    +D     v       -A         
    -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------    vs   -->>>>>>>-----<<<<<<<---->>>>>>>-----<<<<<<<<<<<<<<--
     5'                      DESIRED                   3'           5'               UNDESIRED                       3' 
    ```
@@ -8071,7 +8067,7 @@ cyclic
    For example, the following two _circular_ genomes share the synteny blocks A, B, C, and D between them ...
 
    ```{svgbob}
-        D        B        C           A                                A               B         C                   D   
+       -D       -B       +C          -A                               +A              +B        +C                  +D   
    --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
     5'                  genome1              3'                 5'                          genome2                            3'
    ```
@@ -8141,7 +8137,7 @@ cyclic
    
    Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges.
 
- * `{bm} 2-break/\b(2-break|2 break|two break|two-break)/i` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one the red edges matches the blue edge at that boundary.
+ * `{bm} 2-break/\b(2-break|2 break|two break|two-break)s?\b/i` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one the red edges matches the blue edge at that boundary.
  
    For example, the two red edges highlighted below share the same synteny block boundary and can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...
 
@@ -8201,14 +8197,14 @@ cyclic
     * fusion
 
       ```{svgbob}
-               A        B                              C           D        
+              +A       +B                             +C          +D        
       ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
        5'  circular chromosome1  3'              5'  circular chromosome2  3' 
 
 
                              "FUSE AT [B,C] BOUNDARY..."
 
-                    A        B                  C           D        
+                   +A       +B                 +C          +D        
            ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
             5'                 circular chromosome                   3' 
       ```
@@ -8266,14 +8262,14 @@ cyclic
     * fission
 
       ```{svgbob}
-                    A        B                  C           D        
+                   +A       +B                 +C          +D        
            ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
             5'                 circular chromosome                   3' 
 
 
                           "BREAK AT [B, C] BOUNDARY..."
 
-               A        B                              C           D        
+              +A       +B                             +C          +D        
       ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
        5'  circular chromosome1  3'              5'  circular chromosome2  3' 
       ```
@@ -8332,14 +8328,14 @@ cyclic
     * reversal
 
       ```{svgbob}
-           B        A           C           D        
+          -B       -A          +C          +D        
       --<<<<<<<--<<<<<<<----->>>>>>>-->>>>>>>>>>>>>-----
        5'              circular chromosome           3' 
       
       
                       "REVERSE [B, A] ..."
       
-           A        B           C           D        
+          +A       +B          +C          +D        
       -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
        5'              circular chromosome           3' 
       ```
@@ -8398,14 +8394,14 @@ cyclic
    Other genome rearrangements such as translocations, duplications, and deletions can't be reliably represented as a 2-break. For example, the following translocation requires two 2-breaks...
 
    ```{svgbob}
-        C        B           A           D        
+       +C       +B          +A          +D        
    -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
     5'              circular chromosome           3' 
    
    
                      "SWAP C AND A..."
    
-        A        B           C           D        
+       +A       +B          +C          +D        
    -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
     5'              circular chromosome           3' 
    ```
