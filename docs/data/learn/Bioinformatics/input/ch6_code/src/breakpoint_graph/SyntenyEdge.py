@@ -6,12 +6,14 @@ from breakpoint_graph.SyntenyNode import SyntenyNode
 from breakpoint_graph.SyntenyEnd import SyntenyEnd
 
 
+# MARKDOWN
 class SyntenyEdge:
     def __init__(self, n1: SyntenyNode, n2: SyntenyNode):
         assert n1.id == n2.id
         assert n1.end != n2.end
         self.n1 = n1
         self.n2 = n2
+# MARKDOWN
 
     @staticmethod
     def from_str(v: str) -> Tuple[SyntenyEdge, str]:

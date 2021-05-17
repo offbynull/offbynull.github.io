@@ -3,10 +3,12 @@ from __future__ import annotations
 from BreakpointGraph import SyntenyEnd
 
 
+# MARKDOWN
 class SyntenyNode:
     def __init__(self, id: str, end: SyntenyEnd):
         self.id = id
         self.end = end
+# MARKDOWN
 
     def swap_end(self) -> SyntenyNode:
         return SyntenyNode(self.id, self.end.swap())

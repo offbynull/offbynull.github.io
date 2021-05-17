@@ -40,14 +40,19 @@ from breakpoint_graph.SyntenyEdge import SyntenyEdge
 from breakpoint_graph.SyntenyEnd import SyntenyEnd
 
 
+# MARKDOWN
 class BreakpointGraph:
     def __init__(self, red_p_list: List[List[str]], blue_p_list: List[List[str]]):
+        # Since the blue edges are sandwiched inbetween synteny blocks as they're ordered in the desired genome (correct
+        # order / direction), there's no need to hold on to the actual synteny blocks themselves -- they can be derived
+        # from the blue edges
         self.blue_edges = ColoredEdgeSet.create(
             ce for p in blue_p_list for ce in Permutation.from_raw(p, True).to_colored_edges()
         )
         self.red_edges = ColoredEdgeSet.create(
             ce for p in red_p_list for ce in Permutation.from_raw(p, True).to_colored_edges()
         )
+# MARKDOWN
 
     def get_red_blue_paths(self):
         remaining_n_set = self.blue_edges.nodes()

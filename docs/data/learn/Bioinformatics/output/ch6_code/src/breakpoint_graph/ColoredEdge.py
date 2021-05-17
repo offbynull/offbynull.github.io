@@ -7,6 +7,7 @@ from breakpoint_graph.SyntenyNode import SyntenyNode
 from breakpoint_graph.TerminalNode import TerminalNode
 
 
+# MARKDOWN
 class ColoredEdge:
     def __init__(
             self,
@@ -25,6 +26,7 @@ class ColoredEdge:
             n1, n2 = n2, n1
         self.n1 = n1
         self.n2 = n2
+# MARKDOWN
 
     def other_end(self, n: Union[SyntenyNode, TerminalNode]):
         if n == self.n1:

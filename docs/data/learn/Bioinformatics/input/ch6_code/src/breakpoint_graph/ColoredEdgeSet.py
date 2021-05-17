@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from typing import Optional, Dict, Set, Union, Iterable, List, Tuple
+from typing import Optional, Dict, Set, Union, Iterable, List
 
+from BreakpointGraph import SyntenyEnd
 from breakpoint_graph.ColoredEdge import ColoredEdge
 from breakpoint_graph.SyntenyEdge import SyntenyEdge
-from breakpoint_graph.SyntenyEnd import SyntenyEnd
 from breakpoint_graph.SyntenyNode import SyntenyNode
 from breakpoint_graph.TerminalNode import TerminalNode
 
+from helpers.Utils import slide_window
 
+
+# MARKDOWN
+# Represents a single genome in a breakpoint graph
 class ColoredEdgeSet:
     def __init__(self):
         self.by_node: Dict[SyntenyNode, ColoredEdge] = {}
@@ -27,6 +31,7 @@ class ColoredEdgeSet:
             self.by_node[e.n1] = e
         if not isinstance(e.n2, TerminalNode):
             self.by_node[e.n2] = e
+# MARKDOWN
 
     def find(self, n: Union[SyntenyNode, TerminalNode]) -> Optional[ColoredEdge]:
         return self.by_node.get(n, None)
@@ -70,6 +75,7 @@ class ColoredEdgeSet:
     def edges(self) -> Set[ColoredEdge]:
         return set(self.by_node.values())
 
+# WALK_MARKDOWN
     # Walks the colored edges, spliced with synteny edges.
     def walk(self) -> List[List[Union[ColoredEdge, SyntenyEdge]]]:
         ret = []
@@ -116,6 +122,7 @@ class ColoredEdgeSet:
                 all_edges.remove(ce)
             ret.append(edges)
         return ret
+# WALK_MARKDOWN
 
     # Use this to walk red-blue cycles
     @staticmethod
@@ -149,14 +156,67 @@ class ColoredEdgeSet:
         return hash(frozenset(self.by_node.values()))
 
 
+def main_walk():
+    ce_set = ColoredEdgeSet()
+    lookup = {
+        '+': SyntenyEnd.HEAD,
+        '-': SyntenyEnd.HEAD
+    }
+    vals = [s.strip() for s in input().strip().split(',')]
+    print(f'Given the permutation {vals}...\n')
+    cyclic = vals[0] != ''
+    for (s1, s2), _ in slide_window(vals, 2, cyclic=cyclic):
+        if s1 == '':
+            s1_node = TerminalNode.INST
+        else:
+            s1_node = SyntenyNode(
+                id=s1[1:],
+                end=lookup[s1[0]]
+            )
+        if s2 == '':
+            s2_node = TerminalNode.INST
+        else:
+            s2_node = SyntenyNode(
+                id=s2[1:],
+                end=lookup[s2[0]].swap()
+            )
+        ce = ColoredEdge(s1_node, s2_node)
+        ce_set.insert(ce)
+    for chromosome in ce_set.walk():
+        print(f' * START')
+        for edge in chromosome:
+            print(f'   * {edge}')
+    print('')
+    print(f'CE means colored edge / SE means synteny edge.\n')
+    print(f'Recall that the the breakpoint graph is undirected / a permutation may have been walked in either direction'
+          f'(clockwise vs counter-clockwise). If the output looks like it\'s going backwards, that\'s just as correct'
+          f' as if it looked like it\'s going forward.')
+
+
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        func_name = input().strip()
+        if func_name == 'walk':
+            main_walk()
+        else:
+            raise ValueError(f'Unrecognized {func_name=}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    l = ColoredEdgeSet.create([
-        ColoredEdge(SyntenyNode('A', SyntenyEnd.TAIL), SyntenyNode('B', SyntenyEnd.HEAD)),
-        ColoredEdge(SyntenyNode('B', SyntenyEnd.TAIL), SyntenyNode('C', SyntenyEnd.HEAD)),
-        ColoredEdge(SyntenyNode('C', SyntenyEnd.TAIL), SyntenyNode('A', SyntenyEnd.HEAD)),
-        ColoredEdge(TerminalNode.INST, SyntenyNode('X', SyntenyEnd.HEAD)),
-        ColoredEdge(SyntenyNode('X', SyntenyEnd.TAIL), SyntenyNode('Y', SyntenyEnd.HEAD)),
-        ColoredEdge(SyntenyNode('Y', SyntenyEnd.TAIL), SyntenyNode('Z', SyntenyEnd.HEAD)),
-        ColoredEdge(SyntenyNode('Z', SyntenyEnd.TAIL), TerminalNode.INST),
-    ]).walk()
-    print(f'{l}')
+    main()
+# if __name__ == '__main__':
+#     l = ColoredEdgeSet.create([
+#         ColoredEdge(SyntenyNode('A', SyntenyEnd.TAIL), SyntenyNode('B', SyntenyEnd.HEAD)),
+#         ColoredEdge(SyntenyNode('B', SyntenyEnd.TAIL), SyntenyNode('C', SyntenyEnd.HEAD)),
+#         ColoredEdge(SyntenyNode('C', SyntenyEnd.TAIL), SyntenyNode('A', SyntenyEnd.HEAD)),
+#         ColoredEdge(TerminalNode.INST, SyntenyNode('X', SyntenyEnd.HEAD)),
+#         ColoredEdge(SyntenyNode('X', SyntenyEnd.TAIL), SyntenyNode('Y', SyntenyEnd.HEAD)),
+#         ColoredEdge(SyntenyNode('Y', SyntenyEnd.TAIL), SyntenyNode('Z', SyntenyEnd.HEAD)),
+#         ColoredEdge(SyntenyNode('Z', SyntenyEnd.TAIL), TerminalNode.INST),
+#     ]).walk()
+#     print(f'{l}')

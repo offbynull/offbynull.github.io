@@ -8734,9 +8734,9 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Result...</p>
 <p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
 <ul>
-<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
@@ -8841,10 +8841,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Final synteny graph...</p>
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
-<li>{'y': ('A0', 208, 364), 'x': ('B0', 229, 392), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 385, 587), 'x': ('B0', 710, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 880, 1018), 'x': ('B0', 954, 1104), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 658, 823), 'x': ('B0', 459, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 212, 364), 'x': ('B0', 233, 392), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 884, 1018), 'x': ('B0', 958, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 660, 823), 'x': ('B0', 459, 629), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 530, 586), 'x': ('B0', 711, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -8930,7 +8931,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Leaving the undesired list in the same state as the desired list. As such, the <a href="#BM_(reversal%20distance)%2Fi">reversal distance</a> for this example is 2 reversals.</p>
 <p>In the best case, a single reversal will remove 2 <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s (one on each side of the reversal). In the worst case, there is no single reversal that drives down the number of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s. For example, there is no single reversal for the list <code>[+2, +1]</code> that reduces the number of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s...</p>
 <p><img src="svgbob_deb655097c2a34c25e662fcb9b31bbf5ae45f169.svg" alt="Kroki diagram output"></p>
-<p>In such worst case scenarios, the algorithm fails. The point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation for better algorithms that determine reversal paths.</p>
+<p>In such worst case scenarios, the algorithm fails. However, the point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation for better algorithms that determine reversal paths.</p>
 <p><a href="ch6_code/src/breakpoint_list/BreakpointList.py">ch6_code/src/breakpoint_list/BreakpointList.py</a> (lines 7 to 26):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_adjacencies_sandwiched_between_breakpoints</span>(<span class="hljs-params">augmented_blocks: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]:</span>
     <span class="hljs-keyword">assert</span> augmented_blocks[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>
@@ -8973,6 +8974,273 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
+<p>This algorithm calculates a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path by constructing an undirected graph representing the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between <a href="#BM_(genome)%2Fi">genome</a>s. Unlike the <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a> list algorithm, this algorithm...</p>
+<ul>
+<li>determines the full <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path every time (not a best effort heuristic).</li>
+<li>handles multiple chromosomes (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> chromosomal <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s and <a href="#BM_(fission)%2Fi">fission</a>s).</li>
+<li>handles both linear and circular chromosomes.</li>
+</ul>
+<p>The algorithm begins by constructing undirected graphs called <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s for both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s:</p>
+<ol>
+<li>
+<p>Set the ends of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
+<p><img src="dot_0a2b976df1fe819b59828770f2a8a50d.svg" alt="Dot diagram"></p>
+<p><a href="ch6_code/src/breakpoint_graph/SyntenyEnd.py">ch6_code/src/breakpoint_graph/SyntenyEnd.py</a> (lines 7 to 10):</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SyntenyEnd</span>(<span class="hljs-params">Enum</span>):</span>
+    HEAD = <span class="hljs-string">'h'</span>
+    TAIL = <span class="hljs-string">'t'</span>
+</code></pre>
+<p><a href="ch6_code/src/breakpoint_graph/SyntenyNode.py">ch6_code/src/breakpoint_graph/SyntenyNode.py</a> (lines 7 to 11):</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SyntenyNode</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, <span class="hljs-built_in">id</span>: <span class="hljs-built_in">str</span>, end: SyntenyEnd</span>):</span>
+        self.<span class="hljs-built_in">id</span> = <span class="hljs-built_in">id</span>
+        self.end = end
+</code></pre>
+</li>
+<li>
+<p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
+<p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
+<p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
+<p><img src="dot_19da0e0853121f133813afea783f11f6.svg" alt="Dot diagram"></p>
+<p><a href="ch6_code/src/breakpoint_graph/SyntenyEdge.py">ch6_code/src/breakpoint_graph/SyntenyEdge.py</a> (lines 10 to 16):</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SyntenyEdge</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, n1: SyntenyNode, n2: SyntenyNode</span>):</span>
+        <span class="hljs-keyword">assert</span> n1.<span class="hljs-built_in">id</span> == n2.<span class="hljs-built_in">id</span>
+        <span class="hljs-keyword">assert</span> n1.end != n2.end
+        self.n1 = n1
+        self.n2 = n2
+</code></pre>
+</li>
+<li>
+<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines.</p>
+<ul>
+<li>Blue lines represent regions of desired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
+<li>Red lines represent regions of undesired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
+</ul>
+<p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
+<p><a href="ch6_code/src/breakpoint_graph/ColoredEdge.py">ch6_code/src/breakpoint_graph/ColoredEdge.py</a> (lines 11 to 29):</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ColoredEdge</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">
+            self,
+            n1: <span class="hljs-type">Union</span>[SyntenyNode, TerminalNode],
+            n2: <span class="hljs-type">Union</span>[SyntenyNode, TerminalNode]
+    </span>):</span>
+        <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(n1, SyntenyNode) <span class="hljs-keyword">or</span> <span class="hljs-built_in">isinstance</span>(n2, SyntenyNode), <span class="hljs-string">'Both ends cant\'t be at terminal node'</span>
+        <span class="hljs-keyword">assert</span> n1 != n2, <span class="hljs-string">'Both ends can\'t be equal'</span>
+        <span class="hljs-comment"># sort such that nodes are always placed in the same order</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(n1, SyntenyNode) <span class="hljs-keyword">and</span> <span class="hljs-built_in">isinstance</span>(n2, SyntenyNode):  <span class="hljs-comment"># order pair so n1 is always smallest</span>
+            x = [n1, n2]
+            x.sort()
+            n1 = x[<span class="hljs-number">0</span>]
+            n2 = x[<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">elif</span> <span class="hljs-built_in">isinstance</span>(n2, TerminalNode):  <span class="hljs-comment"># one is term node? n1 should be the term node</span>
+            n1, n2 = n2, n1
+        self.n1 = n1
+        self.n2 = n2
+</code></pre>
+</li>
+</ol>
+<p>If the <a href="#BM_(genome)%2Fi">genome</a>s are linear rather than cyclic, an extra step is required: a termination node that represents chromosome ends would be added to the graph. The ends of each chromosome would be <a href="#BM_(connected)%2Fi">connected</a> by a colored edge to that termination node.</p>
+<p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them ...</p>
+<p><img src="svgbob_7d1d037f9aff25774105ac2ef33cc4cea5f9af58.svg" alt="Kroki diagram output"></p>
+<p>Converting the above <a href="#BM_(genome)%2Fi">genome</a>s to both a cyclic and linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is as follows...</p>
+<p><img src="dot_265a2cff663a78c6cb113f54e2ded77e.svg" alt="Dot diagram"></p>
+<p>As shown in the example above, the convention for drawing a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is to set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges such that they're neatly sandwiched between the blue edges. Note how both <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s in the example above are just another representation of their linear diagram counterparts. The ...</p>
+<ul>
+<li>dashed edges represent the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s (suffix of <em>t</em> denotes arrow end / <em>h</em> denotes opposite end).</li>
+<li>blue edges represent the gap regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / chromosome ends in the desired <a href="#BM_(genome)%2Fi">genome</a>.</li>
+<li>red edges represent the gap regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / chromosome ends in the undesired <a href="#BM_(genome)%2Fi">genome</a>.</li>
+</ul>
+<p>The reason for this convention is that it helps conceptualize the algorithms that operate on <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (described further down). Ultimately, a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is simply a merged version of the linear diagrams for both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s. Specifically, notice that each node other than the termination node has 1 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge</p>
+<p>For example, if the circular <a href="#BM_(genome)%2Fi">genome</a> version of the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> example were flattened based on the blue edges (desired <a href="#BM_(genome)%2Fi">genome</a>), the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s would be ordered as they are in the linear diagram for the desired <a href="#BM_(genome)%2Fi">genome</a>...</p>
+<p><img src="dot_f8f42a4724463ac1f8ff20a8ab0dc7c9.svg" alt="Dot diagram"></p>
+<p>Likewise, if the circular <a href="#BM_(genome)%2Fi">genome</a> version of the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> example were flattened based on red edges (undesired <a href="#BM_(genome)%2Fi">genome</a>), the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s would be ordered as they are in the linear diagram for the undesired <a href="#BM_(genome)%2Fi">genome</a>...</p>
+<p><img src="dot_8e8ffca4fb4c3dabe9ce45d4a7bcada6.svg" alt="Dot diagram"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
+</div>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING <a href="#BM_(genome)%2Fi">GENOME</a>" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">SYNTENY</a> EDGES</p>
+<p>In addition to the graphical form described above, a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is representable as a pair of lists. Each <a href="#BM_(genome)%2Fi">genome</a> in the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> becomes a list called a <a href="#BM_(permutation)_GR%2Fi">permutation</a>. A <a href="#BM_(permutation)_GR%2Fi">permutation</a> is generated by walking that <a href="#BM_(genome)%2Fi">genome</a>'s edges, where each walked edge that's a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is appended to the list with a ...</p>
+<ul>
+<li><em>+</em> prefix if it's walked from head to tail.</li>
+<li><em>-</em> prefix if it's walked from tail to head.</li>
+</ul>
+<p>For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
+<p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
+<p>, ... walking the edges for the red <a href="#BM_(genome)%2Fi">genome</a> from node D_t in the ...</p>
+<ul>
+<li>clockwise direction results in <code>[-D, -B, +C, -A]</code>.</li>
+<li>counter-clockwise direction results in <code>[+A, -C, +B, +D]</code>.</li>
+</ul>
+<p>For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same <a href="#BM_(genome)%2Fi">genome</a>. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: <code>[-B, +C, -A, -D]</code>, <code>[-C, +B, +D, +A]</code>, <code>[+C, -A, -D, -B]</code>, etc...</p>
+<p>For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at a termination node (either end of the chromosome). The termination nodes aren't included in the <a href="#BM_(permutation)_GR%2Fi">permutation</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
+</div>
+<p>The data structure representing a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is simply be two <a href="#BM_(adjacency%20list)%2Fi">adjacency list</a>s: one for the red edges and one for the blue edges.</p>
+<p><a href="ch6_code/src/breakpoint_graph/ColoredEdgeSet.py">ch6_code/src/breakpoint_graph/ColoredEdgeSet.py</a> (lines 15 to 34):</p>
+<pre class="hljs"><code><span class="hljs-comment"># Represents a single genome in a breakpoint graph</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ColoredEdgeSet</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+        self.by_node: <span class="hljs-type">Dict</span>[SyntenyNode, ColoredEdge] = {}
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span>(<span class="hljs-params">ce_list: Iterable[ColoredEdge]</span>) -&gt; ColoredEdgeSet:</span>
+        ret = ColoredEdgeSet()
+        <span class="hljs-keyword">for</span> ce <span class="hljs-keyword">in</span> ce_list:
+            ret.insert(ce)
+        <span class="hljs-keyword">return</span> ret
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insert</span>(<span class="hljs-params">self, e: ColoredEdge</span>):</span>
+        <span class="hljs-keyword">if</span> e.n1 <span class="hljs-keyword">in</span> self.by_node <span class="hljs-keyword">or</span> e.n2 <span class="hljs-keyword">in</span> self.by_node:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f'Node already occupied: <span class="hljs-subst">{e}</span>'</span>)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(e.n1, TerminalNode):
+            self.by_node[e.n1] = e
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(e.n2, TerminalNode):
+            self.by_node[e.n2] = e
+</code></pre>
+<p>The edges representing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
+<p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
+<p>..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The dashed edge at C_h will end in C_t, so get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.</p>
+<p><a href="ch6_code/src/breakpoint_graph/ColoredEdgeSet.py">ch6_code/src/breakpoint_graph/ColoredEdgeSet.py</a> (lines 79 to 125):</p>
+<pre class="hljs"><code><span class="hljs-comment"># Walks the colored edges, spliced with synteny edges.</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-type">Union</span>[ColoredEdge, SyntenyEdge]]]:</span>
+    ret = []
+    all_edges = self.edges()
+    term_edges = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> ce <span class="hljs-keyword">in</span> all_edges:
+        <span class="hljs-keyword">if</span> ce.has_term():
+            term_edges.add(ce)
+    <span class="hljs-comment"># handle linear chromosomes</span>
+    <span class="hljs-keyword">while</span> term_edges:
+        ce = term_edges.pop()
+        n = ce.non_term()
+        all_edges.remove(ce)
+        edges = []
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            se_n1 = n
+            se_n2 = se_n1.swap_end()
+            se = SyntenyEdge(se_n1, se_n2)
+            edges += [ce, se]
+            ce = self.by_node[se_n2]
+            <span class="hljs-keyword">if</span> ce.has_term():
+                edges += [ce]
+                term_edges.remove(ce)
+                all_edges.remove(ce)
+                <span class="hljs-keyword">break</span>
+            n = ce.other_end(se_n2)
+            all_edges.remove(ce)
+        ret.append(edges)
+    <span class="hljs-comment"># handle cyclic chromosomes</span>
+    <span class="hljs-keyword">while</span> all_edges:
+        start_ce = all_edges.pop()
+        ce = start_ce
+        n = ce.n1
+        edges = []
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            se_n1 = n
+            se_n2 = se_n1.swap_end()
+            se = SyntenyEdge(se_n1, se_n2)
+            edges += [ce, se]
+            ce = self.by_node[se_n2]
+            <span class="hljs-keyword">if</span> ce == start_ce:
+                <span class="hljs-keyword">break</span>
+            n = ce.other_end(se_n2)
+            all_edges.remove(ce)
+        ret.append(edges)
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the permutation ['+A', '+B', '+C', '+D']...</p>
+<ul>
+<li>START
+<ul>
+<li>CE(A_t, D_h)</li>
+<li>SE(A_t, A_h)</li>
+<li>CE(A_h, B_t)</li>
+<li>SE(B_t, B_h)</li>
+<li>CE(B_h, C_t)</li>
+<li>SE(C_t, C_h)</li>
+<li>CE(C_h, D_t)</li>
+<li>SE(D_t, D_h)</li>
+</ul>
+</li>
+</ul>
+<p>CE means colored edge / SE means synteny edge.</p>
+<p>Recall that the the breakpoint graph is undirected / a permutation may have been walked in either direction(clockwise vs counter-clockwise). If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
+</div>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST</p>
+<p>Now that the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> has been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.</p>
+<p>For example, the two red edges highlighted below share the same nodes as a blue edge (D_h and C_t). These two red edges can be broken and re-wired such that one of them matches the blue edge...</p>
+<p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
+<p>The re-wiring operation shown above is called a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>. Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> represents either a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example, ...</p>
+<ul>
+<li>
+<p><a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>:</p>
+<p><img src="svgbob_9c0f427c504d3b329618dd75fab69a9ae096257f.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_28dd1f560dda20ac68734bcca00b7941.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p><a href="#BM_(fission)%2Fi">fission</a>:</p>
+<p><img src="svgbob_a123ec85648eb0b5c449a7395ecacab509f50b26.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_da1cc3fbe7558a51c166e6f3562d4272.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>reversal:</p>
+<p><img src="svgbob_41ce541fb85cda99f8376c19a613375c2ea0f7bc.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_ad962f4590c01b25914ecf117d94ef2d.svg" alt="Dot diagram"></p>
+</li>
+</ul>
+<p><a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">Genome rearrangement</a> duplications and deletions aren't representable as <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>s. <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">Genome rearrangement</a> <a href="#BM_(translocation)%2Fi">translocation</a>s can't be reliably represented as a single <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> either. For example, the following <a href="#BM_(translocation)%2Fi">translocation</a> requires two <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>s...</p>
+<p><img src="svgbob_5029f3007e1cfcf23146d31495be8429cfee8bc9.svg" alt="Kroki diagram output"></p>
+<p><img src="dot_bc2e79b243f508a940bf67df140608f8.svg" alt="Dot diagram"></p>
+<p><img src="dot_daa5f09c12a12baad116e997fc9e1d39.svg" alt="Dot diagram"></p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
@@ -11599,17 +11867,14 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
 </li>
 </ol>
-<p>For example, the following two <em>circular</em> <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them ...</p>
+<p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them. If the <a href="#BM_(genome)%2Fi">genome</a>s were linear rather than cyclic, their ends would be <a href="#BM_(connected)%2Fi">connected</a> by a colored edge to a termination node. The termination node indicates that the DNA ends.</p>
 <p><img src="svgbob_7e9c33210faa97dd82efb19ecbdd7b9300236fba.svg" alt="Kroki diagram output"></p>
-<p>The full <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> for the two circular <a href="#BM_(genome)%2Fi">genome</a>s above is as follows...</p>
-<p><img src="dot_b9b5219df336f8ed49e8f406c29349bc.svg" alt="Dot diagram"></p>
-<p>If the <a href="#BM_(genome)%2Fi">genome</a>s in the example above were linear rather than cyclic, their ends would be <a href="#BM_(connected)%2Fi">connected</a> by a colored edge to a termination node. The termination node indicates that the DNA ends...</p>
-<p><img src="dot_9d16d46062000e6b4dbd6e5a7716405f.svg" alt="Dot diagram"></p>
-<p><a href="#BM_(breakpoint%20graph)_GR%2Fi">Breakpoint graph</a>s are an extension of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">Breakpoint</a>s. These graphs are used to compute a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, and reversal operations (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s) that transforms one <a href="#BM_(genome)%2Fi">genome</a> into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s typically order <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s so that blue edges are uniformly sandwiched between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / red edges get chaotically scattered around.</p>
-<p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation. By continually applying <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> on red edges, all red edges will eventually sync up to blue edges.</p>
+<p><img src="dot_68956ed2f489ac4cb837efb6bd1d2a65.svg" alt="Dot diagram"></p>
+<p><a href="#BM_(breakpoint%20graph)_GR%2Fi">Breakpoint graph</a>s build on the concept of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s to compute a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, and reversal operations (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s) that transforms one <a href="#BM_(genome)%2Fi">genome</a> into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s typically order <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s so that blue edges are uniformly sandwiched between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / red edges get chaotically scattered around.</p>
+<p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation. By continually applying <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>s on red edges, all red edges will eventually sync up to blue edges.</p>
 </li>
 <li>
-<p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one the red edges matches the blue edge at that boundary.</p>
+<p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one of the red edges matches the blue edge at that boundary.</p>
 <p>For example, the two red edges highlighted below share the same <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and can be re-wired such that one of the edges matches the blue edge at that <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> boundary ...</p>
 <p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
 <p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example...</p>
@@ -11630,7 +11895,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="dot_ad962f4590c01b25914ecf117d94ef2d.svg" alt="Dot diagram"></p>
 </li>
 </ul>
-<p>Other <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s such as <a href="#BM_(translocation)%2Fi">translocation</a>s, duplications, and deletions can't be reliably represented as a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>. For example, the following <a href="#BM_(translocation)%2Fi">translocation</a> requires two <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>...</p>
+<p>Other <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s such as <a href="#BM_(translocation)%2Fi">translocation</a>s, duplications, and deletions can't be reliably represented as a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>. For example, the following <a href="#BM_(translocation)%2Fi">translocation</a> requires two <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>s...</p>
 <p><img src="svgbob_98149c1130d2d679f31f1005a4385b055a11fb39.svg" alt="Kroki diagram output"></p>
 <p><img src="dot_bc2e79b243f508a940bf67df140608f8.svg" alt="Dot diagram"></p>
 <p><img src="dot_daa5f09c12a12baad116e997fc9e1d39.svg" alt="Dot diagram"></p>

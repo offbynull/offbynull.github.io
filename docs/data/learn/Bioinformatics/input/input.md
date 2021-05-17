@@ -5486,7 +5486,7 @@ In the best case, a single reversal will remove 2 breakpoint_GRs (one on each si
 * "b = breakpoint"
 ```
 
-In such worst case scenarios, the algorithm fails. The point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation for better algorithms that determine reversal paths.
+In such worst case scenarios, the algorithm fails. However, the point of this algorithm isn't so much to be a robust solution as much as it is to be a foundation for better algorithms that determine reversal paths.
 
 ```{output}
 ch6_code/src/breakpoint_list/BreakpointList.py
@@ -5510,6 +5510,792 @@ Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
+
+This algorithm calculates a parsimonious reversal path by constructing an undirected graph representing the synteny blocks between genomes. Unlike the breakpoint_GR list algorithm, this algorithm...
+
+ * determines the full parsimonious reversal path every time (not a best effort heuristic).
+ * handles multiple chromosomes (genome rearrangement chromosomal fusions and fissions).
+ * handles both linear and circular chromosomes.
+
+The algorithm begins by constructing undirected graphs called breakpoint graph_GRs for both the desired and undesired genomes:
+
+1. Set the ends of synteny blocks as nodes. The arrow end should have a _t_ suffix (for tail) while the non-arrow end should have a _h_ suffix (for head)...
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _D_t_ [pos="0.0,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   }
+   ```
+
+   ```{output}
+   ch6_code/src/breakpoint_graph/SyntenyEnd.py
+   python
+   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+   ```
+
+   ```{output}
+   ch6_code/src/breakpoint_graph/SyntenyNode.py
+   python
+   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+   ```
+
+2. Set the synteny blocks themselves as __undirected__ edges, represented by dashed lines.
+   
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _D_t_ [pos="0.0,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _D_t_ -- _D_h_ [style=dashed, dir=back];
+   }
+   ```
+
+   Note that the arrows on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _D_t_ [pos="0.0,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _D_t_ -- _D_h_ [style=dashed];
+   }
+   ```
+
+   ```{output}
+   ch6_code/src/breakpoint_graph/SyntenyEdge.py
+   python
+   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+   ```
+
+3. Set the regions between synteny blocks as __undirected__ edges, represented by colored lines.
+   
+   * Blue lines represent regions of desired genome that border a pair of synteny blocks.
+   * Red lines represent regions of undesired genome that border a pair of synteny blocks.
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B_t_ [pos="0.0,-2.0!"];
+   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _B_t_ -- _C_h_ [color=blue];
+   _B_h_ -- _C_h_ [color=red];
+   }
+   ```
+
+   ```{output}
+   ch6_code/src/breakpoint_graph/ColoredEdge.py
+   python
+   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+   ```
+
+If the genomes are linear rather than cyclic, an extra step is required: a termination node that represents chromosome ends would be added to the graph. The ends of each chromosome would be connected by a colored edge to that termination node.
+
+For example, the following two genomes share the synteny blocks A, B, C, and D between them ...
+
+```{svgbob}
+       +A              +B        +C                  +D                               -D       -B       +C          -A         
+-->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------      vs       --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+ 5'                          desired                            3'                 5'                  undesired            3' 
+```
+
+Converting the above genomes to both a cyclic and linear breakpoint graph_GR is as follows...
+
+```{dot}
+graph G {
+layout=neato
+labelloc="t";
+label="CIRCULAR vs LINEAR";
+node [shape=plain];
+
+_C1_t_ [pos="2.0,0.0!"];
+_C1_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+_B1_t_ [pos="0.0,-2.0!"];
+_B1_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+_A1_t_ [pos="-2.0,0.0!"];
+_A1_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+_D1_t_ [pos="0.0,2.0!"];
+_D1_h_ [pos="1.4142135623730951,1.414213562373095!"];
+_C1_t_ -- _C1_h_ [style=dashed];
+_B1_t_ -- _B1_h_ [style=dashed];
+_A1_t_ -- _A1_h_ [style=dashed];
+_D1_t_ -- _D1_h_ [style=dashed];
+_C1_t_ -- _D1_h_ [color=blue];
+_A1_h_ -- _D1_t_ [color=blue];
+_B1_t_ -- _C1_h_ [color=blue];
+_A1_t_ -- _B1_h_ [color=blue];
+_B1_h_ -- _C1_h_ [color=red];
+_A1_t_ -- _C1_t_ [color=red];
+_A1_h_ -- _D1_t_ [color=red];
+_B1_t_ -- _D1_h_ [color=red];
+
+
+_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+_B2_t_ [label="_B_t_", pos="5,-2.0!"];
+_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+_D2_t_ [label="_D_t_", pos="5,2.0!"];
+_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+TERM [pos="4.9,0.5!"];
+_C2_t_ -- _C2_h_ [style=dashed];
+_B2_t_ -- _B2_h_ [style=dashed];
+_A2_t_ -- _A2_h_ [style=dashed];
+_D2_t_ -- _D2_h_ [style=dashed];
+_C2_t_ -- _D2_h_ [color=blue];
+_B2_t_ -- _C2_h_ [color=blue];
+_A2_t_ -- _B2_h_ [color=blue];
+_A2_h_ -- TERM [color=blue];
+_D2_t_ -- TERM [color=blue];
+_B2_h_ -- _C2_h_ [color=red];
+_A2_t_ -- _C2_t_ [color=red];
+_B2_t_ -- _D2_h_ [color=red];
+_A2_h_ -- TERM [color=red];
+_D2_t_ -- TERM [color=red];
+}
+```
+
+As shown in the example above, the convention for drawing a breakpoint graph_GR is to set the synteny edges such that they're neatly sandwiched between the blue edges. Note how both breakpoint graph_GRs in the example above are just another representation of their linear diagram counterparts. The ...
+
+ * dashed edges represent the synteny blocks (suffix of _t_ denotes arrow end / _h_ denotes opposite end).
+ * blue edges represent the gap regions between synteny blocks / chromosome ends in the desired genome.
+ * red edges represent the gap regions between synteny blocks / chromosome ends in the undesired genome.
+
+The reason for this convention is that it helps conceptualize the algorithms that operate on breakpoint graph_GRs (described further down). Ultimately, a breakpoint graph_GR is simply a merged version of the linear diagrams for both the desired and undesired genomes. Specifically, notice that each node other than the termination node has 1 synteny edge
+
+For example, if the circular genome version of the breakpoint graph_GR example were flattened based on the blue edges (desired genome), the synteny blocks would be ordered as they are in the linear diagram for the desired genome...
+
+```{dot}
+graph G {
+layout=neato
+labelloc="t";
+label="CIRCULAR flattened on desired genome (blue edges)";
+node [shape=plain];
+
+_C1_t_ [pos="6,0!"];
+_C1_h_ [pos="5,0!"];
+_B1_t_ [pos="4,0!"];
+_B1_h_ [pos="3,0!"];
+_A1_t_ [pos="2,0!"];
+_A1_h_ [pos="0,0!"];
+_D1_t_ [pos="9,0!"];
+_D1_h_ [pos="8,0!"];
+_C1_t_:w -- _C1_h_:e [style=dashed];
+_B1_t_:w -- _B1_h_:e [style=dashed];
+_A1_t_:w -- _A1_h_:e [style=dashed];
+_D1_t_:w -- _D1_h_:e [style=dashed];
+
+_C1_t_:e -- _D1_h_:w [color=blue];
+_A1_h_:n -- _D1_t_:n [color=blue];
+_B1_t_:e -- _C1_h_:w [color=blue];
+_A1_t_:e -- _B1_h_:w [color=blue];
+
+splines="curved";
+_B1_h_:n -- _C1_h_:n [color=red];
+_A1_t_:s -- _C1_t_:s [color=red];
+_A1_h_:s -- _D1_t_:s [color=red];
+_B1_t_:s -- _D1_h_:s [color=red];
+}
+```
+
+Likewise, if the circular genome version of the breakpoint graph_GR example were flattened based on red edges (undesired genome), the synteny blocks would be ordered as they are in the linear diagram for the undesired genome...
+
+```{dot}
+graph G {
+layout=neato
+labelloc="t";
+label="CIRCULAR flattened on undesired genome (red edges)";
+node [shape=plain];
+
+_C1_t_ [pos="5,0!"];
+_C1_h_ [pos="4,0!"];
+_B1_t_ [pos="2,0!"];
+_B1_h_ [pos="3,0!"];
+_A1_t_ [pos="7,0!"];
+_A1_h_ [pos="9,0!"];
+_D1_t_ [pos="0,0!"];
+_D1_h_ [pos="1,0!"];
+_C1_h_:e -- _C1_t_:w [style=dashed];
+_B1_t_:e -- _B1_h_:w [style=dashed];
+_A1_t_:e -- _A1_h_:w [style=dashed];
+_D1_t_:e -- _D1_h_:w [style=dashed];
+
+_B1_h_:e -- _C1_h_:w [color=red];
+_A1_t_:w -- _C1_t_:e [color=red];
+_A1_h_:s -- _D1_t_:s [color=red];
+_B1_t_:w -- _D1_h_:e [color=red];
+
+splines="curved";
+_C1_t_:s -- _D1_h_:s [color=blue];
+_A1_h_:n -- _D1_t_:n [color=blue];
+_B1_t_:n -- _C1_h_:n [color=blue];
+_A1_t_:n -- _B1_h_:n [color=blue];
+}
+```
+
+```{note}
+If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
+```
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+
+In addition to the graphical form described above, a breakpoint graph_GR is representable as a pair of lists. Each genome in the breakpoint graph_GR becomes a list called a permutation_GR. A permutation_GR is generated by walking that genome's edges, where each walked edge that's a synteny block is appended to the list with a ...
+   
+ * _\+_ prefix if it's walked from head to tail.
+ * _\-_ prefix if it's walked from tail to head.
+ 
+For example, given the following breakpoint graph_GR ...
+
+```{dot}
+graph G {
+layout=neato
+node [shape=plain];
+_C_t_ [pos="2.0,0.0!"];
+_C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+_B_t_ [pos="0.0,-2.0!"];
+_B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+_A_t_ [pos="-2.0,0.0!"];
+_A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+_D_t_ [pos="0.0,2.0!"];
+_D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+_C_t_ -- _C_h_ [style=dashed];
+_B_t_ -- _B_h_ [style=dashed];
+_A_t_ -- _A_h_ [style=dashed];
+_D_t_ -- _D_h_ [style=dashed];
+_C_t_ -- _D_h_ [color=blue];
+_A_h_ -- _D_t_ [color=blue];
+_B_t_ -- _C_h_ [color=blue];
+_A_t_ -- _B_h_ [color=blue];
+_B_h_ -- _C_h_ [color=red];
+_A_t_ -- _C_t_ [color=red];
+_A_h_ -- _D_t_ [color=red];
+_B_t_ -- _D_h_ [color=red];
+}
+```
+
+, ... walking the edges for the red genome from node D_t in the ...
+
+ * clockwise direction results in `[-D, -B, +C, -A]`.
+ * counter-clockwise direction results in `[+A, -C, +B, +D]`.
+
+For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same genome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: `[-B, +C, -A, -D]`, `[-C, +B, +D, +A]`, `[+C, -A, -D, -B]`, etc...
+
+For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at a termination node (either end of the chromosome). The termination nodes aren't included in the permutation_GR.
+
+```{note}
+If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
+```
+
+The data structure representing a breakpoint graph_GR is simply be two adjacency lists: one for the red edges and one for the blue edges.
+
+```{output}
+ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+The edges representing synteny blocks technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following breakpoint graph_GR ...
+
+```{dot}
+graph G {
+layout=neato
+node [shape=plain];
+_C_t_ [pos="2.0,0.0!"];
+_C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+_B_t_ [pos="0.0,-2.0!"];
+_B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+_A_t_ [pos="-2.0,0.0!"];
+_A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+_D_t_ [pos="0.0,2.0!"];
+_D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+_C_t_ -- _C_h_ [style=dashed];
+_B_t_ -- _B_h_ [style=dashed];
+_A_t_ -- _A_h_ [style=dashed];
+_D_t_ -- _D_h_ [style=dashed];
+_C_t_ -- _D_h_ [color=blue];
+_A_h_ -- _D_t_ [color=blue];
+_B_t_ -- _C_h_ [color=blue];
+_A_t_ -- _B_h_ [color=blue];
+_B_h_ -- _C_h_ [color=red];
+_A_t_ -- _C_t_ [color=red];
+_A_h_ -- _D_t_ [color=red];
+_B_t_ -- _D_h_ [color=red];
+}
+```
+
+..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The dashed edge at C_h will end in C_t, so get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.
+
+```{output}
+ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
+python
+# WALK_MARKDOWN\s*\n([\s\S]+)\n\s*# WALK_MARKDOWN
+```
+
+```{ch6}
+breakpoint_graph.ColoredEdgeSet
+walk
++A, +B, +C, +D
+```
+
+```{note}
+If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
+```
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
+
+Now that the breakpoint graph_GR has been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a breakpoint graph_GR such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.
+
+For example, the two red edges highlighted below share the same nodes as a blue edge (D_h and C_t). These two red edges can be broken and re-wired such that one of them matches the blue edge...
+
+```{dot}
+graph G {
+layout=neato
+labelloc="t";
+label="BEFORE to AFTER...";
+node [shape=plain];
+
+_C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+_C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+_B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+_B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+_A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+_A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+_D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+_D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+_C1_t_ -- _C1_h_ [style=dashed];
+_B1_t_ -- _B1_h_ [style=dashed];
+_A1_t_ -- _A1_h_ [style=dashed];
+_D1_t_ -- _D1_h_ [style=dashed];
+_C1_t_ -- _D1_h_ [color=blue];
+_A1_h_ -- _D1_t_ [color=blue];
+_B1_t_ -- _C1_h_ [color=blue];
+_A1_t_ -- _B1_h_ [color=blue];
+_B1_h_ -- _C1_h_ [color=red];
+_A1_t_ -- _C1_t_ [color=red, penwidth="4"];
+_A1_h_ -- _D1_t_ [color=red];
+_B1_t_ -- _D1_h_ [color=red, penwidth="4"];
+
+_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+_B2_t_ [label="_B_t_", pos="5,-2.0!"];
+_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+_D2_t_ [label="_D_t_", pos="5,2.0!"];
+_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+_C2_t_ -- _C2_h_ [style=dashed];
+_B2_t_ -- _B2_h_ [style=dashed];
+_A2_t_ -- _A2_h_ [style=dashed];
+_D2_t_ -- _D2_h_ [style=dashed];
+_C2_t_ -- _D2_h_ [color=blue];
+_A2_h_ -- _D2_t_ [color=blue];
+_B2_t_ -- _C2_h_ [color=blue];
+_A2_t_ -- _B2_h_ [color=blue];
+_B2_h_ -- _C2_h_ [color=red];
+_A2_t_ -- _B2_t_ [color=red, penwidth="4"];
+_A2_h_ -- _D2_t_ [color=red];
+_C2_t_ -- _D2_h_ [color=red, penwidth="4"];
+}
+```
+
+The re-wiring operation shown above is called a 2-break. Each 2-break represents either a fusion, fission, or reversal operation (genome rearrangement). For example, ...
+
+ * fusion:
+
+   ```{svgbob}
+           +A       +B                             +C          +D        
+   ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
+    5'  circular chromosome1  3'              5'  circular chromosome2  3' 
+
+
+                          "FUSE AT [B,C] BOUNDARY..."
+
+                +A       +B                 +C          +D        
+        ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
+         5'                 circular chromosome                   3' 
+   ```
+
+   ```{dot}
+   graph G {
+   layout=neato
+   labelloc="t";
+   label="BEFORE to AFTER...";
+   node [shape=plain];
+
+   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _B1_t_ -- _A1_h_ [color=red, penwidth="4"];
+   _A1_t_ -- _B1_h_ [color=red];
+   _C1_h_ -- _D1_t_ [color=red, penwidth="4"];
+   _C1_t_ -- _D1_h_ [color=red];
+
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _A2_h_ -- _D2_t_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
+   _A2_t_ -- _B2_h_ [color=red];
+   _C2_h_ -- _B2_t_ [color=red, penwidth="4"];
+   _C2_t_ -- _D2_h_ [color=red];
+   }
+
+ * fission:
+
+   ```{svgbob}
+                +A       +B                 +C          +D        
+        ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
+         5'                 circular chromosome                   3' 
+
+
+                       "BREAK AT [B, C] BOUNDARY..."
+
+           +A       +B                             +C          +D        
+   ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
+    5'  circular chromosome1  3'              5'  circular chromosome2  3' 
+   ```
+
+   ```{dot}
+   graph G {
+   layout=neato
+   labelloc="t";
+   label="BEFORE to AFTER...";
+   node [shape=plain];
+
+   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _B1_t_ [color=blue];
+   _D1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _D1_t_ -- _A1_h_ [color=red, penwidth="4"];
+   _A1_t_ -- _B1_h_ [color=red];
+   _C1_h_ -- _B1_t_ [color=red, penwidth="4"];
+   _C1_t_ -- _D1_h_ [color=red];
+
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _A2_h_ -- _B2_t_ [color=blue];
+   _D2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _B2_t_ -- _A2_h_ [color=red, penwidth="4"];
+   _A2_t_ -- _B2_h_ [color=red];
+   _C2_h_ -- _D2_t_ [color=red, penwidth="4"];
+   _C2_t_ -- _D2_h_ [color=red];
+   }
+   ```
+
+ * reversal:
+
+   ```{svgbob}
+       -B       -A          +C          +D        
+   --<<<<<<<--<<<<<<<----->>>>>>>-->>>>>>>>>>>>>-----
+    5'              circular chromosome           3' 
+   
+      
+                   "REVERSE [B, A] ..."
+      
+       +A       +B          +C          +D        
+   -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
+    5'              circular chromosome           3' 
+   ```
+
+   ```{dot}
+   graph G {
+   layout=neato
+   labelloc="t";
+   label="BEFORE to AFTER...";
+   node [shape=plain];
+
+   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _A1_h_ -- _C1_h_ [color=red, penwidth="4"];
+   _A1_t_ -- _B1_h_ [color=red];
+   _D1_t_ -- _B1_t_ [color=red, penwidth="4"];
+   _C1_t_ -- _D1_h_ [color=red];
+
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _A2_h_ -- _D2_t_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
+   _A2_t_ -- _B2_h_ [color=red];
+   _C2_h_ -- _B2_t_ [color=red, penwidth="4"];
+   _C2_t_ -- _D2_h_ [color=red];
+   }
+   ```
+
+Genome rearrangement duplications and deletions aren't representable as 2-breaks. Genome rearrangement translocations can't be reliably represented as a single 2-break either. For example, the following translocation requires two 2-breaks...
+
+```{svgbob}
+    +C       +B          +A          +D        
+-->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
+ 5'              circular chromosome           3' 
+
+   
+                  "SWAP C AND A..."
+
+    +A       +B          +C          +D        
+-->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
+ 5'              circular chromosome           3' 
+```
+
+```{dot}
+graph G {
+layout=neato
+labelloc="t";
+label="Step 1: BEFORE to AFTER...";
+node [shape=plain];
+
+_C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+_C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+_B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+_B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+_A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+_A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+_D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+_D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+_C1_t_ -- _C1_h_ [style=dashed];
+_B1_t_ -- _B1_h_ [style=dashed];
+_A1_t_ -- _A1_h_ [style=dashed];
+_D1_t_ -- _D1_h_ [style=dashed];
+_C1_t_ -- _D1_h_ [color=blue];
+_A1_h_ -- _D1_t_ [color=blue];
+_B1_t_ -- _C1_h_ [color=blue];
+_A1_t_ -- _B1_h_ [color=blue];
+_C1_t_ -- _B1_h_ [color=red, penwidth="4"];
+_B1_t_ -- _A1_h_ [color=red];
+_A1_t_ -- _D1_h_ [color=red, penwidth="4"];
+_D1_t_ -- _C1_h_ [color=red];
+
+_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+_B2_t_ [label="_B_t_", pos="5,-2.0!"];
+_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+_D2_t_ [label="_D_t_", pos="5,2.0!"];
+_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+_C2_t_ -- _C2_h_ [style=dashed];
+_B2_t_ -- _B2_h_ [style=dashed];
+_A2_t_ -- _A2_h_ [style=dashed];
+_D2_t_ -- _D2_h_ [style=dashed];
+_C2_t_ -- _D2_h_ [color=blue];
+_A2_h_ -- _D2_t_ [color=blue];
+_B2_t_ -- _C2_h_ [color=blue];
+_A2_t_ -- _B2_h_ [color=blue];
+_C2_t_ -- _D2_h_ [color=red, penwidth="4"];
+_B2_t_ -- _A2_h_ [color=red];
+_A2_t_ -- _B2_h_ [color=red, penwidth="4"];
+_D2_t_ -- _C2_h_ [color=red];
+}
+```
+
+```{dot}
+graph G {
+layout=neato
+labelloc="t";
+label="Step 2: BEFORE to AFTER...";
+node [shape=plain];
+
+_C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+_C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+_B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+_B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+_A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+_A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+_D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+_D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+_C1_t_ -- _C1_h_ [style=dashed];
+_B1_t_ -- _B1_h_ [style=dashed];
+_A1_t_ -- _A1_h_ [style=dashed];
+_D1_t_ -- _D1_h_ [style=dashed];
+_C1_t_ -- _D1_h_ [color=blue];
+_A1_h_ -- _D1_t_ [color=blue];
+_B1_t_ -- _C1_h_ [color=blue];
+_A1_t_ -- _B1_h_ [color=blue];
+_C1_t_ -- _D1_h_ [color=red];
+_B1_t_ -- _A1_h_ [color=red, penwidth="4"];
+_A1_t_ -- _B1_h_ [color=red];
+_D1_t_ -- _C1_h_ [color=red, penwidth="4"];
+
+_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+_B2_t_ [label="_B_t_", pos="5,-2.0!"];
+_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+_D2_t_ [label="_D_t_", pos="5,2.0!"];
+_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+_C2_t_ -- _C2_h_ [style=dashed];
+_B2_t_ -- _B2_h_ [style=dashed];
+_A2_t_ -- _A2_h_ [style=dashed];
+_D2_t_ -- _D2_h_ [style=dashed];
+_C2_t_ -- _D2_h_ [color=blue];
+_A2_h_ -- _D2_t_ [color=blue];
+_B2_t_ -- _C2_h_ [color=blue];
+_A2_t_ -- _B2_h_ [color=blue];
+_C2_t_ -- _D2_h_ [color=red];
+_D2_t_ -- _A2_h_ [color=red, penwidth="4"];
+_A2_t_ -- _B2_h_ [color=red];
+_B2_t_ -- _C2_h_ [color=red, penwidth="4"];
+}
+```
 
 # Stories
 
@@ -8064,7 +8850,7 @@ cyclic
       }
       ```
 
-   For example, the following two _circular_ genomes share the synteny blocks A, B, C, and D between them ...
+   For example, the following two genomes share the synteny blocks A, B, C, and D between them. If the genomes were linear rather than cyclic, their ends would be connected by a colored edge to a termination node. The termination node indicates that the DNA ends.
 
    ```{svgbob}
        -D       -B       +C          -A                               +A              +B        +C                  +D   
@@ -8072,72 +8858,65 @@ cyclic
     5'                  genome1              3'                 5'                          genome2                            3'
    ```
 
-   The full breakpoint graph_GR for the two circular genomes above is as follows...
-
    ```{dot}
    graph G {
    layout=neato
+   labelloc="t";
+   label="CIRCULAR vs LINEAR...";
    node [shape=plain];
-   _C_t_ [pos="2.0,0.0!"];
-   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-   _B_t_ [pos="0.0,-2.0!"];
-   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-   _A_t_ [pos="-2.0,0.0!"];
-   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-   _D_t_ [pos="0.0,2.0!"];
-   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   _C_t_ -- _C_h_ [style=dashed, dir=back];
-   _B_t_ -- _B_h_ [style=dashed, dir=back];
-   _A_t_ -- _A_h_ [style=dashed, dir=back];
-   _D_t_ -- _D_h_ [style=dashed, dir=back];
-   _C_t_ -- _D_h_ [color=blue];
-   _A_h_ -- _D_t_ [color=blue];
-   _B_t_ -- _C_h_ [color=blue];
-   _A_t_ -- _B_h_ [color=blue];
-   _B_h_ -- _C_h_ [color=red];
-   _A_t_ -- _C_t_ [color=red];
-   _A_h_ -- _D_t_ [color=red];
-   _B_t_ -- _D_h_ [color=red];
-   }
-   ```
-
-   If the genomes in the example above were linear rather than cyclic, their ends would be connected by a colored edge to a termination node. The termination node indicates that the DNA ends...
-
-   ```{dot}
-   graph G {
-   layout=neato
-   node [shape=plain];
-   _C_t_ [pos="2.0,0.0!"];
-   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-   _B_t_ [pos="0.0,-2.0!"];
-   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-   _A_t_ [pos="-2.0,0.0!"];
-   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-   _D_t_ [pos="0.0,2.0!"];
-   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   TERM [pos="-0.1,0.5!"];
-   _C_t_ -- _C_h_ [style=dashed, dir=back];
-   _B_t_ -- _B_h_ [style=dashed, dir=back];
-   _A_t_ -- _A_h_ [style=dashed, dir=back];
-   _D_t_ -- _D_h_ [style=dashed, dir=back];
-   _C_t_ -- _D_h_ [color=blue];
-   _B_t_ -- _C_h_ [color=blue];
-   _A_t_ -- _B_h_ [color=blue];
-   _A_h_ -- TERM [color=blue];
-   _D_t_ -- TERM [color=blue];
-   _B_h_ -- _C_h_ [color=red];
-   _A_t_ -- _C_t_ [color=red];
-   _B_t_ -- _D_h_ [color=red];
-   _A_h_ -- TERM [color=red];
-   _D_t_ -- TERM [color=red];
+   _C1_t_ [pos="2.0,0.0!"];
+   _C1_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [pos="0.0,-2.0!"];
+   _B1_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [pos="-2.0,0.0!"];
+   _A1_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [pos="0.0,2.0!"];
+   _D1_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _B1_h_ -- _C1_h_ [color=red];
+   _A1_t_ -- _C1_t_ [color=red];
+   _A1_h_ -- _D1_t_ [color=red];
+   _B1_t_ -- _D1_h_ [color=red];
+   
+   
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   TERM [pos="4.9,0.5!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _A2_h_ -- TERM [color=blue];
+   _D2_t_ -- TERM [color=blue];
+   _B2_h_ -- _C2_h_ [color=red];
+   _A2_t_ -- _C2_t_ [color=red];
+   _B2_t_ -- _D2_h_ [color=red];
+   _A2_h_ -- TERM [color=red];
+   _D2_t_ -- TERM [color=red];
    }
    ```
    
-   Breakpoint graph_GRs are an extension of Breakpoint_GRs. These graphs are used to compute a parsimonious path of fusion, fission, and reversal operations (genome rearrangements) that transforms one genome into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
+   Breakpoint graph_GRs build on the concept of breakpoint_GRs to compute a parsimonious path of fusion, fission, and reversal operations (genome rearrangements) that transforms one genome into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
    
    Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges.
 
- * `{bm} 2-break/\b(2-break|2 break|two break|two-break)s?\b/i` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one the red edges matches the blue edge at that boundary.
+ * `{bm} 2-break/\b(2-break|2 break|two break|two-break)s?\b/i/false/true` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one of the red edges matches the blue edge at that boundary.
  
    For example, the two red edges highlighted below share the same synteny block boundary and can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...
 
