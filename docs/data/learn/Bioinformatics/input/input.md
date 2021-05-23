@@ -5595,7 +5595,7 @@ This algorithm begins by constructing an undirected graphs containing both the d
    # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
    ```
 
-If the genomes are linear rather than cyclic, an extra step is required: a termination node that represents chromosome ends would be added to the graph. The ends of each chromosome would be connected by a colored edge to that termination node.
+If the genomes are linear rather than circular, an extra step is required: a termination node that represents chromosome ends would be added to the graph. The ends of each chromosome would be connected by a colored edge to that termination node.
 
 For example, the following two genomes share the synteny blocks A, B, C, and D between them ...
 
@@ -5605,7 +5605,7 @@ For example, the following two genomes share the synteny blocks A, B, C, and D b
  5'                          desired                            3'                 5'                  undesired            3' 
 ```
 
-Converting the above genomes to both a cyclic and linear breakpoint graph_GR is as follows...
+Converting the above genomes to both a circular and linear breakpoint graph_GR is as follows...
 
 ```{dot}
 graph G {
@@ -5667,11 +5667,6 @@ As shown in the example above, the convention for drawing a breakpoint graph_GR 
  * dashed edges represent the synteny blocks (suffix of _t_ denotes arrow end / _h_ denotes opposite end).
  * blue edges represent the gaps between synteny block and chromosome end nodes in the desired genome.
  * red edges represent the gaps between synteny block and chromosome end nodes in the undesired genome.
-
-Notice that ...
-
- * each synteny edge node is bound to exactly one red edge, one blue edge, and one synteny edge. This is only for synteny edge nodes, not chromosome end nodes. For example, node _A\_t_ in the examples above has exactly one of each edge type bound to it.
- * if the synteny edges were removed from the graph, walking nodes while alternating between red and blue edges ultimately ends up forming cycles. In the examples above, the circular breakpoint graph_GR has 2 red-blue cycles while the linear breakpoint graph_GR has 3 red-blue cycles.
 
 The reason for this convention is that it helps conceptualize the algorithms that operate on breakpoint graph_GRs (described further down). Ultimately, a breakpoint graph_GR is simply a merged version of the linear diagrams for both the desired and undesired genomes.
 
@@ -5761,55 +5756,14 @@ _A1_t_:n -- _B1_h_:n [color=blue];
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
 
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+In addition to the graphical form described above, a breakpoint graph_GR may be represented as permutation_GRs. A permutation_GR is a list that represents a chromosome within a genome. Since a breakpoint graph_GR has 2 genomes, it may be represented as a pair of permutation_GR sets (one per genome).
 
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+To convert a genome within a breakpoint graph_GR to a permutation_GR set, simply walk the edges for that genome:
 
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
+ * Blue edges and synteny edges for the desired genome.
+ * Red edges and synteny edges for the undesired genome.
 
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-TODO: THE LANGUAGE HERE NEEDS TO BE CLEANED UP, MAKE SURE "WALKING GENOME" IS UNDERSTOOD TO BE WALKING THE SET OF EDGES FOR A COLOR + SYNTENY EDGES
-
-In addition to the graphical form described above, a breakpoint graph_GR is representable as a pair of lists. Each genome in the breakpoint graph_GR becomes a list called a permutation_GR. A permutation_GR is generated by walking that genome's edges, where each walked edge that's a synteny block is appended to the list with a ...
+Each synteny edge walked is appended to the list with a ...
    
  * _\+_ prefix if it's walked from head to tail.
  * _\-_ prefix if it's walked from tail to head.
@@ -5852,11 +5806,25 @@ For circular chromosomes, the walk direction is irrelevant, meaning that both li
 
 For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at a termination node (either end of the chromosome). The termination nodes aren't included in the permutation_GR.
 
+```{output}
+ch6_code/src/breakpoint_graph/Permutation.py
+python
+# MARKDOWN_FROM\s*\n([\s\S]+)\n\s*# MARKDOWN_FROM
+```
+
+Converting from a permutation_GR back to a breakpoint graph_GR is simply just reversing the above process: Walk the permutation_GR to get the list of colored edges that the permutation_GR is for.
+
+```{output}
+ch6_code/src/breakpoint_graph/Permutation.py
+python
+# MARKDOWN_TO\s*\n([\s\S]+)\n\s*# MARKDOWN_TO
+```
+
 ```{note}
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
 
-The data structure representing a breakpoint graph_GR is simply be two adjacency lists: one for the red edges and one for the blue edges.
+The data structure used to represent a breakpoint graph_GR can simply be two adjacency lists: one for the red edges and one for the blue edges.
 
 ```{output}
 ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
@@ -5864,7 +5832,7 @@ python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
-The edges representing synteny blocks technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following breakpoint graph_GR ...
+The edges representing synteny blocks technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following circular breakpoint graph_GR ...
 
 ```{dot}
 graph G {
@@ -5893,7 +5861,14 @@ _B_t_ -- _D_h_ [color=red];
 }
 ```
 
-..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The dashed edge at C_h will end in C_t, so get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.
+..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The next edge to walk must be a synteny edge, but synteny edges aren't tracked in this data structure. However, since it's known that the nodes of a synteny edge...
+
+ * must either end in _t_ or _h_
+ * share the same name
+
+, ... it's easy to derive that the opposite end of the synteny edge at node C_h is node C_t. As such, get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.
+
+For linear breakpoint graph_GRs, the process is the must start at and will end at chromosome end nodes (no cycle).
 
 ```{output}
 ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
@@ -5903,7 +5878,6 @@ python
 
 ```{ch6}
 breakpoint_graph.ColoredEdgeSet
-walk
 +A, +B, +C, +D
 ```
 
@@ -5911,39 +5885,7 @@ walk
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
 
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-TODO: FIX UP LANGUAGE AND PUT FINAL SOURCE + EXAMPLE + ADD NOTE ABOUT ESTIMATING REV DIST
-
-Now that the breakpoint graph_GR has been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a breakpoint graph_GR such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.
+Now that breakpoint graph_GRs have been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a breakpoint graph_GR such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.
 
 For example, the two red edges highlighted below share the same nodes as a blue edge (D_h and C_t). These two red edges can be broken and re-wired such that one of them matches the blue edge...
 
@@ -5998,7 +5940,7 @@ _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
 }
 ```
 
-The re-wiring operation shown above is called a 2-break. Each 2-break represents either a fusion, fission, or reversal operation (genome rearrangement). For example, ...
+Each re-wiring operation is called a 2-break and represents either a chromosome fusion, chromosome fission, or reversal operation (genome rearrangement). For example, ...
 
  * fusion:
 
@@ -6008,7 +5950,7 @@ The re-wiring operation shown above is called a 2-break. Each 2-break represents
     5'  circular chromosome1  3'              5'  circular chromosome2  3' 
 
 
-                          "FUSE AT [B,C] BOUNDARY..."
+                          "FUSE AT [+B, +C] BOUNDARY..."
 
                 +A       +B                 +C          +D        
         ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
@@ -6073,7 +6015,7 @@ The re-wiring operation shown above is called a 2-break. Each 2-break represents
          5'                 circular chromosome                   3' 
 
 
-                       "BREAK AT [B, C] BOUNDARY..."
+                       "BREAK AT [+B, +C] BOUNDARY..."
 
            +A       +B                             +C          +D        
    ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
@@ -6139,7 +6081,7 @@ The re-wiring operation shown above is called a 2-break. Each 2-break represents
     5'              circular chromosome           3' 
    
       
-                   "REVERSE [B, A] ..."
+                   "REVERSE [-B, -A] ..."
       
        +A       +B          +C          +D        
    -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
@@ -6197,7 +6139,7 @@ The re-wiring operation shown above is called a 2-break. Each 2-break represents
    }
    ```
 
-Genome rearrangement duplications and deletions aren't representable as 2-breaks. Genome rearrangement translocations can't be reliably represented as a single 2-break either. For example, the following translocation requires two 2-breaks...
+Genome rearrangement duplications and deletions aren't representable as 2-breaks. Genome rearrangement translocations can't be reliably represented as a single 2-break either. For example, the following translocation gets modeled as two 2-breaks, one that breaks the undesired chromosome (fission) and another that glues it back together (fusion)...
 
 ```{svgbob}
     +C       +B          +A          +D        
@@ -6216,7 +6158,7 @@ Genome rearrangement duplications and deletions aren't representable as 2-breaks
 graph G {
 layout=neato
 labelloc="t";
-label="Step 1: BEFORE to AFTER...";
+label="Step 1: BEFORE to AFTER (fission)...";
 node [shape=plain];
 
 _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
@@ -6267,7 +6209,7 @@ _D2_t_ -- _C2_h_ [color=red];
 graph G {
 layout=neato
 labelloc="t";
-label="Step 2: BEFORE to AFTER...";
+label="Step 2: BEFORE to AFTER (fusion)...";
 node [shape=plain];
 
 _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
@@ -6313,6 +6255,81 @@ _A2_t_ -- _B2_h_ [color=red];
 _B2_t_ -- _C2_h_ [color=red, penwidth="4"];
 }
 ```
+
+```{output}
+ch6_code/src/breakpoint_graph/ColoredEdge.py
+python
+# 2BREAK_MARKDOWN\s*\n([\s\S]+)\n\s*# 2BREAK_MARKDOWN
+```
+
+```{ch6}
+breakpoint_graph.CyclicBreakpointGraph
+[[+A, -B, -C, +D], [+E]]
+[[+A, +B, -D], [-C, -E]]
+```
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
+TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
+
 
 # Stories
 

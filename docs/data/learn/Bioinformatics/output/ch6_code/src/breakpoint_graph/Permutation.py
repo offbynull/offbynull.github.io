@@ -107,6 +107,7 @@ class Permutation:
             blocks = p.blocks
         return [str(s) for s in blocks]
 
+# MARKDOWN_TO
     def to_colored_edges(self) -> List[ColoredEdge]:
         ret = []
         # add link to dummy head if linear
@@ -142,6 +143,7 @@ class Permutation:
             )
         # return
         return ret
+# MARKDOWN_TO
 
     @staticmethod
     def from_raw(l: List[str], cyclic: bool) -> Permutation:
@@ -152,6 +154,7 @@ class Permutation:
             blocks.append(b)
         return Permutation(blocks, cyclic)
 
+# MARKDOWN_FROM
     @staticmethod
     def from_colored_edges(
             colored_edges: ColoredEdgeSet,
@@ -190,6 +193,7 @@ class Permutation:
             next_n = next_ce.other_end(swapped_n)
             walked_ce_set.add(next_ce)
         return Permutation(blocks, cyclic), walked_ce_set
+# MARKDOWN_FROM
 
     def __str__(self):
         return str(self.to_normalized_raw())

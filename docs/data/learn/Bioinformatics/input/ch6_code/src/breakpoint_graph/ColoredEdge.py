@@ -42,6 +42,7 @@ class ColoredEdge:
     def has_term(self):
         return isinstance(self.n1, TerminalNode) or self.n2 is isinstance(self.n2, TerminalNode)
 
+# 2BREAK_MARKDOWN
     # Takes e1 and e2 and swaps the ends, such that one of the swapped edges becomes desired_e. That is, e1 should have
     # an end matching one of desired_e's ends while e2 should have an end matching desired_e's other end.
     #
@@ -82,6 +83,7 @@ class ColoredEdge:
             if {other_n1, other_n2} == {TerminalNode.INST}:  # if both term edges, there is no other edge
                 return None
             return ColoredEdge(other_n1, other_n2)
+# 2BREAK_MARKDOWN
 
     def __eq__(self, other):
         return self.n1 == other.n1 and self.n2 == other.n2

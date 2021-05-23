@@ -148,20 +148,82 @@ class BreakpointGraph:
         return g
 
 
+def main():
+    def to_list(x: str, x_ptr: int):
+        ret = []
+        val = None
+        assert x[x_ptr] == '['
+        x_ptr += 1
+        while x_ptr < len(x):
+            ch = x[x_ptr]
+            if ch == ',':
+                if val is None:
+                    ret.append('')
+                elif type(val) == str:
+                    ret.append(val.strip())
+                else:
+                    ret.append(val)
+                val = None
+            elif ch == ']':
+                if val is None:
+                    ...
+                elif type(val) == str:
+                    ret.append(val.strip())
+                else:
+                    ret.append(val)
+                return ret, x_ptr
+            elif ch == '[':
+                if val is None:
+                    ...
+                elif type(val) == str and len(val.strip()) == 0:
+                    ...
+                else:
+                    assert False
+                val, x_ptr = to_list(x, x_ptr)
+            else:
+                if val is None:
+                    val = ''
+                assert type(val) == str
+                val += ch
+            x_ptr += 1
+        assert False
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        red_p_list, _ = to_list(input().strip(), 0)
+        blue_p_list, _ = to_list(input().strip(), 0)
+        print(f'Applying 2-breaks on circular genome until {red_p_list=} matches {blue_p_list=}...\n')
+        bg = BreakpointGraph(red_p_list, blue_p_list)
+        while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
+            bg.two_break(next_blue_edge)
+            red_p_list = bg.get_red_permutations()
+            print(f' * {red_p_list=}')
+        print('\n')
+        print(
+            f'Recall that the the breakpoint graph is undirected / a permutation may have been walked in either'
+            f' direction (clockwise vs counter-clockwise). If the output looks like it\'s going backwards, that\'s just'
+            f' as correct as if it looked like it\'s going forward.')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    bg = BreakpointGraph(
-        # [['+A', '-B', '-C', '+D'], ['+E']],
-        # [['+A', '+B', '-D'], ['-C', '-E']]
-        [['-D', '-B', '+C', '-A']],
-        [['+A', '+B', '+C', '+D']]
-    )
-    while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
-        print(f'{bg.get_red_permutations()}')
-        print(f'{bg.get_blue_permutations()}')
-        print(f'{bg.get_red_blue_paths()}')
-        print(f'{bg.to_neato_graph()}')
-        bg.two_break(next_blue_edge)
-    print(f'{bg.get_red_permutations()}')
-    print(f'{bg.get_blue_permutations()}')
-    print(f'{bg.get_red_blue_paths()}')
-    print(f'{bg.to_neato_graph()}')
+    main()
+# if __name__ == '__main__':
+#     bg = BreakpointGraph(
+#         # [['+A', '-B', '-C', '+D'], ['+E']],
+#         # [['+A', '+B', '-D'], ['-C', '-E']]
+#         [['-D', '-B', '+C', '-A']],
+#         [['+A', '+B', '+C', '+D']]
+#     )
+#     while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
+#         print(f'{bg.get_red_permutations()}')
+#         print(f'{bg.get_blue_permutations()}')
+#         print(f'{bg.get_red_blue_paths()}')
+#         print(f'{bg.to_neato_graph()}')
+#         bg.two_break(next_blue_edge)
+#     print(f'{bg.get_red_permutations()}')
+#     print(f'{bg.get_blue_permutations()}')
+#     print(f'{bg.get_red_blue_paths()}')
+#     print(f'{bg.to_neato_graph()}')
