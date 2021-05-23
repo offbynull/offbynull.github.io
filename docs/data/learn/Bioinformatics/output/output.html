@@ -8976,11 +8976,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>ALGORITHM</strong>:</p>
 <p>This algorithm calculates a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path by constructing an undirected graph representing the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between <a href="#BM_(genome)%2Fi">genome</a>s. Unlike the <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a> list algorithm, this algorithm...</p>
 <ul>
-<li>determines the full <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path every time (not a best effort heuristic).</li>
+<li>determines a full <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path every time (there may be multiple such paths).</li>
 <li>handles multiple chromosomes (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> chromosomal <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s and <a href="#BM_(fission)%2Fi">fission</a>s).</li>
 <li>handles both linear and circular chromosomes.</li>
 </ul>
-<p>The algorithm begins by constructing undirected graphs called <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s for both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s:</p>
+<p>This algorithm begins by constructing an undirected graphs containing both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s, referred to as a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>:</p>
 <ol>
 <li>
 <p>Set the ends of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
@@ -9000,7 +9000,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>
 <p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
 <p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
-<p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
+<p>Note that the arrow heads on these dashed lines represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
 <p><img src="dot_19da0e0853121f133813afea783f11f6.svg" alt="Dot diagram"></p>
 <p><a href="ch6_code/src/breakpoint_graph/SyntenyEdge.py">ch6_code/src/breakpoint_graph/SyntenyEdge.py</a> (lines 10 to 16):</p>
 <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SyntenyEdge</span>:</span>
@@ -9012,10 +9012,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </code></pre>
 </li>
 <li>
-<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines.</p>
+<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines. Regions of ...</p>
 <ul>
-<li>Blue lines represent regions of desired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
-<li>Red lines represent regions of undesired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
+<li>desired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as blue lines.</li>
+<li>undesired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as red lines.</li>
 </ul>
 <p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
 <p><a href="ch6_code/src/breakpoint_graph/ColoredEdge.py">ch6_code/src/breakpoint_graph/ColoredEdge.py</a> (lines 11 to 29):</p>
@@ -9045,16 +9045,23 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_7d1d037f9aff25774105ac2ef33cc4cea5f9af58.svg" alt="Kroki diagram output"></p>
 <p>Converting the above <a href="#BM_(genome)%2Fi">genome</a>s to both a cyclic and linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is as follows...</p>
 <p><img src="dot_265a2cff663a78c6cb113f54e2ded77e.svg" alt="Dot diagram"></p>
-<p>As shown in the example above, the convention for drawing a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is to set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges such that they're neatly sandwiched between the blue edges. Note how both <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s in the example above are just another representation of their linear diagram counterparts. The ...</p>
+<p>As shown in the example above, the convention for drawing a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is to position nodes and edges as they appear in the desired <a href="#BM_(genome)%2Fi">genome</a> (<a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges should be neatly sandwiched between blue edges). Note how both <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s in the example above are just another representation of their linear diagram counterparts. The ...</p>
 <ul>
 <li>dashed edges represent the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s (suffix of <em>t</em> denotes arrow end / <em>h</em> denotes opposite end).</li>
-<li>blue edges represent the gap regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / chromosome ends in the desired <a href="#BM_(genome)%2Fi">genome</a>.</li>
-<li>red edges represent the gap regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / chromosome ends in the undesired <a href="#BM_(genome)%2Fi">genome</a>.</li>
+<li>blue edges represent the gaps between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> and chromosome end nodes in the desired <a href="#BM_(genome)%2Fi">genome</a>.</li>
+<li>red edges represent the gaps between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> and chromosome end nodes in the undesired <a href="#BM_(genome)%2Fi">genome</a>.</li>
 </ul>
-<p>The reason for this convention is that it helps conceptualize the algorithms that operate on <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (described further down). Ultimately, a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is simply a merged version of the linear diagrams for both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s. Specifically, notice that each node other than the termination node has 1 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge</p>
-<p>For example, if the circular <a href="#BM_(genome)%2Fi">genome</a> version of the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> example were flattened based on the blue edges (desired <a href="#BM_(genome)%2Fi">genome</a>), the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s would be ordered as they are in the linear diagram for the desired <a href="#BM_(genome)%2Fi">genome</a>...</p>
+<p>Notice that ...</p>
+<ul>
+<li>each <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge node is bound to exactly one red edge, one blue edge, and one <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge. This is only for <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge nodes, not chromosome end nodes. For example, node <em>A_t</em> in the examples above has exactly one of each edge type bound to it.</li>
+<li>if the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges were removed from the graph, walking nodes while alternating between red and blue edges ultimately ends up forming cycles. In the examples above, the circular <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> has 2 red-blue cycles while the linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> has 3 red-blue cycles.</li>
+</ul>
+<p>The reason for this convention is that it helps conceptualize the algorithms that operate on <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (described further down). Ultimately, a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is simply a merged version of the linear diagrams for both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s.</p>
+<p>For example, if the circular <a href="#BM_(genome)%2Fi">genome</a> version of the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> example above were flattened based on the blue edges (desired <a href="#BM_(genome)%2Fi">genome</a>), the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s would be ordered as they are in the linear diagram for the desired <a href="#BM_(genome)%2Fi">genome</a>...</p>
+<p><img src="svgbob_2db636d6a9dca8ec58a87760d2bc130a878996e9.svg" alt="Kroki diagram output"></p>
 <p><img src="dot_f8f42a4724463ac1f8ff20a8ab0dc7c9.svg" alt="Dot diagram"></p>
-<p>Likewise, if the circular <a href="#BM_(genome)%2Fi">genome</a> version of the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> example were flattened based on red edges (undesired <a href="#BM_(genome)%2Fi">genome</a>), the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s would be ordered as they are in the linear diagram for the undesired <a href="#BM_(genome)%2Fi">genome</a>...</p>
+<p>Likewise, if the circular <a href="#BM_(genome)%2Fi">genome</a> version of the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> example above were flattened based on red edges (undesired <a href="#BM_(genome)%2Fi">genome</a>), the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s would be ordered as they are in the linear diagram for the undesired <a href="#BM_(genome)%2Fi">genome</a>...</p>
+<p><img src="svgbob_dcf88bd11a7c7ce3d07c62be91cbadd6b1b47aad.svg" alt="Kroki diagram output"></p>
 <p><img src="dot_8e8ffca4fb4c3dabe9ce45d4a7bcada6.svg" alt="Dot diagram"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>

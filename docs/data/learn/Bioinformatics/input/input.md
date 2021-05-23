@@ -5513,11 +5513,11 @@ Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC
 
 This algorithm calculates a parsimonious reversal path by constructing an undirected graph representing the synteny blocks between genomes. Unlike the breakpoint_GR list algorithm, this algorithm...
 
- * determines the full parsimonious reversal path every time (not a best effort heuristic).
+ * determines a full parsimonious reversal path every time (there may be multiple such paths).
  * handles multiple chromosomes (genome rearrangement chromosomal fusions and fissions).
  * handles both linear and circular chromosomes.
 
-The algorithm begins by constructing undirected graphs called breakpoint graph_GRs for both the desired and undesired genomes:
+This algorithm begins by constructing an undirected graphs containing both the desired and undesired genomes, referred to as a breakpoint graph_GR:
 
 1. Set the ends of synteny blocks as nodes. The arrow end should have a _t_ suffix (for tail) while the non-arrow end should have a _h_ suffix (for head)...
 
@@ -5554,7 +5554,7 @@ The algorithm begins by constructing undirected graphs called breakpoint graph_G
    }
    ```
 
-   Note that the arrows on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
+   Note that the arrow heads on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
 
    ```{dot}
    graph G {
@@ -5572,10 +5572,10 @@ The algorithm begins by constructing undirected graphs called breakpoint graph_G
    # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
    ```
 
-3. Set the regions between synteny blocks as __undirected__ edges, represented by colored lines.
+3. Set the regions between synteny blocks as __undirected__ edges, represented by colored lines. Regions of ...
    
-   * Blue lines represent regions of desired genome that border a pair of synteny blocks.
-   * Red lines represent regions of undesired genome that border a pair of synteny blocks.
+   * desired genome that border a pair of synteny blocks are represented as blue lines.
+   * undesired genome that border a pair of synteny blocks are represented as red lines.
 
    ```{dot}
    graph G {
@@ -5662,15 +5662,26 @@ _D2_t_ -- TERM [color=red];
 }
 ```
 
-As shown in the example above, the convention for drawing a breakpoint graph_GR is to set the synteny edges such that they're neatly sandwiched between the blue edges. Note how both breakpoint graph_GRs in the example above are just another representation of their linear diagram counterparts. The ...
+As shown in the example above, the convention for drawing a breakpoint graph_GR is to position nodes and edges as they appear in the desired genome (synteny edges should be neatly sandwiched between blue edges). Note how both breakpoint graph_GRs in the example above are just another representation of their linear diagram counterparts. The ...
 
  * dashed edges represent the synteny blocks (suffix of _t_ denotes arrow end / _h_ denotes opposite end).
- * blue edges represent the gap regions between synteny blocks / chromosome ends in the desired genome.
- * red edges represent the gap regions between synteny blocks / chromosome ends in the undesired genome.
+ * blue edges represent the gaps between synteny block and chromosome end nodes in the desired genome.
+ * red edges represent the gaps between synteny block and chromosome end nodes in the undesired genome.
 
-The reason for this convention is that it helps conceptualize the algorithms that operate on breakpoint graph_GRs (described further down). Ultimately, a breakpoint graph_GR is simply a merged version of the linear diagrams for both the desired and undesired genomes. Specifically, notice that each node other than the termination node has 1 synteny edge
+Notice that ...
 
-For example, if the circular genome version of the breakpoint graph_GR example were flattened based on the blue edges (desired genome), the synteny blocks would be ordered as they are in the linear diagram for the desired genome...
+ * each synteny edge node is bound to exactly one red edge, one blue edge, and one synteny edge. This is only for synteny edge nodes, not chromosome end nodes. For example, node _A\_t_ in the examples above has exactly one of each edge type bound to it.
+ * if the synteny edges were removed from the graph, walking nodes while alternating between red and blue edges ultimately ends up forming cycles. In the examples above, the circular breakpoint graph_GR has 2 red-blue cycles while the linear breakpoint graph_GR has 3 red-blue cycles.
+
+The reason for this convention is that it helps conceptualize the algorithms that operate on breakpoint graph_GRs (described further down). Ultimately, a breakpoint graph_GR is simply a merged version of the linear diagrams for both the desired and undesired genomes.
+
+For example, if the circular genome version of the breakpoint graph_GR example above were flattened based on the blue edges (desired genome), the synteny blocks would be ordered as they are in the linear diagram for the desired genome...
+
+```{svgbob}
+       +A              +B        +C                  +D            
+-->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
+ 5'                          desired                            3' 
+```
 
 ```{dot}
 graph G {
@@ -5705,7 +5716,13 @@ _B1_t_:s -- _D1_h_:s [color=red];
 }
 ```
 
-Likewise, if the circular genome version of the breakpoint graph_GR example were flattened based on red edges (undesired genome), the synteny blocks would be ordered as they are in the linear diagram for the undesired genome...
+Likewise, if the circular genome version of the breakpoint graph_GR example above were flattened based on red edges (undesired genome), the synteny blocks would be ordered as they are in the linear diagram for the undesired genome...
+
+```{svgbob}
+    -D       -B       +C          -A         
+--<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+ 5'                  undesired            3' 
+```
 
 ```{dot}
 graph G {
