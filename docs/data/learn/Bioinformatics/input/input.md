@@ -5756,7 +5756,7 @@ _A1_t_:n -- _B1_h_:n [color=blue];
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
 
-In addition to the graphical form described above, a breakpoint graph_GR may be represented as permutation_GRs. A permutation_GR is a list that represents a chromosome within a genome. Since a breakpoint graph_GR has 2 genomes, it may be represented as a pair of permutation_GR sets (one per genome).
+In addition to the graphical form described above, a breakpoint graph_GR may be represented as permutation_GRs. A permutation_GR is a list that represents a chromosome within a genome. Since a breakpoint graph_GR has 2 genomes, each genome can be represented as a set of permutation_GRs.
 
 To convert a genome within a breakpoint graph_GR to a permutation_GR set, simply walk the edges for that genome:
 
@@ -5774,14 +5774,14 @@ For example, given the following breakpoint graph_GR ...
 graph G {
 layout=neato
 node [shape=plain];
-_C_t_ [pos="2.0,0.0!"];
-_C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-_B_t_ [pos="0.0,-2.0!"];
-_B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-_A_t_ [pos="-2.0,0.0!"];
-_A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-_D_t_ [pos="0.0,2.0!"];
-_D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+_C_t_ [label="_C_t_", pos="2.0,0.0!"];
+_C_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+_B_t_ [label="_B_t_", pos="0.0,-2.0!"];
+_B_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+_A_t_ [label="_A_t_", pos="-2.0,0.0!"];
+_A_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+_D_t_ [label="_D_t_", pos="0.0,2.0!"];
+_D_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
 _C_t_ -- _C_h_ [style=dashed];
 _B_t_ -- _B_h_ [style=dashed];
 _A_t_ -- _A_h_ [style=dashed];
@@ -5790,21 +5790,26 @@ _C_t_ -- _D_h_ [color=blue];
 _A_h_ -- _D_t_ [color=blue];
 _B_t_ -- _C_h_ [color=blue];
 _A_t_ -- _B_h_ [color=blue];
-_B_h_ -- _C_h_ [color=red];
-_A_t_ -- _C_t_ [color=red];
-_A_h_ -- _D_t_ [color=red];
-_B_t_ -- _D_h_ [color=red];
+_B_t_ -- _A_h_ [color=red];
+_A_t_ -- _B_h_ [color=red];
+_C_h_ -- _D_t_ [color=red];
+_C_t_ -- _D_h_ [color=red];
 }
 ```
 
-, ... walking the edges for the red genome from node D_t in the ...
+, ... walking the edges for the undesired genome (red) from node D_t in the ...
 
- * clockwise direction results in `[-D, -B, +C, -A]`.
- * counter-clockwise direction results in `[+A, -C, +B, +D]`.
+ * clockwise direction results in the permutation_GR `[-D, -C]`.
+ * counter-clockwise direction results in the permutation_GR `[+C, +D]`.
 
-For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same genome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: `[-B, +C, -A, -D]`, `[-C, +B, +D, +A]`, `[+C, -A, -D, -B]`, etc...
+For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: `[+C, +D]`, `[+D, +C]`, `[-C, -D]`, and `[+C, +D]`.
 
 For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at a termination node (either end of the chromosome). The termination nodes aren't included in the permutation_GR.
+
+In the example breakpoint graph_GR above, the permutation_GR set representing the ...
+
+ * undesired genome (red) may be written as either `{[+C, +D], [+A, +B]}`, `{[+A, +B], [-C, _D]}`, `{[-A, -B], [-C, -D]}`, ... (all are equivalent)
+ * desired genome (blue) may be written as either `{[+A, +B, +C, +D]}`, `{[-D, -C, -B, -A]}`, `{[+B, +C, +D, +A]}`, ... (all are equivalent)
 
 ```{output}
 ch6_code/src/breakpoint_graph/Permutation.py
@@ -6006,6 +6011,7 @@ Each re-wiring operation is called a 2-break and represents either a chromosome 
    _C2_h_ -- _B2_t_ [color=red, penwidth="4"];
    _C2_t_ -- _D2_h_ [color=red];
    }
+   ```
 
  * fission:
 
