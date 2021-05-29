@@ -8735,10 +8735,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
 <ul>
 <li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -8841,10 +8841,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Final synteny graph...</p>
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
-<li>{'y': ('A0', 384, 586), 'x': ('B0', 711, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 212, 362), 'x': ('B0', 233, 390), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 880, 1018), 'x': ('B0', 954, 1104), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 660, 823), 'x': ('B0', 459, 629), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 209, 363), 'x': ('B0', 230, 391), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 530, 587), 'x': ('B0', 710, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 658, 823), 'x': ('B0', 459, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 883, 1018), 'x': ('B0', 957, 1104), 'type': 'NORMAL'}</li>
 </ul>
 </div>
 <p></p>
@@ -8986,7 +8987,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>
 <p>Set the ends of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
 <p><img src="dot_0a2b976df1fe819b59828770f2a8a50d.svg" alt="Dot diagram"></p>
-<p>If the <a href="#BM_(genome)%2Fi">genome</a> has linear chromosomes, add a termination node as well to represent the end of chromosome. Only one termination node is needed.</p>
+<p>If the <a href="#BM_(genome)%2Fi">genome</a> has linear chromosomes, add a termination node as well to represent chromosome ends. Only one termination node is needed -- all chromosome ends are represented by the same termination node.</p>
 <p><img src="dot_9e751bbe7943da6f671b2b2f75c6d011.svg" alt="Dot diagram"></p>
 </li>
 <li>
@@ -9003,7 +9004,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 <p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
 <p>For linear chromosomes, the ends of each chromosome would be <a href="#BM_(connected)%2Fi">connected</a> by the appropriate colored edge to that termination node as well.</p>
-<p><img src="dot_2ff6b7be8f0b89459aa289b482a20f5a.svg" alt="Dot diagram"></p>
+<p><img src="dot_2ac588eb07abf6e434abb06af0fe94b7.svg" alt="Dot diagram"></p>
 </li>
 </ol>
 <p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them ...</p>
@@ -9023,6 +9024,127 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Likewise, if the circular <a href="#BM_(genome)%2Fi">genome</a> version of the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> example above were flattened based on red edges (undesired <a href="#BM_(genome)%2Fi">genome</a>), the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s would be ordered as they are in the linear diagram for the undesired <a href="#BM_(genome)%2Fi">genome</a>...</p>
 <p><img src="svgbob_dcf88bd11a7c7ce3d07c62be91cbadd6b1b47aad.svg" alt="Kroki diagram output"></p>
 <p><img src="dot_8e8ffca4fb4c3dabe9ce45d4a7bcada6.svg" alt="Dot diagram"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
+</div>
+<p><strong>DATA STRUCTURE REPRESENTATION</strong></p>
+<p>The data structure used to represent a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> can simply be two <a href="#BM_(adjacency%20list)%2Fi">adjacency list</a>s: one for the red edges and one for the blue edges.</p>
+<p><a href="ch6_code/src/breakpoint_graph/ColoredEdgeSet.py">ch6_code/src/breakpoint_graph/ColoredEdgeSet.py</a> (lines 16 to 35):</p>
+<pre class="hljs"><code><span class="hljs-comment"># Represents a single genome in a breakpoint graph</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ColoredEdgeSet</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+        self.by_node: <span class="hljs-type">Dict</span>[SyntenyNode, ColoredEdge] = {}
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span>(<span class="hljs-params">ce_list: Iterable[ColoredEdge]</span>) -&gt; ColoredEdgeSet:</span>
+        ret = ColoredEdgeSet()
+        <span class="hljs-keyword">for</span> ce <span class="hljs-keyword">in</span> ce_list:
+            ret.insert(ce)
+        <span class="hljs-keyword">return</span> ret
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insert</span>(<span class="hljs-params">self, e: ColoredEdge</span>):</span>
+        <span class="hljs-keyword">if</span> e.n1 <span class="hljs-keyword">in</span> self.by_node <span class="hljs-keyword">or</span> e.n2 <span class="hljs-keyword">in</span> self.by_node:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f'Node already occupied: <span class="hljs-subst">{e}</span>'</span>)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(e.n1, TerminalNode):
+            self.by_node[e.n1] = e
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(e.n2, TerminalNode):
+            self.by_node[e.n2] = e
+</code></pre>
+<p>The edges representing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following circular <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
+<p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
+<p>..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The next edge to walk must be a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge, but <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges aren't tracked in this data structure. However, since it's known that the nodes of a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge...</p>
+<ul>
+<li>must either end in <em>t</em> or <em>h</em></li>
+<li>share the same name</li>
+</ul>
+<p>, ... it's easy to derive that the opposite end of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge at node C_h is node C_t. As such, get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.</p>
+<p>For linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, the process must start and end at the termination node (no cycle).</p>
+<p><a href="ch6_code/src/breakpoint_graph/ColoredEdgeSet.py">ch6_code/src/breakpoint_graph/ColoredEdgeSet.py</a> (lines 80 to 126):</p>
+<pre class="hljs"><code><span class="hljs-comment"># Walks the colored edges, spliced with synteny edges.</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-type">Union</span>[ColoredEdge, SyntenyEdge]]]:</span>
+    ret = []
+    all_edges = self.edges()
+    term_edges = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> ce <span class="hljs-keyword">in</span> all_edges:
+        <span class="hljs-keyword">if</span> ce.has_term():
+            term_edges.add(ce)
+    <span class="hljs-comment"># handle linear chromosomes</span>
+    <span class="hljs-keyword">while</span> term_edges:
+        ce = term_edges.pop()
+        n = ce.non_term()
+        all_edges.remove(ce)
+        edges = []
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            se_n1 = n
+            se_n2 = se_n1.swap_end()
+            se = SyntenyEdge(se_n1, se_n2)
+            edges += [ce, se]
+            ce = self.by_node[se_n2]
+            <span class="hljs-keyword">if</span> ce.has_term():
+                edges += [ce]
+                term_edges.remove(ce)
+                all_edges.remove(ce)
+                <span class="hljs-keyword">break</span>
+            n = ce.other_end(se_n2)
+            all_edges.remove(ce)
+        ret.append(edges)
+    <span class="hljs-comment"># handle cyclic chromosomes</span>
+    <span class="hljs-keyword">while</span> all_edges:
+        start_ce = all_edges.pop()
+        ce = start_ce
+        n = ce.n1
+        edges = []
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            se_n1 = n
+            se_n2 = se_n1.swap_end()
+            se = SyntenyEdge(se_n1, se_n2)
+            edges += [ce, se]
+            ce = self.by_node[se_n2]
+            <span class="hljs-keyword">if</span> ce == start_ce:
+                <span class="hljs-keyword">break</span>
+            n = ce.other_end(se_n2)
+            all_edges.remove(ce)
+        ret.append(edges)
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the colored edges...</p>
+<ul>
+<li>CE(C_h, D_t)</li>
+<li>CE(B_h, C_t)</li>
+<li>CE(A_h, B_t)</li>
+<li>CE(A_t, D_h)</li>
+<li>CE(X_h, Z_t)</li>
+<li>CE(X_t, Z_h)</li>
+</ul>
+<p>Synteny edges spliced in...</p>
+<ul>
+<li>START
+<ul>
+<li>CE(C_h, D_t)</li>
+<li>SE(C_h, C_t)</li>
+<li>CE(B_h, C_t)</li>
+<li>SE(B_h, B_t)</li>
+<li>CE(A_h, B_t)</li>
+<li>SE(A_h, A_t)</li>
+<li>CE(A_t, D_h)</li>
+<li>SE(D_h, D_t)</li>
+</ul>
+</li>
+<li>START
+<ul>
+<li>CE(X_h, Z_t)</li>
+<li>SE(X_h, X_t)</li>
+<li>CE(X_t, Z_h)</li>
+<li>SE(Z_h, Z_t)</li>
+</ul>
+</li>
+</ul>
+<p>CE means colored edge / SE means synteny edge.</p>
+</div>
+<p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
@@ -9163,111 +9285,6 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
 </div>
-<p><strong>DATA STRUCTURE REPRESENTATION</strong></p>
-<p>The data structure used to represent a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> can simply be two <a href="#BM_(adjacency%20list)%2Fi">adjacency list</a>s: one for the red edges and one for the blue edges.</p>
-<p><a href="ch6_code/src/breakpoint_graph/ColoredEdgeSet.py">ch6_code/src/breakpoint_graph/ColoredEdgeSet.py</a> (lines 15 to 34):</p>
-<pre class="hljs"><code><span class="hljs-comment"># Represents a single genome in a breakpoint graph</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ColoredEdgeSet</span>:</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
-        self.by_node: <span class="hljs-type">Dict</span>[SyntenyNode, ColoredEdge] = {}
-
-<span class="hljs-meta">    @staticmethod</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span>(<span class="hljs-params">ce_list: Iterable[ColoredEdge]</span>) -&gt; ColoredEdgeSet:</span>
-        ret = ColoredEdgeSet()
-        <span class="hljs-keyword">for</span> ce <span class="hljs-keyword">in</span> ce_list:
-            ret.insert(ce)
-        <span class="hljs-keyword">return</span> ret
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insert</span>(<span class="hljs-params">self, e: ColoredEdge</span>):</span>
-        <span class="hljs-keyword">if</span> e.n1 <span class="hljs-keyword">in</span> self.by_node <span class="hljs-keyword">or</span> e.n2 <span class="hljs-keyword">in</span> self.by_node:
-            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f'Node already occupied: <span class="hljs-subst">{e}</span>'</span>)
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(e.n1, TerminalNode):
-            self.by_node[e.n1] = e
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(e.n2, TerminalNode):
-            self.by_node[e.n2] = e
-</code></pre>
-<p>The edges representing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following circular <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
-<p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
-<p>..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The next edge to walk must be a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge, but <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges aren't tracked in this data structure. However, since it's known that the nodes of a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge...</p>
-<ul>
-<li>must either end in <em>t</em> or <em>h</em></li>
-<li>share the same name</li>
-</ul>
-<p>, ... it's easy to derive that the opposite end of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge at node C_h is node C_t. As such, get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.</p>
-<p>For linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, the process is the must start at and will end at chromosome end nodes (no cycle).</p>
-<p><a href="ch6_code/src/breakpoint_graph/ColoredEdgeSet.py">ch6_code/src/breakpoint_graph/ColoredEdgeSet.py</a> (lines 79 to 125):</p>
-<pre class="hljs"><code><span class="hljs-comment"># Walks the colored edges, spliced with synteny edges.</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-type">Union</span>[ColoredEdge, SyntenyEdge]]]:</span>
-    ret = []
-    all_edges = self.edges()
-    term_edges = <span class="hljs-built_in">set</span>()
-    <span class="hljs-keyword">for</span> ce <span class="hljs-keyword">in</span> all_edges:
-        <span class="hljs-keyword">if</span> ce.has_term():
-            term_edges.add(ce)
-    <span class="hljs-comment"># handle linear chromosomes</span>
-    <span class="hljs-keyword">while</span> term_edges:
-        ce = term_edges.pop()
-        n = ce.non_term()
-        all_edges.remove(ce)
-        edges = []
-        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-            se_n1 = n
-            se_n2 = se_n1.swap_end()
-            se = SyntenyEdge(se_n1, se_n2)
-            edges += [ce, se]
-            ce = self.by_node[se_n2]
-            <span class="hljs-keyword">if</span> ce.has_term():
-                edges += [ce]
-                term_edges.remove(ce)
-                all_edges.remove(ce)
-                <span class="hljs-keyword">break</span>
-            n = ce.other_end(se_n2)
-            all_edges.remove(ce)
-        ret.append(edges)
-    <span class="hljs-comment"># handle cyclic chromosomes</span>
-    <span class="hljs-keyword">while</span> all_edges:
-        start_ce = all_edges.pop()
-        ce = start_ce
-        n = ce.n1
-        edges = []
-        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-            se_n1 = n
-            se_n2 = se_n1.swap_end()
-            se = SyntenyEdge(se_n1, se_n2)
-            edges += [ce, se]
-            ce = self.by_node[se_n2]
-            <span class="hljs-keyword">if</span> ce == start_ce:
-                <span class="hljs-keyword">break</span>
-            n = ce.other_end(se_n2)
-            all_edges.remove(ce)
-        ret.append(edges)
-    <span class="hljs-keyword">return</span> ret
-</code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>Given the permutation ['+A', '+B', '+C', '+D']...</p>
-<ul>
-<li>START
-<ul>
-<li>CE(C_h, D_t)</li>
-<li>SE(C_h, C_t)</li>
-<li>CE(B_h, C_t)</li>
-<li>SE(B_h, B_t)</li>
-<li>CE(A_h, B_t)</li>
-<li>SE(A_h, A_t)</li>
-<li>CE(A_t, D_h)</li>
-<li>SE(D_h, D_t)</li>
-</ul>
-</li>
-</ul>
-<p>CE means colored edge / SE means synteny edge.</p>
-<p>Recall that the the breakpoint graph is undirected / a permutation may have been walked in either direction (clockwise vs counter-clockwise). If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
-</div>
-<p></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
-</div>
 <p><strong><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">TWO-BREAK</a> ALGORITHM</strong></p>
 <p>Now that <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s have been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.</p>
 <p>For example, the two red edges highlighted below share the same nodes as a blue edge (D_h and C_t). These two red edges can be broken and re-wired such that one of them matches the blue edge...</p>
@@ -9340,9 +9357,9 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <p>Applying 2-breaks on circular genome until red_p_list=[['+A', '-B', '-C', '+D'], ['+E']] matches blue_p_list=[['+A', '+B', '-D'], ['-C', '-E']]...</p>
 <ul>
-<li>red_p_list=[['+A', '-B', '-C', '-E', '+D']]</li>
-<li>red_p_list=[['+A', '-B', '+D'], ['+C', '+E']]</li>
-<li>red_p_list=[['+A', '-B', '-D'], ['+C', '+E']]</li>
+<li>red_p_list=[['+E'], ['+A', '+B', '-C', '+D']]</li>
+<li>red_p_list=[['+E'], ['+A', '+B', '-D', '+C']]</li>
+<li>red_p_list=[['+A', '+B', '-D', '+E', '+C']]</li>
 <li>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</li>
 </ul>
 <p>Recall that the the breakpoint graph is undirected / a permutation may have been walked in either direction (clockwise vs counter-clockwise). If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>

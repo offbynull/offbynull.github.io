@@ -41,6 +41,9 @@ from breakpoint_graph.SyntenyEnd import SyntenyEnd
 
 
 # MARKDOWN
+from helpers.InputUtils import str_to_list
+
+
 class BreakpointGraph:
     def __init__(self, red_p_list: List[List[str]], blue_p_list: List[List[str]]):
         # Since the blue edges are sandwiched inbetween synteny blocks as they're ordered in the desired genome (correct
@@ -149,49 +152,11 @@ class BreakpointGraph:
 
 
 def main():
-    def to_list(x: str, x_ptr: int):
-        ret = []
-        val = None
-        assert x[x_ptr] == '['
-        x_ptr += 1
-        while x_ptr < len(x):
-            ch = x[x_ptr]
-            if ch == ',':
-                if val is None:
-                    ret.append('')
-                elif type(val) == str:
-                    ret.append(val.strip())
-                else:
-                    ret.append(val)
-                val = None
-            elif ch == ']':
-                if val is None:
-                    ...
-                elif type(val) == str:
-                    ret.append(val.strip())
-                else:
-                    ret.append(val)
-                return ret, x_ptr
-            elif ch == '[':
-                if val is None:
-                    ...
-                elif type(val) == str and len(val.strip()) == 0:
-                    ...
-                else:
-                    assert False
-                val, x_ptr = to_list(x, x_ptr)
-            else:
-                if val is None:
-                    val = ''
-                assert type(val) == str
-                val += ch
-            x_ptr += 1
-        assert False
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
     try:
-        red_p_list, _ = to_list(input().strip(), 0)
-        blue_p_list, _ = to_list(input().strip(), 0)
+        red_p_list, _ = str_to_list(input().strip(), 0)
+        blue_p_list, _ = str_to_list(input().strip(), 0)
         print(f'Applying 2-breaks on circular genome until {red_p_list=} matches {blue_p_list=}...\n')
         bg = BreakpointGraph(red_p_list, blue_p_list)
         while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:

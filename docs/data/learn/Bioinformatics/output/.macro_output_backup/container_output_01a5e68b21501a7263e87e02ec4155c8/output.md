@@ -1,4 +1,4 @@
-`{bm-disable-all}`[ch6_code/src/breakpoint_graph/ColoredEdgeSet.py](ch6_code/src/breakpoint_graph/ColoredEdgeSet.py) (lines 79 to 125):`{bm-enable-all}`
+`{bm-disable-all}`[ch6_code/src/breakpoint_graph/ColoredEdgeSet.py](ch6_code/src/breakpoint_graph/ColoredEdgeSet.py) (lines 80 to 126):`{bm-enable-all}`
 
 ```python
 # Walks the colored edges, spliced with synteny edges.

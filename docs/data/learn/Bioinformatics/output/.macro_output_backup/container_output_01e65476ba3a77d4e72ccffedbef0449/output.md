@@ -2,19 +2,13 @@
 
 `{bm-disable-all}`
 
-Given the permutation ['+A', '+B', '+C', '+D']...
+Applying 2-breaks on circular genome until red_p_list=[['+A', '-B', '-C', '+D'], ['+E']] matches blue_p_list=[['+A', '+B', '-D'], ['-C', '-E']]...
 
- * START
-   * CE(C_h, D_t)
-   * SE(C_h, C_t)
-   * CE(B_h, C_t)
-   * SE(B_h, B_t)
-   * CE(A_h, B_t)
-   * SE(A_h, A_t)
-   * CE(A_t, D_h)
-   * SE(D_h, D_t)
+ * red_p_list=[['+E'], ['+A', '+B', '-C', '+D']]
+ * red_p_list=[['+E'], ['+A', '+B', '-D', '+C']]
+ * red_p_list=[['+A', '+B', '-D', '+E', '+C']]
+ * red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]
 
-CE means colored edge / SE means synteny edge.
 
 Recall that the the breakpoint graph is undirected / a permutation may have been walked in either direction (clockwise vs counter-clockwise). If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.
 </div>

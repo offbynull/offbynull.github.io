@@ -7,6 +7,7 @@ from breakpoint_graph.ColoredEdge import ColoredEdge
 from breakpoint_graph.SyntenyEdge import SyntenyEdge
 from breakpoint_graph.SyntenyNode import SyntenyNode
 from breakpoint_graph.TerminalNode import TerminalNode
+from helpers.InputUtils import str_to_list
 
 from helpers.Utils import slide_window
 
@@ -157,44 +158,36 @@ class ColoredEdgeSet:
 
 
 def main():
+    def str_to_node(n: str):
+        if n == 'TERM':
+            return TerminalNode.INST
+        n_id, n_end_str = n.split('_')
+        if n_end_str == 'h':
+            return SyntenyNode(n_id, SyntenyEnd.HEAD)
+        elif n_end_str == 't':
+            return SyntenyNode(n_id, SyntenyEnd.TAIL)
+        else:
+            raise ValueError(f'Bad suffix {n=}')
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
     try:
         ce_set = ColoredEdgeSet()
-        lookup = {
-            '+': SyntenyEnd.HEAD,
-            '-': SyntenyEnd.TAIL
-        }
-        vals = [s.strip() for s in input().strip().split(',')]
-        print(f'Given the permutation {vals}...\n')
-        cyclic = vals[0] != ''
-        for (s1, s2), _ in slide_window(vals, 2, cyclic=cyclic):
-            if s1 == '':
-                s1_node = TerminalNode.INST
-            else:
-                s1_node = SyntenyNode(
-                    id=s1[1:],
-                    end=lookup[s1[0]]
-                )
-            if s2 == '':
-                s2_node = TerminalNode.INST
-            else:
-                s2_node = SyntenyNode(
-                    id=s2[1:],
-                    end=lookup[s2[0]].swap()
-                )
-            ce = ColoredEdge(s1_node, s2_node)
+        print(f'Given the colored edges...\n')
+        edge_list, _ = str_to_list(input().strip(), 0)
+        for e in edge_list:
+            n1 = str_to_node(e[0])
+            n2 = str_to_node(e[1])
+            ce = ColoredEdge(n1, n2)
             ce_set.insert(ce)
+            print(f'* {ce}')
+        print('\n')
+        print(f'Synteny edges spliced in...\n')
         for chromosome in ce_set.walk():
             print(f' * START')
             for edge in chromosome:
                 print(f'   * {edge}')
         print('')
         print(f'CE means colored edge / SE means synteny edge.\n')
-        print(
-            f'Recall that the the breakpoint graph is undirected / a permutation may have been walked in either'
-            f' direction (clockwise vs counter-clockwise). If the output looks like it\'s going backwards, that\'s just'
-            f' as correct as if it looked like it\'s going forward.')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

@@ -5534,7 +5534,7 @@ Construction of a breakpoint graph_GR is as follows:
     }
     ```
 
-    If the genome has linear chromosomes, add a termination node as well to represent the end of chromosome. Only one termination node is needed.
+    If the genome has linear chromosomes, add a termination node as well to represent chromosome ends. Only one termination node is needed -- all chromosome ends are represented by the same termination node.
 
     ```{dot}
     graph G {
@@ -5593,9 +5593,12 @@ Construction of a breakpoint graph_GR is as follows:
     node [shape=plain];
     _A_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
     _D_t_ [label="_D_t_", pos="5,2.0!"];
+    _D_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
     TERM [pos="4.9,0.5!"];
     _A_h_ -- TERM [color=blue];
     _D_t_ -- TERM [color=red];
+    _D_h_ -- TERM [color=blue];
+    _D_h_ -- TERM [color=red];
     }
     ```
 
@@ -5758,6 +5761,69 @@ _A1_t_:n -- _B1_h_:n [color=blue];
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
 
+__DATA STRUCTURE REPRESENTATION__
+
+The data structure used to represent a breakpoint graph_GR can simply be two adjacency lists: one for the red edges and one for the blue edges.
+
+```{output}
+ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+The edges representing synteny blocks technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following circular breakpoint graph_GR ...
+
+```{dot}
+graph G {
+layout=neato
+node [shape=plain];
+_C_t_ [pos="2.0,0.0!"];
+_C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+_B_t_ [pos="0.0,-2.0!"];
+_B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+_A_t_ [pos="-2.0,0.0!"];
+_A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+_D_t_ [pos="0.0,2.0!"];
+_D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+_C_t_ -- _C_h_ [style=dashed];
+_B_t_ -- _B_h_ [style=dashed];
+_A_t_ -- _A_h_ [style=dashed];
+_D_t_ -- _D_h_ [style=dashed];
+_C_t_ -- _D_h_ [color=blue];
+_A_h_ -- _D_t_ [color=blue];
+_B_t_ -- _C_h_ [color=blue];
+_A_t_ -- _B_h_ [color=blue];
+_B_h_ -- _C_h_ [color=red];
+_A_t_ -- _C_t_ [color=red];
+_A_h_ -- _D_t_ [color=red];
+_B_t_ -- _D_h_ [color=red];
+}
+```
+
+..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The next edge to walk must be a synteny edge, but synteny edges aren't tracked in this data structure. However, since it's known that the nodes of a synteny edge...
+
+ * must either end in _t_ or _h_
+ * share the same name
+
+, ... it's easy to derive that the opposite end of the synteny edge at node C_h is node C_t. As such, get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.
+
+For linear breakpoint graph_GRs, the process must start and end at the termination node (no cycle).
+
+```{output}
+ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
+python
+# WALK_MARKDOWN\s*\n([\s\S]+)\n\s*# WALK_MARKDOWN
+```
+
+```{ch6}
+breakpoint_graph.ColoredEdgeSet
+[[C_h, D_t], [B_h, C_t], [A_h, B_t], [A_t, D_h], [X_h, Z_t], [X_t, Z_h]]
+```
+
+```{note}
+If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
+```
+
 __PERMUTATION_GR REPRESENTATION__
 
 A common textual representation of a breakpoint graph_GR is writing out each of the two genomes as a set of lists. Each list, referred to as a permutation_GR, describes one of the chromosomes in a genome.
@@ -5854,69 +5920,6 @@ For linear chromosomes, the sliding window is not cyclic and the chromosomes alw
 ch6_code/src/breakpoint_graph/Permutation.py
 python
 # MARKDOWN_TO\s*\n([\s\S]+)\n\s*# MARKDOWN_TO
-```
-
-```{note}
-If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
-```
-
-__DATA STRUCTURE REPRESENTATION__
-
-The data structure used to represent a breakpoint graph_GR can simply be two adjacency lists: one for the red edges and one for the blue edges.
-
-```{output}
-ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-```
-
-The edges representing synteny blocks technically don't need to be tracked because they're easily derived from either set of colored edges (red or blue). For example, given the following circular breakpoint graph_GR ...
-
-```{dot}
-graph G {
-layout=neato
-node [shape=plain];
-_C_t_ [pos="2.0,0.0!"];
-_C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-_B_t_ [pos="0.0,-2.0!"];
-_B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-_A_t_ [pos="-2.0,0.0!"];
-_A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-_D_t_ [pos="0.0,2.0!"];
-_D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-_C_t_ -- _C_h_ [style=dashed];
-_B_t_ -- _B_h_ [style=dashed];
-_A_t_ -- _A_h_ [style=dashed];
-_D_t_ -- _D_h_ [style=dashed];
-_C_t_ -- _D_h_ [color=blue];
-_A_h_ -- _D_t_ [color=blue];
-_B_t_ -- _C_h_ [color=blue];
-_A_t_ -- _B_h_ [color=blue];
-_B_h_ -- _C_h_ [color=red];
-_A_t_ -- _C_t_ [color=red];
-_A_h_ -- _D_t_ [color=red];
-_B_t_ -- _D_h_ [color=red];
-}
-```
-
-..., walk the blue edges starting from the node B_t. The opposite end of the blue edge at B_t is C_h. The next edge to walk must be a synteny edge, but synteny edges aren't tracked in this data structure. However, since it's known that the nodes of a synteny edge...
-
- * must either end in _t_ or _h_
- * share the same name
-
-, ... it's easy to derive that the opposite end of the synteny edge at node C_h is node C_t. As such, get the blue edge for C_t and repeat. Keep repeating until a cycle is detected.
-
-For linear breakpoint graph_GRs, the process is the must start at and will end at chromosome end nodes (no cycle).
-
-```{output}
-ch6_code/src/breakpoint_graph/ColoredEdgeSet.py
-python
-# WALK_MARKDOWN\s*\n([\s\S]+)\n\s*# WALK_MARKDOWN
-```
-
-```{ch6}
-breakpoint_graph.ColoredEdgeSet
-+A, +B, +C, +D
 ```
 
 ```{note}

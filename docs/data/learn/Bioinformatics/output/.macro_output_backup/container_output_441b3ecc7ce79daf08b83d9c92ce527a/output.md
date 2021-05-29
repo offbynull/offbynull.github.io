@@ -1,4 +1,4 @@
-`{bm-disable-all}`[ch6_code/src/breakpoint_graph/ColoredEdgeSet.py](ch6_code/src/breakpoint_graph/ColoredEdgeSet.py) (lines 15 to 34):`{bm-enable-all}`
+`{bm-disable-all}`[ch6_code/src/breakpoint_graph/ColoredEdgeSet.py](ch6_code/src/breakpoint_graph/ColoredEdgeSet.py) (lines 16 to 35):`{bm-enable-all}`
 
 ```python
 # Represents a single genome in a breakpoint graph
