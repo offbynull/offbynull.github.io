@@ -5517,85 +5517,87 @@ This algorithm calculates a parsimonious reversal path by constructing an undire
  * handles multiple chromosomes (genome rearrangement chromosomal fusions and fissions).
  * handles both linear and circular chromosomes.
 
-This algorithm begins by constructing an undirected graphs containing both the desired and undesired genomes, referred to as a breakpoint graph_GR:
+This algorithm begins by constructing an undirected graphs containing both the desired and undesired genomes, referred to as a breakpoint graph_GR. It then performs a set of re-wiring operations on the breakpoint graph_GR to determine a parsimonious reversal path (including fusion and fission), where each re-wiring operation is referred to as a two-break.
 
-1. Set the ends of synteny blocks as nodes. The arrow end should have a _t_ suffix (for tail) while the non-arrow end should have a _h_ suffix (for head)...
+__BREAKPOINT GRAPH_GR REPRESENTATION__
 
-   ```{dot}
-   graph G {
-   layout=neato
-   node [shape=plain];
-   _D_t_ [pos="0.0,2.0!"];
-   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   }
-   ```
+Construction of a breakpoint graph_GR is as follows:
 
-   ```{output}
-   ch6_code/src/breakpoint_graph/SyntenyEnd.py
-   python
-   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-   ```
+ 1. Set the ends of synteny blocks as nodes. The arrow end should have a _t_ suffix (for tail) while the non-arrow end should have a _h_ suffix (for head)...
+ 
+    ```{dot}
+    graph G {
+    layout=neato
+    node [shape=plain];
+    _D_t_ [pos="0.0,2.0!"];
+    _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+    }
+    ```
 
-   ```{output}
-   ch6_code/src/breakpoint_graph/SyntenyNode.py
-   python
-   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-   ```
+    If the genome has linear chromosomes, add a termination node as well to represent the end of chromosome. Only one termination node is needed.
 
-2. Set the synteny blocks themselves as __undirected__ edges, represented by dashed lines.
-   
-   ```{dot}
-   graph G {
-   layout=neato
-   node [shape=plain];
-   _D_t_ [pos="0.0,2.0!"];
-   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   _D_t_ -- _D_h_ [style=dashed, dir=back];
-   }
-   ```
+    ```{dot}
+    graph G {
+    layout=neato
+    node [shape=plain];
+    TERM [pos="0.0,0.0!"];
+    }
+    ```
 
-   Note that the arrow heads on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
+ 1. Set the synteny blocks themselves as _undirected_ edges, represented by dashed lines.
+    
+    ```{dot}
+    graph G {
+    layout=neato
+    node [shape=plain];
+    _D_t_ [pos="0.0,2.0!"];
+    _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+    _D_t_ -- _D_h_ [style=dashed, dir=back];
+    }
+    ```
+ 
+    Note that the arrow heads on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
 
-   ```{dot}
-   graph G {
-   layout=neato
-   node [shape=plain];
-   _D_t_ [pos="0.0,2.0!"];
-   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-   _D_t_ -- _D_h_ [style=dashed];
-   }
-   ```
+    ```{dot}
+    graph G {
+    layout=neato
+    node [shape=plain];
+    _D_t_ [pos="0.0,2.0!"];
+    _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+    _D_t_ -- _D_h_ [style=dashed];
+    }
+    ```
+ 
+ 1. Set the regions between synteny blocks as _undirected_ edges, represented by colored lines. Regions of ...
+    
+    * desired genome that border a pair of synteny blocks are represented as blue lines.
+    * undesired genome that border a pair of synteny blocks are represented as red lines.
+ 
+    ```{dot}
+    graph G {
+    layout=neato
+    node [shape=plain];
+    _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+    _B_t_ [pos="0.0,-2.0!"];
+    _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+    _B_t_ -- _C_h_ [color=blue];
+    _B_h_ -- _C_h_ [color=red];
+    }
+    ```
 
-   ```{output}
-   ch6_code/src/breakpoint_graph/SyntenyEdge.py
-   python
-   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-   ```
+    For linear chromosomes, the ends of each chromosome would be connected by the appropriate colored edge to that termination node as well.
 
-3. Set the regions between synteny blocks as __undirected__ edges, represented by colored lines. Regions of ...
-   
-   * desired genome that border a pair of synteny blocks are represented as blue lines.
-   * undesired genome that border a pair of synteny blocks are represented as red lines.
-
-   ```{dot}
-   graph G {
-   layout=neato
-   node [shape=plain];
-   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-   _B_t_ [pos="0.0,-2.0!"];
-   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-   _B_t_ -- _C_h_ [color=blue];
-   _B_h_ -- _C_h_ [color=red];
-   }
-   ```
-
-   ```{output}
-   ch6_code/src/breakpoint_graph/ColoredEdge.py
-   python
-   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-   ```
-
-If the genomes are linear rather than circular, an extra step is required: a termination node that represents chromosome ends would be added to the graph. The ends of each chromosome would be connected by a colored edge to that termination node.
+    ```{dot}
+    graph G {
+    layout=neato
+    node [shape=plain];
+    _A_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+    _D_t_ [label="_D_t_", pos="5,2.0!"];
+    TERM [pos="4.9,0.5!"];
+    _A_h_ -- TERM [color=blue];
+    _D_t_ -- TERM [color=red];
+    }
+    ```
 
 For example, the following two genomes share the synteny blocks A, B, C, and D between them ...
 
@@ -5756,17 +5758,19 @@ _A1_t_:n -- _B1_h_:n [color=blue];
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
 
-In addition to the graphical form described above, a breakpoint graph_GR may be represented as permutation_GRs. A permutation_GR is a list that represents a chromosome within a genome. Since a breakpoint graph_GR has 2 genomes, each genome can be represented as a set of permutation_GRs.
+__PERMUTATION_GR REPRESENTATION__
 
-To convert a genome within a breakpoint graph_GR to a permutation_GR set, simply walk the edges for that genome:
+A common textual representation of a breakpoint graph_GR is writing out each of the two genomes as a set of lists. Each list, referred to as a permutation_GR, describes one of the chromosomes in a genome.
 
- * Blue edges and synteny edges for the desired genome.
- * Red edges and synteny edges for the undesired genome.
+To convert a chromosome within a breakpoint graph_GR to a permutation_GR, simply walk the edges for that chromosome...
 
-Each synteny edge walked is appended to the list with a ...
+ * desired genome: blue edges and synteny edges.
+ * undesired genome: red edges and synteny edges.
+
+Each synteny edge walked is appended to the list with a prefix of ...
    
- * _\+_ prefix if it's walked from head to tail.
- * _\-_ prefix if it's walked from tail to head.
+ * _\+_ if it's walked from head to tail.
+ * _\-_ if it's walked from tail to head.
  
 For example, given the following breakpoint graph_GR ...
 
@@ -5802,14 +5806,23 @@ _C_t_ -- _D_h_ [color=red];
  * clockwise direction results in the permutation_GR `[-D, -C]`.
  * counter-clockwise direction results in the permutation_GR `[+C, +D]`.
 
-For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: `[+C, +D]`, `[+D, +C]`, `[-C, -D]`, and `[+C, +D]`.
+For circular chromosomes, the walk direction is irrelevant, meaning that both example permutation_GRs above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following permutation_GRs are all equivalent to the ones in the above example: `[+C, +D]`, and `[+D, +C]`.
 
-For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at a termination node (either end of the chromosome). The termination nodes aren't included in the permutation_GR.
+For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at the termination node (representing the ends of the chromosome). The termination nodes aren't included in the permutation_GR.
 
-In the example breakpoint graph_GR above, the permutation_GR set representing the ...
+In the example breakpoint graph_GR above, the permutation_GR set representing the undesired genome (red) may be written as either...
 
- * undesired genome (red) may be written as either `{[+C, +D], [+A, +B]}`, `{[+A, +B], [-C, _D]}`, `{[-A, -B], [-C, -D]}`, ... (all are equivalent)
- * desired genome (blue) may be written as either `{[+A, +B, +C, +D]}`, `{[-D, -C, -B, -A]}`, `{[+B, +C, +D, +A]}`, ... (all are equivalent)
+ * `{[+C, +D], [+A, +B]}`
+ * `{[+A, +B], [-C, _D]}`
+ * `{[-A, -B], [-C, -D]}`
+ * ...
+
+Likewise, the permutation_GR set representing the desired genome (blue) in the example above may be written as either...
+
+ * `{[+A, +B, +C, +D]}`
+ * `{[-D, -C, -B, -A]}`
+ * `{[+B, +C, +D, +A]}`
+ * ...
 
 ```{output}
 ch6_code/src/breakpoint_graph/Permutation.py
@@ -5817,7 +5830,25 @@ python
 # MARKDOWN_FROM\s*\n([\s\S]+)\n\s*# MARKDOWN_FROM
 ```
 
-Converting from a permutation_GR back to a breakpoint graph_GR is simply just reversing the above process: Walk the permutation_GR to get the list of colored edges that the permutation_GR is for.
+Converting from a permutation_GR set back to a breakpoint graph_GR is basically just reversing the above process. For each permutation_GR, slide a window of size two to determine the colored edges that permutation_GR is for. The node chosen for the window element at index ...
+
+ 0. should be tail if sign is _\-_ or head if sign is _\+_.
+ 1. should be head if sign is _\-_ or tail if sign is _\+_.
+
+For circular chromosomes, the sliding window is cyclic. For example, sliding the window over permutation_GR `[+A, +C, -B, +D]` results in ...
+
+ * `[+A, +C]` which produces the colored edge `(A_h, C_t)`.
+ * `[+C, -B]` which produces the colored edge `(C_h, B_h)`.
+ * `[-B, +D]` which produces the colored edge `(B_t, D_t)`.
+ * `[+D, +A]` which produces the colored edge `(D_h, A_t)`.
+
+For linear chromosomes, the sliding window is not cyclic and the chromosomes always start and end at the termination node. For example, the permutation_GR `[+A, +C, -B, +D]` would actually be treated as `[TERM, +A, +C, -B, +D, TERM]`, resulting in ...
+
+ * `[TERM, +A]` which produces the colored edge `(TERM, A_h)`.
+ * `[+A, +C]` which produces the colored edge `(A_h, C_t)`.
+ * `[+C, -B]` which produces the colored edge `(C_h, B_h)`.
+ * `[-B, +D]` which produces the colored edge `(B_t, D_t)`.
+ * `[+D, TERM]` which produces the colored edge `(D_h, TERM)`.
 
 ```{output}
 ch6_code/src/breakpoint_graph/Permutation.py
@@ -5828,6 +5859,8 @@ python
 ```{note}
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
+
+__DATA STRUCTURE REPRESENTATION__
 
 The data structure used to represent a breakpoint graph_GR can simply be two adjacency lists: one for the red edges and one for the blue edges.
 
@@ -5889,6 +5922,8 @@ breakpoint_graph.ColoredEdgeSet
 ```{note}
 If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.
 ```
+
+__TWO-BREAK ALGORITHM__
 
 Now that breakpoint graph_GRs have been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a breakpoint graph_GR such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.
 
@@ -7233,7 +7268,12 @@ cyclic
 
    This definition is for information theory. In other contexts (e.g. physics, economics), this term has a different meaning.
 
- * `{bm} genome` - All of the DNA for some organism.
+ * `{bm} genome` - In the context of a ...
+ 
+    * specific organism, genome refers to all of the DNA for that organism (e.g. a specific E. coli cell).
+    * specific species, genome refers to the idealized DNA for that species (e.g. all E. coli).
+
+   DNA of individual cells mutate all the time. For example, even in multi-cell organism, two cells from the same mouse may not have the exact same DNA. 
 
  * `{bm} sequence` - The ordered elements that make up some biological entity. For example, a ...
 
@@ -9209,123 +9249,6 @@ cyclic
       _C2_t_ -- _D2_h_ [color=red];
       }
       ```
-
-   Other genome rearrangements such as translocations, duplications, and deletions can't be reliably represented as a 2-break. For example, the following translocation requires two 2-breaks...
-
-   ```{svgbob}
-       +C       +B          +A          +D        
-   -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
-    5'              circular chromosome           3' 
-   
-   
-                     "SWAP C AND A..."
-   
-       +A       +B          +C          +D        
-   -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
-    5'              circular chromosome           3' 
-   ```
-
-   ```{dot}
-   graph G {
-   layout=neato
-   labelloc="t";
-   label="Step 1: BEFORE to AFTER...";
-   node [shape=plain];
-
-   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-   _C1_t_ -- _C1_h_ [style=dashed];
-   _B1_t_ -- _B1_h_ [style=dashed];
-   _A1_t_ -- _A1_h_ [style=dashed];
-   _D1_t_ -- _D1_h_ [style=dashed];
-   _C1_t_ -- _D1_h_ [color=blue];
-   _A1_h_ -- _D1_t_ [color=blue];
-   _B1_t_ -- _C1_h_ [color=blue];
-   _A1_t_ -- _B1_h_ [color=blue];
-   _C1_t_ -- _B1_h_ [color=red, penwidth="4"];
-   _B1_t_ -- _A1_h_ [color=red];
-   _A1_t_ -- _D1_h_ [color=red, penwidth="4"];
-   _D1_t_ -- _C1_h_ [color=red];
-
-   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
-   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-   _D2_t_ [label="_D_t_", pos="5,2.0!"];
-   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-   _C2_t_ -- _C2_h_ [style=dashed];
-   _B2_t_ -- _B2_h_ [style=dashed];
-   _A2_t_ -- _A2_h_ [style=dashed];
-   _D2_t_ -- _D2_h_ [style=dashed];
-   _C2_t_ -- _D2_h_ [color=blue];
-   _A2_h_ -- _D2_t_ [color=blue];
-   _B2_t_ -- _C2_h_ [color=blue];
-   _A2_t_ -- _B2_h_ [color=blue];
-   _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
-   _B2_t_ -- _A2_h_ [color=red];
-   _A2_t_ -- _B2_h_ [color=red, penwidth="4"];
-   _D2_t_ -- _C2_h_ [color=red];
-   }
-   ```
-
-   ```{dot}
-   graph G {
-   layout=neato
-   labelloc="t";
-   label="Step 2: BEFORE to AFTER...";
-   node [shape=plain];
-
-   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-   _C1_t_ -- _C1_h_ [style=dashed];
-   _B1_t_ -- _B1_h_ [style=dashed];
-   _A1_t_ -- _A1_h_ [style=dashed];
-   _D1_t_ -- _D1_h_ [style=dashed];
-   _C1_t_ -- _D1_h_ [color=blue];
-   _A1_h_ -- _D1_t_ [color=blue];
-   _B1_t_ -- _C1_h_ [color=blue];
-   _A1_t_ -- _B1_h_ [color=blue];
-   _C1_t_ -- _D1_h_ [color=red];
-   _B1_t_ -- _A1_h_ [color=red, penwidth="4"];
-   _A1_t_ -- _B1_h_ [color=red];
-   _D1_t_ -- _C1_h_ [color=red, penwidth="4"];
-
-   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
-   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-   _D2_t_ [label="_D_t_", pos="5,2.0!"];
-   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-   _C2_t_ -- _C2_h_ [style=dashed];
-   _B2_t_ -- _B2_h_ [style=dashed];
-   _A2_t_ -- _A2_h_ [style=dashed];
-   _D2_t_ -- _D2_h_ [style=dashed];
-   _C2_t_ -- _D2_h_ [color=blue];
-   _A2_h_ -- _D2_t_ [color=blue];
-   _B2_t_ -- _C2_h_ [color=blue];
-   _A2_t_ -- _B2_h_ [color=blue];
-   _C2_t_ -- _D2_h_ [color=red];
-   _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
-   _A2_t_ -- _B2_h_ [color=red];
-   _B2_t_ -- _C2_h_ [color=red, penwidth="4"];
-   }
-   ```
 
  * `{bm} permutation/(permutation)_GR/i` - A list representing one of the genomes in a breakpoint graph_GR. The list representation is generated by walking that genome's edges, where each walked edge that's a synteny block is appended to the list with a ...
    

@@ -295,7 +295,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -427,12 +427,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>TTAAA = 6 occurrences</li>
-<li>GATCA = 6 occurrences</li>
 <li>AAGGG = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>CCCTT = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>TTAAA = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>GATCA = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -506,18 +506,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1650,7 +1650,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>AAAGA<br>AAAGA<br>AAAGA</p>
+<p>ATAAT<br>ATAAT<br>ATAAT</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2173,7 +2173,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2234,7 +2234,7 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2918,22 +2918,22 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
 </ul>
 </div>
 <p></p>
@@ -5811,7 +5811,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_4aba33933261310cf3a28285b725a33a.svg" alt="Dot diagram"></p>
+<p><img src="dot_2ec4fe4353c196bba361fe6ca5387ee0.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5869,7 +5869,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_fc431804212bc73d78b0dba712bf7104.svg" alt="Dot diagram"></p>
+<p><img src="dot_b01b5dac357c22352ca791a7e4775d50.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6017,13 +6017,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_01bcd3f1033382ace377db30252d4545.svg" alt="Dot diagram"></p>
+<p><img src="dot_cf4893fcb5ccedb6f08ee17de1c0910f.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_6dbc41a1800d46216656490d39cb8c46.svg" alt="Dot diagram"></p>
+<p><img src="dot_4475130e0daf7d3f4f9ab00ef4bdf8b6.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6060,7 +6060,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_30f6dc8cb3a92e97e67403a891ed625c.svg" alt="Latex diagram"></p>
+<p><img src="latex_f53b3fb2b24db47cd1060da959588d72.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6071,7 +6071,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_70e656b7a83b57009025e0e3b4410a88.svg" alt="Latex diagram"></p>
+<p><img src="latex_83e45ecf8122ccb5580f07456224fee1.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6132,9 +6132,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_1a96cd0fb897e2273426a297aa3e9bdf.svg" alt="Latex diagram"></p>
+<p><img src="latex_32970371737ccea1c9c7892289a4039d.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
--GAT
+GA-T
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6410,7 +6410,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c70a9c6bd84e25e06eb7858dc95280a5.svg" alt="Latex diagram"></p>
+<p><img src="latex_7e359f4877d08f2ab87b060e797a1a33.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6418,7 +6418,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_3e4dce3dca6bedbf58a797fd6d73f609.svg" alt="Latex diagram"></p>
+<p><img src="latex_3e0e7371a545f280aba628f80242cfbb.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6760,7 +6760,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_a2f06bd4f512308adb85bb6993ce5fec.svg" alt="Latex diagram"></p>
+<p><img src="latex_2d04fe13d31153bdf453e7771bf65596.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6843,7 +6843,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_0805a7a89e8c38b2ed6e6f793d40385f.svg" alt="Latex diagram"></p>
+<p><img src="latex_7068cf25700d6fb87d1eeecdb70448f4.svg" alt="Latex diagram"></p>
 <pre><code>AG-AC
 AGAAC
 </code></pre>
@@ -7001,7 +7001,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_26b2d96239637352ea2e79fe77f91f2d.svg" alt="Latex diagram"></p>
+<p><img src="latex_32093a8e6ec6b257707195d0c0e6bb7f.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7084,9 +7084,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_49da8e98f0c7a4f02feecbb298e2c292.svg" alt="Latex diagram"></p>
+<p><img src="latex_01dcb1f06303c3e217f4aad5ebc6c8b9.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
-AAAC
+A-AC
 </code></pre>
 <p>Weight: 2.0</p>
 </div>
@@ -7241,7 +7241,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c5d71794e3f1256584b6b55f16aa93cd.svg" alt="Latex diagram"></p>
+<p><img src="latex_ee6ad4dfae0bc8c6e975560c227ab080.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7324,7 +7324,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_9853b787869a2e042575ec8b0f9476a4.svg" alt="Latex diagram"></p>
+<p><img src="latex_2746588f91ff6eb82732b80b94345f69.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7591,7 +7591,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_56a19f7d0b2e8ee3cb8479595561c6fe.svg" alt="Latex diagram"></p>
+<p><img src="latex_ff6a9eea0b62216a514d5c34868597b9.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7677,9 +7677,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_d06aad522086d04beeba8a0aad0d6b61.svg" alt="Latex diagram"></p>
-<pre><code>TAGGCGG----AT
-TA--C--CCCCAT
+<p><img src="latex_76d3109ab035727a761d2e9af37dfcc0.svg" alt="Latex diagram"></p>
+<pre><code>TA----GGCGGAT
+TACCCC--C--AT
 </code></pre>
 <p>Weight: 1.4999999999999998</p>
 </div>
@@ -7712,7 +7712,7 @@ TA--C--CCCCAT
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_682f986c2f24467d590167a52e28b184.svg" alt="Latex diagram"></p>
+<p><img src="latex_c293304db81fea2d551ce2f0d64e555f.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7830,7 +7830,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_11ac7e1566be4db55095c1a192ba0769.svg" alt="Latex diagram"></p>
+<p><img src="latex_ae9dcf1624a91f1737fe0442bf1d0ece.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -8024,9 +8024,9 @@ G G T -1
 G G G 1
 </code></pre>
 <p>... the global alignment is...</p>
-<pre><code>--T-ATTATTA--T
+<pre><code>---TATTATTA--T
 GATTATGATTA--T
---T-ACCATTACAT
+---TACCATTACAT
 </code></pre>
 <p>Weight: 0.0</p>
 </div>
@@ -8979,67 +8979,33 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>handles multiple chromosomes (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> chromosomal <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s and <a href="#BM_(fission)%2Fi">fission</a>s).</li>
 <li>handles both linear and circular chromosomes.</li>
 </ul>
-<p>This algorithm begins by constructing an undirected graphs containing both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s, referred to as a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>:</p>
+<p>This algorithm begins by constructing an undirected graphs containing both the desired and undesired <a href="#BM_(genome)%2Fi">genome</a>s, referred to as a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. It then performs a set of re-wiring operations on the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> to determine a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path (including <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a> and <a href="#BM_(fission)%2Fi">fission</a>), where each re-wiring operation is referred to as a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a>.</p>
+<p><strong><a href="#BM_(breakpoint%20graph)_GR%2Fi">BREAKPOINT GRAPH</a> REPRESENTATION</strong></p>
+<p>Construction of a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is as follows:</p>
 <ol>
 <li>
 <p>Set the ends of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
 <p><img src="dot_0a2b976df1fe819b59828770f2a8a50d.svg" alt="Dot diagram"></p>
-<p><a href="ch6_code/src/breakpoint_graph/SyntenyEnd.py">ch6_code/src/breakpoint_graph/SyntenyEnd.py</a> (lines 7 to 10):</p>
-<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SyntenyEnd</span>(<span class="hljs-params">Enum</span>):</span>
-    HEAD = <span class="hljs-string">'h'</span>
-    TAIL = <span class="hljs-string">'t'</span>
-</code></pre>
-<p><a href="ch6_code/src/breakpoint_graph/SyntenyNode.py">ch6_code/src/breakpoint_graph/SyntenyNode.py</a> (lines 7 to 11):</p>
-<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SyntenyNode</span>:</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, <span class="hljs-built_in">id</span>: <span class="hljs-built_in">str</span>, end: SyntenyEnd</span>):</span>
-        self.<span class="hljs-built_in">id</span> = <span class="hljs-built_in">id</span>
-        self.end = end
-</code></pre>
+<p>If the <a href="#BM_(genome)%2Fi">genome</a> has linear chromosomes, add a termination node as well to represent the end of chromosome. Only one termination node is needed.</p>
+<p><img src="dot_9e751bbe7943da6f671b2b2f75c6d011.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
+<p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <em>undirected</em> edges, represented by dashed lines.</p>
 <p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
 <p>Note that the arrow heads on these dashed lines represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
 <p><img src="dot_19da0e0853121f133813afea783f11f6.svg" alt="Dot diagram"></p>
-<p><a href="ch6_code/src/breakpoint_graph/SyntenyEdge.py">ch6_code/src/breakpoint_graph/SyntenyEdge.py</a> (lines 10 to 16):</p>
-<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SyntenyEdge</span>:</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, n1: SyntenyNode, n2: SyntenyNode</span>):</span>
-        <span class="hljs-keyword">assert</span> n1.<span class="hljs-built_in">id</span> == n2.<span class="hljs-built_in">id</span>
-        <span class="hljs-keyword">assert</span> n1.end != n2.end
-        self.n1 = n1
-        self.n2 = n2
-</code></pre>
 </li>
 <li>
-<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines. Regions of ...</p>
+<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <em>undirected</em> edges, represented by colored lines. Regions of ...</p>
 <ul>
 <li>desired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as blue lines.</li>
 <li>undesired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as red lines.</li>
 </ul>
 <p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
-<p><a href="ch6_code/src/breakpoint_graph/ColoredEdge.py">ch6_code/src/breakpoint_graph/ColoredEdge.py</a> (lines 11 to 29):</p>
-<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ColoredEdge</span>:</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">
-            self,
-            n1: <span class="hljs-type">Union</span>[SyntenyNode, TerminalNode],
-            n2: <span class="hljs-type">Union</span>[SyntenyNode, TerminalNode]
-    </span>):</span>
-        <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(n1, SyntenyNode) <span class="hljs-keyword">or</span> <span class="hljs-built_in">isinstance</span>(n2, SyntenyNode), <span class="hljs-string">'Both ends cant\'t be at terminal node'</span>
-        <span class="hljs-keyword">assert</span> n1 != n2, <span class="hljs-string">'Both ends can\'t be equal'</span>
-        <span class="hljs-comment"># sort such that nodes are always placed in the same order</span>
-        <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(n1, SyntenyNode) <span class="hljs-keyword">and</span> <span class="hljs-built_in">isinstance</span>(n2, SyntenyNode):  <span class="hljs-comment"># order pair so n1 is always smallest</span>
-            x = [n1, n2]
-            x.sort()
-            n1 = x[<span class="hljs-number">0</span>]
-            n2 = x[<span class="hljs-number">1</span>]
-        <span class="hljs-keyword">elif</span> <span class="hljs-built_in">isinstance</span>(n2, TerminalNode):  <span class="hljs-comment"># one is term node? n1 should be the term node</span>
-            n1, n2 = n2, n1
-        self.n1 = n1
-        self.n2 = n2
-</code></pre>
+<p>For linear chromosomes, the ends of each chromosome would be <a href="#BM_(connected)%2Fi">connected</a> by the appropriate colored edge to that termination node as well.</p>
+<p><img src="dot_2ff6b7be8f0b89459aa289b482a20f5a.svg" alt="Dot diagram"></p>
 </li>
 </ol>
-<p>If the <a href="#BM_(genome)%2Fi">genome</a>s are linear rather than circular, an extra step is required: a termination node that represents chromosome ends would be added to the graph. The ends of each chromosome would be <a href="#BM_(connected)%2Fi">connected</a> by a colored edge to that termination node.</p>
 <p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them ...</p>
 <p><img src="svgbob_7d1d037f9aff25774105ac2ef33cc4cea5f9af58.svg" alt="Kroki diagram output"></p>
 <p>Converting the above <a href="#BM_(genome)%2Fi">genome</a>s to both a circular and linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is as follows...</p>
@@ -9061,16 +9027,17 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
 </div>
-<p>In addition to the graphical form described above, a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> may be represented as <a href="#BM_(permutation)_GR%2Fi">permutation</a>s. A <a href="#BM_(permutation)_GR%2Fi">permutation</a> is a list that represents a chromosome within a <a href="#BM_(genome)%2Fi">genome</a>. Since a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> has 2 <a href="#BM_(genome)%2Fi">genome</a>s, each <a href="#BM_(genome)%2Fi">genome</a> can be represented as a set of <a href="#BM_(permutation)_GR%2Fi">permutation</a>s.</p>
-<p>To convert a <a href="#BM_(genome)%2Fi">genome</a> within a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> to a <a href="#BM_(permutation)_GR%2Fi">permutation</a> set, simply walk the edges for that <a href="#BM_(genome)%2Fi">genome</a>:</p>
+<p><strong><a href="#BM_(permutation)_GR%2Fi">PERMUTATION</a> REPRESENTATION</strong></p>
+<p>A common textual representation of a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is writing out each of the two <a href="#BM_(genome)%2Fi">genome</a>s as a set of lists. Each list, referred to as a <a href="#BM_(permutation)_GR%2Fi">permutation</a>, describes one of the chromosomes in a <a href="#BM_(genome)%2Fi">genome</a>.</p>
+<p>To convert a chromosome within a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> to a <a href="#BM_(permutation)_GR%2Fi">permutation</a>, simply walk the edges for that chromosome...</p>
 <ul>
-<li>Blue edges and <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges for the desired <a href="#BM_(genome)%2Fi">genome</a>.</li>
-<li>Red edges and <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges for the undesired <a href="#BM_(genome)%2Fi">genome</a>.</li>
+<li>desired <a href="#BM_(genome)%2Fi">genome</a>: blue edges and <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges.</li>
+<li>undesired <a href="#BM_(genome)%2Fi">genome</a>: red edges and <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edges.</li>
 </ul>
-<p>Each <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge walked is appended to the list with a ...</p>
+<p>Each <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> edge walked is appended to the list with a prefix of ...</p>
 <ul>
-<li><em>+</em> prefix if it's walked from head to tail.</li>
-<li><em>-</em> prefix if it's walked from tail to head.</li>
+<li><em>+</em> if it's walked from head to tail.</li>
+<li><em>-</em> if it's walked from tail to head.</li>
 </ul>
 <p>For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
 <p><img src="dot_30145ecbe97993fdba2f7bb06a36749d.svg" alt="Dot diagram"></p>
@@ -9079,12 +9046,21 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>clockwise direction results in the <a href="#BM_(permutation)_GR%2Fi">permutation</a> <code>[-D, -C]</code>.</li>
 <li>counter-clockwise direction results in the <a href="#BM_(permutation)_GR%2Fi">permutation</a> <code>[+C, +D]</code>.</li>
 </ul>
-<p>For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: <code>[+C, +D]</code>, <code>[+D, +C]</code>, <code>[-C, -D]</code>, and <code>[+C, +D]</code>.</p>
-<p>For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at a termination node (either end of the chromosome). The termination nodes aren't included in the <a href="#BM_(permutation)_GR%2Fi">permutation</a>.</p>
-<p>In the example <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> above, the <a href="#BM_(permutation)_GR%2Fi">permutation</a> set representing the ...</p>
+<p>For circular chromosomes, the walk direction is irrelevant, meaning that both example <a href="#BM_(permutation)_GR%2Fi">permutation</a>s above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following <a href="#BM_(permutation)_GR%2Fi">permutation</a>s are all equivalent to the ones in the above example: <code>[+C, +D]</code>, and <code>[+D, +C]</code>.</p>
+<p>For linear chromosomes, the walk direction is irrelevant but the walk must start from and end at the termination node (representing the ends of the chromosome). The termination nodes aren't included in the <a href="#BM_(permutation)_GR%2Fi">permutation</a>.</p>
+<p>In the example <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> above, the <a href="#BM_(permutation)_GR%2Fi">permutation</a> set representing the undesired <a href="#BM_(genome)%2Fi">genome</a> (red) may be written as either...</p>
 <ul>
-<li>undesired <a href="#BM_(genome)%2Fi">genome</a> (red) may be written as either <code>{[+C, +D], [+A, +B]}</code>, <code>{[+A, +B], [-C, _D]}</code>, <code>{[-A, -B], [-C, -D]}</code>, ... (all are equivalent)</li>
-<li>desired <a href="#BM_(genome)%2Fi">genome</a> (blue) may be written as either <code>{[+A, +B, +C, +D]}</code>, <code>{[-D, -C, -B, -A]}</code>, <code>{[+B, +C, +D, +A]}</code>, ... (all are equivalent)</li>
+<li><code>{[+C, +D], [+A, +B]}</code></li>
+<li><code>{[+A, +B], [-C, _D]}</code></li>
+<li><code>{[-A, -B], [-C, -D]}</code></li>
+<li>...</li>
+</ul>
+<p>Likewise, the <a href="#BM_(permutation)_GR%2Fi">permutation</a> set representing the desired <a href="#BM_(genome)%2Fi">genome</a> (blue) in the example above may be written as either...</p>
+<ul>
+<li><code>{[+A, +B, +C, +D]}</code></li>
+<li><code>{[-D, -C, -B, -A]}</code></li>
+<li><code>{[+B, +C, +D, +A]}</code></li>
+<li>...</li>
 </ul>
 <p><a href="ch6_code/src/breakpoint_graph/Permutation.py">ch6_code/src/breakpoint_graph/Permutation.py</a> (lines 158 to 196):</p>
 <pre class="hljs"><code><span class="hljs-meta">@staticmethod</span>
@@ -9126,7 +9102,26 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
         walked_ce_set.add(next_ce)
     <span class="hljs-keyword">return</span> Permutation(blocks, cyclic), walked_ce_set
 </code></pre>
-<p>Converting from a <a href="#BM_(permutation)_GR%2Fi">permutation</a> back to a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is simply just reversing the above process: Walk the <a href="#BM_(permutation)_GR%2Fi">permutation</a> to get the list of colored edges that the <a href="#BM_(permutation)_GR%2Fi">permutation</a> is for.</p>
+<p>Converting from a <a href="#BM_(permutation)_GR%2Fi">permutation</a> set back to a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is basically just reversing the above process. For each <a href="#BM_(permutation)_GR%2Fi">permutation</a>, slide a window of size two to determine the colored edges that <a href="#BM_(permutation)_GR%2Fi">permutation</a> is for. The node chosen for the window element at index ...</p>
+<ol start="0">
+<li>should be tail if sign is <em>-</em> or head if sign is <em>+</em>.</li>
+<li>should be head if sign is <em>-</em> or tail if sign is <em>+</em>.</li>
+</ol>
+<p>For circular chromosomes, the sliding window is cyclic. For example, sliding the window over <a href="#BM_(permutation)_GR%2Fi">permutation</a> <code>[+A, +C, -B, +D]</code> results in ...</p>
+<ul>
+<li><code>[+A, +C]</code> which produces the colored edge <code>(A_h, C_t)</code>.</li>
+<li><code>[+C, -B]</code> which produces the colored edge <code>(C_h, B_h)</code>.</li>
+<li><code>[-B, +D]</code> which produces the colored edge <code>(B_t, D_t)</code>.</li>
+<li><code>[+D, +A]</code> which produces the colored edge <code>(D_h, A_t)</code>.</li>
+</ul>
+<p>For linear chromosomes, the sliding window is not cyclic and the chromosomes always start and end at the termination node. For example, the <a href="#BM_(permutation)_GR%2Fi">permutation</a> <code>[+A, +C, -B, +D]</code> would actually be treated as <code>[TERM, +A, +C, -B, +D, TERM]</code>, resulting in ...</p>
+<ul>
+<li><code>[TERM, +A]</code> which produces the colored edge <code>(TERM, A_h)</code>.</li>
+<li><code>[+A, +C]</code> which produces the colored edge <code>(A_h, C_t)</code>.</li>
+<li><code>[+C, -B]</code> which produces the colored edge <code>(C_h, B_h)</code>.</li>
+<li><code>[-B, +D]</code> which produces the colored edge <code>(B_t, D_t)</code>.</li>
+<li><code>[+D, TERM]</code> which produces the colored edge <code>(D_h, TERM)</code>.</li>
+</ul>
 <p><a href="ch6_code/src/breakpoint_graph/Permutation.py">ch6_code/src/breakpoint_graph/Permutation.py</a> (lines 111 to 146):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">to_colored_edges</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[ColoredEdge]:</span>
     ret = []
@@ -9168,6 +9163,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
 </div>
+<p><strong>DATA STRUCTURE REPRESENTATION</strong></p>
 <p>The data structure used to represent a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> can simply be two <a href="#BM_(adjacency%20list)%2Fi">adjacency list</a>s: one for the red edges and one for the blue edges.</p>
 <p><a href="ch6_code/src/breakpoint_graph/ColoredEdgeSet.py">ch6_code/src/breakpoint_graph/ColoredEdgeSet.py</a> (lines 15 to 34):</p>
 <pre class="hljs"><code><span class="hljs-comment"># Represents a single genome in a breakpoint graph</span>
@@ -9272,6 +9268,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you're confused at this point, don't continue. Go back and make sure you understand because in the next section builds on the above content.</p>
 </div>
+<p><strong><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">TWO-BREAK</a> ALGORITHM</strong></p>
 <p>Now that <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s have been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.</p>
 <p>For example, the two red edges highlighted below share the same nodes as a blue edge (D_h and C_t). These two red edges can be broken and re-wired such that one of them matches the blue edge...</p>
 <p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
@@ -9472,8 +9469,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -9491,19 +9488,19 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -9515,12 +9512,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -9581,8 +9578,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 18</p>
+<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 21</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>
@@ -10133,7 +10130,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>This definition is for information theory. In other contexts (e.g. physics, economics), this term has a different meaning.</p>
 </li>
 <li>
-<p><a name="BM_(genome)%2Fi"></a><strong>genome</strong> - All of the DNA for some organism.</p>
+<p><a name="BM_(genome)%2Fi"></a><strong>genome</strong> - In the context of a ...</p>
+<ul>
+<li>specific organism, <a href="#BM_(genome)%2Fi">genome</a> refers to all of the DNA for that organism (e.g. a specific E. coli cell).</li>
+<li>specific species, <a href="#BM_(genome)%2Fi">genome</a> refers to the idealized DNA for that species (e.g. all E. coli).</li>
+</ul>
+<p>DNA of individual cells mutate all the time. For example, even in multi-cell organism, two cells from the same mouse may not have the exact same DNA.</p>
 </li>
 <li>
 <p><a name="BM_(sequence)%2Fi"></a><strong>sequence</strong> - The ordered elements that make up some biological entity. For example, a ...</p>
@@ -12036,10 +12038,6 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="dot_ad962f4590c01b25914ecf117d94ef2d.svg" alt="Dot diagram"></p>
 </li>
 </ul>
-<p>Other <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s such as <a href="#BM_(translocation)%2Fi">translocation</a>s, duplications, and deletions can't be reliably represented as a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>. For example, the following <a href="#BM_(translocation)%2Fi">translocation</a> requires two <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>s...</p>
-<p><img src="svgbob_98149c1130d2d679f31f1005a4385b055a11fb39.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_bc2e79b243f508a940bf67df140608f8.svg" alt="Dot diagram"></p>
-<p><img src="dot_daa5f09c12a12baad116e997fc9e1d39.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p><a name="BM_(permutation)_GR%2Fi"></a><strong>permutation</strong> - A list representing one of the <a href="#BM_(genome)%2Fi">genome</a>s in a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The list representation is generated by walking that <a href="#BM_(genome)%2Fi">genome</a>'s edges, where each walked edge that's a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is appended to the list with a ...</p>

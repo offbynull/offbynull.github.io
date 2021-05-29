@@ -400,7 +400,12 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
 
    This definition is for information theory. In other contexts (e.g. physics, economics), this term has a different meaning.
 
- * `{ankiAnswer} genome` - All of the DNA for some organism.
+ * `{ankiAnswer} genome` - In the context of a ...
+ 
+    * specific organism, genome refers to all of the DNA for that organism (e.g. a specific E. coli cell).
+    * specific species, genome refers to the idealized DNA for that species (e.g. all E. coli).
+
+   DNA of individual cells mutate all the time. For example, even in multi-cell organism, two cells from the same mouse may not have the exact same DNA. 
 
  * `{ankiAnswer} sequence` - The ordered elements that make up some biological entity. For example, a ...
 
