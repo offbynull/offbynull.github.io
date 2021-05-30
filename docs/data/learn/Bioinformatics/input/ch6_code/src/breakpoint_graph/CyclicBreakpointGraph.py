@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import textwrap
 from math import cos, pi, sin
 from typing import List
 
@@ -157,17 +158,32 @@ def main():
     try:
         red_p_list, _ = str_to_list(input().strip(), 0)
         blue_p_list, _ = str_to_list(input().strip(), 0)
-        print(f'Applying 2-breaks on circular genome until {red_p_list=} matches {blue_p_list=}...\n')
+        show_graph_str = input().strip()
+        if show_graph_str == 'graph_show':
+            show_graph = True
+        elif show_graph_str == 'graph_hide':
+            show_graph = False
+        else:
+            raise ValueError(f'{show_graph_str=} must be entire graph_show or graph_hide')
+        print(f'Applying 2-breaks on circular genome until {red_p_list=} matches {blue_p_list=} ({show_graph=})...\n')
         bg = BreakpointGraph(red_p_list, blue_p_list)
         while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
             bg.two_break(next_blue_edge)
             red_p_list = bg.get_red_permutations()
             print(f' * {red_p_list=}')
+            if show_graph:
+                print(f'')
+                print(f'   ```{{dot}}')
+                print(f'{textwrap.indent(bg.to_neato_graph(), "   ")}')
+                print(f'   ```')
         print('\n')
         print(
-            f'Recall that the the breakpoint graph is undirected / a permutation may have been walked in either'
-            f' direction (clockwise vs counter-clockwise). If the output looks like it\'s going backwards, that\'s just'
-            f' as correct as if it looked like it\'s going forward.')
+            f'Recall that the the breakpoint graph is undirected. A permutation may have been walked in either'
+            f' direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the'
+            f' output looks like it\'s going backwards, that\'s just as correct as if it looked like it\'s going'
+            f' forward.\n'
+            f'\n'
+            f'Also, recall that a genome is represented as a set of permutations -- sets are not ordered.')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

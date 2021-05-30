@@ -33,11 +33,10 @@ Final synteny graph...
 
 ![Synteny Graph](syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg)
 
- * {'y': ('A0', 209, 363), 'x': ('B0', 230, 391), 'type': 'NORMAL'}
- * {'y': ('A0', 530, 587), 'x': ('B0', 710, 771), 'type': 'REVERSE_COMPLEMENT'}
- * {'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}
  * {'y': ('A0', 658, 823), 'x': ('B0', 459, 631), 'type': 'REVERSE_COMPLEMENT'}
- * {'y': ('A0', 883, 1018), 'x': ('B0', 957, 1104), 'type': 'NORMAL'}
+ * {'y': ('A0', 384, 587), 'x': ('B0', 710, 936), 'type': 'REVERSE_COMPLEMENT'}
+ * {'y': ('A0', 884, 1018), 'x': ('B0', 958, 1104), 'type': 'NORMAL'}
+ * {'y': ('A0', 212, 363), 'x': ('B0', 233, 391), 'type': 'NORMAL'}
 </div>
 
 `{bm-enable-all}`

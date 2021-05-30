@@ -6311,6 +6311,7 @@ python
 breakpoint_graph.CyclicBreakpointGraph
 [[+A, -B, -C, +D], [+E]]
 [[+A, +B, -D], [-C, -E]]
+graph_show
 ```
 
 # Stories

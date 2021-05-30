@@ -8734,8 +8734,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Result...</p>
 <p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
 <ul>
-<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
@@ -8841,11 +8841,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Final synteny graph...</p>
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
-<li>{'y': ('A0', 209, 363), 'x': ('B0', 230, 391), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 530, 587), 'x': ('B0', 710, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 658, 823), 'x': ('B0', 459, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 883, 1018), 'x': ('B0', 957, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 384, 587), 'x': ('B0', 710, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 884, 1018), 'x': ('B0', 958, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 212, 363), 'x': ('B0', 233, 391), 'type': 'NORMAL'}</li>
 </ul>
 </div>
 <p></p>
@@ -9355,14 +9354,27 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Applying 2-breaks on circular genome until red_p_list=[['+A', '-B', '-C', '+D'], ['+E']] matches blue_p_list=[['+A', '+B', '-D'], ['-C', '-E']]...</p>
+<p>Applying 2-breaks on circular genome until red_p_list=[['+A', '-B', '-C', '+D'], ['+E']] matches blue_p_list=[['+A', '+B', '-D'], ['-C', '-E']] (show_graph=True)...</p>
 <ul>
-<li>red_p_list=[['+E'], ['+A', '+B', '-C', '+D']]</li>
-<li>red_p_list=[['+E'], ['+A', '+B', '-D', '+C']]</li>
-<li>red_p_list=[['+A', '+B', '-D', '+E', '+C']]</li>
-<li>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</li>
+<li>
+<p>red_p_list=[['+A', '-B', '-E', '-C', '+D']]</p>
+<p><img src="dot_c0865392b479818479a2b12624d63ba5.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>red_p_list=[['+A', '-B', '+D'], ['+C', '+E']]</p>
+<p><img src="dot_68e8bc9f69d616305909803aee62a99e.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>red_p_list=[['+A', '-B', '-D'], ['+C', '+E']]</p>
+<p><img src="dot_1c2d39d73095ee467437f33973529ffe.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</p>
+<p><img src="dot_473a70b38588b02b456abbd20d379d36.svg" alt="Dot diagram"></p>
+</li>
 </ul>
-<p>Recall that the the breakpoint graph is undirected / a permutation may have been walked in either direction (clockwise vs counter-clockwise). If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
+<p>Recall that the the breakpoint graph is undirected. A permutation may have been walked in either direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
+<p>Also, recall that a genome is represented as a set of permutations -- sets are not ordered.</p>
 </div>
 <p></p>
 <a name="H_Stories"></a><h1>Stories</h1>

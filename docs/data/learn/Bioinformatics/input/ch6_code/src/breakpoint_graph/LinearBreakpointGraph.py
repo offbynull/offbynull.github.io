@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import textwrap
 from math import cos, pi, sin
 from typing import List
 
@@ -16,6 +17,9 @@ from breakpoint_graph.TerminalNode import TerminalNode
 # chromosomes end at termination points rather than looping back in on themselves. The Pevzner book didn't document how
 # to extend the cyclic chromosome algorithm to linear chromosome, so I made a set of assumptions here. I'm reasonably
 # sure they're correct (the book said it's straight-forward to extend the algorithm to linear chromosomes).
+from helpers.InputUtils import str_to_list
+
+
 class BreakpointGraph:
     def __init__(self, red_p_list: List[List[str]], blue_p_list: List[List[str]]):
         self.blue_edges = ColoredEdgeSet.create(
@@ -138,22 +142,60 @@ class BreakpointGraph:
         return g
 
 
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        red_p_list, _ = str_to_list(input().strip(), 0)
+        blue_p_list, _ = str_to_list(input().strip(), 0)
+        show_graph_str = input().strip()
+        if show_graph_str == 'graph_show':
+            show_graph = True
+        elif show_graph_str == 'graph_hide':
+            show_graph = False
+        else:
+            raise ValueError(f'{show_graph_str=} must be entire graph_show or graph_hide')
+        print(f'Applying 2-breaks on circular genome until {red_p_list=} matches {blue_p_list=} ({show_graph=})...\n')
+        bg = BreakpointGraph(red_p_list, blue_p_list)
+        while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
+            bg.two_break(next_blue_edge)
+            red_p_list = bg.get_red_permutations()
+            print(f' * {red_p_list=}')
+            if show_graph:
+                print(f'')
+                print(f'   ```{{dot}}')
+                print(f'{textwrap.indent(bg.to_neato_graph(), "   ")}')
+                print(f'   ```')
+        print('\n')
+        print(
+            f'Recall that the the breakpoint graph is undirected. A permutation may have been walked in either'
+            f' direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the'
+            f' output looks like it\'s going backwards, that\'s just as correct as if it looked like it\'s going'
+            f' forward.\n'
+            f'\n'
+            f'Also, recall that a genome is represented as a set of permutations -- sets are not ordered.')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    bg = BreakpointGraph(
-        # [['+A', '+B', '+C', '-F', '-E', '-D']],
-        # [['+A', '+B', '+C', '+D', '+E', '+F']]
-        [['+F', '+E', '+D']],
-        [['+D', '+E', '+F']]
-        # [['+A', '+B'], ['-D', '-C'], ['-E']],
-        # [['+A', '-B', '-C', '+D'], ['+E']]
-    )
-    while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
-        print(f'{bg.get_red_permutations()}')
-        print(f'{bg.get_blue_permutations()}')
-        print(f'{bg.get_red_blue_paths()}')
-        print(f'{bg.to_neato_graph()}')
-        bg.two_break(next_blue_edge)
-    print(f'{bg.get_red_permutations()}')
-    print(f'{bg.get_blue_permutations()}')
-    print(f'{bg.get_red_blue_paths()}')
-    print(f'{bg.to_neato_graph()}')
+    main()
+    # bg = BreakpointGraph(
+    #     # [['+A', '+B', '+C', '-F', '-E', '-D']],
+    #     # [['+A', '+B', '+C', '+D', '+E', '+F']]
+    #     [['+F', '+E', '+D']],
+    #     [['+D', '+E', '+F']]
+    #     # [['+A', '+B'], ['-D', '-C'], ['-E']],
+    #     # [['+A', '-B', '-C', '+D'], ['+E']]
+    # )
+    # while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
+    #     print(f'{bg.get_red_permutations()}')
+    #     print(f'{bg.get_blue_permutations()}')
+    #     print(f'{bg.get_red_blue_paths()}')
+    #     print(f'{bg.to_neato_graph()}')
+    #     bg.two_break(next_blue_edge)
+    # print(f'{bg.get_red_permutations()}')
+    # print(f'{bg.get_blue_permutations()}')
+    # print(f'{bg.get_red_blue_paths()}')
+    # print(f'{bg.to_neato_graph()}')
