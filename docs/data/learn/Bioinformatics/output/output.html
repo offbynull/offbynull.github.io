@@ -8991,20 +8991,20 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="dot_9e751bbe7943da6f671b2b2f75c6d011.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <em>undirected</em> edges, represented by dashed lines.</p>
+<p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <em>undirected</em> edges, represented by dashed edges.</p>
 <p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
-<p>Note that the arrow heads on these dashed lines represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
+<p>Note that the arrow heads on these dashed edges represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
 <p><img src="dot_19da0e0853121f133813afea783f11f6.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <em>undirected</em> edges, represented by colored lines. Regions of ...</p>
+<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <em>undirected</em> edges, represented by colored edges. Regions of ...</p>
 <ul>
-<li>desired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as blue lines.</li>
-<li>undesired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as red lines.</li>
+<li>desired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as blue edges.</li>
+<li>undesired <a href="#BM_(genome)%2Fi">genome</a> that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented as red edges.</li>
 </ul>
 <p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
-<p>For linear chromosomes, the ends of each chromosome would be <a href="#BM_(connected)%2Fi">connected</a> by the appropriate colored edge to that termination node as well.</p>
-<p><img src="dot_2ac588eb07abf6e434abb06af0fe94b7.svg" alt="Dot diagram"></p>
+<p>For linear chromosomes, the region between a chromosome end and the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> node just before it is also represented by the appropriate colored edge.</p>
+<p><img src="dot_59403de9d680cd87815da4435b70bb70.svg" alt="Dot diagram"></p>
 </li>
 </ol>
 <p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them ...</p>
@@ -9289,7 +9289,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Now that <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s have been adequately described, the goal of this algorithm is to iteratively re-wire the red edges of a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> such that they match its blue edges. At each step, the algorithm finds a pair of red edges that share nodes with a blue edge and re-wires those red edges such that one of them matches the blue edge.</p>
 <p>For example, the two red edges highlighted below share the same nodes as a blue edge (D_h and C_t). These two red edges can be broken and re-wired such that one of them matches the blue edge...</p>
 <p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
-<p>Each re-wiring operation is called a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> and represents either a chromosome <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, chromosome <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example, ...</p>
+<p>Each re-wiring operation is called a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> and represents either a chromosome <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, chromosome <a href="#BM_(fission)%2Fi">fission</a>, or reversal mutation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example, ...</p>
 <ul>
 <li>
 <p><a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>:</p>
@@ -9365,37 +9365,6 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Recall that the the breakpoint graph is undirected / a permutation may have been walked in either direction (clockwise vs counter-clockwise). If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
 </div>
 <p></p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
-<p>TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
@@ -12007,70 +11976,43 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </li>
 <li>
 <p><a name="BM_(breakpoint%20graph)_GR%2Fi"></a><strong>breakpoint graph</strong> - An undirected graph representing the order and orientation of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shared between two <a href="#BM_(genome)%2Fi">genome</a>s.</p>
-<ol>
-<li>
-<p>Set the ends of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as nodes. The arrow end should have a <em>t</em> suffix (for tail) while the non-arrow end should have a <em>h</em> suffix (for head)...</p>
-<p><img src="dot_0a2b976df1fe819b59828770f2a8a50d.svg" alt="Dot diagram"></p>
-</li>
-<li>
-<p>Set the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s themselves as <strong>undirected</strong> edges, represented by dashed lines.</p>
-<p><img src="dot_b5f4f9926e729d81240bfd9413d3bcb0.svg" alt="Dot diagram"></p>
-<p>Note that the arrows on these dashed lines represent the direction of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> match (e.g. head-to-tail for a normal match vs tail-to-head for a <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> match), not edge directions in the graph (graph is undirected). Since the <em>h</em> and <em>t</em> suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.</p>
-<p><img src="dot_19da0e0853121f133813afea783f11f6.svg" alt="Dot diagram"></p>
-</li>
-<li>
-<p>Set the regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as <strong>undirected</strong> edges, represented by colored lines.</p>
-<ul>
-<li>Blue lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 2 that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
-<li>Red lines represent regions of <a href="#BM_(genome)%2Fi">genome</a> 1 that border a pair of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</li>
-</ul>
-<p><img src="dot_4740a5d5e6a50b683018382598a77f39.svg" alt="Dot diagram"></p>
-</li>
-</ol>
-<p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D between them. If the <a href="#BM_(genome)%2Fi">genome</a>s were linear rather than cyclic, their ends would be <a href="#BM_(connected)%2Fi">connected</a> by a colored edge to a termination node. The termination node indicates that the DNA ends.</p>
+<p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D...</p>
 <p><img src="svgbob_7e9c33210faa97dd82efb19ecbdd7b9300236fba.svg" alt="Kroki diagram output"></p>
+<p>The <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> for the above two <a href="#BM_(genome)%2Fi">genome</a>s is basically just a merge of the above diagrams. The set of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shard between both <a href="#BM_(genome)%2Fi">genome</a>s (A, B, C, and D) become dashed edges where each edge's...</p>
+<ul>
+<li>arrow end is a tail node (t suffix).</li>
+<li>non-arrow end is a head node (h suffix).</li>
+</ul>
+<p>Gap regions between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are represented by solid colored edges, either red or blue depending on which <a href="#BM_(genome)%2Fi">genome</a> it is.</p>
+<p>If the <a href="#BM_(genome)%2Fi">genome</a>s are linear, gap region edges are created between the nodes and the edges and a special termination node.</p>
 <p><img src="dot_68956ed2f489ac4cb837efb6bd1d2a65.svg" alt="Dot diagram"></p>
-<p><a href="#BM_(breakpoint%20graph)_GR%2Fi">Breakpoint graph</a>s build on the concept of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s to compute a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, and reversal operations (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s) that transforms one <a href="#BM_(genome)%2Fi">genome</a> into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s typically order <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s so that blue edges are uniformly sandwiched between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / red edges get chaotically scattered around.</p>
-<p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation. By continually applying <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>s on red edges, all red edges will eventually sync up to blue edges.</p>
+<p>In the above <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, the blue edges represent <a href="#BM_(genome)%2Fi">genome</a> 2's gap regions while the red edges represent <a href="#BM_(genome)%2Fi">genome</a> 1's gap regions. The set of edges representing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is shared between them.</p>
+<p><a href="#BM_(breakpoint%20graph)_GR%2Fi">Breakpoint graph</a>s build on the concept of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s to compute a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, and reversal mutations (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s) that transforms one <a href="#BM_(genome)%2Fi">genome</a> into the other (see <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>). Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s typically order <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s so that blue edges are uniformly sandwiched between <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s / red edges get chaotically scattered around.</p>
 </li>
 <li>
 <p><a name="BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi"></a><strong>2-break</strong> - Given a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>, a <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation breaks the two red edges at a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and re-wires them such that one of the red edges matches the blue edge at that boundary.</p>
 <p>For example, the two red edges highlighted below share the same <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> boundary and can be re-wired such that one of the edges matches the blue edge at that <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny</a> boundary ...</p>
 <p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
-<p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal operation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). For example...</p>
-<ul>
-<li>
-<p><a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a></p>
-<p><img src="svgbob_9c0f427c504d3b329618dd75fab69a9ae096257f.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_28dd1f560dda20ac68734bcca00b7941.svg" alt="Dot diagram"></p>
+<p>Each <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a> operation on a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> represents a <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>, <a href="#BM_(fission)%2Fi">fission</a>, or reversal mutation (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>). Continually applying <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">2-break</a>s until all red edges match blue edges reveals a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path of such mutations that transforms the red <a href="#BM_(genome)%2Fi">genome</a> to the blue <a href="#BM_(genome)%2Fi">genome</a>.</p>
 </li>
 <li>
-<p><a href="#BM_(fission)%2Fi">fission</a></p>
-<p><img src="svgbob_a123ec85648eb0b5c449a7395ecacab509f50b26.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_da1cc3fbe7558a51c166e6f3562d4272.svg" alt="Dot diagram"></p>
-</li>
-<li>
-<p>reversal</p>
-<p><img src="svgbob_4d851661f4a60a7ef0f433ba54362534c4fc6268.svg" alt="Kroki diagram output"></p>
-<p><img src="dot_ad962f4590c01b25914ecf117d94ef2d.svg" alt="Dot diagram"></p>
-</li>
-</ul>
-</li>
-<li>
-<p><a name="BM_(permutation)_GR%2Fi"></a><strong>permutation</strong> - A list representing one of the <a href="#BM_(genome)%2Fi">genome</a>s in a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The list representation is generated by walking that <a href="#BM_(genome)%2Fi">genome</a>'s edges, where each walked edge that's a <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a> is appended to the list with a ...</p>
-<ul>
-<li>+ prefix if it's walked from head to tail.</li>
-<li>- prefix if it's walked from tail to head.</li>
-</ul>
-<p>For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
+<p><a name="BM_(permutation)_GR%2Fi"></a><strong>permutation</strong> - A list representing a single chromosome in one of the two <a href="#BM_(genome)%2Fi">genome</a>s that make up a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The entire <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is representable as two sets of <a href="#BM_(permutation)_GR%2Fi">permutation</a>s, where each <a href="#BM_(genome)%2Fi">genome</a> in the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is a set.</p>
+<p><a href="#BM_(permutation)_GR%2Fi">Permutation</a> sets are a commonly used for tersely representing <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s as text. For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
 <p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
-<p>, ... walking the edges for the red <a href="#BM_(genome)%2Fi">genome</a> from node D_t in the ...</p>
+<p>... , the <a href="#BM_(permutation)_GR%2Fi">permutation</a> set representing the red <a href="#BM_(genome)%2Fi">genome</a> may be any of the following ...</p>
 <ul>
-<li>clockwise direction results in [-D, -B, +C, -A].</li>
-<li>counter-clockwise direction results in [+A, -C, +B, +D].</li>
+<li><code>{[-D, -B, +C, -A]}</code></li>
+<li><code>{[+A, -C, +B, +D]}</code></li>
+<li><code>{[-B, +C, -A, -D]}</code></li>
+<li><code>{[-C, +B, +D, +A]}</code></li>
+<li><code>{[+C, -A, -D, -B]}</code></li>
+<li>...</li>
 </ul>
-<p>For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: [-B, +C, -A, -D], [-C, +B, +D, +A], [+C, -A, -D, -B], etc...</p>
-<p>For linear chromosomes, the walk direction is irrelevant but the walk must start from a termination node (either end of the chromosome).</p>
+<p>All representations above are equivalent.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <a href="#BM_(Algorithms%5C%2FSynteny%2FReversal%20Path%2FBreakpoint%20List%20Algorithm)_TOPIC%2F">Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm</a> for a full explanation of how to read <a href="#BM_(permutation)_GR%2Fi">permutation</a>s / how to convert from and to <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(%5Cbfusion%7C%5Cbfuse)%2Fi"></a><strong>fusion</strong> - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>).</p>

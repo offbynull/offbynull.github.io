@@ -5544,7 +5544,7 @@ Construction of a breakpoint graph_GR is as follows:
     }
     ```
 
- 1. Set the synteny blocks themselves as _undirected_ edges, represented by dashed lines.
+ 1. Set the synteny blocks themselves as _undirected_ edges, represented by dashed edges.
     
     ```{dot}
     graph G {
@@ -5556,7 +5556,7 @@ Construction of a breakpoint graph_GR is as follows:
     }
     ```
  
-    Note that the arrow heads on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
+    Note that the arrow heads on these dashed edges represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
 
     ```{dot}
     graph G {
@@ -5568,10 +5568,10 @@ Construction of a breakpoint graph_GR is as follows:
     }
     ```
  
- 1. Set the regions between synteny blocks as _undirected_ edges, represented by colored lines. Regions of ...
+ 1. Set the regions between synteny blocks as _undirected_ edges, represented by colored edges. Regions of ...
     
-    * desired genome that border a pair of synteny blocks are represented as blue lines.
-    * undesired genome that border a pair of synteny blocks are represented as red lines.
+    * desired genome that border a pair of synteny blocks are represented as blue edges.
+    * undesired genome that border a pair of synteny blocks are represented as red edges.
  
     ```{dot}
     graph G {
@@ -5585,19 +5585,20 @@ Construction of a breakpoint graph_GR is as follows:
     }
     ```
 
-    For linear chromosomes, the ends of each chromosome would be connected by the appropriate colored edge to that termination node as well.
+    For linear chromosomes, the region between a chromosome end and the synteny node just before it is also represented by the appropriate colored edge.
 
     ```{dot}
     graph G {
     layout=neato
     node [shape=plain];
+    _A_t_ [label="_A_t_", pos="3.0,0.0!"];
     _A_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
     _D_t_ [label="_D_t_", pos="5,2.0!"];
     _D_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
     TERM [pos="4.9,0.5!"];
+    _A_t_ -- TERM [color=red];
     _A_h_ -- TERM [color=blue];
-    _D_t_ -- TERM [color=red];
-    _D_h_ -- TERM [color=blue];
+    _D_t_ -- TERM [color=blue];
     _D_h_ -- TERM [color=red];
     }
     ```
@@ -5983,7 +5984,7 @@ _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
 }
 ```
 
-Each re-wiring operation is called a 2-break and represents either a chromosome fusion, chromosome fission, or reversal operation (genome rearrangement). For example, ...
+Each re-wiring operation is called a 2-break and represents either a chromosome fusion, chromosome fission, or reversal mutation (genome rearrangement). For example, ...
 
  * fusion:
 
@@ -6311,69 +6312,6 @@ breakpoint_graph.CyclicBreakpointGraph
 [[+A, -B, -C, +D], [+E]]
 [[+A, +B, -D], [-C, -E]]
 ```
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
-TODO: FIX PERM SECTION TO CLEARLY EXPLAIN THAT A PERM IS TARGETING A SPECIFIC CHROMOSOME, ADD VISUALIZER FOR PERM SECTION, ADD VISUAL OUTPUTS TO FINAL RUN, MAYBE BREAK UP INTO CYCLIC AND LINEAR SECTION.
-
 
 # Stories
 
@@ -8881,65 +8819,22 @@ cyclic
 
  * `{bm} breakpoint graph/(breakpoint graph)_GR/i` - An undirected graph representing the order and orientation of synteny blocks shared between two genomes.
 
-    1. Set the ends of synteny blocks as nodes. The arrow end should have a _t_ suffix (for tail) while the non-arrow end should have a _h_ suffix (for head)...
-
-       ```{dot}
-       graph G {
-       layout=neato
-       node [shape=plain];
-       _D_t_ [pos="0.0,2.0!"];
-       _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-       }
-       ```
-
-   2. Set the synteny blocks themselves as __undirected__ edges, represented by dashed lines.
-   
-      ```{dot}
-      graph G {
-      layout=neato
-      node [shape=plain];
-      _D_t_ [pos="0.0,2.0!"];
-      _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-      _D_t_ -- _D_h_ [style=dashed, dir=back];
-      }
-      ```
-
-      Note that the arrows on these dashed lines represent the direction of the synteny match (e.g. head-to-tail for a normal match vs tail-to-head for a reverse complement match), not edge directions in the graph (graph is undirected). Since the _h_ and _t_ suffixes on nodes already convey the match direction information, the arrows may be omitted to reduce confusion.
-
-      ```{dot}
-      graph G {
-      layout=neato
-      node [shape=plain];
-      _D_t_ [pos="0.0,2.0!"];
-      _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-      _D_t_ -- _D_h_ [style=dashed];
-      }
-      ```
-
-   3. Set the regions between synteny blocks as __undirected__ edges, represented by colored lines.
-   
-      * Blue lines represent regions of genome 2 that border a pair of synteny blocks.
-      * Red lines represent regions of genome 1 that border a pair of synteny blocks.
-
-      ```{dot}
-      graph G {
-      layout=neato
-      node [shape=plain];
-      _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-      _B_t_ [pos="0.0,-2.0!"];
-      _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-      _B_t_ -- _C_h_ [color=blue];
-      _B_h_ -- _C_h_ [color=red];
-      }
-      ```
-
-   For example, the following two genomes share the synteny blocks A, B, C, and D between them. If the genomes were linear rather than cyclic, their ends would be connected by a colored edge to a termination node. The termination node indicates that the DNA ends.
+   For example, the following two genomes share the synteny blocks A, B, C, and D...
 
    ```{svgbob}
        -D       -B       +C          -A                               +A              +B        +C                  +D   
    --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
     5'                  genome1              3'                 5'                          genome2                            3'
    ```
+
+   The breakpoint graph_GR for the above two genomes is basically just a merge of the above diagrams. The set of synteny blocks shard between both genomes (A, B, C, and D) become dashed edges where each edge's...
+   
+    * arrow end is a tail node (t suffix).
+    * non-arrow end is a head node (h suffix).
+  
+   Gap regions between synteny blocks are represented by solid colored edges, either red or blue depending on which genome it is.
+   
+   If the genomes are linear, gap region edges are created between the nodes and the edges and a special termination node.
 
    ```{dot}
    graph G {
@@ -8994,10 +8889,10 @@ cyclic
    _D2_t_ -- TERM [color=red];
    }
    ```
+
+   In the above breakpoint graph_GR, the blue edges represent genome 2's gap regions while the red edges represent genome 1's gap regions. The set of edges representing synteny blocks is shared between them.
    
-   Breakpoint graph_GRs build on the concept of breakpoint_GRs to compute a parsimonious path of fusion, fission, and reversal operations (genome rearrangements) that transforms one genome into the other. Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
-   
-   Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation. By continually applying 2-breaks on red edges, all red edges will eventually sync up to blue edges.
+   Breakpoint graph_GRs build on the concept of breakpoint_GRs to compute a parsimonious path of fusion, fission, and reversal mutations (genome rearrangements) that transforms one genome into the other (see 2-break). Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graph_GRs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
 
  * `{bm} 2-break/\b(2-break|2 break|two break|two-break)s?\b/i/false/true` - Given a breakpoint graph_GR, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one of the red edges matches the blue edge at that boundary.
  
@@ -9054,211 +8949,11 @@ cyclic
    }
    ```
 
-   Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal operation (genome rearrangement). For example...
+   Each 2-break operation on a breakpoint graph_GR represents a fusion, fission, or reversal mutation (genome rearrangement). Continually applying 2-breaks until all red edges match blue edges reveals a parsimonious path of such mutations that transforms the red genome to the blue genome.
 
-    * fusion
-
-      ```{svgbob}
-              +A       +B                             +C          +D        
-      ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
-       5'  circular chromosome1  3'              5'  circular chromosome2  3' 
-
-
-                             "FUSE AT [B,C] BOUNDARY..."
-
-                   +A       +B                 +C          +D        
-           ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
-            5'                 circular chromosome                   3' 
-      ```
-
-      ```{dot}
-      graph G {
-      layout=neato
-      labelloc="t";
-      label="BEFORE to AFTER...";
-      node [shape=plain];
-
-      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed];
-      _B1_t_ -- _B1_h_ [style=dashed];
-      _A1_t_ -- _A1_h_ [style=dashed];
-      _D1_t_ -- _D1_h_ [style=dashed];
-      _C1_t_ -- _D1_h_ [color=blue];
-      _A1_h_ -- _D1_t_ [color=blue];
-      _B1_t_ -- _C1_h_ [color=blue];
-      _A1_t_ -- _B1_h_ [color=blue];
-      _B1_t_ -- _A1_h_ [color=red, penwidth="4"];
-      _A1_t_ -- _B1_h_ [color=red];
-      _C1_h_ -- _D1_t_ [color=red, penwidth="4"];
-      _C1_t_ -- _D1_h_ [color=red];
-
-      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
-      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-      _D2_t_ [label="_D_t_", pos="5,2.0!"];
-      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed];
-      _B2_t_ -- _B2_h_ [style=dashed];
-      _A2_t_ -- _A2_h_ [style=dashed];
-      _D2_t_ -- _D2_h_ [style=dashed];
-      _C2_t_ -- _D2_h_ [color=blue];
-      _A2_h_ -- _D2_t_ [color=blue];
-      _B2_t_ -- _C2_h_ [color=blue];
-      _A2_t_ -- _B2_h_ [color=blue];
-      _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
-      _A2_t_ -- _B2_h_ [color=red];
-      _C2_h_ -- _B2_t_ [color=red, penwidth="4"];
-      _C2_t_ -- _D2_h_ [color=red];
-      }
-
-    * fission
-
-      ```{svgbob}
-                   +A       +B                 +C          +D        
-           ------>>>>>>>-->>>>>>>------------>>>>>>>-->>>>>>>>>>>>>-----
-            5'                 circular chromosome                   3' 
-
-
-                          "BREAK AT [B, C] BOUNDARY..."
-
-              +A       +B                             +C          +D        
-      ------>>>>>>>-->>>>>>>--------            ---->>>>>>>-->>>>>>>>>>>>>----
-       5'  circular chromosome1  3'              5'  circular chromosome2  3' 
-      ```
-
-      ```{dot}
-      graph G {
-      layout=neato
-      labelloc="t";
-      label="BEFORE to AFTER...";
-      node [shape=plain];
-
-      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed];
-      _B1_t_ -- _B1_h_ [style=dashed];
-      _A1_t_ -- _A1_h_ [style=dashed];
-      _D1_t_ -- _D1_h_ [style=dashed];
-      _C1_t_ -- _D1_h_ [color=blue];
-      _A1_h_ -- _B1_t_ [color=blue];
-      _D1_t_ -- _C1_h_ [color=blue];
-      _A1_t_ -- _B1_h_ [color=blue];
-      _D1_t_ -- _A1_h_ [color=red, penwidth="4"];
-      _A1_t_ -- _B1_h_ [color=red];
-      _C1_h_ -- _B1_t_ [color=red, penwidth="4"];
-      _C1_t_ -- _D1_h_ [color=red];
-
-      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
-      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-      _D2_t_ [label="_D_t_", pos="5,2.0!"];
-      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed];
-      _B2_t_ -- _B2_h_ [style=dashed];
-      _A2_t_ -- _A2_h_ [style=dashed];
-      _D2_t_ -- _D2_h_ [style=dashed];
-      _C2_t_ -- _D2_h_ [color=blue];
-      _A2_h_ -- _B2_t_ [color=blue];
-      _D2_t_ -- _C2_h_ [color=blue];
-      _A2_t_ -- _B2_h_ [color=blue];
-      _B2_t_ -- _A2_h_ [color=red, penwidth="4"];
-      _A2_t_ -- _B2_h_ [color=red];
-      _C2_h_ -- _D2_t_ [color=red, penwidth="4"];
-      _C2_t_ -- _D2_h_ [color=red];
-      }
-      ```
-
-    * reversal
-
-      ```{svgbob}
-          -B       -A          +C          +D        
-      --<<<<<<<--<<<<<<<----->>>>>>>-->>>>>>>>>>>>>-----
-       5'              circular chromosome           3' 
-      
-      
-                      "REVERSE [B, A] ..."
-      
-          +A       +B          +C          +D        
-      -->>>>>>>-->>>>>>>----->>>>>>>-->>>>>>>>>>>>>-----
-       5'              circular chromosome           3' 
-      ```
-
-      ```{dot}
-      graph G {
-      layout=neato
-      labelloc="t";
-      label="BEFORE to AFTER...";
-      node [shape=plain];
-
-      _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-      _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-      _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-      _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-      _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-      _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-      _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-      _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-      _C1_t_ -- _C1_h_ [style=dashed];
-      _B1_t_ -- _B1_h_ [style=dashed];
-      _A1_t_ -- _A1_h_ [style=dashed];
-      _D1_t_ -- _D1_h_ [style=dashed];
-      _C1_t_ -- _D1_h_ [color=blue];
-      _A1_h_ -- _D1_t_ [color=blue];
-      _B1_t_ -- _C1_h_ [color=blue];
-      _A1_t_ -- _B1_h_ [color=blue];
-      _A1_h_ -- _C1_h_ [color=red, penwidth="4"];
-      _A1_t_ -- _B1_h_ [color=red];
-      _D1_t_ -- _B1_t_ [color=red, penwidth="4"];
-      _C1_t_ -- _D1_h_ [color=red];
-
-      _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-      _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-      _B2_t_ [label="_B_t_", pos="5,-2.0!"];
-      _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-      _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-      _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-      _D2_t_ [label="_D_t_", pos="5,2.0!"];
-      _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-      _C2_t_ -- _C2_h_ [style=dashed];
-      _B2_t_ -- _B2_h_ [style=dashed];
-      _A2_t_ -- _A2_h_ [style=dashed];
-      _D2_t_ -- _D2_h_ [style=dashed];
-      _C2_t_ -- _D2_h_ [color=blue];
-      _A2_h_ -- _D2_t_ [color=blue];
-      _B2_t_ -- _C2_h_ [color=blue];
-      _A2_t_ -- _B2_h_ [color=blue];
-      _D2_t_ -- _A2_h_ [color=red, penwidth="4"];
-      _A2_t_ -- _B2_h_ [color=red];
-      _C2_h_ -- _B2_t_ [color=red, penwidth="4"];
-      _C2_t_ -- _D2_h_ [color=red];
-      }
-      ```
-
- * `{bm} permutation/(permutation)_GR/i` - A list representing one of the genomes in a breakpoint graph_GR. The list representation is generated by walking that genome's edges, where each walked edge that's a synteny block is appended to the list with a ...
-   
-    * \+ prefix if it's walked from head to tail.
-    * \- prefix if it's walked from tail to head.
+ * `{bm} permutation/(permutation)_GR/i` - A list representing a single chromosome in one of the two genomes that make up a breakpoint graph_GR. The entire breakpoint graph_GR is representable as two sets of permutation_GRs, where each genome in the breakpoint graph_GR is a set.
  
-   For example, given the following breakpoint graph_GR ...
+   Permutation_GR sets are a commonly used for tersely representing breakpoint graph_GRs as text. For example, given the following breakpoint graph_GR ...
 
    ```{dot}
    graph G {
@@ -9287,14 +8982,20 @@ cyclic
    }
    ```
 
-   , ... walking the edges for the red genome from node D_t in the ...
+   ... , the permutation_GR set representing the red genome may be any of the following ...
 
-    * clockwise direction results in [-D, -B, +C, -A].
-    * counter-clockwise direction results in [+A, -C, +B, +D].
+    * `{[-D, -B, +C, -A]}`
+    * `{[+A, -C, +B, +D]}`
+    * `{[-B, +C, -A, -D]}`
+    * `{[-C, +B, +D, +A]}`
+    * `{[+C, -A, -D, -B]}`
+    * ...
 
-   For circular chromosomes, the walk direction is irrelevant, meaning that both lists in the example above represent the same chromosome. Likewise, the starting node is also irrelevant, meaning that the following lists are all equivalent to the ones in the example above: [-B, +C, -A, -D], [-C, +B, +D, +A], [+C, -A, -D, -B], etc...
+   All representations above are equivalent.
 
-   For linear chromosomes, the walk direction is irrelevant but the walk must start from a termination node (either end of the chromosome).
+   ```{note}
+   See Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC for a full explanation of how to read_NORM permutation_GRs / how to convert from and to breakpoint graph_GRs.
+   ```
 
  * `{bm} fusion/(\bfusion|\bfuse)/i` - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (genome rearrangement).
 
