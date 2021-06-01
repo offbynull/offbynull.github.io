@@ -6847,6 +6847,31 @@ cyclic
 30
 ```
 
+## Genome Rearrangement
+
+### Find Reversal Path
+
+```{ch6}
+FindReversalPathBetweenGenomes
+[[G1C1, /input/ch6_code/src/Mycoplasma bovis - GCA_000696015.1_ASM69601v1_genomic.fna.xz]]
+[[G2C1, /input/ch6_code/src/Mycoplasma agalactiae 14628 - GCA_000266865.1_ASM26686v1_genomic.fna.xz]]
+cyclic
+20
+graph_show
+[merge, 25, 90]
+[merge, 50, 90]
+[merge, 100, 90]
+[merge, 200, 90]
+[merge, 400, 90]
+[merge, 800, 90]
+[merge, 1600, 90]
+[merge, 3200, 90]
+[filter, 3200, 20000]
+[merge, 6400, 90]
+[merge, 12800, 90]
+[cull, 10000]
+```
+
 # Terminology
 
  * `{bm} k-mer/(\d+-mer|k-mer|kmer)/i` - A substring of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:

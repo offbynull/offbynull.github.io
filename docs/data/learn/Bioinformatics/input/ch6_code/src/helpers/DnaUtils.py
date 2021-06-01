@@ -34,7 +34,7 @@ def dna_complement(dna: str):
         elif ch == 'G':
             ret += 'C'
         else:
-            raise
+            raise ValueError(f'Bad character: {ch}')
     return ret
 
 

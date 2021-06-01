@@ -167,6 +167,13 @@ def main():
             raise ValueError(f'{show_graph_str=} must be entire graph_show or graph_hide')
         print(f'Applying 2-breaks on circular genome until {red_p_list=} matches {blue_p_list=} ({show_graph=})...\n')
         bg = BreakpointGraph(red_p_list, blue_p_list)
+        red_p_list = bg.get_red_permutations()
+        print(f' * Initial {red_p_list=}')
+        if show_graph:
+            print(f'')
+            print(f'   ```{{dot}}')
+            print(f'{textwrap.indent(bg.to_neato_graph(), "   ")}')
+            print(f'   ```')
         while (next_blue_edge := bg.find_blue_edge_in_non_trivial_path()) is not None:
             bg.two_break(next_blue_edge)
             red_p_list = bg.get_red_permutations()

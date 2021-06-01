@@ -152,6 +152,10 @@
 <ul>
 <li><a href="#H_Find%20Sequence">Find Sequence</a></li>
 </ul>
+<li><a href="#H_Genome%20Rearrangement">Genome Rearrangement</a></li>
+<ul>
+<li><a href="#H_Find%20Reversal%20Path">Find Reversal Path</a></li>
+</ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -8734,11 +8738,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Result...</p>
 <p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
 <ul>
-<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -8841,10 +8845,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Final synteny graph...</p>
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
-<li>{'y': ('A0', 658, 823), 'x': ('B0', 459, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 384, 587), 'x': ('B0', 710, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 884, 1018), 'x': ('B0', 958, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 881, 1018), 'x': ('B0', 955, 1104), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 212, 363), 'x': ('B0', 233, 391), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 530, 585), 'x': ('B0', 712, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 658, 823), 'x': ('B0', 459, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -9122,22 +9127,22 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>START
 <ul>
-<li>CE(C_h, D_t)</li>
-<li>SE(C_h, C_t)</li>
 <li>CE(B_h, C_t)</li>
 <li>SE(B_h, B_t)</li>
 <li>CE(A_h, B_t)</li>
 <li>SE(A_h, A_t)</li>
 <li>CE(A_t, D_h)</li>
 <li>SE(D_h, D_t)</li>
+<li>CE(C_h, D_t)</li>
+<li>SE(C_h, C_t)</li>
 </ul>
 </li>
 <li>START
 <ul>
-<li>CE(X_h, Z_t)</li>
-<li>SE(X_h, X_t)</li>
 <li>CE(X_t, Z_h)</li>
-<li>SE(Z_h, Z_t)</li>
+<li>SE(X_t, X_h)</li>
+<li>CE(X_h, Z_t)</li>
+<li>SE(Z_t, Z_h)</li>
 </ul>
 </li>
 </ul>
@@ -9357,20 +9362,24 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Applying 2-breaks on circular genome until red_p_list=[['+A', '-B', '-C', '+D'], ['+E']] matches blue_p_list=[['+A', '+B', '-D'], ['-C', '-E']] (show_graph=True)...</p>
 <ul>
 <li>
-<p>red_p_list=[['+A', '-B', '-E', '-C', '+D']]</p>
-<p><img src="dot_c0865392b479818479a2b12624d63ba5.svg" alt="Dot diagram"></p>
+<p>Initial red_p_list=[['+A', '-B', '-C', '+D'], ['+E']]</p>
+<p><img src="dot_fcb62c1249c85a65e9ec33d93d6696fb.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '-B', '+D'], ['+C', '+E']]</p>
-<p><img src="dot_68e8bc9f69d616305909803aee62a99e.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-C', '+D'], ['+E']]</p>
+<p><img src="dot_6744a5b8d546a2acc1675a6bf06235c7.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '-B', '-D'], ['+C', '+E']]</p>
-<p><img src="dot_1c2d39d73095ee467437f33973529ffe.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-C', '-D'], ['+E']]</p>
+<p><img src="dot_c0ebfee189f388c178d5bf934f5e3f9b.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>red_p_list=[['+A', '+B', '-D'], ['+E'], ['+C']]</p>
+<p><img src="dot_671bf09f65defc0ba1d66affde34431e.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</p>
-<p><img src="dot_473a70b38588b02b456abbd20d379d36.svg" alt="Dot diagram"></p>
+<p><img src="dot_558160466b6f1b5a5427cb219e6b3a54.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <p>Recall that the the breakpoint graph is undirected. A permutation may have been walked in either direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
@@ -9759,6 +9768,69 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>Score 26: 71.2-200.0-127.9-104.0-87.1-86.8</li>
 <li>Score 26: 71.2-200.0-127.9-104.0-87.1-86.9</li>
 <li>Score 26: 71.2-200.0-127.9-104.0-87.1-87.0</li>
+</ul>
+</div>
+<p></p>
+<a name="H_Genome%20Rearrangement"></a><h2>Genome Rearrangement</h2>
+<a name="H_Find%20Reversal%20Path"></a><h3>Find Reversal Path</h3>
+<div style="border:1px solid black;">
+<p></p>
+<p>Solving a parsimonious reversal path for...</p>
+<ul>
+<li>k=20</li>
+<li>cyclic=True</li>
+<li>show_graph=True</li>
+<li>genome1 reference: [[G1C1, /input/ch6_code/src/Mycoplasma bovis - GCA_000696015.1_ASM69601v1_genomic.fna.xz]]</li>
+<li>genome2 reference: [[G2C1, /input/ch6_code/src/Mycoplasma agalactiae 14628 - GCA_000266865.1_ASM26686v1_genomic.fna.xz]]</li>
+</ul>
+<p>NOTE: Nucleotide codes that aren't ACGT get filtered out of the genomes.</p>
+<p>Generating genomic dotplot...</p>
+<p><img src="dotplot_aa18ecc0bccea2e4d491f745259e60c6.png" alt="Genomic Dot Plot"></p>
+<p>Clustering genomic dotplot to snyteny graph...</p>
+<ul>
+<li>Merging radius=25 angle_half_maw=90...</li>
+<li>Merging radius=50 angle_half_maw=90...</li>
+<li>Merging radius=100 angle_half_maw=90...</li>
+<li>Merging radius=200 angle_half_maw=90...</li>
+<li>Merging radius=400 angle_half_maw=90...</li>
+<li>Merging radius=800 angle_half_maw=90...</li>
+<li>Merging radius=1600 angle_half_maw=90...</li>
+<li>Merging radius=3200 angle_half_maw=90...</li>
+<li>Filtering max_filter_length=3200.0 max_merge_distance=20000.0...</li>
+<li>Merging radius=6400 angle_half_maw=90...</li>
+<li>Merging radius=12800 angle_half_maw=90...</li>
+<li>Culling below length=10000.0...</li>
+</ul>
+<p>Generating synteny graph...</p>
+<p><img src="syntenygraph_aa18ecc0bccea2e4d491f745259e60c6.png" alt="Synteny Graph"></p>
+<p>Mapping synteny graph matches to IDs using x-axis genome...</p>
+<ul>
+<li>G2C1_B0 = {'y': ('G1C1', 456122, 490876), 'x': ('G2C1', 26146, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428046), 'x': ('G2C1', 55611, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356150, 384120), 'x': ('G2C1', 88487, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772155, 835255), 'x': ('G2C1', 287183, 351646), 'type': 'NORMAL'}</li>
+<li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
+<li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
+<li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
+<li>G2C1_B8 = {'y': ('G1C1', 529629, 591336), 'x': ('G2C1', 816444, 878201), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B9 = {'y': ('G1C1', 491197, 509162), 'x': ('G2C1', 880483, 897382), 'type': 'REVERSE_COMPLEMENT'}</li>
+</ul>
+<p>Generating permutations for genomes...</p>
+<ul>
+<li>genome1_permutations=[['+G2C1_B6', '+G2C1_B7', '-G2C1_B2', '-G2C1_B1', '-G2C1_B0', '-G2C1_B9', '-G2C1_B8', '+G2C1_B3', '+G2C1_B4', '+G2C1_B5']]</li>
+<li>genome2_permutations=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '+G2C1_B3', '+G2C1_B4', '+G2C1_B5', '+G2C1_B6', '+G2C1_B7', '+G2C1_B8', '+G2C1_B9']]</li>
+</ul>
+<p>Generating reversal path on genomes that are cyclic=True...</p>
+<ul>
+<li>
+<p>INITIAL red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '-G2C1_B7', '-G2C1_B6', '-G2C1_B5', '-G2C1_B4', '-G2C1_B3', '+G2C1_B8', '+G2C1_B9']]</p>
+<p><img src="dot_6b2da855ec21678c258f096800b08bde.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '+G2C1_B3', '+G2C1_B4', '+G2C1_B5', '+G2C1_B6', '+G2C1_B7', '+G2C1_B8', '+G2C1_B9']]</p>
+<p><img src="dot_3e1480702b9cb676b825d9108f7b264e.svg" alt="Dot diagram"></p>
+</li>
 </ul>
 </div>
 <p></p>
