@@ -6315,6 +6315,16 @@ breakpoint_graph.CyclicBreakpointGraph
 graph_show
 ```
 
+```{note}
+It isn't discussed here, but the Pevzner book put an emphasis on calculating the parsimonious number of reversals (reversal distance) without having to go through and apply two-breaks in the breakpoint graph_GR. The basic idea is to count the number of red-blue cycles in the graph.
+
+For a cyclic breakpoint graph_GRs, a single red-blue cycle is when you pick a node, follow the blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ..., until you arrive back at the same node. If the blue and red genomes match perfectly, the number of red-blue cycles should equal the number of synteny blocks. Otherwise, you can calculate the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of synteny blocks.
+
+For a linear breakpoint graph_GRs, a single red-blue cycle isn't actually a cycle because: Pick the termination node, follow a blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ... until you arrive back at the termination node (what if there are actual cyclic red-blue loops as well like in cyclic breakpoint graph_GRs?). If the blue and red genomes match perfectly, the number of red-blue cycles should equal the number of synteny blocks + 1. Otherwise, you can **ESTIMATE** the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of synteny blocks + 1.
+
+To calculate the real number of reversals need for linear breakpoint graph_GRs (not estimate), there's a [paper on ACM DL](https://dl.acm.org/doi/10.1145/300515.300516) that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.
+```
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -8785,7 +8795,7 @@ graph_show
 
    Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
 
- * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes go through structual changes, typically caused by either
+ * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes go through structural changes, typically caused by either
  
    * breakages in the chromosome, where the broken ends possibly rejoin but in a different order / direction.
    * DNA replication error.
@@ -8846,13 +8856,13 @@ graph_show
                                                '--------'
      ```
 
-   If an organism survives genome rearrangement (it may not because the changed genome may result in sterility or death), the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other via genomic dot-plots and synteny graphs.
+   The segments of the genome that were moved around are referred to as synteny blocks.
 
  * `{bm} chimeric gene` - A gene born from two separate genes getting fused together. A chimeric gene may have been created via genome rearrangement translocations.
 
    An example of a chimeric gene is the gene coding for ABL-BCR fusion protein: A fusion of two smaller genes (coding for ABL and BCR individually) caused by chromosomes 9 and 22 breaking and re-attaching in a different order. The ABL-BCR fusion protein has been implicated in the development of a cancer known as chronic myeloid leukemia.
 
- * `{bm} reversal distance` - The *minimum* number of genome rearrangement reversals required to transform sequence P to sequence Q. The minimum is chosen because of parsimony. 
+ * `{bm} reversal distance` - The *minimum* number of genome rearrangement reversals required to transform genome P to genome Q. The minimum is chosen because of parsimony. 
  
    The short-hand for this is `{kt} d_{rev}(P, Q)`.
 
@@ -8909,7 +8919,7 @@ graph_show
      * "D1 and D2 are similar genes, but with reversed sequences."
      ```
 
-   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
+   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterpart).
 
    ```{svgbob}
        -W       -U       +V          -T                               +T              +U        +V                  +W   
@@ -9111,7 +9121,7 @@ graph_show
     5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
    ```
    
-   The number of breakpoint_GRs and adjacencies_GR always equals to one less than the number of synteny blocks.
+   The number of breakpoint_GRs and adjacencies_GR always equals one less than the number of synteny blocks.
 
    ```{svgbob}
    * "1 + 2 =  4 - 1"
@@ -9133,7 +9143,7 @@ graph_show
     5'                  genome1              3'                 5'                          genome2                            3'
    ```
 
-   The breakpoint graph_GR for the above two genomes is basically just a merge of the above diagrams. The set of synteny blocks shard between both genomes (A, B, C, and D) become dashed edges where each edge's...
+   The breakpoint graph_GR for the above two genomes is basically just a merge of the above diagrams. The set of synteny blocks shared between both genomes (A, B, C, and D) become dashed edges where each edge's...
    
     * arrow end is a tail node (t suffix).
     * non-arrow end is a head node (h suffix).
@@ -9259,7 +9269,7 @@ graph_show
 
  * `{bm} permutation/(permutation)_GR/i` - A list representing a single chromosome in one of the two genomes that make up a breakpoint graph_GR. The entire breakpoint graph_GR is representable as two sets of permutation_GRs, where each genome in the breakpoint graph_GR is a set.
  
-   Permutation_GR sets are a commonly used for tersely representing breakpoint graph_GRs as text. For example, given the following breakpoint graph_GR ...
+   Permutation_GR sets are commonly used for tersely representing breakpoint graph_GRs as text. For example, given the following breakpoint graph_GR ...
 
    ```{dot}
    graph G {

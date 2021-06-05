@@ -8740,9 +8740,9 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Result...</p>
 <p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
 <ul>
-<li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
@@ -8847,11 +8847,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Final synteny graph...</p>
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
-<li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 212, 364), 'x': ('B0', 233, 392), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 660, 823), 'x': ('B0', 459, 629), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 879, 1018), 'x': ('B0', 953, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 384, 453), 'x': ('B0', 862, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 208, 362), 'x': ('B0', 229, 390), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 530, 587), 'x': ('B0', 710, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 661, 823), 'x': ('B0', 459, 628), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -9129,10 +9129,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>START
 <ul>
-<li>CE(X_t, Z_h)</li>
-<li>SE(X_t, X_h)</li>
 <li>CE(X_h, Z_t)</li>
-<li>SE(Z_t, Z_h)</li>
+<li>SE(X_h, X_t)</li>
+<li>CE(X_t, Z_h)</li>
+<li>SE(Z_h, Z_t)</li>
 </ul>
 </li>
 <li>START
@@ -9365,29 +9365,36 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>
 <p>Initial red_p_list=[['+A', '-B', '-C', '+D'], ['+E']]</p>
-<p><img src="dot_cbbc54abd56cdb2a73a8f7e17cdace5f.svg" alt="Dot diagram"></p>
+<p><img src="dot_af0ac46e994ac1e5f33cd68f5228325a.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '-B', '-E', '-C', '+D']]</p>
-<p><img src="dot_5f178e16d7d6871f291c6d01d3885c39.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '-B', '-C', '-D'], ['+E']]</p>
+<p><img src="dot_c8b9aa3bc658f8cbc377491579ff9356.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-E', '-C', '+D']]</p>
-<p><img src="dot_58950eda719023d24e91a0cd169aa2d6.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+C', '+B', '-D'], ['+E']]</p>
+<p><img src="dot_c1d70439ae86c9828bfae1db508e496c.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-D', '+C', '+E']]</p>
-<p><img src="dot_ade1c2aa0d6f8578b2df59a567f3305d.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+C', '+E', '+B', '-D']]</p>
+<p><img src="dot_9cd8671b140d48afef68ab7612d9703e.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</p>
-<p><img src="dot_abc88b0c683b78ad2cc894332694151f.svg" alt="Dot diagram"></p>
+<p><img src="dot_be60f4f1d9d02b0e6071be328e3784cf.svg" alt="Dot diagram"></p>
 </li>
 </ul>
-<p>Recall that the the breakpoint graph is undirected. A permutation may have been walked in either direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
+<p>Recall that the breakpoint graph is undirected. A permutation may have been walked in either direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
 <p>Also, recall that a genome is represented as a set of permutations -- sets are not ordered.</p>
 </div>
 <p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It isn't discussed here, but the Pevzner book put an emphasis on calculating the <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> number of reversals (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>) without having to go through and apply <a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a>s in the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The basic idea is to count the number of red-blue cycles in the graph.</p>
+<p>For a cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle is when you pick a node, follow the blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ..., until you arrive back at the same node. If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. Otherwise, you can calculate the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p>For a linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle isn't actually a cycle because: Pick the termination node, follow a blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ... until you arrive back at the termination node (what if there are actual cyclic red-blue loops as well like in cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s?). If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1. Otherwise, you can <strong>ESTIMATE</strong> the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1.</p>
+<p>To calculate the real number of reversals need for linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (not estimate), there's a <a href="https://dl.acm.org/doi/10.1145/300515.300516">paper on ACM DL</a> that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.</p>
+</div>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -9859,11 +9866,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="syntenygraph_aa18ecc0bccea2e4d491f745259e60c6.png" alt="Synteny Graph"></p>
 <p>Mapping synteny graph matches to IDs using x-axis genome...</p>
 <ul>
-<li>G2C1_B0 = {'y': ('G1C1', 456122, 490874), 'x': ('G2C1', 26148, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B1 = {'y': ('G1C1', 403833, 428046), 'x': ('G2C1', 55611, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B0 = {'y': ('G1C1', 456122, 490875), 'x': ('G2C1', 26147, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428050), 'x': ('G2C1', 55607, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B2 = {'y': ('G1C1', 356151, 384120), 'x': ('G2C1', 88487, 113644), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
-<li>G2C1_B4 = {'y': ('G1C1', 772155, 835258), 'x': ('G2C1', 287183, 351649), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772154, 835262), 'x': ('G2C1', 287182, 351653), 'type': 'NORMAL'}</li>
 <li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
 <li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
 <li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
@@ -9922,10 +9929,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Mapping synteny graph matches to IDs using x-axis genome...</p>
 <ul>
 <li>G2C1_B0 = {'y': ('G1C1', 456122, 490876), 'x': ('G2C1', 26146, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B1 = {'y': ('G1C1', 403833, 428054), 'x': ('G2C1', 55603, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B2 = {'y': ('G1C1', 356150, 384118), 'x': ('G2C1', 88487, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428050), 'x': ('G2C1', 55607, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356150, 384121), 'x': ('G2C1', 88486, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
-<li>G2C1_B4 = {'y': ('G1C1', 772154, 825262), 'x': ('G2C1', 287182, 342448), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772154, 835260), 'x': ('G2C1', 287182, 351651), 'type': 'NORMAL'}</li>
 <li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
 <li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
 <li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
@@ -9941,11 +9948,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>
 <p>INITIAL red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '-G2C1_B7', '-G2C1_B6', '-G2C1_B5', '-G2C1_B4', '-G2C1_B3', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_4a09e53adbbec4c175c643d6a0518cad.svg" alt="Dot diagram"></p>
+<p><img src="dot_60dd2c6aef0beef01907928c8f5ce5bb.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '+G2C1_B3', '+G2C1_B4', '+G2C1_B5', '+G2C1_B6', '+G2C1_B7', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_7cac4ef690a2733fbc37c76113ed3f83.svg" alt="Dot diagram"></p>
+<p><img src="dot_3032cc1dc598387acdd258268499f7b1.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 </div>
@@ -12076,7 +12083,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.</p>
 </li>
 <li>
-<p><a name="BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi"></a><strong>genome rearrangement</strong> - A type of mutation where chromosomes go through structual changes, typically caused by either</p>
+<p><a name="BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi"></a><strong>genome rearrangement</strong> - A type of mutation where chromosomes go through structural changes, typically caused by either</p>
 <ul>
 <li>breakages in the chromosome, where the broken ends possibly rejoin but in a different order / direction.</li>
 <li>DNA replication error.</li>
@@ -12109,14 +12116,14 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_2bf9b82f60b2bbaf95ba7e19855dd43c0b57008f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>If an organism survives <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> (it may not because the changed <a href="#BM_(genome)%2Fi">genome</a> may result in sterility or death), the segments of the <a href="#BM_(genome)%2Fi">genome</a> that were moved around are referred to as <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by comparing two <a href="#BM_(genome)%2Fi">genome</a>s against each other via <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a>s and <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>s.</p>
+<p>The segments of the <a href="#BM_(genome)%2Fi">genome</a> that were moved around are referred to as <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(chimeric%20gene)%2Fi"></a><strong>chimeric gene</strong> - A <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> born from two separate <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> getting <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fuse</a>d together. A <a href="#BM_(chimeric%20gene)%2Fi">chimeric gene</a> may have been created via <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> <a href="#BM_(translocation)%2Fi">translocation</a>s.</p>
 <p>An example of a <a href="#BM_(chimeric%20gene)%2Fi">chimeric gene</a> is the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> coding for ABL-BCR <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a> protein: A <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a> of two smaller <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> (coding for ABL and BCR individually) caused by chromosomes 9 and 22 breaking and re-attaching in a different order. The ABL-BCR <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a> protein has been implicated in the development of a cancer known as chronic myeloid leukemia.</p>
 </li>
 <li>
-<p><a name="BM_(reversal%20distance)%2Fi"></a><strong>reversal distance</strong> - The <em>minimum</em> number of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals required to transform <a href="#BM_(sequence)%2Fi">sequence</a> P to <a href="#BM_(sequence)%2Fi">sequence</a> Q. The minimum is chosen because of <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
+<p><a name="BM_(reversal%20distance)%2Fi"></a><strong>reversal distance</strong> - The <em>minimum</em> number of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals required to transform <a href="#BM_(genome)%2Fi">genome</a> P to <a href="#BM_(genome)%2Fi">genome</a> Q. The minimum is chosen because of <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
 <p>The short-hand for this is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>r</mi><mi>e</mi><mi>v</mi></mrow></msub><mo stretchy="false">(</mo><mi>P</mi><mo separator="true">,</mo><mi>Q</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d_{rev}(P, Q)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">Q</span><span class="mclose">)</span></span></span></span>.</p>
 </li>
 <li>
@@ -12142,7 +12149,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_feb089f8283ebeb0a53ce28c3d58c61f4291646f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s (reversals, <a href="#BM_(translocation)%2Fi">translocation</a>s, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterparts).</p>
+<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s (reversals, <a href="#BM_(translocation)%2Fi">translocation</a>s, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterpart).</p>
 <p><img src="svgbob_f4076143294d6480fb4b883c6cf2d02cdbf9117b.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -12177,14 +12184,14 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 <p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">Breakpoint</a>s and <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacencies</a> are useful because they identify desirable points for reversals (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>), giving way to algorithms that find / estimate the <a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>. For example, a contiguous train of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacencies</a> in an undesired <a href="#BM_(genome)%2Fi">genome</a> may identify the boundaries for a single reversal that gets the undesired <a href="#BM_(genome)%2Fi">genome</a> closer to the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
 <p><img src="svgbob_185405cd7f39c08a1a02020363ae24096ff5b234.svg" alt="Kroki diagram output"></p>
-<p>The number of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s and <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacencies</a> always equals to one less than the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p>The number of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s and <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacencies</a> always equals one less than the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p><img src="svgbob_04ffee42b4f3665b1043ccb7aa7273eff21cb2fb.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(breakpoint%20graph)_GR%2Fi"></a><strong>breakpoint graph</strong> - An undirected graph representing the order and orientation of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shared between two <a href="#BM_(genome)%2Fi">genome</a>s.</p>
 <p>For example, the following two <a href="#BM_(genome)%2Fi">genome</a>s share the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s A, B, C, and D...</p>
 <p><img src="svgbob_7e9c33210faa97dd82efb19ecbdd7b9300236fba.svg" alt="Kroki diagram output"></p>
-<p>The <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> for the above two <a href="#BM_(genome)%2Fi">genome</a>s is basically just a merge of the above diagrams. The set of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shard between both <a href="#BM_(genome)%2Fi">genome</a>s (A, B, C, and D) become dashed edges where each edge's...</p>
+<p>The <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> for the above two <a href="#BM_(genome)%2Fi">genome</a>s is basically just a merge of the above diagrams. The set of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shared between both <a href="#BM_(genome)%2Fi">genome</a>s (A, B, C, and D) become dashed edges where each edge's...</p>
 <ul>
 <li>arrow end is a tail node (t suffix).</li>
 <li>non-arrow end is a head node (h suffix).</li>
@@ -12203,7 +12210,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </li>
 <li>
 <p><a name="BM_(permutation)_GR%2Fi"></a><strong>permutation</strong> - A list representing a single chromosome in one of the two <a href="#BM_(genome)%2Fi">genome</a>s that make up a <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>. The entire <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is representable as two sets of <a href="#BM_(permutation)_GR%2Fi">permutation</a>s, where each <a href="#BM_(genome)%2Fi">genome</a> in the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> is a set.</p>
-<p><a href="#BM_(permutation)_GR%2Fi">Permutation</a> sets are a commonly used for tersely representing <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s as text. For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
+<p><a href="#BM_(permutation)_GR%2Fi">Permutation</a> sets are commonly used for tersely representing <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s as text. For example, given the following <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> ...</p>
 <p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
 <p>... , the <a href="#BM_(permutation)_GR%2Fi">permutation</a> set representing the red <a href="#BM_(genome)%2Fi">genome</a> may be any of the following ...</p>
 <ul>

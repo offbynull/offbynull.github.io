@@ -168,7 +168,7 @@ def main():
                 print(f'   ```')
         print('\n')
         print(
-            f'Recall that the the breakpoint graph is undirected. A permutation may have been walked in either'
+            f'Recall that the breakpoint graph is undirected. A permutation may have been walked in either'
             f' direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the'
             f' output looks like it\'s going backwards, that\'s just as correct as if it looked like it\'s going'
             f' forward.\n'
