@@ -154,6 +154,7 @@
 </ul>
 <li><a href="#H_Genome%20Rearrangement">Genome Rearrangement</a></li>
 <ul>
+<li><a href="#H_Find%20Synteny%20Blocks">Find Synteny Blocks</a></li>
 <li><a href="#H_Find%20Reversal%20Path">Find Reversal Path</a></li>
 </ul>
 </ul>
@@ -8640,11 +8641,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li><a href="#BM_(Algorithms%5C%2FK-mer)_TOPIC%2F">Algorithms/K-mer</a></li>
 </ul>
 </div>
-<p>A common form of DNA mutation, called <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, is when fragile regions of DNA break apart and end up either ...</p>
+<p>A form of DNA mutation, called <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, is when chromosomes go through structural changes such as ...</p>
 <ul>
-<li>re-attaching in a different order (<a href="#BM_(translocation)%2Fi">translocation</a>, <a href="#BM_(fission)%2Fi">fission</a>, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>) / direction (reversal).</li>
-<li>re-attaching but after DNA repair / synthesis systems have injected a fix (duplicate).</li>
-<li>re-attaching without the broken off portion / not re-attaching at all (deletion).</li>
+<li>shuffling segments (<a href="#BM_(translocation)%2Fi">translocation</a>, <a href="#BM_(fission)%2Fi">fission</a>, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>)</li>
+<li>flipping direction (reversal).</li>
+<li>duplicating segments.</li>
+<li>deleting segments.</li>
 </ul>
 <p>When a new species branches off from an existing one, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s are responsible for at least some of the divergence. That is, the two related <a href="#BM_(genome)%2Fi">genome</a>s will share long stretches of similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>, but these long stretches will appear as if they had been randomly cut-and-paste and / or randomly reversed when compared to the other.</p>
 <p><img src="svgbob_d5f827e20974efd41c9ac222d75bd5443f3d190d.svg" alt="Kroki diagram output"></p>
@@ -8846,10 +8848,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
 <li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 881, 1018), 'x': ('B0', 955, 1104), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 212, 363), 'x': ('B0', 233, 391), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 530, 585), 'x': ('B0', 712, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 658, 823), 'x': ('B0', 459, 631), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 212, 364), 'x': ('B0', 233, 392), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 660, 823), 'x': ('B0', 459, 629), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 879, 1018), 'x': ('B0', 953, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 530, 587), 'x': ('B0', 710, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -9127,22 +9129,22 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>START
 <ul>
-<li>CE(B_h, C_t)</li>
-<li>SE(B_h, B_t)</li>
+<li>CE(X_t, Z_h)</li>
+<li>SE(X_t, X_h)</li>
+<li>CE(X_h, Z_t)</li>
+<li>SE(Z_t, Z_h)</li>
+</ul>
+</li>
+<li>START
+<ul>
 <li>CE(A_h, B_t)</li>
 <li>SE(A_h, A_t)</li>
 <li>CE(A_t, D_h)</li>
 <li>SE(D_h, D_t)</li>
 <li>CE(C_h, D_t)</li>
 <li>SE(C_h, C_t)</li>
-</ul>
-</li>
-<li>START
-<ul>
-<li>CE(X_t, Z_h)</li>
-<li>SE(X_t, X_h)</li>
-<li>CE(X_h, Z_t)</li>
-<li>SE(Z_t, Z_h)</li>
+<li>CE(B_h, C_t)</li>
+<li>SE(B_h, B_t)</li>
 </ul>
 </li>
 </ul>
@@ -9363,23 +9365,23 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>
 <p>Initial red_p_list=[['+A', '-B', '-C', '+D'], ['+E']]</p>
-<p><img src="dot_fcb62c1249c85a65e9ec33d93d6696fb.svg" alt="Dot diagram"></p>
+<p><img src="dot_cbbc54abd56cdb2a73a8f7e17cdace5f.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-C', '+D'], ['+E']]</p>
-<p><img src="dot_6744a5b8d546a2acc1675a6bf06235c7.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '-B', '-E', '-C', '+D']]</p>
+<p><img src="dot_5f178e16d7d6871f291c6d01d3885c39.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-C', '-D'], ['+E']]</p>
-<p><img src="dot_c0ebfee189f388c178d5bf934f5e3f9b.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-E', '-C', '+D']]</p>
+<p><img src="dot_58950eda719023d24e91a0cd169aa2d6.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-D'], ['+E'], ['+C']]</p>
-<p><img src="dot_671bf09f65defc0ba1d66affde34431e.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-D', '+C', '+E']]</p>
+<p><img src="dot_ade1c2aa0d6f8578b2df59a567f3305d.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</p>
-<p><img src="dot_558160466b6f1b5a5427cb219e6b3a54.svg" alt="Dot diagram"></p>
+<p><img src="dot_abc88b0c683b78ad2cc894332694151f.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <p>Recall that the the breakpoint graph is undirected. A permutation may have been walked in either direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
@@ -9772,6 +9774,96 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 <p></p>
 <a name="H_Genome%20Rearrangement"></a><h2>Genome Rearrangement</h2>
+<p><a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">Genome rearrangement</a> is form of mutation where chromosomes go through structural changes. These structural changes include chromosome segments getting ...</p>
+<ul>
+<li>
+<p>shuffled into a different order (<a href="#BM_(translocation)%2Fi">translocation</a>, <a href="#BM_(fission)%2Fi">fission</a>, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>) or direction (reversal).</p>
+<p>For example, a segment of chromosome breaks off and rejoins, but each end of that segment joins back up at a different point.</p>
+<p><img src="svgbob_dfd16cae74c24c2767d35903c11b7f5050f886c4.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_03cbcaf05f055c39a43c9a1cc326b685879d4beb.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_a3e31548f4a9e9497f1251dc3f6017c22b2d5858.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_d1769d28e9ed5c384f15ea5f0bde362ee6eab157.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>deleted.</p>
+<p>For example, a segment of a chromosome breaks off and DNA repair mechanisms close the gap.</p>
+<p><img src="svgbob_a9ce396e59a5a339165477856ba34d65ad885310.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>duplicated.</p>
+<p>For example, a segment of a chromosome breaks off and DNA repair mechanisms close the gap, but that broken off segment may still re-attach at a different location.</p>
+<p><img src="svgbob_302aff8adacb0e3118dfe66ec50ed3015862d7ee.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>There are fragile regions of chromosomes where breakages are more likely to occur. For example, the ABL-BCR <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a> protein, a protein implicated in the development of a cancer known as chronic myeloid leukemia, is the result of human chromosomes 9 and 22 breaking and fusing back together in a different order: Chromosome 9 contains the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> for ABL while chromosome 22 contains the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> for BCR and both <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are in fragile regions of their respective chromosome. If those fragile chromosome regions both break but <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fuse</a> back together in the wrong order, the ABL-BCR <a href="#BM_(chimeric%20gene)%2Fi">chimeric gene</a> is formed.</p>
+<p>As shown with the ABL-BCR <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a> protein example above, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s often result in the sterility or death of the organism. However, when a species branches off from an existing one, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s are likely responsible for at least some of the divergence. That is, the two related <a href="#BM_(genome)%2Fi">genome</a>s will share long stretches of similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>, but these long stretches will appear as if they had been randomly cut-and-paste and / or randomly reversed when compared to the other. For example, humans and mice have a shared ancestry and as such share a vast number of long stretches (around 280).</p>
+<p>These long stretches of similar <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are called <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, the following <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> mutations result in 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s shared between the two <a href="#BM_(genome)%2Fi">genome</a>s ...</p>
+<p><img src="svgbob_d5f827e20974efd41c9ac222d75bd5443f3d190d.svg" alt="Kroki diagram output"></p>
+<ul>
+<li><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a> 1: <code>[G1, G2]</code></li>
+<li><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a> 2: <code>[G3]</code></li>
+<li><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a> 3: <code>[G4, G5, G6]</code> (although they're reversed)</li>
+<li><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a> 4: <code>[G7, G8, G9]</code></li>
+</ul>
+<a name="H_Find%20Synteny%20Blocks"></a><h3>Find Synteny Blocks</h3>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSynteny%2FGenomic%20Dot%20Plot)_TOPIC%2F">Algorithms/Synteny/Genomic Dot Plot</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSynteny%2FSynteny%20Graph)_TOPIC%2F">Algorithms/Synteny/Synteny Graph</a></li>
+</ul>
+</div>
+<p><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by first finding matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s and <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, then combining matches that are close together (clustering) to reveal the long stretches of matches that make up <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p>The visual manifestation of this concept is the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> and <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>. A <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> is a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, while a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> is the clustered form of a <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> that reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, ...</p>
+<p><img src="svgbob_eb50ab9882ae13623c74006244614b059e22fa47.svg" alt="Kroki diagram output"></p>
+<p>... reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (C) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, B, and D)...</p>
+<p><img src="svgbob_725cfe74948aa476c335f99e888801f679a0059a.svg" alt="Kroki diagram output"></p>
+<p>In the example below, two species of the Mycoplasma bacteria are analyzed to find the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between them...</p>
+<div style="border:1px solid black;">
+<p></p>
+<p>Finding synteny blocks for...</p>
+<ul>
+<li>k=20</li>
+<li>cyclic=True</li>
+<li>show_graph=True</li>
+<li>genome1 reference: [[G1C1, /input/ch6_code/src/Mycoplasma bovis - GCA_000696015.1_ASM69601v1_genomic.fna.xz]]</li>
+<li>genome2 reference: [[G2C1, /input/ch6_code/src/Mycoplasma agalactiae 14628 - GCA_000266865.1_ASM26686v1_genomic.fna.xz]]</li>
+</ul>
+<p>NOTE: Nucleotide codes that aren't ACGT get filtered out of the genomes.</p>
+<p>Generating genomic dotplot...</p>
+<p><img src="dotplot_aa18ecc0bccea2e4d491f745259e60c6.png" alt="Genomic Dot Plot"></p>
+<p>Clustering genomic dotplot to snyteny graph...</p>
+<ul>
+<li>Merging radius=25 angle_half_maw=90...</li>
+<li>Merging radius=50 angle_half_maw=90...</li>
+<li>Merging radius=100 angle_half_maw=90...</li>
+<li>Merging radius=200 angle_half_maw=90...</li>
+<li>Merging radius=400 angle_half_maw=90...</li>
+<li>Merging radius=800 angle_half_maw=90...</li>
+<li>Merging radius=1600 angle_half_maw=90...</li>
+<li>Merging radius=3200 angle_half_maw=90...</li>
+<li>Filtering max_filter_length=3200.0 max_merge_distance=20000.0...</li>
+<li>Merging radius=6400 angle_half_maw=90...</li>
+<li>Merging radius=12800 angle_half_maw=90...</li>
+<li>Culling below length=10000.0...</li>
+</ul>
+<p>Generating synteny graph...</p>
+<p><img src="syntenygraph_aa18ecc0bccea2e4d491f745259e60c6.png" alt="Synteny Graph"></p>
+<p>Mapping synteny graph matches to IDs using x-axis genome...</p>
+<ul>
+<li>G2C1_B0 = {'y': ('G1C1', 456122, 490874), 'x': ('G2C1', 26148, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428046), 'x': ('G2C1', 55611, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356151, 384120), 'x': ('G2C1', 88487, 113644), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772155, 835258), 'x': ('G2C1', 287183, 351649), 'type': 'NORMAL'}</li>
+<li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
+<li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
+<li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
+<li>G2C1_B8 = {'y': ('G1C1', 529629, 591336), 'x': ('G2C1', 816444, 878201), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B9 = {'y': ('G1C1', 491197, 509162), 'x': ('G2C1', 880483, 897382), 'type': 'REVERSE_COMPLEMENT'}</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Find%20Reversal%20Path"></a><h3>Find Reversal Path</h3>
 <div style="border:1px solid black;">
 <p></p>
@@ -9806,10 +9898,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Mapping synteny graph matches to IDs using x-axis genome...</p>
 <ul>
 <li>G2C1_B0 = {'y': ('G1C1', 456122, 490876), 'x': ('G2C1', 26146, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B1 = {'y': ('G1C1', 403833, 428046), 'x': ('G2C1', 55611, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B2 = {'y': ('G1C1', 356150, 384120), 'x': ('G2C1', 88487, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428054), 'x': ('G2C1', 55603, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356150, 384118), 'x': ('G2C1', 88487, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
-<li>G2C1_B4 = {'y': ('G1C1', 772155, 835255), 'x': ('G2C1', 287183, 351646), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772154, 825262), 'x': ('G2C1', 287182, 342448), 'type': 'NORMAL'}</li>
 <li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
 <li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
 <li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
@@ -9825,11 +9917,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>
 <p>INITIAL red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '-G2C1_B7', '-G2C1_B6', '-G2C1_B5', '-G2C1_B4', '-G2C1_B3', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_6b2da855ec21678c258f096800b08bde.svg" alt="Dot diagram"></p>
+<p><img src="dot_4a09e53adbbec4c175c643d6a0518cad.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '+G2C1_B3', '+G2C1_B4', '+G2C1_B5', '+G2C1_B6', '+G2C1_B7', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_3e1480702b9cb676b825d9108f7b264e.svg" alt="Dot diagram"></p>
+<p><img src="dot_7cac4ef690a2733fbc37c76113ed3f83.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 </div>
@@ -11960,10 +12052,16 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.</p>
 </li>
 <li>
-<p><a name="BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi"></a><strong>genome rearrangement</strong> - A type of mutation where chromosomes break and get glued back together in a different order / direction. The different classes of rearrangement include...</p>
+<p><a name="BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi"></a><strong>genome rearrangement</strong> - A type of mutation where chromosomes go through structual changes, typically caused by either</p>
+<ul>
+<li>breakages in the chromosome, where the broken ends possibly rejoin but in a different order / direction.</li>
+<li>DNA replication error.</li>
+<li>DNA repair error.</li>
+</ul>
+<p>The different classes of rearrangement include...</p>
 <ul>
 <li>
-<p>reversal / inversion:</p>
+<p>reversal / inversion: A break at two different locations followed by rejoining of the broken ends in different order. and rejoin in different order</p>
 <p><img src="svgbob_c74a74fa3c923d49b533b6a31889fba8c857805a.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -11987,7 +12085,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_2bf9b82f60b2bbaf95ba7e19855dd43c0b57008f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>If an organism survives <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> (it may not because the changed <a href="#BM_(genome)%2Fi">genome</a> may result in sterility or death), the segments of the <a href="#BM_(genome)%2Fi">genome</a> that were moved around are referred to as <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by comparing two <a href="#BM_(genome)%2Fi">genome</a>s against each other.</p>
+<p>If an organism survives <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> (it may not because the changed <a href="#BM_(genome)%2Fi">genome</a> may result in sterility or death), the segments of the <a href="#BM_(genome)%2Fi">genome</a> that were moved around are referred to as <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by comparing two <a href="#BM_(genome)%2Fi">genome</a>s against each other via <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a>s and <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(chimeric%20gene)%2Fi"></a><strong>chimeric gene</strong> - A <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> born from two separate <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> getting <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fuse</a>d together. A <a href="#BM_(chimeric%20gene)%2Fi">chimeric gene</a> may have been created via <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> <a href="#BM_(translocation)%2Fi">translocation</a>s.</p>
@@ -12020,7 +12118,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_feb089f8283ebeb0a53ce28c3d58c61f4291646f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s (reversals, <a href="#BM_(translocation)%2Fi">translocation</a>s, etc..) are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterparts).</p>
+<p>The idea is that as evolution branches out a single ancestor species to different sub-species, <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s (reversals, <a href="#BM_(translocation)%2Fi">translocation</a>s, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between their <a href="#BM_(genome)%2Fi">genome</a>s (most human <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have a mouse counterparts).</p>
 <p><img src="svgbob_f4076143294d6480fb4b883c6cf2d02cdbf9117b.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -12035,7 +12133,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>
 <p><a name="BM_(synteny%20graph)%2Fi"></a><strong>synteny graph</strong> - Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, cluster together points so as to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, ...</p>
 <p><img src="svgbob_eb50ab9882ae13623c74006244614b059e22fa47.svg" alt="Kroki diagram output"></p>
-<p>... reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (B) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, C, and D)...</p>
+<p>... reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (C) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, B, and D)...</p>
 <p><img src="svgbob_725cfe74948aa476c335f99e888801f679a0059a.svg" alt="Kroki diagram output"></p>
 </li>
 <li>

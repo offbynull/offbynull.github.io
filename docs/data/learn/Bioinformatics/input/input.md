@@ -4983,11 +4983,12 @@ C
 Algorithms/K-mer_TOPIC
 ```
 
-A common form of DNA mutation, called genome rearrangement, is when fragile regions of DNA break apart and end up either ...
+A form of DNA mutation, called genome rearrangement, is when chromosomes go through structural changes such as ...
 
-* re-attaching in a different order (translocation, fission, fusion) / direction (reversal).
-* re-attaching but after DNA repair / synthesis systems have injected a fix (duplicate).
-* re-attaching without the broken off portion / not re-attaching at all (deletion).
+* shuffling segments (translocation, fission, fusion) 
+* flipping direction (reversal).
+* duplicating segments.
+* deleting segments.
 
 When a new species branches off from an existing one, genome rearrangements are responsible for at least some of the divergence. That is, the two related genomes will share long stretches of similar genes, but these long stretches will appear as if they had been randomly cut-and-paste and / or randomly reversed when compared to the other.
 
@@ -6849,6 +6850,174 @@ cyclic
 
 ## Genome Rearrangement
 
+Genome rearrangement is form of mutation where chromosomes go through structural changes. These structural changes include chromosome segments getting ... 
+
+ * shuffled into a different order (translocation, fission, fusion) or direction (reversal).
+ 
+   For example, a segment of chromosome breaks off and rejoins, but each end of that segment joins back up at a different point.
+
+   ```{svgbob}
+   "Reversal Example"
+
+                                  .--------------.
+   "BEFORE:"    A1 ->  A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+   "AFTER:"     A1 ->  A2 -> A3 -> A7 <- A6 <- A5 -> A7 -> A8 -> A9
+                                  '--------------'
+   ```
+
+   ```{svgbob}
+   "Translocation Example"
+
+                     .--------------.
+   "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+   "AFTER:"     A1 -> A5 -> A6 -> A7 -> A8 -> A2 -> A3 -> A4 -> A9
+                                             '--------------'
+   ```
+
+   ```{svgbob}
+   "Chromosome Fusion Example"
+
+                                             .--------.
+   "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6    B1 -> B2 -> B3
+   "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> B1 -> B2 -> B3
+                                             '--------'
+   ```
+
+   ```{svgbob}
+   "Chromosome Fission Example"
+
+                                             .--------.
+   "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> B1 -> B2 -> B3
+   "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6    B1 -> B2 -> B3
+                                             '--------'
+   ```
+
+ * deleted.
+ 
+   For example, a segment of a chromosome breaks off and DNA repair mechanisms close the gap.
+
+   ```{svgbob}
+   "Deletion Example"
+
+                     .--------------.
+   "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+   "AFTER:"     A1 -> A5 -> A6 -> A7 -> A8 -> A9
+   ```
+
+ * duplicated.
+ 
+   For example, a segment of a chromosome breaks off and DNA repair mechanisms close the gap, but that broken off segment may still re-attach at a different location.
+
+   ```{svgbob}
+   "Duplication Example"
+
+                     .--------.
+   "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+   "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A2 -> A3 -> A9
+                                                               '--------'
+   ```
+
+There are fragile regions of chromosomes where breakages are more likely to occur. For example, the ABL-BCR fusion protein, a protein implicated in the development of a cancer known as chronic myeloid leukemia, is the result of human chromosomes 9 and 22 breaking and fusing back together in a different order: Chromosome 9 contains the gene for ABL while chromosome 22 contains the gene for BCR and both genes are in fragile regions of their respective chromosome. If those fragile chromosome regions both break but fuse back together in the wrong order, the ABL-BCR chimeric gene is formed.
+
+As shown with the ABL-BCR fusion protein example above, genome rearrangements often result in the sterility or death of the organism. However, when a species branches off from an existing one, genome rearrangements are likely responsible for at least some of the divergence. That is, the two related genomes will share long stretches of similar genes, but these long stretches will appear as if they had been randomly cut-and-paste and / or randomly reversed when compared to the other. For example, humans and mice have a shared ancestry and as such share a vast number of long stretches (around 280).
+
+These long stretches of similar genes are called synteny blocks. For example, the following genome rearrangement mutations result in 4 synteny blocks shared between the two genomes ...
+
+```{svgbob}
+                                    "translocate"
+                 .---------------------------------------------------.
+                 |                              "reverse"            |
+                 |                    .---------------------------.  |
+            .----+---.        .-------+------.                    |  |
+"GENOME1:"   G1 -> G2 -> G3 -> G4 -> G5 -> G6 -> G7 -> G8 -> G9   |  |
+"GENOME2:"   G3 -> G6 <- G5 <- G4 -> G7 -> G8 -> G9 -> G1 -> G2   |  |
+                  '-------+------'                    '----+---'  |  |
+                          `--------------------------------+------'  |
+                                                           `---------'
+```
+
+ * Synteny block 1: `[G1, G2]`
+ * Synteny block 2: `[G3]`
+ * Synteny block 3: `[G4, G5, G6]` (although they're reversed)
+ * Synteny block 4: `[G7, G8, G9]`
+
+### Find Synteny Blocks
+
+```{prereq}
+Algorithms/Synteny/Genomic Dot Plot_TOPIC
+Algorithms/Synteny/Synteny Graph_TOPIC
+```
+
+Synteny blocks are identified by first finding matching k-mers and reverse complement matching k-mers, then combining matches that are close together (clustering) to reveal the long stretches of matches that make up synteny blocks.
+
+The visual manifestation of this concept is the genomic dot-plot and synteny graph. A genomic dot-plot is a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, while a synteny graph is the clustered form of a genomic dot-plot that reveals synteny blocks. For example, ...
+
+```{svgbob}
+ * "N = normal k-mer match"
+ * "R = reverse complement k-mer match"
+
+3'|                                                                                  3'|                                                                 
+  |  R                              R                                                  |  *                                                              
+  |   R           N                                                                    |   \                                                             
+  |    R               R                                                               |    \                                                            
+  |      R                           R           N                                     |     \                                                           
+  |       R                                                                            |      \                                                          
+  |       R               N                                                            |     A \                                                         
+ g|        R                                                                          g|        \                                                        
+ e|          R                   R           N                                        e|         \                                                      
+ n|           R                                                                       n|          \                                                     
+ o|            R                                     R                   ------->     o|           v                                                    
+ m|   N                        N                                         CLUSTER      m|                           ^                                    
+ e|                          N            N                                           e|                        C /                                      
+ 1|      N                  N                                                         1|                         /                                      
+  |                        N               N         N                                 |                        *                                          
+  |                 R                                                                  |                 *                                               
+  |                   R                                                                |                  \                                             
+  |                    R                                                               |                 B \                                           
+  |    R                R                                                              |                    v                                               
+  |                                           R              R                         |                                           *                     
+  |             N              N                R                                      |                                            \                    
+  |                                              R           R                         |                                           D \                    
+5'|       R             R                   R     R                                  5'|                                              v                  
+  +-----------------------------------------------------------------                   +-----------------------------------------------------------------
+   5'                          genome2                            3'                    5'                          genome2                            3'
+
+ * "Remember that the direction of DNA is 5' to 3'."
+```
+
+... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D)...
+
+```{svgbob}
+* "Synteny blocks projected on to each axis."
+
+     -D       -B      +C          -A                               +A              +B        +C                  +D   
+--<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
+ 5'                  genome1              3'                 5'                          genome2                            3'
+```
+
+In the example below, two species of the Mycoplasma bacteria are analyzed to find the synteny blocks between them...
+
+```{ch6}
+FindSyntenyBlocksBetweenGenomes
+[[G1C1, /input/ch6_code/src/Mycoplasma bovis - GCA_000696015.1_ASM69601v1_genomic.fna.xz]]
+[[G2C1, /input/ch6_code/src/Mycoplasma agalactiae 14628 - GCA_000266865.1_ASM26686v1_genomic.fna.xz]]
+cyclic
+20
+graph_show
+[merge, 25, 90]
+[merge, 50, 90]
+[merge, 100, 90]
+[merge, 200, 90]
+[merge, 400, 90]
+[merge, 800, 90]
+[merge, 1600, 90]
+[merge, 3200, 90]
+[filter, 3200, 20000]
+[merge, 6400, 90]
+[merge, 12800, 90]
+[cull, 10000]
+```
+
 ### Find Reversal Path
 
 ```{ch6}
@@ -8511,9 +8680,15 @@ graph_show
 
    Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
 
- * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes break and get glued back together in a different order / direction. The different classes of rearrangement include...
+ * `{bm} genome rearrangement/(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes go through structual changes, typically caused by either
  
-   * reversal / inversion:
+   * breakages in the chromosome, where the broken ends possibly rejoin but in a different order / direction.
+   * DNA replication error.
+   * DNA repair error.
+   
+   The different classes of rearrangement include...
+ 
+   * reversal / inversion: A break at two different locations followed by rejoining of the broken ends in different order. and rejoin in different order
   
      ```{svgbob}
                                     .--------------.
@@ -8566,7 +8741,7 @@ graph_show
                                                '--------'
      ```
 
-   If an organism survives genome rearrangement (it may not because the changed genome may result in sterility or death), the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other.
+   If an organism survives genome rearrangement (it may not because the changed genome may result in sterility or death), the segments of the genome that were moved around are referred to as synteny blocks. Synteny blocks are identified by comparing two genomes against each other via genomic dot-plots and synteny graphs.
 
  * `{bm} chimeric gene` - A gene born from two separate genes getting fused together. A chimeric gene may have been created via genome rearrangement translocations.
 
@@ -8629,7 +8804,7 @@ graph_show
      * "D1 and D2 are similar genes, but with reversed sequences."
      ```
 
-   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and get glued back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
+   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterparts).
 
    ```{svgbob}
        -W       -U       +V          -T                               +T              +U        +V                  +W   
@@ -8734,7 +8909,7 @@ graph_show
     * "Remember that the direction of DNA is 5' to 3'."
    ```
 
-   ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (B) while three are matching against their reverse complements (A, C, and D)...
+   ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D)...
 
    ```{svgbob}
    * "Synteny blocks projected on to each axis."
