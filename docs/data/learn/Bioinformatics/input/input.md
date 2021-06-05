@@ -5253,7 +5253,7 @@ Algorithms/Synteny/Synteny Graph_TOPIC
                                 -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--
 ```
 
-**WHY**: The theory is that the genome rearrangements between two species take the parsimonious path (or close to it). Since genome reversals are the most common form of genome rearrangement operation, by calculating a minimum reversal path it's possible to get an idea of how the two species branched off. In the example above, it may be that one of the genomes in the reversal path is the parent that both genomes are based off of.
+**WHY**: The theory is that the genome rearrangements between two species take the parsimonious path (or close to it). Since genome reversals are the most common form of genome rearrangement mutation, by calculating a parsimonious reversal path (smallest set of reversals) it's possible to get an idea of how the two species branched off. In the example above, it may be that one of the genomes in the reversal path is the parent that both genomes are based off of.
 
 ```{svgbob}
 * "Synteny blocks going in the forward direction (5' to 3') are prefixed with +."
@@ -6319,6 +6319,8 @@ graph_show
 
 ## Bacterial Genome Replication
 
+`{bm} /(Stories\/Bacterial Genome Replication)_TOPIC/`
+
 Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the replication origin (ori) is the region in which DNA replication starts, while the replication terminus (ter) is where it ends. The ori and ter and usually placed on opposite ends of each other.
 
 ```{svgbob}
@@ -6504,7 +6506,7 @@ There are now two complete copies of the DNA.
 
 ### Find Ori and Ter
 
-`{bm} /(Stories\/Bacteria Replication\/Find Ori and Ter)_TOPIC/`
+`{bm} /(Stories\/Bacterial Genome Replication\/Find Ori and Ter)_TOPIC/`
 
 ```{prereq}
 Algorithms/GC Skew_TOPIC
@@ -6601,8 +6603,10 @@ The material talks about how not all bacteria have a single peak and single vall
 
 ### Find the DnaA Box
 
+`{bm} /(Stories\/Bacterial Genome Replication\/Find the DnaA Box)_TOPIC/`
+
 ```{prereq}
-Stories/Bacteria Replication/Find Ori and Ter_TOPIC
+Stories/Bacterial Genome Replication/Find Ori and Ter_TOPIC
 Algorithms/K-mer/Find Repeating in Window_TOPIC
 Algorithms/GC Skew_TOPIC
 ```
@@ -6638,6 +6642,8 @@ DnaABoxCandidateFinder
 ```
 
 ## Transcription Factors
+
+`{bm} /(Stories\/Transcription Factors)_TOPIC/`
 
 A transcription factor / regulatory protein is an enzyme that influences the rate of gene expression for some set of genes. As the saturation of a transcription factor changes, so does the rate of gene expression for the set of genes that it influences.
 
@@ -6677,6 +6683,8 @@ The external conditions of sunlight and temperature causes the saturation of som
 ```
 
 ### Find Regulatory Motif
+
+`{bm} /(Stories\/Transcription Factors\/Find Regulatory Motif)_TOPIC/`
 
 ```{prereq}
 Algorithms/Motif/Find Motif Matrix_TOPIC
@@ -6718,6 +6726,8 @@ PracticalMotifFindingExample
 ```
 
 ## Non-ribosomal Peptides
+
+`{bm} /(Stories\/Non-ribosomal Peptides)_TOPIC/`
 
 A peptide is a miniature protein consisting of a chain of amino acids anywhere between 2 to 100 amino acids in length. 
 
@@ -6773,6 +6783,8 @@ According to the Wikipedia article on NRPs, there exist a wide range of peptides
 ```
 
 ### Find Sequence
+
+`{bm} /(Stories\/Non-ribosomal Peptides\/Find Sequence)_TOPIC/`
 
 ```{prereq}
 Algorithms/Peptide Sequence/Spectrum Sequence_TOPIC
@@ -6849,6 +6861,8 @@ cyclic
 ```
 
 ## Genome Rearrangement
+
+`{bm} /(Stories\/Genome Rearrangement)_TOPIC/`
 
 Genome rearrangement is form of mutation where chromosomes go through structural changes. These structural changes include chromosome segments getting ... 
 
@@ -6943,6 +6957,8 @@ These long stretches of similar genes are called synteny blocks. For example, th
 
 ### Find Synteny Blocks
 
+`{bm} /(Stories\/Genome Rearrangement\/Find Synteny Blocks)_TOPIC/`
+
 ```{prereq}
 Algorithms/Synteny/Genomic Dot Plot_TOPIC
 Algorithms/Synteny/Synteny Graph_TOPIC
@@ -6950,7 +6966,7 @@ Algorithms/Synteny/Synteny Graph_TOPIC
 
 Synteny blocks are identified by first finding matching k-mers and reverse complement matching k-mers, then combining matches that are close together (clustering) to reveal the long stretches of matches that make up synteny blocks.
 
-The visual manifestation of this concept is the genomic dot-plot and synteny graph. A genomic dot-plot is a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, while a synteny graph is the clustered form of a genomic dot-plot that reveals synteny blocks. For example, ...
+The visual manifestation of this concept is the genomic dot-plot and synteny graph. A genomic dot-plot is a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, while a synteny graph is the clustered form of a genomic dot-plot that reveals synteny blocks.
 
 ```{svgbob}
  * "N = normal k-mer match"
@@ -6985,7 +7001,7 @@ The visual manifestation of this concept is the genomic dot-plot and synteny gra
  * "Remember that the direction of DNA is 5' to 3'."
 ```
 
-... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D)...
+The synteny graph above reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D.
 
 ```{svgbob}
 * "Synteny blocks projected on to each axis."
@@ -6995,7 +7011,7 @@ The visual manifestation of this concept is the genomic dot-plot and synteny gra
  5'                  genome1              3'                 5'                          genome2                            3'
 ```
 
-In the example below, two species of the Mycoplasma bacteria are analyzed to find the synteny blocks between them...
+In the example below, two species of the Mycoplasma bacteria are analyzed to find the synteny blocks between them. The output reveals that pretty much the entirety of both genomes are shared, just in a different order.
 
 ```{ch6}
 FindSyntenyBlocksBetweenGenomes
@@ -7019,6 +7035,95 @@ graph_show
 ```
 
 ### Find Reversal Path
+
+`{bm} /(Stories\/Genome Rearrangement\/Find Reversal Path)_TOPIC/`
+
+```{prereq}
+Stories/Genome Rearrangement/Find Synteny Blocks_TOPIC
+Algorithms/Synteny/Reversal Path/Breakpoint Graph Algorithm_TOPIC
+```
+
+A reversal is the most common type of genome rearrangement mutation: A segment of chromosome breaks off and ends up re-attaching, but with the ends swapped.
+
+```{svgbob}
+            "Scenario 1"                                                     "Scenario 2"
+
+"Original:"                                                    "Original:"
+-->-->-->-->-->-->-->-->-->-->-->-->--                         -->-->-->-->-->-->-. .->-->-->-->-->-->--
+                                                                                  | |                   
+                                                                              .-<-' '-<-.               
+                                                                              '->-->-->-'               
+
+"Interval breaks:"                                             "Interval breaks:"
+             ->-->-->-->-                                      -->-->-->-->-->-->-. .->-->-->-->-->-->--
+-->-->-->-->-            ->-->-->-->--                                                                  
+                                                                              .-<-' '-<-.               
+                                                                              '->-->-->-'               
+
+"Interval flips around:"                                       "Interval ends re-attach in swapped order:"
+             -<--<--<--<-                                      -->-->-->-->-->-->-. .->-->-->-->-->-->--
+-->-->-->-->-            ->-->-->-->--                                             X                    
+                                                                              .-<-' '-<-.               
+                                                                              '->-->-->-'
+
+"Reversed interval re-attaches:"                                                           
+-->-->-->-->--<--<--<--<-->-->-->-->--               
+```
+
+The theory is that genome rearrangements between two species take the parsimonious path (or close to it). Since reversals are the most common form of genome rearrangement mutation, by calculating a parsimonious reversal path (smallest set of reversals) it's possible to get an idea of how the two species branched off.
+
+Note that there may be many parsimonious reversal paths between two genomes with shared synteny blocks.
+
+```{svgbob}
+                              +B     +C       -A      +D       -E                        +A     +B      +C       +D       +E                      
+                           -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--       vs        -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--
+
+
+
+         "Parsimonious reversal path 1"                          "Parsimonious reversal path 2"                          "Parsimonious reversal path 3"  
+                                                                                                                                                          
+                                  .-----.                .--------------------.                                  .------------.                           
+   +B     +C      -A       +D       -E                     +B     +C      -A       +D       -E                     +B     +C      -A       +D       -E    
+-->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--              -->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--              -->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--
+                                                                                                                                                          
+ .--------------------.                                                                   .-----.                                                 .-----.
+   +B     +C      -A       +D       +E                     +A     -C      -B       +D       -E                     -C     -B      -A       +D       -E   
+-->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--              -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--              -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<-
+                                                                                                                                                        
+        .-------------.                                         .-------------.                                         .-------------.                   
+   +A     -C      -B       +D       +E                     +A     -C      -B       +D       +E                     +A     -C      -B       +D       +E    
+-->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--              -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--              -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
+                                                                                                                                                          
+                                                                                                                                                          
+   +A     +B      +C       +D       +E                     +A     +B      +C       +D       +E                     +A     +B      +C       +D       +E    
+-->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--              -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--              -->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--
+```
+
+Given a parsimonious reversal path, it may be that one of the genomes in the reversal path is the parent species (or close to it).
+
+```{svgbob}
+                                   +A     -C      -B       +D       +E    
+                                -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
+                                                 PARENT
+
+                                                   |
+                   .-------------------------------+-------------------------------.
+                   |                                                               v
+                   |
+                   |                                         .--------------------.
+                   |                                           +A     -C      -B       +D       +E    
+                   v                                        -->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--
+
+        .-------------.                                                                       .-----.
+   +A     -C      -B       +D       +E                         +B     +C      -A       +D       +E    
+-->>>>>--<<<<<---<<<<<-->>>>>>>>>-->>>>>--                  -->>>>>-->>>>>---<<<<<-->>>>>>>>>-->>>>>--
+
+
+   +A    "+B      +C       +D       +E                         +B     +C      -A       +D       -E    
+-->>>>>-->>>>>--->>>>>-->>>>>>>>>-->>>>>--                  -->>>>>-->>>>>---<<<<<-->>>>>>>>>--<<<<<--
+```
+
+In the example below, two species of the Mycoplasma bacteria are analyzed to find a parsimonious reversal path using the breakpoint graph_GR algorithm. The output reveals that only 1 reversal is responsible for the change in species. As such, it's very likely that one species broke off from the other rather than there being a shared parent species.
 
 ```{ch6}
 FindReversalPathBetweenGenomes

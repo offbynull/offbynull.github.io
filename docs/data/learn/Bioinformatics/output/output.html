@@ -8865,7 +8865,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 <p><strong>WHAT</strong>: Given two <a href="#BM_(genome)%2Fi">genome</a>s that share <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s, where one <a href="#BM_(genome)%2Fi">genome</a> has the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in desired form while the other does not, determine the minimum number of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>) required to get the undesired <a href="#BM_(genome)%2Fi">genome</a>'s <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s to match those in the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
 <p><img src="svgbob_0abfe253869a0df3178afa7a4929438ea7bbdafc.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>: The theory is that the <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s between two species take the <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path (or close to it). Since <a href="#BM_(genome)%2Fi">genome</a> reversals are the most common form of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> operation, by calculating a minimum reversal path it's possible to get an idea of how the two species branched off. In the example above, it may be that one of the <a href="#BM_(genome)%2Fi">genome</a>s in the reversal path is the parent that both <a href="#BM_(genome)%2Fi">genome</a>s are based off of.</p>
+<p><strong>WHY</strong>: The theory is that the <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s between two species take the <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path (or close to it). Since <a href="#BM_(genome)%2Fi">genome</a> reversals are the most common form of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> mutation, by calculating a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path (smallest set of reversals) it's possible to get an idea of how the two species branched off. In the example above, it may be that one of the <a href="#BM_(genome)%2Fi">genome</a>s in the reversal path is the parent that both <a href="#BM_(genome)%2Fi">genome</a>s are based off of.</p>
 <p><img src="svgbob_f5e080c97a55e0d2d02be92cc43ad7aab9c45612.svg" alt="Kroki diagram output"></p>
 <a name="H_Breakpoint%20List%20Algorithm"></a><h4>Breakpoint List Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSynteny%2FReversal%20Path%2FBreakpoint%20List%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -9390,6 +9390,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
+<p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
 <p>Bacteria are known to have a single chromosome of circular / looping DNA. On that DNA, the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> (<a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>) is the region in which DNA replication starts, while the <a href="#BM_(replication%20terminus)%2Fi">replication terminus</a> (<a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>) is where it ends. The <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> and <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> and usually placed on opposite ends of each other.</p>
 <p><img src="svgbob_308a4af4e5d6864abeb06f6652581aec0ff50fb1.svg" alt="Kroki diagram output"></p>
 <p>The replication process begins by a <a href="#BM_(replication%20fork)%2Fi">replication fork</a> opening at the <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a>. As replication happens, that fork widens until the point it reaches <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a>...</p>
@@ -9412,7 +9413,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_5c3304d08cc6bbc226df966d6e1c119636331723.svg" alt="Kroki diagram output"></p>
 <p>There are now two complete copies of the DNA.</p>
 <a name="H_Find%20Ori%20and%20Ter"></a><h3>Find Ori and Ter</h3>
-<p><a name="BM_(Stories%5C%2FBacteria%20Replication%2FFind%20Ori%20and%20Ter)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication%2FFind%20Ori%20and%20Ter)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -9448,10 +9449,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>The material talks about how not all bacteria have a single peak and single valley. Some may have multiple. The reasoning for this still hasn't been discovered. It was speculated at one point that some bacteria may have multiple <a href="#BM_%5Cb(ori)%5Cb%2Fi">ori</a> / <a href="#BM_%5Cb(ter)%5Cb%2Fi">ter</a> regions.</p>
 </div>
 <a name="H_Find%20the%20DnaA%20Box"></a><h3>Find the DnaA Box</h3>
+<p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication%2FFind%20the%20DnaA%20Box)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Stories%5C%2FBacteria%20Replication%2FFind%20Ori%20and%20Ter)_TOPIC%2F">Stories/Bacteria Replication/Find Ori and Ter</a></li>
+<li><a href="#BM_(Stories%5C%2FBacterial%20Genome%20Replication%2FFind%20Ori%20and%20Ter)_TOPIC%2F">Stories/Bacterial Genome Replication/Find Ori and Ter</a></li>
 <li><a href="#BM_(Algorithms%5C%2FK-mer%2FFind%20Repeating%20in%20Window)_TOPIC%2F">Algorithms/K-mer/Find Repeating in Window</a></li>
 <li><a href="#BM_(Algorithms%5C%2FGC%20Skew)_TOPIC%2F">Algorithms/GC Skew</a></li>
 </ul>
@@ -9543,6 +9545,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 <p></p>
 <a name="H_Transcription%20Factors"></a><h2>Transcription Factors</h2>
+<p><a name="BM_(Stories%5C%2FTranscription%20Factors)_TOPIC%2F"></a><strong></strong></p>
 <p>A <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a> / <a href="#BM_(regulatory%20protein)%2Fi">regulatory protein</a> is an enzyme that influences the rate of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for some set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>. As the saturation of a <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a> changes, so does the rate of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> that it influences.</p>
 <p><a href="#BM_(transcription%20factor)%2Fi">Transcription factor</a>s bind to DNA near the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> they influence: a <a href="#BM_(transcription%20factor%20binding%20site)%2Fi">transcription factor binding site</a> is located in a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s <a href="#BM_(upstream%20region)%2Fi">upstream region</a> and the <a href="#BM_(sequence)%2Fi">sequence</a> at that location is a fuzzy nucleotide <a href="#BM_(sequence)%2Fi">sequence</a> of length 8 to 12 called a <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>. The simplest way to think of a <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a> is a regex pattern without quantifiers. For example, the regex <code>[AT]TT[GC]CCCTA</code> may match to ATTGCCCTA, ATTCCCCTA, TTTGCCCTA, and TTTCCCCTA. The regex itself is the <a href="#BM_(motif)%2Fi">motif</a>, while the <a href="#BM_(sequence)%2Fi">sequence</a>s being matched are <a href="#BM_(motif%20member)%2Fi">motif member</a>s.</p>
 <p><img src="svgbob_c77523791e9f610ea50acd1a596be075095bcceb.svg" alt="Kroki diagram output"></p>
@@ -9554,6 +9557,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>The external conditions of sunlight and temperature causes the saturation of some <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s to change. Those <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s influence the rate of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> that control the bunching and spreading of the petals.</p>
 <p><img src="svgbob_02d5e3f967efc5f1f94cccd5f97a6610035cb8fd.svg" alt="Kroki diagram output"></p>
 <a name="H_Find%20Regulatory%20Motif"></a><h3>Find Regulatory Motif</h3>
+<p><a name="BM_(Stories%5C%2FTranscription%20Factors%2FFind%20Regulatory%20Motif)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -9592,6 +9596,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>
+<p><a name="BM_(Stories%5C%2FNon-ribosomal%20Peptides)_TOPIC%2F"></a><strong></strong></p>
 <p>A <a href="#BM_(peptide)%2Fi">peptide</a> is a miniature protein consisting of a chain of <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s anywhere between 2 to 100 <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s in length.</p>
 <p><img src="svgbob_65d4227aac16dd6290813a8c18042c837e078f9d.svg" alt="Kroki diagram output"></p>
 <p>Most <a href="#BM_(peptide)%2Fi">peptide</a>s are synthesized through the <a href="#BM_(central%20dogma%20of%20molecular%20biology)%2Fi">central dogma of molecular biology</a>: a segment of the DNA that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s the <a href="#BM_(peptide)%2Fi">peptide</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA, which in turn is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a <a href="#BM_(peptide)%2Fi">peptide</a> by a ribosome.</p>
@@ -9611,6 +9616,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>According to the Wikipedia article on <a href="#BM_%5Cb(NRP)s%3F%5Cb%2F">NRP</a>s, there exist a wide range of <a href="#BM_(peptide)%2Fi">peptide</a>s that are not synthesized by ribosomes but the term <a href="#BM_(non-ribosomal%20peptide)%2Fi">non-ribosomal peptide</a> typically refers to the ones synthesized by <a href="#BM_(non-ribosomal%20peptide%20synthetase%7CNRP%20synthetase)%2Fi">NRP synthetase</a>s.</p>
 </div>
 <a name="H_Find%20Sequence"></a><h3>Find Sequence</h3>
+<p><a name="BM_(Stories%5C%2FNon-ribosomal%20Peptides%2FFind%20Sequence)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -9774,6 +9780,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 <p></p>
 <a name="H_Genome%20Rearrangement"></a><h2>Genome Rearrangement</h2>
+<p><a name="BM_(Stories%5C%2FGenome%20Rearrangement)_TOPIC%2F"></a><strong></strong></p>
 <p><a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">Genome rearrangement</a> is form of mutation where chromosomes go through structural changes. These structural changes include chromosome segments getting ...</p>
 <ul>
 <li>
@@ -9806,6 +9813,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a> 4: <code>[G7, G8, G9]</code></li>
 </ul>
 <a name="H_Find%20Synteny%20Blocks"></a><h3>Find Synteny Blocks</h3>
+<p><a name="BM_(Stories%5C%2FGenome%20Rearrangement%2FFind%20Synteny%20Blocks)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -9814,11 +9822,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 </div>
 <p><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by first finding matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s and <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, then combining matches that are close together (clustering) to reveal the long stretches of matches that make up <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
-<p>The visual manifestation of this concept is the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> and <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>. A <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> is a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, while a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> is the clustered form of a <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> that reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, ...</p>
+<p>The visual manifestation of this concept is the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> and <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>. A <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> is a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, while a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> is the clustered form of a <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> that reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p><img src="svgbob_eb50ab9882ae13623c74006244614b059e22fa47.svg" alt="Kroki diagram output"></p>
-<p>... reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (C) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, B, and D)...</p>
+<p>The <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> above reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (C) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, B, and D.</p>
 <p><img src="svgbob_725cfe74948aa476c335f99e888801f679a0059a.svg" alt="Kroki diagram output"></p>
-<p>In the example below, two species of the Mycoplasma bacteria are analyzed to find the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between them...</p>
+<p>In the example below, two species of the Mycoplasma bacteria are analyzed to find the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s between them. The output reveals that pretty much the entirety of both <a href="#BM_(genome)%2Fi">genome</a>s are shared, just in a different order.</p>
 <div style="border:1px solid black;">
 <p></p>
 <p>Finding synteny blocks for...</p>
@@ -9865,6 +9873,22 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 <p></p>
 <a name="H_Find%20Reversal%20Path"></a><h3>Find Reversal Path</h3>
+<p><a name="BM_(Stories%5C%2FGenome%20Rearrangement%2FFind%20Reversal%20Path)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Stories%5C%2FGenome%20Rearrangement%2FFind%20Synteny%20Blocks)_TOPIC%2F">Stories/Genome Rearrangement/Find Synteny Blocks</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSynteny%2FReversal%20Path%2FBreakpoint%20Graph%20Algorithm)_TOPIC%2F">Algorithms/Synteny/Reversal Path/Breakpoint Graph Algorithm</a></li>
+</ul>
+</div>
+<p>A reversal is the most common type of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> mutation: A segment of chromosome breaks off and ends up re-attaching, but with the ends swapped.</p>
+<p><img src="svgbob_49b402ac745f2c2e4400c3b2de9a7ad449cb1c2b.svg" alt="Kroki diagram output"></p>
+<p>The theory is that <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s between two species take the <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> path (or close to it). Since reversals are the most common form of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> mutation, by calculating a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path (smallest set of reversals) it's possible to get an idea of how the two species branched off.</p>
+<p>Note that there may be many <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal paths between two <a href="#BM_(genome)%2Fi">genome</a>s with shared <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p><img src="svgbob_035933ac760c4093244bf1755e35100274fda88b.svg" alt="Kroki diagram output"></p>
+<p>Given a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path, it may be that one of the <a href="#BM_(genome)%2Fi">genome</a>s in the reversal path is the parent species (or close to it).</p>
+<p><img src="svgbob_e20200ac846a9d4bd80722ede4c92f15023e6797.svg" alt="Kroki diagram output"></p>
+<p>In the example below, two species of the Mycoplasma bacteria are analyzed to find a <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> reversal path using the <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a> algorithm. The output reveals that only 1 reversal is responsible for the change in species. As such, it's very likely that one species broke off from the other rather than there being a shared parent species.</p>
 <div style="border:1px solid black;">
 <p></p>
 <p>Solving a parsimonious reversal path for...</p>
