@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(3'|3 prime)/i"></span>

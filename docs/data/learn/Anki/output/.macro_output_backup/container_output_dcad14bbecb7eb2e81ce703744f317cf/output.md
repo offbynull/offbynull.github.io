@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(false3?)/i"></span>

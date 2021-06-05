@@ -1,0 +1,1 @@
+<span class="anki-hidepattern" data-pattern="dynamic programming"></span>

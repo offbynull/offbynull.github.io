@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="theoretical spectrum"></span>

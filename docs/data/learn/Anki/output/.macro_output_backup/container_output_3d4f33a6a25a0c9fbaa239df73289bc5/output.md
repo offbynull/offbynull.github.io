@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(DNA microarray|DNA array)/i"></span>

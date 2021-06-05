@@ -86,6 +86,15 @@
 <p>When identifying a kd-mer with a specific k and d, the proper syntax is (k, d)-mer. For example, (1, 2)-mer represents a kd-mer with k=1 and d=2. In the DNA sequence GAAATC, the following (1, 2)-mer's exist: <code>G--A</code>, <code>A--T</code>, <code>A--C</code>.</p>
 </li>
 <li>
+<p><span class="anki-answerpattern" data-pattern="(reverse complement)/i"></span> - Given double-stranded DNA, each ...</p>
+<ul>
+<li>strand's direction is opposite of the other,</li>
+<li>strand position has a nucleotide that complements the nucleotide at that same position on the other stand (A ⟷ T and C ⟷ G)</li>
+</ul>
+<p><img src="svgbob_b05df825cb791aaf67d96b4e629e42c02b75f509.svg" alt="Kroki diagram output"></p>
+<p>The reverse complement means that a stretch of single-stranded DNA has its direction reversed (5' and 3' switched) and nucleotides complemented.</p>
+</li>
+<li>
 <p><span class="anki-answerpattern" data-pattern="(5'|5 prime)/i"></span> <span class="anki-answerpattern" data-pattern="(3'|3 prime)/i"></span> - 5' (5 prime) and 3' (3 prime) describe the opposite ends of DNA. The chemical structure at each end is what defines if it's 5' or 3' -- each end is guaranteed to be different from the other. The forward direction on DNA is defined as 5' to 3', while the backwards direction is 3' to 5'.</p>
 <p>Two complementing DNA strands will always be attached in opposite directions.</p>
 <p><img src="svgbob_17a210d3487024b39998105bb2cf073cdd5d23a1.svg" alt="Kroki diagram output"></p>
@@ -372,7 +381,12 @@
 <p>This definition is for information theory. In other contexts (e.g. physics, economics), this term has a different meaning.</p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="genome"></span> - All of the DNA for some organism.</p>
+<p><span class="anki-answerpattern" data-pattern="genome"></span> - In the context of a ...</p>
+<ul>
+<li>specific organism, genome refers to all of the DNA for that organism (e.g. a specific E. coli cell).</li>
+<li>specific species, genome refers to the idealized DNA for that species (e.g. all E. coli).</li>
+</ul>
+<p>DNA of individual cells mutate all the time. For example, even in multi-cell organism, two cells from the same mouse may not have the exact same DNA.</p>
 </li>
 <li>
 <p><span class="anki-answerpattern" data-pattern="sequence"></span> - The ordered elements that make up some biological entity. For example, a ...</p>
@@ -1864,7 +1878,7 @@
   <span class="hljs-keyword">if</span> value == <span class="hljs-number">0.01</span> <span class="hljs-keyword">or</span> value == <span class="hljs-number">0.12</span> <span class="hljs-keyword">or</span> value == <span class="hljs-number">0.13</span>:
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
   <span class="hljs-keyword">else</span>:
-    <span class="hljs-keyword">return</span> min([
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>([
       min_coins(value - <span class="hljs-number">0.01</span>) + <span class="hljs-number">1</span>,
       min_coins(value - <span class="hljs-number">0.12</span>) + <span class="hljs-number">1</span>,
       min_coins(value - <span class="hljs-number">0.13</span>) + <span class="hljs-number">1</span>
@@ -2217,6 +2231,286 @@
 </tbody>
 </table>
 <p>Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i"></span> - A type of mutation where chromosomes go through structural changes, typically caused by either</p>
+<ul>
+<li>breakages in the chromosome, where the broken ends possibly rejoin but in a different order / direction.</li>
+<li>DNA replication error.</li>
+<li>DNA repair error.</li>
+</ul>
+<p>The different classes of rearrangement include...</p>
+<ul>
+<li>
+<p>reversal / inversion: A break at two different locations followed by rejoining of the broken ends in different order. and rejoin in different order <span class="anki-listrandomorder"></span>
+</p>
+<p><img src="svgbob_c74a74fa3c923d49b533b6a31889fba8c857805a.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>translocation:</p>
+<p><img src="svgbob_1a60b8a84c9cf4c8e262eb77c4db7fd6cdcb613c.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>deletion:</p>
+<p><img src="svgbob_99d9b70d106d2088d8c2b416ae27d9528b9bd80f.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>duplication:</p>
+<p><img src="svgbob_89a0a11786d7852db04220f4567d8243d5c22975.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>chromosome fusion:</p>
+<p><img src="svgbob_5dda88b1068989e48adff91a638bd6e8122a5269.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>chromosome fission:</p>
+<p><img src="svgbob_2bf9b82f60b2bbaf95ba7e19855dd43c0b57008f.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>The segments of the genome that were moved around are referred to as synteny blocks.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="chimeric gene"></span> - A gene born from two separate genes getting fused together. A chimeric gene may have been created via genome rearrangement translocations.</p>
+<p>An example of a chimeric gene is the gene coding for ABL-BCR fusion protein: A fusion of two smaller genes (coding for ABL and BCR individually) caused by chromosomes 9 and 22 breaking and re-attaching in a different order. The ABL-BCR fusion protein has been implicated in the development of a cancer known as chronic myeloid leukemia.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="reversal distance"></span> - The <em>minimum</em> number of genome rearrangement reversals required to transform genome P to genome Q. The minimum is chosen because of parsimony.</p>
+<p>The short-hand for this is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>r</mi><mi>e</mi><mi>v</mi></mrow></msub><mo stretchy="false">(</mo><mi>P</mi><mo separator="true">,</mo><mi>Q</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d_{rev}(P, Q)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">Q</span><span class="mclose">)</span></span></span></span>.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(sex-chromosome dosage compensation|sex chromosome dosage compensation|dosage compensation)/i"></span> - The mechanism by which sex chromosome gene expression is equalized between different sexes of the same species.</p>
+<p>For example, mammals have two sexes...</p>
+<ul>
+<li>males, identified by one X chromosome and one Y chromosome. <span class="anki-listrandomorder"></span>
+</li>
+<li>females, identified by two X chromosomes.</li>
+</ul>
+<p>Since females have two X chromosomes, it would make sense for females to have double the gene expression for X chromosome genes. However, many X chromosome genes have nothing to do with sex and if their expression were doubled it would lead to disease. As such, female mammals randomly shut down one of two X chromosomes so as to keep X chromosome gene expression levels roughly equivalent to that of males.</p>
+<p>For mammals, this mechanism means that X chromosomes are mostly conserved because an X chromosome that's gone through genome rearrangement likely won't survive: If a gene jumps off an X chromosome its gene expression may double, leading to problems.</p>
+<p>Different species have different mechanisms for equalization. For example, some species will double the gene expression on the male's single X chromosome rather than deactivating one of the female's two X chromosomes. Other hermaphroditic species may scale down X chromosome gene expression when multiple X chromosomes are present.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(synteny block|synteny region|syntenic region|synteny|syntenic|syntenies)/i"></span> - Intervals within two sets of chromosomes that have similar genes which are either in ...</p>
+<ul>
+<li>
+<p>the same order.</p>
+<p><img src="svgbob_d3e4eb729d41d644a981794c1b1d200e2ac32fac.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>reverse order, where each gene's sequence is also reversed.</p>
+<p><img src="svgbob_feb089f8283ebeb0a53ce28c3d58c61f4291646f.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterpart).</p>
+<p><img src="svgbob_f4076143294d6480fb4b883c6cf2d02cdbf9117b.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(parsimony|parsimonious)/i"></span> - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(genomic dot-plot|genomic dot plot)/i"></span> - Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. Matches may also be fuzzily found (e.g. within some hamming distance rather).</p>
+<p>For example, ...</p>
+<p><img src="svgbob_3e7a2fb0e16cdd00ff9eaefd665998612d1db15c.svg" alt="Kroki diagram output"></p>
+<p>Genomic dot-plots are typically used in building synteny graphs: Graphs that reveal shared synteny blocks (shared stretches of DNA). Synteny blocks exist because genome rearrangements account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse vs human).</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(synteny graph)/i"></span> - Given the genomic dot-plot for two genomes, cluster together points so as to reveal synteny blocks. For example, ...</p>
+<p><img src="svgbob_eb50ab9882ae13623c74006244614b059e22fa47.svg" alt="Kroki diagram output"></p>
+<p>... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D)...</p>
+<p><img src="svgbob_725cfe74948aa476c335f99e888801f679a0059a.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(adjacent|adjacency|adjacencies|breakpoint)/i"></span> - Given two genomes that share synteny blocks, where one genome has the synteny blocks in desired order and direction while the other does not, an ...</p>
+<ul>
+<li>
+<p>adjacency is when two neighbouring synteny blocks in the undesired genome are following each other just as they do in the desired genome. <span class="anki-listrandomorder"></span>
+</p>
+<p><img src="svgbob_ef5578eeb87986c967edea2a617d034be77e5477.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_076d065748dd4e638132b3f29fbb34d75bb184f3.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_d0bde3ada227e34f8571467009b7ef0bcaa51c57.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>breakpoint is when two neighbouring synteny blocks in the undesired genome don't fit the definition of an adjacency: They aren't following each other just as they do in the desired genome.</p>
+<p><img src="svgbob_ab356811559d698349cda64e9f7a2358677b0ead.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_50bbe22a5291932cc5b9550a809e89a71b893090.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>Breakpoints and adjacencies are useful because they identify desirable points for reversals (genome rearrangement), giving way to algorithms that find / estimate the reversal distance. For example, a contiguous train of adjacencies in an undesired genome may identify the boundaries for a single reversal that gets the undesired genome closer to the desired genome.</p>
+<p><img src="svgbob_f265e51b0204855ebea5dad68bc33bf63c310885.svg" alt="Kroki diagram output"></p>
+<p>The number of breakpoints and adjacencies always equals one less than the number of synteny blocks.</p>
+<p><img src="svgbob_c6541b471afebaadca2c80a09a04248761d667e2.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="breakpoint graph"></span> - An undirected graph representing the order and orientation of synteny blocks shared between two genomes.</p>
+<p>For example, the following two genomes share the synteny blocks A, B, C, and D...</p>
+<p><img src="svgbob_7e9c33210faa97dd82efb19ecbdd7b9300236fba.svg" alt="Kroki diagram output"></p>
+<p>The breakpoint graph for the above two genomes is basically just a merge of the above diagrams. The set of synteny blocks shared between both genomes (A, B, C, and D) become dashed edges where each edge's...</p>
+<ul>
+<li>arrow end is a tail node (t suffix).</li>
+<li>non-arrow end is a head node (h suffix).</li>
+</ul>
+<p>Gap regions between synteny blocks are represented by solid colored edges, either red or blue depending on which genome it is.</p>
+<p>If the genomes are linear, gap region edges are created between the nodes and the edges and a special termination node.</p>
+<pre><code class="language-{dot}">graph G {
+layout=neato
+labelloc="t";
+label="CIRCULAR vs LINEAR...";
+node [shape=plain];
+_C1_t_ [pos="2.0,0.0!"];
+_C1_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+_B1_t_ [pos="0.0,-2.0!"];
+_B1_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+_A1_t_ [pos="-2.0,0.0!"];
+_A1_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+_D1_t_ [pos="0.0,2.0!"];
+_D1_h_ [pos="1.4142135623730951,1.414213562373095!"];
+_C1_t_ -- _C1_h_ [style=dashed];
+_B1_t_ -- _B1_h_ [style=dashed];
+_A1_t_ -- _A1_h_ [style=dashed];
+_D1_t_ -- _D1_h_ [style=dashed];
+_C1_t_ -- _D1_h_ [color=blue];
+_A1_h_ -- _D1_t_ [color=blue];
+_B1_t_ -- _C1_h_ [color=blue];
+_A1_t_ -- _B1_h_ [color=blue];
+_B1_h_ -- _C1_h_ [color=red];
+_A1_t_ -- _C1_t_ [color=red];
+_A1_h_ -- _D1_t_ [color=red];
+_B1_t_ -- _D1_h_ [color=red];
+
+
+_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+_B2_t_ [label="_B_t_", pos="5,-2.0!"];
+_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+_D2_t_ [label="_D_t_", pos="5,2.0!"];
+_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+TERM [pos="4.9,0.5!"];
+_C2_t_ -- _C2_h_ [style=dashed];
+_B2_t_ -- _B2_h_ [style=dashed];
+_A2_t_ -- _A2_h_ [style=dashed];
+_D2_t_ -- _D2_h_ [style=dashed];
+_C2_t_ -- _D2_h_ [color=blue];
+_B2_t_ -- _C2_h_ [color=blue];
+_A2_t_ -- _B2_h_ [color=blue];
+_A2_h_ -- TERM [color=blue];
+_D2_t_ -- TERM [color=blue];
+_B2_h_ -- _C2_h_ [color=red];
+_A2_t_ -- _C2_t_ [color=red];
+_B2_t_ -- _D2_h_ [color=red];
+_A2_h_ -- TERM [color=red];
+_D2_t_ -- TERM [color=red];
+}
+</code></pre>
+<p>In the above breakpoint graph, the blue edges represent genome 2's gap regions while the red edges represent genome 1's gap regions. The set of edges representing synteny blocks is shared between them.</p>
+<p>Breakpoint graphs build on the concept of breakpoints to compute a parsimonious path of fusion, fission, and reversal mutations (genome rearrangements) that transforms one genome into the other (see 2-break). Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graphs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="\b(2-break|2 break|two break|two-break)s?\b/i"></span> - Given a breakpoint graph, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one of the red edges matches the blue edge at that boundary.</p>
+<p>For example, the two red edges highlighted below share the same synteny block boundary and can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...</p>
+<pre><code class="language-{dot}">graph G {
+layout=neato
+labelloc="t";
+label="BEFORE to AFTER...";
+node [shape=plain];
+
+_C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+_C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+_B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+_B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+_A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+_A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+_D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+_D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+_C1_t_ -- _C1_h_ [style=dashed];
+_B1_t_ -- _B1_h_ [style=dashed];
+_A1_t_ -- _A1_h_ [style=dashed];
+_D1_t_ -- _D1_h_ [style=dashed];
+_C1_t_ -- _D1_h_ [color=blue];
+_A1_h_ -- _D1_t_ [color=blue];
+_B1_t_ -- _C1_h_ [color=blue];
+_A1_t_ -- _B1_h_ [color=blue];
+_B1_h_ -- _C1_h_ [color=red];
+_A1_t_ -- _C1_t_ [color=red, penwidth="4"];
+_A1_h_ -- _D1_t_ [color=red];
+_B1_t_ -- _D1_h_ [color=red, penwidth="4"];
+
+_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+_B2_t_ [label="_B_t_", pos="5,-2.0!"];
+_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+_D2_t_ [label="_D_t_", pos="5,2.0!"];
+_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+_C2_t_ -- _C2_h_ [style=dashed];
+_B2_t_ -- _B2_h_ [style=dashed];
+_A2_t_ -- _A2_h_ [style=dashed];
+_D2_t_ -- _D2_h_ [style=dashed];
+_C2_t_ -- _D2_h_ [color=blue];
+_A2_h_ -- _D2_t_ [color=blue];
+_B2_t_ -- _C2_h_ [color=blue];
+_A2_t_ -- _B2_h_ [color=blue];
+_B2_h_ -- _C2_h_ [color=red];
+_A2_t_ -- _B2_t_ [color=red, penwidth="4"];
+_A2_h_ -- _D2_t_ [color=red];
+_C2_t_ -- _D2_h_ [color=red, penwidth="4"];
+}
+</code></pre>
+<p>Each 2-break operation on a breakpoint graph represents a fusion, fission, or reversal mutation (genome rearrangement). Continually applying 2-breaks until all red edges match blue edges reveals a parsimonious path of such mutations that transforms the red genome to the blue genome.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(permutation)/i"></span> - A list representing a single chromosome in one of the two genomes that make up a breakpoint graph. The entire breakpoint graph is representable as two sets of permutations, where each genome in the breakpoint graph is a set.</p>
+<p>Permutation sets are commonly used for tersely representing breakpoint graphs as text. For example, given the following breakpoint graph ...</p>
+<pre><code class="language-{dot}">graph G {
+layout=neato
+node [shape=plain];
+_C_t_ [pos="2.0,0.0!"];
+_C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+_B_t_ [pos="0.0,-2.0!"];
+_B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+_A_t_ [pos="-2.0,0.0!"];
+_A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+_D_t_ [pos="0.0,2.0!"];
+_D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+_C_t_ -- _C_h_ [style=dashed];
+_B_t_ -- _B_h_ [style=dashed];
+_A_t_ -- _A_h_ [style=dashed];
+_D_t_ -- _D_h_ [style=dashed];
+_C_t_ -- _D_h_ [color=blue];
+_A_h_ -- _D_t_ [color=blue];
+_B_t_ -- _C_h_ [color=blue];
+_A_t_ -- _B_h_ [color=blue];
+_B_h_ -- _C_h_ [color=red];
+_A_t_ -- _C_t_ [color=red];
+_A_h_ -- _D_t_ [color=red];
+_B_t_ -- _D_h_ [color=red];
+}
+</code></pre>
+<p>... , the permutation set representing the red genome may be any of the following ...</p>
+<ul>
+<li><code>{[-D, -B, +C, -A]}</code></li>
+<li><code>{[+A, -C, +B, +D]}</code></li>
+<li><code>{[-B, +C, -A, -D]}</code></li>
+<li><code>{[-C, +B, +D, +A]}</code></li>
+<li><code>{[+C, -A, -D, -B]}</code></li>
+<li>...</li>
+</ul>
+<p>All representations above are equivalent.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC for a full explanation of how to read_NORM permutations / how to convert from and to breakpoint graphs.</p>
+</div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(\bfusion|\bfuse)/i"></span> - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (genome rearrangement).</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="fission"></span> - Splitting a single entity into two or more parts. For example, a single chromosome may break into multiple pieces where each piece becomes its own chromosome (genome rearrangement).</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="translocation"></span> - Changing location. For example, part of a chromosome may transfer to another chromosome (genome rearrangement).</p>
 </li>
 </ul>
 

@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="\b(PAM)\d*\b//false/true"></span>

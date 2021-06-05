@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(topological ordering|topological order|topological)/i"></span>

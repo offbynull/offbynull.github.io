@@ -1729,3 +1729,527 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
    | Score | -1        | -1 | 0  | 0  | 0  | 0  | -1 | Total: -3 |
 
    Negate the total score to get the minimum number of operations. In the example above, the final score of -3 maps to a minimum of 3 operations.
+
+ * `{ankiAnswer} (genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i` - A type of mutation where chromosomes go through structural changes, typically caused by either
+ 
+   * breakages in the chromosome, where the broken ends possibly rejoin but in a different order / direction.
+   * DNA replication error.
+   * DNA repair error.
+   
+   The different classes of rearrangement include...
+ 
+   * reversal / inversion: A break at two different locations followed by rejoining of the broken ends in different order. and rejoin in different order `{ankiListRandomOrder}`
+  
+     ```{svgbob}
+                                    .--------------.
+     "BEFORE:"    A1 ->  A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 ->  A2 -> A3 -> A7 <- A6 <- A5 -> A7 -> A8 -> A9
+                                    '--------------'
+     ```
+
+   * translocation:
+
+     ```{svgbob}
+                       .--------------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 -> A5 -> A6 -> A7 -> A8 -> A2 -> A3 -> A4 -> A9
+                                               '--------------'
+     ```
+
+   * deletion:
+
+     ```{svgbob}
+                       .--------------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 -> A5 -> A6 -> A7 -> A8 -> A9
+     ```
+
+   * duplication:
+
+     ```{svgbob}
+                       .--------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A9
+     "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> A2 -> A3 -> A9
+                                                                 '--------'
+     ```
+
+   * chromosome fusion:
+
+     ```{svgbob}
+                                               .--------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6    B1 -> B2 -> B3
+     "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> B1 -> B2 -> B3
+                                               '--------'
+     ```
+
+   * chromosome fission:
+
+     ```{svgbob}
+                                               .--------.
+     "BEFORE:"    A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> B1 -> B2 -> B3
+     "AFTER:"     A1 -> A2 -> A3 -> A4 -> A5 -> A6    B1 -> B2 -> B3
+                                               '--------'
+     ```
+
+   The segments of the genome that were moved around are referred to as synteny blocks.
+
+ * `{ankiAnswer} chimeric gene` - A gene born from two separate genes getting fused together. A chimeric gene may have been created via genome rearrangement translocations.
+
+   An example of a chimeric gene is the gene coding for ABL-BCR fusion protein: A fusion of two smaller genes (coding for ABL and BCR individually) caused by chromosomes 9 and 22 breaking and re-attaching in a different order. The ABL-BCR fusion protein has been implicated in the development of a cancer known as chronic myeloid leukemia.
+
+ * `{ankiAnswer} reversal distance` - The *minimum* number of genome rearrangement reversals required to transform genome P to genome Q. The minimum is chosen because of parsimony. 
+ 
+   The short-hand for this is `{kt} d_{rev}(P, Q)`.
+
+ * `{ankiAnswer} (sex-chromosome dosage compensation|sex chromosome dosage compensation|dosage compensation)/i` - The mechanism by which sex chromosome gene expression is equalized between different sexes of the same species.
+ 
+   For example, mammals have two sexes...
+   
+    * males, identified by one X chromosome and one Y chromosome. `{ankiListRandomOrder}`
+    * females, identified by two X chromosomes.
+    
+   Since females have two X chromosomes, it would make sense for females to have double the gene expression for X chromosome genes. However, many X chromosome genes have nothing to do with sex and if their expression were doubled it would lead to disease. As such, female mammals randomly shut down one of two X chromosomes so as to keep X chromosome gene expression levels roughly equivalent to that of males.
+
+   For mammals, this mechanism means that X chromosomes are mostly conserved because an X chromosome that's gone through genome rearrangement likely won't survive: If a gene jumps off an X chromosome its gene expression may double, leading to problems.
+  
+   Different species have different mechanisms for equalization. For example, some species will double the gene expression on the male's single X chromosome rather than deactivating one of the female's two X chromosomes. Other hermaphroditic species may scale down X chromosome gene expression when multiple X chromosomes are present.
+
+ * `{ankiAnswer} (synteny block|synteny region|syntenic region|synteny|syntenic|syntenies)/i` - Intervals within two sets of chromosomes that have similar genes which are either in ...
+ 
+   * the same order.
+     
+     ```{svgbob}
+     "Region of chromosome set 1:"
+     .------------..--------..----------------..------------.
+     | > > A1 > > || > B1 > || > > > C1 > > > || > > D1 > > |
+     `------------'`--------'`----------------'`------------'
+
+     "Region of chromosome set 2:"
+     .------------..--------..------------..----------------.
+     | > > A2 > > || > B2 > || > > C2 > > || > > > D2 > > > |
+     `------------'`--------'`------------'`----------------'
+
+     * "A1 and A2 are similar genes."
+     * "B1 and B2 are similar genes."
+     * "C1 and C2 are similar genes."
+     * "D1 and D2 are similar genes."
+     ```
+
+   * reverse order, where each gene's sequence is also reversed.
+
+     ```{svgbob}
+     "Region of chromosome set 1:"
+     .------------..--------..----------------..------------.
+     | > > A1 > > || > B1 > || > > > C1 > > > || > > D1 > > |
+     `------------'`--------'`----------------'`------------'
+     
+     "Region of chromosome set 2:"
+     .----------------..------------..--------..------------.
+     | < < < D2 < < < || < < C2 < < || < B2 < || < < A2 < < |
+     `----------------'`------------'`--------'`------------'
+
+     * "A1 and A2 are similar genes, but with reversed sequences."
+     * "B1 and B2 are similar genes, but with reversed sequences."
+     * "C1 and C2 are similar genes, but with reversed sequences."
+     * "D1 and D2 are similar genes, but with reversed sequences."
+     ```
+
+   The idea is that as evolution branches out a single ancestor species to different sub-species, genome rearrangements (reversals, translocations, etc..) are responsible for some of those mutations. As chromosomes break and rejoin back together in different order, the stretches between breakage points remain largely the same. For example, it's assumed that mice and humans have the same ancestor species because of the high number of synteny blocks between their genomes (most human genes have a mouse counterpart).
+
+   ```{svgbob}
+       -W       -U       +V          -T                               +T              +U        +V                  +W   
+   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
+    5'                  genome1              3'                 5'                          genome2                            3'
+   ```
+
+ * `{ankiAnswer} (parsimony|parsimonious)/i` - The scientific concept of choosing the fewest number of steps / shortest path / simplest scenario / simplest explanation that fits the evidence available.
+
+ * `{ankiAnswer} (genomic dot-plot|genomic dot plot)/i` - Given two genomes, create a 2D plot where each axis is assigned to one of the genomes and a dot is placed at each coordinate containing a match, where a match is either a shared k-mer or a k-mer and its reverse complement. Matches may also be fuzzily found (e.g. within some hamming distance rather).
+    
+   For example, ...
+
+   ```{svgbob}
+   "Consider each shared 5-mer, shown as a line, to be a dot."
+   * "N = normal match"
+   * "R = reverse complement match"
+
+     3' 5'|   
+      G C |                                     ^            
+          |                                    /
+      G C |                                   /                
+          |                                  /
+      T A |                                 / N: "ACTGG vs ACTGG"         
+          |                                /  
+      C G |                               /                   
+          |                              /      
+      A T |                             *                    
+          |   
+      C C |                                                     ^
+          |                                                    /
+      G A |                                                   /
+          |                                                  /
+      T G |                                                 / N: "CATGC vs CATGC"
+          |                                                /  
+    g A T |                                               /         *
+    e     |                                              /           \
+    n C G |                                             *             \
+    o     |                                                            \
+    m C G |                                                             \ R: "CCCCA vs TGGGG"
+    e     |                                                              \
+    1 C G |   *                                                           \
+          |    \                                                           \
+      C G |     \                                                           v
+          |      \  
+      A T |       \ R: "AAACC vs GGTTT"                                      
+          |        \
+      A T |         \                                          
+          |          \
+      A T |           v                                     
+          |   
+      G C |                                                                   ^
+          |                                                                  /
+      G C |                                                                 / 
+          |                                                                / 
+      G C |                                                               / N: "GGGGG vs GGGGG" 
+          |                                                              /  
+      G C |                                                             /    
+          |                                                            /      
+      G C |                                                           *        
+     5' 3'|                                                                   
+          +-----------------------------------------------------------------------
+           5' G G T T T A G G T G A C T T A C T G G A A C A T G C T T G G G G G 3'
+           3' C C A A A T C C A C T G A A T G A C C T T G T C A G T T C C C C C 5'
+                                          genome2
+   ```
+
+   Genomic dot-plots are typically used in building synteny graphs: Graphs that reveal shared synteny blocks (shared stretches of DNA). Synteny blocks exist because genome rearrangements account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse vs human).
+
+ * `{ankiAnswer} (synteny graph)/i` - Given the genomic dot-plot for two genomes, cluster together points so as to reveal synteny blocks. For example, ...
+
+   ```{svgbob}
+    * "N = normal k-mer match"
+    * "R = reverse complement k-mer match"
+
+   3'|                                                                                  3'|                                                                 
+     |  R                              R                                                  |  *                                                              
+     |   R           N                                                                    |   \                                                             
+     |    R               R                                                               |    \                                                            
+     |      R                           R           N                                     |     \                                                           
+     |       R                                                                            |      \                                                          
+     |       R               N                                                            |     A \                                                         
+    g|        R                                                                          g|        \                                                        
+    e|          R                   R           N                                        e|         \                                                      
+    n|           R                                                                       n|          \                                                     
+    o|            R                                     R                   ------->     o|           v                                                    
+    m|   N                        N                                         CLUSTER      m|                           ^                                    
+    e|                          N            N                                           e|                        C /                                      
+    1|      N                  N                                                         1|                         /                                      
+     |                        N               N         N                                 |                        *                                          
+     |                 R                                                                  |                 *                                               
+     |                   R                                                                |                  \                                             
+     |                    R                                                               |                 B \                                           
+     |    R                R                                                              |                    v                                               
+     |                                           R              R                         |                                           *                     
+     |             N              N                R                                      |                                            \                    
+     |                                              R           R                         |                                           D \                    
+   5'|       R             R                   R     R                                  5'|                                              v                  
+     +-----------------------------------------------------------------                   +-----------------------------------------------------------------
+      5'                          genome2                            3'                    5'                          genome2                            3'
+
+    * "Remember that the direction of DNA is 5' to 3'."
+   ```
+
+   ... reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D)...
+
+   ```{svgbob}
+   * "Synteny blocks projected on to each axis."
+
+        -D       -B      +C          -A                               +A              +B        +C                  +D   
+   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
+    5'                  genome1              3'                 5'                          genome2                            3'
+   ```
+
+ * `{ankiAnswer} (adjacent|adjacency|adjacencies|breakpoint)/i` - Given two genomes that share synteny blocks, where one genome has the synteny blocks in desired order and direction while the other does not, an ...
+ 
+   * adjacency is when two neighbouring synteny blocks in the undesired genome are following each other just as they do in the desired genome. `{ankiListRandomOrder}`
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other and the"
+       "tail of B is followed by the head of C, just as in the desired genome."
+
+                                .---------------------------------------------------.
+                       .--------+--------.                                 .--------+-------.                          
+            +A            +B        +C          +D                            +B       +C       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------      vs       -->>>>>>>--->>>>>>-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                    |
+                                                                                    ?
+     ```
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other and the"
+       "tail of B is followed by the tail of C, just as in the desired genome."
+
+                                .---------------------------------------------------.
+                       .--------+--------.                                 .--------+-------.                          
+            +A            +B        -C          +D                            +B       -C       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------      vs       -->>>>>>>--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'                 5'       ^       UNDESIRED               3' 
+                                                                                    |
+                                                                                    ?
+     ```
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other and the"
+       "tail of B is followed by the head of C, just as in the desired genome. Note"
+       "that their placement has been swapped when compared to the desired genome."
+       "This is fine. As long as they follow each other as they do in the desired"
+       "genome, it's considered an adjacency."
+     
+                                .--------------------------------------------.
+                       .--------+--------.                          .--------+-------.                          
+            +A            +B        +C          +D                     -C       -B       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                             |
+                                                                             ?
+     ```
+
+   * breakpoint is when two neighbouring synteny blocks in the undesired genome don't fit the definition of an adjacency: They aren't following each other just as they do in the desired genome.
+
+     ```{svgbob}
+     * "In this example, the undesired genome has B and C next to each other but the"
+       "tail of B is NOT followed by the head of A, as it is in the desired genome."
+
+                                .--------------------------------------------.
+                       .--------+--------.                          .--------+-------.                          
+            +A            +B        +C          +D                     +B       -C       +D          -A         
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED               3' 
+                                                                             |
+                                                                             ?
+     ```
+
+     ```{svgbob}
+     * "In this example, the undesired genome does NOT have B and C next to each"
+       "other."
+
+                                .---------------------------------------+---------------------------------.
+                       .--------+--------.                          .---+---.                         .---+---.
+            +A            +B        +C          +D                     +B        -D          -A          +C     
+     -->>>>>>>>>>>>>>--->>>>>>>--->>>>>>>----->>>>>>>------   vs   -->>>>>>>---<<<<<<--<<<<<<<<<<<<<<-->>>>>>>--
+      5'                      DESIRED                   3'          5'       ^       UNDESIRED        ^      3' 
+                                                                             |                        |
+                                                                             ?                        ?
+     ```
+
+   Breakpoints and adjacencies are useful because they identify desirable points for reversals (genome rearrangement), giving way to algorithms that find / estimate the reversal distance. For example, a contiguous train of adjacencies in an undesired genome may identify the boundaries for a single reversal that gets the undesired genome closer to the desired genome.
+
+   ```{svgbob}
+   * "The contiguous segment comprising D, C, and B may be reversed as"
+     "a single genome reversal."
+
+                                                                             ?           ?           ?           ?
+                                                                             |           |           |           |         
+       +A          +B         +C          +D         +E                +A    v     -D    v    -C     v    -B     v   +E    
+   -->>>>>>>----->>>>>>>---->>>>>>>----->>>>>>----->>>>>>--   vs   -->>>>>>>-----<<<<<<<----<<<<<<<-----<<<<<<----->>>>>>--
+    5'                      DESIRED                     3'          5'                     UNDESIRED                    3' 
+   ```
+   
+   The number of breakpoints and adjacencies always equals one less than the number of synteny blocks.
+
+   ```{svgbob}
+   * "1 + 2 =  4 - 1"
+
+                                                                            ?           ?           ?
+                                                                            |           |           |
+          +A            +B        -C          +D                      +B    v     -C    v    +D     v       -A         
+   -->>>>>>>>>>>>>>--->>>>>>>---<<<<<<<----->>>>>>>------    vs   -->>>>>>>-----<<<<<<<---->>>>>>>-----<<<<<<<<<<<<<<--
+    5'                      DESIRED                   3'           5'               UNDESIRED                       3' 
+   ```
+
+ * `{ankiAnswer} breakpoint graph` - An undirected graph representing the order and orientation of synteny blocks shared between two genomes.
+
+   For example, the following two genomes share the synteny blocks A, B, C, and D...
+
+   ```{svgbob}
+       -D       -B       +C          -A                               +A              +B        +C                  +D   
+   --<<<<<<<--<<<<<<<-->>>>>>>--<<<<<<<<<<<<<<--      vs       -->>>>>>>>>>>>>>----->>>>>>>--->>>>>>>------------->>>>>>>---------
+    5'                  genome1              3'                 5'                          genome2                            3'
+   ```
+
+   The breakpoint graph for the above two genomes is basically just a merge of the above diagrams. The set of synteny blocks shared between both genomes (A, B, C, and D) become dashed edges where each edge's...
+   
+    * arrow end is a tail node (t suffix).
+    * non-arrow end is a head node (h suffix).
+  
+   Gap regions between synteny blocks are represented by solid colored edges, either red or blue depending on which genome it is.
+   
+   If the genomes are linear, gap region edges are created between the nodes and the edges and a special termination node.
+
+   ```{dot}
+   graph G {
+   layout=neato
+   labelloc="t";
+   label="CIRCULAR vs LINEAR...";
+   node [shape=plain];
+   _C1_t_ [pos="2.0,0.0!"];
+   _C1_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [pos="0.0,-2.0!"];
+   _B1_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [pos="-2.0,0.0!"];
+   _A1_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [pos="0.0,2.0!"];
+   _D1_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _B1_h_ -- _C1_h_ [color=red];
+   _A1_t_ -- _C1_t_ [color=red];
+   _A1_h_ -- _D1_t_ [color=red];
+   _B1_t_ -- _D1_h_ [color=red];
+   
+   
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   TERM [pos="4.9,0.5!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _A2_h_ -- TERM [color=blue];
+   _D2_t_ -- TERM [color=blue];
+   _B2_h_ -- _C2_h_ [color=red];
+   _A2_t_ -- _C2_t_ [color=red];
+   _B2_t_ -- _D2_h_ [color=red];
+   _A2_h_ -- TERM [color=red];
+   _D2_t_ -- TERM [color=red];
+   }
+   ```
+
+   In the above breakpoint graph, the blue edges represent genome 2's gap regions while the red edges represent genome 1's gap regions. The set of edges representing synteny blocks is shared between them.
+   
+   Breakpoint graphs build on the concept of breakpoints to compute a parsimonious path of fusion, fission, and reversal mutations (genome rearrangements) that transforms one genome into the other (see 2-break). Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graphs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.
+
+ * `{ankiAnswer} \b(2-break|2 break|two break|two-break)s?\b/i` - Given a breakpoint graph, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one of the red edges matches the blue edge at that boundary.
+ 
+   For example, the two red edges highlighted below share the same synteny block boundary and can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...
+
+   ```{dot}
+   graph G {
+   layout=neato
+   labelloc="t";
+   label="BEFORE to AFTER...";
+   node [shape=plain];
+
+   _C1_t_ [label="_C_t_", pos="2.0,0.0!"];
+   _C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
+   _B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
+   _B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
+   _A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
+   _A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
+   _D1_t_ [label="_D_t_", pos="0.0,2.0!"];
+   _D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
+   _C1_t_ -- _C1_h_ [style=dashed];
+   _B1_t_ -- _B1_h_ [style=dashed];
+   _A1_t_ -- _A1_h_ [style=dashed];
+   _D1_t_ -- _D1_h_ [style=dashed];
+   _C1_t_ -- _D1_h_ [color=blue];
+   _A1_h_ -- _D1_t_ [color=blue];
+   _B1_t_ -- _C1_h_ [color=blue];
+   _A1_t_ -- _B1_h_ [color=blue];
+   _B1_h_ -- _C1_h_ [color=red];
+   _A1_t_ -- _C1_t_ [color=red, penwidth="4"];
+   _A1_h_ -- _D1_t_ [color=red];
+   _B1_t_ -- _D1_h_ [color=red, penwidth="4"];
+
+   _C2_t_ [label="_C_t_", pos="7.0,0.0!"];
+   _C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
+   _B2_t_ [label="_B_t_", pos="5,-2.0!"];
+   _B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
+   _A2_t_ [label="_A_t_", pos="3.0,0.0!"];
+   _A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
+   _D2_t_ [label="_D_t_", pos="5,2.0!"];
+   _D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
+   _C2_t_ -- _C2_h_ [style=dashed];
+   _B2_t_ -- _B2_h_ [style=dashed];
+   _A2_t_ -- _A2_h_ [style=dashed];
+   _D2_t_ -- _D2_h_ [style=dashed];
+   _C2_t_ -- _D2_h_ [color=blue];
+   _A2_h_ -- _D2_t_ [color=blue];
+   _B2_t_ -- _C2_h_ [color=blue];
+   _A2_t_ -- _B2_h_ [color=blue];
+   _B2_h_ -- _C2_h_ [color=red];
+   _A2_t_ -- _B2_t_ [color=red, penwidth="4"];
+   _A2_h_ -- _D2_t_ [color=red];
+   _C2_t_ -- _D2_h_ [color=red, penwidth="4"];
+   }
+   ```
+
+   Each 2-break operation on a breakpoint graph represents a fusion, fission, or reversal mutation (genome rearrangement). Continually applying 2-breaks until all red edges match blue edges reveals a parsimonious path of such mutations that transforms the red genome to the blue genome.
+
+ * `{ankiAnswer} (permutation)/i` - A list representing a single chromosome in one of the two genomes that make up a breakpoint graph. The entire breakpoint graph is representable as two sets of permutations, where each genome in the breakpoint graph is a set.
+ 
+   Permutation sets are commonly used for tersely representing breakpoint graphs as text. For example, given the following breakpoint graph ...
+
+   ```{dot}
+   graph G {
+   layout=neato
+   node [shape=plain];
+   _C_t_ [pos="2.0,0.0!"];
+   _C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
+   _B_t_ [pos="0.0,-2.0!"];
+   _B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
+   _A_t_ [pos="-2.0,0.0!"];
+   _A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
+   _D_t_ [pos="0.0,2.0!"];
+   _D_h_ [pos="1.4142135623730951,1.414213562373095!"];
+   _C_t_ -- _C_h_ [style=dashed];
+   _B_t_ -- _B_h_ [style=dashed];
+   _A_t_ -- _A_h_ [style=dashed];
+   _D_t_ -- _D_h_ [style=dashed];
+   _C_t_ -- _D_h_ [color=blue];
+   _A_h_ -- _D_t_ [color=blue];
+   _B_t_ -- _C_h_ [color=blue];
+   _A_t_ -- _B_h_ [color=blue];
+   _B_h_ -- _C_h_ [color=red];
+   _A_t_ -- _C_t_ [color=red];
+   _A_h_ -- _D_t_ [color=red];
+   _B_t_ -- _D_h_ [color=red];
+   }
+   ```
+
+   ... , the permutation set representing the red genome may be any of the following ...
+
+    * `{[-D, -B, +C, -A]}`
+    * `{[+A, -C, +B, +D]}`
+    * `{[-B, +C, -A, -D]}`
+    * `{[-C, +B, +D, +A]}`
+    * `{[+C, -A, -D, -B]}`
+    * ...
+
+   All representations above are equivalent.
+
+   ```{note}
+   See Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC for a full explanation of how to read_NORM permutations / how to convert from and to breakpoint graphs.
+   ```
+
+ * `{ankiAnswer} (\bfusion|\bfuse)/i` - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (genome rearrangement).
+
+ * `{ankiAnswer} fission` - Splitting a single entity into two or more parts. For example, a single chromosome may break into multiple pieces where each piece becomes its own chromosome (genome rearrangement).
+
+ * `{ankiAnswer} translocation` - Changing location. For example, part of a chromosome may transfer to another chromosome (genome rearrangement).

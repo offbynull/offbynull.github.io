@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(branch-and-bound algorithm|branch and bound algorithm|branch-and-bound|branch and bound|branch-and-bound)/i"></span>

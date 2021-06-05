@@ -1,0 +1,1 @@
+<span class="anki-ignorepattern" data-pattern="blueberries"></span>

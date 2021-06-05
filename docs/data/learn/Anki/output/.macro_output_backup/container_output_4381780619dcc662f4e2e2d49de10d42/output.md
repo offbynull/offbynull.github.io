@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(kd-mer|kdmer|\(k,\s*d\)-mer)/i"></span>

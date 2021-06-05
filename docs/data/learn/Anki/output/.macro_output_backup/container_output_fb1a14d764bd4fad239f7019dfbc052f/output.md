@@ -1,0 +1,1 @@
+<span class="anki-ignorepattern" data-pattern="(0)_IGNORE/i"></span>

@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(amino acid residue|residue)/i"></span>

@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(Hamiltonian path|Hamilton path)/i"></span>
