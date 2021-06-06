@@ -7011,7 +7011,7 @@ The visual manifestation of this concept is the genomic dot-plot and synteny gra
  * "Remember that the direction of DNA is 5' to 3'."
 ```
 
-The synteny graph above reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D.
+The synteny graph above reveals that 4 synteny blocks are shared between the genomes. One of the synteny blocks is a normal match (C) while three are matching against their reverse complements (A, B, and D).
 
 ```{svgbob}
 * "Synteny blocks projected on to each axis."
