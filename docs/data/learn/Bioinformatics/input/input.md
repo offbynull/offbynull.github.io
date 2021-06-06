@@ -9319,6 +9319,41 @@ graph_show
 
  * `{bm} translocation` - Changing location. For example, part of a chromosome may transfer to another chromosome (genome rearrangement).
 
+ * `{bm} severe acute respiratory syndrome` `{bm} /(SARS)/` - A deadly coronavirus that emerged from China around early 2003.
+
+ * `{bm} coronavirus` `{bm} /(COVID|CoV)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of sun's atmosphere protruding out).
+ 
+   The common cold, SARS, and COVID-19 are examples of coronaviruses.
+
+ * `{bm} human immunodeficiency virus` `{bm} /(HIV|AIDS)/` - A virus that over time causes acquired immunodeficiency syndrome (AIDS).
+
+ * `{bm} immunodeficiency/(immunodeficiency|immunocompromisation|immunocompromised)/i` - A state in which the immune system's ability to fight infectious disease and cancer is compromised or entirely absent.
+
+ * `{bm} DNA virus` - A virus with a DNA genome. Depending on the type of virus, the genome may be single-stranded DNA or double-stranded DNA.
+
+   Herpes, chickenpox, and smallpox are examples of DNA viruses.
+
+ * `{bm} RNA virus` - A virus with a RNA genome. RNA replication has a higher rate than DNA replication, meaning that RNA viruses mutate faster than DNA viruses.
+
+   Coronaviruses, HIV, and influenza are examples of RNA viruses.
+
+ * `{bm} phylogenetic tree/(phylogenetic tree|phylogenetic|phylogeny|phylogeny tree|phylogenies|evolutionary tree)/i` - A branching tree showing the degree in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
+
+   ```{svgbob}
+                  +--- "Mycoplasma mobile"
+      +-----------+
+      |           +--- "Mycoplasma arthritidis"
+   ---+   
+      |   +----------- "Mycoplasma pulmonis"
+      |   |
+      +---+   +------- "Mycoplasma synoviae"
+          |   |
+          +---+
+              |   +--- "Mycoplasma bovis"
+              +---+
+                  +--- "Mycoplasma agalactiae"
+   ```
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
