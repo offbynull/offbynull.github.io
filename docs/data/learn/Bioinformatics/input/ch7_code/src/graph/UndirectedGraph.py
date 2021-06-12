@@ -74,7 +74,7 @@ class Graph(Generic[N, ND, E, ED]):
             removed_already = True
         if remove_if_isolated\
                 and len(self._node_outbound[gt_node]) == 0 \
-                and (not dealing_with_same_node or (dealing_with_same_node and not removed_already)) \                :
+                and (not dealing_with_same_node or (dealing_with_same_node and not removed_already)):
             self.delete_node(gt_node)
 
     # updates the data for the FIRST edge b
@@ -149,40 +149,45 @@ class Graph(Generic[N, ND, E, ED]):
 
     def __str__(self: Graph) -> str:
         out = []
+        walked_edges = set()
         for node, edges in self._node_outbound.items():
             for edge in edges:
-                from_node, to_node, edge_data = self._edges[edge]
-                out.append(f'{(from_node, self._node_data[from_node])}--'
-                           f'{(edge, edge_data)}->'
-                           f'{(to_node, self._node_data[to_node])}')
+                if edge in walked_edges:
+                    continue
+                walked_edges.add(edge)
+                node1, node2, edge_data = self._edges[edge]
+                out.append(f'{(node1, self._node_data[node1])}--'
+                           f'{(edge, edge_data)}--'
+                           f'{(node2, self._node_data[node2])}')
             if len(edges) == 0:
                 out.append(f'{(node, self._node_data[node])}--x')
         return '\n'.join(out)
 
     def __repr__(self: Graph) -> str:
         return str(self)
-#
-#
-# if __name__ == '__main__':
-#     g = Graph()
-#     g.insert_node('A')
-#     g.insert_node('B')
-#     g.insert_node('C')
-#     g.insert_node('D')
-#     g.insert_edge('A', 'B', 'MY EDGE DATA FOR 1st AB')
-#     g.insert_edge('A', 'B', 'MY EDGE DATA FOR 2nd AB')
-#     g.insert_edge('B', 'C')
-#     g.insert_edge('C', 'D')
-#     g.insert_edge('A', 'D')
-#     print(f'{g}')
-#     print(f'{g.get_in_degree("A")} {g.get_out_degree("A")}')
-#     print(f'{g.get_in_degree("B")} {g.get_out_degree("B")}')
-#     print(f'{g.get_in_degree("C")} {g.get_out_degree("C")}')
-#     print(f'{g.get_in_degree("D")} {g.get_out_degree("D")}')
-#     g.insert_node('E')
-#     g.insert_edge('D', 'E')
-#     print(f'{g}')
-#     g.delete_edge('A', 'D')
-#     print(f'{g}')
-#     g.delete_edge('A', 'C')  # error expected here
-#     print(f'{g}')
+
+
+if __name__ == '__main__':
+    g = Graph()
+    g.insert_node('A')
+    g.insert_node('B')
+    g.insert_node('C')
+    g.insert_node('D')
+    g.insert_edge('AB1', 'A', 'B', 'MY EDGE DATA FOR 1st AB')
+    g.insert_edge('AB2', 'A', 'B', 'MY EDGE DATA FOR 2nd AB')
+    g.insert_edge('BC', 'B', 'C')
+    g.insert_edge('CD', 'C', 'D')
+    g.insert_edge('AD', 'A', 'D')
+    g.insert_node('Z')
+    print(f'{g}')
+    print(f'{g.get_degree("A")}')
+    print(f'{g.get_degree("B")}')
+    print(f'{g.get_degree("C")}')
+    print(f'{g.get_degree("D")}')
+    g.insert_node('E')
+    g.insert_edge('DE', 'D', 'E')
+    print(f'{g}')
+    g.delete_edge('AD')
+    print(f'{g}')
+    g.delete_edge('AC')  # error expected here
+    print(f'{g}')
