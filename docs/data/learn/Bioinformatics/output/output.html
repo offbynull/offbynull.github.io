@@ -8767,7 +8767,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> algorithm relies on three non-trivial components:</p>
 <ol>
-<li>A spatial indexing algorithm bins points that are close together, such that it's fast to look up the set of dots that are within the proximity of some other dot. The spatial indexing algorithm used by this implementation is called a quad tree.</li>
+<li>A spatial indexing algorithm bins points that are close together, such that it's fast to look up the set of dots that are within the proximity of some other dot. The spatial indexing algorithm used by this implementation is called a quad <a href="#BM_(tree)%2Fi">tree</a>.</li>
 <li>A clustering algorithm connects dots going in the same direction to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The clustering algorithm used by this implementation is iterative, doing multiple rounds of connecting within a set of constraints (e.g. the neighbouring dot has to be within some limit / in some angle for it to connect).</li>
 <li>A filtering algorithm that trims/merges overlapping <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as well as removes superfluous <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s returned by the clustering algorithm. The filtering algorithm used by this implementation is simple off-the-cuff heuristics.</li>
 </ol>
@@ -9394,6 +9394,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>For a cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle is when you pick a node, follow the blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ..., until you arrive back at the same node. If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. Otherwise, you can calculate the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p>For a linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle isn't actually a cycle because: Pick the termination node, follow a blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ... until you arrive back at the termination node (what if there are actual cyclic red-blue loops as well like in cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s?). If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1. Otherwise, you can <strong>ESTIMATE</strong> the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1.</p>
 <p>To calculate the real number of reversals need for linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (not estimate), there's a <a href="https://dl.acm.org/doi/10.1145/300515.300516">paper on ACM DL</a> that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.</p>
+<p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> definition.</p>
 </div>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
@@ -11870,7 +11871,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>
 <p><a name="BM_(manhattan%20tourist%20problem)%2Fi"></a><strong>manhattan tourist problem</strong> - The <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> is an allegory to help explain <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">sequence alignment graph</a>s. Where as in <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s you're finding a path through the graph from source to sink that has the maximum weight, in the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>:</p>
 <ul>
-<li>The graph is the street layout of Manhattan.</li>
+<li>The graph is the s<a href="#BM_(tree)%2Fi">tree</a>t layout of Manhattan.</li>
 <li>The only options at each intersection are to move right or down.</li>
 <li>The source node is the intersection of 59th St and 8th Ave.</li>
 <li>The sink node is the intersection of 42nd St and 3rd Ave.</li>
@@ -12258,8 +12259,92 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><a href="#BM_(coronavirus)%2Fi">Coronavirus</a>es, <a href="#BM_(HIV%7CAIDS)%2F">HIV</a>, and influenza are examples of <a href="#BM_(RNA%20virus)%2Fi">RNA virus</a>es.</p>
 </li>
 <li>
-<p><a name="BM_(phylogenetic%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi"></a><strong>phylogenetic tree</strong> - A branching tree showing the degree in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).</p>
+<p><a name="BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi"></a><strong>phylogenetic tree</strong> - A branching <a href="#BM_(tree)%2Fi">tree</a> showing the degree in which biological species or entities (e.g. viruses) are related. Such <a href="#BM_(tree)%2Fi">tree</a>s help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).</p>
 <p><img src="svgbob_f061cc8cf94ad999d22025f6f8522d6cb607e8ca.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi"></a><strong>distance matrix</strong> - Given a set of n different species, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Snake</th>
+<th>Lizard</th>
+<th>Bird</th>
+<th>Crocodile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Snake</td>
+<td>0</td>
+<td>2</td>
+<td>6</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Lizard</td>
+<td>2</td>
+<td>0</td>
+<td>6</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Bird</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Crocodile</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The distance metric can be anything so long as it meets the following properties:</p>
+<ul>
+<li>Must produce a non-negative distance -- dist(A,B) &gt;= 0</li>
+<li>Must produce the same distance regardless of species order -- dist(A,B) == dist(B,A)</li>
+<li>Must produce a distance that satisfies the triangle inequality property -- if dist(B,C) = x, then dist(A,B) + dist(A,C) &gt;= x</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I think what the last bullet point means is that the distance will be &gt;= if you travel to it indirectly (hop over to it instead of taking a straight path). For example, if dist(B,C) = 5, then dist(A,B) + dist(A,C) must be &gt;= 5.</p>
+<p><img src="svgbob_3f0c5795b674de5612a12db473d621ed2ed53e92.svg" alt="Kroki diagram output"></p>
+<p>A, B, and C are species.</p>
+</div>
+<p>Common distance metrics include...</p>
+<ul>
+<li><a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_(levenshtein%20distance%7Cstring%20distance)%2Fi">levenshtein distance</a> between the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
+</ul>
+<p><a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">Distance matrices</a> are used to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s. A single <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> may fit many different <a href="#BM_(tree)%2Fi">tree</a>s or it's possible that it fits no <a href="#BM_(tree)%2Fi">tree</a> at all. For example, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> above fits the <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><img src="svgbob_5a2ddd5247c86bd4e9d05f814cb689158dca59b0.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(tree)%2Fi"></a><strong>tree</strong> - In graph theory, a <a href="#BM_(tree)%2Fi">tree</a> is an acyclic <em>undirected</em> graph in which any two nodes are <a href="#BM_(connected)%2Fi">connected</a> by exactly one path (nodes branch outward / never converge).</p>
+<p><a href="#BM_(tree)%2Fi">Tree</a>s come in two forms:</p>
+<ul>
+<li>
+<p>A <a href="#BM_(tree)%2Fi">tree</a> without a root node (un-rooted <a href="#BM_(tree)%2Fi">tree</a>)...</p>
+<p><img src="svgbob_3ae717329571359a328c5697332e94ce675003fb.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>A <a href="#BM_(tree)%2Fi">tree</a> with a root node (rooted <a href="#BM_(tree)%2Fi">tree</a>)...</p>
+<p><img src="svgbob_4a12a5e83db150bd3a7d62bc553c9ece9b5d54b2.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>Note that both examples above are the same undirected graph drawn differently. The only difference between is that the rooted version had a non-leaf node (internal node) chosen to be the top-most node where operations should start from (root node).</p>
+<p>For un-rooted <a href="#BM_(tree)%2Fi">tree</a>s, any non-leaf node (internal node) may be chosen to be the root node.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is different from the computer science definition of <a href="#BM_(tree)%2Fi">tree</a>, which is an abstract data type representing a hierarchy (always a single root that flows downwards), typically generalized as a <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> as opposed to an un<a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a>.</p>
+</div>
 </li>
 </ul>
 <p>
@@ -12279,6 +12364,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </p>
 <p>
 
+</p>
+<p>
 </p>
 <p>
 </p>

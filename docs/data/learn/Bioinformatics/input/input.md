@@ -6323,6 +6323,8 @@ For a cyclic breakpoint graph_GRs, a single red-blue cycle is when you pick a no
 For a linear breakpoint graph_GRs, a single red-blue cycle isn't actually a cycle because: Pick the termination node, follow a blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ... until you arrive back at the termination node (what if there are actual cyclic red-blue loops as well like in cyclic breakpoint graph_GRs?). If the blue and red genomes match perfectly, the number of red-blue cycles should equal the number of synteny blocks + 1. Otherwise, you can **ESTIMATE** the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of synteny blocks + 1.
 
 To calculate the real number of reversals need for linear breakpoint graph_GRs (not estimate), there's a [paper on ACM DL](https://dl.acm.org/doi/10.1145/300515.300516) that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.
+
+UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a phylogenetic tree across a set of species (a tree that shows how closely a set of species are related / how they branched out). See distance matrix_PT definition.
 ```
 
 # Stories
@@ -9337,7 +9339,7 @@ graph_show
 
    Coronaviruses, HIV, and influenza are examples of RNA viruses.
 
- * `{bm} phylogenetic tree/(phylogenetic tree|phylogenetic|phylogeny|phylogeny tree|phylogenies|evolutionary tree)/i` - A branching tree showing the degree in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
+ * `{bm} phylogenetic tree/(phylogenetic tree|phylogeny tree|phylogenetic|phylogeny|phylogenies|evolutionary tree)/i` - A branching tree showing the degree in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
 
    ```{svgbob}
                   +--- "Mycoplasma mobile"
@@ -9352,6 +9354,111 @@ graph_show
               |   +--- "Mycoplasma bovis"
               +---+
                   +--- "Mycoplasma agalactiae"
+   ```
+
+ * `{bm} distance matrix/(distance matrix|distance matrices)_PT/i` - Given a set of n different species, a distance matrix_PT is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...
+
+   |           | Snake | Lizard | Bird | Crocodile |
+   |-----------|-------|--------|------|-----------|
+   | Snake     |   0   |   2    |  6   |     4     |
+   | Lizard    |   2   |   0    |  6   |     4     |
+   | Bird      |   6   |   6    |  0   |     5     |
+   | Crocodile |   4   |   4    |  5   |     0     |
+
+   The distance metric can be anything so long as it meets the following properties:
+   
+    * Must produce a non-negative distance -- dist(A,B) >= 0
+    * Must produce the same distance regardless of species order -- dist(A,B) == dist(B,A)
+    * Must produce a distance that satisfies the triangle inequality property -- if dist(B,C) = x, then dist(A,B) + dist(A,C) >= x
+
+   ````{note}
+   I think what the last bullet point means is that the distance will be >= if you travel to it indirectly (hop over to it instead of taking a straight path). For example, if dist(B,C) = 5, then dist(A,B) + dist(A,C) must be >= 5.
+
+   ```{svgbob}
+        C
+        *
+       / \
+    3 /   \ 3
+     /     \
+    *-------*
+   A    5    B
+   ```
+
+   A, B, and C are species.
+   ````
+
+   Common distance metrics include...
+
+    * hamming distance between the DNA sequences.
+    * levenshtein distance between the DNA sequences.
+    * two-break count (reversal distance).
+
+   Distance matrices_PT are used to generate phylogenetic trees. A single distance matrix_PT may fit many different trees or it's possible that it fits no tree at all. For example, the distance matrix_PT above fits the tree...
+
+   ```{svgbob}
+             1
+         +------* Snake
+      1  |
+   +-----*
+   |     |   1
+   |     +------* Lizard
+   |
+   *
+   |         1
+   |     +------* Crocodile
+   |  1  |
+   +-----*
+         |   3
+         +------* Bird
+   ```
+
+ * `{bm} tree` - In graph theory, a tree is an acyclic _undirected_ graph in which any two nodes are connected by exactly one path (nodes branch outward / never converge).
+
+   Trees come in two forms:
+   
+   * A tree without a root node (un-rooted tree)...
+
+     ```{svgbob}
+     A   B      C
+     *   *      *
+      \ /       |
+       * D    E *--* F
+        \      /
+       G *----* H
+        /     |\
+       *      * *
+       I      J K
+     ```
+
+   * A tree with a root node (rooted tree)...
+
+     ```{svgbob}
+       * D
+      /|\
+     * * \
+     A B  * G
+         / \
+        *   \
+        I    * H
+            /|\
+           * * \
+           J K  * E
+               / \
+              *   *
+              C   F
+    
+     * "D is the root, and"
+       "as such is placed on"
+       "top while everything"
+       "else flows downward"
+     ```
+   
+   Note that both examples above are the same undirected graph drawn differently. The only difference between is that the rooted version had a non-leaf node (internal node) chosen to be the top-most node where operations should start from (root node).
+
+   For un-rooted trees, any non-leaf node (internal node) may be chosen to be the root node.
+
+   ```{note}
+   This is different from the computer science definition of tree, which is an abstract data type representing a hierarchy (always a single root that flows downwards), typically generalized as a directed acyclic graph as opposed to an undirected acyclic graph.
    ```
 
 `{bm-ignore} \b(read)_NORM/i`
@@ -9382,6 +9489,9 @@ graph_show
 
 `{bm-ignore} (permutation)_NORM/i`
 `{bm-error} Apply suffix _NORM or _GR/(permutation)/i`
+
+`{bm-ignore} (distance matrix|distance matrices)_NORM/i`
+`{bm-error} Apply suffix _NORM or _PT/(distance matrix|distance matrices)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 
