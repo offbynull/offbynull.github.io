@@ -4254,7 +4254,7 @@ It's said that PAM is focused on tracking the evolutionary origins of proteins. 
 ```{note}
 [Here](http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html) and [here](https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&oldid=1002281881#Comparing_PAM_and_BLOSUM) both seem to say that BLOSUM supersedes PAM as a scoring matrix for protein sequences.
 
-> Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degrees the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
+> Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degree_NORMs the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
 
 > Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known member_NORMs of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.
 ```
@@ -9339,7 +9339,7 @@ graph_show
 
    Coronaviruses, HIV, and influenza are examples of RNA viruses.
 
- * `{bm} phylogenetic tree/(phylogenetic tree|phylogeny tree|phylogenetic|phylogeny|phylogenies|evolutionary tree)/i` - A branching tree showing the degree in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
+ * `{bm} phylogenetic tree/(phylogenetic tree|phylogeny tree|phylogenetic|phylogeny|phylogenies|evolutionary tree)/i` - A simple tree showing the degree_NORM in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
 
    ```{svgbob}
                   +--- "Mycoplasma mobile"
@@ -9412,7 +9412,7 @@ graph_show
          +------* Bird
    ```
 
- * `{bm} tree` - In graph theory, a tree is an acyclic _undirected_ graph in which any two nodes are connected by exactly one path (nodes branch outward / never converge).
+ * `{bm} tree` - In graph theory, a tree is an acyclic undirected graph in which any two nodes are connected by exactly one path (nodes branch outward / never converge).
 
    Trees come in two forms:
    
@@ -9461,6 +9461,59 @@ graph_show
    This is different from the computer science definition of tree, which is an abstract data type representing a hierarchy (always a single root that flows downwards), typically generalized as a directed acyclic graph as opposed to an undirected acyclic graph.
    ```
 
+ * `{bm} degree/(degree)_GRAPH/i` - The number of edges leading into / out of a node of an undirected graph.
+
+    The node below has an degree_GRAPH of 3.
+
+    ```{svgbob}
+           /
+          /
+    -----N
+          \
+           \
+    ```
+
+ * `{bm} simple tree` - A tree where every non-branching path has exactly one edge. A non-branching path is any path where every node other than the start and end node have a degree_GRAPH of 2.
+
+
+   ```{svgbob}
+   "branching path"             "non-branching path"
+            B                             B
+            *                             *
+           /                             / 
+      *   *                             *  
+       \ /                             /   
+        *                             *    
+        |                             |    
+        *                             *    
+        C                             C    
+
+   * "Branching vs non-branching path between nodes B and C. Note"
+     "how in the branching version, one of the nodes between B and"
+     "C has a degree of 3."
+   ```
+
+
+   ```{svgbob}
+   "non-simple tree"             "simple tree"
+            *                             
+           / 1                            
+      *   *                               
+     1 \ / 1                       *   * 
+        *                         1 \ / 2
+      3 |                            *   
+        *                          4 |   
+      1 |                            *   
+        *                         3 / \ 2
+     1 / \ 2                       *   * 
+      *   *                               
+   2 /                                    
+    *                                     
+
+   * "Non-simple tree transformed into a simple tree. Edges"
+     "that were merged had their weights summed."
+   ```
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
@@ -9492,6 +9545,9 @@ graph_show
 
 `{bm-ignore} (distance matrix|distance matrices)_NORM/i`
 `{bm-error} Apply suffix _NORM or _PT/(distance matrix|distance matrices)/i`
+
+`{bm-ignore} (degree)_NORM/i`
+`{bm-error} Apply suffix _NORM or _PT/(degree)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 
