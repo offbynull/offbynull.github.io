@@ -300,7 +300,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AAAG', 'ACAA', 'AACA', 'AATA', 'AAAC', 'TAAA', 'AAAT', 'AGAA', 'AAAA', 'CAAA', 'ATAA', 'GAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -432,12 +432,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>AAGGG = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
+<li>AAGGG = 6 occurrences</li>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -511,18 +511,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1655,7 +1655,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>ATAAT<br>ATAAT<br>ATAAT</p>
+<p>AAAGA<br>AAAGA<br>AAAGA</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2178,7 +2178,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2239,7 +2239,7 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <p>to...</p>
 <p>CWTCYK<br>CWTCYK<br>CWTCYK</p>
 <p>using...</p>
-<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'T', 'C'}): 'Y'}</p>
+<p>{frozenset({'A', 'T'}): 'W', frozenset({'G', 'C'}): 'S', frozenset({'G', 'T'}): 'K', frozenset({'C', 'T'}): 'Y'}</p>
 </div>
 <p></p>
 <a name="H_DNA%20Assembly"></a><h2>DNA Assembly</h2>
@@ -2923,22 +2923,22 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 </ul>
 </div>
 <p></p>
@@ -5816,7 +5816,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_2ec4fe4353c196bba361fe6ca5387ee0.svg" alt="Dot diagram"></p>
+<p><img src="dot_4aba33933261310cf3a28285b725a33a.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5874,7 +5874,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_b01b5dac357c22352ca791a7e4775d50.svg" alt="Dot diagram"></p>
+<p><img src="dot_fc431804212bc73d78b0dba712bf7104.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6022,13 +6022,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_cf4893fcb5ccedb6f08ee17de1c0910f.svg" alt="Dot diagram"></p>
+<p><img src="dot_01bcd3f1033382ace377db30252d4545.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_4475130e0daf7d3f4f9ab00ef4bdf8b6.svg" alt="Dot diagram"></p>
+<p><img src="dot_6dbc41a1800d46216656490d39cb8c46.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6065,7 +6065,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f53b3fb2b24db47cd1060da959588d72.svg" alt="Latex diagram"></p>
+<p><img src="latex_30f6dc8cb3a92e97e67403a891ed625c.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6076,7 +6076,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_83e45ecf8122ccb5580f07456224fee1.svg" alt="Latex diagram"></p>
+<p><img src="latex_70e656b7a83b57009025e0e3b4410a88.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6137,9 +6137,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_32970371737ccea1c9c7892289a4039d.svg" alt="Latex diagram"></p>
+<p><img src="latex_1a96cd0fb897e2273426a297aa3e9bdf.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
-GA-T
+-GAT
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6415,7 +6415,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_7e359f4877d08f2ab87b060e797a1a33.svg" alt="Latex diagram"></p>
+<p><img src="latex_c70a9c6bd84e25e06eb7858dc95280a5.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6423,7 +6423,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_3e0e7371a545f280aba628f80242cfbb.svg" alt="Latex diagram"></p>
+<p><img src="latex_3e4dce3dca6bedbf58a797fd6d73f609.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6765,7 +6765,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_2d04fe13d31153bdf453e7771bf65596.svg" alt="Latex diagram"></p>
+<p><img src="latex_a2f06bd4f512308adb85bb6993ce5fec.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6848,7 +6848,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_7068cf25700d6fb87d1eeecdb70448f4.svg" alt="Latex diagram"></p>
+<p><img src="latex_0805a7a89e8c38b2ed6e6f793d40385f.svg" alt="Latex diagram"></p>
 <pre><code>AG-AC
 AGAAC
 </code></pre>
@@ -7006,7 +7006,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_32093a8e6ec6b257707195d0c0e6bb7f.svg" alt="Latex diagram"></p>
+<p><img src="latex_26b2d96239637352ea2e79fe77f91f2d.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7089,9 +7089,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_01dcb1f06303c3e217f4aad5ebc6c8b9.svg" alt="Latex diagram"></p>
+<p><img src="latex_49da8e98f0c7a4f02feecbb298e2c292.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
-A-AC
+AAAC
 </code></pre>
 <p>Weight: 2.0</p>
 </div>
@@ -7246,7 +7246,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ee6ad4dfae0bc8c6e975560c227ab080.svg" alt="Latex diagram"></p>
+<p><img src="latex_c5d71794e3f1256584b6b55f16aa93cd.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7329,7 +7329,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_2746588f91ff6eb82732b80b94345f69.svg" alt="Latex diagram"></p>
+<p><img src="latex_9853b787869a2e042575ec8b0f9476a4.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7596,7 +7596,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ff6a9eea0b62216a514d5c34868597b9.svg" alt="Latex diagram"></p>
+<p><img src="latex_56a19f7d0b2e8ee3cb8479595561c6fe.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7682,9 +7682,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_76d3109ab035727a761d2e9af37dfcc0.svg" alt="Latex diagram"></p>
-<pre><code>TA----GGCGGAT
-TACCCC--C--AT
+<p><img src="latex_d06aad522086d04beeba8a0aad0d6b61.svg" alt="Latex diagram"></p>
+<pre><code>TAGGCGG----AT
+TA--C--CCCCAT
 </code></pre>
 <p>Weight: 1.4999999999999998</p>
 </div>
@@ -7717,7 +7717,7 @@ TACCCC--C--AT
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c293304db81fea2d551ce2f0d64e555f.svg" alt="Latex diagram"></p>
+<p><img src="latex_682f986c2f24467d590167a52e28b184.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7835,7 +7835,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_ae9dcf1624a91f1737fe0442bf1d0ece.svg" alt="Latex diagram"></p>
+<p><img src="latex_11ac7e1566be4db55095c1a192ba0769.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -8029,9 +8029,9 @@ G G T -1
 G G G 1
 </code></pre>
 <p>... the global alignment is...</p>
-<pre><code>---TATTATTA--T
+<pre><code>--T-ATTATTA--T
 GATTATGATTA--T
----TACCATTACAT
+--T-ACCATTACAT
 </code></pre>
 <p>Weight: 0.0</p>
 </div>
@@ -9394,7 +9394,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>For a cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle is when you pick a node, follow the blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ..., until you arrive back at the same node. If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. Otherwise, you can calculate the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p>For a linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle isn't actually a cycle because: Pick the termination node, follow a blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ... until you arrive back at the termination node (what if there are actual cyclic red-blue loops as well like in cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s?). If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1. Otherwise, you can <strong>ESTIMATE</strong> the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1.</p>
 <p>To calculate the real number of reversals need for linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (not estimate), there's a <a href="https://dl.acm.org/doi/10.1145/300515.300516">paper on ACM DL</a> that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.</p>
-<p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> definition.</p>
+<p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> definition.</p>
 </div>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
@@ -9488,8 +9488,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
@@ -9507,19 +9507,19 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCGTT', start_index=232, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GCGGATCCT', start_index=233, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCGT', start_index=233, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGCCGGATC', start_index=235, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTAAA', start_index=282, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTTTGATAC', start_index=427, occurrence_count=3)</li>
@@ -9531,12 +9531,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -9599,8 +9599,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAGAAGATGATGACAAA<br>GAAAAAGAAAAAATAGAA<br>GAAAAAGAAAAAAAAAAA<br>AGAAAAGGAAAAAAAGAA<br>GAATATTAACATATAAAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 21</p>
+<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
+<p>Score is: 18</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>
@@ -12263,7 +12263,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_f061cc8cf94ad999d22025f6f8522d6cb607e8ca.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi"></a><strong>distance matrix</strong> - Given a set of n different species, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
+<p><a name="BM_(distance%20matrix%7Cdistance%20matrices)%2Fi"></a><strong>distance matrix</strong> - Given a set of n different species, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
 <table>
 <thead>
 <tr>
@@ -12323,7 +12323,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li><a href="#BM_(levenshtein%20distance%7Cstring%20distance)%2Fi">levenshtein distance</a> between the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
 <li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
 </ul>
-<p><a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">Distance matrices</a> are used to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s. A single <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> may fit many different <a href="#BM_(tree)%2Fi">tree</a>s or it's possible that it fits no <a href="#BM_(tree)%2Fi">tree</a> at all. For example, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)_PT%2Fi">distance matrix</a> above fits the <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">Distance matrices</a>_PT are used to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s. A single <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> may fit many different <a href="#BM_(tree)%2Fi">tree</a>s or it's possible that it fits no <a href="#BM_(tree)%2Fi">tree</a> at all. For example, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above fits the <a href="#BM_(tree)%2Fi">tree</a>...</p>
 <p><img src="svgbob_5a2ddd5247c86bd4e9d05f814cb689158dca59b0.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -12355,6 +12355,174 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><a name="BM_(simple%20tree)%2Fi"></a><strong>simple tree</strong> - A <a href="#BM_(tree)%2Fi">tree</a> where every non-branching path has exactly one edge. A non-branching path is any path where every node other than the start and end node have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2.</p>
 <p><img src="svgbob_4d27c1d642180331af63b50b2385d9ff745ff6f0.svg" alt="Kroki diagram output"></p>
 <p><img src="svgbob_48f0cff4f632b17d9c4a758c7eff4ff5bf2a8f9c.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall that by definition, a <a href="#BM_(tree)%2Fi">tree</a> doesn't have to have a root. The examples above are un-rooted <a href="#BM_(tree)%2Fi">tree</a>s.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(additive%20matrix%7Cadditive%20matrices)%2Fi"></a><strong>additive matrix</strong> - Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if there exists a <a href="#BM_(tree)%2Fi">tree</a> with edge weights that satisfy that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices)%2Fi">additive matrix</a>.</p>
+<p>For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> structure...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cat</th>
+<th>Lion</th>
+<th>Bear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cat</td>
+<td>0</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Lion</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Bear</td>
+<td>4</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_8a24e0c5247c6d3c9d66b8f0cf6695d8e2b6a851.svg" alt="Kroki diagram output"></p>
+<p>... the distances between species must be calculated as follows:</p>
+<ul>
+<li><code>dist(Cat, Lion) = dist(Cat, Feline) + dist(Feline, Lion)</code></li>
+<li><code>dist(Cat, Bear) = dist(Cat, Feline) + dist(Feline, Animal) + dist(Animal, Bear)</code></li>
+<li><code>dist(Lion, Bear) = dist(Lion, Feline) + dist(Feline, Animal) + dist(Animal, Bear)</code></li>
+</ul>
+<p>This is a system of linear equations that may be solved using standard algebra. For example, each dist function call is representable as either a variable or a constant...</p>
+<ul>
+<li><code>2 = dist(Cat, Lion)      = dist(Lion, Cat)</code></li>
+<li><code>4 = dist(Cat, Bear)      = dist(Bear, Cat)</code></li>
+<li><code>3 = dist(Lion, Bear)     = dist(Bear, Lion)</code></li>
+<li><code>w = dist(Cat, Feline)    = dist(Feline, Cat)</code></li>
+<li><code>x = dist(Lion, Feline)   = dist(Feline, Lion)</code></li>
+<li><code>y = dist(Feline, Animal) = dist(Animal, Feline)</code></li>
+<li><code>z = dist(Animal, Bear)   = dist(Bear, Animal)</code></li>
+</ul>
+<p>..., which converts each calculation above to following equations...</p>
+<ul>
+<li><code>2 = w + x</code></li>
+<li><code>4 = w + y + z</code></li>
+<li><code>3 = x + y + z</code></li>
+</ul>
+<p><img src="svgbob_78e29e04183882e23cf8a3411572c49b179661fc.svg" alt="Kroki diagram output"></p>
+<p>Solving this system of linear equations results in...</p>
+<ul>
+<li><code>x = 0.5</code></li>
+<li><code>w = 1.5</code></li>
+<li><code>z = 2.5 - y</code></li>
+</ul>
+<p>As such, the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices)%2Fi">additive matrix</a> because there exists a <a href="#BM_(tree)%2Fi">tree</a> that satisfies it. Any of the following edge weights will work with this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<ul>
+<li><code>x = 0.5</code>, <code>w = 1.5</code>, <code>y = 0.5</code>, <code>z = 2.0</code></li>
+<li><code>x = 0.5</code>, <code>w = 1.5</code>, <code>y = 1.0</code>, <code>z = 1.5</code></li>
+<li><code>x = 0.5</code>, <code>w = 1.5</code>, <code>y = 1.5</code>, <code>z = 1.0</code></li>
+<li>...</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's both a rooted <a href="#BM_(tree)%2Fi">tree</a> and a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (Feline to Bear is a non-branching path with &gt; 0 nodes in between). The <a href="#BM_(tree)%2Fi">tree</a> doesn't have to be rooted or non-simple. In fact, I suspect the book is implying that it should be both un-rooted and simple. I'm guessing that if you limit your search scope to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially the same as <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s but with extra nodes spliced between non-branching paths.</p>
+<p>The example above as a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
+<p><img src="svgbob_f3846233feb740fda161cb3ffdf8d1f9d33c9404.svg" alt="Kroki diagram output"></p>
+<p>This <a href="#BM_(simple%20tree)%2Fi">simple tree</a> version gets solved to <code>w = 2</code>, <code>x = 1</code>, and <code>z = 2</code>.</p>
+</div>
+<p>The term additive is used because the weights of all edges along the path between leaves i and j in a <a href="#BM_(tree)%2Fi">tree</a> fitting a matrix D add to <code>dist(i, j)</code>. Not all <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are additive. For example, no 4-leaf <a href="#BM_(simple%20tree)%2Fi">simple tree</a> exists that satisfies the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>S1</th>
+<th>S2</th>
+<th>S3</th>
+<th>S4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>0</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>3</td>
+<td>0</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>3</td>
+<td>5</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 1:</p>
+<p><img src="svgbob_aeb82bce61a329489efb970443826a72b075e6d2.svg" alt="Kroki diagram output"></p>
+<ul>
+<li>dist(S1, S2) is 3 = w + x</li>
+<li>dist(S1, S3) is 4 = w + y</li>
+<li>dist(S1, S4) is 3 = w + z</li>
+<li>dist(S2, S3) is 4 = x + y</li>
+<li>dist(S2, S4) is 5 = x + z</li>
+<li>dist(S3, S4) is 2 = y + z</li>
+</ul>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 2:</p>
+<p><img src="svgbob_310a023ae046f0c94fc708941d7e494797cf787b.svg" alt="Kroki diagram output"></p>
+<ul>
+<li>dist(S1, S2) is 3 = w + x</li>
+<li>dist(S1, S3) is 4 = w + u + y</li>
+<li>dist(S1, S4) is 3 = w + u + z</li>
+<li>dist(S2, S3) is 4 = x + u + y</li>
+<li>dist(S2, S4) is 5 = x + u + z</li>
+<li>dist(S3, S4) is 2 = y + z</li>
+</ul>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 3:</p>
+<p><img src="svgbob_27b6be0c6cb6193b60f5164ee5e83ce0f0389d38.svg" alt="Kroki diagram output"></p>
+<ul>
+<li>dist(S1, S2) is 4 = w + u + y</li>
+<li>dist(S1, S3) is 3 = w + x</li>
+<li>dist(S1, S4) is 3 = w + u + z</li>
+<li>dist(S2, S3) is 4 = x + u + y</li>
+<li>dist(S2, S4) is 2 = y + z</li>
+<li>dist(S3, S4) is 5 = x + u + z</li>
+</ul>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>etc..</p>
+</li>
+</ul>
 </li>
 </ul>
 <p>
@@ -12374,8 +12542,6 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </p>
 <p>
 
-</p>
-<p>
 </p>
 <p>
 </p>

@@ -6324,7 +6324,7 @@ For a linear breakpoint graph_GRs, a single red-blue cycle isn't actually a cycl
 
 To calculate the real number of reversals need for linear breakpoint graph_GRs (not estimate), there's a [paper on ACM DL](https://dl.acm.org/doi/10.1145/300515.300516) that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.
 
-UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a phylogenetic tree across a set of species (a tree that shows how closely a set of species are related / how they branched out). See distance matrix_PT definition.
+UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a phylogenetic tree across a set of species (a tree that shows how closely a set of species are related / how they branched out). See distance matrix definition.
 ```
 
 # Stories
@@ -9356,7 +9356,7 @@ graph_show
                   +--- "Mycoplasma agalactiae"
    ```
 
- * `{bm} distance matrix/(distance matrix|distance matrices)_PT/i` - Given a set of n different species, a distance matrix_PT is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...
+ * `{bm} distance matrix/(distance matrix|distance matrices)/i` - Given a set of n different species, a distance matrix is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...
 
    |           | Snake | Lizard | Bird | Crocodile |
    |-----------|-------|--------|------|-----------|
@@ -9393,7 +9393,7 @@ graph_show
     * levenshtein distance between the DNA sequences.
     * two-break count (reversal distance).
 
-   Distance matrices_PT are used to generate phylogenetic trees. A single distance matrix_PT may fit many different trees or it's possible that it fits no tree at all. For example, the distance matrix_PT above fits the tree...
+   Distance matrices_PT are used to generate phylogenetic trees. A single distance matrix may fit many different trees or it's possible that it fits no tree at all. For example, the distance matrix above fits the tree...
 
    ```{svgbob}
              1
@@ -9514,6 +9514,197 @@ graph_show
      "that were merged had their weights summed."
    ```
 
+   ```{note}
+   Recall that by definition, a tree doesn't have to have a root. The examples above are un-rooted trees.
+   ```
+
+ * `{bm} additive matrix/(additive matrix|additive matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix, that distance matrix is said to be an additive matrix.
+
+   For example, given the following distance matrix and tree structure...
+   
+   |      | Cat | Lion | Bear |
+   |------|-----|------|------|
+   | Cat  |  0  |  2   |  4   |
+   | Lion |  2  |  0   |  3   |
+   | Bear |  4  |  3   |  0   |
+
+   ```{svgbob}
+              * Animal
+             / \
+            /   \
+           /     \
+   Feline *       \
+         / \       \
+        /   \       \
+       /     \       \
+      *       *       *
+     Cat     Lion    Bear
+   ```
+
+   ... the distances between species must be calculated as follows:
+
+   * `dist(Cat, Lion) = dist(Cat, Feline) + dist(Feline, Lion)`
+   * `dist(Cat, Bear) = dist(Cat, Feline) + dist(Feline, Animal) + dist(Animal, Bear)`
+   * `dist(Lion, Bear) = dist(Lion, Feline) + dist(Feline, Animal) + dist(Animal, Bear)`
+
+   This is a system of linear equations that may be solved using standard algebra. For example, each dist function call is representable as either a variable or a constant...
+
+   * `2 = dist(Cat, Lion)      = dist(Lion, Cat)`
+   * `4 = dist(Cat, Bear)      = dist(Bear, Cat)`
+   * `3 = dist(Lion, Bear)     = dist(Bear, Lion)`
+   * `w = dist(Cat, Feline)    = dist(Feline, Cat)`
+   * `x = dist(Lion, Feline)   = dist(Feline, Lion)`
+   * `y = dist(Feline, Animal) = dist(Animal, Feline)`
+   * `z = dist(Animal, Bear)   = dist(Bear, Animal)`
+
+   ..., which converts each calculation above to following equations...   
+   
+   * `2 = w + x`
+   * `4 = w + y + z`
+   * `3 = x + y + z`
+
+   ```{svgbob}
+              * Animal
+             / \
+          y /   \
+           /     \
+   Feline *       \ z
+         / \       \
+     w  /   \ x     \
+       /     \       \
+      *       *       *
+     Cat     Lion    Bear
+   ```
+
+   Solving this system of linear equations results in...
+
+   * `x = 0.5`
+   * `w = 1.5`
+   * `z = 2.5 - y`
+
+   As such, the example distance matrix is an additive matrix because there exists a tree that satisfies it. Any of the following edge weights will work with this distance matrix...
+
+   * `x = 0.5`, `w = 1.5`, `y = 0.5`, `z = 2.0`
+   * `x = 0.5`, `w = 1.5`, `y = 1.0`, `z = 1.5`
+   * `x = 0.5`, `w = 1.5`, `y = 1.5`, `z = 1.0`
+   * ...
+
+   ````{note}
+   The example above tests against a tree that's both a rooted tree and a non-simple tree (Feline to Bear is a non-branching path with > 0 nodes in between). The tree doesn't have to be rooted or non-simple. In fact, I suspect the book is implying that it should be both un-rooted and simple. I'm guessing that if you limit your search scope to simple trees and find nothing, there won't be any non-simple trees either: Non-simple trees are essentially the same as simple trees but with extra nodes spliced between non-branching paths.
+
+   The example above as a simple tree:
+
+
+   ```{svgbob}
+               z
+          *--------* Bear 
+         / \
+     w  /   \ x
+       /     \
+      *       *
+     Cat     Lion
+   ```
+
+   This simple tree version gets solved to `w = 2`, `x = 1`, and `z = 2`.  
+   ````
+
+   The term additive is used because the weights of all edges along the path between leaves i and j in a tree fitting a matrix D add to `dist(i, j)`. Not all distance matrices are additive. For example, no 4-leaf simple tree exists that satisfies the following distance matrix...
+
+   |    | S1 | S2 | S3 | S4 |
+   |----|----|----|----|----|
+   | S1 | 0  | 3  | 4  | 3  |
+   | S2 | 3  | 0  | 4  | 5  |
+   | S3 | 4  | 4  | 0  | 2  |
+   | S4 | 3  | 5  | 2  | 0  |
+
+   * Test simple tree 1:
+   
+     ```{svgbob}
+                S2
+                *
+                | x
+                |
+          w     |     
+     S1 *-------*-------* S3
+                |     y
+                |    
+              z |
+                *
+                S4
+     ```
+  
+     * dist(S1, S2) is 3 = w + x
+     * dist(S1, S3) is 4 = w + y
+     * dist(S1, S4) is 3 = w + z
+     * dist(S2, S3) is 4 = x + y
+     * dist(S2, S4) is 5 = x + z
+     * dist(S3, S4) is 2 = y + z
+  
+     Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+
+   * Test simple tree 2:
+   
+     ```{svgbob}
+                S2
+                *
+              x |
+                |
+          w     |
+     S1 *-------*
+                 \
+                  \ u
+                   \
+                    *-------* S3
+                    |     y
+                    |
+                    | z
+                    *
+                    S4
+     ```
+  
+     * dist(S1, S2) is 3 = w + x
+     * dist(S1, S3) is 4 = w + u + y
+     * dist(S1, S4) is 3 = w + u + z
+     * dist(S2, S3) is 4 = x + u + y
+     * dist(S2, S4) is 5 = x + u + z
+     * dist(S3, S4) is 2 = y + z
+  
+     Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+
+   * Test simple tree 3:
+   
+     ```{svgbob}
+                S3
+                *
+              x |
+                |
+          w     |
+     S1 *-------*
+                 \
+                  \ u
+                   \
+                    *-------* S2
+                    |     y
+                    |
+                    | z
+                    *
+                    S4
+
+     * "Same structure to previous example"
+       "but species assigned to different leafs."
+     ```
+  
+     * dist(S1, S2) is 4 = w + u + y
+     * dist(S1, S3) is 3 = w + x
+     * dist(S1, S4) is 3 = w + u + z
+     * dist(S2, S3) is 4 = x + u + y
+     * dist(S2, S4) is 2 = y + z
+     * dist(S3, S4) is 5 = x + u + z
+  
+     Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+
+   * etc..
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
@@ -9543,11 +9734,8 @@ graph_show
 `{bm-ignore} (permutation)_NORM/i`
 `{bm-error} Apply suffix _NORM or _GR/(permutation)/i`
 
-`{bm-ignore} (distance matrix|distance matrices)_NORM/i`
-`{bm-error} Apply suffix _NORM or _PT/(distance matrix|distance matrices)/i`
-
 `{bm-ignore} (degree)_NORM/i`
-`{bm-error} Apply suffix _NORM or _PT/(degree)/i`
+`{bm-error} Apply suffix _NORM or _GRAPH/(degree)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
 
