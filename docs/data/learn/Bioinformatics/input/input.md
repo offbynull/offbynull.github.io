@@ -9708,7 +9708,7 @@ graph_show
    When choosing a tree structure, it's important to remember some key intuitions about solving systems of linear equations: A system of linear equations where ...
 
    1. the number of equations <= the number of variables usually has at least one solution. However, some of those solutions may not be viable because some variables might solve to negative values but it doesn't make sense to have a negative distance. The initial example in this section is one that has multiple solutions where some are not viable because they result in some variables ending up as negative values. 
-   2. the number of equations > the number of variables may have a solution but usually does't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.
+   2. the number of equations > the number of variables may have a solution but usually doesn't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
