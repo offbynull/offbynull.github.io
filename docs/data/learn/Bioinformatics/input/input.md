@@ -9606,6 +9606,8 @@ graph_show
    ```
 
    This simple tree version gets solved to `w = 2`, `x = 1`, and `z = 2`.  
+
+   The Pevzner book states that if a matrix is an additive matrix, there's a unique simple tree that fits it.
    ````
 
    The term additive is used because the weights of all edges along the path between leaves i and j in a tree fitting a matrix D add to `dist(i, j)`. Not all distance matrices are additive. For example, no 4-leaf simple tree exists that satisfies the following distance matrix...

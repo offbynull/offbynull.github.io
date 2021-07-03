@@ -22,3 +22,15 @@ for i, k in product(range(mat_size), range(mat_size)):
     if min_limb_len is None or limb_len < min_limb_len:
         min_limb_len = limb_len
 print(f'{int(min_limb_len)}')
+
+# THIS IS GIVING BACK GOOD RESULTS WITH THE TEST DATASETS BUT I DON'T KNOW WHY...
+#
+# target = sorted(enumerate(dist_mat[leaf_idx]), key=lambda x: x[1])
+# target.remove((leaf_idx, 0))
+# for ((i1, v1), (i2, v2)), _ in slide_window(target, k=2):
+#     limb_len = (dist_mat[i1][leaf_idx] + dist_mat[i2][leaf_idx] - dist_mat[i1][i2]) / 2
+#     if min_limb_len is None or limb_len < min_limb_len:
+#         min_limb_len = limb_len
+#     elif limb_len > min_limb_len:
+#         break
+# print(f'{int(min_limb_len)}')

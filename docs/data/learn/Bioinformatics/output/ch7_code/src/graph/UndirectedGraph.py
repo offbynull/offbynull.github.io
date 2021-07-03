@@ -76,6 +76,7 @@ class Graph(Generic[N, ND, E, ED]):
                 and len(self._node_outbound[gt_node]) == 0 \
                 and (not dealing_with_same_node or (dealing_with_same_node and not removed_already)):
             self.delete_node(gt_node)
+        del self._edges[edge]
 
     # updates the data for the FIRST edge b
     def update_edge_data(
