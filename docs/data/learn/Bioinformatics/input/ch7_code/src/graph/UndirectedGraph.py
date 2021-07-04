@@ -12,7 +12,7 @@ ED = TypeVar('ED')
 
 class Graph(Generic[N, ND, E, ED]):
     def __init__(self):
-        self._node_outbound: dict[N, E] = {}
+        self._node_outbound: dict[N, set[E]] = {}
         self._node_data: dict[N, ND] = {}
         self._edges: dict[E, (N, N, ED)] = {}
 
@@ -157,11 +157,23 @@ class Graph(Generic[N, ND, E, ED]):
                     continue
                 walked_edges.add(edge)
                 node1, node2, edge_data = self._edges[edge]
-                out.append(f'{(node1, self._node_data[node1])}--'
-                           f'{(edge, edge_data)}--'
-                           f'{(node2, self._node_data[node2])}')
+                line = f'({node1}'
+                if self._node_data[node1] is not None:
+                    line += f', {self._node_data[node1]}'
+                line += f')--({edge}'
+                if edge_data is not None:
+                    line += f', {edge_data}'
+                line += f')--({node2}'
+                if self._node_data[node2] is not None:
+                    line += f', {self._node_data[node2]}'
+                line += f')'
+                out.append(line)
             if len(edges) == 0:
-                out.append(f'{(node, self._node_data[node])}--x')
+                line = f'({node}'
+                if self._node_data[node] is not None:
+                    line += f', {self._node_data[node]}'
+                line += f')--x'
+                out.append(line)
         return '\n'.join(out)
 
     def __repr__(self: Graph) -> str:
