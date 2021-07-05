@@ -9518,7 +9518,7 @@ graph_show
    Recall that by definition, a tree doesn't have to have a root. The examples above are un-rooted trees.
    ```
 
- * `{bm} additive matrix/(additive matrix|additive matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix, that distance matrix is said to be an additive matrix.
+ * `{bm} additive matrix/(additive matrix|additive matrices|additive distance matrix|additive distance matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix, that distance matrix is said to be an additive matrix.
 
    For example, given the following distance matrix and tree structure...
    
@@ -9711,6 +9711,139 @@ graph_show
 
    1. the number of equations <= the number of variables usually has at least one solution. However, some of those solutions may not be viable because some variables might solve to negative values but it doesn't make sense to have a negative distance. The initial example in this section is one that has multiple solutions where some are not viable because they result in some variables ending up as negative values. 
    2. the number of equations > the number of variables may have a solution but usually doesn't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.
+
+ * `{bm} limb length` - In the context of phylogenetic trees, a limb is defined as the edge between a leaf node and its parent. For example, in the following graph the limbs are highlighted in red...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label="11", color="red", penwidth="1.5"]
+    v1 -- i0 [label="2", color="red", penwidth="1.5"]
+    i0 -- i1 [label="4"]
+    i1 -- v2 [label="6", color="red", penwidth="1.5"]
+    i1 -- v3 [label="7", color="red", penwidth="1.5"]
+   }
+   ```
+
+   Limb length is simply the weight for some leaf node's limb. For example, in the diagram above the limb length for node v1 is 2.
+
+   ```{note}
+   A leaf node will only ever have 1 parent, by definition of a tree.
+   ```
+
+   Given an additive distance matrix, there exists a unique simple tree that fits that matrix. It's possible to compute limb lengths for that simple tree just from the matrix itself. That is, the distances between leaf nodes provide enough information to derive the limb lengths for any / all leaf nodes.
+   
+   For example, the distance matrix for the tree above is as follows...
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 22 |
+   | v1 | 13 | 0  | 12 | 13 |
+   | v2 | 21 | 12 | 0  | 13 |
+   | v3 | 22 | 13 | 13 | 0  |
+
+   Inspecting the path (v0, v1) and (v0, v2), note how both paths travel through i0, the parent of v0...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    i0 [fillcolor="gray", style="filled"]
+    v0 -- i0 [label="11", color="red", penwidth="1.5"]
+    v1 -- i0 [label="2", color="orange", penwidth="1.5"]
+    i0 -- i1 [label="4"]
+    i1 -- v2 [label="6"]
+    i1 -- v3 [label="7"]
+   }
+   ```
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    i0 [fillcolor="gray", style="filled"]
+    v0 -- i0 [label="11", color="red", penwidth="1.5"]
+    v1 -- i0 [label="2"]
+    i0 -- i1 [label="4", color="blue", penwidth="1.5"]
+    i1 -- v2 [label="6", color="blue", penwidth="1.5"]
+    i1 -- v3 [label="7"]
+   }
+   ```
+
+   The two key pieces of insight here are ...
+
+   1. v0's limb is included in both paths...
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       i0 [fillcolor="gray", style="filled"]
+       v0 -- i0 [label="11", color="red", penwidth="1.5"]
+       v1 -- i0 [label="2"]
+       i0 -- i1 [label="4"]
+       i1 -- v2 [label="6"]
+       i1 -- v3 [label="7"]
+      }
+      ```
+
+   2. Removing v0's limb and combining the paths reveals the path (v1, v2)...
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       i0 [fillcolor="gray", style="filled"]
+       v0 -- i0 [label="11"]
+       v1 -- i0 [label="2", color="orange", penwidth="1.5"]
+       i0 -- i1 [label="4", color="blue", penwidth="1.5"]
+       i1 -- v2 [label="6", color="blue", penwidth="1.5"]
+       i1 -- v3 [label="7"]
+      }
+      ```
+
+   These key pieces of insight give way to the idea that adding dist(v0, v1) with dist(v0, v2) is the same as adding dist(v1, v2) with twice dist(v0, i0): `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`. For the example above, ...
+
+    * d(v0, v1) = 13
+    * d(v0, v2) = 21
+    * d(v1, v2) = 12
+    * d(v0, i0) = 11
+
+   Note how all of these distances except for the last one (limb length) are in the distance matrix. This last distance (limb length) may be solved as follows:
+
+    * `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`
+    * `{kt} d_{v0, v1} + d_{v0, v2} - d_{v1, v2} = 2 \cdot d_{v0, i0}`
+    * `{kt} (d_{v0, v1} + d_{v0, v2} - d_{v1, v2}) \div 2 = d_{v0, i0}`
+
+   For the example above: (13 + 21 - 12) / 2 = 11.
+
+   This algorithm works without knowing the tree structure beforehand. As long as the distance matrix is an additive matrix and the path between the two nodes chosen travel through the limb node's parent.
+   
+   Because the tree structure for the above example was revealed beforehand, it's apparent that the algorithm would work just as well had a different pair of nodes been chosen: (v0, v1), (v0, v2), and (v0, v3) all travel through i0. However, that isn't the case for the following tree:
+
+   ```{dot}
+   graph G {
+    graph[nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0
+    v1 -- i0
+    i0 -- i1
+    v2 -- i1
+    v3 -- i1
+    i1 -- i2
+    v4 -- i2
+    i2 -- i3
+    i3 -- v5
+    i3 -- v6
+   }
+   ```
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
