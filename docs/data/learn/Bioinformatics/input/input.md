@@ -9719,11 +9719,11 @@ graph_show
     graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    v0 -- i0 [label="11", color="red", penwidth="1.5"]
-    v1 -- i0 [label="2", color="red", penwidth="1.5"]
+    v0 -- i0 [label="11", color="red", penwidth="2.5"]
+    v1 -- i0 [label="2", color="red", penwidth="2.5"]
     i0 -- i1 [label="4"]
-    i1 -- v2 [label="6", color="red", penwidth="1.5"]
-    i1 -- v3 [label="7", color="red", penwidth="1.5"]
+    i1 -- v2 [label="6", color="red", penwidth="2.5"]
+    i1 -- v3 [label="7", color="red", penwidth="2.5"]
    }
    ```
 
@@ -9752,8 +9752,8 @@ graph_show
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     i0 [fillcolor="gray", style="filled"]
-    v0 -- i0 [label="11", color="red", penwidth="1.5"]
-    v1 -- i0 [label="2", color="orange", penwidth="1.5"]
+    v0 -- i0 [label="11", color="red", penwidth="2.5"]
+    v1 -- i0 [label="2", color="orange", penwidth="2.5"]
     i0 -- i1 [label="4"]
     i1 -- v2 [label="6"]
     i1 -- v3 [label="7"]
@@ -9766,10 +9766,10 @@ graph_show
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     i0 [fillcolor="gray", style="filled"]
-    v0 -- i0 [label="11", color="red", penwidth="1.5"]
+    v0 -- i0 [label="11", color="red", penwidth="2.5"]
     v1 -- i0 [label="2"]
-    i0 -- i1 [label="4", color="blue", penwidth="1.5"]
-    i1 -- v2 [label="6", color="blue", penwidth="1.5"]
+    i0 -- i1 [label="4", color="blue", penwidth="2.5"]
+    i1 -- v2 [label="6", color="blue", penwidth="2.5"]
     i1 -- v3 [label="7"]
    }
    ```
@@ -9784,7 +9784,7 @@ graph_show
        node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
        edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
        i0 [fillcolor="gray", style="filled"]
-       v0 -- i0 [label="11", color="red", penwidth="1.5"]
+       v0 -- i0 [label="11", color="red", penwidth="2.5"]
        v1 -- i0 [label="2"]
        i0 -- i1 [label="4"]
        i1 -- v2 [label="6"]
@@ -9801,21 +9801,19 @@ graph_show
        edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
        i0 [fillcolor="gray", style="filled"]
        v0 -- i0 [label="11"]
-       v1 -- i0 [label="2", color="orange", penwidth="1.5"]
-       i0 -- i1 [label="4", color="blue", penwidth="1.5"]
-       i1 -- v2 [label="6", color="blue", penwidth="1.5"]
+       v1 -- i0 [label="2", color="orange", penwidth="2.5"]
+       i0 -- i1 [label="4", color="blue", penwidth="2.5"]
+       i1 -- v2 [label="6", color="blue", penwidth="2.5"]
        i1 -- v3 [label="7"]
       }
       ```
 
-   These key pieces of insight give way to the idea that adding dist(v0, v1) with dist(v0, v2) is the same as adding dist(v1, v2) with twice dist(v0, i0): `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`. For the example above, ...
-
-    * d(v0, v1) = 13
-    * d(v0, v2) = 21
-    * d(v1, v2) = 12
-    * d(v0, i0) = 11
-
-   Note how all of these distances except for the last one (limb length) are in the distance matrix. This last distance (limb length) may be solved as follows:
+   These key pieces of insight give way to the idea that adding dist(v0, v1) with dist(v0, v2) is the same as adding dist(v1, v2) with twice dist(v0, i0): `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`.  This formula is abstracted out as `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}`, where...
+   
+    * A, B, and L are leaf nodes.
+    * Lp is the parent node of L.
+   
+   In the example above, L=v0, A=v1, B=v2, and Lp=i0. Note how all of the distances required by the formula except for the limb length are in the distance matrix. The limb length may be solved as follows:
 
     * `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`
     * `{kt} d_{v0, v1} + d_{v0, v2} - d_{v1, v2} = 2 \cdot d_{v0, i0}`
@@ -9823,13 +9821,11 @@ graph_show
 
    For the example above: (13 + 21 - 12) / 2 = 11.
 
-   This algorithm works without knowing the tree structure beforehand. As long as the distance matrix is an additive matrix and the path between the two nodes chosen travel through the limb node's parent.
-   
-   Because the tree structure for the above example was revealed beforehand, it's apparent that the algorithm would work just as well had a different pair of nodes been chosen: (v0, v1), (v0, v2), and (v0, v3) all travel through i0. However, that isn't the case for the following tree:
+   Because the tree structure for the above example was revealed beforehand, it's apparent that the algorithm to find v0's limb length would work just as well had a different pair of leaf nodes been chosen: (v0, v1), (v0, v2), and (v0, v3) all travel through i0. However, that isn't the case for the following tree:
 
    ```{dot}
    graph G {
-    graph[nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0
@@ -9844,6 +9840,127 @@ graph_show
     i3 -- v6
    }
    ```
+
+   For example, it isn't possible to find the limb length for v2 if the chosen pair of leaf nodes is v5 an v4 because the path (v5, v4) doesn't travel between v2's parent...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0
+    v1 -- i0
+    i0 -- i1
+    v2 -- i1 [color="red", penwidth="2.5"]
+    v3 -- i1
+    i1 -- i2
+    v4 -- i2 [color="orange", penwidth="2.5"]
+    i2 -- i3 [color="orange", penwidth="2.5"]
+    i3 -- v5 [color="orange", penwidth="2.5"]
+    i3 -- v6
+    i1 [fillcolor="gray", style="filled"]
+   }
+   ```
+
+   ..., but the path (v1, v5) does...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0
+    v1 -- i0 [color="blue", penwidth="2.5"]
+    i0 -- i1 [color="blue", penwidth="2.5"]
+    v2 -- i1 [color="red", penwidth="2.5"]
+    v3 -- i1
+    i1 -- i2 [color="orange", penwidth="2.5"]
+    v4 -- i2
+    i2 -- i3 [color="orange", penwidth="2.5"]
+    i3 -- v5 [color="orange", penwidth="2.5"]
+    i3 -- v6
+    i1 [fillcolor="gray", style="filled"]
+   }
+   ```
+
+   To find a correct pair of leaf nodes whose path travels through limb's parent, simply test each pair of nodes with the formula and use the _minimum_ as the limb length.
+   
+   To understand why the pair producing the minimum value is the correct limb length, consider what happens when you break the edges on v2's parent (i1): The tree breaks into 4 distinct subtrees (colored below as green, yellow, pink, and cyan)...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0
+    v1 -- i0 
+    i0 -- i1 [style="dashed"]
+    v2 -- i1 [style="dashed"]
+    v3 -- i1 [style="dashed"]
+    i1 -- i2 [style="dashed"]
+    v4 -- i2
+    i2 -- i3 
+    i3 -- v5 
+    i3 -- v6
+    v0 [style="filled", fillcolor="green"]
+    v1 [style="filled", fillcolor="green"]
+    i0 [style="filled", fillcolor="green"]
+    i1 [style="filled", fillcolor="gray"]
+    v2 [style="filled", fillcolor="yellow"]
+    v3 [style="filled", fillcolor="pink"]
+    i2 [style="filled", fillcolor="cyan"]
+    i3 [style="filled", fillcolor="cyan"]
+    v4 [style="filled", fillcolor="cyan"]
+    v5 [style="filled", fillcolor="cyan"]
+    v6 [style="filled", fillcolor="cyan"]
+   }
+   ```
+
+   If the two leaf nodes chosen are within the same subtree, the path will _never_ travel through v2's parent (i1). For example, the path (v4, v5) will never travel through i1...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0
+    v1 -- i0 
+    i0 -- i1 [style="dashed"]
+    v2 -- i1 [style="dashed"]
+    v3 -- i1 [style="dashed"]
+    i1 -- i2 [style="dashed"]
+    v4 -- i2 [color="orange", penwidth="2.5"]
+    i2 -- i3 [color="orange", penwidth="2.5"]
+    i3 -- v5 [color="orange", penwidth="2.5"]
+    i3 -- v6
+    v0 [style="filled", fillcolor="green"]
+    v1 [style="filled", fillcolor="green"]
+    i0 [style="filled", fillcolor="green"]
+    i1 [style="filled", fillcolor="gray"]
+    v2 [style="filled", fillcolor="yellow"]
+    v3 [style="filled", fillcolor="pink"]
+    i2 [style="filled", fillcolor="cyan"]
+    i3 [style="filled", fillcolor="cyan"]
+    v4 [style="filled", fillcolor="cyan"]
+    v5 [style="filled", fillcolor="cyan"]
+    v6 [style="filled", fillcolor="cyan"]
+   }
+   ```
+
+   That means the formula derived earlier no longer holds true: `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}`
+
+   If the two leaf nodes chosen are within the same subtree, path(L, A) and path(L, B) will both travel through the node Lp, but path(A, B) won't. This means that the...
+
+   1. dist(v2,v5) includes dist(i1,i2)
+   2. dist(v2,v4) includes dist(i1,i2)
+   3. dist(v4,v5) DOES NOT include dist(i1,i2)
+
+   As such, if it's from the two chosen leaf nodes are from...
+
+    * the same subtree, `{kt} d_{L, A} + d_{L, B} \geq d_{A, B} + 2 \cdot d_{L, Lp}`.
+    * different subtree, `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}`.
+
+   Assuming the tree is that generated the distance matrix was an additive matrix / structured correctly (e.g. simple tree, weights that are non-zero and positive weights, etc..), choosing the node leaf pair that produces the minimum  `{kt} (d_{v0, v1} + d_{v0, v2} - d_{v1, v2}) \div 2` will yield pairs from different trees.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
