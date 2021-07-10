@@ -9712,18 +9712,18 @@ graph_show
    1. the number of equations <= the number of variables usually has at least one solution. However, some of those solutions may not be viable because some variables might solve to negative values but it doesn't make sense to have a negative distance. The initial example in this section is one that has multiple solutions where some are not viable because they result in some variables ending up as negative values. 
    2. the number of equations > the number of variables may have a solution but usually doesn't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.
 
- * `{bm} limb length` - In the context of phylogenetic trees, a limb is defined as the edge between a leaf node and its parent. For example, in the following graph the limbs are highlighted in red...
+ * `{bm} limb length` - In the context of phylogenetic trees, a limb is defined as the edge between a leaf node and its parent (node it's connected to). For example, the limbs in the following graph are highlighted in red...
 
    ```{dot}
    graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    v0 -- i0 [label="11", color="red", penwidth="2.5"]
-    v1 -- i0 [label="2", color="red", penwidth="2.5"]
-    i0 -- i1 [label="4"]
-    i1 -- v2 [label="6", color="red", penwidth="2.5"]
-    i1 -- v3 [label="7", color="red", penwidth="2.5"]
+    v0 -- i0 [color="red", penwidth="2.5"]
+    v1 -- i0 [color="red", penwidth="2.5"]
+    i0 -- i1
+    i1 -- v2 [color="red", penwidth="2.5"]
+    i1 -- v3 [color="red", penwidth="2.5"]
    }
    ```
 
@@ -9748,84 +9748,178 @@ graph_show
 
    ```{dot}
    graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    i0 [fillcolor="gray", style="filled"]
-    v0 -- i0 [label="11", color="red", penwidth="2.5"]
-    v1 -- i0 [label="2", color="orange", penwidth="2.5"]
-    i0 -- i1 [label="4"]
-    i1 -- v2 [label="6"]
-    i1 -- v3 [label="7"]
+    subgraph cluster_two {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="path(v0, v2)"
+     y_v0 [label=v0]
+     y_v1 [label=v1]
+     y_v2 [label=v2]
+     y_v3 [label=v3]
+     y_i0 [label=i0]
+     y_i0 [fillcolor="gray", style="filled"]
+     y_i1 [label=i1]
+     y_v0 -- y_i0 [color="blue", penwidth="2.5"]
+     y_v1 -- y_i0
+     y_i0 -- y_i1 [color="blue", penwidth="2.5"]
+     y_i1 -- y_v2 [color="blue", penwidth="2.5"]
+     y_i1 -- y_v3
+    }
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="path(v0, v1)"
+     x_v0 [label=v0]
+     x_v1 [label=v1]
+     x_v2 [label=v2]
+     x_v3 [label=v3]
+     x_i0 [label=i0]
+     x_i0 [fillcolor="gray", style="filled"]
+     x_i1 [label=i1]
+     x_v0 -- x_i0 [color="orange", penwidth="2.5"]
+     x_v1 -- x_i0 [color="orange", penwidth="2.5"]
+     x_i0 -- x_i1
+     x_i1 -- x_v2
+     x_i1 -- x_v3
+    }
    }
    ```
 
-   ```{dot}
-   graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    i0 [fillcolor="gray", style="filled"]
-    v0 -- i0 [label="11", color="red", penwidth="2.5"]
-    v1 -- i0 [label="2"]
-    i0 -- i1 [label="4", color="blue", penwidth="2.5"]
-    i1 -- v2 [label="6", color="blue", penwidth="2.5"]
-    i1 -- v3 [label="7"]
-   }
-   ```
-
-   The two key pieces of insight here are ...
+   The key pieces of insight here are ...
 
    1. v0's limb is included in both paths...
 
       ```{dot}
       graph G {
-       graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+       graph[rankdir=LR]
        node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
        edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-       i0 [fillcolor="gray", style="filled"]
-       v0 -- i0 [label="11", color="red", penwidth="2.5"]
-       v1 -- i0 [label="2"]
-       i0 -- i1 [label="4"]
-       i1 -- v2 [label="6"]
-       i1 -- v3 [label="7"]
+       subgraph cluster_two {
+        fontname="Courier-Bold"
+        fontsize=10
+        label="limb (v0, i0) in path(v0, v1)"
+        y_v0 [label=v0]
+        y_v1 [label=v1]
+        y_v2 [label=v2]
+        y_v3 [label=v3]
+        y_i0 [label=i0]
+        y_i0 [fillcolor="gray", style="filled"]
+        y_i1 [label=i1]
+        y_v0 -- y_i0 [color="blue", penwidth="2.5"]
+        y_v1 -- y_i0
+        y_i0 -- y_i1
+        y_i1 -- y_v2
+        y_i1 -- y_v3
+       }
+       subgraph cluster_one {
+        fontname="Courier-Bold"
+        fontsize=10
+        label="limb (v0, i0) in path(v0, v2)"
+        x_v0 [label=v0]
+        x_v1 [label=v1]
+        x_v2 [label=v2]
+        x_v3 [label=v3]
+        x_i0 [label=i0]
+        x_i0 [fillcolor="gray", style="filled"]
+        x_i1 [label=i1]
+        x_v0 -- x_i0 [color="orange", penwidth="2.5"]
+        x_v1 -- x_i0
+        x_i0 -- x_i1
+        x_i1 -- x_v2
+        x_i1 -- x_v3
+       }
       }
       ```
 
-   2. Removing v0's limb and combining the paths reveals the path (v1, v2)...
+   2. removing v0's limb from both paths and combining them reveals the path (v1, v2)...
 
       ```{dot}
       graph G {
-       graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+       graph[rankdir=LR]
        node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
        edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-       i0 [fillcolor="gray", style="filled"]
-       v0 -- i0 [label="11"]
-       v1 -- i0 [label="2", color="orange", penwidth="2.5"]
-       i0 -- i1 [label="4", color="blue", penwidth="2.5"]
-       i1 -- v2 [label="6", color="blue", penwidth="2.5"]
-       i1 -- v3 [label="7"]
+       subgraph cluster_one {
+        fontname="Courier-Bold"
+        fontsize=10
+        label="both paths with limb (v0, i0) removed"
+        i0 [fillcolor="gray", style="filled"]
+        v0 -- i0
+        v1 -- i0 [color="orange", penwidth="2.5"]
+        i0 -- i1 [color="blue", penwidth="2.5"]
+        i1 -- v2 [color="blue", penwidth="2.5"]
+        i1 -- v3
+       }
       }
       ```
 
-   These key pieces of insight give way to the idea that adding dist(v0, v1) with dist(v0, v2) is the same as adding dist(v1, v2) with twice dist(v0, i0): `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`.  This formula is abstracted out as `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}`, where...
+   These key pieces of insight give way to the equation: `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`, which says that adding dist(v0, v1) with dist(v0, v2) is the same as adding dist(v1, v2) with twice dist(v0, i0)....
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       subgraph cluster_two {
+        fontname="Courier-Bold"
+        fontsize=10
+        label="dist(v0, v1) + dist(v0, v2)"
+        y_v0 [label=v0]
+        y_v1 [label=v1]
+        y_v2 [label=v2]
+        y_v3 [label=v3]
+        y_i0 [label=i0]
+        y_i0 [fillcolor="gray", style="filled"]
+        y_i1 [label=i1]
+        y_v0 -- y_i0 [color="orange:invis:blue", penwidth="2.5"]
+        y_v1 -- y_i0 [color="orange", penwidth="2.5"]
+        y_i0 -- y_i1 [color="blue", penwidth="2.5"]
+        y_i1 -- y_v2 [color="blue", penwidth="2.5"]
+        y_i1 -- y_v3
+       }
+       subgraph cluster_one {
+        fontname="Courier-Bold"
+        fontsize=10
+        label="dist(v1, v2) + 2 * dist(v0, i0)"
+        x_v0 [label=v0]
+        x_v1 [label=v1]
+        x_v2 [label=v2]
+        x_v3 [label=v3]
+        x_i0 [label=i0]
+        x_i0 [fillcolor="gray", style="filled"]
+        x_i1 [label=i1]
+        x_v0 -- x_i0 [color="red:invis:red", penwidth="2.5"]
+        x_v1 -- x_i0 [color="purple", penwidth="2.5"]
+        x_i0 -- x_i1 [color="purple", penwidth="2.5"]
+        x_i1 -- x_v2 [color="purple", penwidth="2.5"]
+        x_i1 -- x_v3
+       }
+      }
+      ```
    
-    * A, B, and L are leaf nodes.
-    * Lp is the parent node of L.
-   
-   In the example above, L=v0, A=v1, B=v2, and Lp=i0. Note how all of the distances required by the formula except for the limb length are in the distance matrix. The limb length may be solved as follows:
+   Note how all of the distances required by the equation except for v0's limb length are in the distance matrix. As such, v0's limb length may be solved as follows:
 
     * `{kt} d_{v0, v1} + d_{v0, v2} = d_{v1, v2} + 2 \cdot d_{v0, i0}`
     * `{kt} d_{v0, v1} + d_{v0, v2} - d_{v1, v2} = 2 \cdot d_{v0, i0}`
     * `{kt} (d_{v0, v1} + d_{v0, v2} - d_{v1, v2}) \div 2 = d_{v0, i0}`
 
-   For the example above: (13 + 21 - 12) / 2 = 11.
+   v0's limb length is (13 + 21 - 12) / 2 = 11.
 
-   Because the tree structure for the above example was revealed beforehand, it's apparent that the algorithm to find v0's limb length would work just as well had a different pair of leaf nodes been chosen: (v0, v1), (v0, v2), and (v0, v3) all travel through i0. However, that isn't the case for the following tree:
+   The above equation can be abstracted out to the formula `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}`, where...
+   
+    * A, B, and L are leaf nodes.
+    * Lp is the parent node of L.
+    * path (A, B) travels through Lp.
+
+   Because the tree for the above example was revealed beforehand, it's apparent that the algorithm to find v0's limb length would work just as well had a different pair of leaf nodes been chosen: (v0, v1), (v0, v2), and (v0, v3) all travel through i0.
+   
+   On this more complex tree, finding v2's limb length is only possible when selecting specific node pairs:
 
    ```{dot}
    graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0
@@ -9841,22 +9935,22 @@ graph_show
    }
    ```
 
-   For example, it isn't possible to find the limb length for v2 if the chosen pair of leaf nodes is v5 an v4 because the path (v5, v4) doesn't travel between v2's parent...
+   For example, it isn't possible to find the v2's limb length if the chosen pair of leaf nodes is v5 an v4 because the path (v5, v4) doesn't travel between v2's parent...
 
    ```{dot}
    graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0
     v1 -- i0
     i0 -- i1
-    v2 -- i1 [color="red", penwidth="2.5"]
+    v2 -- i1
     v3 -- i1
     i1 -- i2
-    v4 -- i2 [color="orange", penwidth="2.5"]
-    i2 -- i3 [color="orange", penwidth="2.5"]
-    i3 -- v5 [color="orange", penwidth="2.5"]
+    v4 -- i2 [color="purple", penwidth="2.5"]
+    i2 -- i3 [color="purple", penwidth="2.5"]
+    i3 -- v5 [color="purple", penwidth="2.5"]
     i3 -- v6
     i1 [fillcolor="gray", style="filled"]
    }
@@ -9866,13 +9960,13 @@ graph_show
 
    ```{dot}
    graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0
-    v1 -- i0 [color="blue", penwidth="2.5"]
-    i0 -- i1 [color="blue", penwidth="2.5"]
-    v2 -- i1 [color="red", penwidth="2.5"]
+    v1 -- i0 [color="orange", penwidth="2.5"]
+    i0 -- i1 [color="orange", penwidth="2.5"]
+    v2 -- i1
     v3 -- i1
     i1 -- i2 [color="orange", penwidth="2.5"]
     v4 -- i2
@@ -9883,13 +9977,13 @@ graph_show
    }
    ```
 
-   To find a correct pair of leaf nodes whose path travels through limb's parent, simply test each pair of nodes with the formula and use the _minimum_ as the limb length.
+   If the tree structure hasn't been revealed beforehand, a correct pair of leaf nodes may still be found by simply testing each pair of leaf nodes with the formula and using the pair that results in the _minimum_.
    
    To understand why the pair producing the minimum value is the correct limb length, consider what happens when you break the edges on v2's parent (i1): The tree breaks into 4 distinct subtrees (colored below as green, yellow, pink, and cyan)...
 
    ```{dot}
    graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0
@@ -9916,51 +10010,98 @@ graph_show
    }
    ```
 
-   If the two leaf nodes chosen are within the same subtree, the path will _never_ travel through v2's parent (i1). For example, the path (v4, v5) will never travel through i1...
+   If the two leaf nodes chosen are within the same subtree, the path will _never_ travel through v2's parent (i1). For example, the path (v4, v5) never travels through v2's parent, meaning that the formula derived earlier no longer holds true: `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}` ...
+
+    * Lp = i0
+    * L = v2
+    * A = v4
+    * B = v5
 
    ```{dot}
    graph G {
-    graph[rankdir=LR, nodesep=0.25, ranksep=0.25]
+    graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    v0 -- i0
-    v1 -- i0 
-    i0 -- i1 [style="dashed"]
-    v2 -- i1 [style="dashed"]
-    v3 -- i1 [style="dashed"]
-    i1 -- i2 [style="dashed"]
-    v4 -- i2 [color="orange", penwidth="2.5"]
-    i2 -- i3 [color="orange", penwidth="2.5"]
-    i3 -- v5 [color="orange", penwidth="2.5"]
-    i3 -- v6
-    v0 [style="filled", fillcolor="green"]
-    v1 [style="filled", fillcolor="green"]
-    i0 [style="filled", fillcolor="green"]
-    i1 [style="filled", fillcolor="gray"]
-    v2 [style="filled", fillcolor="yellow"]
-    v3 [style="filled", fillcolor="pink"]
-    i2 [style="filled", fillcolor="cyan"]
-    i3 [style="filled", fillcolor="cyan"]
-    v4 [style="filled", fillcolor="cyan"]
-    v5 [style="filled", fillcolor="cyan"]
-    v6 [style="filled", fillcolor="cyan"]
+    subgraph cluster_two {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v4, v5) + 2 * dist(v2, i1)"
+     y_v0 -- y_i0
+     y_v1 -- y_i0 
+     y_i0 -- y_i1
+     y_v2 -- y_i1 [color="red:invis:red", penwidth="2.5"]
+     y_v3 -- y_i1
+     y_i1 -- y_i2
+     y_v4 -- y_i2 [color="purple", penwidth="2.5"]
+     y_i2 -- y_i3 [color="purple", penwidth="2.5"]
+     y_i3 -- y_v5 [color="purple", penwidth="2.5"]
+     y_i3 -- y_v6
+     y_v0 [label= "v0", style="filled", fillcolor="green"]
+     y_v1 [label= "v1", style="filled", fillcolor="green"]
+     y_i0 [label= "i0", style="filled", fillcolor="green"]
+     y_i1 [label= "i1", style="filled", fillcolor="gray"]
+     y_v2 [label= "v2", style="filled", fillcolor="yellow"]
+     y_v3 [label= "v3", style="filled", fillcolor="pink"]
+     y_i2 [label= "i2", style="filled", fillcolor="cyan"]
+     y_i3 [label= "i3", style="filled", fillcolor="cyan"]
+     y_v4 [label= "v4", style="filled", fillcolor="cyan"]
+     y_v5 [label= "v5", style="filled", fillcolor="cyan"]
+     y_v6 [label= "v6", style="filled", fillcolor="cyan"]
+    }
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v4, v2) + dist(v5, v2)"
+     x_v0 -- x_i0
+     x_v1 -- x_i0 
+     x_i0 -- x_i1
+     x_v2 -- x_i1 [color="blue:invis:orange", penwidth="2.5"]
+     x_v3 -- x_i1
+     x_i1 -- x_i2 [color="blue:invis:orange", penwidth="2.5"]
+     x_v4 -- x_i2 [color="blue", penwidth="2.5"]
+     x_i2 -- x_i3 [color="orange", penwidth="2.5"]
+     x_i3 -- x_v5 [color="orange", penwidth="2.5"]
+     x_i3 -- x_v6
+     x_v0 [label= "v0", style="filled", fillcolor="green"]
+     x_v1 [label= "v1", style="filled", fillcolor="green"]
+     x_i0 [label= "i0", style="filled", fillcolor="green"]
+     x_i1 [label= "i1", style="filled", fillcolor="gray"]
+     x_v2 [label= "v2", style="filled", fillcolor="yellow"]
+     x_v3 [label= "v3", style="filled", fillcolor="pink"]
+     x_i2 [label= "i2", style="filled", fillcolor="cyan"]
+     x_i3 [label= "i3", style="filled", fillcolor="cyan"]
+     x_v4 [label= "v4", style="filled", fillcolor="cyan"]
+     x_v5 [label= "v5", style="filled", fillcolor="cyan"]
+     x_v6 [label= "v6", style="filled", fillcolor="cyan"]
+    }
    }
    ```
 
-   That means the formula derived earlier no longer holds true: `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}`
+   Notice how the diagram for the left-hand side of the equation has more highlighted edges than the diagram for the right-hand side. This means that it's possible for the left-hand side's result to larger than the right-hand side's result: `{kt} d_{L, A} + d_{L, B} \geq d_{A, B} + 2 \cdot d_{L, Lp}`. 
 
-   If the two leaf nodes chosen are within the same subtree, path(L, A) and path(L, B) will both travel through the node Lp, but path(A, B) won't. This means that the...
+   ```{note}
+   Why is it greater than OR equal? I suppose it has to do with edges having a weight of 0. So for example, in the example graph above, if the edge (i1, i2) had a weight of 0 then the RHS and LHS would be equal.
 
-   1. dist(v2,v5) includes dist(i1,i2)
-   2. dist(v2,v4) includes dist(i1,i2)
-   3. dist(v4,v5) DOES NOT include dist(i1,i2)
+   But, does it make sense to have 0 weight edges? If an edge has a 0 weight, why is it ever there? Doesn't it mean that species represented by both sides of the edge are exactly the same (0 distance)? The book says >= so that's what I'm going with.
+   ```
 
-   As such, if it's from the two chosen leaf nodes are from...
+   Solving the above equation for dist(L, Lp) is as follows:
 
-    * the same subtree, `{kt} d_{L, A} + d_{L, B} \geq d_{A, B} + 2 \cdot d_{L, Lp}`.
-    * different subtree, `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}`.
+    * `{kt} d_{v0, v1} + d_{v0, v2} \geq d_{v1, v2} + 2 \cdot d_{v0, i0}`
+    * `{kt} d_{v0, v1} + d_{v0, v2} - d_{v1, v2} \geq 2 \cdot d_{v0, i0}`
+    * `{kt} (d_{v0, v1} + d_{v0, v2} - d_{v1, v2}) \div 2 \geq d_{v0, i0}`
 
-   Assuming the tree is that generated the distance matrix was an additive matrix / structured correctly (e.g. simple tree, weights that are non-zero and positive weights, etc..), choosing the node leaf pair that produces the minimum  `{kt} (d_{v0, v1} + d_{v0, v2} - d_{v1, v2}) \div 2` will yield pairs from different trees.
+   This important distinction is why selecting the minimum works: If the two leaf nodes chosen are within ...
+
+    * different subtrees, it's guaranteed that path(A,B) will go through Lp, resulting in the formula...
+
+      `{kt} (d_{v0, v1} + d_{v0, v2} - d_{v1, v2}) \div 2 = d_{v0, i0}`
+
+    * the same subtree, the path(A,B) will not go through Lp, resulting in the formula...
+
+      `{kt} (d_{v0, v1} + d_{v0, v2} - d_{v1, v2}) \div 2 \geq d_{v0, i0}`
+    
+   The left-hand side of the two equations above are the same, meaning that all node pairs get evaluated the same way. Those that are within the same subtree will be >= to the limb length, while those that are within different subtrees will be = to the limb length. The second case (different subtrees) is what gives the limb length value, and that will always be <= to the first case (same subtree). This is why choosing the minimum works.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
