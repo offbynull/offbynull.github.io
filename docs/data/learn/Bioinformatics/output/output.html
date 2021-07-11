@@ -12529,6 +12529,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li>the number of equations &lt;= the number of variables usually has at least one solution. However, some of those solutions may not be viable because some variables might solve to negative values but it doesn't make sense to have a negative distance. The initial example in this section is one that has multiple solutions where some are not viable because they result in some variables ending up as negative values.</li>
 <li>the number of equations &gt; the number of variables may have a solution but usually doesn't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.</li>
 </ol>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are two ways of determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive. The first method is that, at some point, additive <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a> will fail when you try to find an additive pair in a bald matrix. The second method is to use the <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">four point condition</a>. I'll document each algorithm when it comes time to write out.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(limb%20length)%2Fi"></a><strong>limb length</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, a limb is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the limbs in the following graph are highlighted in red...</p>
@@ -12668,6 +12672,20 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><img src="dot_bbe2c1719425a3eccdeb2cb1d01c1a5d.svg" alt="Dot diagram"></p>
 <p>Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get <a href="#BM_(limb%20length)%2Fi">limb length</a> for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.</p>
 </div>
+</li>
+<li>
+<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The idea is that, given any 4 arbitrarily chosen leaf nodes in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> (can't be the same leaf nodes), there will be case where...</p>
+<ul>
+<li>one pair of distances sum up to another pair of distances</li>
+<li>a third pair of distances sum to &lt;= the pair found in the previous point</li>
+</ul>
+<p>For example, given (v0, v2, v4, v6) in the following <a href="#BM_(tree)%2Fi">tree</a> ...</p>
+<p><img src="dot_662a94ff9db2b299a086eb0713a712a1.svg" alt="Dot diagram"></p>
+<p>... the pair of distances ((v0, v4), (v2, v6)) sum up to another pair of distances ((v0, v6), (v2, v4))...</p>
+<p><img src="dot_22fc1a4773152dc1666db0582699a6ae.svg" alt="Dot diagram"></p>
+<p>... and the pair of distances ((v0, v2), (v4, v6)) sum up to less than the other two...</p>
+<p><img src="dot_0d5c0bb0941d5f1ce82c2750abf59258.svg" alt="Dot diagram"></p>
+<p>In the above example, dist(v2, v4) + dist(v0, v6) &lt;= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4).</p>
 </li>
 </ul>
 <p>

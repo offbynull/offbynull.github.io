@@ -9712,6 +9712,10 @@ graph_show
    1. the number of equations <= the number of variables usually has at least one solution. However, some of those solutions may not be viable because some variables might solve to negative values but it doesn't make sense to have a negative distance. The initial example in this section is one that has multiple solutions where some are not viable because they result in some variables ending up as negative values. 
    2. the number of equations > the number of variables may have a solution but usually doesn't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.
 
+   ```{note}
+   There are two ways of determining if a distance matrix is additive. The first method is that, at some point, additive phylogeny will fail when you try to find an additive pair in a bald matrix. The second method is to use the four point condition. I'll document each algorithm when it comes time to write out.
+   ```
+
  * `{bm} limb length` - In the context of phylogenetic trees, a limb is defined as the edge between a leaf node and its parent (node it's connected to). For example, the limbs in the following graph are highlighted in red...
 
    ```{dot}
@@ -10142,8 +10146,135 @@ graph_show
 
    Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get limb length for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.
    ````
+
+ * `{bm} four point condition/(four point condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. The idea is that, given any 4 arbitrarily chosen leaf nodes in a phylogenetic tree (can't be the same leaf nodes), there will be case where...
+
+   * one pair of distances sum up to another pair of distances
+   * a third pair of distances sum to <= the pair found in the previous point
+
+   For example, given (v0, v2, v4, v6) in the following tree ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 [style=filled, fillcolor="gray"]
+    v2 [style=filled, fillcolor="gray"]
+    v4 [style=filled, fillcolor="gray"]
+    v6 [style=filled, fillcolor="gray"]
+    v0 -- i0
+    v1 -- i0
+    i0 -- i1
+    v2 -- i1
+    v3 -- i1
+    i1 -- i2
+    v4 -- i2
+    i2 -- i3
+    i3 -- v5
+    i3 -- v6
+   }
+   ```
+
+   ... the pair of distances ((v0, v4), (v2, v6)) sum up to another pair of distances ((v0, v6), (v2, v4))...
      
-     
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    subgraph cluster_two {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v0, v6) + dist(v2, v4)"
+     y_v0 -- y_i0 [color=darkgreen, penwidth=2.5]
+     y_v1 -- y_i0
+     y_i0 -- y_i1 [color=darkgreen, penwidth=2.5]
+     y_v2 -- y_i1 [color=pink, penwidth=2.5]
+     y_v3 -- y_i1
+     y_i1 -- y_i2 [color="pink:invis:darkgreen", penwidth=2.5]
+     y_v4 -- y_i2 [color=pink, penwidth=2.5]
+     y_i2 -- y_i3 [color=darkgreen, penwidth=2.5]
+     y_i3 -- y_v5
+     y_i3 -- y_v6 [color=darkgreen, penwidth=2.5]
+     y_v0 [label= "v0", style=filled, fillcolor="gray"] 
+     y_v1 [label= "v1"] 
+     y_i0 [label= "i0"] 
+     y_i1 [label= "i1"] 
+     y_v2 [label= "v2", style=filled, fillcolor="gray"] 
+     y_v3 [label= "v3"] 
+     y_i2 [label= "i2"] 
+     y_i3 [label= "i3"] 
+     y_v4 [label= "v4", style=filled, fillcolor="gray"] 
+     y_v5 [label= "v5"] 
+     y_v6 [label= "v6", style=filled, fillcolor="gray"]
+    }
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v0, v4) + dist(v2, v6)"
+     x_v0 -- x_i0 [color=blue, penwidth=2.5]
+     x_v1 -- x_i0
+     x_i0 -- x_i1 [color=blue, penwidth=2.5]
+     x_v2 -- x_i1 [color=orange, penwidth=2.5]
+     x_v3 -- x_i1
+     x_i1 -- x_i2 [color="orange:invis:blue", penwidth=2.5]
+     x_v4 -- x_i2 [color=blue, penwidth=2.5]
+     x_i2 -- x_i3 [color=orange, penwidth=2.5]
+     x_i3 -- x_v5
+     x_i3 -- x_v6 [color=orange, penwidth=2.5]
+     x_v0 [label= "v0", style=filled, fillcolor="gray"] 
+     x_v1 [label= "v1"] 
+     x_i0 [label= "i0"] 
+     x_i1 [label= "i1"] 
+     x_v2 [label= "v2", style=filled, fillcolor="gray"] 
+     x_v3 [label= "v3"] 
+     x_i2 [label= "i2"] 
+     x_i3 [label= "i3"] 
+     x_v4 [label= "v4", style=filled, fillcolor="gray"] 
+     x_v5 [label= "v5"] 
+     x_v6 [label= "v6", style=filled, fillcolor="gray"]
+    }
+   }
+   ```
+
+   ... and the pair of distances ((v0, v2), (v4, v6)) sum up to less than the other two...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v2, v4) + dist(v0, v6)"
+     x_v0 -- x_i0 [color=violet, penwidth=2.5]
+     x_v1 -- x_i0
+     x_i0 -- x_i1 [color=violet, penwidth=2.5]
+     x_v2 -- x_i1 [color=violet, penwidth=2.5]
+     x_v3 -- x_i1
+     x_i1 -- x_i2
+     x_v4 -- x_i2 [color=brown, penwidth=2.5]
+     x_i2 -- x_i3 [color=brown, penwidth=2.5]
+     x_i3 -- x_v5
+     x_i3 -- x_v6 [color=brown, penwidth=2.5]
+     x_v0 [label= "v0", style=filled, fillcolor="gray"] 
+     x_v1 [label= "v1"] 
+     x_i0 [label= "i0"] 
+     x_i1 [label= "i1"] 
+     x_v2 [label= "v2", style=filled, fillcolor="gray"] 
+     x_v3 [label= "v3"] 
+     x_i2 [label= "i2"] 
+     x_i3 [label= "i3"] 
+     x_v4 [label= "v4", style=filled, fillcolor="gray"] 
+     x_v5 [label= "v5"] 
+     x_v6 [label= "v6", style=filled, fillcolor="gray"]
+    }
+   }
+   ```
+
+   In the above example, dist(v2, v4) + dist(v0, v6) <= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4).
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
