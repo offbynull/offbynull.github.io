@@ -22,7 +22,7 @@
 <!-- y_v0 -->
 <g id="node1" class="node">
 <title>y_v0</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="30.5" cy="-125" rx="14.5" ry="14.5"/>
+<ellipse fill="#ffd700" stroke="#000000" cx="30.5" cy="-125" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="30.5" y="-122.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v0</text>
 </g>
 <!-- y_i0 -->
@@ -34,7 +34,7 @@
 <!-- y_v0&#45;&#45;y_i0 -->
 <g id="edge1" class="edge">
 <title>y_v0&#45;&#45;y_i0</title>
-<path fill="none" stroke="#006400" stroke-width="2.5" d="M45.2495,-125C55.8872,-125 70.1846,-125 80.8089,-125"/>
+<path fill="none" stroke="#ffd700" stroke-width="2.5" d="M45.2495,-125C55.8872,-125 70.1846,-125 80.8089,-125"/>
 </g>
 <!-- y_i1 -->
 <g id="node4" class="node">
@@ -45,7 +45,7 @@
 <!-- y_i0&#45;&#45;y_i1 -->
 <g id="edge3" class="edge">
 <title>y_i0&#45;&#45;y_i1</title>
-<path fill="none" stroke="#006400" stroke-width="2.5" d="M107.422,-116.3795C119.1501,-107.8992 136.9517,-95.0273 148.6536,-86.5659"/>
+<path fill="none" stroke="#ffd700" stroke-width="2.5" d="M107.422,-116.3795C119.1501,-107.8992 136.9517,-95.0273 148.6536,-86.5659"/>
 </g>
 <!-- y_v1 -->
 <g id="node3" class="node">
@@ -69,12 +69,12 @@
 <title>y_i1&#45;&#45;y_i2</title>
 <path fill="none" stroke="#ffc0cb" stroke-width="2.5" d="M174.5625,-73.37C185.3341,-71.3814 199.9897,-68.6758 210.7516,-66.689"/>
 <path fill="none" stroke="transparent" stroke-width="2.5" d="M174.9256,-75.3368C185.6972,-73.3482 200.3528,-70.6426 211.1147,-68.6557"/>
-<path fill="none" stroke="#006400" stroke-width="2.5" d="M175.2887,-77.3036C186.0603,-75.315 200.7159,-72.6093 211.4778,-70.6225"/>
+<path fill="none" stroke="#ffd700" stroke-width="2.5" d="M175.2887,-77.3036C186.0603,-75.315 200.7159,-72.6093 211.4778,-70.6225"/>
 </g>
 <!-- y_v2 -->
 <g id="node5" class="node">
 <title>y_v2</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="95.5" cy="-78" rx="14.5" ry="14.5"/>
+<ellipse fill="#ffc0cb" stroke="#000000" cx="95.5" cy="-78" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="95.5" y="-75.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v2</text>
 </g>
 <!-- y_v2&#45;&#45;y_i1 -->
@@ -102,12 +102,12 @@
 <!-- y_i2&#45;&#45;y_i3 -->
 <g id="edge8" class="edge">
 <title>y_i2&#45;&#45;y_i3</title>
-<path fill="none" stroke="#006400" stroke-width="2.5" d="M240.2495,-66C250.8872,-66 265.1846,-66 275.8089,-66"/>
+<path fill="none" stroke="#ffd700" stroke-width="2.5" d="M240.2495,-66C250.8872,-66 265.1846,-66 275.8089,-66"/>
 </g>
 <!-- y_v4 -->
 <g id="node8" class="node">
 <title>y_v4</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="160.5" cy="-31" rx="14.5" ry="14.5"/>
+<ellipse fill="#ffc0cb" stroke="#000000" cx="160.5" cy="-31" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="160.5" y="-28.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v4</text>
 </g>
 <!-- y_v4&#45;&#45;y_i2 -->
@@ -129,18 +129,18 @@
 <!-- y_v6 -->
 <g id="node11" class="node">
 <title>y_v6</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="355.5" cy="-101" rx="14.5" ry="14.5"/>
+<ellipse fill="#ffd700" stroke="#000000" cx="355.5" cy="-101" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="355.5" y="-98.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v6</text>
 </g>
 <!-- y_i3&#45;&#45;y_v6 -->
 <g id="edge10" class="edge">
 <title>y_i3&#45;&#45;y_v6</title>
-<path fill="none" stroke="#006400" stroke-width="2.5" d="M303.3419,-72.9149C314.7373,-79.0509 331.2974,-87.9679 342.6848,-94.0995"/>
+<path fill="none" stroke="#ffd700" stroke-width="2.5" d="M303.3419,-72.9149C314.7373,-79.0509 331.2974,-87.9679 342.6848,-94.0995"/>
 </g>
 <!-- x_v0 -->
 <g id="node12" class="node">
 <title>x_v0</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="30.5" cy="-292" rx="14.5" ry="14.5"/>
+<ellipse fill="#40e0d0" stroke="#000000" cx="30.5" cy="-292" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="30.5" y="-289.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v0</text>
 </g>
 <!-- x_i0 -->
@@ -152,7 +152,7 @@
 <!-- x_v0&#45;&#45;x_i0 -->
 <g id="edge11" class="edge">
 <title>x_v0&#45;&#45;x_i0</title>
-<path fill="none" stroke="#0000ff" stroke-width="2.5" d="M45.2495,-292C55.8872,-292 70.1846,-292 80.8089,-292"/>
+<path fill="none" stroke="#40e0d0" stroke-width="2.5" d="M45.2495,-292C55.8872,-292 70.1846,-292 80.8089,-292"/>
 </g>
 <!-- x_i1 -->
 <g id="node15" class="node">
@@ -163,7 +163,7 @@
 <!-- x_i0&#45;&#45;x_i1 -->
 <g id="edge13" class="edge">
 <title>x_i0&#45;&#45;x_i1</title>
-<path fill="none" stroke="#0000ff" stroke-width="2.5" d="M107.422,-283.3795C119.1501,-274.8992 136.9517,-262.0273 148.6536,-253.5659"/>
+<path fill="none" stroke="#40e0d0" stroke-width="2.5" d="M107.422,-283.3795C119.1501,-274.8992 136.9517,-262.0273 148.6536,-253.5659"/>
 </g>
 <!-- x_v1 -->
 <g id="node14" class="node">
@@ -187,12 +187,12 @@
 <title>x_i1&#45;&#45;x_i2</title>
 <path fill="none" stroke="#ffa500" stroke-width="2.5" d="M174.5625,-240.37C185.3341,-238.3814 199.9897,-235.6758 210.7516,-233.689"/>
 <path fill="none" stroke="transparent" stroke-width="2.5" d="M174.9256,-242.3368C185.6972,-240.3482 200.3528,-237.6426 211.1147,-235.6557"/>
-<path fill="none" stroke="#0000ff" stroke-width="2.5" d="M175.2887,-244.3036C186.0603,-242.315 200.7159,-239.6093 211.4778,-237.6225"/>
+<path fill="none" stroke="#40e0d0" stroke-width="2.5" d="M175.2887,-244.3036C186.0603,-242.315 200.7159,-239.6093 211.4778,-237.6225"/>
 </g>
 <!-- x_v2 -->
 <g id="node16" class="node">
 <title>x_v2</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="95.5" cy="-245" rx="14.5" ry="14.5"/>
+<ellipse fill="#ffa500" stroke="#000000" cx="95.5" cy="-245" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="95.5" y="-242.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v2</text>
 </g>
 <!-- x_v2&#45;&#45;x_i1 -->
@@ -225,13 +225,13 @@
 <!-- x_v4 -->
 <g id="node19" class="node">
 <title>x_v4</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="160.5" cy="-198" rx="14.5" ry="14.5"/>
+<ellipse fill="#40e0d0" stroke="#000000" cx="160.5" cy="-198" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="160.5" y="-195.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v4</text>
 </g>
 <!-- x_v4&#45;&#45;x_i2 -->
 <g id="edge17" class="edge">
 <title>x_v4&#45;&#45;x_i2</title>
-<path fill="none" stroke="#0000ff" stroke-width="2.5" d="M173.3419,-204.9149C184.7373,-211.0509 201.2974,-219.9679 212.6848,-226.0995"/>
+<path fill="none" stroke="#40e0d0" stroke-width="2.5" d="M173.3419,-204.9149C184.7373,-211.0509 201.2974,-219.9679 212.6848,-226.0995"/>
 </g>
 <!-- x_v5 -->
 <g id="node21" class="node">
@@ -247,7 +247,7 @@
 <!-- x_v6 -->
 <g id="node22" class="node">
 <title>x_v6</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="355.5" cy="-268" rx="14.5" ry="14.5"/>
+<ellipse fill="#ffa500" stroke="#000000" cx="355.5" cy="-268" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="355.5" y="-265.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v6</text>
 </g>
 <!-- x_i3&#45;&#45;x_v6 -->

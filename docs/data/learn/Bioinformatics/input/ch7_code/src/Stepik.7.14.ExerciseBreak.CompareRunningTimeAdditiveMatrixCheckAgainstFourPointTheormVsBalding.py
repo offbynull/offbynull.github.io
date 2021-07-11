@@ -22,3 +22,9 @@
 # Simplify that to O(n) * O(n^2). So that'd be O(n^3)?
 #
 # Not sure if this is entirely correct. I'm probably missing something here.
+
+
+# UPDATE
+# -----
+# I devised a better runtime for the four point test. Something closer to O(n^2) * O(6). See
+# Stepik.7.14.ExerciseBreak.ProveFourPointTheorem.py for the update algorithm (I'm pretty sure it's correct).

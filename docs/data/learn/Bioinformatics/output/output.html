@@ -12682,10 +12682,33 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p>For example, given (v0, v2, v4, v6) in the following <a href="#BM_(tree)%2Fi">tree</a> ...</p>
 <p><img src="dot_662a94ff9db2b299a086eb0713a712a1.svg" alt="Dot diagram"></p>
 <p>... the pair of distances ((v0, v4), (v2, v6)) sum up to another pair of distances ((v0, v6), (v2, v4))...</p>
-<p><img src="dot_22fc1a4773152dc1666db0582699a6ae.svg" alt="Dot diagram"></p>
+<p><img src="dot_e14d655006c318a62d6e2b62fffe6e24.svg" alt="Dot diagram"></p>
 <p>... and the pair of distances ((v0, v2), (v4, v6)) sum up to less than the other two...</p>
-<p><img src="dot_0d5c0bb0941d5f1ce82c2750abf59258.svg" alt="Dot diagram"></p>
-<p>In the above example, dist(v2, v4) + dist(v0, v6) &lt;= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4).</p>
+<p><img src="dot_72caf73c6f3685ec232aab8e711ddf6d.svg" alt="Dot diagram"></p>
+<p>Notice how the...</p>
+<ul>
+<li>
+<p>first and second diagram have the same set of edges highlighted:</p>
+<p>dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)</p>
+</li>
+<li>
+<p>third diagram has less edges highlighted than the first two</p>
+<p>dist(v2, v4) + dist(v0, v6) &lt;= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)</p>
+</li>
+</ul>
+<p>If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive, this will always be the case. Of any 4 leaf nodes you pick, there exists a pairing of leafs where the ...</p>
+<ul>
+<li>sum of distances from one pair will == the sum of distances of another pair.</li>
+<li>third pair will be &lt;= to the other two pairs.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall that the book said that a <a href="#BM_(tree)%2Fi">tree</a> of size 3 is guaranteed to have an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>. Thats why you need at least 4 leafs to test.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The code for this is at Stepik.7.14.ExerciseBreak.ProveFourPointTheorem.py</p>
+</div>
 </li>
 </ul>
 <p>

@@ -10187,53 +10187,53 @@ graph_show
      fontname="Courier-Bold"
      fontsize=10
      label="dist(v0, v6) + dist(v2, v4)"
-     y_v0 -- y_i0 [color=darkgreen, penwidth=2.5]
+     y_v0 -- y_i0 [color=gold, penwidth=2.5]
      y_v1 -- y_i0
-     y_i0 -- y_i1 [color=darkgreen, penwidth=2.5]
+     y_i0 -- y_i1 [color=gold, penwidth=2.5]
      y_v2 -- y_i1 [color=pink, penwidth=2.5]
      y_v3 -- y_i1
-     y_i1 -- y_i2 [color="pink:invis:darkgreen", penwidth=2.5]
+     y_i1 -- y_i2 [color="pink:invis:gold", penwidth=2.5]
      y_v4 -- y_i2 [color=pink, penwidth=2.5]
-     y_i2 -- y_i3 [color=darkgreen, penwidth=2.5]
+     y_i2 -- y_i3 [color=gold, penwidth=2.5]
      y_i3 -- y_v5
-     y_i3 -- y_v6 [color=darkgreen, penwidth=2.5]
-     y_v0 [label= "v0", style=filled, fillcolor="gray"] 
+     y_i3 -- y_v6 [color=gold, penwidth=2.5]
+     y_v0 [label= "v0", style=filled, fillcolor="gold"] 
      y_v1 [label= "v1"] 
      y_i0 [label= "i0"] 
      y_i1 [label= "i1"] 
-     y_v2 [label= "v2", style=filled, fillcolor="gray"] 
+     y_v2 [label= "v2", style=filled, fillcolor="pink"] 
      y_v3 [label= "v3"] 
      y_i2 [label= "i2"] 
      y_i3 [label= "i3"] 
-     y_v4 [label= "v4", style=filled, fillcolor="gray"] 
+     y_v4 [label= "v4", style=filled, fillcolor="pink"] 
      y_v5 [label= "v5"] 
-     y_v6 [label= "v6", style=filled, fillcolor="gray"]
+     y_v6 [label= "v6", style=filled, fillcolor="gold"]
     }
     subgraph cluster_one {
      fontname="Courier-Bold"
      fontsize=10
      label="dist(v0, v4) + dist(v2, v6)"
-     x_v0 -- x_i0 [color=blue, penwidth=2.5]
+     x_v0 -- x_i0 [color=turquoise, penwidth=2.5]
      x_v1 -- x_i0
-     x_i0 -- x_i1 [color=blue, penwidth=2.5]
+     x_i0 -- x_i1 [color=turquoise, penwidth=2.5]
      x_v2 -- x_i1 [color=orange, penwidth=2.5]
      x_v3 -- x_i1
-     x_i1 -- x_i2 [color="orange:invis:blue", penwidth=2.5]
-     x_v4 -- x_i2 [color=blue, penwidth=2.5]
+     x_i1 -- x_i2 [color="orange:invis:turquoise", penwidth=2.5]
+     x_v4 -- x_i2 [color=turquoise, penwidth=2.5]
      x_i2 -- x_i3 [color=orange, penwidth=2.5]
      x_i3 -- x_v5
      x_i3 -- x_v6 [color=orange, penwidth=2.5]
-     x_v0 [label= "v0", style=filled, fillcolor="gray"] 
+     x_v0 [label= "v0", style=filled, fillcolor="turquoise"] 
      x_v1 [label= "v1"] 
      x_i0 [label= "i0"] 
      x_i1 [label= "i1"] 
-     x_v2 [label= "v2", style=filled, fillcolor="gray"] 
+     x_v2 [label= "v2", style=filled, fillcolor="orange"] 
      x_v3 [label= "v3"] 
      x_i2 [label= "i2"] 
      x_i3 [label= "i3"] 
-     x_v4 [label= "v4", style=filled, fillcolor="gray"] 
+     x_v4 [label= "v4", style=filled, fillcolor="turquoise"] 
      x_v5 [label= "v5"] 
-     x_v6 [label= "v6", style=filled, fillcolor="gray"]
+     x_v6 [label= "v6", style=filled, fillcolor="orange"]
     }
    }
    ```
@@ -10248,33 +10248,54 @@ graph_show
     subgraph cluster_one {
      fontname="Courier-Bold"
      fontsize=10
-     label="dist(v2, v4) + dist(v0, v6)"
+     label="dist(v0, v2) + dist(v4, v6)"
      x_v0 -- x_i0 [color=violet, penwidth=2.5]
      x_v1 -- x_i0
      x_i0 -- x_i1 [color=violet, penwidth=2.5]
      x_v2 -- x_i1 [color=violet, penwidth=2.5]
      x_v3 -- x_i1
      x_i1 -- x_i2
-     x_v4 -- x_i2 [color=brown, penwidth=2.5]
-     x_i2 -- x_i3 [color=brown, penwidth=2.5]
+     x_v4 -- x_i2 [color=tan, penwidth=2.5]
+     x_i2 -- x_i3 [color=tan, penwidth=2.5]
      x_i3 -- x_v5
-     x_i3 -- x_v6 [color=brown, penwidth=2.5]
-     x_v0 [label= "v0", style=filled, fillcolor="gray"] 
+     x_i3 -- x_v6 [color=tan, penwidth=2.5]
+     x_v0 [label= "v0", style=filled, fillcolor="violet"] 
      x_v1 [label= "v1"] 
      x_i0 [label= "i0"] 
      x_i1 [label= "i1"] 
-     x_v2 [label= "v2", style=filled, fillcolor="gray"] 
+     x_v2 [label= "v2", style=filled, fillcolor="violet"] 
      x_v3 [label= "v3"] 
      x_i2 [label= "i2"] 
      x_i3 [label= "i3"] 
-     x_v4 [label= "v4", style=filled, fillcolor="gray"] 
+     x_v4 [label= "v4", style=filled, fillcolor="tan"] 
      x_v5 [label= "v5"] 
-     x_v6 [label= "v6", style=filled, fillcolor="gray"]
+     x_v6 [label= "v6", style=filled, fillcolor="tan"]
     }
    }
    ```
 
-   In the above example, dist(v2, v4) + dist(v0, v6) <= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4).
+   Notice how the...
+
+   * first and second diagram have the same set of edges highlighted:
+   
+     dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)
+
+   * third diagram has less edges highlighted than the first two
+   
+     dist(v2, v4) + dist(v0, v6) <= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)
+
+   If the distance matrix is additive, this will always be the case. Of any 4 leaf nodes you pick, there exists a pairing of leafs where the ...
+   
+   * sum of distances from one pair will == the sum of distances of another pair.
+   * third pair will be <= to the other two pairs.
+
+   ```{note}
+   Recall that the book said that a tree of size 3 is guaranteed to have an additive matrix. Thats why you need at least 4 leafs to test.
+   ```
+
+   ```{note}
+   The code for this is at Stepik.7.14.ExerciseBreak.ProveFourPointTheorem.py
+   ```
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

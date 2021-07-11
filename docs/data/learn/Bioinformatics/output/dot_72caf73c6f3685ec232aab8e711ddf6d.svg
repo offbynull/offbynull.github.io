@@ -12,12 +12,12 @@
 <g id="clust1" class="cluster">
 <title>cluster_one</title>
 <polygon fill="none" stroke="#000000" points="8,-8 8,-167 378,-167 378,-8 8,-8"/>
-<text text-anchor="middle" x="193" y="-155" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">dist(v2, v4) + dist(v0, v6)</text>
+<text text-anchor="middle" x="193" y="-155" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">dist(v0, v2) + dist(v4, v6)</text>
 </g>
 <!-- x_v0 -->
 <g id="node1" class="node">
 <title>x_v0</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="30.5" cy="-125" rx="14.5" ry="14.5"/>
+<ellipse fill="#ee82ee" stroke="#000000" cx="30.5" cy="-125" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="30.5" y="-122.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v0</text>
 </g>
 <!-- x_i0 -->
@@ -67,7 +67,7 @@
 <!-- x_v2 -->
 <g id="node5" class="node">
 <title>x_v2</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="95.5" cy="-78" rx="14.5" ry="14.5"/>
+<ellipse fill="#ee82ee" stroke="#000000" cx="95.5" cy="-78" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="95.5" y="-75.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v2</text>
 </g>
 <!-- x_v2&#45;&#45;x_i1 -->
@@ -95,18 +95,18 @@
 <!-- x_i2&#45;&#45;x_i3 -->
 <g id="edge8" class="edge">
 <title>x_i2&#45;&#45;x_i3</title>
-<path fill="none" stroke="#a52a2a" stroke-width="2.5" d="M240.2495,-66C250.8872,-66 265.1846,-66 275.8089,-66"/>
+<path fill="none" stroke="#d2b48c" stroke-width="2.5" d="M240.2495,-66C250.8872,-66 265.1846,-66 275.8089,-66"/>
 </g>
 <!-- x_v4 -->
 <g id="node8" class="node">
 <title>x_v4</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="160.5" cy="-31" rx="14.5" ry="14.5"/>
+<ellipse fill="#d2b48c" stroke="#000000" cx="160.5" cy="-31" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="160.5" y="-28.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v4</text>
 </g>
 <!-- x_v4&#45;&#45;x_i2 -->
 <g id="edge7" class="edge">
 <title>x_v4&#45;&#45;x_i2</title>
-<path fill="none" stroke="#a52a2a" stroke-width="2.5" d="M173.3419,-37.9149C184.7373,-44.0509 201.2974,-52.9679 212.6848,-59.0995"/>
+<path fill="none" stroke="#d2b48c" stroke-width="2.5" d="M173.3419,-37.9149C184.7373,-44.0509 201.2974,-52.9679 212.6848,-59.0995"/>
 </g>
 <!-- x_v5 -->
 <g id="node10" class="node">
@@ -122,13 +122,13 @@
 <!-- x_v6 -->
 <g id="node11" class="node">
 <title>x_v6</title>
-<ellipse fill="#c0c0c0" stroke="#000000" cx="355.5" cy="-101" rx="14.5" ry="14.5"/>
+<ellipse fill="#d2b48c" stroke="#000000" cx="355.5" cy="-101" rx="14.5" ry="14.5"/>
 <text text-anchor="middle" x="355.5" y="-98.5" font-family="Courier,monospace" font-weight="bold" font-size="10.00" fill="#000000">v6</text>
 </g>
 <!-- x_i3&#45;&#45;x_v6 -->
 <g id="edge10" class="edge">
 <title>x_i3&#45;&#45;x_v6</title>
-<path fill="none" stroke="#a52a2a" stroke-width="2.5" d="M303.3419,-72.9149C314.7373,-79.0509 331.2974,-87.9679 342.6848,-94.0995"/>
+<path fill="none" stroke="#d2b48c" stroke-width="2.5" d="M303.3419,-72.9149C314.7373,-79.0509 331.2974,-87.9679 342.6848,-94.0995"/>
 </g>
 </g>
 </svg>
