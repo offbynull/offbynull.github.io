@@ -12531,7 +12531,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ol>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There are two ways of determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive. The first method is that, at some point, additive <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a> will fail when you try to find an additive pair in a bald matrix. The second method is to use the <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">four point condition</a>. I'll document each algorithm when it comes time to write out.</p>
+<p>There are two ways of determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive. The first method is that, at some point, <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a> will fail when you try to find an additive pair in a bald matrix. The second method is to use the <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">four point condition</a>. I'll document each algorithm when it comes time to write out.</p>
 </div>
 </li>
 <li>
@@ -12709,6 +12709,189 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The code for this is at Stepik.7.14.ExerciseBreak.ProveFourPointTheorem.py</p>
 </div>
+</li>
+<li>
+<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits a specific <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>The algorithm depends on being able to find the <a href="#BM_(limb%20length)%2Fi">limb length</a> for any leaf node. It recursively widdles down the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> by subtracting and removing limbs until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is 2x2. As it leaves each recursive step, there's enough information available to "build out" the next step of the <a href="#BM_(tree)%2Fi">tree</a>.</p>
+<p>The algorithm relies on two fundamental ideas: balding and trimming.</p>
+<p>Balding is the idea of modifying a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> such that a node's <a href="#BM_(limb%20length)%2Fi">limb length</a> becomes 0. For example, given the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and corresponding <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>... the <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm may be used calculate the weight at each limb had the <a href="#BM_(tree)%2Fi">tree</a> not already been provided ...</p>
+<ul>
+<li>limb_length(v0) = 11</li>
+<li>limb_length(v1) = 2</li>
+<li>limb_length(v2) = 6</li>
+<li>limb_length(v3) = 7</li>
+</ul>
+<p>Balding the matrix for v3 means subtracting v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> from each cell in v<a href="#BM_(3')%2Fi">3'</a>s row and column (except the one where v3 is compared against v3 -- 0 length). The balded matrix is the same matrix produced had v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> been 0...</p>
+<p><img src="dot_8c120199ceab31996165aec34c935e0c.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>15</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Trimming is the idea of removing a leaf from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In the example <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and corresponding <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> shown above, trimming v3 out...</p>
+<p><img src="dot_50f1d7a075a806b4bf87ac6cf9359204.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Notice that when v3 gets trimmed out, the internal path i0 - i1 - v2 merges into a single edge. This happens because <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have nodes with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (you can't have a straight more than 1 edge connecting two nodes unless the nodes in between branch off).</p>
+<p>The full algorithm is as follows:</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">x</span>(<span class="hljs-params">d</span>):</span>
+  n = <span class="hljs-built_in">len</span>(d) - <span class="hljs-number">1</span>
+  <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:
+    g = Graph()
+    g.add_edge(v0,v1)
+  last_limb_length = limb_length(n)
+  d_bald = bald(d, n, last_limb_length)
+  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
+  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
+  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
+  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
+  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
+  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
+  <span class="hljs-comment"># d_bald has limb length for n set to 0... which means non-n distance exists such that it == d_bald[i][n] + d_bald[k][n] </span>
+  found = <span class="hljs-literal">None</span>
+  <span class="hljs-keyword">for</span> i, k <span class="hljs-keyword">in</span> product(<span class="hljs-built_in">range</span>(n), <span class="hljs-built_in">range</span>(n)):
+    <span class="hljs-keyword">if</span> i == k:
+      <span class="hljs-keyword">continue</span>
+    <span class="hljs-keyword">if</span> d_bald[i][k] == d_bald[i][n] + d_bald[n][k]:
+      found = i, k, n
+  <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Not additive'</span>) <span class="hljs-keyword">if</span> found <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>
+  <span class="hljs-comment"># n IS GUARANTEED TO EXIST ON THE PATH BETWEEN i AND k</span>
+  d_trim = trim(d, n - <span class="hljs-number">1</span>)
+  g = x(d_trim)
+  path = find_path(g, i, k)
+  res = sum_path_check(t, x, edges_between_i_and_k, i)
+  op = res[<span class="hljs-number">0</span>]
+  <span class="hljs-keyword">if</span> op == SumPathCheckRes.BREAK:
+      <span class="hljs-comment"># find edge between i and k where n fits, add an internal node there and add it in</span>
+      <span class="hljs-keyword">return</span> t
+  <span class="hljs-keyword">elif</span> op == SumPathCheckRes.ATTACH:
+      <span class="hljs-comment"># find node between i and k where n fits, add an internal node there and add it in</span>
+      <span class="hljs-keyword">return</span> t
+  <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'???'</span>)
+</code></pre>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
 </li>
 </ul>
 <p>

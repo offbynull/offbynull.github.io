@@ -10297,6 +10297,156 @@ graph_show
    The code for this is at Stepik.7.14.ExerciseBreak.ProveFourPointTheorem.py
    ```
 
+ * `{bm} additive phylogeny` - An algorithm that finds the unique simple tree that fits a specific additive distance matrix.
+
+   The algorithm depends on being able to find the limb length for any leaf node. It recursively widdles down the distance matrix by subtracting and removing limbs until the distance matrix is 2x2. As it leaves each recursive step, there's enough information available to "build out" the next step of the tree.
+
+   The algorithm relies on two fundamental ideas: balding and trimming.
+
+   Balding is the idea of modifying a distance matrix such that a node's limb length becomes 0. For example, given the simple tree and corresponding distance matrix ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+    i1 -- v3 [label=7]
+   }
+   ```
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 22 |
+   | v1 | 13 | 0  | 12 | 13 |
+   | v2 | 21 | 12 | 0  | 13 |
+   | v3 | 22 | 13 | 13 | 0  |
+
+   ... the limb length algorithm may be used calculate the weight at each limb had the tree not already been provided ...
+
+   * limb_length(v0) = 11
+   * limb_length(v1) = 2
+   * limb_length(v2) = 6
+   * limb_length(v3) = 7
+
+   Balding the matrix for v3 means subtracting v3's limb length from each cell in v3's row and column (except the one where v3 is compared against v3 -- 0 length). The balded matrix is the same matrix produced had v3's limb length been 0...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+    i1 -- v3 [style="dashed", label=0]
+   }
+   ```
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 15 |
+   | v1 | 13 | 0  | 12 | 6  |
+   | v2 | 21 | 12 | 0  | 6  |
+   | v3 | 15 | 6  | 6  | 0  |
+
+   Trimming is the idea of removing a leaf from the distance matrix. In the example simple tree and corresponding distance matrix shown above, trimming v3 out...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- v2 [label=10]
+   }
+   ```
+
+   |    | v0 | v1 | v2 |
+   |----|----|----|----|
+   | v0 | 0  | 13 | 21 |
+   | v1 | 13 | 0  | 12 |
+   | v2 | 21 | 12 | 0  |
+
+   Notice that when v3 gets trimmed out, the internal path i0 - i1 - v2 merges into a single edge. This happens because simple trees can't have nodes with degree_GRAPH 2 (you can't have a straight more than 1 edge connecting two nodes unless the nodes in between branch off).
+
+   The full algorithm is as follows:
+   
+   ```python
+   def x(d):
+     n = len(d) - 1
+     if n == 2:
+       g = Graph()
+       g.add_edge(v0,v1)
+     last_limb_length = limb_length(n)
+     d_bald = bald(d, n, last_limb_length)
+     # THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT
+     # THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT
+     # THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT
+     # THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT
+     # THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT
+     # THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT
+     # d_bald has limb length for n set to 0... which means non-n distance exists such that it == d_bald[i][n] + d_bald[k][n] 
+     found = None
+     for i, k in product(range(n), range(n)):
+       if i == k:
+         continue
+       if d_bald[i][k] == d_bald[i][n] + d_bald[n][k]:
+         found = i, k, n
+     raise ValueError('Not additive') if found is None
+     # n IS GUARANTEED TO EXIST ON THE PATH BETWEEN i AND k
+     d_trim = trim(d, n - 1)
+     g = x(d_trim)
+     path = find_path(g, i, k)
+     res = sum_path_check(t, x, edges_between_i_and_k, i)
+     op = res[0]
+     if op == SumPathCheckRes.BREAK:
+         # find edge between i and k where n fits, add an internal node there and add it in
+         return t
+     elif op == SumPathCheckRes.ATTACH:
+         # find node between i and k where n fits, add an internal node there and add it in
+         return t
+     raise ValueError('???')
+   ```
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
