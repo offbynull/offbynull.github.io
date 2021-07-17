@@ -10299,7 +10299,231 @@ graph_show
 
  * `{bm} additive phylogeny` - An algorithm that finds the unique simple tree that fits a specific additive distance matrix.
 
-   The algorithm depends on being able to find the limb length for any leaf node. It recursively widdles down the distance matrix by subtracting and removing limbs until the distance matrix is 2x2. As it leaves each recursive step, there's enough information available to "build out" the next step of the tree.
+   The algorithm relies on four core ideas:
+
+   1. Adding a new leaf to a known simple tree only requires ...
+
+       * the limb length for that new leaf.
+       * the edge that new leaf's limb protrudes from, as well the position on that edge.
+      
+      For example, given the following tree...
+   
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       v0 -- i0 [label=11]
+       v1 -- i0 [label=2]
+       i0 -- v2 [label=10]
+      }
+      ```
+   
+      ... adding the new leaf v3 where ...
+      
+       * v3's limb length is 7
+       * v3's limb protrudes from (i0, v2), 6 units away from i0
+
+      ... results in ...
+   
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       v0 -- i0 [label=11]
+       v1 -- i0 [label=2]
+       i0 -- i1 [label=4]
+       i1 -- v2 [label=6]
+       i1 -- v3 [label=7]
+      }
+      ```
+
+   2. Removing a leaf from a known simple tree produces the same distance matrix as the original tree but with that leaf's column / row removed. For example, the following tree produces the following distance matrix...
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       v0 -- i0 [label=11]
+       v1 -- i0 [label=2]
+       i0 -- i1 [label=4]
+       i1 -- v2 [label=6]
+       i1 -- v3 [label=7]
+      }
+      ```
+   
+      |    | v0 | v1 | v2 | v3 |
+      |----|----|----|----|----|
+      | v0 | 0  | 13 | 21 | 22 |
+      | v1 | 13 | 0  | 12 | 13 |
+      | v2 | 21 | 12 | 0  | 13 |
+      | v3 | 22 | 13 | 13 | 0  |
+
+      Removing v3 (and merging i0 - i1 - v3 into a single edge because simple trees can't have edges with degree_GRAPH 2) produces the same distance matrix but without v3's column / row...
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       v0 -- i0 [label=11]
+       v1 -- i0 [label=2]
+       i0 -- v2 [label=10]
+      }
+      ```
+
+      |    | v0 | v1 | v2 |
+      |----|----|----|----|
+      | v0 | 0  | 13 | 21 |
+      | v1 | 13 | 0  | 12 |
+      | v2 | 21 | 12 | 0  |
+
+      As such, it's possible to remove a leaf node from a distance matrix just by removing the column / row for that leaf. The tree doesn't need to be known beforehand.
+
+   3. Setting a leaf's limb length to 0 in a known simple tree produces the same distance matrix as the original tree but with that leaf's column / row values having the limb length subtracted. For example, the following tree produces the following distance matrix...
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       v0 -- i0 [label=11]
+       v1 -- i0 [label=2]
+       i0 -- i1 [label=4]
+       i1 -- v2 [label=6]
+       i1 -- v3 [label=7]
+      }
+      ```
+   
+      |    | v0 | v1 | v2 | v3 |
+      |----|----|----|----|----|
+      | v0 | 0  | 13 | 21 | 22 |
+      | v1 | 13 | 0  | 12 | 13 |
+      | v2 | 21 | 12 | 0  | 13 |
+      | v3 | 22 | 13 | 13 | 0  |
+
+      Setting v3's limb length to 0 produces the same distance matrix but with v3's limb length removed from v3's column / row...
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       v0 -- i0 [label=11]
+       v1 -- i0 [label=2]
+       i0 -- i1 [label=4]
+       i1 -- v2 [label=6]
+       i1 -- v3 [label=0, style=dashed]
+      }
+      ```
+
+      |    | v0 | v1 | v2 | v3 |
+      |----|----|----|----|----|
+      | v0 | 0  | 13 | 21 | 15 |
+      | v1 | 13 | 0  | 12 | 6  |
+      | v2 | 21 | 12 | 0  | 6  |
+      | v3 | 15 | 6  | 6  | 0  |
+
+      As such, if the limb length is known, it's possible to set it to 0 within the distance matrix directly. The tree doesn't need to be known beforehand.
+
+      ```{note}
+      Refer to the algorithm for calculating limb length just from an additive distance matrix.
+      ```
+  
+   4. The simple tree for a 2x2 distance matrix is obvious. For example, given the following distance matrix...
+
+      |    | v0 | v1 |
+      |----|----|----|
+      | v0 | 0  | 14 |
+      | v1 | 14 | 0  |
+
+      ..., the requirements of a simple tree (nodes of degree_GRAPH 2 not allowed) mean that the simple tree for this distance matrix is just a single edge of weight 14...
+
+      ```{dot}
+      graph G {
+       graph[rankdir=LR]
+       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+       v0 -- v1 [label=14]
+      }
+      ```
+  
+   Given ...
+
+   * a tree that's missing a leaf
+   * the limb length of that missing leaf
+   * the balded distance matrix that describes what that distance matrix looks like had that leaf not been missing but its limb length were 0
+   
+   ..., there's enough information to deduce where on the tree the missing leaf should be added to. Imagine the following tree ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+    i1 -- v3 [label=7]
+   }
+
+   Balding v3 from that tree would result in ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+    i1 -- v3 [label=0 style=dashed]
+   }
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 15 |
+   | v1 | 13 | 0  | 12 | 6  |
+   | v2 | 21 | 12 | 0  | 6  |
+   | v3 | 15 | 6  | 6  | 0  |
+
+   Removing v3 from that tree would result in ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- v2 [label=10]
+   }
+   ```
+
+   Had the original tree structure not been known but v3's limb length and the balded distance matrix had v3 been on the tree is as follows...
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 15 |
+   | v1 | 13 | 0  | 12 | 6  |
+   | v2 | 21 | 12 | 0  | 6  |
+   | v3 | 15 | 6  | 6  | 0  |   
+
+   Since the balded matrix has v3's limb length set to 0, there must exist at least 1 pair
+
+
+
+
+   
+    and the balded distance matrix that describes , you want to add a new leaf onto that tree (idea #1). You have the limb length for that new leaf and a balded matrix that shows what that the distance matrix would look like had that new leaf been added with a limb length of 0 (idea #3).
+   
+   (what the matrix would look like had that limb length been 0) the limb length for new leaf node to add to that tree, and a 
+
+   At a high-level the algorithm recursively widdles down the distance matrix to a 2x2 matrix then "builds out" the unique simple tree for that distance matrix as it walks out of each recursive step. This is done until the matrix is sized 2x2. As it leaves each recursive step, there's enough information available to "build out" the next step of the tree.
 
    The algorithm relies on two fundamental ideas: balding and trimming.
 
@@ -10402,7 +10626,7 @@ graph_show
      # n IS GUARANTEED TO EXIST ON THE PATH BETWEEN i AND k
      d_trim = trim(d, n - 1)
      g = x(d_trim)
-     path = find_path(g, i, k)
+     path = find_path(g, i, k)   # how do I know iif I should sum_path_check from i-to-k or k-to-i? do it both ways and then generate the distance matrix to see if it matches?
      res = sum_path_check(t, x, edges_between_i_and_k, i)
      op = res[0]
      if op == SumPathCheckRes.BREAK:
@@ -10445,6 +10669,172 @@ graph_show
    TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
 
    TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION
+
+   Call it limb neighbour algorithm, similar to the limb length algorithm.
+
+
+ * `{bm} balded distance matrix/(bald distance matrix|balded distance matrix)/i` - An additive distance matrix where the limb length of some leaf has been set to 0.
+
+   For example, given the following tree and accompanying distance matrix...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+    i1 -- v3 [label=7]
+   }
+   ```
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 22 |
+   | v1 | 13 | 0  | 12 | 13 |
+   | v2 | 21 | 12 | 0  | 13 |
+   | v3 | 22 | 13 | 13 | 0  |
+
+   Balding v3 on that tree would result in ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+    i1 -- v3 [label=0 style=dashed]
+   }
+   ```
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 15 |
+   | v1 | 13 | 0  | 12 | 6  |
+   | v2 | 21 | 12 | 0  | 6  |
+   | v3 | 15 | 6  | 6  | 0  |
+
+   Note how of the two distance matrices, v3's entries (each entry in v3 row and v3 column) in the the balded distance matrix is equivalent to that in the original distance matrix subtracted by v3's limb length...
+
+   |    |     v0     |      v1     |     v2      |      v3     |
+   |----|------------|-------------|-------------|-------------|
+   | v0 |     0      |      13     |     21      | 22 - 7 = 15 |
+   | v1 |     13     |      0      |     12      | 13 - 7 = 15 |
+   | v2 |     21     |      12     |     0       | 13 - 7 = 15 |
+   | v3 | 22 - 7 = 15| 13 - 7 = 15 | 13 - 7 = 15 | 0           |
+
+   ```{note}
+   Can a limb length be 0 in a phylogenetic tree? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.
+   ```
+
+   Bald distance matrices are used during additive phylogeny to reconstruct the tree from just the distance matrix. Reconstructing the original tree that a balded distance matrix came from is possible provided that the original limb length for the zero'd out leaf is known. In other words, given ...
+
+   * a simple tree with a missing limb
+   * the limb length of the missing limb
+   * the balded distance matrix generated from the original tree that contained the missing limb
+   
+   , ... it's possible to reconstruct the original simple tree that contained the missing limb. On closer inspection of the graph representing the balded distance matrix, it becomes apparent why this is. Since v3's limb length is 0, the sum of distances for any leaf node A and v3's neighbor B is equal to the distance between A and B.
+   
+   For example, since v2 is v3's neighbour in the example graph above...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11, color=orange, penwidth=2.5]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4, color=orange, penwidth=2.5]
+    i1 -- v2 [label=6, color=blue, penwidth=2.5]
+    i1 -- v3 [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
+    i1 [style=filled fillcolor=gray]
+   }
+   ```
+
+   dist(v0, v3) + dist(v2, v3) = dist(v0, v2).
+   
+   Looking at the balded distance matrix confirms this...
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 15 |
+   | v1 | 13 | 0  | 12 | 6  |
+   | v2 | 21 | 12 | 0  | 6  |
+   | v3 | 15 | 6  | 6  | 0  |
+
+   * dist(v0, v3) = 15
+   * dist(v2, v3) = 6
+   * dist(v0, v2) = 21
+
+   15 + 6 = 21
+
+   However, path(v0, v1) does not travel over i1 (v3's parent)...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11, color=orange, penwidth=2.5]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4, color=orange, penwidth=2.5]
+    i1 -- v2 [label=6, color=blue, penwidth=2.5]
+    i1 -- v3 [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
+    i1 [style=filled fillcolor=gray]
+   }
+   ```
+
+   This makes it so that dist(v0, v3) + dist(v2, v3) = dist(v0, v2).
+   
+   Looking at the balded distance matrix confirms this...
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 15 |
+   | v1 | 13 | 0  | 12 | 6  |
+   | v2 | 21 | 12 | 0  | 6  |
+   | v3 | 15 | 6  | 6  | 0  |
+
+   * dist(v0, v3) = 15
+   * dist(v2, v3) = 6
+   * dist(v0, v2) = 21
+
+   15 + 6 = 21
+
+   The original tree with v3 removed is ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- v2 [label=10]
+   }
+
+   ````{note}
+   If you literally remove v3 from the original graph, you end up with a non-simple tree...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+   }
+   ```
+
+   ... because the i1 in the path [i0, i1, v2] has degree_GRAPH 2, which isn't allowed in simple trees.
+   ````
 
 
 `{bm-ignore} \b(read)_NORM/i`

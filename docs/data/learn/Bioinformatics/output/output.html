@@ -12712,7 +12712,276 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </li>
 <li>
 <p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits a specific <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p>The algorithm depends on being able to find the <a href="#BM_(limb%20length)%2Fi">limb length</a> for any leaf node. It recursively widdles down the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> by subtracting and removing limbs until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is 2x2. As it leaves each recursive step, there's enough information available to "build out" the next step of the <a href="#BM_(tree)%2Fi">tree</a>.</p>
+<p>The algorithm relies on four core ideas:</p>
+<ol>
+<li>
+<p>Adding a new leaf to a known <a href="#BM_(simple%20tree)%2Fi">simple tree</a> only requires ...</p>
+<ul>
+<li>the <a href="#BM_(limb%20length)%2Fi">limb length</a> for that new leaf.</li>
+<li>the edge that new leaf's limb protrudes from, as well the position on that edge.</li>
+</ul>
+<p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><img src="dot_50f1d7a075a806b4bf87ac6cf9359204.svg" alt="Dot diagram"></p>
+<p>... adding the new leaf v3 where ...</p>
+<ul>
+<li>v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 7</li>
+<li>v<a href="#BM_(3')%2Fi">3'</a>s limb protrudes from (i0, v2), 6 units away from i0</li>
+</ul>
+<p>... results in ...</p>
+<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>Removing a leaf from a known <a href="#BM_(simple%20tree)%2Fi">simple tree</a> produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> as the original <a href="#BM_(tree)%2Fi">tree</a> but with that leaf's column / row removed. For example, the following <a href="#BM_(tree)%2Fi">tree</a> produces the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Removing v3 (and merging i0 - i1 - v3 into a single edge because <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have edges with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2) produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> but without v<a href="#BM_(3')%2Fi">3'</a>s column / row...</p>
+<p><img src="dot_50f1d7a075a806b4bf87ac6cf9359204.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>As such, it's possible to remove a leaf node from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> just by removing the column / row for that leaf. The <a href="#BM_(tree)%2Fi">tree</a> doesn't need to be known beforehand.</p>
+</li>
+<li>
+<p>Setting a leaf's <a href="#BM_(limb%20length)%2Fi">limb length</a> to 0 in a known <a href="#BM_(simple%20tree)%2Fi">simple tree</a> produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> as the original <a href="#BM_(tree)%2Fi">tree</a> but with that leaf's column / row values having the <a href="#BM_(limb%20length)%2Fi">limb length</a> subtracted. For example, the following <a href="#BM_(tree)%2Fi">tree</a> produces the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Setting v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> to 0 produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> but with v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> removed from v<a href="#BM_(3')%2Fi">3'</a>s column / row...</p>
+<p><img src="dot_f2984253588c45c1e5e4cba6849f789b.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>15</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>As such, if the <a href="#BM_(limb%20length)%2Fi">limb length</a> is known, it's possible to set it to 0 within the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> directly. The <a href="#BM_(tree)%2Fi">tree</a> doesn't need to be known beforehand.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Refer to the algorithm for calculating <a href="#BM_(limb%20length)%2Fi">limb length</a> just from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+</div>
+</li>
+<li>
+<p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious. For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>..., the requirements of a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 not allowed) mean that the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is just a single edge of weight 14...</p>
+<p><img src="dot_e4939b6f43610a7950a5425df01badc2.svg" alt="Dot diagram"></p>
+</li>
+</ol>
+<p>Given ...</p>
+<ul>
+<li>a <a href="#BM_(tree)%2Fi">tree</a> that's missing a leaf</li>
+<li>the <a href="#BM_(limb%20length)%2Fi">limb length</a> of that missing leaf</li>
+<li>the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> that describes what that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> looks like had that leaf not been missing but its <a href="#BM_(limb%20length)%2Fi">limb length</a> were 0</li>
+</ul>
+<p>..., there's enough information to deduce where on the <a href="#BM_(tree)%2Fi">tree</a> the missing leaf should be added to. Imagine the following <a href="#BM_(tree)%2Fi">tree</a> ...</p>
+<p><img src="dot_e38acdf6a8311bf36df07de25a9e8e33.svg" alt="Dot diagram"></p>
+<p>Had the original <a href="#BM_(tree)%2Fi">tree</a> structure not been known but v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> and the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> had v3 been on the <a href="#BM_(tree)%2Fi">tree</a> is as follows...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>15</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Since the balded matrix has v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> set to 0, there must exist at least 1 pair</p>
+<p>and the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> that describes , you want to add a new leaf onto that <a href="#BM_(tree)%2Fi">tree</a> (idea #1). You have the <a href="#BM_(limb%20length)%2Fi">limb length</a> for that new leaf and a balded matrix that shows what that the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> would look like had that new leaf been added with a <a href="#BM_(limb%20length)%2Fi">limb length</a> of 0 (idea #3).</p>
+<p>(what the matrix would look like had that <a href="#BM_(limb%20length)%2Fi">limb length</a> been 0) the <a href="#BM_(limb%20length)%2Fi">limb length</a> for new leaf node to add to that <a href="#BM_(tree)%2Fi">tree</a>, and a</p>
+<p>At a high-level the algorithm recursively widdles down the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a 2x2 matrix then "builds out" the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> as it walks out of each recursive step. This is done until the matrix is sized 2x2. As it leaves each recursive step, there's enough information available to "build out" the next step of the <a href="#BM_(tree)%2Fi">tree</a>.</p>
 <p>The algorithm relies on two fundamental ideas: balding and trimming.</p>
 <p>Balding is the idea of modifying a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> such that a node's <a href="#BM_(limb%20length)%2Fi">limb length</a> becomes 0. For example, given the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and corresponding <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
 <p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
@@ -12865,7 +13134,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
   <span class="hljs-comment"># n IS GUARANTEED TO EXIST ON THE PATH BETWEEN i AND k</span>
   d_trim = trim(d, n - <span class="hljs-number">1</span>)
   g = x(d_trim)
-  path = find_path(g, i, k)
+  path = find_path(g, i, k)   <span class="hljs-comment"># how do I know iif I should sum_path_check from i-to-k or k-to-i? do it both ways and then generate the distance matrix to see if it matches?</span>
   res = sum_path_check(t, x, edges_between_i_and_k, i)
   op = res[<span class="hljs-number">0</span>]
   <span class="hljs-keyword">if</span> op == SumPathCheckRes.BREAK:
@@ -12892,6 +13161,255 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
 <p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
 <p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
+<p>Call it limb neighbour algorithm, similar to the <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm.</p>
+</li>
+<li>
+<p><a name="BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi"></a><strong>balded distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where the <a href="#BM_(limb%20length)%2Fi">limb length</a> of some leaf has been set to 0.</p>
+<p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a> and accompanying <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Balding v3 on that <a href="#BM_(tree)%2Fi">tree</a> would result in ...</p>
+<p><img src="dot_bf95475f0384705b91cb0dc0c37e8c79.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>15</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Note how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, v<a href="#BM_(3')%2Fi">3'</a>s entries (each entry in v3 row and v3 column) in the the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> is equivalent to that in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> subtracted by v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>22 - 7 = 15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>13 - 7 = 15</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>13 - 7 = 15</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22 - 7 = 15</td>
+<td>13 - 7 = 15</td>
+<td>13 - 7 = 15</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Can a <a href="#BM_(limb%20length)%2Fi">limb length</a> be 0 in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.</p>
+</div>
+<p>Bald <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are used during <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a> to reconstruct the <a href="#BM_(tree)%2Fi">tree</a> from just the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. Reconstructing the original <a href="#BM_(tree)%2Fi">tree</a> that a <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> came from is possible provided that the original <a href="#BM_(limb%20length)%2Fi">limb length</a> for the zero'd out leaf is known. In other words, given ...</p>
+<ul>
+<li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> with a missing limb</li>
+<li>the <a href="#BM_(limb%20length)%2Fi">limb length</a> of the missing limb</li>
+<li>the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> generated from the original <a href="#BM_(tree)%2Fi">tree</a> that contained the missing limb</li>
+</ul>
+<p>, ... it's possible to reconstruct the original <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that contained the missing limb. On closer inspection of the graph representing the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a>, it becomes apparent why this is. Since v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 0, the sum of distances for any leaf node A and v<a href="#BM_(3')%2Fi">3'</a>s neighbor B is equal to the distance between A and B.</p>
+<p>For example, since v2 is v<a href="#BM_(3')%2Fi">3'</a>s neighbour in the example graph above...</p>
+<p><img src="dot_f413318a5accfb5b12a376591ad6c1bd.svg" alt="Dot diagram"></p>
+<p>dist(v0, v3) + dist(v2, v3) = dist(v0, v2).</p>
+<p>Looking at the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> confirms this...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>15</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>dist(v0, v3) = 15</li>
+<li>dist(v2, v3) = 6</li>
+<li>dist(v0, v2) = 21</li>
+</ul>
+<p>15 + 6 = 21</p>
+<p>However, path(v0, v1) does not travel over i1 (v<a href="#BM_(3')%2Fi">3'</a>s parent)...</p>
+<p><img src="dot_f413318a5accfb5b12a376591ad6c1bd.svg" alt="Dot diagram"></p>
+<p>This makes it so that dist(v0, v3) + dist(v2, v3) = dist(v0, v2).</p>
+<p>Looking at the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix)%2Fi">balded distance matrix</a> confirms this...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>15</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>dist(v0, v3) = 15</li>
+<li>dist(v2, v3) = 6</li>
+<li>dist(v0, v2) = 21</li>
+</ul>
+<p>15 + 6 = 21</p>
+<p>The original <a href="#BM_(tree)%2Fi">tree</a> with v3 removed is ...</p>
+<p><img src="dot_d9a3dc81bf841ede566e62c7876adf8d.svg" alt="Dot diagram"></p>
+<p>... because the i1 in the path [i0, i1, v2] has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2, which isn't allowed in <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s.
+````</p>
 </li>
 </ul>
 <p>
