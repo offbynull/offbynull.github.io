@@ -1,1 +1,0 @@
-<span style="background-color: blue; color: white">6</span>

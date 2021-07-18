@@ -10673,7 +10673,7 @@ graph_show
    Call it limb neighbour algorithm, similar to the limb length algorithm.
 
 
- * `{bm} trimmed distance matrix` - An additive distance matrix where a leaf has been removed.
+ * `{bm} trimmed distance matrix/(trimmed distance matrix|trimmed distance matrices)/i` - An additive distance matrix where a leaf has been removed.
 
    For example, given the following tree and accompanying distance matrix...
 
@@ -10706,8 +10706,7 @@ graph_show
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0 [label=11]
     v1 -- i0 [label=2]
-    i0 -- i1 [label=4]
-    i0 -- v2 [label=6]
+    i0 -- v2 [label=10]
    }
    ```
 
@@ -10723,7 +10722,7 @@ graph_show
    
    The trimmed distance matrix is the same as the original distance matrix but with v3's row and v3 column removed. In other words, removing some leaf's row and column in an additive distance matrix is equivalent to removing it from the tree. The tree structure or edge weights aren't required.
 
- * `{bm} balded distance matrix/(bald distance matrix|balded distance matrix)/i` - An additive distance matrix where the limb length of some leaf has been set to 0.
+ * `{bm} balded distance matrix/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i` - An additive distance matrix where the limb length of some leaf has been set to 0.
 
    For example, given the following tree and accompanying distance matrix...
 
@@ -10734,20 +10733,25 @@ graph_show
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0 [label=11]
     v1 -- i0 [label=2]
-    i0 -- i1 [label=4]
-    i1 -- v2 [label=6]
-    i1 -- v3 [label=7]
+    v2 -- i0 [label=10]
+    i0 -- i2 [label=4]
+    i2 -- i1 [label=3]
+    i1 -- v3 [label=3]
+    i1 -- v4 [label=4]
+    i2 -- v5 [label=7]
    }
    ```
 
-   |    | v0 | v1 | v2 | v3 |
-   |----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 22 |
-   | v1 | 13 | 0  | 12 | 13 |
-   | v2 | 21 | 12 | 0  | 13 |
-   | v3 | 22 | 13 | 13 | 0  |
+   |    | v0 | v1 | v2 | v3 | v4 | v5 |
+   |----|----|----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+   | v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+   | v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+   | v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+   | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+   | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
 
-   Balding v3 on that tree would result in ...
+   Setting v5's limb length to 0 on that tree would result in ...
 
    ```{dot}
    graph G {
@@ -10756,77 +10760,312 @@ graph_show
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     v0 -- i0 [label=11]
     v1 -- i0 [label=2]
-    i0 -- i1 [label=4]
-    i1 -- v2 [label=6]
-    i1 -- v3 [label=0 style=dashed]
+    v2 -- i0 [label=10]
+    i0 -- i2 [label=4]
+    i2 -- i1 [label=3]
+    i1 -- v3 [label=3]
+    i1 -- v4 [label=4]
+    i2 -- v5 [label=0 style=dashed]
    }
    ```
 
-   |    | v0 | v1 | v2 | v3 |
-   |----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 15 |
-   | v1 | 13 | 0  | 12 | 6  |
-   | v2 | 21 | 12 | 0  | 6  |
-   | v3 | 15 | 6  | 6  | 0  |
+   |    | v0 | v1 | v2 | v3 | v4 | v5 |
+   |----|----|----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 21 | 22 | 15 |
+   | v1 | 13 | 0  | 12 | 12 | 13 | 6  |
+   | v2 | 21 | 12 | 0  | 20 | 21 | 14 |
+   | v3 | 21 | 12 | 20 | 0  | 7  | 6  |
+   | v4 | 22 | 13 | 21 | 7  | 0  | 7  |
+   | v5 | 15 | 6  | 14 | 6  | 7  | 0  |
 
-   Note how of the two distance matrices, v3's entries (each entry in v3 row and v3 column) in the the balded distance matrix is equivalent to that in the original distance matrix subtracted by v3's limb length...
+   Notice how of the two distance matrices, v3's entries (each entry in v3 row and v3 column) in the the balded distance matrix is equivalent to that in the original distance matrix subtracted by v5's limb length...
 
-   |    |     v0      |      v1     |     v2      |      v3     |
-   |----|-------------|-------------|-------------|-------------|
-   | v0 |     0       |      13     |     21      | 22 - 7 = 15 |
-   | v1 |     13      |      0      |     12      | 13 - 7 = 6  |
-   | v2 |     21      |      12     |     0       | 13 - 7 = 6  |
-   | v3 | 22 - 7 = 15 | 13 - 7 = 6  | 13 - 7 = 6  | 0           |
+   |    |     v0      |     v1      |     v2      |     v3      |     v4      |     v5      |
+   |----|-------------|-------------|-------------|-------------|-------------|-------------|
+   | v0 |     0       |     13      |     21      |     21      |     22      | 22 - 7 = 15 |
+   | v1 |     13      |     0       |     12      |     12      |     13      | 13 - 7 = 6  |
+   | v2 |     21      |     12      |     0       |     20      |     21      | 21 - 7 = 14 |
+   | v3 |     21      |     12      |     20      |     0       |     7       | 13 - 7 = 6  |
+   | v4 |     22      |     13      |     21      |     7       |     0       | 14 - 7 = 7  |
+   | v5 | 22 - 7 = 15 | 13 - 7 = 6  | 21 - 7 = 14 | 13 - 7 = 6  | 14 - 7 = 7  | 0           |
 
    ```{note}
    Can a limb length be 0 in a phylogenetic tree? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.
    ```
 
-   Bald distance matrices are used during additive phylogeny to reconstruct the tree from just the distance matrix. Reconstructing the original tree that a balded distance matrix came from is possible provided that the original limb length for the zero'd out leaf is known. In other words, given ...
+   Bald distance matrices are used as part of the algorithm that constructs the unique tree for an additive distance matrix (additive phylogeny). Given a ...
 
-   * a simple tree with a missing limb
-   * the limb length of the missing limb
-   * the balded distance matrix generated from the original tree that contained the missing limb
+   * an additive matrix
+   * a simple tree for that additive matrix but with a limb missing
    
-   , ... it's possible to reconstruct the original simple tree that contained the missing limb.
+   , ... it's possible to determine where in the simple tree the missing limb should be added.
    
-   ```{note}
-   Recall that it's possible to get the limb length for any leaf just from the additive distance matrix.
-   ```
+   For example, the following is additive matrix is for a simple tree that contains leaf node v5 along with the tree structure for that additive distance matrix had v5 been removed...
 
-   On closer inspection of the graph representing the balded distance matrix example above, it becomes apparent why this is. Given any two leaf nodes A and B in the tree (that aren't v3) where path(A,B) travels through i1 (v3's parent), dist(A,B) will always equal to dist(A,v3) + dist(B,v3). For example, path(v0,v2) travels through i1...
+   |    | v0 | v1 | v2 | v3 | v4 | v5 |
+   |----|----|----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+   | v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+   | v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+   | v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+   | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+   | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
 
    ```{dot}
    graph G {
     graph[rankdir=LR]
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    v0 -- i0 [label=11, color=orange, penwidth=2.5]
+    v0 -- i0 [label=11]
     v1 -- i0 [label=2]
-    i0 -- i1 [label=4, color=orange, penwidth=2.5]
-    i1 -- v2 [label=6, color=blue, penwidth=2.5]
-    i1 -- v3 [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
-    i1 [style=filled fillcolor=gray]
+    v2 -- i0 [label=10]
+    i0 -- i2 [label=7]
+    i2 -- v3 [label=2]
+    i2 -- v4 [label=4]
    }
    ```
 
-   dist(v0, v3) + dist(v2, v3) = dist(v0, v2).
+   There's enough information available in the above additive distance matrix and tree structure to determine where in that simple tree v5 should be added and what v5's limb length should be...
 
-   * dist(v0, v3) = 15
-   * dist(v2, v3) = 6
-   * dist(v0, v2) = 21
+   * v5's limb length is 7.
+   * v5's limb should protrude from edge(i0, i2).
 
-   15 + 6 = 21
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    v2 -- i0 [label=10]
+    i0 -- i1 [label=4]
+    i1 -- i2 [label=3]
+    i2 -- v3 [label=3]
+    i2 -- v4 [label=4]
+    i1 -- v5 [label=7]
+   }
+   ```
    
-   Looking at the balded distance matrix confirms this...
+   ```{note}
+   Where did i2 come from? Note how when v3 is removed, the path(i0, v2) get merged into a single edge. This has because phylogenetic trees are simple trees: a simple tree can't have a node with degree_GRAPH 2 (a train of non-branching edges is not allowed).
+   ```
 
-   |    |       v0       |       v1       |       v2        |       v3        |
-   |----|----------------|----------------|-----------------|-----------------|
-   | v0 |       0        |       13       |  `{h} gray 21`  | `{h} orange 15` |
-   | v1 |       13       |       0        |       12        |         6       |
-   | v2 |       21       |       12       |       0         |         6       |
-   | v3 |       15       |       6        |  `{h} blue 6`   |         0       |
+   To understand how this is possible, consider the reconstructed tree in the example above had v5's limb length been set to 0...
 
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    v2 -- i0 [label=10]
+    i0 -- i1 [label=4]
+    i1 -- i2 [label=3]
+    i2 -- v3 [label=3]
+    i2 -- v4 [label=4]
+    i1 -- v5 [label=0, style=dashed]
+   }
+   ```
+   
+   Notice that since v5's limb length is 0, it doesn't contribute to the distance of any path to / from v5. For example, ...
+
+   * path(v0, v5) = path(v0, i1) + 0 = path(v0, i1).
+   * path(v4, v5) = path(v4, i1) + 0 = path(v4, i1).
+   * path(v2, v5) = path(v2, i1) + 0 = path(v2, i1).
+   * etc..
+
+   This leads to the insight that given any two leaf nodes A and B in the above tree (that aren't v5), dist(A,B) will always equal to dist(A,v5) + dist(B,v5) as long as path(A,B) travels through i1 (v5's parent).
+   
+   For example, ...
+   
+   * path(v0,v3) travels through i1 (v5's parent)...
+   
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+      subgraph cluster_two {
+       fontname="Courier-Bold"
+       fontsize=10
+       label="dist(v0, v3)"
+       v0_x -- i0_x [label=11, color=violet, penwidth=2.5]
+       v1_x -- i0_x [label=2]
+       v2_x -- i0_x [label=10]
+       i0_x -- i1_x [label=4, color=violet, penwidth=2.5]
+       i1_x -- i2_x [label=3, color=violet, penwidth=2.5]
+       i2_x -- v3_x [label=3, color=violet, penwidth=2.5]
+       i2_x -- v4_x [label=4]
+       i1_x -- v5_x [label=0, style=dashed]
+       v0_x [label=v0]
+       v1_x [label=v1]
+       v2_x [label=v2]
+       v3_x [label=v3]
+       v4_x [label=v4]
+       v5_x [label=v5]
+       i0_x [label=i0]
+       i1_x [label=i1, style=filled, fillcolor=gray]
+       i2_x [label=i2]
+       i2_x [label=i2]
+       i1_x [label=i1]
+      }
+      subgraph cluster_one {
+       fontname="Courier-Bold"
+       fontsize=10
+       label="dist(v0, v5) + dist(v3, v5)"
+       v0_y -- i0_y [label=11, color=orange, penwidth=2.5]
+       v1_y -- i0_y [label=2]
+       v2_y -- i0_y [label=10]
+       i0_y -- i1_y [label=4, color=orange, penwidth=2.5]
+       i1_y -- i2_y [label=3, color=blue, penwidth=2.5]
+       i2_y -- v3_y [label=3, color=blue, penwidth=2.5]
+       i2_y -- v4_y [label=4]
+       i1_y -- v5_y [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
+       v0_y [label=v0]
+       v1_y [label=v1]
+       v2_y [label=v2]
+       v3_y [label=v3]
+       v4_y [label=v4]
+       v5_y [label=v5]
+       i0_y [label=i0]
+       i1_y [label=i1, style=filled, fillcolor=gray]
+       i2_y [label=i2]
+       i2_y [label=i2]
+       i1_y [label=i1]
+      }
+     }
+     ```
+  
+     `{h}orange dist(v0, v5)` + `{h}blue dist(v3, v5)` = `{h}violet dist(v0, v3)`
+
+     `{h}orange 15` + `{h}blue 6` = `{h}violet 21`
+
+   * path(v0,v2) does NOT travel through i1 (v5's parent)...
+   
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+      subgraph cluster_two {
+       fontname="Courier-Bold"
+       fontsize=10
+       label="dist(v0, v2)"
+       v0_x -- i0_x [label=11, color=tan, penwidth=2.5]
+       v1_x -- i0_x [label=2]
+       v2_x -- i0_x [label=10, color=tan, penwidth=2.5]
+       i0_x -- i1_x [label=4]
+       i1_x -- i2_x [label=3]
+       i2_x -- v3_x [label=3]
+       i2_x -- v4_x [label=4]
+       i1_x -- v5_x [label=0, style=dashed]
+       v0_x [label=v0]
+       v1_x [label=v1]
+       v2_x [label=v2]
+       v3_x [label=v3]
+       v4_x [label=v4]
+       v5_x [label=v5]
+       i0_x [label=i0]
+       i1_x [label=i1, style=filled, fillcolor=gray]
+       i2_x [label=i2]
+       i2_x [label=i2]
+       i1_x [label=i1]
+      }
+      subgraph cluster_one {
+       fontname="Courier-Bold"
+       fontsize=10
+       label="dist(v0, v5) + dist(v2, v5)"
+       v0_y -- i0_y [label=11, color=pink, penwidth=2.5]
+       v1_y -- i0_y [label=2]
+       v2_y -- i0_y [label=10, color=green, penwidth=2.5]
+       i0_y -- i1_y [label=4, color="green:invis:pink", penwidth=2.5]
+       i1_y -- i2_y [label=3]
+       i2_y -- v3_y [label=3]
+       i2_y -- v4_y [label=4]
+       i1_y -- v5_y [label=0, color="green:invis:pink", penwidth=2.5, style=dashed]
+       v0_y [label=v0]
+       v1_y [label=v1]
+       v2_y [label=v2]
+       v3_y [label=v3]
+       v4_y [label=v4]
+       v5_y [label=v5]
+       i0_y [label=i0]
+       i1_y [label=i1, style=filled, fillcolor=gray]
+       i2_y [label=i2]
+       i2_y [label=i2]
+       i1_y [label=i1]
+      }
+     }
+     ```
+
+     `{h}pink dist(v0, v5)` + `{h}green dist(v2, v5)` > `{h}tan dist(v0, v2)`
+
+     `{h}pink 15` + `{h}green 14` > `{h}tan 21`
+
+     ```{note}
+     Other than the v5's limb, I think no other edge in the graph should ever have a weight of 0. That's why this will always be >, because each traverses more edges to get to v5 than they do to get to each other, and those edges have positive weights (not zero).
+     
+     A edge weight of 0 means the species on both sides of an edge are the same, which should never be case (why have an edge at all then? why not merge the edge into a single node? they represent the same thing). v5's limb is explicitly being set to 0 because it's a temporary thing the algorithm requires.
+     ```
+
+   TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE LIMB LENGTH FROM THE DISTANCE MATRIX, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE DISTANCE MATRIX FOR THAT LIMB WILL == THE PRE-BALDED DISTANCE MATRIX YOU HAD WHEN YOU STARTED
+
+   TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE LIMB LENGTH FROM THE DISTANCE MATRIX, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE DISTANCE MATRIX FOR THAT LIMB WILL == THE PRE-BALDED DISTANCE MATRIX YOU HAD WHEN YOU STARTED
+
+   TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE LIMB LENGTH FROM THE DISTANCE MATRIX, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE DISTANCE MATRIX FOR THAT LIMB WILL == THE PRE-BALDED DISTANCE MATRIX YOU HAD WHEN YOU STARTED
+
+   TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE LIMB LENGTH FROM THE DISTANCE MATRIX, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE DISTANCE MATRIX FOR THAT LIMB WILL == THE PRE-BALDED DISTANCE MATRIX YOU HAD WHEN YOU STARTED
+
+   TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE LIMB LENGTH FROM THE DISTANCE MATRIX, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE DISTANCE MATRIX FOR THAT LIMB WILL == THE PRE-BALDED DISTANCE MATRIX YOU HAD WHEN YOU STARTED
+
+   The above equation can be abstracted out to the formula `{kt} d_{A, L} + d_{B, L} = d_{A, B}`, where...
+   
+    * A, B, are leaf nodes.
+    * L is the leaf node for the balded limb (limb length = 0).
+    * path(A, B) travels through the parent node of L.
+   
+   Notice how all distances in the formula are in the bald distance matrix. Had the example tree for the balded distance matrix not been provided before hand, the balded distance matrix itself contains all the information needed to find paths where v5's limb branch from. That is, if dist(A,v5) + dist(B,v5) == dist(A,B) is true for some pair of nodes A and B (that aren't v5), v5's limb branches off somewhere along path(A,B).
+   
+   Since the tree was already exposed, it's obvious that path(v0,v3) is one of the candidates: `{h}orange dist(v0, v5)` + `{h}blue dist(v3, v5)` = `{h}violet dist(v3, v5)`...
+
+   |    |       v0       |       v1       |       v2       |       v3       |       v4       |       v5       |
+   |----|----------------|----------------|----------------|----------------|----------------|----------------|
+   | v0 |       0        |       13       |       21       | `{h}violet 21` |       22       | `{h}orange 15` |
+   | v1 |       13       |       0        |       12       |       12       |       13       |       6        |
+   | v2 |       21       |       12       |       0        |       20       |       21       |       14       |
+   | v3 |       21       |       12       |       20       |       0        |       7        |       6        |
+   | v4 |       22       |       13       |       21       |       7        |       0        |       7        |
+   | v5 |       15       |       6        |       14       |  `{h}blue 6`   |       7        |       0        |
+
+   However, other paths are ...
+
+   * path(v0, v4) / path(v4, v0) -- dist(v0, v5) + dist(v4, v5) = dist(v0, v4) -- 15 + 7 = 22
+   * path(v1, v4) / path(v4, v1) -- dist(v1, v5) + dist(v4, v5) = dist(v1, v4) -- 
+   * path(v2, v4) / path(v4, v2) -- dist(v2, v5) + dist(v4, v5) = dist(v2, v4)
+   * path(v0, v3) / path(v4, v3) -- dist(v0, v5) + dist(v3, v5) = dist(v0, v3)
+   * path(v1, v3) / path(v4, v3) -- dist(v1, v5) + dist(v3, v5) = dist(v1, v3)
+   * path(v2, v3) / path(v4, v3) -- dist(v2, v5) + dist(v3, v5) = dist(v2, v3)
+
+   ```python
+   # Algorithm to find paths
+   for A, B in product(non_bald_nodes, non_bald_nodes):
+     if A == B:
+       continue
+     if balded_matrix[A][L] + balded_matrix[B][L] == balded_matrix[A][B]:
+       candidate_pairs.append((A, B))
+   ```
+
+   ```python
+   # Even better algorithm to find paths -- pick a single node and scan through the other nodes...
+   #   since all nodes are reachable from other nodes in the tree, this will always produce a good result.
+   A = non_bald_nodes.pop()
+   for B in non_bald_nodes:
+     if balded_matrix[A][L] + balded_matrix[B][L] == balded_matrix[A][B]:
+       candidate_pairs.append((A, B))
+   ```
+
+   For any two nodes in the balded distance matrix that isn't v3, if the path travels through v3
 
    The original tree with v3 removed is ...
 
