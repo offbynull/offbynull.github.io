@@ -10673,6 +10673,56 @@ graph_show
    Call it limb neighbour algorithm, similar to the limb length algorithm.
 
 
+ * `{bm} trimmed distance matrix` - An additive distance matrix where a leaf has been removed.
+
+   For example, given the following tree and accompanying distance matrix...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i1 -- v2 [label=6]
+    i1 -- v3 [label=7]
+   }
+   ```
+
+   |    | v0 | v1 | v2 | v3 |
+   |----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 22 |
+   | v1 | 13 | 0  | 12 | 13 |
+   | v2 | 21 | 12 | 0  | 13 |
+   | v3 | 22 | 13 | 13 | 0  |
+
+   Trimming v3 off that tree would result in ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0 [label=11]
+    v1 -- i0 [label=2]
+    i0 -- i1 [label=4]
+    i0 -- v2 [label=6]
+   }
+   ```
+
+   |    | v0 | v1 | v2 |
+   |----|----|----|----|
+   | v0 | 0  | 13 | 21 |
+   | v1 | 13 | 0  | 12 |
+   | v2 | 21 | 12 | 0  |
+
+   ```{note}
+   Note how when v3 is removed, the path(i0, v2) get merged into a single edge. This has because phylogenetic trees are simple trees: a simple tree can't have a node with degree_GRAPH 2 (a train of non-branching edges is not allowed).
+   ```
+   
+   The trimmed distance matrix is the same as the original distance matrix but with v3's row and v3 column removed. In other words, removing some leaf's row and column in an additive distance matrix is equivalent to removing it from the tree. The tree structure or edge weights aren't required.
+
  * `{bm} balded distance matrix/(bald distance matrix|balded distance matrix)/i` - An additive distance matrix where the limb length of some leaf has been set to 0.
 
    For example, given the following tree and accompanying distance matrix...
@@ -10721,12 +10771,12 @@ graph_show
 
    Note how of the two distance matrices, v3's entries (each entry in v3 row and v3 column) in the the balded distance matrix is equivalent to that in the original distance matrix subtracted by v3's limb length...
 
-   |    |     v0     |      v1     |     v2      |      v3     |
-   |----|------------|-------------|-------------|-------------|
-   | v0 |     0      |      13     |     21      | 22 - 7 = 15 |
-   | v1 |     13     |      0      |     12      | 13 - 7 = 15 |
-   | v2 |     21     |      12     |     0       | 13 - 7 = 15 |
-   | v3 | 22 - 7 = 15| 13 - 7 = 15 | 13 - 7 = 15 | 0           |
+   |    |     v0      |      v1     |     v2      |      v3     |
+   |----|-------------|-------------|-------------|-------------|
+   | v0 |     0       |      13     |     21      | 22 - 7 = 15 |
+   | v1 |     13      |      0      |     12      | 13 - 7 = 6  |
+   | v2 |     21      |      12     |     0       | 13 - 7 = 6  |
+   | v3 | 22 - 7 = 15 | 13 - 7 = 6  | 13 - 7 = 6  | 0           |
 
    ```{note}
    Can a limb length be 0 in a phylogenetic tree? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.
@@ -10738,9 +10788,13 @@ graph_show
    * the limb length of the missing limb
    * the balded distance matrix generated from the original tree that contained the missing limb
    
-   , ... it's possible to reconstruct the original simple tree that contained the missing limb. On closer inspection of the graph representing the balded distance matrix, it becomes apparent why this is. Since v3's limb length is 0, the sum of distances for any leaf node A and v3's neighbor B is equal to the distance between A and B.
+   , ... it's possible to reconstruct the original simple tree that contained the missing limb.
    
-   For example, since v2 is v3's neighbour in the example graph above...
+   ```{note}
+   Recall that it's possible to get the limb length for any leaf just from the additive distance matrix.
+   ```
+
+   On closer inspection of the graph representing the balded distance matrix example above, it becomes apparent why this is. Given any two leaf nodes A and B in the tree (that aren't v3) where path(A,B) travels through i1 (v3's parent), dist(A,B) will always equal to dist(A,v3) + dist(B,v3). For example, path(v0,v2) travels through i1...
 
    ```{dot}
    graph G {
@@ -10757,54 +10811,22 @@ graph_show
    ```
 
    dist(v0, v3) + dist(v2, v3) = dist(v0, v2).
-   
-   Looking at the balded distance matrix confirms this...
-
-   |    | v0 | v1 | v2 | v3 |
-   |----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 15 |
-   | v1 | 13 | 0  | 12 | 6  |
-   | v2 | 21 | 12 | 0  | 6  |
-   | v3 | 15 | 6  | 6  | 0  |
 
    * dist(v0, v3) = 15
    * dist(v2, v3) = 6
    * dist(v0, v2) = 21
 
    15 + 6 = 21
-
-   However, path(v0, v1) does not travel over i1 (v3's parent)...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    v0 -- i0 [label=11, color=orange, penwidth=2.5]
-    v1 -- i0 [label=2]
-    i0 -- i1 [label=4, color=orange, penwidth=2.5]
-    i1 -- v2 [label=6, color=blue, penwidth=2.5]
-    i1 -- v3 [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
-    i1 [style=filled fillcolor=gray]
-   }
-   ```
-
-   This makes it so that dist(v0, v3) + dist(v2, v3) = dist(v0, v2).
    
    Looking at the balded distance matrix confirms this...
 
-   |    | v0 | v1 | v2 | v3 |
-   |----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 15 |
-   | v1 | 13 | 0  | 12 | 6  |
-   | v2 | 21 | 12 | 0  | 6  |
-   | v3 | 15 | 6  | 6  | 0  |
+   |    |       v0       |       v1       |       v2        |       v3        |
+   |----|----------------|----------------|-----------------|-----------------|
+   | v0 |       0        |       13       |  `{h} gray 21`  | `{h} orange 15` |
+   | v1 |       13       |       0        |       12        |         6       |
+   | v2 |       21       |       12       |       0         |         6       |
+   | v3 |       15       |       6        |  `{h} blue 6`   |         0       |
 
-   * dist(v0, v3) = 15
-   * dist(v2, v3) = 6
-   * dist(v0, v2) = 21
-
-   15 + 6 = 21
 
    The original tree with v3 removed is ...
 
