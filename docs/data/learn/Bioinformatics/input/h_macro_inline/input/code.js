@@ -186,5 +186,5 @@ const contrastColor = (c) => {
 const input = fs.readFileSync('/input/input.data', { encoding: 'utf8' }).trim();
 const outputColor = input.substring(0, input.indexOf(' ')).trim()
 const outputText = input.substring(input.indexOf(' ')).trim()
-const output = `<span style="background-color: ${outputColor}; color: ${contrastColor(outputColor)}; border: solid 3px ${outputColor}">${outputText}</span>`
+const output = `<span style="background-color: ${outputColor}; color: ${contrastColor(outputColor)}; padding: 3px">${outputText}</span>`
 fs.writeFileSync('/output/output.md', output, { encoding: 'utf8' });

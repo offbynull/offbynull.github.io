@@ -1,1 +1,0 @@
-<span style="background-color: orange; color: black; border: solid 3px orange">15</span>

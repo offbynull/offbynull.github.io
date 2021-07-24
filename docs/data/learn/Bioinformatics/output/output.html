@@ -13474,16 +13474,29 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">Bald distance matrices</a> are used as part of the algorithm that constructs the unique <a href="#BM_(tree)%2Fi">tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (limb re-attachment and <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>).</p>
 </li>
 <li>
-<p><a name="BM_(limb%20attachment)%2Fi"></a><strong>limb attachment</strong> - Given ...</p>
+<p><a name="BM_(limb%20attachment)%2Fi"></a><strong>limb attachment</strong> - <a href="#BM_(limb%20attachment)%2Fi">Limb attachment</a> is the idea of attaching a new leaf node to some existing <a href="#BM_(tree)%2Fi">tree</a>. The new leaf's limb may be attached by either...</p>
+<ul>
+<li>
+<p>attaching to an existing internal node</p>
+<p><img src="dot_c4c7eecb35b4e7c0a797706719060bfa.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>breaking an existing edge by placing an internal node inbetween, then attaching to that internal node</p>
+<p><img src="dot_203b22848a065212d08eb1b4fe5961d6.svg" alt="Dot diagram"></p>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Attaching a new limb to an existing leaf node is never possible because...</p>
 <ol>
-<li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a></li>
-<li>a leaf node to add to that <a href="#BM_(simple%20tree)%2Fi">simple tree</a></li>
-<li>the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> produced once that leaf node has been added</li>
+<li>it'll turn that existing leaf node to an internal node, which doesn't make sense because in the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s leaf nodes identify known organisms</li>
+<li>it will cease to be a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> -- <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (train of edges not allowed).</li>
 </ol>
-<p>, ... it's possible to determine where on that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> the leaf node needs to be added such that it produces the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p>For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+</div>
+<p>Given a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> before the addition of a leaf node and the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> after the addition of that leaf node, there's enough information to determine where that leaf node should be added on the before-addition <a href="#BM_(simple%20tree)%2Fi">simple tree</a> such that it produces the after-addition <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. In other words, BEFORE <a href="#BM_(tree)%2Fi">TREE</a> + AFTER <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> = AFTER <a href="#BM_(tree)%2Fi">TREE</a>.</p>
+<p>For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is to have v5 added somewhere to it...</p>
 <p><img src="dot_474a7e4cf5bc49a86d6321e9fb6ca532.svg" alt="Dot diagram"></p>
-<p>... needs v5 added to it such that the resulting <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is...</p>
+<p>... and the following <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is produced once v5 has been added...</p>
 <table>
 <thead>
 <tr>
@@ -13553,38 +13566,41 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </tr>
 </tbody>
 </table>
-<p>There's enough information available in the above <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to determine...</p>
+<p>There's enough information available in the above <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to determine v<a href="#BM_(5')%2Fi">5'</a>s...</p>
 <ul>
-<li>what v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is (calculated using the <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm): v5 has a <a href="#BM_(limb%20length)%2Fi">limb length</a> of 7</li>
-<li>where v<a href="#BM_(5')%2Fi">5'</a>s location is in the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (calculated using this algorithm) from: v5 branches 4 units out from i0 towards i2</li>
+<li><a href="#BM_(limb%20length)%2Fi">limb length</a>: 7 (calculated using the <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm)</li>
+<li>attachment location: 4 units out from i0 towards i2 (calculated using the algorithm described below)</li>
 </ul>
 <p><img src="dot_f5bf016bc128291dcb5726d92cb371f5.svg" alt="Dot diagram"></p>
-<p>To understand how this is possible, consider the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above with v5 <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
-<p><img src="dot_02e958986528b3a292c6b8fc18805a6f.svg" alt="Dot diagram"></p>
-<p>Since v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 0, it doesn't contribute to the distance of any path to / from v5. For example, ...</p>
+<p>To find the attachment location, consider the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above with v5 <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
+<p><img src="dot_a9116ed4fdfb8f82c74dc5869a9e69bb.svg" alt="Dot diagram"></p>
+<p>Since v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 0, v<a href="#BM_(5')%2Fi">5'</a>s limb doesn't contribute to the distance of any path to / from v5. For example, ...</p>
 <ul>
 <li>path(v0, v5) = path(v0, i1) + 0 = path(v0, i1).</li>
 <li>path(v4, v5) = path(v4, i1) + 0 = path(v4, i1).</li>
 <li>path(v2, v5) = path(v2, i1) + 0 = path(v2, i1).</li>
 <li>etc..</li>
 </ul>
-<p>This leads to the insight that given any two leaf nodes A and B in the above <a href="#BM_(tree)%2Fi">tree</a> (that aren't v5), dist(A,B) will always equal to dist(A,v5) + dist(B,v5) as long as path(A,B) travels through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent).</p>
-<p>For example, ...</p>
+<p>This leads to the insight that given any two leaf nodes A and B in the above <a href="#BM_(tree)%2Fi">tree</a> (that aren't v5), ...</p>
 <ul>
 <li>
-<p>path(v0,v3) travels through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent)...</p>
+<p>dist(A,v5) + dist(B,v5) = dist(A,B), if path(A,B) travels through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent).</p>
+<p>For example, path(v0,v3) travels through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent)...</p>
 <p><img src="dot_9cf52a6152d7da794d04426229428840.svg" alt="Dot diagram"></p>
-<p><span style="background-color: orange; color: black; border: solid 3px orange">dist(v0, v5)</span> + <span style="background-color: blue; color: white; border: solid 3px blue">dist(v3, v5)</span> = <span style="background-color: violet; color: black; border: solid 3px violet">dist(v0, v3)</span></p>
-<p><span style="background-color: orange; color: black; border: solid 3px orange">15</span> + <span style="background-color: blue; color: white; border: solid 3px blue">6</span> = <span style="background-color: violet; color: black; border: solid 3px violet">21</span></p>
+<p><span style="background-color: orange; color: black; padding: 3px">dist(v0, v5)</span> + <span style="background-color: blue; color: white; padding: 3px">dist(v3, v5)</span> = <span style="background-color: violet; color: black; padding: 3px">dist(v0, v3)</span></p>
+<p><span style="background-color: orange; color: black; padding: 3px">15</span> + <span style="background-color: blue; color: white; padding: 3px">6</span> = <span style="background-color: violet; color: black; padding: 3px">21</span></p>
+<p>Notice how, with the exception of v<a href="#BM_(5')%2Fi">5'</a>s limb, the same set of edges are highlighted in both diagrams. v<a href="#BM_(5')%2Fi">5'</a>s limb doesn't contribute anything to the distance (<a href="#BM_(limb%20length)%2Fi">limb length</a> = 0) which is why it's excluded.</p>
 </li>
 <li>
-<p>path(v0,v2) does NOT travel through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent)...</p>
+<p>dist(A,v5) + dist(B,v5) &gt; dist(A,B), if path(A,B) DOES NOT travel through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent).</p>
+<p>For example, path(v0,v2) does NOT travel through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent)...</p>
 <p><img src="dot_ee86d44f9384f912e676f8440c64e3ca.svg" alt="Dot diagram"></p>
-<p><span style="background-color: pink; color: black; border: solid 3px pink">dist(v0, v5)</span> + <span style="background-color: green; color: white; border: solid 3px green">dist(v2, v5)</span> &gt; <span style="background-color: tan; color: black; border: solid 3px tan">dist(v0, v2)</span></p>
-<p><span style="background-color: pink; color: black; border: solid 3px pink">15</span> + <span style="background-color: green; color: white; border: solid 3px green">14</span> &gt; <span style="background-color: tan; color: black; border: solid 3px tan">21</span></p>
+<p><span style="background-color: pink; color: black; padding: 3px">dist(v0, v5)</span> + <span style="background-color: green; color: white; padding: 3px">dist(v2, v5)</span> &gt; <span style="background-color: tan; color: black; padding: 3px">dist(v0, v2)</span></p>
+<p><span style="background-color: pink; color: black; padding: 3px">15</span> + <span style="background-color: green; color: white; padding: 3px">14</span> &gt; <span style="background-color: tan; color: black; padding: 3px">21</span></p>
+<p>Notice how, with the exception of v<a href="#BM_(5')%2Fi">5'</a>s limb, more edges are highlighted for the left-hand side of the equation vs the right-hand side. v<a href="#BM_(5')%2Fi">5'</a>s limb doesn't contribute anything to the distance (<a href="#BM_(limb%20length)%2Fi">limb length</a> = 0) which is why it's excluded.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Other than the v<a href="#BM_(5')%2Fi">5'</a>s limb, I think no other edge in the graph should ever have a weight of 0. That's why this will always be &gt;, because each traverses more edges to get to v5 than they do to get to each other, and those edges have positive weights (not zero).</p>
+<p>Other than the v<a href="#BM_(5')%2Fi">5'</a>s limb, I think no other edge in the <a href="#BM_(tree)%2Fi">tree</a> should ever have a weight of 0. That's why this will always be &gt;, because v0 and v2 traverse more edges to get to v5 than they do to get to each other, and those edges have positive weights (not zero).</p>
 <p>A edge weight of 0 means the species on both sides of an edge are the same, which should never be case (why have an edge at all then? why not merge the edge into a single node? they represent the same thing). v<a href="#BM_(5')%2Fi">5'</a>s limb is explicitly being set to 0 because it's a temporary thing the algorithm requires.</p>
 </div>
 </li>
@@ -13597,10 +13613,11 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p>, where...</p>
 <ul>
 <li>A, B, are leaf nodes.</li>
-<li>L is the leaf node for the balded limb (<a href="#BM_(limb%20length)%2Fi">limb length</a> = 0).</li>
+<li>L is the leaf node for the <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a> limb (<a href="#BM_(limb%20length)%2Fi">limb length</a> = 0).</li>
 </ul>
-<p>Since all distances in the formulas above are between leaf nodes in the balded <a href="#BM_(tree)%2Fi">tree</a>, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> itself contains all the information needed to find paths where v<a href="#BM_(5')%2Fi">5'</a>s limb branches from. That is, if dist(A,v5) + dist(B,v5) == dist(A,B) is true for some pair of nodes A and B (that aren't v5), v<a href="#BM_(5')%2Fi">5'</a>s limb branches off somewhere along path(A,B).</p>
-<p>Since the <a href="#BM_(tree)%2Fi">tree</a> was already exposed, it's obvious that path(v0,v3) is one of the candidates: <span style="background-color: orange; color: black; border: solid 3px orange">dist(v0, v5)</span> + <span style="background-color: blue; color: white; border: solid 3px blue">dist(v3, v5)</span> = <span style="background-color: violet; color: black; border: solid 3px violet">dist(v3, v5)</span>...</p>
+<p>All distances in the formulas above are between leaf nodes in the balded <a href="#BM_(tree)%2Fi">tree</a>. As such, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> itself contains all the information needed to find paths where v<a href="#BM_(5')%2Fi">5'</a>s limb branch from. That is, if dist(A,v5) + dist(B,v5) == dist(A,B) is true for some pair of nodes A and B (that aren't v5) in the balded matrix, v<a href="#BM_(5')%2Fi">5'</a>s limb branches off somewhere along path(A,B).</p>
+<p>Since the <a href="#BM_(tree)%2Fi">tree</a> was already exposed, it's obvious that path(v0,v3) is one of the candidates:</p>
+<p><span style="background-color: orange; color: black; padding: 3px">dist(v0, v5)</span> + <span style="background-color: blue; color: white; padding: 3px">dist(v3, v5)</span> = <span style="background-color: violet; color: black; padding: 3px">dist(v3, v5)</span></p>
 <table>
 <thead>
 <tr>
@@ -13619,9 +13636,9 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>0</td>
 <td>13</td>
 <td>21</td>
-<td><span style="background-color: violet; color: black; border: solid 3px violet">21</span></td>
+<td><span style="background-color: violet; color: black; padding: 3px">21</span></td>
 <td>22</td>
-<td><span style="background-color: orange; color: black; border: solid 3px orange">15</span></td>
+<td><span style="background-color: orange; color: black; padding: 3px">15</span></td>
 </tr>
 <tr>
 <td>v1</td>
@@ -13664,16 +13681,16 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>15</td>
 <td>6</td>
 <td>14</td>
-<td><span style="background-color: blue; color: white; border: solid 3px blue">6</span></td>
+<td><span style="background-color: blue; color: white; padding: 3px">6</span></td>
 <td>7</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<p>However, other paths are ...</p>
+<p>However, other viable paths are ...</p>
 <ul>
-<li>path(v0, v4) / path(v4, v0): dist(v0, v5) + dist(v4, v5) = dist(v0, v4) -- 15 + 7 = 22</li>
-<li>path(v1, v4) / path(v4, v1): dist(v1, v5) + dist(v4, v5) = dist(v1, v4) -- 6 + 7 = 13</li>
+<li>path(v0, v4) / path(v4, v0): dist(v0, v5) + dist(v4, v5) = dist(v0, v4)</li>
+<li>path(v1, v4) / path(v4, v1): dist(v1, v5) + dist(v4, v5) = dist(v1, v4)</li>
 <li>path(v2, v4) / path(v4, v2): dist(v2, v5) + dist(v4, v5) = dist(v2, v4)</li>
 <li>path(v0, v3) / path(v4, v3): dist(v0, v5) + dist(v3, v5) = dist(v0, v3)</li>
 <li>path(v1, v3) / path(v4, v3): dist(v1, v5) + dist(v3, v5) = dist(v1, v3)</li>
@@ -13693,30 +13710,18 @@ A = non_bald_nodes.pop()
   <span class="hljs-keyword">if</span> balded_matrix[A][L] + balded_matrix[B][L] == balded_matrix[A][B]:
     candidate_pairs.append((A, B))
 </code></pre>
-<p>Given any of these paths, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> states how far down that path v5 branches from. For example, path(v0, v4) was one of the identified paths that v5 branches from...</p>
+<p>For each path, L's branch point is determined by either ...</p>
 <ul>
-<li>path(v0, v4) / path(v4, v0): dist(v0, v5) + dist(v4, v5) = dist(v0, v4): 15 + 7 = 22</li>
+<li>pulling dist(A,L) from the balded after-addition <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and walking that many units on path(A,B) from A on the before-addition <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</li>
+<li>pulling dist(L,B) from the balded after-addition <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and walking that many units on path(A,B) from B on the before-addition <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</li>
 </ul>
-<p>Since it's known that ...</p>
-<ol>
-<li>v5 branches out from path(v0,v4)</li>
-<li>v<a href="#BM_(5')%2Fi">5'</a>s parent is dist(v0,v5)=15 units away from v0</li>
-<li>v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 7</li>
-</ol>
-<p>... the algorithm simply needs to walk the path from v0 towards v4 in the original <a href="#BM_(tree)%2Fi">tree</a>, stopping at dist(v0,v5) units. If stopped at a ...</p>
+<p>..., either works. If the walk stops at a ...</p>
 <ul>
-<li>node, v5 branches from that node.</li>
-<li>edge, a new internal node is put in-between that edge and v5 branches from that new node.</li>
+<li>node, L branches from that node.</li>
+<li>edge, a new internal node is put in-between that edge and L branches from that new node.</li>
 </ul>
-<p><img src="dot_a4ed390b96f29795e878f224dcb586b1.svg" alt="Dot diagram"></p>
-<p>Since the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a></p>
-<ul>
-<li>from the balded matrix, it's known that <span style="background-color: purple; color: white; border: solid 3px purple">dist(v0, v4)</span> = <span style="background-color: orange; color: black; border: solid 3px orange">dist(v0, v5)</span> + <span style="background-color: blue; color: white; border: solid 3px blue">dist(v5, v4)</span></li>
-<li>from the original matrix, it's known that dist(v0, v5) = 15</li>
-</ul>
-<p>, 15 units down path(v0, v4) starting at v0 is where the v<a href="#BM_(5')%2Fi">5'</a>s limb branches from...</p>
-<p><img src="dot_893fc4cc4841a37283941fe06ce807a8.svg" alt="Dot diagram"></p>
-<p>TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> FROM THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a>, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> FOR THAT LIMB WILL == THE PRE-<a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">BALDED DISTANCE MATRIX</a> YOU HAD WHEN YOU STARTED</p>
+<p>In the example above, path(v0,v4) was one of the identified paths that v5 branches from. Walking from v0, the branch point would be dist(v0,v5)=15 units down...</p>
+<p><img src="dot_f649ae920aa9f7920c523e9a57283a91.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <p>

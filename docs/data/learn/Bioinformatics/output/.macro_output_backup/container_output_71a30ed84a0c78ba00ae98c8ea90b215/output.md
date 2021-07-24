@@ -1,0 +1,1 @@
+<span style="background-color: tan; color: black; padding: 3px">dist(v0, v2)</span>
