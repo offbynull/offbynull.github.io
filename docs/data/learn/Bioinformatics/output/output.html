@@ -13166,7 +13166,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <li>
 <p><a name="BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where a leaf has been removed.</p>
 <p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a> and accompanying <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
+<p><img src="dot_4e5daffbacf71191e85a5881e8367790.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -13209,7 +13209,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </tbody>
 </table>
 <p>Trimming v3 off that <a href="#BM_(tree)%2Fi">tree</a> would result in ...</p>
-<p><img src="dot_50f1d7a075a806b4bf87ac6cf9359204.svg" alt="Dot diagram"></p>
+<p><img src="dot_6a109324ab04f1a066f363c371982971.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -13242,14 +13242,20 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Note how when v3 is removed, the path(i0, v2) get merged into a single edge. This has because <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s are <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s: a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have a node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (a train of non-branching edges is not allowed).</p>
+<p>Notice that with v3 removed from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, path(i0, v2) merges into a single edge. Recall that ...</p>
+<ul>
+<li><a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s are <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s: a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have a node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (a train of non-branching edges is not allowed)</li>
+<li>for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix</li>
+</ul>
+<p>The trimmed version of the <a href="#BM_(tree)%2Fi">tree</a> fits the trimmed version of the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
 </div>
 <p>The <a href="#BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi">trimmed distance matrix</a> is the same as the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> but with v<a href="#BM_(3')%2Fi">3'</a>s row and v3 column removed. In other words, removing some leaf's row and column in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to removing it from the <a href="#BM_(tree)%2Fi">tree</a>. The <a href="#BM_(tree)%2Fi">tree</a> structure or edge weights aren't required.</p>
+<p><a href="#BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi">Trimmed distance matrices</a> are used as part of the algorithm that constructs the unique <a href="#BM_(tree)%2Fi">tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (limb re-attachment and <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>).</p>
 </li>
 <li>
-<p><a name="BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi"></a><strong>balded distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where the <a href="#BM_(limb%20length)%2Fi">limb length</a> of some leaf has been set to 0.</p>
+<p><a name="BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi"></a><strong>balded distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where a leaf's <a href="#BM_(limb%20length)%2Fi">limb length</a> has been set to 0.</p>
 <p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a> and accompanying <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><img src="dot_2660f9fe34fc08baf1c92341f6835089.svg" alt="Dot diagram"></p>
+<p><img src="dot_e304cd9917c7e5b9d72c4e876e260cba.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -13320,7 +13326,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </tbody>
 </table>
 <p>Setting v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> to 0 on that <a href="#BM_(tree)%2Fi">tree</a> would result in ...</p>
-<p><img src="dot_6918f0614e3e237ad824bbddd437f491.svg" alt="Dot diagram"></p>
+<p><img src="dot_504f11240750f6a2add064fe593ca205.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -13386,76 +13392,6 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>14</td>
 <td>6</td>
 <td>7</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>Notice how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, v<a href="#BM_(3')%2Fi">3'</a>s entries (each entry in v3 row and v3 column) in the the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is equivalent to that in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> subtracted by v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a>...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-<th>v4</th>
-<th>v5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>21</td>
-<td>22</td>
-<td>22 - 7 = 15</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>12</td>
-<td>13</td>
-<td>13 - 7 = 6</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>20</td>
-<td>21</td>
-<td>21 - 7 = 14</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>21</td>
-<td>12</td>
-<td>20</td>
-<td>0</td>
-<td>7</td>
-<td>13 - 7 = 6</td>
-</tr>
-<tr>
-<td>v4</td>
-<td>22</td>
-<td>13</td>
-<td>21</td>
-<td>7</td>
-<td>0</td>
-<td>14 - 7 = 7</td>
-</tr>
-<tr>
-<td>v5</td>
-<td>22 - 7 = 15</td>
-<td>13 - 7 = 6</td>
-<td>21 - 7 = 14</td>
-<td>13 - 7 = 6</td>
-<td>14 - 7 = 7</td>
 <td>0</td>
 </tr>
 </tbody>
@@ -13464,13 +13400,90 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Can a <a href="#BM_(limb%20length)%2Fi">limb length</a> be 0 in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.</p>
 </div>
-<p><a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">Bald distance matrices</a> are used as part of the algorithm that constructs the unique <a href="#BM_(tree)%2Fi">tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (<a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>). Given a ...</p>
-<ul>
-<li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a></li>
-<li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a> but with a limb missing</li>
-</ul>
-<p>, ... it's possible to determine where in the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> the missing limb should be added.</p>
-<p>For example, the following is <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a> is for a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that contains leaf node v5 along with the <a href="#BM_(tree)%2Fi">tree</a> structure for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> had v5 been removed...</p>
+<p>Notice how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, v<a href="#BM_(5')%2Fi">5'</a>s entries (each entry in v5 row and v5 column) in the the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is equivalent to that in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> subtracted by v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22 - 7 = 15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13 - 7 = 6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21 - 7 = 14</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13 - 7 = 6</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14 - 7 = 7</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22 - 7 = 15</td>
+<td>13 - 7 = 6</td>
+<td>21 - 7 = 14</td>
+<td>13 - 7 = 6</td>
+<td>14 - 7 = 7</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>In other words, subtracting some leaf's <a href="#BM_(limb%20length)%2Fi">limb length</a> from its distance values in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (row and column in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>) is equivalent to removing it from the <a href="#BM_(tree)%2Fi">tree</a>. The <a href="#BM_(tree)%2Fi">tree</a> structure or edge weights aren't required.</p>
+<p><a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">Bald distance matrices</a> are used as part of the algorithm that constructs the unique <a href="#BM_(tree)%2Fi">tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (limb re-attachment and <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>).</p>
+</li>
+<li>
+<p><a name="BM_(limb%20attachment)%2Fi"></a><strong>limb attachment</strong> - Given ...</p>
+<ol>
+<li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a></li>
+<li>a leaf node to add to that <a href="#BM_(simple%20tree)%2Fi">simple tree</a></li>
+<li>the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> produced once that leaf node has been added</li>
+</ol>
+<p>, ... it's possible to determine where on that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> the leaf node needs to be added such that it produces the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<p><img src="dot_474a7e4cf5bc49a86d6321e9fb6ca532.svg" alt="Dot diagram"></p>
+<p>... needs v5 added to it such that the resulting <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is...</p>
 <table>
 <thead>
 <tr>
@@ -13540,20 +13553,15 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </tr>
 </tbody>
 </table>
-<p><img src="dot_372fdaf5fe10e42c539f038edcf50a1b.svg" alt="Dot diagram"></p>
-<p>There's enough information available in the above <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> structure to determine where in that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> v5 should be added and what v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> should be...</p>
+<p>There's enough information available in the above <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to determine...</p>
 <ul>
-<li>v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 7.</li>
-<li>v<a href="#BM_(5')%2Fi">5'</a>s limb should protrude from edge(i0, i2).</li>
+<li>what v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is (calculated using the <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm): v5 has a <a href="#BM_(limb%20length)%2Fi">limb length</a> of 7</li>
+<li>where v<a href="#BM_(5')%2Fi">5'</a>s location is in the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (calculated using this algorithm) from: v5 branches 4 units out from i0 towards i2</li>
 </ul>
-<p><img src="dot_f08ea7b0bd9601666701c9155116a04c.svg" alt="Dot diagram"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Where did i2 come from? Note how when v3 is removed, the path(i0, v2) get merged into a single edge. This has because <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s are <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s: a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have a node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (a train of non-branching edges is not allowed).</p>
-</div>
-<p>To understand how this is possible, consider the reconstructed <a href="#BM_(tree)%2Fi">tree</a> in the example above had v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> been set to 0...</p>
-<p><img src="dot_d76e6061cb5cd754c406e68c80198fe1.svg" alt="Dot diagram"></p>
-<p>Notice that since v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 0, it doesn't contribute to the distance of any path to / from v5. For example, ...</p>
+<p><img src="dot_f5bf016bc128291dcb5726d92cb371f5.svg" alt="Dot diagram"></p>
+<p>To understand how this is possible, consider the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above with v5 <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
+<p><img src="dot_02e958986528b3a292c6b8fc18805a6f.svg" alt="Dot diagram"></p>
+<p>Since v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 0, it doesn't contribute to the distance of any path to / from v5. For example, ...</p>
 <ul>
 <li>path(v0, v5) = path(v0, i1) + 0 = path(v0, i1).</li>
 <li>path(v4, v5) = path(v4, i1) + 0 = path(v4, i1).</li>
@@ -13565,13 +13573,13 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <ul>
 <li>
 <p>path(v0,v3) travels through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent)...</p>
-<p><img src="dot_07670b29ed820773f63972e709a8b918.svg" alt="Dot diagram"></p>
+<p><img src="dot_9cf52a6152d7da794d04426229428840.svg" alt="Dot diagram"></p>
 <p><span style="background-color: orange; color: black; border: solid 3px orange">dist(v0, v5)</span> + <span style="background-color: blue; color: white; border: solid 3px blue">dist(v3, v5)</span> = <span style="background-color: violet; color: black; border: solid 3px violet">dist(v0, v3)</span></p>
 <p><span style="background-color: orange; color: black; border: solid 3px orange">15</span> + <span style="background-color: blue; color: white; border: solid 3px blue">6</span> = <span style="background-color: violet; color: black; border: solid 3px violet">21</span></p>
 </li>
 <li>
 <p>path(v0,v2) does NOT travel through i1 (v<a href="#BM_(5')%2Fi">5'</a>s parent)...</p>
-<p><img src="dot_fa36a3ca4a10f6c514a20a456c5abcc7.svg" alt="Dot diagram"></p>
+<p><img src="dot_ee86d44f9384f912e676f8440c64e3ca.svg" alt="Dot diagram"></p>
 <p><span style="background-color: pink; color: black; border: solid 3px pink">dist(v0, v5)</span> + <span style="background-color: green; color: white; border: solid 3px green">dist(v2, v5)</span> &gt; <span style="background-color: tan; color: black; border: solid 3px tan">dist(v0, v2)</span></p>
 <p><span style="background-color: pink; color: black; border: solid 3px pink">15</span> + <span style="background-color: green; color: white; border: solid 3px green">14</span> &gt; <span style="background-color: tan; color: black; border: solid 3px tan">21</span></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -13581,18 +13589,17 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </div>
 </li>
 </ul>
-<p>TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> FROM THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a>, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> FOR THAT LIMB WILL == THE PRE-<a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">BALDED DISTANCE MATRIX</a> YOU HAD WHEN YOU STARTED</p>
-<p>TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> FROM THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a>, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> FOR THAT LIMB WILL == THE PRE-<a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">BALDED DISTANCE MATRIX</a> YOU HAD WHEN YOU STARTED</p>
-<p>TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> FROM THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a>, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> FOR THAT LIMB WILL == THE PRE-<a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">BALDED DISTANCE MATRIX</a> YOU HAD WHEN YOU STARTED</p>
-<p>TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> FROM THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a>, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> FOR THAT LIMB WILL == THE PRE-<a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">BALDED DISTANCE MATRIX</a> YOU HAD WHEN YOU STARTED</p>
-<p>TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> FROM THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a>, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> FOR THAT LIMB WILL == THE PRE-<a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">BALDED DISTANCE MATRIX</a> YOU HAD WHEN YOU STARTED</p>
-<p>The above equation can be abstracted out to the formula <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>L</mi></mrow></msub><mo>+</mo><msub><mi>d</mi><mrow><mi>B</mi><mo separator="true">,</mo><mi>L</mi></mrow></msub><mo>=</mo><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{A, L} + d_{B, L} = d_{A, B}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>, where...</p>
+<p>The above equations can be abstracted out to the formulas ...</p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>L</mi></mrow></msub><mo>+</mo><msub><mi>d</mi><mrow><mi>B</mi><mo separator="true">,</mo><mi>L</mi></mrow></msub><mo>=</mo><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{A, L} + d_{B, L} = d_{A, B}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> if path(A,B) does travel through the parent of L</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>L</mi></mrow></msub><mo>+</mo><msub><mi>d</mi><mrow><mi>B</mi><mo separator="true">,</mo><mi>L</mi></mrow></msub><mo>&gt;</mo><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{A, L} + d_{B, L} &gt; d_{A, B}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> if path(A,B) does not travel through the parent of L</li>
+</ul>
+<p>, where...</p>
 <ul>
 <li>A, B, are leaf nodes.</li>
 <li>L is the leaf node for the balded limb (<a href="#BM_(limb%20length)%2Fi">limb length</a> = 0).</li>
-<li>path(A, B) travels through the parent node of L.</li>
 </ul>
-<p>Notice how all distances in the formula are in the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">bald distance matrix</a>. Had the example <a href="#BM_(tree)%2Fi">tree</a> for the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> not been provided before hand, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> itself contains all the information needed to find paths where v<a href="#BM_(5')%2Fi">5'</a>s limb branch from. That is, if dist(A,v5) + dist(B,v5) == dist(A,B) is true for some pair of nodes A and B (that aren't v5), v<a href="#BM_(5')%2Fi">5'</a>s limb branches off somewhere along path(A,B).</p>
+<p>Since all distances in the formulas above are between leaf nodes in the balded <a href="#BM_(tree)%2Fi">tree</a>, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> itself contains all the information needed to find paths where v<a href="#BM_(5')%2Fi">5'</a>s limb branches from. That is, if dist(A,v5) + dist(B,v5) == dist(A,B) is true for some pair of nodes A and B (that aren't v5), v<a href="#BM_(5')%2Fi">5'</a>s limb branches off somewhere along path(A,B).</p>
 <p>Since the <a href="#BM_(tree)%2Fi">tree</a> was already exposed, it's obvious that path(v0,v3) is one of the candidates: <span style="background-color: orange; color: black; border: solid 3px orange">dist(v0, v5)</span> + <span style="background-color: blue; color: white; border: solid 3px blue">dist(v3, v5)</span> = <span style="background-color: violet; color: black; border: solid 3px violet">dist(v3, v5)</span>...</p>
 <table>
 <thead>
@@ -13665,12 +13672,12 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </table>
 <p>However, other paths are ...</p>
 <ul>
-<li>path(v0, v4) / path(v4, v0) -- dist(v0, v5) + dist(v4, v5) = dist(v0, v4) -- 15 + 7 = 22</li>
-<li>path(v1, v4) / path(v4, v1) -- dist(v1, v5) + dist(v4, v5) = dist(v1, v4) --</li>
-<li>path(v2, v4) / path(v4, v2) -- dist(v2, v5) + dist(v4, v5) = dist(v2, v4)</li>
-<li>path(v0, v3) / path(v4, v3) -- dist(v0, v5) + dist(v3, v5) = dist(v0, v3)</li>
-<li>path(v1, v3) / path(v4, v3) -- dist(v1, v5) + dist(v3, v5) = dist(v1, v3)</li>
-<li>path(v2, v3) / path(v4, v3) -- dist(v2, v5) + dist(v3, v5) = dist(v2, v3)</li>
+<li>path(v0, v4) / path(v4, v0): dist(v0, v5) + dist(v4, v5) = dist(v0, v4) -- 15 + 7 = 22</li>
+<li>path(v1, v4) / path(v4, v1): dist(v1, v5) + dist(v4, v5) = dist(v1, v4) -- 6 + 7 = 13</li>
+<li>path(v2, v4) / path(v4, v2): dist(v2, v5) + dist(v4, v5) = dist(v2, v4)</li>
+<li>path(v0, v3) / path(v4, v3): dist(v0, v5) + dist(v3, v5) = dist(v0, v3)</li>
+<li>path(v1, v3) / path(v4, v3): dist(v1, v5) + dist(v3, v5) = dist(v1, v3)</li>
+<li>path(v2, v3) / path(v4, v3): dist(v2, v5) + dist(v3, v5) = dist(v2, v3)</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-comment"># Algorithm to find paths</span>
 <span class="hljs-keyword">for</span> A, B <span class="hljs-keyword">in</span> product(non_bald_nodes, non_bald_nodes):
@@ -13686,11 +13693,30 @@ A = non_bald_nodes.pop()
   <span class="hljs-keyword">if</span> balded_matrix[A][L] + balded_matrix[B][L] == balded_matrix[A][B]:
     candidate_pairs.append((A, B))
 </code></pre>
-<p>For any two nodes in the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> that isn't v3, if the path travels through v3</p>
-<p>The original <a href="#BM_(tree)%2Fi">tree</a> with v3 removed is ...</p>
-<p><img src="dot_d9a3dc81bf841ede566e62c7876adf8d.svg" alt="Dot diagram"></p>
-<p>... because the i1 in the path [i0, i1, v2] has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2, which isn't allowed in <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s.
-````</p>
+<p>Given any of these paths, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> states how far down that path v5 branches from. For example, path(v0, v4) was one of the identified paths that v5 branches from...</p>
+<ul>
+<li>path(v0, v4) / path(v4, v0): dist(v0, v5) + dist(v4, v5) = dist(v0, v4): 15 + 7 = 22</li>
+</ul>
+<p>Since it's known that ...</p>
+<ol>
+<li>v5 branches out from path(v0,v4)</li>
+<li>v<a href="#BM_(5')%2Fi">5'</a>s parent is dist(v0,v5)=15 units away from v0</li>
+<li>v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 7</li>
+</ol>
+<p>... the algorithm simply needs to walk the path from v0 towards v4 in the original <a href="#BM_(tree)%2Fi">tree</a>, stopping at dist(v0,v5) units. If stopped at a ...</p>
+<ul>
+<li>node, v5 branches from that node.</li>
+<li>edge, a new internal node is put in-between that edge and v5 branches from that new node.</li>
+</ul>
+<p><img src="dot_a4ed390b96f29795e878f224dcb586b1.svg" alt="Dot diagram"></p>
+<p>Since the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a></p>
+<ul>
+<li>from the balded matrix, it's known that <span style="background-color: purple; color: white; border: solid 3px purple">dist(v0, v4)</span> = <span style="background-color: orange; color: black; border: solid 3px orange">dist(v0, v5)</span> + <span style="background-color: blue; color: white; border: solid 3px blue">dist(v5, v4)</span></li>
+<li>from the original matrix, it's known that dist(v0, v5) = 15</li>
+</ul>
+<p>, 15 units down path(v0, v4) starting at v0 is where the v<a href="#BM_(5')%2Fi">5'</a>s limb branches from...</p>
+<p><img src="dot_893fc4cc4841a37283941fe06ce807a8.svg" alt="Dot diagram"></p>
+<p>TODO: START FROM HERE AND CLEAN UP THE EQUATION NOTES BELOW + ADD THE INEQUALITY BEFORE MOVING ON THE NEXT PARAGRAPH. IN THE NEXT PARAGRAPH, EXPLICITLY SAY THAT YOU CAN GET THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> FROM THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a>, THEN BALD IT, THEN USE THE EQUATION TO FIND PAIRS OF NODES. THESE PAIRS OF NODES ARE THE PATHS THAT THE LIMB GO ON. HOW DO YOU FIND OUT WHERE ON THE LIMB ITS SUPPOSE TO GO? THE BALDED MATRIX HAS HOW FAR YOU SHOULD WALK DOWN THE PATH -- IF YOU END UP AT A NODE, APPEND THE LIMB TO THAT NODE / IF YOU END UP IN THE MIDDLE OF AN EDGE, BREAK IT AND APPEND THE LIMB TO HTE NEW INTERNAL NODE -- YOU MIGHT HAVE TO WALK THE EDGE BOTH WAYS TO FIND THE RIGHT SPOT TO ADD -- YOU'LL KNOW IF THE DIRECTION YOU WALKED IS RIGHT BECAUSE AFTER YOU ADD THE LIMB, GENERATING THE <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a> FOR THAT LIMB WILL == THE PRE-<a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">BALDED DISTANCE MATRIX</a> YOU HAD WHEN YOU STARTED</p>
 </li>
 </ul>
 <p>
