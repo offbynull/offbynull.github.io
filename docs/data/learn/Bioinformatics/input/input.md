@@ -11042,6 +11042,27 @@ graph_show
 
    At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
 
+ * `{bm} sum of squared errors/(sum of squared errors|sum of square error|sum of errors squared)/i` - Sum of errors squared is an algorithm used to quantify how far off some estimation / prediction is.
+ 
+   Given a a set of real values and a set of predicted values, the error is the difference between the real and predicated values at each data point. For example...
+
+   |           |   |    |   |   |   |   |
+   |-----------|---|----|---|---|---|---|
+   | Real      | 5 | 4  | 7 | 8 | 5 | 4 |
+   | Predicted | 4 | 5  | 7 | 6 | 4 | 4 |
+   | Error     | 1 | -1 | 0 | 2 | 1 | 0 |
+
+   The algorithm squares each error and sums them together:
+
+   ```python
+   res = 0
+   for r_val, p_val in zip(real, predicted):
+     err = r_val - p_val
+     res += err ** 2
+   ```
+
+   The algorithm as a formula: `{kt} \sum_{i=0}^{n}{(r_i - p_i)^2}`
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
