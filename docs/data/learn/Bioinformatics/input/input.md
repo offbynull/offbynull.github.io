@@ -10820,6 +10820,10 @@ graph_show
 
    In other words, subtracting some leaf's limb length from its distance values in an additive distance matrix (row and column in an additive matrix) is equivalent to removing it from the tree. The tree structure or edge weights aren't required.
 
+   ```{note}
+   How do you know the limb length from just the distance matrix? See the algorithm to determine limb length for any leaf from just the distance matrix.
+   ```
+
    Bald distance matrices are used as part of the algorithm that constructs the unique tree for an additive distance matrix (limb re-attachment and additive phylogeny).
    
  * `{bm} limb attachment` - Limb attachment is the idea of attaching a new leaf node to some existing tree. The new leaf's limb may be attached by either...
@@ -10861,7 +10865,7 @@ graph_show
       }
       ```
 
-    * breaking an existing edge by placing an internal node inbetween, then attaching to that internal node
+    * adding an internal node inbetween an edge (breaking it into two) and attaching to that internal node
 
       ```{dot}
       graph G {
@@ -10907,7 +10911,14 @@ graph_show
    2. it will cease to be a simple tree -- simple trees can't have nodes of degree_GRAPH 2 (train of edges not allowed).
    ```
 
-   Given a simple tree before the addition of a leaf node and the additive distance matrix after the addition of that leaf node, there's enough information to determine where that leaf node should be added on the before-addition simple tree such that it produces the after-addition additive distance matrix. In other words, BEFORE TREE + AFTER DISTANCE MATRIX = AFTER TREE.
+   Given a simple tree before the addition of a leaf node and the additive distance matrix after the addition of that leaf node, there's enough information to determine where that leaf node should be added on the simple tree such that it produces the additive distance matrix. In other words, given ...
+   
+   1. tree_without_L -- a simple tree WITHOUT leaf node L
+   2. distmat_with_L -- an additive distance matrix WITH leaf node L
+   
+   ... there exists an algorithm to find where on tree_without_L leaf node L should be added: tree_without_L + distmat_with_L = tree_with_L.
+
+   `{bm-disable} (5')/i` <!-- Needs to be disabled because v5's is conflicting with 5' -->
 
    For example, the following simple tree is to have v5 added somewhere to it...
    
@@ -10992,14 +11003,14 @@ graph_show
    
    Since v5's limb length is 0, v5's limb doesn't contribute to the distance of any path to / from v5. For example, ...
 
-   * path(v0, v5) = path(v0, i1) + 0 = path(v0, i1).
-   * path(v4, v5) = path(v4, i1) + 0 = path(v4, i1).
-   * path(v2, v5) = path(v2, i1) + 0 = path(v2, i1).
+   * `{kt} d_{v0,v5} = d_{v0,i1} + 0 = d_{v0,i1}`
+   * `{kt} d_{v4,v5} = d_{v4,i1} + 0 = d_{v4,i1}`
+   * `{kt} d_{v2,v5} = d_{v2,i1} + 0 = d_{v2,i1}`
    * etc..
 
-   This leads to the insight that given any two leaf nodes A and B in the above tree (that aren't v5), ...
+   This leads to the insight that given any two leaf nodes A and B in the above balded tree (that aren't v5), ...
    
-   * dist(A,v5) + dist(B,v5) = dist(A,B), if path(A,B) travels through i1 (v5's parent).
+   * `{kt} d_{A,v5} + d_{B,v5} = d_{A,B}`, if path(A,B) travels through i1 (v5's parent).
 
      For example, path(v0,v3) travels through i1 (v5's parent)...
    
@@ -11060,13 +11071,11 @@ graph_show
      }
      ```
   
-     `{h}orange dist(v0, v5)` + `{h}blue dist(v3, v5)` = `{h}violet dist(v0, v3)`
+     `{kt} \colorbox{orange}{$d_{v0,v5}$} + \colorbox{blue}{$\textcolor{white}{d_{v3,v5}}$} = \colorbox{violet}{$d_{v0,v3}$}`
 
-     `{h}orange 15` + `{h}blue 6` = `{h}violet 21`
+     Notice that, not counting v5's limb (because it contributes nothing to distance), the same edges are highlighted in both diagrams.
 
-     Notice how, with the exception of v5's limb, the same set of edges are highlighted in both diagrams. v5's limb doesn't contribute anything to the distance (limb length = 0) which is why it's excluded.
-
-   * dist(A,v5) + dist(B,v5) > dist(A,B), if path(A,B) DOES NOT travel through i1 (v5's parent).
+   * `{kt} d_{A,v5} + d_{B,v5} > d_{A,B}`, if path(A,B) DOES NOT travel through i1 (v5's parent).
    
      For example, path(v0,v2) does NOT travel through i1 (v5's parent)...
    
@@ -11127,11 +11136,9 @@ graph_show
      }
      ```
 
-     `{h}pink dist(v0, v5)` + `{h}green dist(v2, v5)` > `{h}tan dist(v0, v2)`
+     `{kt} \colorbox{pink}{$d_{v0,v5}$} + \colorbox{lime}{$d_{v2,v5}$} > \colorbox{tan}{$d_{v0,v2}$}`
 
-     `{h}pink 15` + `{h}green 14` > `{h}tan 21`
-
-     Notice how, with the exception of v5's limb, more edges are highlighted for the left-hand side of the equation vs the right-hand side. v5's limb doesn't contribute anything to the distance (limb length = 0) which is why it's excluded.
+     Notice that, not counting v5's limb (because it contributes nothing to distance), more edges are highlighted for the left-hand side of the equation vs the right-hand side.
 
      ```{note}
      Other than the v5's limb, I think no other edge in the tree should ever have a weight of 0. That's why this will always be >, because v0 and v2 traverse more edges to get to v5 than they do to get to each other, and those edges have positive weights (not zero).
@@ -11148,60 +11155,46 @@ graph_show
    
     * A, B, are leaf nodes.
     * L is the leaf node for the `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i` limb (limb length = 0).
-   
-   All distances in the formulas above are between leaf nodes in the balded tree. As such, the balded distance matrix itself contains all the information needed to find paths where v5's limb branch from. That is, if dist(A,v5) + dist(B,v5) == dist(A,B) is true for some pair of nodes A and B (that aren't v5) in the balded matrix, v5's limb branches off somewhere along path(A,B).
-   
-   Since the tree was already exposed, it's obvious that path(v0,v3) is one of the candidates:
-   
-   `{h}orange dist(v0, v5)` + `{h}blue dist(v3, v5)` = `{h}violet dist(v3, v5)`
 
-   |    |       v0       |       v1       |       v2       |       v3       |       v4       |       v5       |
-   |----|----------------|----------------|----------------|----------------|----------------|----------------|
-   | v0 |       0        |       13       |       21       | `{h}violet 21` |       22       | `{h}orange 15` |
-   | v1 |       13       |       0        |       12       |       12       |       13       |       6        |
-   | v2 |       21       |       12       |       0        |       20       |       21       |       14       |
-   | v3 |       21       |       12       |       20       |       0        |       7        |       6        |
-   | v4 |       22       |       13       |       21       |       7        |       0        |       7        |
-   | v5 |       15       |       6        |       14       |  `{h}blue 6`   |       7        |       0        |
+   ```{note}
+   The logic described above is very reminiscent of the algorithm for finding a leaf node's limb length from just the distance matrix. The formula is = if A and B are within the different subtrees, but > if the same.
 
-   However, other viable paths are ...
-
-   * path(v0, v4) / path(v4, v0): dist(v0, v5) + dist(v4, v5) = dist(v0, v4)
-   * path(v1, v4) / path(v4, v1): dist(v1, v5) + dist(v4, v5) = dist(v1, v4)
-   * path(v2, v4) / path(v4, v2): dist(v2, v5) + dist(v4, v5) = dist(v2, v4)
-   * path(v0, v3) / path(v4, v3): dist(v0, v5) + dist(v3, v5) = dist(v0, v3)
-   * path(v1, v3) / path(v4, v3): dist(v1, v5) + dist(v3, v5) = dist(v1, v3)
-   * path(v2, v3) / path(v4, v3): dist(v2, v5) + dist(v3, v5) = dist(v2, v3)
+   When writing notes in the algorithm section, break this out into a "subtree detection" algorithm that'll tell you if 2 nodes are in the same subtree vs different subtrees.
+   ```
+   
+   All distances in the formulas above are between leaf nodes in the balded tree. As such, the balded tree isn't needed -- the balded distance matrix itself contains all the information needed to find paths that v5's limb branches off of.
 
    ```python
    # Algorithm to find paths
-   for A, B in product(non_bald_nodes, non_bald_nodes):
-     if A == B:
-       continue
-     if balded_matrix[A][L] + balded_matrix[B][L] == balded_matrix[A][B]:
+   b_dm = bald(distmat_with_L, L)
+   for A, B in product(nodes, nodes):
+     if A == B: continue
+     if A == L or B == L: continue
+     if b_dm[A][L] + b_dm[B][L] == b_dm[A][B]:
        candidate_pairs.append((A, B))
-   ```
+     elif b_dm[A][L] + b_dm[B][L] > b_dm[A][B]:
+       pass  # doesn't travel through L's parent
+     else:
+       raise ValueError('Should never happen')
 
-   ```python
-   # Even better algorithm to find paths -- pick a single node and scan through the other nodes...
-   #   since all nodes are reachable from other nodes in the tree, this will always produce a good result.
-   A = non_bald_nodes.pop()
-   for B in non_bald_nodes:
-     if balded_matrix[A][L] + balded_matrix[B][L] == balded_matrix[A][B]:
+   # Even better algorithm to find paths
+   #   Pick a single node and scan through all other nodes.Since a tree / simple
+   #   tree is a connected graph (path exists between every pair of vertices),
+   #   this will always produce correct results.
+   b_dm = bald(distmat_with_L, L)
+   A = nodes[0]
+   for B in nodes:
+     if A == B: continue
+     if A == L or B == L: continue
+     if b_dm[A][L] + b_dm[B][L] == b_dm[A][B]:
        candidate_pairs.append((A, B))
+     elif b_dm[A][L] + b_dm[B][L] > b_dm[A][B]:
+       pass  # doesn't travel through L's parent
+     else:
+       raise ValueError('Should never happen')
    ```
-
-   For each path, L's branch point is determined by either ...
    
-   * pulling dist(A,L) from the balded after-addition distance matrix and walking that many units on path(A,B) from A on the before-addition simple tree.
-   * pulling dist(L,B) from the balded after-addition distance matrix and walking that many units on path(A,B) from B on the before-addition simple tree.
-
-   ..., either works. If the walk stops at a ...
-
-   * node, L branches from that node.
-   * edge, a new internal node is put in-between that edge and L branches from that new node.
-
-   In the example above, path(v0,v4) was one of the identified paths that v5 branches from. Walking from v0, the branch point would be dist(v0,v5)=15 units down...
+   For the example above, if `{kt} d_{A,v5} + d_{B,v5} = d+{A,B}` is true for some pair of nodes A and B (that aren't v5) in the balded matrix, v5's limb branches off somewhere along path(A,B). Since the tree was already exposed, it's obvious that path(v0,v3) is one of the candidates:
 
    ```{dot}
    graph G {
@@ -11212,7 +11205,116 @@ graph_show
     subgraph cluster_rhs {
      fontname="Courier-Bold"
      fontsize=10
-     label="path(v0,v4) broken 15 units in from v0, then v5's limb added"
+     label="dist(v0, v3)"
+     v0_x -- i0_x [label=11, color=violet, penwidth=2.5]
+     v1_x -- i0_x [label=2]
+     v2_x -- i0_x [label=10]
+     i0_x -- i1_x [label=4, color=violet, penwidth=2.5]
+     i1_x -- i2_x [label=3, color=violet, penwidth=2.5]
+     i2_x -- v3_x [label=3, color=violet, penwidth=2.5]
+     i2_x -- v4_x [label=4]
+     i1_x -- v5_x [label=0, style=dashed]
+     v0_x [label=v0]
+     v1_x [label=v1]
+     v2_x [label=v2]
+     v3_x [label=v3]
+     v4_x [label=v4]
+     v5_x [label=v5]
+     i0_x [label=i0]
+     i1_x [label=i1, style=filled, fillcolor=gray]
+     i2_x [label=i2]
+     i2_x [label=i2]
+     i1_x [label=i1]
+    }
+    subgraph cluster_lhs {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v0, v5) + dist(v3, v5)"
+     v0_y -- i0_y [label=11, color=orange, penwidth=2.5]
+     v1_y -- i0_y [label=2]
+     v2_y -- i0_y [label=10]
+     i0_y -- i1_y [label=4, color=orange, penwidth=2.5]
+     i1_y -- i2_y [label=3, color=blue, penwidth=2.5]
+     i2_y -- v3_y [label=3, color=blue, penwidth=2.5]
+     i2_y -- v4_y [label=4]
+     i1_y -- v5_y [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
+     v0_y [label=v0]
+     v1_y [label=v1]
+     v2_y [label=v2]
+     v3_y [label=v3]
+     v4_y [label=v4]
+     v5_y [label=v5]
+     i0_y [label=i0]
+     i1_y [label=i1, style=filled, fillcolor=gray]
+     i2_y [label=i2]
+     i2_y [label=i2]
+     i1_y [label=i1]
+    }
+   }
+   ```
+   
+   `{kt} \colorbox{orange}{$d_{v0,v5}$} + \colorbox{blue}{$\textcolor{white}{d_{v3,v5}}$} = \colorbox{violet}{$d_{v0,v3}$}`
+
+   |    |       v0       |       v1       |       v2       |       v3       |       v4       |       v5       |
+   |----|----------------|----------------|----------------|----------------|----------------|----------------|
+   | v0 |       0        |       13       |       21       | `{h}violet 21` |       22       | `{h}orange 15` |
+   | v1 |       13       |       0        |       12       |       12       |       13       |       6        |
+   | v2 |       21       |       12       |       0        |       20       |       21       |       14       |
+   | v3 |       21       |       12       |       20       |       0        |       7        |       6        |
+   | v4 |       22       |       13       |       21       |       7        |       0        |       7        |
+   | v5 |       15       |       6        |       14       |  `{h}blue 6`   |       7        |       0        |
+
+   However, other paths that v5's limb branches off are ...
+
+   * path(v0, v4) / path(v4, v0): `{kt} d_{v0,v5} + d_{v4, v5} = d_{v0, v4}`
+   * path(v1, v4) / path(v4, v1): `{kt} d_{v1,v5} + d_{v4, v5} = d_{v1, v4}`
+   * path(v2, v4) / path(v4, v2): `{kt} d_{v2,v5} + d_{v4, v5} = d_{v2, v4}`
+   * path(v0, v3) / path(v4, v3): `{kt} d_{v0,v5} + d_{v3, v5} = d_{v0, v3}`
+   * path(v1, v3) / path(v4, v3): `{kt} d_{v1,v5} + d_{v3, v5} = d_{v1, v3}`
+   * path(v2, v3) / path(v4, v3): `{kt} d_{v2,v5} + d_{v3, v5} = d_{v2, v3}`
+
+   Once a path has been identified, the actual point on that path where L's limb branches off is determined by either ...
+   
+   * pulling `{kt} d_{A,L}` from bald(distmat_with_L, L) and walking that many units on path(A,B) from A on tree_without_L.
+   * pulling `{kt} d_{L,B}` from bald(distmat_with_L, L) and walking that many units on path(A,B) from B on tree_without_L.
+
+   ..., either works. If the walk stops at a ...
+
+   * node, L branches from that node.
+   * edge, a new internal node is put in-between that edge and L branches from that new node.
+
+   ```python
+   # Get distance where limb should be injected
+   inject_dist = balded_distmat_with_L[A][L]
+   # Given a path, ensure that you're walking it from A (tree = undirected graph so it
+   # may be in reverse order)
+   if path[-1].end_node == A:
+     reverse_path(path)
+   # Walk
+   walk_weight = 0
+   for edge in path:
+     walk_weight += edge.weight
+     if walk_weight == inject_dist:
+       tree_without_L.add_edge(edge.end_node, L, L_limb_length)
+       break
+     elif walk_weight > inject_dist:
+       edge1, new_internal_node, edge2 = tree_without_L.break_edge(edge)
+       tree_without_L.add_edge(new_internal_node, L, L_limb_length)
+   # At this point tree_without_L should have L attached on to it
+   ```
+
+   In the example above, path(v0,v4) was one of the identified paths that v5 branches from. Since the balded distance matrix states that `{kt} d_{v0,v5}=15`, the branch point for v5's limb would be 15 units down when walking path(v0,v4) from v0 ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_rhs {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="15 units from v0, edge is broken and v5's limb added"
      v0_y -- i0_y [label=11, dir=forward, color=purple, penwidth=2.5]
      v1_y -- i0_y [label=2]
      v2_y -- i0_y [label=10]
@@ -11236,7 +11338,7 @@ graph_show
     subgraph cluster_lhs {
      fontname="Courier-Bold"
      fontsize=10
-     label="before-addition path(v0,v4), starting from v0"
+     label="path(v0,v4) on tree_without_L, starting from v0"
      v0_x -- i0_x [label=11, dir=forward, color=purple, penwidth=2.5]
      v1_x -- i0_x [label=2]
      v2_x -- i0_x [label=10]
@@ -11253,6 +11355,8 @@ graph_show
     }
    }
    ```
+
+   `{bm-enable} (5')/i` <!-- Re-enable 5' now that section is finished -->
 
 
 `{bm-ignore} \b(read)_NORM/i`

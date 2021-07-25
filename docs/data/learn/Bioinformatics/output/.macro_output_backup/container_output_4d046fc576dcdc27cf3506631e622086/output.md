@@ -1,1 +1,0 @@
-<span style="background-color: tan; color: black; padding: 3px">21</span>
