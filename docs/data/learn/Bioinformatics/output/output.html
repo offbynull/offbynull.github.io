@@ -12711,459 +12711,6 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </div>
 </li>
 <li>
-<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits a specific <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p>The algorithm relies on four core ideas:</p>
-<ol>
-<li>
-<p>Adding a new leaf to a known <a href="#BM_(simple%20tree)%2Fi">simple tree</a> only requires ...</p>
-<ul>
-<li>the <a href="#BM_(limb%20length)%2Fi">limb length</a> for that new leaf.</li>
-<li>the edge that new leaf's limb protrudes from, as well the position on that edge.</li>
-</ul>
-<p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a>...</p>
-<p><img src="dot_50f1d7a075a806b4bf87ac6cf9359204.svg" alt="Dot diagram"></p>
-<p>... adding the new leaf v3 where ...</p>
-<ul>
-<li>v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> is 7</li>
-<li>v<a href="#BM_(3')%2Fi">3'</a>s limb protrudes from (i0, v2), 6 units away from i0</li>
-</ul>
-<p>... results in ...</p>
-<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
-</li>
-<li>
-<p>Removing a leaf from a known <a href="#BM_(simple%20tree)%2Fi">simple tree</a> produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> as the original <a href="#BM_(tree)%2Fi">tree</a> but with that leaf's column / row removed. For example, the following <a href="#BM_(tree)%2Fi">tree</a> produces the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>22</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>13</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>13</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>22</td>
-<td>13</td>
-<td>13</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>Removing v3 (and merging i0 - i1 - v3 into a single edge because <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have edges with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2) produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> but without v<a href="#BM_(3')%2Fi">3'</a>s column / row...</p>
-<p><img src="dot_50f1d7a075a806b4bf87ac6cf9359204.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>As such, it's possible to remove a leaf node from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> just by removing the column / row for that leaf. The <a href="#BM_(tree)%2Fi">tree</a> doesn't need to be known beforehand.</p>
-</li>
-<li>
-<p>Setting a leaf's <a href="#BM_(limb%20length)%2Fi">limb length</a> to 0 in a known <a href="#BM_(simple%20tree)%2Fi">simple tree</a> produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> as the original <a href="#BM_(tree)%2Fi">tree</a> but with that leaf's column / row values having the <a href="#BM_(limb%20length)%2Fi">limb length</a> subtracted. For example, the following <a href="#BM_(tree)%2Fi">tree</a> produces the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>22</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>13</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>13</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>22</td>
-<td>13</td>
-<td>13</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>Setting v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> to 0 produces the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> but with v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> removed from v<a href="#BM_(3')%2Fi">3'</a>s column / row...</p>
-<p><img src="dot_f2984253588c45c1e5e4cba6849f789b.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>15</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>15</td>
-<td>6</td>
-<td>6</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>As such, if the <a href="#BM_(limb%20length)%2Fi">limb length</a> is known, it's possible to set it to 0 within the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> directly. The <a href="#BM_(tree)%2Fi">tree</a> doesn't need to be known beforehand.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Refer to the algorithm for calculating <a href="#BM_(limb%20length)%2Fi">limb length</a> just from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-</div>
-</li>
-<li>
-<p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious. For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>14</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>14</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>..., the requirements of a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 not allowed) mean that the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is just a single edge of weight 14...</p>
-<p><img src="dot_e4939b6f43610a7950a5425df01badc2.svg" alt="Dot diagram"></p>
-</li>
-</ol>
-<p>Given ...</p>
-<ul>
-<li>a <a href="#BM_(tree)%2Fi">tree</a> that's missing a leaf</li>
-<li>the <a href="#BM_(limb%20length)%2Fi">limb length</a> of that missing leaf</li>
-<li>the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> that describes what that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> looks like had that leaf not been missing but its <a href="#BM_(limb%20length)%2Fi">limb length</a> were 0</li>
-</ul>
-<p>..., there's enough information to deduce where on the <a href="#BM_(tree)%2Fi">tree</a> the missing leaf should be added to. Imagine the following <a href="#BM_(tree)%2Fi">tree</a> ...</p>
-<p><img src="dot_e38acdf6a8311bf36df07de25a9e8e33.svg" alt="Dot diagram"></p>
-<p>Had the original <a href="#BM_(tree)%2Fi">tree</a> structure not been known but v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> and the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> had v3 been on the <a href="#BM_(tree)%2Fi">tree</a> is as follows...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>15</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>15</td>
-<td>6</td>
-<td>6</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>Since the balded matrix has v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> set to 0, there must exist at least 1 pair</p>
-<p>and the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> that describes , you want to add a new leaf onto that <a href="#BM_(tree)%2Fi">tree</a> (idea #1). You have the <a href="#BM_(limb%20length)%2Fi">limb length</a> for that new leaf and a balded matrix that shows what that the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> would look like had that new leaf been added with a <a href="#BM_(limb%20length)%2Fi">limb length</a> of 0 (idea #3).</p>
-<p>(what the matrix would look like had that <a href="#BM_(limb%20length)%2Fi">limb length</a> been 0) the <a href="#BM_(limb%20length)%2Fi">limb length</a> for new leaf node to add to that <a href="#BM_(tree)%2Fi">tree</a>, and a</p>
-<p>At a high-level the algorithm recursively widdles down the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a 2x2 matrix then "builds out" the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> as it walks out of each recursive step. This is done until the matrix is sized 2x2. As it leaves each recursive step, there's enough information available to "build out" the next step of the <a href="#BM_(tree)%2Fi">tree</a>.</p>
-<p>The algorithm relies on two fundamental ideas: balding and trimming.</p>
-<p>Balding is the idea of modifying a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> such that a node's <a href="#BM_(limb%20length)%2Fi">limb length</a> becomes 0. For example, given the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and corresponding <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
-<p><img src="dot_4bfaeba3d4357015c3e69796d464ed03.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>22</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>13</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>13</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>22</td>
-<td>13</td>
-<td>13</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>... the <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm may be used calculate the weight at each limb had the <a href="#BM_(tree)%2Fi">tree</a> not already been provided ...</p>
-<ul>
-<li>limb_length(v0) = 11</li>
-<li>limb_length(v1) = 2</li>
-<li>limb_length(v2) = 6</li>
-<li>limb_length(v3) = 7</li>
-</ul>
-<p>Balding the matrix for v3 means subtracting v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> from each cell in v<a href="#BM_(3')%2Fi">3'</a>s row and column (except the one where v3 is compared against v3 -- 0 length). The balded matrix is the same matrix produced had v<a href="#BM_(3')%2Fi">3'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a> been 0...</p>
-<p><img src="dot_8c120199ceab31996165aec34c935e0c.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>15</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>15</td>
-<td>6</td>
-<td>6</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>Trimming is the idea of removing a leaf from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In the example <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and corresponding <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> shown above, trimming v3 out...</p>
-<p><img src="dot_50f1d7a075a806b4bf87ac6cf9359204.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>Notice that when v3 gets trimmed out, the internal path i0 - i1 - v2 merges into a single edge. This happens because <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have nodes with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (you can't have a straight more than 1 edge connecting two nodes unless the nodes in between branch off).</p>
-<p>The full algorithm is as follows:</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">x</span>(<span class="hljs-params">d</span>):</span>
-  n = <span class="hljs-built_in">len</span>(d) - <span class="hljs-number">1</span>
-  <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:
-    g = Graph()
-    g.add_edge(v0,v1)
-  last_limb_length = limb_length(n)
-  d_bald = bald(d, n, last_limb_length)
-  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
-  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
-  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
-  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
-  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
-  <span class="hljs-comment"># THIS IS THE BLOCK THE TODO BELOW IS TALKING ABOUT -- ITS FINDING A NEIGHBOUR EXTENDING FROM THE SAME PARENT</span>
-  <span class="hljs-comment"># d_bald has limb length for n set to 0... which means non-n distance exists such that it == d_bald[i][n] + d_bald[k][n] </span>
-  found = <span class="hljs-literal">None</span>
-  <span class="hljs-keyword">for</span> i, k <span class="hljs-keyword">in</span> product(<span class="hljs-built_in">range</span>(n), <span class="hljs-built_in">range</span>(n)):
-    <span class="hljs-keyword">if</span> i == k:
-      <span class="hljs-keyword">continue</span>
-    <span class="hljs-keyword">if</span> d_bald[i][k] == d_bald[i][n] + d_bald[n][k]:
-      found = i, k, n
-  <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Not additive'</span>) <span class="hljs-keyword">if</span> found <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>
-  <span class="hljs-comment"># n IS GUARANTEED TO EXIST ON THE PATH BETWEEN i AND k</span>
-  d_trim = trim(d, n - <span class="hljs-number">1</span>)
-  g = x(d_trim)
-  path = find_path(g, i, k)   <span class="hljs-comment"># how do I know iif I should sum_path_check from i-to-k or k-to-i? do it both ways and then generate the distance matrix to see if it matches?</span>
-  res = sum_path_check(t, x, edges_between_i_and_k, i)
-  op = res[<span class="hljs-number">0</span>]
-  <span class="hljs-keyword">if</span> op == SumPathCheckRes.BREAK:
-      <span class="hljs-comment"># find edge between i and k where n fits, add an internal node there and add it in</span>
-      <span class="hljs-keyword">return</span> t
-  <span class="hljs-keyword">elif</span> op == SumPathCheckRes.ATTACH:
-      <span class="hljs-comment"># find node between i and k where n fits, add an internal node there and add it in</span>
-      <span class="hljs-keyword">return</span> t
-  <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'???'</span>)
-</code></pre>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>TODO: The bald_d loop is essentially finding the neightbouring node! REFINE THE LOGIC AND PLACE IT IN ITS OWN SECTION</p>
-<p>Call it limb neighbour algorithm, similar to the <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm.</p>
-</li>
-<li>
 <p><a name="BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where a leaf has been removed.</p>
 <p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a> and accompanying <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <p><img src="dot_4e5daffbacf71191e85a5881e8367790.svg" alt="Dot diagram"></p>
@@ -13657,7 +13204,7 @@ A = nodes[<span class="hljs-number">0</span>]
   <span class="hljs-keyword">else</span>:
     <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Should never happen'</span>)
 </code></pre>
-<p>For the example above, if <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>v</mi><mn>5</mn></mrow></msub><mo>+</mo><msub><mi>d</mi><mrow><mi>B</mi><mo separator="true">,</mo><mi>v</mi><mn>5</mn></mrow></msub><mo>=</mo><mi>d</mi><mo>+</mo><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi></mrow></mrow><annotation encoding="application/x-tex">d_{A,v5} + d_{B,v5} = d+{A,B}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span> is true for some pair of nodes A and B (that aren't v5) in the balded matrix, v5's limb branches off somewhere along path(A,B). Since the <a href="#BM_(tree)%2Fi">tree</a> was already exposed, it's obvious that path(v0,v3) is one of the candidates:</p>
+<p>For the example above, if <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>v</mi><mn>5</mn></mrow></msub><mo>+</mo><msub><mi>d</mi><mrow><mi>B</mi><mo separator="true">,</mo><mi>v</mi><mn>5</mn></mrow></msub><mo>=</mo><msub><mi>d</mi><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{A,v5} + d_{B,v5} = d_{A,B}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> is true for some pair of nodes A and B (that aren't v5) in the balded matrix, v5's limb branches off somewhere along path(A,B). Since the <a href="#BM_(tree)%2Fi">tree</a> was already exposed, it's obvious that path(v0,v3) is one of the candidates:</p>
 <p><img src="dot_9cf52a6152d7da794d04426229428840.svg" alt="Dot diagram"></p>
 <p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mpadded width="+6pt" height="+6pt" lspace="3pt" voffset="3pt" mathbackground="orange"><mstyle scriptlevel="0" displaystyle="false"><msub><mi>d</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>5</mn></mrow></msub></mstyle></mpadded><mo>+</mo><mpadded width="+6pt" height="+6pt" lspace="3pt" voffset="3pt" mathbackground="blue"><mstyle scriptlevel="0" displaystyle="false"><mstyle mathcolor="white"><msub><mi>d</mi><mrow><mi>v</mi><mn>3</mn><mo separator="true">,</mo><mi>v</mi><mn>5</mn></mrow></msub></mstyle></mstyle></mpadded><mo>=</mo><mpadded width="+6pt" height="+6pt" lspace="3pt" voffset="3pt" mathbackground="violet"><mstyle scriptlevel="0" displaystyle="false"><msub><mi>d</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub></mstyle></mpadded></mrow><annotation encoding="application/x-tex">\colorbox{orange}{$d_{v0,v5}$} + \colorbox{blue}{$\textcolor{white}{d_{v3,v5}}$} = \colorbox{violet}{$d_{v0,v3}$}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.5805479999999998em;vertical-align:-0.586108em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9944399999999999em;"><span style="top:-2.99444em;"><span class="pstrut" style="height:3.580548em;"></span><span class="stretchy colorbox" style="height:1.5805479999999998em;background-color:orange;"></span></span><span style="top:-3.580548em;"><span class="pstrut" style="height:3.580548em;"></span><span class="mord boxpad"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.586108em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.5805479999999998em;vertical-align:-0.586108em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9944399999999999em;"><span style="top:-2.99444em;"><span class="pstrut" style="height:3.580548em;"></span><span class="stretchy colorbox" style="height:1.5805479999999998em;background-color:blue;"></span></span><span style="top:-3.580548em;"><span class="pstrut" style="height:3.580548em;"></span><span class="mord boxpad"><span class="mord" style="color:white;"><span class="mord mathnormal" style="color:white;">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:white;"><span class="mord mtight" style="color:white;"><span class="mord mathnormal mtight" style="margin-right:0.03588em;color:white;">v</span><span class="mord mtight" style="color:white;">3</span><span class="mpunct mtight" style="color:white;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;color:white;">v</span><span class="mord mtight" style="color:white;">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.586108em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.5805479999999998em;vertical-align:-0.586108em;"></span><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9944399999999999em;"><span style="top:-2.99444em;"><span class="pstrut" style="height:3.580548em;"></span><span class="stretchy colorbox" style="height:1.5805479999999998em;background-color:violet;"></span></span><span style="top:-3.580548em;"><span class="pstrut" style="height:3.580548em;"></span><span class="mord boxpad"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.586108em;"><span></span></span></span></span></span></span></span></span></p>
 <table>
@@ -13769,6 +13316,63 @@ walk_weight = <span class="hljs-number">0</span>
 <p>In the example above, path(v0,v4) was one of the identified paths that v5 branches from. Since the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> states that <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>5</mn></mrow></msub><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">d_{v0,v5}=15</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">5</span></span></span></span>, the branch point for v5's limb would be 15 units down when walking path(v0,v4) from v0 ...</p>
 <p><img src="dot_e11563a6933115667437ae37a776e5ec.svg" alt="Dot diagram"></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
+</li>
+<li>
+<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>The algorithm recursively <a href="#BM_(trimmed distance matrix|trimmed distance matrices)/i">trim</a>s the node for the last row/column in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> until the size is 2x2. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious as ...</p>
+<ul>
+<li>it only consists of 2 nodes</li>
+<li>it only consists of a single edge (nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 not allowed in <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s, meaning train of non-branching edges not allowed)</li>
+</ul>
+<p>For example, the following 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="dot_d0010bac57ea6a9ead9cf3d10ce6f86e.svg" alt="Dot diagram"></p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">additive_phylogeny</span>(<span class="hljs-params">distmat</span>):</span>
+  n = <span class="hljs-built_in">len</span>(distmat)
+  <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:
+    <span class="hljs-keyword">return</span> obvious_graph(distmat)
+  L = n - <span class="hljs-number">1</span>  <span class="hljs-comment"># node in last row/col of distmat</span>
+  trimmed_dm = trim(distmat, L)
+  additive_phylogeny(trimmed_dm)
+  ...
+</code></pre>
+<p>As the algorithm returns from each recursive step, it has 2 pieces of information:</p>
+<ul>
+<li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> with leaf node L.</li>
+<li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> without leaf node L.</li>
+</ul>
+<p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L should be added and what L's <a href="#BM_(limb%20length)%2Fi">limb length</a> should be (<a href="#BM_(limb%20attachment)%2Fi">limb attachment</a> algorithm)...</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">additive_phylogeny</span>(<span class="hljs-params">distmat</span>):</span>
+  n = <span class="hljs-built_in">len</span>(distmat)
+  <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:
+    <span class="hljs-keyword">return</span> obvious_graph(distmat)
+  L = n - <span class="hljs-number">1</span>  <span class="hljs-comment"># node in last row/col of distmat</span>
+  trimmed_dm = trim(distmat, L)
+  simple_tree = additive_phylogeny(trimmed_dm)
+  attach_limb(simple_tree, L)
+  <span class="hljs-keyword">return</span> simple_tree
+</code></pre>
+<p>At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 </li>
 </ul>
 <p>
