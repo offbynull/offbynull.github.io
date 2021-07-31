@@ -129,7 +129,9 @@
         "transposases",
         "transposon",
         "transposons",
+        "ultrametric",
         "unfavourable",
         "unrooted"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }

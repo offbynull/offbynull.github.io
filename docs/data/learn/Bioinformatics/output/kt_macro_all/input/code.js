@@ -39,7 +39,8 @@ const html = kt.renderToString(
 fse.writeFileSync('/output/output.md', html, { encoding: 'utf8' });
 
 fse.copySync('node_modules/katex/dist', '/output/katex');
-fse.writeFileSync('/output/output.injects', '[ ["katex/katex.min.css", "css"] ]', { encoding: 'utf8' });
+fse.writeFileSync('/output/katex/CUSTOMIZED_NO_CENTER.css', '.katex-display { text-align: left }\n.katex-display > .katex  { text-align: left }\n', { encoding: 'utf8' });
+fse.writeFileSync('/output/output.injects', '[ ["katex/katex.min.css", "css"], ["katex/CUSTOMIZED_NO_CENTER.css", "css"] ]', { encoding: 'utf8' });
 
         // const headElement = document.getElementsByTagName('head')[0];
 

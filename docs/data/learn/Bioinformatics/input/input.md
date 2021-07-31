@@ -11102,7 +11102,7 @@ graph_show
    ```{svgbob}
    0   1
     \ /
-     a -- 2 
+     a 
     / \
    4   3
                              
@@ -11120,7 +11120,7 @@ graph_show
    * simple trees that states internal nodes must have degree_GRAPH of greater than 2.
 
    ```{svgbob}
-                                                                          *
+                                                                          r
                                                                          / \ 
                                                                         /   \
                         2                                              /     \
@@ -11137,6 +11137,108 @@ graph_show
    * "Letter are internal nodes"
    * "Numbers are leaf nodes"
    ```
+
+ * `{bm} ultrametric tree/(ultrametric tree|ultrametric)/i` - A rooted binary tree predicated on the idea that the rate of mutation is the same across all species. Since the rate of mutation is the same, a set of present day species (leaf nodes) will have the same amount of mutation (distance) between their shared ancestor (internal node).
+
+   ```{svgbob}
+               a
+              / \
+             /   \
+        2.5 /     \
+           /       \ 3
+          /         \
+         b           \
+        / \           \
+   1.5 /   \ 1.5       c
+      /     \       1 / \ 1
+     /       \       /   \ 
+    d         e     f     g
+
+   * "d and e share ancestor b:   dist(b,d) = dist(b,e)"
+   * "f and g share ancestor c:   dist(c,f) = dist(c,g)"
+   * "d, e, f, and g share ancestor a:   dist(a,d) = dist(a,e) = dist(a,f) = dist(a,g)"
+   ```
+   
+   In other words, the weights of an ultrametric tree represents the "molecular age" across present day species and their ancestors:
+   
+   * Leaf nodes are present day species, meaning that their age is 0.
+   * Leaf nodes that diverged from the same parent did so at the same time, meaning their age relative to that parent is the same.
+   * Internal nodes that diverged from the same parent MAY or MAY NOT have done so at the same time (there isn't enough information to know for certain), meaning their age relative to the parent can be different.
+
+   ```{svgbob}
+                      a (age=4)
+                     / \
+                    /   \
+               2.5 /     \
+                  /       \ 3
+                 /         \
+      (age=1.5) b           \
+               / \           \
+          1.5 /   \ 1.5       c (age=1)
+             /     \       1 / \ 1
+            /       \       /   \ 
+   (age=0) d         e     f     g (age=0)
+                (age=0)   (age=0)
+   ```
+
+ * `{bm} unweighted pair group method with arithmetic mean/(unweighted pair group method with arithmetic mean|UPGMA)/i` - A clustering heuristic used for building an ultrametric tree from a distance matrix. The algorithm works by iteratively building larger and larger clusters of leaf nodes, where the minimum distance between clusters defines how the edges are placed.
+ 
+   Distances between two clusters of leaf nodes are measured as follows...
+
+   ```{kt}
+   D_{C_1,C_2} = \frac{
+     \sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
+     }{
+       |C_1| \cdot |C_2|
+     }
+   ```
+
+   * `{kt} i \in C_1` - Leaf nodes in cluster 1.
+   * `{kt} j \in C_2` - Leaf nodes in cluster 2.
+   * `{kt} D_{i,j}` - Distance between leaf nodes i and j.
+   * `{kt} \sum_{i \in C_1}\sum_{j \in C_2}D_{i,j}` - Sum of distances between cluster 1's leaf nodes and cluster 2's leaf nodes.
+   * `{kt} |C_1|` - Number of leaf nodes in cluster 1
+   * `{kt} |C_2|` - Number of leaf nodes in cluster 2
+
+   ```python
+   def cluster_dist(dist_mat: list[list[float]], cluster1: set[int], cluster2[int]) -> float:
+     numerator = sum(dist_mat[i][j] for i, j in zip(cluster1, cluster2))
+     denominator = len(cluster1) * len(cluster2)
+     return numerator / denominator
+   ```
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
+   TODO: CONTINUE OT FILL ME IN..
+
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
