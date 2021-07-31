@@ -11063,6 +11063,81 @@ graph_show
 
    The algorithm as a formula: `{kt} \sum_{i=0}^{n}{(r_i - p_i)^2}`
 
+ * `{bm} speciation` - The evolutionary process by which a species splits into distinct child species.
+
+   In phylogenetic trees, internal nodes are assumed to be speciation events. That is, an internal node is assumed to be evolutionary event where that ancestral species represented by that node split into distinct child species).
+
+ * `{bm} unrooted binary tree` - In the context of phylogeny, an unrooted binary tree is a simple tree where internal nodes must have a degree_GRAPH of 3...
+
+   ```{svgbob}
+                        2    
+                       /     
+   0      1           e -- 3 
+    \     |          /       
+     a -- b -- c -- d        
+    /          |     \       
+   4           5      6      
+                             
+   * "Letter are internal nodes"
+   * "Numbers are leaf nodes"
+   ```
+
+   In other words, an edge leading to an internal node is guaranteed to branch _exactly_ twice.
+
+   ```{svgbob}
+      YES           NO           NO
+
+          1            1
+         /            /
+   0 -- a       0 -- a -- 3     0 -- 1 
+         \            \
+          2            2
+                             
+   * "Letter are internal nodes"
+   * "Numbers are leaf nodes"
+   ```
+
+   Contrast that to normal simple trees where internal nodes can have any degree_GRAPH greater than 2...
+
+   ```{svgbob}
+   0   1
+    \ /
+     a -- 2 
+    / \
+   4   3
+                             
+   * "Letter are internal nodes"
+   * "Numbers are leaf nodes"
+   ```
+
+   ```{note}
+   Recall that simple trees are unrooted to begin with and can't have nodes with degree_GRAPH 2 (non-branching train of edges not allowed).
+   ```
+
+ * `{bm} rooted binary tree` - In the context of phylogeny, a rooted binary tree is an unrooted binary tree with a root node injected in between one of its edges. The injected root node will always end up as an internal node of degree_GRAPH of 2, breaking the constraint of ...
+
+   * unrooted binary trees that states internal nodes must have degree_GRAPH of exactly 3.
+   * simple trees that states internal nodes must have degree_GRAPH of greater than 2.
+
+   ```{svgbob}
+                                                                          *
+                                                                         / \ 
+                                                                        /   \
+                        2                                              /     \
+                       /                                              a       b
+   0      1           e -- 3                                         / \     / \
+    \     |          /             "INJECT ROOT BETWEEN (a,b)"      0   4   1   c
+     a -- b -- c -- d                                                          / \ 
+    /          |     \                                                        5   d
+   4           5      6                                                          / \
+                                                                                6   e
+                                                                                   / \ 
+                                                                                  2   3 
+
+   * "Letter are internal nodes"
+   * "Numbers are leaf nodes"
+   ```
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
