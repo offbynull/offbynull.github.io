@@ -1,14 +1,13 @@
 from enum import Enum
+from io import BytesIO
 from itertools import product
-
-from graph import UndirectedGraph
+from tkinter import Label, BOTH
+from tkinter.ttk import Frame
 
 import pydotplus as pydot
 from PIL import Image, ImageTk
-from tkinter import Tk, Label, BOTH
-from tkinter.ttk import Frame, Style
-from io import BytesIO
 
+from graph import UndirectedGraph
 from helpers.Utils import slide_window
 
 

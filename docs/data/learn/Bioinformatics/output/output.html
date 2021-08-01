@@ -13463,7 +13463,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p><img src="svgbob_0a00812697b072d3bddacafad00662499cf938f6.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean</strong> - A clustering heuristic used for constructing an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. The algorithm works by iteratively building larger and larger clusters, where the minimum distance between clusters defines how the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> The <a href="#BM_(tree)%2Fi">tree</a> constructed might not fit the corresponding <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> exactly (it's an estimate).</p>
+<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean</strong> - A clustering heuristic used for building an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. The algorithm works by iteratively building larger and larger clusters of leaf nodes, where the minimum distance between clusters defines how the edges are placed.</p>
 <p>Distances between two clusters of leaf nodes are measured as follows...</p>
 <p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><msub><mi>C</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow></munder><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></munder><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">D_{C_1,C_2} = \frac{
 \sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
@@ -13479,11 +13479,29 @@ walk_weight = <span class="hljs-number">0</span>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|C_1|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span> - Number of leaf nodes in cluster 1</li>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|C_2|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span> - Number of leaf nodes in cluster 2</li>
 </ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cluster_dist</span>(<span class="hljs-params">dist_mat: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">float</span>]], cluster1: <span class="hljs-built_in">set</span>[<span class="hljs-built_in">int</span>], cluster2[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">float</span>:</span>
-  numerator = <span class="hljs-built_in">sum</span>(dist_mat[i][j] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(cluster1, cluster2))
-  denominator = <span class="hljs-built_in">len</span>(cluster1) * <span class="hljs-built_in">len</span>(cluster2)
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cluster_dist</span>(<span class="hljs-params">orig_dist_mat: DistanceMatrix, clusters: ClusterSet, c1: <span class="hljs-built_in">int</span>, c2: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">float</span>:</span>
+  c1_set = clusters[c1]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
+  c2_set = clusters[c2]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
+  numerator = <span class="hljs-built_in">sum</span>(orig_dist_mat[i, j] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> product(c1_set, c2_set))  <span class="hljs-comment"># sum it all up</span>
+  denominator = <span class="hljs-built_in">len</span>(c1_set) * <span class="hljs-built_in">len</span>(c2_set)  <span class="hljs-comment"># number of additions that occurred</span>
   <span class="hljs-keyword">return</span> numerator / denominator
 </code></pre>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
+<p>TODO: CONTINUE OT FILL ME IN..</p>
 </li>
 </ul>
 <p>

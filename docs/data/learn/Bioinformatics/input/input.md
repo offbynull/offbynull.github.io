@@ -11201,9 +11201,11 @@ graph_show
    * `{kt} |C_2|` - Number of leaf nodes in cluster 2
 
    ```python
-   def cluster_dist(dist_mat: list[list[float]], cluster1: set[int], cluster2[int]) -> float:
-     numerator = sum(dist_mat[i][j] for i, j in zip(cluster1, cluster2))
-     denominator = len(cluster1) * len(cluster2)
+   def cluster_dist(orig_dist_mat: DistanceMatrix, clusters: ClusterSet, c1: int, c2: int) -> float:
+     c1_set = clusters[c1]  # this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix
+     c2_set = clusters[c2]  # this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix
+     numerator = sum(orig_dist_mat[i, j] for i, j in product(c1_set, c2_set))  # sum it all up
+     denominator = len(c1_set) * len(c2_set)  # number of additions that occurred
      return numerator / denominator
    ```
 
