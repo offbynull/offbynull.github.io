@@ -13440,7 +13440,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p><img src="svgbob_17ac9bddd64ed68c7e7e56c709f3a2967622a61a.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are unrooted to begin with and can't have nodes with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (non-branching train of edges not allowed).</p>
+<p>Recall that <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are unrooted to begin with and can't have nodes with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (train of non-branching edges not allowed).</p>
 </div>
 </li>
 <li>
@@ -13452,56 +13452,208 @@ walk_weight = <span class="hljs-number">0</span>
 <p><img src="svgbob_9fe6d9301400b1bc3c8689dfb1b50be14722ebbd.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(ultrametric%20tree%7Cultrametric)%2Fi"></a><strong>ultrametric tree</strong> - A <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a> predicated on the idea that the rate of mutation is the same across all species. Since the rate of mutation is the same, a set of present day species (leaf nodes) will have the same amount of mutation (distance) between their shared ancestor (internal node).</p>
-<p><img src="svgbob_7a74f5cd29c6091a0c271a376d3f0c9a4db79fa9.svg" alt="Kroki diagram output"></p>
+<p><a name="BM_(ultrametric%20tree%7Cultrametric)%2Fi"></a><strong>ultrametric tree</strong> - A rooted <a href="#BM_(tree)%2Fi">tree</a> where all leaf nodes are equidistant from the root.</p>
+<p><img src="svgbob_10fa2bf98dc55b5346b2ebb7f45c2e56a81730fe.svg" alt="Kroki diagram output"></p>
+<p>In the example above, all leaf nodes are a distance of 4 from the root.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Does an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> have to be a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>? I think the answer is no: <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> generated <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>s, but <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>s in general don't have to be binary.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean</strong> - A clustering heuristic used for building a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> (<a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>) from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In this case, building an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is predicated on the idea that the rate of mutation is the same across all species. Since the rate of mutation is the same, a set of present day species (leaf nodes) will have the same amount of mutation (distance) between their shared ancestor (internal node).</p>
+<p><img src="svgbob_2b1fe11971a026e99ad93672671ee7e54092b420.svg" alt="Kroki diagram output"></p>
 <p>In other words, the weights of an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> represents the "molecular age" across present day species and their ancestors:</p>
 <ul>
 <li>Leaf nodes are present day species, meaning that their age is 0.</li>
-<li>Leaf nodes that diverged from the same parent did so at the same time, meaning their age relative to that parent is the same.</li>
-<li>Internal nodes that diverged from the same parent MAY or MAY NOT have done so at the same time (there isn't enough information to know for certain), meaning their age relative to the parent can be different.</li>
+<li>Leaf nodes that share an ancestor all have the same age to that ancestor.</li>
 </ul>
-<p><img src="svgbob_0a00812697b072d3bddacafad00662499cf938f6.svg" alt="Kroki diagram output"></p>
-</li>
-<li>
-<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean</strong> - A clustering heuristic used for building an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. The algorithm works by iteratively building larger and larger clusters of leaf nodes, where the minimum distance between clusters defines how the edges are placed.</p>
-<p>Distances between two clusters of leaf nodes are measured as follows...</p>
+<p><img src="svgbob_0ed49e1a40ee96793b85ebc459927b3ad3b79107.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Confused about the second point? Think of it like this, species m splits into species a and b. That split happened at the same time, meaning a and b always have the same age difference when compared against their parent m (e.g. m is always 30 years older)...</p>
+<p><img src="svgbob_8c7e2e83a2357c46be7ed19e38e8cb6eb516fe43.svg" alt="Kroki diagram output"></p>
+<p>Likewise, think of what happens if m and its sibling n had split off from g. Unlike m, its sibling n never split, meaning that a, b, and n (all leaf nodes) all have the same age difference when compared against their shared ancestor g (e.g. g is always 70 years older)...</p>
+<p><img src="svgbob_b137a75a53eab3f9f82245ac89b64a00e7d2038f.svg" alt="Kroki diagram output"></p>
+<p>In other words, you can think of "age" more so as an "age offset" from leaf nodes rather than the age of the species.</p>
+</div>
+<p>Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, the <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> algorithm estimates a <a href="#BM_(tree)%2Fi">tree</a> for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The iteration stops once only the root node is left.</p>
+<p><img src="svgbob_3d816b9d61032209afd8294044f1caf010c46928.svg" alt="Kroki diagram output"></p>
+<p>Which nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Ca={a}</th>
+<th>Cb={b}</th>
+<th>Cc={c}</th>
+<th>Cd={d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ca={a}</td>
+<td>0</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Cb={b}</td>
+<td>3</td>
+<td>0</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Cc={c}</td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Cd={d}</td>
+<td>3</td>
+<td>5</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The two clusters with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc={c} and Cd={d} (distance of 2), meaning that Cc={c} and Cd={d} should be <a href="#BM_(connected)%2Fi">connected</a> together with a shared parent in between (internal node). Since the organisms representing these leaf nodes branched off from their ancestor at the same time, each organism is equally younger than the parent: age(parent) = dist(Cc={c}, Cd={d}) / 2 = 2 / 2 = 1.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
+<p>The distance down to each leaf node of that shared parent must be equidistant.</p>
+<ul>
+<li>edge(e,c) = age(e) - age(c) = 1 - 0 = 1</li>
+<li>edge(e,d) = age(e) - age(d) = 1 - 0 = 1</li>
+</ul>
+<p><img src="svgbob_edad5376d12c390fdc4fd4ceb13e5185042651f6.svg" alt="Kroki diagram output"></p>
+<p>The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> then gets modified by merging together the recently <a href="#BM_(connected)%2Fi">connected</a> clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances for that cluster are computed using the formula...</p>
 <p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><msub><mi>C</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow></munder><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></munder><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">D_{C_1,C_2} = \frac{
 \sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
 }{
 |C_1| \cdot |C_2|
 }
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mpunct mtight">,</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.511818em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.575818em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.825818em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.39981em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<ul>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">i \in C_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69862em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> - Leaf nodes in cluster 1.</li>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">j \in C_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> - Leaf nodes in cluster 2.</li>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">D_{i,j}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> - Distance between leaf nodes i and j.</li>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow></msub><msub><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></msub><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sum_{i \in C_1}\sum_{j \in C_2}D_{i,j}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.185818em;vertical-align:-0.43581800000000004em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.39981em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> - Sum of distances between cluster 1's leaf nodes and cluster 2's leaf nodes.</li>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|C_1|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span> - Number of leaf nodes in cluster 1</li>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|C_2|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span> - Number of leaf nodes in cluster 2</li>
-</ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cluster_dist</span>(<span class="hljs-params">orig_dist_mat: DistanceMatrix, clusters: ClusterSet, c1: <span class="hljs-built_in">int</span>, c2: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">float</span>:</span>
+<pre class="hljs"><code><span class="hljs-comment"># code representation of formula above -- the formula essentially averages the distances the between the</span>
+<span class="hljs-comment"># leaf nodes of two clusters.</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cluster_dist</span>(<span class="hljs-params">orig_dist_mat: DistanceMatrix, clusters: ClusterSet, c1: <span class="hljs-built_in">int</span>, c2: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">float</span>:</span>
   c1_set = clusters[c1]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
   c2_set = clusters[c2]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
   numerator = <span class="hljs-built_in">sum</span>(orig_dist_mat[i, j] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> product(c1_set, c2_set))  <span class="hljs-comment"># sum it all up</span>
   denominator = <span class="hljs-built_in">len</span>(c1_set) * <span class="hljs-built_in">len</span>(c2_set)  <span class="hljs-comment"># number of additions that occurred</span>
   <span class="hljs-keyword">return</span> numerator / denominator
 </code></pre>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
-<p>TODO: CONTINUE OT FILL ME IN..</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Ca={a}</th>
+<th>Cb={b}</th>
+<th>Ce={c,d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ca={a}</td>
+<td>0</td>
+<td>3</td>
+<td>3.5</td>
+</tr>
+<tr>
+<td>Cb={b}</td>
+<td>3</td>
+<td>0</td>
+<td>7.5</td>
+</tr>
+<tr>
+<td>Ce={c,d}</td>
+<td>3.5</td>
+<td>7.5</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>This process repeats at each iteration until a single cluster remains. At the next iteration, Ca={a} and Cb={b} have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 3), meaning that Ca={a} and Cb={b} should be <a href="#BM_(connected)%2Fi">connected</a> together with a shared parent in between (internal node) where age(parent) = dist(Cc={a}, Cd={b}) / 2 = 3 / 2 = 1.5.</p>
+<p>The distance down to each leaf node of that shared parent must be equidistant.</p>
+<ul>
+<li>edge(f,a) = age(f) - age(b) = 1.5 - 0 = 1.5</li>
+<li>edge(f,b) = age(f) - age(b) = 1.5 - 0 = 1.5</li>
+</ul>
+<p><img src="svgbob_26f9a0eff6275595d58ab1d21d132eea3dcd8884.svg" alt="Kroki diagram output"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cf={a,b}</th>
+<th>Ce={c,d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cf={a,b}</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Ce={c,d}</td>
+<td>4</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>At the next iteration, Ce={a,b} and Cf={c,d} have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 4), meaning that Ce={a,b} and Cf={c,d} should be <a href="#BM_(connected)%2Fi">connected</a> together with a shared parent in between(internal node) where age(parent) = dist(Cc={f}, Cd={e}) / 2 = 4 / 2 = 2.</p>
+<p>The distance down to each leaf node of that shared parent must be equidistant.</p>
+<ul>
+<li>edge(g,f) = age(g) - age(f) = 2 - 1.5 = 0.5</li>
+<li>edge(g,e) = age(g) - age(e) = 2 - 1 = 1</li>
+</ul>
+<p><img src="svgbob_6fd871350c8ca1591855970ed8adce9a06fa7ce7.svg" alt="Kroki diagram output"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cg={a,b,c,d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cg={a,b,c,d}</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The process is complete. There's only a single cluster left / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
+<p><img src="svgbob_548aaadcfa02dfab0391d4e7ec177b4b2ae7394e.svg" alt="Kroki diagram output"></p>
+<p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a rooted <a href="#BM_(tree)%2Fi">tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is for (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
+<p>In addition, some distances in  the generated <a href="#BM_(tree)%2Fi">tree</a> are wildly off from the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. For example, ...</p>
+<ul>
+<li>dist(a,d)=8 in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</li>
+<li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
+</ul>
+<p>Part of this may have to do with the assumption this algorithm makes that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(tree)%2Fi">tree</a>.</p>
 </li>
 </ul>
 <p>
