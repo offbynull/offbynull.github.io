@@ -11065,7 +11065,7 @@ graph_show
 
  * `{bm} speciation` - The evolutionary process by which a species splits into distinct child species.
 
-   In phylogenetic trees, internal nodes are assumed to be speciation events. That is, an internal node is assumed to be evolutionary event where that ancestral species represented by that node split into distinct child species).
+   In phylogenetic trees, internal nodes branching are assumed to be speciation events. That is, an event where the ancestral species represented by that node splits into distinct child species.
 
  * `{bm} unrooted binary tree` - In the context of phylogeny, an unrooted binary tree is a simple tree where internal nodes must have a degree_GRAPH of 3...
 
@@ -11158,10 +11158,14 @@ graph_show
    In the example above, all leaf nodes are a distance of 4 from the root.
 
    ```{note}
-   Does an ultrametric tree have to be a rooted binary tree? I think the answer is no: UPGMA generated rooted binary trees, but ultrametric trees in general don't have to be binary.
+   Does an ultrametric tree have to be a rooted binary tree? I think the answer is no: UPGMA generated rooted binary trees, but ultrametric trees in general just have to be rooted trees / they don't have to be binary.
    ```
 
- * `{bm} unweighted pair group method with arithmetic mean/(unweighted pair group method with arithmetic mean|UPGMA)/i` - A clustering heuristic used for building a binary ultrametric tree (rooted binary tree) from a distance matrix. In this case, building an ultrametric tree is predicated on the idea that the rate of mutation is the same across all species. Since the rate of mutation is the same, a set of present day species (leaf nodes) will have the same amount of mutation (distance) between their shared ancestor (internal node).
+ * `{bm} molecular clock` - The assumption that the rate of mutation is more-or-less steady across all organisms. This assumption is used for some phylogeny algorithms (e.g. UPGMA).
+
+ * `{bm} unweighted pair group method with arithmetic mean (UPGMA)/(unweighted pair group method with arithmetic mean|UPGMA)/i` - A clustering heuristic used for building a binary ultrametric tree (rooted binary tree) from a distance matrix.
+ 
+   The heuristic assumes that the rate of mutation is steady (molecular clock). As such, a set of present day species (leaf nodes) should always have the same amount of mutation (distance) from a shared ancestor (shared internal node).
 
    ```{svgbob}
                g
@@ -11177,65 +11181,41 @@ graph_show
      /       \       /   \ 
     a         b     c     d
 
-   * "d and e share ancestor b:   dist(b,d) = dist(b,e)"
-   * "f and g share ancestor c:   dist(c,f) = dist(c,g)"
-   * "d, e, f, and g share ancestor a:   dist(a,d) = dist(a,e) = dist(a,f) = dist(a,g)"
+   * "a and b share ancestor f:   dist(a,f) = dist(b,f)"
+   * "c and d share ancestor e:   dist(c,e) = dist(d,e)"
+   * "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g)"
    ```
-   
-   In other words, the weights of an ultrametric tree represents the "molecular age" across present day species and their ancestors:
-   
-   * Leaf nodes are present day species, meaning that their age is 0.
-   * Leaf nodes that share an ancestor all have the same age to that ancestor.
+
+   In the example above, ...
+
+   * present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5
+   * present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1
+   * present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4
+   * present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4
+   * etc..
+
+   The weight of each...
+
+    * edge is the amount of mutation underwent between two species.
+    * node is the amount of mutation underwent between that species and one of its present day children.
 
    ```{svgbob}
-                      g (age=4)
+                      g (mut=4)
                      / \
                     /   \
                2.5 /     \
                   /       \ 3
                  /         \
-      (age=1.5) f           \
+      (mut=1.5) f           \
                / \           \
-          1.5 /   \ 1.5       e (age=1)
+          1.5 /   \ 1.5       e (mut=1)
              /     \       1 / \ 1
             /       \       /   \ 
-   (age=0) a         b     c     d (age=0)
-                (age=0)   (age=0)
+   (mut=0) a         b     c     d (mut=0)
+                (mut=0)   (mut=0)
    ```
-
-   ````{note}
-   Confused about the second point? Think of it like this, species m splits into species a and b. That split happened at the same time, meaning a and b always have the same age difference when compared against their parent m (e.g. m is always 30 years older)...
-
-   ```{svgbob}
-       (age=30) m      
-               / \     
-           30 /   \ 30
-             /     \   
-            /       \  
-   (age=0) a         b (age=0)
-   ```
-
-   Likewise, think of what happens if m and its sibling n had split off from g. Unlike m, its sibling n never split, meaning that a, b, and n (all leaf nodes) all have the same age difference when compared against their shared ancestor g (e.g. g is always 70 years older)...
-
-   ```{svgbob}
-                      g (age=70)
-                     / \
-                    /   \
-                40 /     \
-                  /       \
-                 /         \ 70
-       (age=30) m           \
-               / \           \
-           30 /   \ 30        \
-             /     \           \
-            /       \           \
-   (age=0) a         b (age=0)   n (age=0)
-   ```
-
-   In other words, you can think of "age" more so as an "age offset" from leaf nodes rather than the age of the species.
-   ````
  
-   Given a distance matrix, the UPGMA algorithm estimates a tree for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The iteration stops once only the root node is left.
+   Given a distance matrix, the UPGMA algorithm estimates an ultrametric tree for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).
 
    ```{svgbob}
                                                                                                              g           
@@ -11255,7 +11235,7 @@ graph_show
      "(no connections)"              "(connect c, d)"                "(connect a, b)"                     "(connect e, f)"
    ```
    
-   Which nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the distance matrix is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.
+   Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the distance matrix is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.
 
    |        | Ca={a} | Cb={b} | Cc={c} | Cd={d} |
    |--------|--------|--------|--------|--------|
@@ -11264,66 +11244,27 @@ graph_show
    | Cc={c} |   4    |   4    |   0    |   2    |
    | Cd={d} |   3    |   5    |   2    |   0    |
 
-   The two clusters with the minimum distance are chosen to connect in the tree. In the example distance matrix above, the minimum distance is between Cc={c} and Cd={d} (distance of 2), meaning that Cc={c} and Cd={d} should be connected together with a shared parent in between (internal node). Since the organisms representing these leaf nodes branched off from their ancestor at the same time, each organism is equally younger than the parent: age(parent) = dist(Cc={c}, Cd={d}) / 2 = 2 / 2 = 1.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.
-
-   
-   
-   The distance down to each leaf node of that shared parent must be equidistant.
-
-   * edge(e,c) = age(e) - age(c) = 1 - 0 = 1 
-   * edge(e,d) = age(e) - age(d) = 1 - 0 = 1
+   The two clusters with the minimum distance are chosen to connect in the tree. In the example distance matrix above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be connected together with a new internal node.
 
    ```{svgbob}
-                                                                                                         
-                                                                                                             e (age=1)   
+      e
+     / \
+    /   \
+   c     d
+   ```
+   
+   This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:
+
+   * mut(Ce) = dist(Cc, Cd) / 2 = 2 / 2 = 1
+   * dist(Ce, Cc) = mut(Ce) - mut(Cc) = 1 - 0 = 1
+   * dist(Ce, Cd) = mut(Ce) - mut(Cd) = 1 - 0 = 1
+
+   ```{svgbob}
+                                                                                                             e (mut=1)   
                                                                                                           1 / \ 1        
                                                         "(connect c, d)"                                   /   \         
-   (age=0) a        b        c        d (age=0)         ------------>           (age=0) a        b        c     d (age=0)
-              (age=0)        (age=0)                                                       (age=0)        (age=0)        
+   (mut=0) a        b        c        d (mut=0)         ------------>           (mut=0) a        b        c     d (mut=0)
+              (mut=0)        (mut=0)                                                       (mut=0)        (mut=0)        
    ```
 
    The distance matrix then gets modified by merging together the recently connected clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new distance matrix distances for that cluster are computed using the formula...
@@ -11353,21 +11294,20 @@ graph_show
    | Cb={b}   |   3    |   0    |    7.5   |
    | Ce={c,d} |  3.5   |  7.5   |     0    |
 
-   This process repeats at each iteration until a single cluster remains. At the next iteration, Ca={a} and Cb={b} have the minimum distance in the previous distance matrix (distance of 3), meaning that Ca={a} and Cb={b} should be connected together with a shared parent in between (internal node) where age(parent) = dist(Cc={a}, Cd={b}) / 2 = 3 / 2 = 1.5.
-
-   The distance down to each leaf node of that shared parent must be equidistant.
-
-   * edge(f,a) = age(f) - age(b) = 1.5 - 0 = 1.5
-   * edge(f,b) = age(f) - age(b) = 1.5 - 0 = 1.5
+   This process repeats at each iteration until a single cluster remains. At the next iteration, Ca and Cb have the minimum distance in the previous distance matrix (distance of 3), meaning that Ca and Cb should be connected with a new internal internal node:
+   
+   * mut(Cf) = dist(Ca, Cb) / 2 = 3 / 2 = 1.5
+   * dist(Cf, Ca) = mut(Cf) - mut(Ca) = 1.5 - 0 = 1.5
+   * dist(Cf, Cb) = mut(Cf) - mut(Cb) = 1.5 - 0 = 1.5
 
    ```{svgbob}
-                                                                                 (age=1.5) f                   
+                                                                                 (mut=1.5) f                   
                                                                                           / \                           
-                                e (age=1)                                            1.5 /   \ 1.5          e (age=1)   
+                                e (mut=1)                                            1.5 /   \ 1.5          e (mut=1)   
                              1 / \ 1                                                    /     \          1 / \ 1        
                               /   \                  "(connect a, b)"                  /       \          /   \         
-   (age=0) a        b        c     d (age=0)         ------------>           (age=0)  a         b        c     d (age=0)
-              (age=0)        (age=0)                                                       (age=0)      (age=0)         
+   (mut=0) a        b        c     d (mut=0)         ------------>           (mut=0)  a         b        c     d (mut=0)
+              (mut=0)        (mut=0)                                                       (mut=0)      (mut=0)         
    ```
 
    |          | Cf={a,b} | Ce={c,d} |
@@ -11375,59 +11315,58 @@ graph_show
    | Cf={a,b} |     0    |     4    |
    | Ce={c,d} |     4    |     0    |
 
-   At the next iteration, Ce={a,b} and Cf={c,d} have the minimum distance in the previous distance matrix (distance of 4), meaning that Ce={a,b} and Cf={c,d} should be connected together with a shared parent in between(internal node) where age(parent) = dist(Cc={f}, Cd={e}) / 2 = 4 / 2 = 2.
-
-   The distance down to each leaf node of that shared parent must be equidistant.
-
-   * edge(g,f) = age(g) - age(f) = 2 - 1.5 = 0.5
-   * edge(g,e) = age(g) - age(e) = 2 - 1 = 1
+   At the next iteration, Ce and Cf have the minimum distance in the previous distance matrix (distance of 4), meaning that Ce and Cf should be connected together with a new internal node:
+   
+   * mut(Cg) = dist(Cf, Ce) / 2 = 4 / 2 = 2
+   * dist(Cg, Cf) = mut(Cg) - mut(Cf) = 2 - 1.5 = 0.5
+   * dist(Cg, Ce) = mut(Cg) - mut(Ce) = 2 - 1 = 1
 
    ```{svgbob}
-                                                                                                   g (age=2)
+                                                                                                   g (mut=2)
                                                                                                   / \
                                                                                                  /   \
                                                                                             0.5 /     \ 1
                                                                                                /       \
                                                                                               /         \
-                 f (age=1.5)                                                       (age=1.5) f           \             
+                 f (mut=1.5)                                                       (mut=1.5) f           \             
                 / \                                                                         / \           \            
-           1.5 /   \ 1.5          e (age=1)                                            1.5 /   \ 1.5       e (age=1)   
+           1.5 /   \ 1.5          e (mut=1)                                            1.5 /   \ 1.5       e (mut=1)   
               /     \          1 / \ 1                                                    /     \       1 / \ 1        
              /       \          /   \                  "(connect e, f)"                  /       \       /   \         
-   (age=0)  a         b        c     d (age=0)         ------------>           (age=0)  a         b     c     d (age=0)
-                 (age=0)      (age=0)                                                        (age=0)   (age=0)         
+   (mut=0)  a         b        c     d (mut=0)         ------------>           (mut=0)  a         b     c     d (mut=0)
+                 (mut=0)      (mut=0)                                                        (mut=0)   (mut=0)         
    ```
 
    |              | Cg={a,b,c,d} |
    |--------------|--------------|
    | Cg={a,b,c,d} |       0      |
    
-   The process is complete. There's only a single cluster left / the ultrametric tree is fully generated.
+   The process is complete. Only a single cluster remains (representing the root) / the ultrametric tree is fully generated.
 
    ```{svgbob}
-                       g (age=2)
+                       g (mut=2)
                       / \
                      /   \
                 0.5 /     \ 1
                    /       \
                   /         \
-       (age=1.5) f           \             
+       (mut=1.5) f           \             
                 / \           \            
-           1.5 /   \ 1.5       e (age=1)   
+           1.5 /   \ 1.5       e (mut=1)   
               /     \       1 / \ 1        
              /       \       /   \         
-   (age=0)  a         b     c     d (age=0)
-                 (age=0)   (age=0)         
+   (mut=0)  a         b     c     d (mut=0)
+                 (mut=0)   (mut=0)         
    ```
 
-   Note that the generated ultrametric tree above is an estimation. The example distance matrix above isn't an additive distance matrix, meaning a simple tree doesn't exist for it. Even if it were an additive distance matrix, an ultrametric tree is a rooted tree, meaning it'll never qualify as the simple tree that the additive distance matrix is for (root node has degree_GRAPH of 2 which isn't allowed in a simple tree).
+   Note that the generated ultrametric tree above is an estimation. The distance matrix for the example above isn't an additive distance matrix, meaning a unique simple tree doesn't exist for it. Even if it were an additive distance matrix, an ultrametric tree is a rooted tree, meaning it'll never qualify as the simple tree unique to that additive distance matrix (root node has degree_GRAPH of 2 which isn't allowed in a simple tree).
    
-   In addition, some distances in  the generated tree are wildly off from the original distance matrix distance matrix. For example, ...
+   In addition, some distances in the generated ultrametric tree are wildly off from the original distance matrix distances. For example, ...
 
    * dist(a,d)=8 in the generated ultrametric tree.
    * dist(a,d)=5 in the original distance matrix.
 
-   Part of this may have to do with the assumption this algorithm makes that the closest two nodes in the distance matrix are neighbors in the tree.
+   Part of this may have to do with the assumption this algorithm makes that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
 
 
 `{bm-ignore} \b(read)_NORM/i`

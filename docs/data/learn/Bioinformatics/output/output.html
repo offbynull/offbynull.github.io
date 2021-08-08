@@ -13429,7 +13429,7 @@ walk_weight = <span class="hljs-number">0</span>
 </li>
 <li>
 <p><a name="BM_(speciation)%2Fi"></a><strong>speciation</strong> - The evolutionary process by which a species splits into distinct child species.</p>
-<p>In <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, internal nodes are assumed to be <a href="#BM_(speciation)%2Fi">speciation</a> events. That is, an internal node is assumed to be evolutionary event where that ancestral species represented by that node split into distinct child species).</p>
+<p>In <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, internal nodes branching are assumed to be <a href="#BM_(speciation)%2Fi">speciation</a> events. That is, an event where the ancestral species represented by that node splits into distinct child species.</p>
 </li>
 <li>
 <p><a name="BM_(unrooted%20binary%20tree)%2Fi"></a><strong>unrooted binary tree</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a>, an <a href="#BM_(unrooted%20binary%20tree)%2Fi">unrooted binary tree</a> is a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> where internal nodes must have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 3...</p>
@@ -13457,29 +13457,33 @@ walk_weight = <span class="hljs-number">0</span>
 <p>In the example above, all leaf nodes are a distance of 4 from the root.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Does an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> have to be a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>? I think the answer is no: <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> generated <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>s, but <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>s in general don't have to be binary.</p>
+<p>Does an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> have to be a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>? I think the answer is no: <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> generated <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>s, but <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>s in general just have to be rooted <a href="#BM_(tree)%2Fi">tree</a>s / they don't have to be binary.</p>
 </div>
 </li>
 <li>
-<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean</strong> - A clustering heuristic used for building a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> (<a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>) from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In this case, building an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is predicated on the idea that the rate of mutation is the same across all species. Since the rate of mutation is the same, a set of present day species (leaf nodes) will have the same amount of mutation (distance) between their shared ancestor (internal node).</p>
-<p><img src="svgbob_2b1fe11971a026e99ad93672671ee7e54092b420.svg" alt="Kroki diagram output"></p>
-<p>In other words, the weights of an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> represents the "molecular age" across present day species and their ancestors:</p>
+<p><a name="BM_(molecular%20clock)%2Fi"></a><strong>molecular clock</strong> - The assumption that the rate of mutation is more-or-less steady across all organisms. This assumption is used for some <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a> algorithms (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>).</p>
+</li>
+<li>
+<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean (UPGMA)</strong> - A clustering heuristic used for building a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> (<a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>) from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
+<p>The heuristic assumes that the rate of mutation is steady (<a href="#BM_(molecular%20clock)%2Fi">molecular clock</a>). As such, a set of present day species (leaf nodes) should always have the same amount of mutation (distance) from a shared ancestor (shared internal node).</p>
+<p><img src="svgbob_be74276e6e04294093e2e2787315db7d429b3d65.svg" alt="Kroki diagram output"></p>
+<p>In the example above, ...</p>
 <ul>
-<li>Leaf nodes are present day species, meaning that their age is 0.</li>
-<li>Leaf nodes that share an ancestor all have the same age to that ancestor.</li>
+<li>present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5</li>
+<li>present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1</li>
+<li>present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4</li>
+<li>present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4</li>
+<li>etc..</li>
 </ul>
-<p><img src="svgbob_0ed49e1a40ee96793b85ebc459927b3ad3b79107.svg" alt="Kroki diagram output"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Confused about the second point? Think of it like this, species m splits into species a and b. That split happened at the same time, meaning a and b always have the same age difference when compared against their parent m (e.g. m is always 30 years older)...</p>
-<p><img src="svgbob_8c7e2e83a2357c46be7ed19e38e8cb6eb516fe43.svg" alt="Kroki diagram output"></p>
-<p>Likewise, think of what happens if m and its sibling n had split off from g. Unlike m, its sibling n never split, meaning that a, b, and n (all leaf nodes) all have the same age difference when compared against their shared ancestor g (e.g. g is always 70 years older)...</p>
-<p><img src="svgbob_b137a75a53eab3f9f82245ac89b64a00e7d2038f.svg" alt="Kroki diagram output"></p>
-<p>In other words, you can think of "age" more so as an "age offset" from leaf nodes rather than the age of the species.</p>
-</div>
-<p>Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, the <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> algorithm estimates a <a href="#BM_(tree)%2Fi">tree</a> for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The iteration stops once only the root node is left.</p>
+<p>The weight of each...</p>
+<ul>
+<li>edge is the amount of mutation underwent between two species.</li>
+<li>node is the amount of mutation underwent between that species and one of its present day children.</li>
+</ul>
+<p><img src="svgbob_a6ac9d56fda6d8c4d1177d7915eb2d5cf8eda283.svg" alt="Kroki diagram output"></p>
+<p>Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, the <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> algorithm estimates an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).</p>
 <p><img src="svgbob_3d816b9d61032209afd8294044f1caf010c46928.svg" alt="Kroki diagram output"></p>
-<p>Which nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
+<p>Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
 <table>
 <thead>
 <tr>
@@ -13521,35 +13525,15 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p>The two clusters with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc={c} and Cd={d} (distance of 2), meaning that Cc={c} and Cd={d} should be <a href="#BM_(connected)%2Fi">connected</a> together with a shared parent in between (internal node). Since the organisms representing these leaf nodes branched off from their ancestor at the same time, each organism is equally younger than the parent: age(parent) = dist(Cc={c}, Cd={d}) / 2 = 2 / 2 = 1.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>THE PART ABOVE STILL DOESNT MAKE SENSE. FIX IT TOMMOROW.</p>
-<p>The distance down to each leaf node of that shared parent must be equidistant.</p>
+<p>The two clusters with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node.</p>
+<p><img src="svgbob_33e1b85dbaff91ad5a6f7d584fbcd812e2c84362.svg" alt="Kroki diagram output"></p>
+<p>This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:</p>
 <ul>
-<li>edge(e,c) = age(e) - age(c) = 1 - 0 = 1</li>
-<li>edge(e,d) = age(e) - age(d) = 1 - 0 = 1</li>
+<li>mut(Ce) = dist(Cc, Cd) / 2 = 2 / 2 = 1</li>
+<li>dist(Ce, Cc) = mut(Ce) - mut(Cc) = 1 - 0 = 1</li>
+<li>dist(Ce, Cd) = mut(Ce) - mut(Cd) = 1 - 0 = 1</li>
 </ul>
-<p><img src="svgbob_edad5376d12c390fdc4fd4ceb13e5185042651f6.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_43abd429f61152576f3c8e328872adaa265aa9d1.svg" alt="Kroki diagram output"></p>
 <p>The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> then gets modified by merging together the recently <a href="#BM_(connected)%2Fi">connected</a> clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances for that cluster are computed using the formula...</p>
 <p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><msub><mi>C</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow></munder><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></munder><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">D_{C_1,C_2} = \frac{
 \sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
@@ -13596,13 +13580,13 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p>This process repeats at each iteration until a single cluster remains. At the next iteration, Ca={a} and Cb={b} have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 3), meaning that Ca={a} and Cb={b} should be <a href="#BM_(connected)%2Fi">connected</a> together with a shared parent in between (internal node) where age(parent) = dist(Cc={a}, Cd={b}) / 2 = 3 / 2 = 1.5.</p>
-<p>The distance down to each leaf node of that shared parent must be equidistant.</p>
+<p>This process repeats at each iteration until a single cluster remains. At the next iteration, Ca and Cb have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 3), meaning that Ca and Cb should be <a href="#BM_(connected)%2Fi">connected</a> with a new internal internal node:</p>
 <ul>
-<li>edge(f,a) = age(f) - age(b) = 1.5 - 0 = 1.5</li>
-<li>edge(f,b) = age(f) - age(b) = 1.5 - 0 = 1.5</li>
+<li>mut(Cf) = dist(Ca, Cb) / 2 = 3 / 2 = 1.5</li>
+<li>dist(Cf, Ca) = mut(Cf) - mut(Ca) = 1.5 - 0 = 1.5</li>
+<li>dist(Cf, Cb) = mut(Cf) - mut(Cb) = 1.5 - 0 = 1.5</li>
 </ul>
-<p><img src="svgbob_26f9a0eff6275595d58ab1d21d132eea3dcd8884.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_962e2ba14c7994a6bd258ad28c99dfca555738f5.svg" alt="Kroki diagram output"></p>
 <table>
 <thead>
 <tr>
@@ -13624,13 +13608,13 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p>At the next iteration, Ce={a,b} and Cf={c,d} have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 4), meaning that Ce={a,b} and Cf={c,d} should be <a href="#BM_(connected)%2Fi">connected</a> together with a shared parent in between(internal node) where age(parent) = dist(Cc={f}, Cd={e}) / 2 = 4 / 2 = 2.</p>
-<p>The distance down to each leaf node of that shared parent must be equidistant.</p>
+<p>At the next iteration, Ce and Cf have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 4), meaning that Ce and Cf should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node:</p>
 <ul>
-<li>edge(g,f) = age(g) - age(f) = 2 - 1.5 = 0.5</li>
-<li>edge(g,e) = age(g) - age(e) = 2 - 1 = 1</li>
+<li>mut(Cg) = dist(Cf, Ce) / 2 = 4 / 2 = 2</li>
+<li>dist(Cg, Cf) = mut(Cg) - mut(Cf) = 2 - 1.5 = 0.5</li>
+<li>dist(Cg, Ce) = mut(Cg) - mut(Ce) = 2 - 1 = 1</li>
 </ul>
-<p><img src="svgbob_6fd871350c8ca1591855970ed8adce9a06fa7ce7.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_98ab2c91ad7bd2b3913d79cfa991112d4dcecaa7.svg" alt="Kroki diagram output"></p>
 <table>
 <thead>
 <tr>
@@ -13645,15 +13629,15 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p>The process is complete. There's only a single cluster left / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
-<p><img src="svgbob_548aaadcfa02dfab0391d4e7ec177b4b2ae7394e.svg" alt="Kroki diagram output"></p>
-<p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a rooted <a href="#BM_(tree)%2Fi">tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is for (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
-<p>In addition, some distances in  the generated <a href="#BM_(tree)%2Fi">tree</a> are wildly off from the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. For example, ...</p>
+<p>The process is complete. Only a single cluster remains (representing the root) / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
+<p><img src="svgbob_d60f7033a6d15c3337efd4d2055adb9ef9dfb1f8.svg" alt="Kroki diagram output"></p>
+<p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a rooted <a href="#BM_(tree)%2Fi">tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
+<p>In addition, some distances in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> are wildly off from the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances. For example, ...</p>
 <ul>
 <li>dist(a,d)=8 in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</li>
 <li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 </ul>
-<p>Part of this may have to do with the assumption this algorithm makes that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(tree)%2Fi">tree</a>.</p>
+<p>Part of this may have to do with the assumption this algorithm makes that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
 </li>
 </ul>
 <p>
