@@ -11161,14 +11161,30 @@ graph_show
    Does an ultrametric tree have to be a rooted binary tree? I think the answer is no: UPGMA generated rooted binary trees, but ultrametric trees in general just have to be rooted trees / they don't have to be binary.
    ```
 
- * `{bm} molecular clock` - The assumption that the rate of mutation is more-or-less steady across all organisms. This assumption is used for some phylogeny algorithms (e.g. UPGMA).
+ * `{bm} molecular clock` - The assumption that the rate of mutation is more-or-less consistent. For example, ...
+   
+   * every minute, around n of m nucleotides get mutated.
+   * every hour, around n genome rearrangement reversals occur per chromosome segment of size m.
+   * etc..
+   
+   This assumption is used for some phylogeny algorithms (e.g. UPGMA).
 
- * `{bm} unweighted pair group method with arithmetic mean (UPGMA)/(unweighted pair group method with arithmetic mean|UPGMA)/i` - A clustering heuristic used for building a binary ultrametric tree (rooted binary tree) from a distance matrix.
- 
-   The heuristic assumes that the rate of mutation is steady (molecular clock). As such, a set of present day species (leaf nodes) should always have the same amount of mutation (distance) from a shared ancestor (shared internal node).
+ * `{bm} unweighted pair group method with arithmetic mean (UPGMA)/(unweighted pair group method with arithmetic mean|UPGMA)/i` - A heuristic algorithm used to estimate a binary ultrametric tree for some distance matrix.
+
+   ```{note}
+   A binary ultrametric tree is an ultrametric tree where each internal node only branches to two children. In other words, a binary ultrametric tree is a rooted binary tree where all leaf nodes are equidistant from the root.
+   ```
+
+   The heuristic assumes that the rate of mutation is consistent (molecular clock). For example, ...
+   
+   * every minute, around n of m nucleotides get mutated.
+   * every hour, around n genome rearrangement reversals occur per genome segment of size m.
+   * etc..
+
+   This assumption is what makes the tree ultrametric. A set of present day species (leaf nodes) should all have the same amount of mutation (distance) from their shared ancestor (shared internal node).
 
    ```{svgbob}
-               g
+               g      <-- "shared ancestor"
               / \
              /   \
         2.5 /     \
@@ -11178,42 +11194,45 @@ graph_show
         / \           \
    1.5 /   \ 1.5       e
       /     \       1 / \ 1
-     /       \       /   \ 
-    a         b     c     d
+     /       \       /   \
+    a         b     c     d      <-- "present day species"
+      
+   * "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g) = 4"
+   ```
+   
+   For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000-1800 = 200 years. Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation.
 
-   * "a and b share ancestor f:   dist(a,f) = dist(b,f)"
-   * "c and d share ancestor e:   dist(c,e) = dist(d,e)"
-   * "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g)"
+   Imagine that the distance metric used to measure mutations in the above example were genome rearrangement reversals. If roughly 2 reversals are expected per 100 years, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.
+
+   ```{svgbob}
+                         g (mut=4)      <-- "shared ancestor"
+                        / \
+                       /   \
+                  2.5 /     \
+                     /       \ 3
+                    /         \
+         (mut=1.5) f           \
+                  / \           \
+             1.5 /   \ 1.5       e (mut=1)
+                /     \       1 / \ 1
+               /       \       /   \
+      (mut=0) a         b     c     d (mut=0) a      <-- "present day species"
+                   (mut=0)   (mut=0)
+   
+   * "a and b share ancestor f:   dist(a,f) = dist(b,f) = 1.5"
+   * "c and d share ancestor e:   dist(c,e) = dist(d,e) = 1"
+   * "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g) = 4"
+
+   * "mut is the amount of mutation required to get any of the leaf nodes to that ancestor"
    ```
 
    In the example above, ...
 
-   * present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5
-   * present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1
-   * present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4
-   * present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4
+   * present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5 reversals
+   * present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1 reversal
+   * present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals
+   * present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals
    * etc..
-
-   The weight of each...
-
-    * edge is the amount of mutation underwent between two species.
-    * node is the amount of mutation underwent between that species and one of its present day children.
-
-   ```{svgbob}
-                      g (mut=4)
-                     / \
-                    /   \
-               2.5 /     \
-                  /       \ 3
-                 /         \
-      (mut=1.5) f           \
-               / \           \
-          1.5 /   \ 1.5       e (mut=1)
-             /     \       1 / \ 1
-            /       \       /   \ 
-   (mut=0) a         b     c     d (mut=0)
-                (mut=0)   (mut=0)
-   ```
  
    Given a distance matrix, the UPGMA algorithm estimates an ultrametric tree for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).
 
@@ -11251,6 +11270,10 @@ graph_show
      / \
     /   \
    c     d
+   ```
+
+   ```{note}
+   The assumption being made here is that the leaf nodes for the minimum distance matrix value are always neighbours. Not always true, but probably good enough as a heuristic.
    ```
    
    This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:
@@ -11366,7 +11389,7 @@ graph_show
    * dist(a,d)=8 in the generated ultrametric tree.
    * dist(a,d)=5 in the original distance matrix.
 
-   Part of this may have to do with the assumption this algorithm makes that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
+   Part of this may have to do with the assumption that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
 
 
 `{bm-ignore} \b(read)_NORM/i`

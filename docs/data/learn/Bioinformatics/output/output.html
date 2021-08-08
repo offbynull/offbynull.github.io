@@ -13461,26 +13461,39 @@ walk_weight = <span class="hljs-number">0</span>
 </div>
 </li>
 <li>
-<p><a name="BM_(molecular%20clock)%2Fi"></a><strong>molecular clock</strong> - The assumption that the rate of mutation is more-or-less steady across all organisms. This assumption is used for some <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a> algorithms (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>).</p>
-</li>
-<li>
-<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean (UPGMA)</strong> - A clustering heuristic used for building a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> (<a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>) from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
-<p>The heuristic assumes that the rate of mutation is steady (<a href="#BM_(molecular%20clock)%2Fi">molecular clock</a>). As such, a set of present day species (leaf nodes) should always have the same amount of mutation (distance) from a shared ancestor (shared internal node).</p>
-<p><img src="svgbob_be74276e6e04294093e2e2787315db7d429b3d65.svg" alt="Kroki diagram output"></p>
-<p>In the example above, ...</p>
+<p><a name="BM_(molecular%20clock)%2Fi"></a><strong>molecular clock</strong> - The assumption that the rate of mutation is more-or-less consistent. For example, ...</p>
 <ul>
-<li>present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5</li>
-<li>present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1</li>
-<li>present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4</li>
-<li>present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4</li>
+<li>every minute, around n of m nucleotides get mutated.</li>
+<li>every hour, around n <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals occur per chromosome segment of size m.</li>
 <li>etc..</li>
 </ul>
-<p>The weight of each...</p>
+<p>This assumption is used for some <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a> algorithms (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>).</p>
+</li>
+<li>
+<p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean (UPGMA)</strong> - A heuristic algorithm used to estimate a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for some <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> where each internal node only branches to two children. In other words, a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a> where all leaf nodes are equidistant from the root.</p>
+</div>
+<p>The heuristic assumes that the rate of mutation is consistent (<a href="#BM_(molecular%20clock)%2Fi">molecular clock</a>). For example, ...</p>
 <ul>
-<li>edge is the amount of mutation underwent between two species.</li>
-<li>node is the amount of mutation underwent between that species and one of its present day children.</li>
+<li>every minute, around n of m nucleotides get mutated.</li>
+<li>every hour, around n <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals occur per <a href="#BM_(genome)%2Fi">genome</a> segment of size m.</li>
+<li>etc..</li>
 </ul>
-<p><img src="svgbob_a6ac9d56fda6d8c4d1177d7915eb2d5cf8eda283.svg" alt="Kroki diagram output"></p>
+<p>This assumption is what makes the <a href="#BM_(tree)%2Fi">tree</a> <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric</a>. A set of present day species (leaf nodes) should all have the same amount of mutation (distance) from their shared ancestor (shared internal node).</p>
+<p><img src="svgbob_9c45e3a8fedf42d570c570b7c417173e7ed57970.svg" alt="Kroki diagram output"></p>
+<p>For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000-1800 = 200 years. Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation.</p>
+<p>Imagine that the distance metric used to measure mutations in the above example were <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals. If roughly 2 reversals are expected per 100 years, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.</p>
+<p><img src="svgbob_654b76b1b2c38a3b673699e508dbccf71b07c41e.svg" alt="Kroki diagram output"></p>
+<p>In the example above, ...</p>
+<ul>
+<li>present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5 reversals</li>
+<li>present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1 reversal</li>
+<li>present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals</li>
+<li>present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals</li>
+<li>etc..</li>
+</ul>
 <p>Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, the <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> algorithm estimates an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).</p>
 <p><img src="svgbob_3d816b9d61032209afd8294044f1caf010c46928.svg" alt="Kroki diagram output"></p>
 <p>Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
@@ -13527,6 +13540,10 @@ walk_weight = <span class="hljs-number">0</span>
 </table>
 <p>The two clusters with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node.</p>
 <p><img src="svgbob_33e1b85dbaff91ad5a6f7d584fbcd812e2c84362.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The assumption being made here is that the leaf nodes for the minimum <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> value are always neighbours. Not always true, but probably good enough as a heuristic.</p>
+</div>
 <p>This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:</p>
 <ul>
 <li>mut(Ce) = dist(Cc, Cd) / 2 = 2 / 2 = 1</li>
@@ -13637,7 +13654,7 @@ walk_weight = <span class="hljs-number">0</span>
 <li>dist(a,d)=8 in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</li>
 <li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 </ul>
-<p>Part of this may have to do with the assumption this algorithm makes that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
+<p>Part of this may have to do with the assumption that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
 </li>
 </ul>
 <p>
