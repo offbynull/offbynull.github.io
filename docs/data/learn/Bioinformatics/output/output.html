@@ -13477,14 +13477,14 @@ walk_weight = <span class="hljs-number">0</span>
 </div>
 <p>The heuristic assumes that the rate of mutation is consistent (<a href="#BM_(molecular%20clock)%2Fi">molecular clock</a>). For example, ...</p>
 <ul>
-<li>every minute, around n of m nucleotides get mutated.</li>
+<li>every minute, around n of m nucleotides mutate.</li>
 <li>every hour, around n <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals occur per <a href="#BM_(genome)%2Fi">genome</a> segment of size m.</li>
 <li>etc..</li>
 </ul>
 <p>This assumption is what makes the <a href="#BM_(tree)%2Fi">tree</a> <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric</a>. A set of present day species (leaf nodes) should all have the same amount of mutation (distance) from their shared ancestor (shared internal node).</p>
 <p><img src="svgbob_9c45e3a8fedf42d570c570b7c417173e7ed57970.svg" alt="Kroki diagram output"></p>
-<p>For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000-1800 = 200 years. Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation.</p>
-<p>Imagine that the distance metric used to measure mutations in the above example were <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals. If roughly 2 reversals are expected per 100 years, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.</p>
+<p>For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000-1800 = 200 years.</p>
+<p>Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation. Imagine that the distance metric used to measure mutations for this specific example is <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals. If the rate of reversals expected every 100 years is 2, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.</p>
 <p><img src="svgbob_654b76b1b2c38a3b673699e508dbccf71b07c41e.svg" alt="Kroki diagram output"></p>
 <p>In the example above, ...</p>
 <ul>
