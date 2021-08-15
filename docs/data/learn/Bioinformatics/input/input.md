@@ -11396,6 +11396,230 @@ graph_show
 
    Part of this may have to do with the assumption that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
 
+ * `{bm} neighbouring leaf algorithm` - Given an additive distance matrix, identify a pair of leaf nodes that are neighbours in the simple tree for that distance matrix. In other words, this algorithm identifies a pair of neighbouring leaf nodes (shared parent) for an additive distance matrix without having the simple tree for that distance matrix.
+
+   To understand how this is possible, begin with a scenario where the simple tree's provided for the additive distance matrix.
+
+   |    | v0 | v1 | v2 | v3 | v4 | v5 |
+   |----|----|----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+   | v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+   | v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+   | v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+   | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+   | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     v0_x -- i0_x [label=11]
+     v1_x -- i0_x [label=2]
+     v2_x -- i0_x [label=10]
+     i0_x -- i1_x [label=4]
+     i1_x -- i2_x [label=3]
+     i2_x -- v3_x [label=3]
+     i2_x -- v4_x [label=4]
+     i1_x -- v5_x [label=7]
+     v0_x [label=v0]
+     v1_x [label=v1]
+     v2_x [label=v2]
+     v3_x [label=v3]
+     v4_x [label=v4]
+     v5_x [label=v5]
+     i0_x [label=i0]
+     i1_x [label=i1]
+     i2_x [label=i2]
+     i2_x [label=i2]
+     i1_x [label=i1]
+    }
+   }
+   ```
+
+   The first piece of insight is that, if two leaf nodes are neighbours in the tree, the path walked from either neighbour to a 3rd leaf node will be identical except for the limb of each neighbouring node. For example, other than their limbs, v1 and v2 have the exact same path to v3...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="path(v1,v3) and path(v2,v3)"
+     v0_x -- i0_x [label=11]
+     v1_x -- i0_x [label=2, penwidth=2.5, color=purple]
+     v2_x -- i0_x [label=10, penwidth=2.5, color=orange]
+     i0_x -- i1_x [label=4, penwidth=2.5, color="orange:invis:purple"]
+     i1_x -- i2_x [label=3, penwidth=2.5, color="orange:invis:purple"]
+     i2_x -- v3_x [label=3, penwidth=2.5, color="orange:invis:purple"]
+     i2_x -- v4_x [label=4]
+     i1_x -- v5_x [label=7]
+     v0_x [label=v0]
+     v1_x [label=v1]
+     v2_x [label=v2]
+     v3_x [label=v3]
+     v4_x [label=v4]
+     v5_x [label=v5]
+     i0_x [label=i0]
+     i1_x [label=i1]
+     i2_x [label=i2]
+     i2_x [label=i2]
+     i1_x [label=i1]
+    }
+   }
+   ```
+
+   The second piece of insight is that, for any two leaf nodes, counting the total number of times each edge gets walked when traversing the paths from each initial leaf to every other leaf node reveals that, ...
+
+   1. other than the initial two leaf nodes, the count of each leaf limb is 2.
+   1. for the initial two leaf nodes, the count of each leaf limb is the total number of leaf nodes.
+
+   |    | v1                              | v2                              |
+   |----|---------------------------------|---------------------------------|
+   | v0 | (v1,i0) (i0,v0)                 | (i0,v2) (i0,v0)                 |
+   | v1 |                                 | (i0,v2) (v1,i0)                 |
+   | v2 | (v1,i0) (i0,v2)                 |                                 |
+   | v3 | (v1,i0) (i0,i1) (i1,i2) (i2,v3) | (i0,v2) (i0,i1) (i1,i2) (i2,v3) |
+   | v4 | (v1,i0) (i0,i1) (i1,i2) (i2,v4) | (i0,v2) (i0,i1) (i1,i2) (i2,v4) |
+   | v5 | (v1,i0) (i0,i1) (i1,v5)         | (i0,v2) (i0,i1) (i1,v5)         |
+
+   |         edge        | v1 path count | v2 path count | total count |
+   |---------------------|---------------|---------------|-------------|
+   | `{h}yellow (i0,v0)` |        1      |        1      |      2      |
+   | `{h}blue   (v1,i0)` |        5      |        1      |      6      |
+   | `{h}blue   (i0,v2)` |        1      |        5      |      6      |
+   |            (i0,i1)  |        3      |        3      |      6      |
+   | `{h}yellow (i1,v5)` |        1      |        1      |      2      |
+   |            (i1,i2)  |        2      |        2      |      4      |
+   | `{h}yellow (i2,v4)` |        1      |        1      |      2      |
+   | `{h}yellow (i2,v3)` |        1      |        1      |      2      |
+
+   The third piece of insight is that, the result of summing the distance matrix distances for v1 and v2 is the same as summing them together the edge weights for all paths listed above...
+
+   |         |   v1   |   v2   | v1 + v2 |
+   |---------|--------|--------|---------|
+   | v0      |   13   |   21   |    34   |
+   | v1      |   0    |   12   |    12   |
+   | v2      |   12   |   0    |    12   |
+   | v3      |   12   |   20   |    22   |
+   | v4      |   13   |   21   |    34   |
+   | v5      |   13   |   21   |    34   |
+   | **SUM** | **63** | **95** | **158** |
+
+   The initial leaf nodes are counted 6 times in total. All other leaf nodes are counted 2 times in total. Normalize their contribution to the total sum above such that they're only included twice (just like all other leaf nodes) by subtracting dist(v0,v1) exactly 4 times (2 less than the number of leaf nodes)...
+
+   > (sum_distance(v1) + sum_distance(v2)) - 4 * dist(v1,v2) = (63 + 95) - 4 * 12 = 110
+
+   |         edge        | total count |
+   |---------------------|-------------|
+   | `{h}yellow (i0,v0)` |      2      |
+   | `{h}blue   (v1,i0)` |      2*     |
+   | `{h}blue   (i0,v2)` |      2*     |
+   |            (i0,i1)  |      6      |
+   | `{h}yellow (i1,v5)` |      2      |
+   |            (i1,i2)  |      4      |
+   | `{h}yellow (i2,v4)` |      2      |
+   | `{h}yellow (i2,v3)` |      2      |
+
+
+   v0 and v1 are neighbours in the graph. Contrast that to what happens when the same steps run for leaf nodes that aren't neighbours. For example, the process repeated for non-neighbouring leaf nodes v0 and v3 results in a larger edge count for internal node (i1,i2) ...
+
+   |    | v0                              | v3                              |
+   |----|---------------------------------|---------------------------------|
+   | v0 |                                 | (v0,i0) (i0,i1) (i1,i2) (i2,v3) |
+   | v1 | (v0,i0) (i0,v1)                 | (i0,v1) (i0,i1) (i1,i2) (i2,v3) |
+   | v2 | (v0,i0) (i0,v2)                 | (i0,v2) (i0,i1) (i1,i2) (i2,v3) |
+   | v3 | (v0,i0) (i0,i1) (i1,i2) (i2,v3) |                                 |
+   | v4 | (v0,i0) (i0,i1) (i1,i2) (i2,v4) | (i2,v3) (i2,v4)                 |
+   | v5 | (v0,i0) (i0,i1) (i1,v5)         | (i2,v3) (i1,i2) (i1,v5)         |
+
+   |         | v0 | v3 | total count |
+   |---------|----|----|-------------|
+   | (v0,i0) | 5  | 1  |         6   |
+   | (v1,i0) | 1  | 1  |         2   |
+   | (v2,i0) | 1  | 1  |         2   |
+   | (i0,i1) | 3  | 3  |         6   |
+   | (i1,v5) | 1  | 1  |         2   |
+   | (i1,i2) | 2  | 4  | `{h}red 6`  |
+   | (i2,v4) | 1  | 1  |         2   |
+   | (i2,v3) | 1  | 5  |         6   |
+
+   |         |   v0   |   v3   | v0 + v3 |
+   |---------|--------|--------|---------|
+   | v0      |   0    |   21   |    21   |
+   | v1      |   13   |   12   |    25   |
+   | v2      |   21   |   20   |    41   |
+   | v3      |   21   |   0    |    21   |
+   | v4      |   22   |   7    |    29   |
+   | v5      |   22   |   13   |    35   |
+   | **SUM** | **99** | **73** | **172** |
+
+   > (sum_distance(v0) + sum_distance(v3)) - 4 * dist(v0,v3) = (99 + 73) - 4 * 21 = 88
+
+   Of all leaf node pairs, the one where the above formula is the highest is the one that touches internal nodes the least, meaning that it's the one with the neighbour?????
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+   
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+   SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT
+
+ * `{bm} neighbour joining matrix/(neighbour joining matrix|neighbour-joining matrix)/i` - A matrix used to identify neighbouring leaf nodes in an additive distance matrix.
+
+   For each element in the additive distance matrix, the corresponding element in the neighbour joining matrix is calculated as...
+
+   ```python
+   for a in range(n):
+       tot_dist[l] = sum(D[l,k] for k in range(n))
+   J[i,j] = D[i,j] - tot_dist[i] - tot_dist[j]
+   ```
+
+   The minimum element in the neighbour joining matrix is for the element
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

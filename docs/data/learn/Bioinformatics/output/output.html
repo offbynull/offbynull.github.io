@@ -13373,6 +13373,10 @@ walk_weight = <span class="hljs-number">0</span>
   <span class="hljs-keyword">return</span> simple_tree
 </code></pre>
 <p>At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Later on the book goes on to say explicitly say that the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> won't have any internal edges of weight 0. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(sum%20of%20squared%20errors%7Csum%20of%20square%20error%7Csum%20of%20errors%20squared)%2Fi"></a><strong>sum of squared errors</strong> - <a href="#BM_(sum%20of%20squared%20errors%7Csum%20of%20square%20error%7Csum%20of%20errors%20squared)%2Fi">Sum of errors squared</a> is an algorithm used to quantify how far off some estimation / prediction is.</p>
@@ -13655,6 +13659,480 @@ walk_weight = <span class="hljs-number">0</span>
 <li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 </ul>
 <p>Part of this may have to do with the assumption that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
+</li>
+<li>
+<p><a name="BM_(neighbouring%20leaf%20algorithm)%2Fi"></a><strong>neighbouring leaf algorithm</strong> - Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, identify a pair of leaf nodes that are neighbours in the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In other words, this algorithm identifies a pair of neighbouring leaf nodes (shared parent) for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> without having the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
+<p>To understand how this is possible, begin with a scenario where the <a href="#BM_(simple%20tree)%2Fi">simple tree</a>'s provided for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="dot_7cdebedc8861c604b14c3330aeb1c286.svg" alt="Dot diagram"></p>
+<p>The first piece of insight is that, if two leaf nodes are neighbours in the <a href="#BM_(tree)%2Fi">tree</a>, the path walked from either neighbour to a 3rd leaf node will be identical except for the limb of each neighbouring node. For example, other than their limbs, v1 and v2 have the exact same path to v3...</p>
+<p><img src="dot_2331577325c74f898ea0f6edc19a8051.svg" alt="Dot diagram"></p>
+<p>The second piece of insight is that, for any two leaf nodes, counting the total number of times each edge gets walked when traversing the paths from each initial leaf to every other leaf node reveals that, ...</p>
+<ol>
+<li>other than the initial two leaf nodes, the count of each leaf limb is 2.</li>
+<li>for the initial two leaf nodes, the count of each leaf limb is the total number of leaf nodes.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v1</th>
+<th>v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>(v1,i0) (i0,v0)</td>
+<td>(i0,v2) (i0,v0)</td>
+</tr>
+<tr>
+<td>v1</td>
+<td></td>
+<td>(i0,v2) (v1,i0)</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>(v1,i0) (i0,v2)</td>
+<td></td>
+</tr>
+<tr>
+<td>v3</td>
+<td>(v1,i0) (i0,i1) (i1,i2) (i2,v3)</td>
+<td>(i0,v2) (i0,i1) (i1,i2) (i2,v3)</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>(v1,i0) (i0,i1) (i1,i2) (i2,v4)</td>
+<td>(i0,v2) (i0,i1) (i1,i2) (i2,v4)</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>(v1,i0) (i0,i1) (i1,v5)</td>
+<td>(i0,v2) (i0,i1) (i1,v5)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>edge</th>
+<th>v1 path count</th>
+<th>v2 path count</th>
+<th>total count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i0,v0)</span></td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><span style="background-color: blue; color: white; padding: 3px">(v1,i0)</span></td>
+<td>5</td>
+<td>1</td>
+<td>6</td>
+</tr>
+<tr>
+<td><span style="background-color: blue; color: white; padding: 3px">(i0,v2)</span></td>
+<td>1</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>(i0,i1)</td>
+<td>3</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i1,v5)</span></td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>(i1,i2)</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i2,v4)</span></td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i2,v3)</span></td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>The third piece of insight is that, the result of summing the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances for v1 and v2 is the same as summing them together the edge weights for all paths listed above...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v1</th>
+<th>v2</th>
+<th>v1 + v2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>13</td>
+<td>21</td>
+<td>34</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>12</td>
+<td>0</td>
+<td>12</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>12</td>
+<td>20</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>13</td>
+<td>21</td>
+<td>34</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>13</td>
+<td>21</td>
+<td>34</td>
+</tr>
+<tr>
+<td><strong>SUM</strong></td>
+<td><strong>63</strong></td>
+<td><strong>95</strong></td>
+<td><strong>158</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The initial leaf nodes are counted 6 times in total. All other leaf nodes are counted 2 times in total. Normalize their contribution to the total sum above such that they're only included twice (just like all other leaf nodes) by subtracting dist(v0,v1) exactly 4 times (2 less than the number of leaf nodes)...</p>
+<blockquote>
+<p>(sum_distance(v1) + sum_distance(v2)) - 4 * dist(v1,v2) = (63 + 95) - 4 * 12 = 110</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>edge</th>
+<th>total count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i0,v0)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span style="background-color: blue; color: white; padding: 3px">(v1,i0)</span></td>
+<td>2*</td>
+</tr>
+<tr>
+<td><span style="background-color: blue; color: white; padding: 3px">(i0,v2)</span></td>
+<td>2*</td>
+</tr>
+<tr>
+<td>(i0,i1)</td>
+<td>6</td>
+</tr>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i1,v5)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>(i1,i2)</td>
+<td>4</td>
+</tr>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i2,v4)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span style="background-color: yellow; color: black; padding: 3px">(i2,v3)</span></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>v0 and v1 are neighbours in the graph. Contrast that to what happens when the same steps run for leaf nodes that aren't neighbours. For example, the process repeated for non-neighbouring leaf nodes v0 and v3 results in a larger edge count for internal node (i1,i2) ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td></td>
+<td>(v0,i0) (i0,i1) (i1,i2) (i2,v3)</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>(v0,i0) (i0,v1)</td>
+<td>(i0,v1) (i0,i1) (i1,i2) (i2,v3)</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>(v0,i0) (i0,v2)</td>
+<td>(i0,v2) (i0,i1) (i1,i2) (i2,v3)</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>(v0,i0) (i0,i1) (i1,i2) (i2,v3)</td>
+<td></td>
+</tr>
+<tr>
+<td>v4</td>
+<td>(v0,i0) (i0,i1) (i1,i2) (i2,v4)</td>
+<td>(i2,v3) (i2,v4)</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>(v0,i0) (i0,i1) (i1,v5)</td>
+<td>(i2,v3) (i1,i2) (i1,v5)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v3</th>
+<th>total count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(v0,i0)</td>
+<td>5</td>
+<td>1</td>
+<td>6</td>
+</tr>
+<tr>
+<td>(v1,i0)</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>(v2,i0)</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>(i0,i1)</td>
+<td>3</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr>
+<td>(i1,v5)</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>(i1,i2)</td>
+<td>2</td>
+<td>4</td>
+<td><span style="background-color: red; color: white; padding: 3px">6</span></td>
+</tr>
+<tr>
+<td>(i2,v4)</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>(i2,v3)</td>
+<td>1</td>
+<td>5</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v3</th>
+<th>v0 + v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>12</td>
+<td>25</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>20</td>
+<td>41</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>0</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>7</td>
+<td>29</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22</td>
+<td>13</td>
+<td>35</td>
+</tr>
+<tr>
+<td><strong>SUM</strong></td>
+<td><strong>99</strong></td>
+<td><strong>73</strong></td>
+<td><strong>172</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>(sum_distance(v0) + sum_distance(v3)) - 4 * dist(v0,v3) = (99 + 73) - 4 * 21 = 88</p>
+</blockquote>
+<p>Of all leaf node pairs, the one where the above formula is the highest is the one that touches internal nodes the least, meaning that it's the one with the neighbour?????</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+<p>SOMETHING HERE IS WRONG. YOU REASONED ABOUT THIS INCORRECTLY. WRITE SOME ONE-OFF CODE TO TEST YOUR ASSUMPTIONS NAD TRY TO RELATE IT TO THE PROOF IN THE BOOK. THE BOOK IS SUBTRACTING BUT IM TRYING TO ADD BECAUSE IT MENTALLY MAKES MORE SENSE ALTHOUGH IT MIGHT NOT BE 100% CORRECT</p>
+</li>
+<li>
+<p><a name="BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi"></a><strong>neighbour joining matrix</strong> - A matrix used to identify neighbouring leaf nodes in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>For each element in the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, the corresponding element in the <a href="#BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi">neighbour joining matrix</a> is calculated as...</p>
+<pre class="hljs"><code><span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+    tot_dist[l] = <span class="hljs-built_in">sum</span>(D[l,k] <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+J[i,j] = D[i,j] - tot_dist[i] - tot_dist[j]
+</code></pre>
+<p>The minimum element in the <a href="#BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi">neighbour joining matrix</a> is for the element</p>
 </li>
 </ul>
 <p>

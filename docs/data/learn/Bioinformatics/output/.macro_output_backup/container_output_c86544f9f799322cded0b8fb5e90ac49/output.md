@@ -1,0 +1,1 @@
+<span style="background-color: blue; color: white; padding: 3px">(v1,i0)</span>
