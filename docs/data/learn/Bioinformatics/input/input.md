@@ -11042,6 +11042,10 @@ graph_show
 
    At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
 
+   ```{note}
+   Later on the book goes on to say explicitly say that the simple tree won't have any internal edges of weight 0. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).
+   ```
+
  * `{bm} sum of squared errors/(sum of squared errors|sum of square error|sum of errors squared)/i` - Sum of errors squared is an algorithm used to quantify how far off some estimation / prediction is.
  
    Given a a set of real values and a set of predicted values, the error is the difference between the real and predicated values at each data point. For example...
