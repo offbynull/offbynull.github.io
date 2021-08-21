@@ -13733,13 +13733,185 @@ walk_weight = <span class="hljs-number">0</span>
 </tbody>
 </table>
 <p><img src="dot_7cdebedc8861c604b14c3330aeb1c286.svg" alt="Dot diagram"></p>
-<p>The first piece of insight is that, if two leaf nodes are neighbours in the <a href="#BM_(tree)%2Fi">tree</a>, the path walked from either neighbour to a 3rd leaf node will be identical except for the limb of each neighbouring node. For example, other than their limbs, v1 and v2 have the exact same path to v3...</p>
+<p>The first piece of insight is that, if two leaf nodes are neighbours in the <a href="#BM_(tree)%2Fi">tree</a>, the path walked from either neighbour to a third leaf node will be identical except for the limb of each neighbouring node. For example, other than their limbs, v1 and v2 have the exact same path to v3...</p>
 <p><img src="dot_2331577325c74f898ea0f6edc19a8051.svg" alt="Dot diagram"></p>
-<p>The second piece of insight is that, for any two leaf nodes, counting the total number of times each edge gets walked when traversing the paths from each initial leaf to every other leaf node reveals that, ...</p>
+<p>This isn't the case if the two leaf nodes are not neighbours. For example, v0 and v3 hit a different set of internal edges on their way to v5...</p>
+<p><img src="dot_64e5ccc88453b13860d5196a39f09383.svg" alt="Dot diagram"></p>
+<p>CHANGE TO START FROM HERE</p>
+<p>CHANGE TO START FROM HERE</p>
+<p>CHANGE TO START FROM HERE</p>
+<p>CHANGE TO START FROM HERE</p>
+<p>CHANGE TO START FROM HERE</p>
+<p>CHANGE TO START FROM HERE</p>
+<p>CHANGE TO START FROM HERE</p>
+<p>CHANGE TO START FROM HERE</p>
+<p>The second piece of insight is that, if you were to take the paths from a leaf node to all other leaf nodes and count the number of times each edge gets walked, some interesting properties are revealed.</p>
+<p>For some leaf node, counting the edges to all other leaf nodes reveals that ...</p>
 <ol>
-<li>other than the initial two leaf nodes, the count of each leaf limb is 2.</li>
-<li>for the initial two leaf nodes, the count of each leaf limb is the total number of leaf nodes.</li>
+<li>the initial leaf's limb gets walked n - 1 times.</li>
+<li>every other leaf's limb gets walked 1 time.</li>
 </ol>
+<p>For example, the example graph above has 6 leaf nodes. Given the paths from v1 to every other leaf node, v1's limb is walked 6 - 1 times (5) while every other leaf node's limb is walked exactly once...</p>
+<p><img src="dot_fa6bfefdd496809378b31c566e0cdd67.svg" alt="Dot diagram"></p>
+<p>Similarly, notice how the number of internal edges walked is consistent with the number of leaf nodes on the other end of that internal edge. For example, in the diagram above, internal edge (i1,i2) separates the <a href="#BM_(tree)%2Fi">tree</a> into two sub-<a href="#BM_(tree)%2Fi">tree</a>s, ...</p>
+<p><img src="dot_f4b480793edd922f8f6878edef1130f2.svg" alt="Dot diagram"></p>
+<p>... where the...</p>
+<ul>
+<li>i1 side has 4 leaf nodes (v0, v1, v2, and v5).</li>
+<li>i2 side has 2 leaf nodes (v4 and v3).</li>
+</ul>
+<p>Given that v1 is on the i1 side, the number of times edge (i1,i2) gets walked is 2 because there are two leaf nodes on the opposite i2 side.</p>
+<p>This same exact process works similarly for leaf node v2. Given the paths from v2 to every other leaf node, v2's limb is walked 6 - 1 times (5) while every other leaf node's limb is walked exactly once. Combining the edge counts for v1 and v2 makes it so that...</p>
+<ul>
+<li>both v1 and v2 get walked 6 times.</li>
+<li>every other leaf node gets walked 2 times.</li>
+</ul>
+<p><img src="dot_8997930741615a4edbfbdfc1c19a4e34.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>(i0,i1)</th>
+<th>(i1,i2)</th>
+<th>(v0,i0)</th>
+<th>(v1,i0)</th>
+<th>(v2,i0)</th>
+<th>(v3,i2)</th>
+<th>(v4,i2)</th>
+<th>(v5,i1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>-----------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>6</td>
+<td>4</td>
+<td>2</td>
+<td>6</td>
+<td>6</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>The key to this algorithm is to normalize the edge counts for the initially chosen leaf node limbs (v1 and v2 each limb counted 6 times) such that they match the edge counts of the other leaf nodes (v0, v3, v4, and v5 each limb counted 2 times). Since it's known that the the initially chosen leaf node's edge count is equal to the number of leaf nodes in the <a href="#BM_(tree)%2Fi">tree</a>, the algorithm here is simple:</p>
+<ol>
+<li>get path between the initially chosen leaf nodes.</li>
+<li>subtract each edge in the path (n - 2) times from the counts above.</li>
+</ol>
+<p>In the above example, the path between (v1,v2) is the edges (v1,i0) and (i0,v2). Subtract both those edges 6 - 2 (4) times from the edge counts above.</p>
+<p><img src="dot_a610725a39831683b629fee540a91880.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>(i0,i1)</th>
+<th>(i1,i2)</th>
+<th>(v0,i0)</th>
+<th>(v1,i0)</th>
+<th>(v2,i0)</th>
+<th>(v3,i2)</th>
+<th>(v4,i2)</th>
+<th>(v5,i1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>-4 * path(v1,v2)</td>
+<td></td>
+<td></td>
+<td></td>
+<td>-4</td>
+<td>-4</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>----------------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+<td>-------</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>6</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>n1='v1' n2='v2'
+[('i0-i1', 3), ('i1-i2', 2), ('v0-i0', 1), ('v1-i0', 5), ('v2-i0', 1), ('v3-i2', 1), ('v4-i2', 1), ('v5-i1', 1)] -- total of 15   FROM v1
+[('i0-i1', 3), ('i1-i2', 2), ('v0-i0', 1), ('v1-i0', 1), ('v2-i0', 5), ('v3-i2', 1), ('v4-i2', 1), ('v5-i1', 1)] -- total of 15   FROM v2
+[('i0-i1', 6), ('i1-i2', 4), ('v0-i0', 2), ('v1-i0', 6), ('v2-i0', 6), ('v3-i2', 2), ('v4-i2', 2), ('v5-i1', 2)] -- total of 30   v1 + v2
+[('i0-i1', 6), ('i1-i2', 4), ('v0-i0', 2), ('v1-i0', 2), ('v2-i0', 2), ('v3-i2', 2), ('v4-i2', 2), ('v5-i1', 2)] -- total of 22   v1 + v2 NORM</p>
 <table>
 <thead>
 <tr>
