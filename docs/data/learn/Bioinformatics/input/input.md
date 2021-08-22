@@ -11441,12 +11441,18 @@ graph_show
    }
    ```
 
-   The algorithm essentially boils down to counting edges. Picking any leaf node in the tree, if you were to take the paths from that leaf node to all other leaf nodes and count the number of times each edge gets walked, ...
+   The algorithm essentially boils down to counting edges. Picking any leaf node in the tree, if you were to collect the paths from that leaf node to all other leaf nodes, then count the number of times each edge is encountered across all paths in the collection, ...
    
-   * that leaf node's limb gets walked `leaf_count - 1` times.
-   * every other leaf node's limb gets walked once.
+   * the picked leaf node's limb gets walked `leaf_count - 1` times.
+   * every other limb gets walked once.
 
-   For example, the supplied tree above has 6 leaf nodes. Given the paths from v1 to every other leaf node, v1's limb is walked 5 times (6 - 1 = 5) while every other leaf node's limb is walked exactly once...
+   ```{output}
+   ch7_code/src/neighbour_detect/EdgeOnlyVariant.py
+   python
+   # MARKDOWN_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COUNT
+   ```
+
+   For example, the tree has 6 leaf nodes: [v0, v1, v2, v3, v4, v5, v6]. Given the paths from v1 to every other leaf node, v1's limb is walked 5 times (6 - 1 = 5) while every other limb is walked exactly once...
 
    ```{dot}
    graph G {
@@ -11484,7 +11490,7 @@ graph_show
    |-----------|---------|---------|---------|---------|---------|---------|---------|---------|
    | count(v1) |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
 
-   Similarly, given the paths from v2 to every other leaf node, v2's limb is walked 5 times (6 - 1 = 5) while every other leaf node's limb is walked exactly once.
+   Similarly, given the paths from v2 to every other leaf node, v2's limb is walked 5 times (6 - 1 = 5) while every other limb is walked exactly once.
 
    ```{dot}
    graph G {
@@ -11521,17 +11527,19 @@ graph_show
    |           | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
    |-----------|---------|---------|---------|---------|---------|---------|---------|---------|
    | count(v2) |    3    |    2    |    1    |    1    |    5    |    1    |    1    |    1    |
+
+   Combining the edge counts for a pair of leaf nodes makes it so that...
    
+   * the pair's limbs get walked `leaf_count` times.
+   * every other limb gets walked 2 times.
+
    ```{output}
    ch7_code/src/neighbour_detect/EdgeOnlyVariant.py
    python
-   # MARKDOWN_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COUNT
+   # MARKDOWN_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_COUNT
    ```
 
-   Combining the edge counts for both v1 and v2 makes it so that...
-   
-   * both v1 and v2 get walked 6 times.
-   * every other leaf node gets walked 2 times.
+   For example, `combine_counts(v1,v2)` counts v1 and v2's limb 6 times while every other limb is counted 2 times ...
 
    ```{dot}
    graph G {
@@ -11621,18 +11629,19 @@ graph_show
    |           | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
    |           |    6    |    4    |    2    |    6    |    6    |    2    |    2    |    2    |
 
+   The key to this algorithm is to normalize the results of `combine_counts()` such that each selected leaf node's limb count (`leaf_count`) matches the count of the other limbs (2). To do this, each edge in the path between the selected leaf node pairs must be subtracted `leaf_count - 2` times from `combine_count()`'s result.
+   
    ```{output}
    ch7_code/src/neighbour_detect/EdgeOnlyVariant.py
    python
-   # MARKDOWN_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_COUNT
+   # MARKDOWN_NORMALIZED_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_COUNT
    ```
 
-   The key to this algorithm is to normalize the edge counts for the initially chosen leaf node limbs (v1 and v2 each limb counted 6 times) such that they match the edge counts of the other leaf nodes (v0, v3, v4, and v5 each limb counted 2 times). Since it's known that the the initially chosen leaf node's edge count is equal to the number of leaf nodes in the tree, the algorithm here is simple:
+   ```{note}
+   Wondering why you can't just remove the selected leaf pair's limbs `leaf_count - 2` times vs removing the edges from the path `leaf_count - 2` times? It's explained further below.
+   ```
 
-   1. get path between the initially chosen leaf nodes.
-   2. subtract each edge in the path (n - 2) times from the counts above.
-
-   In the above example, the path between (v1,v2) is the edges (v1,i0) and (i0,v2). Subtract both those edges 6 - 2 (4) times from the edge counts above.
+   For example, `combine_count_and_normalize(v1,v2)` requires subtracting each edge in path(v1,v2) 4 times from the counts...
 
    ```{dot}
    graph G {
@@ -11643,7 +11652,7 @@ graph_show
     subgraph cluster_2 {
      fontname="Courier-Bold"
      fontsize=10
-     label="count(v1) + count(v2) - (leaf_count - 2) * path(v1,v2)"
+     label="count(v1) + count(v2) + -(leaf_count - 2) * path(v1,v2)"
      v0_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:purple"]
      v1_x -- i0_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
      v2_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:purple"]
@@ -11699,12 +11708,6 @@ graph_show
    |                                 | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
    |                                 |    6    |    4    |    2    |    2    |    2    |    2    |    2    |    2    |
 
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeOnlyVariant.py
-   python
-   # MARKDOWN_NORMALIZED_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_COUNT
-   ```
-
    The insight here is that, if the two selected leaf nodes are neighbours, the path between them should only ever have two edges: their limbs. In the example above, v1 and v2 are neighbours and as such path(v1,v2) contains only their limbs: [(v1,i0), (v2,i0)].
 
    ```{dot}
@@ -11740,7 +11743,7 @@ graph_show
    }
    ```
 
-   Contrast to when the two selected leaf nodes are *not* neighbours. The path between them will contain their limbs *in addition to internal edges*. For example, path(v1,v5) has the edges [(v1,i0), (i0,i1), (v5,i1)].
+   Contrast to when the two selected leaf nodes are *not* neighbours. The path between them will internal edges in addition to their limbs. For example, path(v1,v5) has the edges [(v1,i0), (i0,i1), (v5,i1)].
 
    ```{dot}
    graph G {
@@ -11775,7 +11778,9 @@ graph_show
    }
    ```
 
-   That means if the nodes are NOT neighbours, normalizing the edge counts for the initially chosen leaf node limbs will correct the limb counts for those leaf nodes IN ADDITION TO reducing internal edge counts. For example, since v1 and v5 are not neighbours, normalization reduces (i0,i1) along with the limbs of v1 and v5...
+   That means if the nodes are *not* neighbours, `combine_count_and_normalize()` will correct the counts of the limbs *in addition to reducing internal edge counts*.
+   
+   For example, since v1 and v5 are not neighbours, `combine_count_and_normalize(v1,v5)` reduces (i0,i1) along with the limbs of v1 and v5...
 
    ```{dot}
    graph G {
@@ -11786,7 +11791,7 @@ graph_show
     subgraph cluster_4 {
      fontname="Courier-Bold"
      fontsize=10
-     label="count(v1) + count(v5) - (leaf_count - 2) * path(v1,v5)"
+     label="count(v1) + count(v5) + -(leaf_count - 2) * path(v1,v5)"
      v0_w -- i0_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
      v1_w -- i0_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
      v2_w -- i0_w [label=" ", penwidth=2.5, color="tan:invis:pink"]
@@ -11892,7 +11897,7 @@ graph_show
 
    It turns out that any internal edges between the path of the two selected leaf nodes get reduced to 2 just like the leaf limbs they normalized. In the example above, (i0,i1) is reduced to 2 because path(v1,v5) goes through (i0,i1).
    
-   To understand why, consider what's happening in the above example. For count(v1), v1's limb gets walked 5 times (6 - 1 = 5) while every other limb is walked exactly once...
+   To understand why, consider what's happening in the example. For `count(v1)`, v1's limb gets walked 5 times (6 - 1 = 5) while every other limb is walked exactly once...
 
    ```{dot}
    graph G {
@@ -11982,12 +11987,12 @@ graph_show
      fontname="Courier-Bold"
      fontsize=10
      label="count(v1) + count(v3)"
-     v0_x -- i0_x:n [label=" ", penwidth=2.5, color="brown:invis:orange"]
+     v0_x -- i0_x:n [label=" ", penwidth=2.5, color="orange:invis:brown"]
      v1_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:brown"]
-     v2_x -- i0_x:s [label=" ", penwidth=2.5, color="brown:invis:brown:invis:brown:invis:brown:invis:brown:invis:orange"]
+     v2_x -- i0_x:s [label=" ", penwidth=2.5, color="brown:invis:orange"]
      i0_x -- i1_x [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:brown:invis:brown:invis:brown"]
      i1_x -- i2_x [label=" ", penwidth=2.5, color="orange:invis:orange:invis:brown:invis:brown:invis:brown:invis:brown"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
+     i2_x -- v3_x [label=" ", penwidth=2.5, color="brown:invis:brown:invis:brown:invis:brown:invis:brown:invis:orange"]
      i2_x -- v4_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
      i1_x:n -- v5_x [label=" ", penwidth=2.5, color="brown:invis:orange"]
      v0_x [label=v0]
@@ -12000,7 +12005,6 @@ graph_show
      i1_x [label=i1]
      i2_x [label=i2]
      i2_x [label=i2]
-     i1_x [label=i1]
     }
     subgraph cluster_1 {
      fontname="Courier-Bold"
@@ -12024,7 +12028,6 @@ graph_show
      i1_z [label=i1]
      i2_z [label=i2]
      i2_z [label=i2]
-     i1_z [label=i1]
     }
     subgraph cluster_2 {
      fontname="Courier-Bold"
@@ -12048,19 +12051,18 @@ graph_show
      i1_y [label=i1]
      i2_y [label=i2]
      i2_y [label=i2]
-     i1_y [label=i1]
     }
    }
    ```
 
-   |                                | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
-   |--------------------------------|---------|---------|---------|---------|---------|---------|---------|---------|
-   | count(v1)                      |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
-   | count(v3)                      |    3    |    4    |    1    |    1    |    1    |    5    |    1    |    1    |
-   |                                | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-   |                                |    6    |    6    |    2    |    6    |    2    |    6    |    2    |    2    |
+   |           | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
+   |-----------|---------|---------|---------|---------|---------|---------|---------|---------|
+   | count(v1) |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
+   | count(v3) |    3    |    4    |    1    |    1    |    1    |    5    |    1    |    1    |
+   |           | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+   |           |    6    |    6    |    2    |    6    |    2    |    6    |    2    |    2    |
 
-   This is why the internal edges between the path of the initial leaf nodes will always get normalized to 2. When you add them together, they equal to the number of leaf nodes in the tree 6. When you normalize that number, you're removing `leaf_count - 2` from that, resulting in 2.
+   This is why the internal edges between the path of the selected leaf nodes will always get normalized to 2. When you add their counts together, they equal to `leaf_count`. When you normalize those counts, you're removing `leaf_count - 2` from that, resulting in 2.
 
    ```{dot}
    graph G {
@@ -12068,11 +12070,11 @@ graph_show
     node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
     edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
     ranksep=0.25
-    subgraph cluster_3 {
+    subgraph cluster_4 {
      fontname="Courier-Bold"
      fontsize=10
-     label="count(v1) + count(v3) - (leaf_count - 2) * path(v1,v3)"
-     v0_x -- i0_x [label=" ", penwidth=2.5, color="brown:invis:orange"]
+     label="count(v1) + count(v3)  + -(leaf_count - 2) * path(v1,v3)"
+     v0_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
      v1_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
      v2_x -- i0_x [label=" ", penwidth=2.5, color="brown:invis:orange"]
      i0_x -- i1_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
@@ -12092,6 +12094,29 @@ graph_show
      i2_x [label=i2]
      i1_x [label=i1]
     }
+    subgraph cluster_3 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="count(v1) + count(v3)"
+     v0_y -- i0_y:n [label=" ", penwidth=2.5, color="orange:invis:brown"]
+     v1_y -- i0_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:brown"]
+     v2_y -- i0_y:s [label=" ", penwidth=2.5, color="brown:invis:orange"]
+     i0_y -- i1_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:brown:invis:brown:invis:brown"]
+     i1_y -- i2_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:brown:invis:brown:invis:brown:invis:brown"]
+     i2_y -- v3_y [label=" ", penwidth=2.5, color="brown:invis:brown:invis:brown:invis:brown:invis:brown:invis:orange"]
+     i2_y -- v4_y [label=" ", penwidth=2.5, color="orange:invis:brown"]
+     i1_y:n -- v5_y [label=" ", penwidth=2.5, color="brown:invis:orange"]
+     v0_y [label=v0]
+     v1_y [label=v1, style=filled, fillcolor=orange]
+     v2_y [label=v2]
+     v3_y [label=v3, style=filled, fillcolor=brown]
+     v4_y [label=v4]
+     v5_y [label=v5]
+     i0_y [label=i0]
+     i1_y [label=i1]
+     i2_y [label=i2]
+     i2_y [label=i2]
+    }
    }
    ```
 
@@ -12103,7 +12128,7 @@ graph_show
    |                                 | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
    |                                 |    2    |    2    |    2    |    2    |    2    |    2    |    2    |    2    |
 
-   The ultimate idea is that, of the normalized edge counts for all leaf node pairs, the highest one is guaranteed to be a pair of neighbouring nodes. The reason is that lesser ones may have had internal edges removed, but the highest one is guaranteed to have no internal edges reduced during normalization.
+   The ultimate idea is that, of `combined_count_and_normalize()` for all leaf node pairs, the result with the highest sum is guaranteed to be a pair of neighbouring nodes. The reason is that lesser ones may have had internal edges subtracted during normalization while the highest one is guaranteed to have no internal edges reduced.
    
    In the example graph above, the edge counts are ...
 

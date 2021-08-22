@@ -13733,12 +13733,28 @@ walk_weight = <span class="hljs-number">0</span>
 </tbody>
 </table>
 <p><img src="dot_7cdebedc8861c604b14c3330aeb1c286.svg" alt="Dot diagram"></p>
-<p>The algorithm essentially boils down to counting edges. Picking any leaf node in the <a href="#BM_(tree)%2Fi">tree</a>, if you were to take the paths from that leaf node to all other leaf nodes and count the number of times each edge gets walked, ...</p>
+<p>The algorithm essentially boils down to counting edges. Picking any leaf node in the <a href="#BM_(tree)%2Fi">tree</a>, if you were to collect the paths from that leaf node to all other leaf nodes, then count the number of times each edge is encountered across all paths in the collection, ...</p>
 <ul>
-<li>that leaf node's limb gets walked <code>leaf_count - 1</code> times.</li>
-<li>every other leaf node's limb gets walked once.</li>
+<li>the picked leaf node's limb gets walked <code>leaf_count - 1</code> times.</li>
+<li>every other limb gets walked once.</li>
 </ul>
-<p>For example, the supplied <a href="#BM_(tree)%2Fi">tree</a> above has 6 leaf nodes. Given the paths from v1 to every other leaf node, v1's limb is walked 5 times (6 - 1 = 5) while every other leaf node's limb is walked exactly once...</p>
+<p><a href="ch7_code/src/neighbour_detect/EdgeOnlyVariant.py">ch7_code/src/neighbour_detect/EdgeOnlyVariant.py</a> (lines 85 to 99):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>(<span class="hljs-params">g: Graph, leaf_id: N</span>) -&gt; Counter[E]:</span>
+    <span class="hljs-comment"># Collect paths from leaf_id to all other leaf nodes</span>
+    path_collection = []
+    <span class="hljs-keyword">for</span> other_leaf_id <span class="hljs-keyword">in</span> get_leaf_nodes(g):
+        <span class="hljs-keyword">if</span> leaf_id == other_leaf_id:
+            <span class="hljs-keyword">continue</span>
+        path = get_path(g, leaf_id, other_leaf_id)
+        path_collection.append(path)
+    <span class="hljs-comment"># Count edges across all paths</span>
+    edge_counts = Counter()
+    <span class="hljs-keyword">for</span> path <span class="hljs-keyword">in</span> path_collection:
+        edge_counts.update(path)
+    <span class="hljs-comment"># Return edge counts</span>
+    <span class="hljs-keyword">return</span> edge_counts
+</code></pre>
+<p>For example, the <a href="#BM_(tree)%2Fi">tree</a> has 6 leaf nodes: [v0, v1, v2, v3, v4, v5, v6]. Given the paths from v1 to every other leaf node, v1's limb is walked 5 times (6 - 1 = 5) while every other limb is walked exactly once...</p>
 <p><img src="dot_7cb123d9a3d434f7ee43508c0aa83f11.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -13768,7 +13784,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p>Similarly, given the paths from v2 to every other leaf node, v2's limb is walked 5 times (6 - 1 = 5) while every other leaf node's limb is walked exactly once.</p>
+<p>Similarly, given the paths from v2 to every other leaf node, v2's limb is walked 5 times (6 - 1 = 5) while every other limb is walked exactly once.</p>
 <p><img src="dot_9d96a74bafefab7819740530bf8ce82d.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -13798,21 +13814,18 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><a href="ch7_code/src/neighbour_detect/EdgeOnlyVariant.py">ch7_code/src/neighbour_detect/EdgeOnlyVariant.py</a> (lines 56 to 64):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>(<span class="hljs-params">g: Graph, leaf: N</span>) -&gt; Counter[E]:</span>
-    counter = Counter()
-    leaf_list = get_leaf_nodes(g)
-    leaf_list.remove(leaf)
-    <span class="hljs-keyword">for</span> other_leaf <span class="hljs-keyword">in</span> leaf_list:
-        edges = path(g, leaf, other_leaf)
-        counter.update(edges)
-    <span class="hljs-keyword">return</span> counter
-</code></pre>
-<p>Combining the edge counts for both v1 and v2 makes it so that...</p>
+<p>Combining the edge counts for a pair of leaf nodes makes it so that...</p>
 <ul>
-<li>both v1 and v2 get walked 6 times.</li>
-<li>every other leaf node gets walked 2 times.</li>
+<li>the pair's limbs get walked <code>leaf_count</code> times.</li>
+<li>every other limb gets walked 2 times.</li>
 </ul>
+<p><a href="ch7_code/src/neighbour_detect/EdgeOnlyVariant.py">ch7_code/src/neighbour_detect/EdgeOnlyVariant.py</a> (lines 118 to 121):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combined_count</span>(<span class="hljs-params">g: Graph, leaf1: N, leaf2: N</span>) -&gt; Counter[E]:</span>
+    c1 = count(g, leaf1)
+    c2 = count(g, leaf2)
+    <span class="hljs-keyword">return</span> c1 + c2
+</code></pre>
+<p>For example, <code>combine_counts(v1,v2)</code> counts v1 and v2's limb 6 times while every other limb is counted 2 times ...</p>
 <p><img src="dot_10f09e051c1bfb08f76cbb6091ded9ef.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -13875,19 +13888,22 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><a href="ch7_code/src/neighbour_detect/EdgeOnlyVariant.py">ch7_code/src/neighbour_detect/EdgeOnlyVariant.py</a> (lines 68 to 72):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combined_count</span>(<span class="hljs-params">g: Graph, leaf1: N, leaf2: N</span>) -&gt; Counter[E]:</span>
-    leaf1_counts = count(g, leaf1)
-    leaf2_counts = count(g, leaf2)
-    <span class="hljs-keyword">return</span> leaf1_counts + leaf2_counts
+<p>The key to this algorithm is to normalize the results of <code>combine_counts()</code> such that each selected leaf node's limb count (<code>leaf_count</code>) matches the count of the other limbs (2). To do this, each edge in the path between the selected leaf node pairs must be subtracted <code>leaf_count - 2</code> times from <code>combine_count()</code>'s result.</p>
+<p><a href="ch7_code/src/neighbour_detect/EdgeOnlyVariant.py">ch7_code/src/neighbour_detect/EdgeOnlyVariant.py</a> (lines 141 to 147):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_count_and_normalize</span>(<span class="hljs-params">g: Graph, leaf1: N, leaf2: N</span>) -&gt; Counter[E]:</span>
+    edge_counts = combined_count(g, leaf1, leaf2)
+    leaf_count = get_leaf_count(g)
+    path_edges = get_path(g, leaf1, leaf2)
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> path_edges:
+        edge_counts[e] -= leaf_count - <span class="hljs-number">2</span>
+    <span class="hljs-keyword">return</span> edge_counts
 </code></pre>
-<p>The key to this algorithm is to normalize the edge counts for the initially chosen leaf node limbs (v1 and v2 each limb counted 6 times) such that they match the edge counts of the other leaf nodes (v0, v3, v4, and v5 each limb counted 2 times). Since it's known that the the initially chosen leaf node's edge count is equal to the number of leaf nodes in the <a href="#BM_(tree)%2Fi">tree</a>, the algorithm here is simple:</p>
-<ol>
-<li>get path between the initially chosen leaf nodes.</li>
-<li>subtract each edge in the path (n - 2) times from the counts above.</li>
-</ol>
-<p>In the above example, the path between (v1,v2) is the edges (v1,i0) and (i0,v2). Subtract both those edges 6 - 2 (4) times from the edge counts above.</p>
-<p><img src="dot_6fc881a6b26c05e4d5305bf9550439e3.svg" alt="Dot diagram"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Wondering why you can't just remove the selected leaf pair's limbs <code>leaf_count - 2</code> times vs removing the edges from the path <code>leaf_count - 2</code> times? It's explained further below.</p>
+</div>
+<p>For example, <code>combine_count_and_normalize(v1,v2)</code> requires subtracting each edge in path(v1,v2) 4 times from the counts...</p>
+<p><img src="dot_c9c9c341c9dc25df372326d862d81711.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -13960,21 +13976,13 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><a href="ch7_code/src/neighbour_detect/EdgeOnlyVariant.py">ch7_code/src/neighbour_detect/EdgeOnlyVariant.py</a> (lines 76 to 82):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normalized_combined_count</span>(<span class="hljs-params">g: Graph, leaf1: N, leaf2: N</span>) -&gt; Counter[E]:</span>
-    leaf_count = get_leaf_count(g)
-    edge_counts = combined_count(g, leaf1, leaf2)
-    path_edges = path(g, leaf1, leaf2)
-    <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> path_edges:
-        edge_counts[edge] -= leaf_count - <span class="hljs-number">2</span>
-    <span class="hljs-keyword">return</span> edge_counts
-</code></pre>
 <p>The insight here is that, if the two selected leaf nodes are neighbours, the path between them should only ever have two edges: their limbs. In the example above, v1 and v2 are neighbours and as such path(v1,v2) contains only their limbs: [(v1,i0), (v2,i0)].</p>
 <p><img src="dot_26b3ab8f61db48bd059847cab00f9437.svg" alt="Dot diagram"></p>
-<p>Contrast to when the two selected leaf nodes are <em>not</em> neighbours. The path between them will contain their limbs <em>in addition to internal edges</em>. For example, path(v1,v5) has the edges [(v1,i0), (i0,i1), (v5,i1)].</p>
+<p>Contrast to when the two selected leaf nodes are <em>not</em> neighbours. The path between them will internal edges in addition to their limbs. For example, path(v1,v5) has the edges [(v1,i0), (i0,i1), (v5,i1)].</p>
 <p><img src="dot_a288a7f2d69a2d20eca39a8edefb53c9.svg" alt="Dot diagram"></p>
-<p>That means if the nodes are NOT neighbours, normalizing the edge counts for the initially chosen leaf node limbs will correct the limb counts for those leaf nodes IN ADDITION TO reducing internal edge counts. For example, since v1 and v5 are not neighbours, normalization reduces (i0,i1) along with the limbs of v1 and v5...</p>
-<p><img src="dot_7f134aeb49498b6a8f022dd9c7e7f956.svg" alt="Dot diagram"></p>
+<p>That means if the nodes are <em>not</em> neighbours, <code>combine_count_and_normalize()</code> will correct the counts of the limbs <em>in addition to reducing internal edge counts</em>.</p>
+<p>For example, since v1 and v5 are not neighbours, <code>combine_count_and_normalize(v1,v5)</code> reduces (i0,i1) along with the limbs of v1 and v5...</p>
+<p><img src="dot_8e9697f6c7023d4a171e4eead1d626e3.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -14048,7 +14056,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tbody>
 </table>
 <p>It turns out that any internal edges between the path of the two selected leaf nodes get reduced to 2 just like the leaf limbs they normalized. In the example above, (i0,i1) is reduced to 2 because path(v1,v5) goes through (i0,i1).</p>
-<p>To understand why, consider what's happening in the above example. For count(v1), v1's limb gets walked 5 times (6 - 1 = 5) while every other limb is walked exactly once...</p>
+<p>To understand why, consider what's happening in the example. For <code>count(v1)</code>, v1's limb gets walked 5 times (6 - 1 = 5) while every other limb is walked exactly once...</p>
 <p><img src="dot_7cb123d9a3d434f7ee43508c0aa83f11.svg" alt="Dot diagram"></p>
 <p>Similarly, notice how the count of each internal edge walked is consistent with the number of leaf nodes it leads to. For example, in the diagram above, internal edge (i1,i2) separates the <a href="#BM_(tree)%2Fi">tree</a> into two sub-<a href="#BM_(tree)%2Fi">tree</a>s where the...</p>
 <ul>
@@ -14063,7 +14071,7 @@ walk_weight = <span class="hljs-number">0</span>
 </ul>
 <p>In the example above, v1 is the i1 side, meaning that (i1,i2) gets walked 2 times. Had v3 been chosen instead, v3 would be on the i2 side, meaning that (i1,i2) gets walked 4 times.</p>
 <p>As such, if you take the edge counts for a leaf node on the i1 side + the edge counts for a leaf node on the i2 side, (i1,i2)'s count is the total number of leaf nodes in the <a href="#BM_(tree)%2Fi">tree</a>: 6.</p>
-<p><img src="dot_22127bcd85e5e358d6776d7f91e0e312.svg" alt="Dot diagram"></p>
+<p><img src="dot_0a4b5e858c994f703798c1943be8992d.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -14125,8 +14133,8 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p>This is why the internal edges between the path of the initial leaf nodes will always get normalized to 2. When you add them together, they equal to the number of leaf nodes in the <a href="#BM_(tree)%2Fi">tree</a> 6. When you normalize that number, you're removing <code>leaf_count - 2</code> from that, resulting in 2.</p>
-<p><img src="dot_ecfc4a93dffb9e6940e5fa7be2cb7b52.svg" alt="Dot diagram"></p>
+<p>This is why the internal edges between the path of the selected leaf nodes will always get normalized to 2. When you add their counts together, they equal to <code>leaf_count</code>. When you normalize those counts, you're removing <code>leaf_count - 2</code> from that, resulting in 2.</p>
+<p><img src="dot_6186e00e67dd8903950d5312e398f8b1.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -14199,7 +14207,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p>The ultimate idea is that, of the normalized edge counts for all leaf node pairs, the highest one is guaranteed to be a pair of neighbouring nodes. The reason is that lesser ones may have had internal edges removed, but the highest one is guaranteed to have no internal edges reduced during normalization.</p>
+<p>The ultimate idea is that, of <code>combined_count_and_normalize()</code> for all leaf node pairs, the result with the highest sum is guaranteed to be a pair of neighbouring nodes. The reason is that lesser ones may have had internal edges subtracted during normalization while the highest one is guaranteed to have no internal edges reduced.</p>
 <p>In the example graph above, the edge counts are ...</p>
 <table>
 <thead>

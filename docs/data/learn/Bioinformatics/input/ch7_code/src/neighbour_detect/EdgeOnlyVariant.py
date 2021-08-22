@@ -1,13 +1,42 @@
 from collections import Counter
+from itertools import combinations
 from typing import TypeVar
 
 from graph.UndirectedGraph import Graph
+from helpers.InputUtils import str_to_list
 from helpers.Utils import slide_window
 
 N = TypeVar('N')
 ND = TypeVar('ND')
 E = TypeVar('E')
 ED = TypeVar('ED')
+
+
+def create_tree(edges: list[list[str, str]]) -> Graph:
+    g = Graph()
+    for n in {n for e in edges for n in e}:
+        g.insert_node(n)
+    for n1, n2 in edges:
+        g.insert_edge(f'{n1}-{n2}', n1, n2)
+    return g
+
+
+def tree_to_dot(g: Graph) -> str:
+    ret = '''
+graph G {
+ graph[rankdir=LR]
+ node[shape=none, fontname="Courier-Bold", fontsize=10, width=0.3, height=0.3, fixedsize=true]
+ edge[fontname="Courier-Bold", fontsize=10]
+ ranksep=0.25
+'''
+    nodes = sorted(g.get_nodes())
+    for i, n in enumerate(nodes):
+        ret += f'{n}\n'
+    for e in g.get_edges():
+        n1, n2 = g.get_edge_ends(e)
+        ret += f'{n1} -- {n2} [label=""]\n'
+    ret += '}'
+    return ret
 
 
 def find_nodes_between_leaves(g: Graph, n: N, end_n: N, n_walk: list[N]):
@@ -25,7 +54,7 @@ def find_nodes_between_leaves(g: Graph, n: N, end_n: N, n_walk: list[N]):
     n_walk.pop()
 
 
-def path(g: Graph, n: N, end_n: N) -> list[E]:
+def get_path(g: Graph, n: N, end_n: N) -> list[E]:
     edges = []
     nodes = []
     find_nodes_between_leaves(g, n, end_n, nodes)
@@ -53,53 +82,87 @@ def get_leaf_count(g: Graph[N, ND, E, ED]) -> len:
 
 
 # MARKDOWN_COUNT
-def count(g: Graph, leaf: N) -> Counter[E]:
-    counter = Counter()
-    leaf_list = get_leaf_nodes(g)
-    leaf_list.remove(leaf)
-    for other_leaf in leaf_list:
-        edges = path(g, leaf, other_leaf)
-        counter.update(edges)
-    return counter
+def count(g: Graph, leaf_id: N) -> Counter[E]:
+    # Collect paths from leaf_id to all other leaf nodes
+    path_collection = []
+    for other_leaf_id in get_leaf_nodes(g):
+        if leaf_id == other_leaf_id:
+            continue
+        path = get_path(g, leaf_id, other_leaf_id)
+        path_collection.append(path)
+    # Count edges across all paths
+    edge_counts = Counter()
+    for path in path_collection:
+        edge_counts.update(path)
+    # Return edge counts
+    return edge_counts
 # MARKDOWN_COUNT
+
+
+def main_count():
+    edges, _ = str_to_list(input().strip(), 0)
+    g = create_tree(edges)
+    print('Edge counts walked from each leaf node...')
+    print()
+    print('```{dot}')
+    print(f'{tree_to_dot(g)}')
+    print('```')
+    print()
+    for leaf in sorted(get_leaf_nodes(g)):
+        c = sorted(count(g, leaf).most_common())
+        edge_cnt_str = ', '.join(f'{e}:{cnt}' for e, cnt in c)
+        print(f' * count({leaf}) = {edge_cnt_str}')
 
 
 # MARKDOWN_COMBINE_COUNT
 def combined_count(g: Graph, leaf1: N, leaf2: N) -> Counter[E]:
-    leaf1_counts = count(g, leaf1)
-    leaf2_counts = count(g, leaf2)
-    return leaf1_counts + leaf2_counts
+    c1 = count(g, leaf1)
+    c2 = count(g, leaf2)
+    return c1 + c2
 # MARKDOWN_COMBINE_COUNT
 
 
+def main_combine_count():
+    edges, _ = str_to_list(input().strip(), 0)
+    g = create_tree(edges)
+    print('Combined edge counts...')
+    print()
+    print('```{dot}')
+    print(f'{tree_to_dot(g)}')
+    print('```')
+    print()
+    for l1, l2 in combinations(sorted(get_leaf_nodes(g)), r = 2):
+        c = sorted(combined_count(g, l1, l2).most_common())
+        edge_cnt_str = ', '.join(f'{e}:{cnt}' for e, cnt in c)
+        print(f' * count({l1}) + count({l2}) = {edge_cnt_str}')
+
+
 # MARKDOWN_NORMALIZED_COMBINE_COUNT
-def normalized_combined_count(g: Graph, leaf1: N, leaf2: N) -> Counter[E]:
-    leaf_count = get_leaf_count(g)
+def combine_count_and_normalize(g: Graph, leaf1: N, leaf2: N) -> Counter[E]:
     edge_counts = combined_count(g, leaf1, leaf2)
-    path_edges = path(g, leaf1, leaf2)
-    for edge in path_edges:
-        edge_counts[edge] -= leaf_count - 2
+    leaf_count = get_leaf_count(g)
+    path_edges = get_path(g, leaf1, leaf2)
+    for e in path_edges:
+        edge_counts[e] -= leaf_count - 2
     return edge_counts
 # MARKDOWN_NORMALIZED_COMBINE_COUNT
 
 
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        val = input().strip()
+        if val == 'count':
+            main_count()
+        elif val == 'combined_count':
+            main_combine_count()
+        else:
+            raise ValueError('???')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    g = Graph()
-    g.insert_node('v0')
-    g.insert_node('v1')
-    g.insert_node('v2')
-    g.insert_node('v3')
-    g.insert_node('v4')
-    g.insert_node('v5')
-    g.insert_node('i0')
-    g.insert_node('i1')
-    g.insert_node('i2')
-    g.insert_edge('v0-i0', 'v0', 'i0', 11.0)
-    g.insert_edge('v1-i0', 'v1', 'i0', 2.0)
-    g.insert_edge('v2-i0', 'v2', 'i0', 10.0)
-    g.insert_edge('v5-i1', 'v5', 'i1', 7.0)
-    g.insert_edge('v4-i2', 'v4', 'i2', 4.0)
-    g.insert_edge('v3-i2', 'v3', 'i2', 3.0)
-    g.insert_edge('i0-i1', 'i0', 'i1', 4.0)
-    g.insert_edge('i1-i2', 'i1', 'i2', 3.0)
-    print(f'{count_to_all(g, "v0")}')
+    main()
