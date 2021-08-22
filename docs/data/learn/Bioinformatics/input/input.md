@@ -11774,6 +11774,303 @@ graph_show
    | ---------------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
    | **Result**       |    6    |    4    |    2    |    2    |    2    |    2    |    2    |    2    |
 
+   The key piece of insight here is that, if the initial two selected leaf nodes are neighbours, their path to each other should only ever have two edges: the limbs of those initial leaf nodes. In the example above, v1 and v2 are neighbours and as such path(v1,v2) contains only their limbs: [(v1,i0), (v2,i0)].
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_2 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="path(v1,v2)"
+     v0_x -- i0_x [label=" "]
+     v1_x -- i0_x [label=" ", penwidth=2.5, color=red]
+     v2_x -- i0_x [label=" ", penwidth=2.5, color=red]
+     i0_x -- i1_x [label=" "]
+     i1_x -- i2_x [label=" "]
+     i2_x -- v3_x [label=" "]
+     i2_x -- v4_x [label=" "]
+     i1_x -- v5_x [label=" "]
+     v0_x [label=v0]
+     v1_x [label=v1, style=filled, fillcolor=gray]
+     v2_x [label=v2, style=filled, fillcolor=gray]
+     v3_x [label=v3]
+     v4_x [label=v4]
+     v5_x [label=v5]
+     i0_x [label=i0]
+     i1_x [label=i1]
+     i2_x [label=i2]
+     i2_x [label=i2]
+     i1_x [label=i1]
+    }
+   }
+   ```
+
+   Contrast this to when the initial two selected leaf nodes are NOT neighbours. The path between those neighbours will contain the limbs of those initial leaf nodes as well as one or more internal nodes. For example, path(v1, v5) has the edges [(v1,i0), (i0,i1), (v5,i1)].
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_2 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="path(v1,v5)"
+     v0_x -- i0_x [label=" "]
+     v1_x -- i0_x [label=" ", penwidth=2.5, color=red]
+     v2_x -- i0_x [label=" "]
+     i0_x -- i1_x [label=" ", penwidth=2.5, color=red]
+     i1_x -- i2_x [label=" "]
+     i2_x -- v3_x [label=" "]
+     i2_x -- v4_x [label=" "]
+     i1_x -- v5_x [label=" ", penwidth=2.5, color=red]
+     v0_x [label=v0]
+     v1_x [label=v1, style=filled, fillcolor=gray]
+     v2_x [label=v2]
+     v3_x [label=v3]
+     v4_x [label=v4]
+     v5_x [label=v5, style=filled, fillcolor=gray]
+     i0_x [label=i0]
+     i1_x [label=i1]
+     i2_x [label=i2]
+     i2_x [label=i2]
+     i1_x [label=i1]
+    }
+   }
+   ```
+
+   That means if the nodes are NOT neighbours, normalizing the edge counts for the initially chosen leaf node limbs will correct the limb counts for those leaf nodes IN ADDITION TO reducing internal edge counts. For example, since v1 and v5 are not neighbours ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_4 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="edge counts from v1 + v5 - 4 * path(v1,v5)"
+     v0_w -- i0_w [label=" ", penwidth=2.5, color="orange:invis:purple"]
+     v1_w -- i0_w [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     v2_w -- i0_w [label=" ", penwidth=2.5, color="orange:invis:purple"]
+     i0_w -- i1_w [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     i1_w -- i2_w [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
+     i2_w -- v3_w [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     i2_w -- v4_w [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     i1_w -- v5_w [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     v0_w [label=v0]
+     v1_w [label=v1, style=filled, fillcolor=purple]
+     v2_w [label=v2, style=filled, fillcolor=orange]
+     v3_w [label=v3]
+     v4_w [label=v4]
+     v5_w [label=v5]
+     i0_w [label=i0]
+     i1_w [label=i1]
+     i2_w [label=i2]
+     i2_w [label=i2]
+     i1_w [label=i1]
+    }
+    subgraph cluster_3 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="edge counts from v1 + v5"
+     v0_x -- i0_x:n [label=" ", penwidth=2.5, color="orange:invis:purple"]
+     v1_x -- i0_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:purple:invis:purple:invis:orange"]
+     v2_x -- i0_x:s [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:purple"]
+     i0_x -- i1_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange:invis:orange:invis:orange"]
+     i1_x -- i2_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
+     i2_x -- v3_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     i2_x -- v4_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     i1_x -- v5_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
+     v0_x [label=v0]
+     v1_x [label=v1, style=filled, fillcolor=purple]
+     v2_x [label=v2]
+     v3_x [label=v3]
+     v4_x [label=v4]
+     v5_x [label=v5, style=filled, fillcolor=orange]
+     i0_x [label=i0]
+     i1_x [label=i1]
+     i2_x [label=i2]
+     i2_x [label=i2]
+     i1_x [label=i1]
+    }
+    subgraph cluster_1 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="edge counts from v5"
+     v0_z -- i0_z [label=" ", penwidth=2.5, color=orange]
+     v1_z -- i0_z [label=" ", penwidth=2.5, color=orange]
+     v2_z -- i0_z [label=" ", penwidth=2.5, color=orange]
+     i0_z -- i1_z [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange"]
+     i1_z -- i2_z [label=" ", penwidth=2.5, color="orange:invis:orange"]
+     i2_z -- v3_z [label=" ", penwidth=2.5, color=orange]
+     i2_z -- v4_z [label=" ", penwidth=2.5, color=orange]
+     i1_z -- v5_z [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange"]
+     v0_z [label=v0]
+     v1_z [label=v1]
+     v2_z [label=v2]
+     v3_z [label=v3]
+     v4_z [label=v4]
+     v5_z [label=v5, style=filled, fillcolor=orange]
+     i0_z [label=i0]
+     i1_z [label=i1]
+     i2_z [label=i2]
+     i2_z [label=i2]
+     i1_z [label=i1]
+    }
+    subgraph cluster_2 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="edge counts from v1"
+     v0_y -- i0_y [label=" ", penwidth=2.5, color=purple]
+     v1_y -- i0_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:purple:invis:purple"]
+     v2_y -- i0_y [label=" ", penwidth=2.5, color=purple]
+     i0_y -- i1_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple"]
+     i1_y -- i2_y [label=" ", penwidth=2.5, color="purple:invis:purple"]
+     i2_y -- v3_y [label=" ", penwidth=2.5, color=purple]
+     i2_y -- v4_y [label=" ", penwidth=2.5, color=purple]
+     i1_y -- v5_y [label=" ", penwidth=2.5, color=purple]
+     v0_y [label=v0]
+     v1_y [label=v1, style=filled, fillcolor=purple]
+     v2_y [label=v2]
+     v3_y [label=v3]
+     v4_y [label=v4]
+     v5_y [label=v5]
+     i0_y [label=i0]
+     i1_y [label=i1]
+     i2_y [label=i2]
+     i2_y [label=i2]
+     i1_y [label=i1]
+    }
+   }
+   ```
+
+   |                  | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
+   |------------------|---------|---------|---------|---------|---------|---------|---------|---------|
+   | v1               |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
+   | v5               |    3    |    2    |    1    |    1    |    1    |    1    |    1    |    5    |
+   | -4 * path(v1,v5) |   -4    |         |         |   -4    |         |         |         |   -4    |
+   | ---------------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+   | **Result**       |    2    |    4    |    2    |    2    |    2    |    2    |    2    |    2    |
+
+   It turns out that any internal edges between the path of the initial two leaf nodes get reduced to 2 just like the leaf limbs they normalized. To understand why, consider what's happening in the above example. In the above example, the paths from v1 to every other leaf node, v1's limb is walked 6 - 1 times (5) while every other leaf node's limb is walked exactly once...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="edge counts from v1"
+     v0_x -- i0_x [label=" ", penwidth=2.5, color="#ff0300"]
+     v1_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00:invis:#42c000:invis:#818100:invis:#c04200:invis:#ff0300"]
+     v2_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00"]
+     i0_x -- i1_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100:invis:#c04200"]
+     i1_x -- i2_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100"]
+     i2_x -- v3_x [label=" ", penwidth=2.5, color="#42c000"]
+     i2_x -- v4_x [label=" ", penwidth=2.5, color="#818100"]
+     i1_x -- v5_x [label=" ", penwidth=2.5, color="#c04200"]
+     v0_x [label=v0, style=filled, fillcolor="#ff0300"]
+     v1_x [label=v1, penwidth=5]
+     v5_x [label=v5, style=filled, fillcolor="#c04200"]
+     v4_x [label=v4, style=filled, fillcolor="#818100"]
+     v3_x [label=v3, style=filled, fillcolor="#42c000"]
+     v2_x [label=v2, style=filled, fillcolor="#03ff00"]
+     i0_x [label=i0]
+     i1_x [label=i1]
+     i2_x [label=i2]
+     i2_x [label=i2]
+    }
+   }
+   ```
+
+   Similarly, notice how the number of internal edges walked is consistent with the number of leaf nodes on the other end of that internal edge. In the diagram above, internal edge (i1,i2) separates the tree into two sub-trees, ...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="subgraphs separated by (i1,i2)"
+     v0_x -- i0_x [label=" ", color=red]
+     v1_x -- i0_x [label=" ", color=red]
+     v2_x -- i0_x [label=" ", color=red]
+     i0_x -- i1_x [label=" ", color=red]
+     i1_x -- i2_x [label=" ", style=dashed]
+     i2_x -- v3_x [label=" ", color=blue]
+     i2_x -- v4_x [label=" ", color=blue]
+     i1_x -- v5_x [label=" ", color=red]
+     v0_x [label=v0, color=red]
+     v1_x [label=v1, color=red]
+     v2_x [label=v2, color=red]
+     v3_x [label=v3, color=blue]
+     v4_x [label=v4, color=blue]
+     v5_x [label=v5, color=red]
+     i0_x [label=i0, color=red]
+     i1_x [label=i1, color=red]
+     i2_x [label=i2, color=blue]
+     i2_x [label=i2, color=blue]
+    }
+   }
+   ```
+
+   ... where the...
+   
+   * i1 side has 4 leaf nodes: [v0, v1, v2, v5].
+   * i2 side has 2 leaf nodes: [v4, v3].
+
+   Calculating edge counts from any leaf node on the...
+
+   * i1 side will walk over (i1,i2) exactly 2 times (the number of leaf nodes on the i2 side).
+   * i2 side will walk over (i1,i2) exactly 4 times (the number of leaf nodes on the i1 side).
+
+   As such, if you take the edge counts for a leaf node on the i1 side + the edge counts for a leaf node on the i2 side, (i1,i2)'s count is the total number of leaf nodes in the tree: 6.
+
+   This is why the internal edges between the path of the initial leaf nodes will always get normalized to 2. When you add them together, they equal to the number of leaf nodes in the tree. When you normalize that number, you're subtracting the number of leaf nodes - 2 (resulting in 2).
+
+   The ultimate idea is that, of all possible pairs of initial leaf nodes, by adding the edge counts and normalizing each, the one with the highest edge count is guaranteed to be a pair of neighbouring nodes. In the example graph above, the edge counts are ...
+
+   |        |   v0   |   v1   |   v2   |   v3   |   v4   |   v5   |
+   |  ----  |  ----  |  ----  |  ----  |  ----  |  ----  |  ----  |
+   | **v0** |   0    |   22   |   22   |   16   |   16   |   18   |
+   | **v1** |   22   |   0    |   22   |   16   |   16   |   18   |
+   | **v2** |   22   |   22   |   0    |   16   |   16   |   18   |
+   | **v3** |   16   |   16   |   16   |   0    | **26** |   20   |
+   | **v4** |   16   |   16   |   16   |   26   |   0    |   20   |
+   | **v5** |   18   |   18   |   18   |   20   |   20   |   0    |
+
+   v3 and v4 have the highest count (26) and as such are identified as being neighbours.
+
+
+
+
+
+
+
+
+
+
+
+
+   n1='v1' n2='v5'
+     [('i0-i1', 3), ('i1-i2', 2), ('v0-i0', 1), ('v1-i0', 5), ('v2-i0', 1), ('v3-i2', 1), ('v4-i2', 1), ('v5-i1', 1)] -- total of 15   FROM v1
+     [('i0-i1', 3), ('i1-i2', 2), ('v0-i0', 1), ('v1-i0', 1), ('v2-i0', 1), ('v3-i2', 1), ('v4-i2', 1), ('v5-i1', 5)] -- total of 15   FROM v5
+     [('i0-i1', 6), ('i1-i2', 4), ('v0-i0', 2), ('v1-i0', 6), ('v2-i0', 2), ('v3-i2', 2), ('v4-i2', 2), ('v5-i1', 6)] -- total of 30   v1 + v5
+     [('i0-i1', 2), ('i1-i2', 4), ('v0-i0', 2), ('v1-i0', 2), ('v2-i0', 2), ('v3-i2', 2), ('v4-i2', 2), ('v5-i1', 2)] -- total of 18   v1 + v5 NORM
+
    n1='v1' n2='v2'
      [('i0-i1', 3), ('i1-i2', 2), ('v0-i0', 1), ('v1-i0', 5), ('v2-i0', 1), ('v3-i2', 1), ('v4-i2', 1), ('v5-i1', 1)] -- total of 15   FROM v1
      [('i0-i1', 3), ('i1-i2', 2), ('v0-i0', 1), ('v1-i0', 1), ('v2-i0', 5), ('v3-i2', 1), ('v4-i2', 1), ('v5-i1', 1)] -- total of 15   FROM v2
