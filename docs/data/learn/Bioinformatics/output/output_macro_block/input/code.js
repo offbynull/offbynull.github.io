@@ -74,6 +74,7 @@ const lines = content.split(/[\r\n]/g);
 
 const lang = lines.length < 1 ? '' : lines[0];
 const regex = lines.length < 2 ? /^([\s\S]*)$/  : new RegExp(lines[1], '');
+const extra = lines.length < 3 ? '' : lines[2];
 if (/^{.*}$/.exec(lang) !== null) {
     throw Error(`The language specified cannot be wrapped in curly braces: ${lang}`);
 }
@@ -94,7 +95,9 @@ linesUntilFoundEnd = data.slice(0, isolation.index + found.length).split('\n').l
 const trimCount = getStartingSpaceCount(found);
 found = knockback(found, trimCount);
 
-const ret = ''
-        + '`{bm-disable-all}`[' + filePath + '](' + filePath + ') (lines ' + linesUntilFoundStart + ' to ' + linesUntilFoundEnd + '):`{bm-enable-all}`\n\n'
-        + '```' + lang + '\n' + found + '\n```';
+var ret = ''
+if (extra.indexOf('no_preamble') == -1) {
+    ret += '`{bm-disable-all}`[' + filePath + '](' + filePath + ') (lines ' + linesUntilFoundStart + ' to ' + linesUntilFoundEnd + '):`{bm-enable-all}`\n\n';
+}
+ret += '```' + lang + '\n' + found + '\n```';
 fs.writeFileSync('/output/output.md', ret, { encoding: 'utf8' });
