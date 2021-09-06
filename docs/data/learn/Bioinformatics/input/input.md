@@ -6327,6 +6327,198 @@ To calculate the real number of reversals need for linear breakpoint graph_GRs (
 UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a phylogenetic tree across a set of species (a tree that shows how closely a set of species are related / how they branched out). See distance matrix definition.
 ```
 
+## Distance Phylogeny
+
+`{bm} /(Algorithms\/Distance Phylogeny)_TOPIC/`
+
+```{prereq}
+Algorithms/K-mer_TOPIC
+```
+
+Phylogeny is the concept of inferring the evolutionary history of a set of biological entities (e.g. animal species, viruses, etc..) by inspecting properties of those entities for relatedness (e.g. phenotypic, genotypic, etc..).
+ 
+```{svgbob}
+                      * "Ancestor Animal"
+                     / \
+                    /   \
+                   /     \
+"Ancestor Feline" *       \
+                 / \       \
+                /   \       \
+               /     \       \
+              *       *       *
+             Cat     Lion    Bear
+```
+
+Evolutionary history is often displayed as a tree called a phylogenetic tree, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The phylogenetic tree may be a rooted tree or an unrooted tree.
+
+The example above shows a phylogenetic tree for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.
+
+The typical process for phylogeny is to first quantify how related pairs of entities are, where each relatedness quantity is referred to as a distance (e.g. `dist(cat, lion) = 2`). Then, work backwards to find a phylogenetic tree that fits those distances.
+
+The distance may be any metric so long as ...
+
+ * it computes the distance to itself as 0 (e.g. `dist(cat, cat) = 0`)
+ * it computes the distance to any other entity as > 0 (e.g. `dist(cat, lion) = 2`)
+ * it computes the same distance for the same pair regardless of order (e.g. `dist(cat, lion) = dist(lion, cat)`)
+ * computed distances don't leapfrog each other (e.g. `dist(cat, lion) + dist(lion, dog) >= dist(cat, dog)`)
+
+````{note}
+The last point may be confusing. All it's saying is that taking an indirect path between two species should produce a distance that's >= the direct path. For example, the direct path between cat and dog is 6: `dist(cat, dog) = 6`. If you were to instead jump from cat to lion `dist(cat, lion) = 2`, then from lion to dog `dist(lion, dog) = 5`, that combined distance should be >= to 6...
+
+```
+dist(cat, dog)  = 6
+dist(cat, lion) = 2
+dist(lion, dog) = 5
+
+dist(cat, lion) + dist(lion, dog) >= dist(cat, dog)
+        2       +        5        >=       6
+                7                 >=       6
+```
+
+The Pevzner book refers to the this as the triangle inequality.
+
+```{svgbob}
+      2
+cat ------ lion
+   \        |
+    \       |
+     \      |
+    6 \     | 5
+       \    |
+        \   |
+         \  |
+          \ |
+          dog
+```
+
+Later on non-conforming distance matrices are discussed called non-additive distance matrices. I don't know if non-additive distance matrices are required to have this specific property, but they should have all others.
+````
+
+Distances for a set of entities are typically represented as a 2D matrix that contains all possible pairings, called a distance matrix. The distance matrix for the example Cat/Lion/Bear phylogenetic tree is ...
+
+|      | Cat | Lion | Bear |
+|------|-----|------|------|
+| Cat  | 0   | 2    | 23   |
+| Lion | 2   | 0    | 23   |
+| Bear | 23  | 23   | 0    |
+
+```{svgbob}
+                      * "Ancestor Animal"
+                     / \
+                 6  /   \
+                   /     \
+"Ancestor Feline" *       \ 16
+                 / \       \
+              1 /   \ 1     \
+               /     \       \
+              *       *       *
+             Cat     Lion    Bear
+
+* "The same tree as shown above, but with distances"
+  "assigned to edge weights"
+```
+
+Note how the distance matrix has the distance for each pair slotted twice, mirrored across the diagonal of 0s (self distances). For example, the distance between bear and lion is listed twice.
+
+Examples of metrics that may be used as distance, referred to as distance metrics, include...
+
+ * hamming distance between DNA sequences.
+ * global alignment score between DNA sequences.
+ * two-break count (reversal distance).
+ * number of similar physical or behavioural attributes.
+ * etc..
+
+### Simple Tree
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Simple Tree)_TOPIC/`
+
+**WHAT**: An unrooted tree where ...
+
+ * every internal node has a degree_GRAPH > 2.
+ * every edge has a weight of > 0.
+ 
+The first point just means the tree can't contain non-branching internal nodes. By definition every leaf node in a tree has a degree_GRAPH of 1, and this restriction makes it so that every internal node must have a degree_GRAPH > 2 instead of >= 2.
+
+```{svgbob}
+"branching (GOOD)"             "non-branching (BAD)"
+
+     *   *                              *
+      \ /                              /   
+       *                              *  
+       |                              |    
+       *                              *    
+
+* "Note how in the non-branching version, the"
+  "node in-between has a degree of 2."
+```
+
+A train of non-branching internal nodes be merged into a single edge.
+
+```{svgbob}
+"non-simple tree"             "simple tree"
+
+         *                             
+        / 1                            
+   *   *                               
+  1 \ / 1                       *   * 
+     *                         1 \ / 2
+   3 |                            *   
+     *                          4 |   
+   1 |                            *   
+     *                         3 / \ 2
+  1 / \ 2                       *   * 
+   *   *                               
+2 /                                    
+ *                                     
+
+* "Non-simple tree transformed into a simple tree. Edges"
+  "that were merged had their weights summed."
+```
+
+**WHY**: A simple tree accurately models many of the the concepts behind phylogeny. Leaf nodes represent known entities, internal nodes represent inferred ancestor entities, and edge weights represent distances between entities.
+
+Having edge weights > 0 models out the restriction on distance metrics specified in the parent section: The distance between any to entities must be > 0. That is, it doesn't make sense for the distance between two entities to be ...
+
+ * < 0 because distance represents how diverged the entities are from each other. What would a negative distance represent?
+ * = 0 because then the two nodes between the edge would represent the same entity. If they did represent the same entity, those nodes would have to be merged, resulting in the edge getting removed.
+
+Having an unrooted tree models out the fact that it isn't impossible to know which inferred shared ancestor came first / is the top-level parent.
+
+Having non-branching internal nodes models out the fact you need at least two disconnected entities to infer that a shared ancestor exists.
+
+**ALGORITHM**: 
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+
+
+### Additive Distance Matrix
+
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -7160,8 +7352,9 @@ graph_show
 
 # Ideas
 
- * CPU optimized C++ alignment - Simple global alignment is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.
- * GPU optimized C++ alignment - Simple global alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.
+ * CPU optimized C++ global alignment - Simple global alignment is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.
+ * GPU optimized C++ global alignment - Simple global alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well.
+ * GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.
  * Deep-learning Regulatory Motif Detection - Try training a deep learning model to "find" regulatory motifs for new transcription factors based on past training data.
 
 # Terminology
@@ -9345,21 +9538,38 @@ graph_show
 
    Coronaviruses, HIV, and influenza are examples of RNA viruses.
 
- * `{bm} phylogenetic tree/(phylogenetic tree|phylogeny tree|phylogenetic|phylogeny|phylogenies|evolutionary tree)/i` - A simple tree showing the degree_NORM in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
+ * `{bm} phylogeny/(phylogeny|phylogenetic)/i` - The concept of inferring the evolutionary history among some set of species (shared ancestry) by inspecting properties of those species (e.g. relatedness of phenotypic or genotypic characteristics).
+ 
+   ```{svgbob}
+                        * "Unknown Animal"
+                       / \
+                      /   \
+                     /     \
+   "Unknown Feline" *       \
+                   / \       \
+                  /   \       \
+                 /     \       \
+                *       *       *
+               Cat     Lion    Bear
+   ```
+
+   In the example above, cat and lion are descendants of some shared ancestor species. Likewise, that ancestor and bears are likely descendants from some other higher up species.
+
+ * `{bm} phylogenetic tree/(phylogenetic tree|phylogeny tree|phylogenies|evolutionary tree)/i` - A tree showing the degree_NORM in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
 
    ```{svgbob}
-                  +--- "Mycoplasma mobile"
-      +-----------+
-      |           +--- "Mycoplasma arthritidis"
-   ---+   
-      |   +----------- "Mycoplasma pulmonis"
-      |   |
-      +---+   +------- "Mycoplasma synoviae"
-          |   |
-          +---+
-              |   +--- "Mycoplasma bovis"
-              +---+
-                  +--- "Mycoplasma agalactiae"
+               +--- "Mycoplasma mobile"
+   +-----------+
+   |           +--- "Mycoplasma arthritidis"
+   |   
+   |   +----------- "Mycoplasma pulmonis"
+   |   |
+   +---+   +------- "Mycoplasma synoviae"
+       |   |
+       +---+
+           |   +--- "Mycoplasma bovis"
+           +---+
+               +--- "Mycoplasma agalactiae"
    ```
 
  * `{bm} distance matrix/(distance matrix|distance matrices)/i` - Given a set of n different species, a distance matrix is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...
@@ -9419,52 +9629,50 @@ graph_show
    ```
 
  * `{bm} tree` - In graph theory, a tree is an acyclic undirected graph in which any two nodes are connected by exactly one path (nodes branch outward / never converge).
-
-   Trees come in two forms:
-   
-   * A tree without a root node (un-rooted tree)...
-
-     ```{svgbob}
-     A   B      C
-     *   *      *
-      \ /       |
-       * D    E *--* F
-        \      /
-       G *----* H
-        /     |\
-       *      * *
-       I      J K
-     ```
-
-   * A tree with a root node (rooted tree)...
-
-     ```{svgbob}
-       * D
-      /|\
-     * * \
-     A B  * G
-         / \
-        *   \
-        I    * H
-            /|\
-           * * \
-           J K  * E
-               / \
-              *   *
-              C   F
-    
-     * "D is the root, and"
-       "as such is placed on"
-       "top while everything"
-       "else flows downward"
-     ```
-   
-   Note that both examples above are the same undirected graph drawn differently. The only difference between is that the rooted version had a non-leaf node (internal node) chosen to be the top-most node where operations should start from (root node).
-
-   For un-rooted trees, any non-leaf node (internal node) may be chosen to be the root node.
+ 
+   Trees come in two forms: rooted trees and unrooted trees. In graph theory, a tree typically refers to an unrooted tree.
 
    ```{note}
-   This is different from the computer science definition of tree, which is an abstract data type representing a hierarchy (always a single root that flows downwards), typically generalized as a directed acyclic graph as opposed to an undirected acyclic graph.
+   This is different from the computer science definition of tree, which is an abstract data type representing a hierarchy (always a single root that flows downwards), typically generalized as a *directed* acyclic graph as opposed to an undirected acyclic graph.
+   ```
+   
+ * `{bm} unrooted tree/(un-rooted tree|unrooted tree)/i` - A tree without a root node...
+
+   ```{svgbob}
+   A   B      C
+   *   *      *
+    \ /       |
+     * D    E *--* F
+      \      /
+     G *----* H
+      /     |\
+     *      * *
+     I      J K
+   ```
+
+   An unrooted tree may be turned into a rooted tree by choosing any non-leaf node (internal node) to be the root node.
+
+ * `{bm} rooted tree` - A tree with a root node...
+
+   ```{svgbob}
+     * D
+    /|\
+   * * \
+   A B  * G
+       / \
+      *   \
+      I    * H
+          /|\
+         * * \
+         J K  * E
+             / \
+            *   *
+            C   F
+  
+   * "D is the root, and"
+     "as such is placed on"
+     "top while everything"
+     "else flows downward"
    ```
 
  * `{bm} degree/(degree)_GRAPH/i` - The number of edges leading into / out of a node of an undirected graph.
@@ -11402,7 +11610,7 @@ graph_show
 
    Part of this may have to do with the assumption that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
 
- * `{bm} neighbouring leaf algorithm` - An algorithm that identifies a pair of neighbouring leaf nodes in the unique simple tree for some additive distance matrix, without having that unique simple tree provided.
+ * `{bm} neighbouring leaf detection` - An algorithm that identifies a pair of neighbouring leaf nodes in the unique simple tree for some additive distance matrix, without having that unique simple tree provided.
 
    The algorithm essentially boils down to edge counting. Consider the following example simple tree...
 
@@ -12442,17 +12650,53 @@ graph_show
    [[0,13,21,21,22,22],[13,0,12,12,13,13],[21,12,0,20,21,21],[21,12,20,0,7,13],[22,13,21,7,0,14],[22,13,21,13,14,0]]
    ```
 
- * `{bm} neighbour joining matrix/(neighbour joining matrix|neighbour-joining matrix)/i` - A matrix used to identify neighbouring leaf nodes in an additive distance matrix.
+ * `{bm} neighbour joining phylogeny` - An algorithm that finds the unique simple tree for some additive distance matrix OR approximates a simple tree for a non-additive distance matrix.
 
-   For each element in the additive distance matrix, the corresponding element in the neighbour joining matrix is calculated as...
+   Similar to additive phylogeny, this algorithm recursively widdles down the distance matrix until the size is 2x2. The simple tree for any 2x2 distance matrix is obvious as ...
+   
+   * it only consists of 2 nodes
+   * it only consists of a single edge (nodes of degree_GRAPH 2 not allowed in simple trees, meaning train of non-branching edges not allowed)
 
-   ```python
-   for a in range(n):
-       tot_dist[l] = sum(D[l,k] for k in range(n))
-   J[i,j] = D[i,j] - tot_dist[i] - tot_dist[j]
+   |    | v0 | v1 |
+   |----|----|----|
+   | v0 | 0  | 14 |
+   | v1 | 14 | 0  |
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    ranksep=0.25
+    subgraph cluster_x {
+     v0_x -- v1_x [label=14]
+     v0_x [label=v0]
+     v1_x [label=v1]
+    }
+   }
    ```
 
-   The minimum element in the neighbour joining matrix is for the element
+   However, unlike additive phylogeny, this algorithm `{bm-target} trim/(trimmed distance matrix|trimmed distance matrices)/i`s the distance matrix by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the distance matrix is 2x2, then finds the limb lengths for those pairs and attaches them to the tree as it backs out of the recursion.
+
+   Because this algorithm is intended to approximate non-additive distance matrices, the original limb length algorithm won't work. Instead, a new limb length algorithm approximates the limb length for neighbouring nodes by averaging total distances.
+
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
+
+ * `{bm} paleontology/(paleontology|palaeontology|palæontology)/i` - The scientific study of ancient organisms: dinosaurs, prehistoric plants, prehistoric insects, prehistoric fungi, etc...
+   
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

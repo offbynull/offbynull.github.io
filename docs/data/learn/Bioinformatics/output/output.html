@@ -136,6 +136,11 @@
 <li><a href="#H_Breakpoint%20Graph%20Algorithm">Breakpoint Graph Algorithm</a></li>
 </ul>
 </ul>
+<li><a href="#H_Distance%20Phylogeny">Distance Phylogeny</a></li>
+<ul>
+<li><a href="#H_Simple%20Tree">Simple Tree</a></li>
+<li><a href="#H_Additive%20Distance%20Matrix">Additive Distance Matrix</a></li>
+</ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
 <ul>
@@ -9395,8 +9400,118 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>For a cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle is when you pick a node, follow the blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ..., until you arrive back at the same node. If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. Otherwise, you can calculate the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p>For a linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle isn't actually a cycle because: Pick the termination node, follow a blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ... until you arrive back at the termination node (what if there are actual cyclic red-blue loops as well like in cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s?). If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1. Otherwise, you can <strong>ESTIMATE</strong> the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1.</p>
 <p>To calculate the real number of reversals need for linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (not estimate), there's a <a href="https://dl.acm.org/doi/10.1145/300515.300516">paper on ACM DL</a> that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.</p>
-<p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> definition.</p>
+<p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> definition.</p>
 </div>
+<a name="H_Distance%20Phylogeny"></a><h2>Distance Phylogeny</h2>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FK-mer)_TOPIC%2F">Algorithms/K-mer</a></li>
+</ul>
+</div>
+<p><a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">Phylogeny</a> is the concept of inferring the evolutionary history of a set of biological entities (e.g. animal species, viruses, etc..) by inspecting properties of those entities for relatedness (e.g. phenotypic, genotypic, etc..).</p>
+<p><img src="svgbob_9ad92bcc26081dc1ee059aa771d26eb82d6e4ad4.svg" alt="Kroki diagram output"></p>
+<p>Evolutionary history is often displayed as a <a href="#BM_(tree)%2Fi">tree</a> called a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> may be a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> or an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>.</p>
+<p>The example above shows a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.</p>
+<p>The typical process for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is to first quantify how related pairs of entities are, where each relatedness quantity is referred to as a distance (e.g. <code>dist(cat, lion) = 2</code>). Then, work backwards to find a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> that fits those distances.</p>
+<p>The distance may be any metric so long as ...</p>
+<ul>
+<li>it computes the distance to itself as 0 (e.g. <code>dist(cat, cat) = 0</code>)</li>
+<li>it computes the distance to any other entity as &gt; 0 (e.g. <code>dist(cat, lion) = 2</code>)</li>
+<li>it computes the same distance for the same pair regardless of order (e.g. <code>dist(cat, lion) = dist(lion, cat)</code>)</li>
+<li>computed distances don't leapfrog each other (e.g. <code>dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)</code>)</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The last point may be confusing. All it's saying is that taking an indirect path between two species should produce a distance that's &gt;= the direct path. For example, the direct path between cat and dog is 6: <code>dist(cat, dog) = 6</code>. If you were to instead jump from cat to lion <code>dist(cat, lion) = 2</code>, then from lion to dog <code>dist(lion, dog) = 5</code>, that combined distance should be &gt;= to 6...</p>
+<pre><code>dist(cat, dog)  = 6
+dist(cat, lion) = 2
+dist(lion, dog) = 5
+
+dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
+        2       +        5        &gt;=       6
+                7                 &gt;=       6
+</code></pre>
+<p>The Pevzner book refers to the this as the triangle inequality.</p>
+<p><img src="svgbob_a535ea37908c1e912c089d9ea621240bae63f541.svg" alt="Kroki diagram output"></p>
+<p>Later on non-conforming <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are discussed called non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>. I don't know if non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a> are required to have this specific property, but they should have all others.</p>
+</div>
+<p>Distances for a set of entities are typically represented as a 2D matrix that contains all possible pairings, called a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example Cat/Lion/Bear <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cat</th>
+<th>Lion</th>
+<th>Bear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cat</td>
+<td>0</td>
+<td>2</td>
+<td>23</td>
+</tr>
+<tr>
+<td>Lion</td>
+<td>2</td>
+<td>0</td>
+<td>23</td>
+</tr>
+<tr>
+<td>Bear</td>
+<td>23</td>
+<td>23</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_a4884cea1f03dad70aa6cd67fa7232f3a6772e94.svg" alt="Kroki diagram output"></p>
+<p>Note how the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has the distance for each pair slotted twice, mirrored across the diagonal of 0s (self distances). For example, the distance between bear and lion is listed twice.</p>
+<p>Examples of metrics that may be used as distance, referred to as distance metrics, include...</p>
+<ul>
+<li><a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> score between DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
+<li>number of similar physical or behavioural attributes.</li>
+<li>etc..</li>
+</ul>
+<a name="H_Simple%20Tree"></a><h3>Simple Tree</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSimple%20Tree)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>WHAT</strong>: An <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> where ...</p>
+<ul>
+<li>every internal node has a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> &gt; 2.</li>
+<li>every edge has a weight of &gt; 0.</li>
+</ul>
+<p>The first point just means the <a href="#BM_(tree)%2Fi">tree</a> can't contain non-branching internal nodes. By definition every leaf node in a <a href="#BM_(tree)%2Fi">tree</a> has a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 1, and this restriction makes it so that every internal node must have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> &gt; 2 instead of &gt;= 2.</p>
+<p><img src="svgbob_e703fab4f7666d65a65d6abef480ee962af9a9ee.svg" alt="Kroki diagram output"></p>
+<p>A train of non-branching internal nodes be merged into a single edge.</p>
+<p><img src="svgbob_944d1c0f94761c28d7f2a4c840990fc2eadcd19c.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> accurately models many of the the concepts behind <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Leaf nodes represent known entities, internal nodes represent inferred ancestor entities, and edge weights represent distances between entities.</p>
+<p>Having edge weights &gt; 0 models out the restriction on distance metrics specified in the parent section: The distance between any to entities must be &gt; 0. That is, it doesn't make sense for the distance between two entities to be ...</p>
+<ul>
+<li>&lt; 0 because distance represents how diverged the entities are from each other. What would a negative distance represent?</li>
+<li>= 0 because then the two nodes between the edge would represent the same entity. If they did represent the same entity, those nodes would have to be merged, resulting in the edge getting removed.</li>
+</ul>
+<p>Having an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> models out the fact that it isn't impossible to know which inferred shared ancestor came first / is the top-level parent.</p>
+<p>Having non-branching internal nodes models out the fact you need at least two <a href="#BM_(disconnected)%2Fi">disconnected</a> entities to infer that a shared ancestor exists.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<p>TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a>. FIX <a href="#BM_(simple%20tree)%2Fi">SIMPLE TREE</a> BOOKMARK DEFINITION.</p>
+<a name="H_Additive%20Distance%20Matrix"></a><h3>Additive Distance Matrix</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -9961,8 +10076,9 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p></p>
 <a name="H_Ideas"></a><h1>Ideas</h1>
 <ul>
-<li>CPU optimized C++ alignment - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</li>
-<li>GPU optimized C++ alignment - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</li>
+<li>CPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</li>
+<li>GPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well.</li>
+<li>GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</li>
 <li>Deep-learning <a href="#BM_(regulatory%20motif)%2Fi">Regulatory Motif</a> Detection - Try training a deep learning model to "find" <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>s for new <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s based on past training data.</li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
@@ -12266,8 +12382,13 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><a href="#BM_(coronavirus)%2Fi">Coronavirus</a>es, <a href="#BM_(HIV%7CAIDS)%2F">HIV</a>, and influenza are examples of <a href="#BM_(RNA%20virus)%2Fi">RNA virus</a>es.</p>
 </li>
 <li>
-<p><a name="BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi"></a><strong>phylogenetic tree</strong> - A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> showing the degree in which biological species or entities (e.g. viruses) are related. Such <a href="#BM_(tree)%2Fi">tree</a>s help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).</p>
-<p><img src="svgbob_f061cc8cf94ad999d22025f6f8522d6cb607e8ca.svg" alt="Kroki diagram output"></p>
+<p><a name="BM_(phylogeny%7Cphylogenetic)%2Fi"></a><strong>phylogeny</strong> - The concept of inferring the evolutionary history among some set of species (shared ancestry) by inspecting properties of those species (e.g. relatedness of phenotypic or genotypic characteristics).</p>
+<p><img src="svgbob_cabf6297c9c4eca18762400d14f3c05340a62b31.svg" alt="Kroki diagram output"></p>
+<p>In the example above, cat and lion are descendants of some shared ancestor species. Likewise, that ancestor and bears are likely descendants from some other higher up species.</p>
+</li>
+<li>
+<p><a name="BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi"></a><strong>phylogenetic tree</strong> - A <a href="#BM_(tree)%2Fi">tree</a> showing the degree in which biological species or entities (e.g. viruses) are related. Such <a href="#BM_(tree)%2Fi">tree</a>s help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).</p>
+<p><img src="svgbob_f7b1705852841b00a5ecb758d6e39af634d6898e.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(distance%20matrix%7Cdistance%20matrices)%2Fi"></a><strong>distance matrix</strong> - Given a set of n different species, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
@@ -12330,28 +12451,25 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li><a href="#BM_(levenshtein%20distance%7Cstring%20distance)%2Fi">levenshtein distance</a> between the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
 <li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
 </ul>
-<p><a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">Distance matrices</a>_PT are used to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s. A single <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> may fit many different <a href="#BM_(tree)%2Fi">tree</a>s or it's possible that it fits no <a href="#BM_(tree)%2Fi">tree</a> at all. For example, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above fits the <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">Distance matrices</a>_PT are used to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s. A single <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> may fit many different <a href="#BM_(tree)%2Fi">tree</a>s or it's possible that it fits no <a href="#BM_(tree)%2Fi">tree</a> at all. For example, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above fits the <a href="#BM_(tree)%2Fi">tree</a>...</p>
 <p><img src="svgbob_5a2ddd5247c86bd4e9d05f814cb689158dca59b0.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(tree)%2Fi"></a><strong>tree</strong> - In graph theory, a <a href="#BM_(tree)%2Fi">tree</a> is an acyclic undirected graph in which any two nodes are <a href="#BM_(connected)%2Fi">connected</a> by exactly one path (nodes branch outward / never converge).</p>
-<p><a href="#BM_(tree)%2Fi">Tree</a>s come in two forms:</p>
-<ul>
-<li>
-<p>A <a href="#BM_(tree)%2Fi">tree</a> without a root node (un-rooted <a href="#BM_(tree)%2Fi">tree</a>)...</p>
-<p><img src="svgbob_3ae717329571359a328c5697332e94ce675003fb.svg" alt="Kroki diagram output"></p>
-</li>
-<li>
-<p>A <a href="#BM_(tree)%2Fi">tree</a> with a root node (rooted <a href="#BM_(tree)%2Fi">tree</a>)...</p>
-<p><img src="svgbob_4a12a5e83db150bd3a7d62bc553c9ece9b5d54b2.svg" alt="Kroki diagram output"></p>
-</li>
-</ul>
-<p>Note that both examples above are the same undirected graph drawn differently. The only difference between is that the rooted version had a non-leaf node (internal node) chosen to be the top-most node where operations should start from (root node).</p>
-<p>For un-rooted <a href="#BM_(tree)%2Fi">tree</a>s, any non-leaf node (internal node) may be chosen to be the root node.</p>
+<p><a href="#BM_(tree)%2Fi">Tree</a>s come in two forms: <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>s and <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s. In graph theory, a <a href="#BM_(tree)%2Fi">tree</a> typically refers to an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This is different from the computer science definition of <a href="#BM_(tree)%2Fi">tree</a>, which is an abstract data type representing a hierarchy (always a single root that flows downwards), typically generalized as a <a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a> as opposed to an un<a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a>.</p>
+<p>This is different from the computer science definition of <a href="#BM_(tree)%2Fi">tree</a>, which is an abstract data type representing a hierarchy (always a single root that flows downwards), typically generalized as a <em>directed</em> acyclic graph as opposed to an un<a href="#BM_(directed%20acyclic%20graph)%2Fi">directed acyclic graph</a>.</p>
 </div>
+</li>
+<li>
+<p><a name="BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi"></a><strong>unrooted tree</strong> - A <a href="#BM_(tree)%2Fi">tree</a> without a root node...</p>
+<p><img src="svgbob_3ae717329571359a328c5697332e94ce675003fb.svg" alt="Kroki diagram output"></p>
+<p>An <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> may be turned into a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> by choosing any non-leaf node (internal node) to be the root node.</p>
+</li>
+<li>
+<p><a name="BM_(rooted%20tree)%2Fi"></a><strong>rooted tree</strong> - A <a href="#BM_(tree)%2Fi">tree</a> with a root node...</p>
+<p><img src="svgbob_4a12a5e83db150bd3a7d62bc553c9ece9b5d54b2.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(degree)_GRAPH%2Fi"></a><strong>degree</strong> - The number of edges leading into / out of a node of an undirected graph.</p>
@@ -12364,7 +12482,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p><img src="svgbob_48f0cff4f632b17d9c4a758c7eff4ff5bf2a8f9c.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that by definition, a <a href="#BM_(tree)%2Fi">tree</a> doesn't have to have a root. The examples above are un-rooted <a href="#BM_(tree)%2Fi">tree</a>s.</p>
+<p>Recall that by definition, a <a href="#BM_(tree)%2Fi">tree</a> doesn't have to have a root. The examples above are <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">un-rooted tree</a>s.</p>
 </div>
 </li>
 <li>
@@ -12439,7 +12557,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's both a rooted <a href="#BM_(tree)%2Fi">tree</a> and a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (Feline to Bear is a non-branching path with &gt; 0 nodes in between). The <a href="#BM_(tree)%2Fi">tree</a> doesn't have to be rooted or non-simple. In fact, I suspect the book is implying that it should be both un-rooted and simple. I'm guessing that if you limit your search scope to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially the same as <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s but with extra nodes spliced between non-branching paths.</p>
+<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's both a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> and a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (Feline to Bear is a non-branching path with &gt; 0 nodes in between). The <a href="#BM_(tree)%2Fi">tree</a> doesn't have to be rooted or non-simple. In fact, I suspect the book is implying that it should be both un-rooted and simple. I'm guessing that if you limit your search scope to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially the same as <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s but with extra nodes spliced between non-branching paths.</p>
 <p>The example above as a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
 <p><img src="svgbob_f3846233feb740fda161cb3ffdf8d1f9d33c9404.svg" alt="Kroki diagram output"></p>
 <p>This <a href="#BM_(simple%20tree)%2Fi">simple tree</a> version gets solved to <code>w = 2</code>, <code>x = 1</code>, and <code>z = 2</code>.</p>
@@ -12542,7 +12660,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 </li>
 <li>
-<p><a name="BM_(limb%20length)%2Fi"></a><strong>limb length</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, a limb is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the limbs in the following graph are highlighted in red...</p>
+<p><a name="BM_(limb%20length)%2Fi"></a><strong>limb length</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, a limb is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the limbs in the following graph are highlighted in red...</p>
 <p><img src="dot_d300b828794f37137c8e864b72a4f0d6.svg" alt="Dot diagram"></p>
 <p><a href="#BM_(limb%20length)%2Fi">Limb length</a> is simply the weight for some leaf node's limb. For example, in the diagram above the <a href="#BM_(limb%20length)%2Fi">limb length</a> for node v1 is 2.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -12670,7 +12788,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </blockquote>
 <p>The answer to this is obvious now that I've gone through and reasoned about things above.</p>
 <p>For the <a href="#BM_(limb%20length)%2Fi">limb length</a> formula to work, you need to find leaf nodes (A, B) whose path travels through leaf node L's parent (Lp). Originally, the book had you try all combination of leafs (L excluded) and take the minimum. That works, but you don't need to try all possible pairs. Instead, you can just pick any leaf (that isn't L) for A and test against every other node (that isn't L) to find B -- as with the original method, you pick the B that produces the minimum value.</p>
-<p>Because a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is a <a href="#BM_(connected)%2Fi">connected</a> graph (a path exists between each node and all other nodes), at least 1 path will exist starting from A that travels through Lp.</p>
+<p>Because a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is a <a href="#BM_(connected)%2Fi">connected</a> graph (a path exists between each node and all other nodes), at least 1 path will exist starting from A that travels through Lp.</p>
 <pre class="hljs"><code>leaf_nodes.remove(L)  <span class="hljs-comment"># remove L from the set</span>
 A = leaf_nodes.pop()  <span class="hljs-comment"># removes and returns an arbitrary leaf node</span>
 B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword">lambda</span> x: (dist(L, A) + dist(L, x) - dist(A, x)) / <span class="hljs-number">2</span>)
@@ -12681,7 +12799,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </div>
 </li>
 <li>
-<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The idea is that, given any 4 arbitrarily chosen leaf nodes in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> (can't be the same leaf nodes), there will be case where...</p>
+<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The idea is that, given any 4 arbitrarily chosen leaf nodes in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> (can't be the same leaf nodes), there will be case where...</p>
 <ul>
 <li>one pair of distances sum up to another pair of distances</li>
 <li>a third pair of distances sum to &lt;= the pair found in the previous point</li>
@@ -12798,7 +12916,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Notice that with v3 removed from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, path(i0, v2) merges into a single edge. Recall that ...</p>
 <ul>
-<li><a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s are <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s: a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have a node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (a train of non-branching edges is not allowed)</li>
+<li><a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s are <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s: a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have a node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (a train of non-branching edges is not allowed)</li>
 <li>for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix</li>
 </ul>
 <p>The trimmed version of the <a href="#BM_(tree)%2Fi">tree</a> fits the trimmed version of the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
@@ -12952,7 +13070,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Can a <a href="#BM_(limb%20length)%2Fi">limb length</a> be 0 in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.</p>
+<p>Can a <a href="#BM_(limb%20length)%2Fi">limb length</a> be 0 in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.</p>
 </div>
 <p>Notice how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, v<a href="#BM_(5')%2Fi">5'</a>s entries (each entry in v5 row and v5 column) in the the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is equivalent to that in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> subtracted by v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length)%2Fi">limb length</a>...</p>
 <table>
@@ -13047,7 +13165,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Attaching a new limb to an existing leaf node is never possible because...</p>
 <ol>
-<li>it'll turn that existing leaf node to an internal node, which doesn't make sense because in the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s leaf nodes identify known organisms</li>
+<li>it'll turn that existing leaf node to an internal node, which doesn't make sense because in the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s leaf nodes identify known organisms</li>
 <li>it will cease to be a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> -- <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (train of edges not allowed).</li>
 </ol>
 </div>
@@ -13440,10 +13558,10 @@ walk_weight = <span class="hljs-number">0</span>
 </li>
 <li>
 <p><a name="BM_(speciation)%2Fi"></a><strong>speciation</strong> - The evolutionary process by which a species splits into distinct child species.</p>
-<p>In <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, internal nodes branching are assumed to be <a href="#BM_(speciation)%2Fi">speciation</a> events. That is, an event where the ancestral species represented by that node splits into distinct child species.</p>
+<p>In <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, internal nodes branching are assumed to be <a href="#BM_(speciation)%2Fi">speciation</a> events. That is, an event where the ancestral species represented by that node splits into distinct child species.</p>
 </li>
 <li>
-<p><a name="BM_(unrooted%20binary%20tree)%2Fi"></a><strong>unrooted binary tree</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a>, an <a href="#BM_(unrooted%20binary%20tree)%2Fi">unrooted binary tree</a> is a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> where internal nodes must have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 3...</p>
+<p><a name="BM_(unrooted%20binary%20tree)%2Fi"></a><strong>unrooted binary tree</strong> - In the context of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>, an <a href="#BM_(unrooted%20binary%20tree)%2Fi">unrooted binary tree</a> is a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> where internal nodes must have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 3...</p>
 <p><img src="svgbob_b29e6fe881c0b485a2b8b1eac26f15987cb45a9a.svg" alt="Kroki diagram output"></p>
 <p>In other words, an edge leading to an internal node is guaranteed to branch <em>exactly</em> twice.</p>
 <p><img src="svgbob_43a3ec6298299c551b148002f27fa4910a77a171.svg" alt="Kroki diagram output"></p>
@@ -13455,7 +13573,7 @@ walk_weight = <span class="hljs-number">0</span>
 </div>
 </li>
 <li>
-<p><a name="BM_(rooted%20binary%20tree)%2Fi"></a><strong>rooted binary tree</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a>, a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a> is an <a href="#BM_(unrooted%20binary%20tree)%2Fi">unrooted binary tree</a> with a root node injected in between one of its edges. The injected root node will always end up as an internal node of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2, breaking the constraint of ...</p>
+<p><a name="BM_(rooted%20binary%20tree)%2Fi"></a><strong>rooted binary tree</strong> - In the context of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>, a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a> is an <a href="#BM_(unrooted%20binary%20tree)%2Fi">unrooted binary tree</a> with a root node injected in between one of its edges. The injected root node will always end up as an internal node of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2, breaking the constraint of ...</p>
 <ul>
 <li><a href="#BM_(unrooted%20binary%20tree)%2Fi">unrooted binary tree</a>s that states internal nodes must have <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of exactly 3.</li>
 <li><a href="#BM_(simple%20tree)%2Fi">simple tree</a>s that states internal nodes must have <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of greater than 2.</li>
@@ -13463,12 +13581,12 @@ walk_weight = <span class="hljs-number">0</span>
 <p><img src="svgbob_9fe6d9301400b1bc3c8689dfb1b50be14722ebbd.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(ultrametric%20tree%7Cultrametric)%2Fi"></a><strong>ultrametric tree</strong> - A rooted <a href="#BM_(tree)%2Fi">tree</a> where all leaf nodes are equidistant from the root.</p>
+<p><a name="BM_(ultrametric%20tree%7Cultrametric)%2Fi"></a><strong>ultrametric tree</strong> - A <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> where all leaf nodes are equidistant from the root.</p>
 <p><img src="svgbob_10fa2bf98dc55b5346b2ebb7f45c2e56a81730fe.svg" alt="Kroki diagram output"></p>
 <p>In the example above, all leaf nodes are a distance of 4 from the root.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Does an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> have to be a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>? I think the answer is no: <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> generated <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>s, but <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>s in general just have to be rooted <a href="#BM_(tree)%2Fi">tree</a>s / they don't have to be binary.</p>
+<p>Does an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> have to be a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>? I think the answer is no: <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> generated <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a>s, but <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>s in general just have to be <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>s / they don't have to be binary.</p>
 </div>
 </li>
 <li>
@@ -13478,7 +13596,7 @@ walk_weight = <span class="hljs-number">0</span>
 <li>every hour, around n <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals occur per chromosome segment of size m.</li>
 <li>etc..</li>
 </ul>
-<p>This assumption is used for some <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenetic%7Cphylogeny%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogeny</a> algorithms (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>).</p>
+<p>This assumption is used for some <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> algorithms (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>).</p>
 </li>
 <li>
 <p><a name="BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi"></a><strong>unweighted pair group method with arithmetic mean (UPGMA)</strong> - A heuristic algorithm used to estimate a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for some <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
@@ -13659,7 +13777,7 @@ walk_weight = <span class="hljs-number">0</span>
 </table>
 <p>The process is complete. Only a single cluster remains (representing the root) / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
 <p><img src="svgbob_d60f7033a6d15c3337efd4d2055adb9ef9dfb1f8.svg" alt="Kroki diagram output"></p>
-<p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a rooted <a href="#BM_(tree)%2Fi">tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
+<p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
 <p>In addition, some distances in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> are wildly off from the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances. For example, ...</p>
 <ul>
 <li>dist(a,d)=8 in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</li>
@@ -13668,7 +13786,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p>Part of this may have to do with the assumption that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
 </li>
 <li>
-<p><a name="BM_(neighbouring%20leaf%20algorithm)%2Fi"></a><strong>neighbouring leaf algorithm</strong> - An algorithm that identifies a pair of neighbouring leaf nodes in the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, without having that unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> provided.</p>
+<p><a name="BM_(neighbouring%20leaf%20detection)%2Fi"></a><strong>neighbouring leaf detection</strong> - An algorithm that identifies a pair of neighbouring leaf nodes in the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, without having that unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> provided.</p>
 <p>The algorithm essentially boils down to edge counting. Consider the following example <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
 <p>If you were to choose a leaf node and gather the paths from that leaf node to all other leaf nodes, the number of times ...</p>
@@ -14503,7 +14621,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p><img src="dot_a04b9e7ac82b002390f9721321b106ae.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
+<p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
 <ul>
 <li>
 <p><code>edge_multiple(v1)</code> breaks down to...</p>
@@ -14690,13 +14808,53 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p></p>
 </li>
 <li>
-<p><a name="BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi"></a><strong>neighbour joining matrix</strong> - A matrix used to identify neighbouring leaf nodes in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p>For each element in the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, the corresponding element in the <a href="#BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi">neighbour joining matrix</a> is calculated as...</p>
-<pre class="hljs"><code><span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
-    tot_dist[l] = <span class="hljs-built_in">sum</span>(D[l,k] <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
-J[i,j] = D[i,j] - tot_dist[i] - tot_dist[j]
-</code></pre>
-<p>The minimum element in the <a href="#BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi">neighbour joining matrix</a> is for the element</p>
+<p><a name="BM_(neighbour%20joining%20phylogeny)%2Fi"></a><strong>neighbour joining phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> OR approximates a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>Similar to <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, this algorithm recursively widdles down the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> until the size is 2x2. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious as ...</p>
+<ul>
+<li>it only consists of 2 nodes</li>
+<li>it only consists of a single edge (nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 not allowed in <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s, meaning train of non-branching edges not allowed)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="dot_d0010bac57ea6a9ead9cf3d10ce6f86e.svg" alt="Dot diagram"></p>
+<p>However, unlike <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, this algorithm <a href="#BM_(trimmed distance matrix|trimmed distance matrices)/i">trim</a>s the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is 2x2, then finds the <a href="#BM_(limb%20length)%2Fi">limb length</a>s for those pairs and attaches them to the <a href="#BM_(tree)%2Fi">tree</a> as it backs out of the recursion.</p>
+<p>Because this algorithm is intended to approximate non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>, the original <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm won't work. Instead, a new <a href="#BM_(limb%20length)%2Fi">limb length</a> algorithm approximates the <a href="#BM_(limb%20length)%2Fi">limb length</a> for neighbouring nodes by averaging total distances.</p>
+<p>TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
+TODO: EXPLAIN THE <a href="#BM_(limb%20length)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.</p>
+</li>
+<li>
+<p><a name="BM_(paleontology%7Cpalaeontology%7Cpal%C3%A6ontology)%2Fi"></a><strong>paleontology</strong> - The scientific study of ancient organisms: dinosaurs, prehistoric plants, prehistoric insects, prehistoric fungi, etc...</p>
 </li>
 </ul>
 <p>
