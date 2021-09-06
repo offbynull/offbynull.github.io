@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from itertools import product
-from typing import Iterator, TypeVar
+from typing import Iterator, TypeVar, Generic
 
 from graph import UndirectedGraph
 from helpers.Utils import slide_window
@@ -10,7 +10,7 @@ from helpers.Utils import slide_window
 ID = TypeVar('ID')
 
 
-class DistanceMatrix:
+class DistanceMatrix(Generic[ID]):
     def __init__(self, initial: dict[tuple[ID, ID], float]):
         d = {}
         ids = {id for id_pair in initial.keys() for id in id_pair}
@@ -18,8 +18,8 @@ class DistanceMatrix:
             opt1 = (id1, id2) in initial
             opt2 = (id2, id1) in initial
             if id1 == id2:
-                if opt1:
-                    raise ValueError(f'Distance to self must not be provided -- it will always default to 0: {(id1, id2)}')
+                if opt1 and initial[(id1, id2)] != 0:
+                    raise ValueError(f'Distance to self must be 0 or not provided -- it will always default to 0: {(id1, id2)}')
                 continue
             if opt1 and opt2 and initial[(id1, id2)] != initial[(id2, id1)]:
                 raise ValueError(f'Distance between leaf nodes inserted twice but distances are not the same: {(id1, id2)} / {(id2, id1)}')

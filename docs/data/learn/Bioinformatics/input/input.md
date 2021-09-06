@@ -7158,6 +7158,12 @@ graph_show
 [cull, 10000]
 ```
 
+# Ideas
+
+ * CPU optimized C++ alignment - Simple global alignment is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.
+ * GPU optimized C++ alignment - Simple global alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.
+ * Deep-learning Regulatory Motif Detection - Try training a deep learning model to "find" regulatory motifs for new transcription factors based on past training data.
+
 # Terminology
 
  * `{bm} k-mer/(\d+-mer|k-mer|kmer)/i` - A substring of length k within some larger biological sequence (e.g. DNA or amino acid chain). For example, in the DNA sequence GAAATC, the following k-mer's exist:
@@ -11439,7 +11445,7 @@ graph_show
    * every other limb will get encountered is 1 time.
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountVariant.py
+   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
    python
    # MARKDOWN_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COUNT
    no_preamble
@@ -11489,7 +11495,7 @@ graph_show
    * every other limb gets counted 2 times.
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountVariant.py
+   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
    python
    # MARKDOWN_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_COUNT
    no_preamble
@@ -11588,7 +11594,7 @@ graph_show
    The key to this algorithm is to normalize the limb counts returned by `combine_counts()` such that each limb for the chosen pair matches (`leaf_count`) has the same count as the other limbs (2). To do this, each edge in the path between the chosen pair must be subtracted `leaf_count - 2` times from `combine_edge_count()`'s result.
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountVariant.py
+   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
    python
    # MARKDOWN_NORMALIZED_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_COUNT
    no_preamble
@@ -11667,7 +11673,7 @@ graph_show
     * aren't neighbours, the path between them will have more than 2 edges: their limbs AND internal edges.
     
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountVariant.py
+   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
    python
    # MARKDOWN_NEIGHBOUR_PATH_EDGE_COUNT_CHECK\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_PATH_EDGE_COUNT_CHECK
    no_preamble
@@ -11853,7 +11859,7 @@ graph_show
    Notice how (i0,i1) was reduced to 2 in the example above. It turns out that any internal edges in the path between the chosen pair get reduced to a count of 2, just like the chosen pair's limb counts.
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountVariant.py
+   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
    python
    # MARKDOWN_REDUCE_TO_2_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_REDUCE_TO_2_TEST
    no_preamble
@@ -11950,7 +11956,7 @@ graph_show
    * v5 is on the i1 side, `edge_count(v5)` counts (i1,i2) 2 times.
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountVariant.py
+   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
    python
    # MARKDOWN_SEGREGATE_BY_EDGE\s*\n([\s\S]+)\n\s*# MARKDOWN_SEGREGATE_BY_EDGE
    no_preamble
@@ -12126,7 +12132,7 @@ graph_show
    The pair with the highest total count is guaranteed to be a neighbouring pair because lesser total counts may have had their internal edges reduced.
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountVariant.py
+   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
    python
    # MARKDOWN_NEIGHBOUR_DETECT\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_DETECT
    ```
@@ -12136,7 +12142,7 @@ graph_show
    ```
 
    ```{ch7}
-   neighbour_detect.EdgeCountVariant
+   neighbour_detect.EdgeCountExplainer
    [[v0,i0], [v1,i0], [v2,i0], [i0,i1], [i1,i2], [i2,v3], [i2,v4], [i1,v5]]
    ```
 
@@ -12145,7 +12151,7 @@ graph_show
    In the edge count version on this algorithm, `edge_count()` gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is hit. In the edge weight multiplicity version, instead of counting how many times each edge gets traversed, each time an edge gets traversed it increases the multiplicity of its weight ...
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityVariant.py
+   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
    python
    # MARKDOWN_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_EDGE_MULTIPLE
    no_preamble
@@ -12235,7 +12241,7 @@ graph_show
    Similarly, where in the edge count version `combine_edge_count()` adds together the `edge_count()`s for two leaf nodes, the edge weight multiplicity version should add together the `edge_multiple()`s for two leaf nodes instead...
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityVariant.py
+   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
    python
    # MARKDOWN_COMBINE_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_EDGE_MULTIPLE
    no_preamble
@@ -12304,7 +12310,7 @@ graph_show
    Similarly, where in the edge count version `combine_edge_count_and_normalize()` reduces all limbs and possibly some internals edges from `combine_edge_count()` to a count of 2, the edge multiplicity version reduces weights for those same limbs and edges to a multiple of 2...
 
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityVariant.py
+   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
    python
    # MARKDOWN_NORMALIZED_COMBINE_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_EDGE_MULTIPLE
    no_preamble
@@ -12365,10 +12371,10 @@ graph_show
    }
    ```
 
-   |                                         | (i0,i1) | (i1,i2) | (v0,i0)  | (v1,i0) | (v2,i0)  | (v3,i2) | (v4,i2) | (v5,i1) |
-   |-----------------------------------------|---------|---------|----------|---------|----------|---------|---------|---------|
-   | combine_edge_count_and_normalize(v1)    | 6       | 4       | 2        | 2       | 2        | 2       | 2       | 2       |
-   | combine_edge_multiple_and_normalize(v1) | 6\*4=24 | 4\*3=12 | 2\*11=22 | 2\*2=20 | 2\*10=60 | 2\*3=6  | 2\*4=8  | 2\*7=14 |
+   |                                            | (i0,i1) | (i1,i2) | (v0,i0)  | (v1,i0) | (v2,i0)  | (v3,i2) | (v4,i2) | (v5,i1) |
+   |--------------------------------------------|---------|---------|----------|---------|----------|---------|---------|---------|
+   | combine_edge_count_and_normalize(v1,v2)    | 6       | 4       | 2        | 2       | 2        | 2       | 2       | 2       |
+   | combine_edge_multiple_and_normalize(v1,v2) | 6\*4=24 | 4\*3=12 | 2\*11=22 | 2\*2=20 | 2\*10=60 | 2\*3=6  | 2\*4=8  | 2\*7=14 |
 
    Similar to `combine_edge_count_and_normalize()`, for any leaf node pair in a simple tree `combine_edge_multiple_and_normalize()` will have a *multiple* of ...
 
@@ -12383,7 +12389,7 @@ graph_show
    The pair with the highest combined multiple is guaranteed to be a neighbouring pair because lesser combined multiples may have had their internal edge multiples reduced.
    
    ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityVariant.py
+   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
    python
    # MARKDOWN_NEIGHBOUR_DETECT\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_DETECT
    ```
@@ -12393,39 +12399,48 @@ graph_show
    ```
 
    ```{ch7}
-   neighbour_detect.EdgeMultiplicityVariant
+   neighbour_detect.EdgeMultiplicityExplainer
    [[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i2,v4,4], [i1,v5,7]]
    ```
 
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
+   The matrix produced in the example above is called a neighbour joining matrix. The summation of `combine_edge_multiple_and_normalize()` performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that `combine_edge_multiple_and_normalize(v1,v2)` in the example graph breaks down to `edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)`. The sum of ...
+  
+   * `edge_multiple(v1)` breaks down to...
+   
+     ```
+     dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5)
+     ```
+   * `edge_multiple(v2)` breaks down to...
+   
+     ```
+     dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
+     ```
+   * `combine_edge_multiple(v2)` is simply the sum of the two summations above:
+   
+     ```
+     dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
+     dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
+     ```
+   *  `combine_edge_multiple_and_normalize(v1,v2)` is simply the above summation but with `dist(v1,v2)` removed 4 times:
+   
+     ```
+     dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
+     dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5) -
+     dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
+     ```
 
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
+   Since only leaf node distances are being used in the summation calculation, a distance matrix suffices as the input. The actual simple tree isn't required.
 
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
+   ```{output}
+   ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py
+   python
+   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+   ```
 
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
-
-   TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT\[A\]\[B\].
+   ```{ch7}
+   neighbour_detect.NeighbourJoiningMatrix
+   [[0,13,21,21,22,22],[13,0,12,12,13,13],[21,12,0,20,21,21],[21,12,20,0,7,13],[22,13,21,7,0,14],[22,13,21,13,14,0]]
+   ```
 
  * `{bm} neighbour joining matrix/(neighbour joining matrix|neighbour-joining matrix)/i` - A matrix used to identify neighbouring leaf nodes in an additive distance matrix.
 
@@ -12472,6 +12487,8 @@ graph_show
 `{bm-error} Apply suffix _NORM or _GRAPH/(degree)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
+
+`{bm-error} Did you mean neighbour joining matrix?/(neighbouring join matrix|neighbouring joining matrix|neighbouring-join matrix|neighbouring-joining matrix)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`

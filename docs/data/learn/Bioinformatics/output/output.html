@@ -158,6 +158,7 @@
 <li><a href="#H_Find%20Reversal%20Path">Find Reversal Path</a></li>
 </ul>
 </ul>
+<li><a href="#H_Ideas">Ideas</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
@@ -9958,6 +9959,12 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 </div>
 <p></p>
+<a name="H_Ideas"></a><h1>Ideas</h1>
+<ul>
+<li>CPU optimized C++ alignment - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</li>
+<li>GPU optimized C++ alignment - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</li>
+<li>Deep-learning <a href="#BM_(regulatory%20motif)%2Fi">Regulatory Motif</a> Detection - Try training a deep learning model to "find" <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>s for new <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s based on past training data.</li>
+</ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -14156,7 +14163,7 @@ walk_weight = <span class="hljs-number">0</span>
 <li>best case scenario, all internal edges are kept &gt; 2.</li>
 </ul>
 <p>The pair with the highest total count is guaranteed to be a neighbouring pair because lesser total counts may have had their internal edges reduced.</p>
-<p><a href="ch7_code/src/neighbour_detect/EdgeCountVariant.py">ch7_code/src/neighbour_detect/EdgeCountVariant.py</a> (lines 127 to 137):</p>
+<p><a href="ch7_code/src/neighbour_detect/EdgeCountExplainer.py">ch7_code/src/neighbour_detect/EdgeCountExplainer.py</a> (lines 127 to 137):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
     found_pair = <span class="hljs-literal">None</span>
     found_total_count = -<span class="hljs-number">1</span>
@@ -14176,7 +14183,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -14238,7 +14245,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_53b531861a0f51ec9ea61136237ce65f.svg" alt="Dot diagram"></p>
+<p><img src="dot_9d5e546c799f737205344d7d53a9620f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
@@ -14370,7 +14377,7 @@ walk_weight = <span class="hljs-number">0</span>
 </thead>
 <tbody>
 <tr>
-<td>combine_edge_count_and_normalize(v1)</td>
+<td>combine_edge_count_and_normalize(v1,v2)</td>
 <td>6</td>
 <td>4</td>
 <td>2</td>
@@ -14381,7 +14388,7 @@ walk_weight = <span class="hljs-number">0</span>
 <td>2</td>
 </tr>
 <tr>
-<td>combine_edge_multiple_and_normalize(v1)</td>
+<td>combine_edge_multiple_and_normalize(v1,v2)</td>
 <td>6*4=24</td>
 <td>4*3=12</td>
 <td>2*11=22</td>
@@ -14404,7 +14411,7 @@ walk_weight = <span class="hljs-number">0</span>
 <li>best case scenario, all internal edge multiples are kept &gt; 2.</li>
 </ul>
 <p>The pair with the highest combined multiple is guaranteed to be a neighbouring pair because lesser combined multiples may have had their internal edge multiples reduced.</p>
-<p><a href="ch7_code/src/neighbour_detect/EdgeMultiplicityVariant.py">ch7_code/src/neighbour_detect/EdgeMultiplicityVariant.py</a> (lines 98 to 108):</p>
+<p><a href="ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py">ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py</a> (lines 98 to 108):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
     found_pair = <span class="hljs-literal">None</span>
     found_total_count = -<span class="hljs-number">1</span>
@@ -14493,24 +14500,194 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_312c0cf9db95c05f431f805ec3671a1c.svg" alt="Dot diagram"></p>
+<p><img src="dot_a04b9e7ac82b002390f9721321b106ae.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
-<p>TODO: ADD FINAL SECTION THAT TELLS YOU HOW TO DO IT ON THE DIST MAT. THE FACT THAT YOU'RE SUMMING AT THE END IS THE KEY PIECE -- ITS ADDING TOGETHER ALL THE EDGE VALUES. SUMMING ALL THE WEIGHTS IN COMBINED_EDGE_MULTIPLE() IS THE SAME AS ADDING TOGETHER ALL THE DISTANCES FOR 2 LEAFS IN THE DIST_MAT -- REMOVING (LEAF_COUNT - 2) FOR EACH EDGE IN THE PATH BETWEEN TWO LEAFS IS THE SAME AS SUBTRACTING (LEAF_COUNT - 2) * DIST_MAT[A][B].</p>
+<p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
+<ul>
+<li>
+<p><code>edge_multiple(v1)</code> breaks down to...</p>
+<pre><code>dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5)
+</code></pre>
+</li>
+<li>
+<p><code>edge_multiple(v2)</code> breaks down to...</p>
+<pre><code>dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
+</code></pre>
+</li>
+<li>
+<p><code>combine_edge_multiple(v2)</code> is simply the sum of the two summations above:</p>
+<pre><code>dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
+dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
+</code></pre>
+</li>
+<li>
+<p><code>combine_edge_multiple_and_normalize(v1,v2)</code> is simply the above summation but with <code>dist(v1,v2)</code> removed 4 times:</p>
+</li>
+</ul>
+<pre><code>dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
+dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5) -
+dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
+</code></pre>
+<p>Since only leaf node distances are being used in the summation calculation, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> suffices as the input. The actual <a href="#BM_(simple%20tree)%2Fi">simple tree</a> isn't required.</p>
+<p><a href="ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py">ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py</a> (lines 12 to 28):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">total_distance</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N]</span>) -&gt; <span class="hljs-built_in">dict</span>[N, <span class="hljs-built_in">float</span>]:</span>
+    ret = {}
+    <span class="hljs-keyword">for</span> l1 <span class="hljs-keyword">in</span> dist_mat.leaf_ids():
+        ret[l1] = <span class="hljs-built_in">sum</span>(dist_mat[l1, l2] <span class="hljs-keyword">for</span> l2 <span class="hljs-keyword">in</span> dist_mat.leaf_ids())
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_joining_matrix</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N]</span>) -&gt; DistanceMatrix[N]:</span>
+    tot_dists = total_distance(dist_mat)
+    n = dist_mat.n
+    ret = dist_mat.copy()
+    <span class="hljs-keyword">for</span> l1, l2 <span class="hljs-keyword">in</span> product(dist_mat.leaf_ids(), repeat=<span class="hljs-number">2</span>):
+        <span class="hljs-keyword">if</span> l1 == l2:
+            <span class="hljs-keyword">continue</span>
+        ret[l1, l2] = tot_dists[l1] + tot_dists[l2] - (n - <span class="hljs-number">2</span>) * dist_mat[l1, l2]
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the following distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... the neighbour joining matrix is ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>110.0</td>
+<td>110.0</td>
+<td>88.0</td>
+<td>88.0</td>
+<td>94.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>110.0</td>
+<td>0.0</td>
+<td>110.0</td>
+<td>88.0</td>
+<td>88.0</td>
+<td>94.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>110.0</td>
+<td>110.0</td>
+<td>0.0</td>
+<td>88.0</td>
+<td>88.0</td>
+<td>94.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>88.0</td>
+<td>88.0</td>
+<td>88.0</td>
+<td>0.0</td>
+<td>122.0</td>
+<td>104.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>88.0</td>
+<td>88.0</td>
+<td>88.0</td>
+<td>122.0</td>
+<td>0.0</td>
+<td>104.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>94.0</td>
+<td>94.0</td>
+<td>94.0</td>
+<td>104.0</td>
+<td>104.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
 </li>
 <li>
 <p><a name="BM_(neighbour%20joining%20matrix%7Cneighbour-joining%20matrix)%2Fi"></a><strong>neighbour joining matrix</strong> - A matrix used to identify neighbouring leaf nodes in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
@@ -14544,6 +14721,7 @@ J[i,j] = D[i,j] - tot_dist[i] - tot_dist[j]
 </p>
 <p>
 </p>
+<p></p>
 <p></p>
 <p>
 </p>
