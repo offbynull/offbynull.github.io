@@ -6429,19 +6429,27 @@ Examples of metrics that may be used as distance, referred to as distance metric
  * number of similar physical or behavioural attributes.
  * etc..
 
+### Additive Distance Matrix
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix)_TOPIC/`
+
 ### Simple Tree
 
 `{bm} /(Algorithms\/Distance Phylogeny\/Simple Tree)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Additive Distance Matrix_TOPIC
+```
 
 **WHAT**: An unrooted tree where ...
 
  * every internal node has a degree_GRAPH > 2.
  * every edge has a weight of > 0.
  
-The first point just means the tree can't contain non-branching internal nodes. By definition every leaf node in a tree has a degree_GRAPH of 1, and this restriction makes it so that every internal node must have a degree_GRAPH > 2 instead of >= 2.
+The first point just means that the tree can't contain non-splitting internal nodes. By definition every leaf node in a tree has a degree_GRAPH of 1, and this restriction makes it so that every internal node must have a degree_GRAPH > 2 instead of >= 2...
 
 ```{svgbob}
-"branching (GOOD)"             "non-branching (BAD)"
+"splitting (GOOD)"             "non-splitting (BAD)"
 
      *   *                              *
       \ /                              /   
@@ -6449,11 +6457,11 @@ The first point just means the tree can't contain non-branching internal nodes. 
        |                              |    
        *                              *    
 
-* "Note how in the non-branching version, the"
+* "Note how in the non-splitting version, the"
   "node in-between has a degree of 2."
 ```
 
-A train of non-branching internal nodes be merged into a single edge.
+If non-splitting internal nodes did exist, the correct course of action would typically be to merge them somehow into a single edge...
 
 ```{svgbob}
 "non-simple tree"             "simple tree"
@@ -6470,54 +6478,192 @@ A train of non-branching internal nodes be merged into a single edge.
   1 / \ 2                       *   * 
    *   *                               
 2 /                                    
- *                                     
+ *                                        
 
 * "Non-simple tree transformed into a simple tree. Edges"
   "that were merged had their weights summed."
 ```
 
-**WHY**: A simple tree accurately models many of the the concepts behind phylogeny. Leaf nodes represent known entities, internal nodes represent inferred ancestor entities, and edge weights represent distances between entities.
+In the context of phylogeny, a simple tree's ...
 
-Having edge weights > 0 models out the restriction on distance metrics specified in the parent section: The distance between any to entities must be > 0. That is, it doesn't make sense for the distance between two entities to be ...
+ * leaf nodes represent known entities.
+ * internal nodes represent inferred ancestor entities.
+ * edge weights represent distances between entities.
 
- * < 0 because distance represents how diverged the entities are from each other. What would a negative distance represent?
- * = 0 because then the two nodes between the edge would represent the same entity. If they did represent the same entity, those nodes would have to be merged, resulting in the edge getting removed.
+**WHY**: Simple trees have properties / restrictions that simplify the process of working backwards from a distance matrix to a phylogenetic tree. In other words, when constructing a phylogenetic tree from a distance matrix, the process is simpler if the phylogenetic tree is restricted to being a simple tree.
 
-Having an unrooted tree models out the fact that it isn't impossible to know which inferred shared ancestor came first / is the top-level parent.
+The first property is that a unique simple tree exists for a unique additive distance matrix (1-to-1 mapping). That is, it isn't possible for...
 
-Having non-branching internal nodes models out the fact you need at least two disconnected entities to infer that a shared ancestor exists.
+ * two different simple trees to map to the same distance matrix.
+ * two different distance matrices to map to the same simple tree.
+ 
+For example, the following additive distance matrix will only ever map to the following simple tree (and vice-versa)...
 
-**ALGORITHM**: 
+|   | w | u | y | z |
+|---|---|---|---|---|
+| w | 0 | 3 | 8 | 7 |
+| u | 3 | 0 | 9 | 8 |
+| y | 8 | 9 | 0 | 5 |
+| z | 7 | 8 | 5 | 0 |
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+```{svgbob}
+"simple-tree"
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+ w   u       
+1 \ / 2      
+   a         
+ 4 |         
+   b         
+3 / \ 2      
+ y   z       
+```
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+However, that same additive distance matrix can map to an infinite number of non-simple trees (and vice-versa)...
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+```{svgbob}
+"non-simple tree 1"  "non-simple tree 2"  "non-simple tree 2"
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+          u                     u                  
+         / 1                   / 1.5               
+    w   c                 w   c               w   u     
+   1 \ / 1               1 \ / 0.5           1 \ / 2    
+      a                     a                   a       
+    3 |                   2 |                 4 |                etc...  
+      d                     d                   b         
+    1 |                   2 |                3 / \ 1    
+      b                     b                 y   f     
+   1 / \ 2               0 / \ 2                   \ 0.5
+    e   z                 e   z                     z   
+ 2 /                   3 /                                 
+  y                     y                             
+```
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+```{note}
+To clarify: An additive distance matrix may have been generated from one of many non-simple trees. However, when reconstructing a phylogenetic tree from the additive distance matrix, if you restrict yourself to a simple tree you'll only ever have 1 tree to reconstruct to. This makes the algorithms simpler.
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+Also, additive distance matrices are mentioned above, but algorithms exist for both additive distance matrices and non-additive distance matrices -- non-additive distance matrices get approximated to simple trees.
+```
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+The second property is that the direction of evolution isn't maintained in a simple tree: It's an unrooted tree where edges are undirected. That is, a distance matrix doesn't provide enough information to know the hierarchy relationships between inferred common ancestors. For example, any of the internal nodes in the following graph may be the top-level entity from which all others are descendants of ...
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+```{svgbob}
+UNROOTED            "c AS ROOT"            "d AS ROOT"            "f AS ROOT"
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+ a   b                 c                        d                    f
+  \ /                 /|\                      /|\                  /|\
+   c                 a b d                    c e f                g h d
+   |                    / \                  /|   |\                  / \  
+   d                   e   f                a b   g h                e   c
+  / \                     / \                                           / \
+ e   f                   g   h                                         a   b
+    / \                                                              
+   g   h                                                             
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+* "Either c, d, or f could be the root."
+```
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+The third property is that weights > 0, which is because of the restriction on distance metrics specified in the parent section: The distance between any to entities must be > 0. That is, it doesn't make sense for the distance between two entities to be ...
 
-TODO: ADD DIAGRAM TO THE WHY SECTION ABOVE. WRITE AN ALGORITHM TO CHECK THAT A GRAPH MATCHES THE SIMPLE TREE DEFINITION / WRAPPER AROUND GRAPH TO REPRESENT A SIMPLE TREE. FIX SIMPLE TREE BOOKMARK DEFINITION.
+ * < 0 because distance represents how diverged the entities are from each other. Having a negative amount of divergence doesn't make sense.
+ * = 0 because then the two nodes between the edge would represent the same entity. Having more than one representation of the same entity in the tree doesn't make sense.
+
+```{svgbob}
+ a   c                        a                         
+1 \ / 0                      1 \                            a 
+   d         "... to ..."       d       "... to ..."      2 |
+ 1 |                          1 |                           b
+   b                            b                      
 
 
-### Additive Distance Matrix
+* "Nodes c and d represent the same entity (distance of 0 means"
+  "no divergence / same entity). It would make sense to merge c"
+  "and d into just d. Doing so would make it so that d has a"
+  "degree of 2, meaning that the two edges its connected to need"
+  "to merged into a single edge to make this a valid simple tree."
+```
 
+
+The following examples show various real evolutionary paths and their corresponding simple trees. Note that the simple trees don't fully represent the true relationships between entities (some parents are missing) and the direction of evolution isn't maintained (simple trees are unrooted and undirected).
+
+```{svgbob}
+         "REAL EVOLUTIONARY PATH"                                        "SIMPLE TREE"
+
+                                                                           entity1
+entity1  -------> entity2                                                    |
+                                                                           entity2
+
+
+
+                                                                           entity1
+entity2  -------> entity1                                                    |
+                                                                           entity2
+
+
+
+         .-------> entity1                                                 entity1
+parent  -+                                                                   |
+         '-------> entity2                                                 entity2
+
+
+
+         .-------> entity1                                                 entity1
+         |                                                                   |
+parent  -+-------> entity2                                                 parent1
+         |                                                                  /   \
+         '-------> entity3                                             entity2   entity3
+
+
+
+                            .-------> entity1                              entity1
+         .-------> parent2 -+                                                |
+parent1 -+                  '-------> entity2                              parent1
+         '-------> entity3                                                  /   \
+                                                                       entity2   entity3
+
+
+
+                            .-------> entity1                          entity1    entity2
+         .-------> parent2 -+                                                \   /       
+         |                  '-------> entity2                               parent2      
+parent1 -+                                                                     |         
+         |                  .-------> entity3                               parent3      
+         '-------> parent3 -+                                                /   \       
+                            '-------> entity4                          entity3    entity4
+```
+
+In the first two examples, one present-day entity branched off from another present-day entity. Both entities are still present-day entities (the entity branched off from isn't extinct).
+
+In the third and last two examples, the top-level parent doesn't show up because adding it would break the requirement that internal nodes must be splitting (degree_GRAPH > 2). For example, adding parent1 in to the simple tree of the last example above causes parent1 to have a degree_GRAPH = 2...
+
+```{svgbob}
+entity1    entity2
+      \   /       
+     parent2      
+        |         
+     parent1      
+        |         
+     parent3      
+      /   \       
+entity3    entity4
+
+* "parent1 has a degree of 2, meaning this is not a valid"
+  "simple tree."
+```
+
+**ALGORITHM**:
+
+The following algorithm tests to see if an undirected graph is a simple tree.
+
+```{output}
+ch7_code/src/simple_tree_tester/SimpleTreeTester.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+simple_tree_tester.SimpleTreeTester
+[[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i2,v4,4], [i1,v5,7]]
+```
 
 # Stories
 
@@ -9687,29 +9833,14 @@ graph_show
            \
     ```
 
- * `{bm} simple tree` - A tree where every non-branching path has exactly one edge. A non-branching path is any path where every node other than the start and end node have a degree_GRAPH of 2.
-
-
-   ```{svgbob}
-   "branching path"             "non-branching path"
-            B                             B
-            *                             *
-           /                             / 
-      *   *                             *  
-       \ /                             /   
-        *                             *    
-        |                             |    
-        *                             *    
-        C                             C    
-
-   * "Branching vs non-branching path between nodes B and C. Note"
-     "how in the branching version, one of the nodes between B and"
-     "C has a degree of 3."
-   ```
-
+ * `{bm} simple tree` - An unrooted tree where ...
+   
+    * every internal node has a degree_GRAPH > 2.
+    * every edge has a weight of > 0.
 
    ```{svgbob}
    "non-simple tree"             "simple tree"
+   
             *                             
            / 1                            
       *   *                               
@@ -9722,15 +9853,19 @@ graph_show
      1 / \ 2                       *   * 
       *   *                               
    2 /                                    
-    *                                     
-
+    *                                        
+   
    * "Non-simple tree transformed into a simple tree. Edges"
      "that were merged had their weights summed."
    ```
+   
+   In the context of phylogeny, a simple tree's ...
+   
+    * leaf nodes represent known entities.
+    * internal nodes represent inferred ancestor entities.
+    * edge weights represent distances between entities.
 
-   ```{note}
-   Recall that by definition, a tree doesn't have to have a root. The examples above are un-rooted trees.
-   ```
+   The restrictions placed on simple trees simplify the process of working backwards from a distance matrix to a phylogenetic tree.
 
  * `{bm} additive matrix/(additive matrix|additive matrices|additive distance matrix|additive distance matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix, that distance matrix is said to be an additive matrix.
 

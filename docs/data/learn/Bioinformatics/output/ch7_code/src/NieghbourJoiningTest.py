@@ -1,7 +1,7 @@
 from collections import Counter
 from itertools import product, combinations
 
-from distance_matric.DistanceMatrix import DistanceMatrix
+from distance_matrix.DistanceMatrix import DistanceMatrix
 from graph.UndirectedGraph import Graph
 from helpers.Utils import slide_window
 

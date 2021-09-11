@@ -1,7 +1,7 @@
 from itertools import product
 from typing import TypeVar
 
-from distance_matric.DistanceMatrix import DistanceMatrix
+from distance_matrix.DistanceMatrix import DistanceMatrix
 from helpers.InputUtils import str_to_list
 
 
