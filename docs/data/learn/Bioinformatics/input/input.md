@@ -6708,7 +6708,7 @@ parent1 -+                                                 |
 
 In the first two examples, one present-day entity branched off from another present-day entity. Both entities are still present-day entities (the entity branched off from isn't extinct).
 
-In the fifth example, parent1 branched off to the present-day entities entity1 and entity3, then entity2 branched off entity1. All three entities are present-day entities (neither entity1, entity2, nor entity3 is extinct).
+In the fifth example, parent1 split off to the present-day entities entity1 and entity3, then entity2 branched off entity1. All three entities are present-day entities (neither entity1, entity2, nor entity3 is extinct).
 
 In the third and last two examples, the top-level parent doesn't show up because adding it would break the requirement that internal nodes must be splitting (degree_GRAPH > 2). For example, adding parent1 in to the simple tree of the last example above causes parent1 to have a degree_GRAPH = 2...
 
@@ -6765,7 +6765,181 @@ Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
 
 **WHAT**: Determine if a distance matrix is an additive distance matrix without knowing the tree structure beforehand.
 
-**WHY**: Knowing if a distance matrix is additive helps determine how the tree for that distance matrix should be constructed. For example, since it's impossible for a non-additive distance matrix to fit to a tree, different algorithms are needed to approximate a tree with a "close-enough" fit vs an algorithm that tries to find a tree with a specific fit.
+**WHY**: Knowing if a distance matrix is additive helps determine how the tree for that distance matrix should be constructed. For example, since it's impossible for a non-additive distance matrix to fit a tree, different algorithms are needed to approximate a tree that somewhat fits.
+
+#### Four Point Condition Algorithm
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Test\/Four Point Condition Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+This algorithm tests pairs within each quartet of leaf nodes to ensure that they meet a certain set of conditions. For example, the following tree has the quartet of leaf nodes (v0, v2, v4, v6) ...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ subgraph cluster_one {
+  v0 [style=filled, fillcolor="gray"]
+  v1
+  v2 [style=filled, fillcolor="gray"]
+  v3
+  v4 [style=filled, fillcolor="gray"]
+  v5
+  v6 [style=filled, fillcolor="gray"]
+  v0 -- i0
+  v1 -- i0
+  i0 -- i1
+  v2 -- i1
+  v3 -- i1
+  i1 -- i2
+  v4 -- i2
+  i2 -- i3
+  i3 -- v5
+  i3 -- v6
+ }
+}
+```
+
+A quartet makes up 3 different pair combinations (pairs of pairs). For example, the example quartet above has the 3 pair combinations ...
+
+ * ((v0, v2), (v4, v6))
+ * ((v0, v4), (v2, v6))
+ * ((v0, v6), (v2, v4))
+
+```{note}
+Order of the pairing doesn't matter at either level. For example, ((v0, v2), (v4, v6)) and ((v6, v4), (v2, v0)) are the same. That's why there are only 3.
+```
+
+Of these 3 pair combinations, the test checks to see that ...
+
+ 1. the sum of distances for one is == the sum of distances for another.
+ 2. the sum of distances for the remaining is <= the sums from the point above.
+
+In a tree with edge weights >= 0, every leaf node quartet will pass this test. For example, for leaf node quartet (v0, v2, v4, v6) highlighted in the example tree above ...
+
+```{dot}
+graph G {
+graph[rankdir=LR]
+node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ subgraph cluster_two2 {
+  fontname="Courier-Bold"
+  fontsize=10
+  label="dist(v0, v2) + dist(v4, v6)"
+  z_v0 -- z_i0 [color=violet, penwidth=2.5]
+  z_v1 -- z_i0
+  z_i0 -- z_i1 [color=violet, penwidth=2.5]
+  z_v2 -- z_i1 [color=violet, penwidth=2.5]
+  z_v3 -- z_i1
+  z_i1 -- z_i2
+  z_v4 -- z_i2 [color=tan, penwidth=2.5]
+  z_i2 -- z_i3 [color=tan, penwidth=2.5]
+  z_i3 -- z_v5
+  z_i3 -- z_v6 [color=tan, penwidth=2.5]
+  z_v0 [label= "v0", style=filled, fillcolor="violet"] 
+  z_v1 [label= "v1"] 
+  z_i0 [label= "i0"] 
+  z_i1 [label= "i1"] 
+  z_v2 [label= "v2", style=filled, fillcolor="violet"] 
+  z_v3 [label= "v3"] 
+  z_i2 [label= "i2"] 
+  z_i3 [label= "i3"] 
+  z_v4 [label= "v4", style=filled, fillcolor="tan"] 
+  z_v5 [label= "v5"] 
+  z_v6 [label= "v6", style=filled, fillcolor="tan"]
+ }
+ subgraph cluster_two {
+  fontname="Courier-Bold"
+  fontsize=10
+  label="dist(v0, v6) + dist(v2, v4)"
+  y_v0 -- y_i0 [color=gold, penwidth=2.5]
+  y_v1 -- y_i0
+  y_i0 -- y_i1 [color=gold, penwidth=2.5]
+  y_v2 -- y_i1 [color=pink, penwidth=2.5]
+  y_v3 -- y_i1
+  y_i1 -- y_i2 [color="pink:invis:gold", penwidth=2.5]
+  y_v4 -- y_i2 [color=pink, penwidth=2.5]
+  y_i2 -- y_i3 [color=gold, penwidth=2.5]
+  y_i3 -- y_v5
+  y_i3 -- y_v6 [color=gold, penwidth=2.5]
+  y_v0 [label= "v0", style=filled, fillcolor="gold"] 
+  y_v1 [label= "v1"] 
+  y_i0 [label= "i0"] 
+  y_i1 [label= "i1"] 
+  y_v2 [label= "v2", style=filled, fillcolor="pink"] 
+  y_v3 [label= "v3"] 
+  y_i2 [label= "i2"] 
+  y_i3 [label= "i3"] 
+  y_v4 [label= "v4", style=filled, fillcolor="pink"] 
+  y_v5 [label= "v5"] 
+  y_v6 [label= "v6", style=filled, fillcolor="gold"]
+ }
+ subgraph cluster_one {
+  fontname="Courier-Bold"
+  fontsize=10
+  label="dist(v0, v4) + dist(v2, v6)"
+  x_v0 -- x_i0 [color=turquoise, penwidth=2.5]
+  x_v1 -- x_i0
+  x_i0 -- x_i1 [color=turquoise, penwidth=2.5]
+  x_v2 -- x_i1 [color=orange, penwidth=2.5]
+  x_v3 -- x_i1
+  x_i1 -- x_i2 [color="orange:invis:turquoise", penwidth=2.5]
+  x_v4 -- x_i2 [color=turquoise, penwidth=2.5]
+  x_i2 -- x_i3 [color=orange, penwidth=2.5]
+  x_i3 -- x_v5
+  x_i3 -- x_v6 [color=orange, penwidth=2.5]
+  x_v0 [label= "v0", style=filled, fillcolor="turquoise"] 
+  x_v1 [label= "v1"] 
+  x_i0 [label= "i0"] 
+  x_i1 [label= "i1"] 
+  x_v2 [label= "v2", style=filled, fillcolor="orange"] 
+  x_v3 [label= "v3"] 
+  x_i2 [label= "i2"] 
+  x_i3 [label= "i3"] 
+  x_v4 [label= "v4", style=filled, fillcolor="turquoise"] 
+  x_v5 [label= "v5"] 
+  x_v6 [label= "v6", style=filled, fillcolor="orange"]
+ }
+}
+```
+
+<code>`{h}violet dist(v0, v2)` + `{h}tan dist(v4, v6)` <= `{h}gold dist(v0, v6)` + `{h}pink dist(v2, v4)` == `{h}turquoise dist(v0, v4)` + `{h}orange dist(v2, v6)`</code>
+
+Note how the same set of edges are highlighted between the first two diagrams (same distance contributions) while the third diagram has less edges highlighted (missing some distance contributions). This is where the inequality comes from.
+
+```{note}
+I'm almost certain this inequality should be < instead of <=, because in a phylogenetic tree you can't have an edge weight of 0, right? An edge weight of 0 would indicate that the nodes at each end of an edge are the same entity.
+```
+
+All of the information required for the above calculation is available in the distance matrix...
+
+```{output}
+ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py
+python
+# MARKDOWN_QUARTET_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_QUARTET_TEST
+```
+
+If a distance matrix was derived from a tree / fits a tree, its leaf node quartets will also pass this test. That is, if all leaf node quartets in a distance matrix pass the above test, the distance matrix is an additive distance matrix ...
+
+```{output}
+ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.AdditiveDistanceMatrixTest_FourPointCondition
+[0, 3, 8, 7]
+[3, 0, 9, 8]
+[8, 9, 0, 5]
+[7, 8, 5, 0]
+```
+
+```{note}
+Could the differences found by this algorithm help determine how "close" a distance matrix is to being an additive distance matrix?
+```
 
 #### Equation Algorithm
 
@@ -6784,32 +6958,6 @@ TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
 TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
 
 TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
-
-#### Four Point Condition Algorithm
-
-**ALGORITHM**:
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-TODO: MOVE THE LOGIC FROM FOUR POINT CONDITION BOOKMARK HERE.
-
-```{note}
-Could the differences found by this algorithm help determine how "close" a distance matrix is to being an additive distance matrix?
-```
 
 ### Same Subtree Detection
 
@@ -10662,154 +10810,38 @@ graph_show
    Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get limb length for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.
    ````
 
- * `{bm} four point condition/(four point condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. The idea is that, given any 4 arbitrarily chosen leaf nodes in a phylogenetic tree (can't be the same leaf nodes), there will be case where...
+ * `{bm} four point condition/(four point condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. The algorithm takes 4 leaf nodes and tests different pairings of those 4 to test if any pass a set of conditions. ...
 
-   * one pair of distances sum up to another pair of distances
-   * a third pair of distances sum to <= the pair found in the previous point
-
-   For example, given (v0, v2, v4, v6) in the following tree ...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    v0 [style=filled, fillcolor="gray"]
-    v2 [style=filled, fillcolor="gray"]
-    v4 [style=filled, fillcolor="gray"]
-    v6 [style=filled, fillcolor="gray"]
-    v0 -- i0
-    v1 -- i0
-    i0 -- i1
-    v2 -- i1
-    v3 -- i1
-    i1 -- i2
-    v4 -- i2
-    i2 -- i3
-    i3 -- v5
-    i3 -- v6
-   }
+   ```python
+   # Pairs of leaf node pairs
+   pair_combos = (
+       ((l0, l1), (l2, l3)),
+       ((l0, l2), (l1, l3)),
+       ((l0, l3), (l1, l2))
+   )
+   # Different orders to test pair_combos to see if they match conditions
+   test_orders = (
+       (0, 1, 2),
+       (0, 2, 1),
+       (1, 2, 0)
+   )
+   # Find at least one order of pair combos that passes the test
+   for p1_idx, p2_idx, p3_idx in test_orders:
+       p1_1, p1_2 = pair_combos[p1_idx]
+       p2_1, p2_2 = pair_combos[p2_idx]
+       p3_1, p3_2 = pair_combos[p3_idx]
+       s1 = dm[p1_1] + dm[p1_2]
+       s2 = dm[p2_1] + dm[p2_2]
+       s3 = dm[p3_1] + dm[p3_2]
+       if s1 <= s2 == s3:
+           return True
+   return False
    ```
 
-   ... the pair of distances ((v0, v4), (v2, v6)) sum up to another pair of distances ((v0, v6), (v2, v4))...
-     
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    subgraph cluster_two {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v6) + dist(v2, v4)"
-     y_v0 -- y_i0 [color=gold, penwidth=2.5]
-     y_v1 -- y_i0
-     y_i0 -- y_i1 [color=gold, penwidth=2.5]
-     y_v2 -- y_i1 [color=pink, penwidth=2.5]
-     y_v3 -- y_i1
-     y_i1 -- y_i2 [color="pink:invis:gold", penwidth=2.5]
-     y_v4 -- y_i2 [color=pink, penwidth=2.5]
-     y_i2 -- y_i3 [color=gold, penwidth=2.5]
-     y_i3 -- y_v5
-     y_i3 -- y_v6 [color=gold, penwidth=2.5]
-     y_v0 [label= "v0", style=filled, fillcolor="gold"] 
-     y_v1 [label= "v1"] 
-     y_i0 [label= "i0"] 
-     y_i1 [label= "i1"] 
-     y_v2 [label= "v2", style=filled, fillcolor="pink"] 
-     y_v3 [label= "v3"] 
-     y_i2 [label= "i2"] 
-     y_i3 [label= "i3"] 
-     y_v4 [label= "v4", style=filled, fillcolor="pink"] 
-     y_v5 [label= "v5"] 
-     y_v6 [label= "v6", style=filled, fillcolor="gold"]
-    }
-    subgraph cluster_one {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v4) + dist(v2, v6)"
-     x_v0 -- x_i0 [color=turquoise, penwidth=2.5]
-     x_v1 -- x_i0
-     x_i0 -- x_i1 [color=turquoise, penwidth=2.5]
-     x_v2 -- x_i1 [color=orange, penwidth=2.5]
-     x_v3 -- x_i1
-     x_i1 -- x_i2 [color="orange:invis:turquoise", penwidth=2.5]
-     x_v4 -- x_i2 [color=turquoise, penwidth=2.5]
-     x_i2 -- x_i3 [color=orange, penwidth=2.5]
-     x_i3 -- x_v5
-     x_i3 -- x_v6 [color=orange, penwidth=2.5]
-     x_v0 [label= "v0", style=filled, fillcolor="turquoise"] 
-     x_v1 [label= "v1"] 
-     x_i0 [label= "i0"] 
-     x_i1 [label= "i1"] 
-     x_v2 [label= "v2", style=filled, fillcolor="orange"] 
-     x_v3 [label= "v3"] 
-     x_i2 [label= "i2"] 
-     x_i3 [label= "i3"] 
-     x_v4 [label= "v4", style=filled, fillcolor="turquoise"] 
-     x_v5 [label= "v5"] 
-     x_v6 [label= "v6", style=filled, fillcolor="orange"]
-    }
-   }
-   ```
-
-   ... and the pair of distances ((v0, v2), (v4, v6)) sum up to less than the other two...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    subgraph cluster_one {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v2) + dist(v4, v6)"
-     x_v0 -- x_i0 [color=violet, penwidth=2.5]
-     x_v1 -- x_i0
-     x_i0 -- x_i1 [color=violet, penwidth=2.5]
-     x_v2 -- x_i1 [color=violet, penwidth=2.5]
-     x_v3 -- x_i1
-     x_i1 -- x_i2
-     x_v4 -- x_i2 [color=tan, penwidth=2.5]
-     x_i2 -- x_i3 [color=tan, penwidth=2.5]
-     x_i3 -- x_v5
-     x_i3 -- x_v6 [color=tan, penwidth=2.5]
-     x_v0 [label= "v0", style=filled, fillcolor="violet"] 
-     x_v1 [label= "v1"] 
-     x_i0 [label= "i0"] 
-     x_i1 [label= "i1"] 
-     x_v2 [label= "v2", style=filled, fillcolor="violet"] 
-     x_v3 [label= "v3"] 
-     x_i2 [label= "i2"] 
-     x_i3 [label= "i3"] 
-     x_v4 [label= "v4", style=filled, fillcolor="tan"] 
-     x_v5 [label= "v5"] 
-     x_v6 [label= "v6", style=filled, fillcolor="tan"]
-    }
-   }
-   ```
-
-   Notice how the...
-
-   * first and second diagram have the same set of edges highlighted:
-   
-     dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)
-
-   * third diagram has less edges highlighted than the first two
-   
-     dist(v2, v4) + dist(v0, v6) <= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)
-
-   If the distance matrix is additive, this will always be the case. Of any 4 leaf nodes you pick, there exists a pairing of leafs where the ...
-   
-   * sum of distances from one pair will == the sum of distances of another pair.
-   * third pair will be <= to the other two pairs.
+   If all possible leaf node quartets pass the above conditions, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
 
    ```{note}
-   Recall that the book said that a tree of size 3 is guaranteed to have an additive matrix. Thats why you need at least 4 leafs to test.
-   ```
-
-   ```{note}
-   The code for this is at Stepik.7.14.ExerciseBreak.ProveFourPointTheorem.py
+   For a detailed explaination of why this is, see Algorithms/Distance Phylogeny/Additive Distance Matrix Test/Four Point Condition Algorithm_TOPIC.
    ```
 
  * `{bm} trimmed distance matrix/(trimmed distance matrix|trimmed distance matrices)/i` - An additive distance matrix where a leaf has been removed.

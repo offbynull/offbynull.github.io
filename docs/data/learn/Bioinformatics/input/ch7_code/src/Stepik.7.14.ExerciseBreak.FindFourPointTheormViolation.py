@@ -57,7 +57,7 @@ leaf_test_orders = {
 }
 
 def four_point_test(i, j, k, l):
-    s1 = d[i][j] * d[k][l]
+    s1 = d[i][j] + d[k][l]
     s2 = d[i][k] + d[j][l]
     s3 = d[i][l] + d[j][k]
     return s1 <= s2 == s3

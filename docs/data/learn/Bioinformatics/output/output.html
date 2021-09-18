@@ -142,8 +142,8 @@
 <li><a href="#H_Tree%20to%20Simple%20Tree">Tree to Simple Tree</a></li>
 <li><a href="#H_Additive%20Distance%20Matrix%20Test">Additive Distance Matrix Test</a></li>
 <ul>
-<li><a href="#H_Equation%20Algorithm">Equation Algorithm</a></li>
 <li><a href="#H_Four%20Point%20Condition%20Algorithm">Four Point Condition Algorithm</a></li>
+<li><a href="#H_Equation%20Algorithm">Equation Algorithm</a></li>
 </ul>
 <li><a href="#H_Same%20Subtree%20Detection">Same Subtree Detection</a></li>
 <li><a href="#H_Trim%20Distance%20Matrix">Trim Distance Matrix</a></li>
@@ -9812,7 +9812,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The following examples show various real evolutionary paths and their corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s. Note how the <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s neither fully represent the true lineage nor the direction of evolution (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are unrooted and undirected).</p>
 <p><img src="svgbob_86f08fc5c51796312a431fa11fa8a143a7525756.svg" alt="Kroki diagram output"></p>
 <p>In the first two examples, one present-day entity branched off from another present-day entity. Both entities are still present-day entities (the entity branched off from isn't extinct).</p>
-<p>In the fifth example, parent1 branched off to the present-day entities entity1 and entity3, then entity2 branched off entity1. All three entities are present-day entities (neither entity1, entity2, nor entity3 is extinct).</p>
+<p>In the fifth example, parent1 split off to the present-day entities entity1 and entity3, then entity2 branched off entity1. All three entities are present-day entities (neither entity1, entity2, nor entity3 is extinct).</p>
 <p>In the third and last two examples, the top-level parent doesn't show up because adding it would break the requirement that internal nodes must be splitting (<a href="#BM_(degree)_GRAPH%2Fi">degree</a> &gt; 2). For example, adding parent1 in to the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> of the last example above causes parent1 to have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> = 2...</p>
 <p><img src="svgbob_895c08d3866dea4e938d43c7c62da5224abdeb82.svg" alt="Kroki diagram output"></p>
 <p>The following algorithm removes nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> = 2, merging its two edges together. This makes it so every internal edge has a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of &gt; 2...</p>
@@ -9910,7 +9910,126 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </ul>
 </div>
 <p><strong>WHAT</strong>: Determine if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> without knowing the <a href="#BM_(tree)%2Fi">tree</a> structure beforehand.</p>
-<p><strong>WHY</strong>: Knowing if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive helps determine how the <a href="#BM_(tree)%2Fi">tree</a> for that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> should be constructed. For example, since it's impossible for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to fit to a <a href="#BM_(tree)%2Fi">tree</a>, different algorithms are needed to approximate a <a href="#BM_(tree)%2Fi">tree</a> with a "close-enough" fit vs an algorithm that tries to find a <a href="#BM_(tree)%2Fi">tree</a> with a specific fit.</p>
+<p><strong>WHY</strong>: Knowing if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive helps determine how the <a href="#BM_(tree)%2Fi">tree</a> for that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> should be constructed. For example, since it's impossible for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to fit a <a href="#BM_(tree)%2Fi">tree</a>, different algorithms are needed to approximate a <a href="#BM_(tree)%2Fi">tree</a> that somewhat fits.</p>
+<a name="H_Four%20Point%20Condition%20Algorithm"></a><h4>Four Point Condition Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test%2FFour%20Point%20Condition%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>This algorithm tests pairs within each quartet of leaf nodes to ensure that they meet a certain set of conditions. For example, the following <a href="#BM_(tree)%2Fi">tree</a> has the quartet of leaf nodes (v0, v2, v4, v6) ...</p>
+<p><img src="dot_d1edbcb3745180a7312db2a6e743e4fe.svg" alt="Dot diagram"></p>
+<p>A quartet makes up 3 different pair combinations (pairs of pairs). For example, the example quartet above has the 3 pair combinations ...</p>
+<ul>
+<li>((v0, v2), (v4, v6))</li>
+<li>((v0, v4), (v2, v6))</li>
+<li>((v0, v6), (v2, v4))</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Order of the pairing doesn't matter at either level. For example, ((v0, v2), (v4, v6)) and ((v6, v4), (v2, v0)) are the same. That's why there are only 3.</p>
+</div>
+<p>Of these 3 pair combinations, the test checks to see that ...</p>
+<ol>
+<li>the sum of distances for one is == the sum of distances for another.</li>
+<li>the sum of distances for the remaining is &lt;= the sums from the point above.</li>
+</ol>
+<p>In a <a href="#BM_(tree)%2Fi">tree</a> with edge weights &gt;= 0, every leaf node quartet will pass this test. For example, for leaf node quartet (v0, v2, v4, v6) highlighted in the example <a href="#BM_(tree)%2Fi">tree</a> above ...</p>
+<p><img src="dot_d31d36a6fb4e1c4996a83fe60cfef729.svg" alt="Dot diagram"></p>
+<p><code><span style="background-color: violet; color: black; padding: 3px">dist(v0, v2)</span> + <span style="background-color: tan; color: black; padding: 3px">dist(v4, v6)</span> &lt;= <span style="background-color: gold; color: black; padding: 3px">dist(v0, v6)</span> + <span style="background-color: pink; color: black; padding: 3px">dist(v2, v4)</span> == <span style="background-color: turquoise; color: black; padding: 3px">dist(v0, v4)</span> + <span style="background-color: orange; color: black; padding: 3px">dist(v2, v6)</span></code></p>
+<p>Note how the same set of edges are highlighted between the first two diagrams (same distance contributions) while the third diagram has less edges highlighted (missing some distance contributions). This is where the inequality comes from.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I'm almost certain this inequality should be &lt; instead of &lt;=, because in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> you can't have an edge weight of 0, right? An edge weight of 0 would indicate that the nodes at each end of an edge are the same entity.</p>
+</div>
+<p>All of the information required for the above calculation is available in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><a href="ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py">ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py</a> (lines 12 to 35):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">four_point_test</span>(<span class="hljs-params">dm: DistanceMatrix, l0: N, l1: N, l2: N, l3: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
+    <span class="hljs-comment"># Pairs of leaf node pairs</span>
+    pair_combos = (
+        ((l0, l1), (l2, l3)),
+        ((l0, l2), (l1, l3)),
+        ((l0, l3), (l1, l2))
+    )
+    <span class="hljs-comment"># Different orders to test pair_combos to see if they match conditions</span>
+    test_orders = (
+        (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>),
+        (<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>),
+        (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)
+    )
+    <span class="hljs-comment"># Find at least one order of pair combos that passes the test</span>
+    <span class="hljs-keyword">for</span> p1_idx, p2_idx, p3_idx <span class="hljs-keyword">in</span> test_orders:
+        p1_1, p1_2 = pair_combos[p1_idx]
+        p2_1, p2_2 = pair_combos[p2_idx]
+        p3_1, p3_2 = pair_combos[p3_idx]
+        s1 = dm[p1_1] + dm[p1_2]
+        s2 = dm[p2_1] + dm[p2_2]
+        s3 = dm[p3_1] + dm[p3_2]
+        <span class="hljs-keyword">if</span> s1 &lt;= s2 == s3:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre>
+<p>If a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>, its leaf node quartets will also pass this test. That is, if all leaf node quartets in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> ...</p>
+<p><a href="ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py">ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py</a> (lines 40 to 52):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_additive</span>(<span class="hljs-params">dm: DistanceMatrix</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
+    <span class="hljs-comment"># Recall that an additive distance matrix of size &lt;= 3 is guaranteed to be an additive distance</span>
+    <span class="hljs-comment"># matrix (try it and see -- any distances you use will always end up fitting a tree). Thats why</span>
+    <span class="hljs-comment"># you need at least 4 leaf nodes to test.</span>
+    <span class="hljs-keyword">if</span> dm.n &lt; <span class="hljs-number">4</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    leaves = dm.leaf_ids()
+    <span class="hljs-keyword">for</span> quartet <span class="hljs-keyword">in</span> combinations(leaves, r=<span class="hljs-number">4</span>):
+        passed = four_point_test(dm, *quartet)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> passed:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>8.0</td>
+<td>7.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>9.0</td>
+<td>8.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8.0</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7.0</td>
+<td>8.0</td>
+<td>5.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... is additive.</p>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Could the differences found by this algorithm help determine how "close" a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is to being an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>?</p>
+</div>
 <a name="H_Equation%20Algorithm"></a><h4>Equation Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
 <p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
@@ -9920,21 +10039,6 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
 <p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
 <p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
-<a name="H_Four%20Point%20Condition%20Algorithm"></a><h4>Four Point Condition Algorithm</h4>
-<p><strong>ALGORITHM</strong>:</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">FOUR POINT CONDITION</a> BOOKMARK HERE.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Could the differences found by this algorithm help determine how "close" a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is to being an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>?</p>
-</div>
 <a name="H_Same%20Subtree%20Detection"></a><h3>Same Subtree Detection</h3>
 <a name="H_Trim%20Distance%20Matrix"></a><h3>Trim Distance Matrix</h3>
 <a name="H_Bald%20Distance%20Matrix"></a><h3>Bald Distance Matrix</h3>
@@ -13238,40 +13342,35 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </div>
 </li>
 <li>
-<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The idea is that, given any 4 arbitrarily chosen leaf nodes in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> (can't be the same leaf nodes), there will be case where...</p>
-<ul>
-<li>one pair of distances sum up to another pair of distances</li>
-<li>a third pair of distances sum to &lt;= the pair found in the previous point</li>
-</ul>
-<p>For example, given (v0, v2, v4, v6) in the following <a href="#BM_(tree)%2Fi">tree</a> ...</p>
-<p><img src="dot_662a94ff9db2b299a086eb0713a712a1.svg" alt="Dot diagram"></p>
-<p>... the pair of distances ((v0, v4), (v2, v6)) sum up to another pair of distances ((v0, v6), (v2, v4))...</p>
-<p><img src="dot_e14d655006c318a62d6e2b62fffe6e24.svg" alt="Dot diagram"></p>
-<p>... and the pair of distances ((v0, v2), (v4, v6)) sum up to less than the other two...</p>
-<p><img src="dot_72caf73c6f3685ec232aab8e711ddf6d.svg" alt="Dot diagram"></p>
-<p>Notice how the...</p>
-<ul>
-<li>
-<p>first and second diagram have the same set of edges highlighted:</p>
-<p>dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)</p>
-</li>
-<li>
-<p>third diagram has less edges highlighted than the first two</p>
-<p>dist(v2, v4) + dist(v0, v6) &lt;= dist(v2, v4) + dist(v0, v6) == dist(v0, v6) + dist(v2, v4)</p>
-</li>
-</ul>
-<p>If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive, this will always be the case. Of any 4 leaf nodes you pick, there exists a pairing of leafs where the ...</p>
-<ul>
-<li>sum of distances from one pair will == the sum of distances of another pair.</li>
-<li>third pair will be &lt;= to the other two pairs.</li>
-</ul>
+<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The algorithm takes 4 leaf nodes and tests different pairings of those 4 to test if any pass a set of conditions. ...</p>
+<pre class="hljs"><code><span class="hljs-comment"># Pairs of leaf node pairs</span>
+pair_combos = (
+    ((l0, l1), (l2, l3)),
+    ((l0, l2), (l1, l3)),
+    ((l0, l3), (l1, l2))
+)
+<span class="hljs-comment"># Different orders to test pair_combos to see if they match conditions</span>
+test_orders = (
+    (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>),
+    (<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>),
+    (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)
+)
+<span class="hljs-comment"># Find at least one order of pair combos that passes the test</span>
+<span class="hljs-keyword">for</span> p1_idx, p2_idx, p3_idx <span class="hljs-keyword">in</span> test_orders:
+    p1_1, p1_2 = pair_combos[p1_idx]
+    p2_1, p2_2 = pair_combos[p2_idx]
+    p3_1, p3_2 = pair_combos[p3_idx]
+    s1 = dm[p1_1] + dm[p1_2]
+    s2 = dm[p2_1] + dm[p2_2]
+    s3 = dm[p3_1] + dm[p3_2]
+    <span class="hljs-keyword">if</span> s1 &lt;= s2 == s3:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+<span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre>
+<p>If all possible leaf node quartets pass the above conditions, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that the book said that a <a href="#BM_(tree)%2Fi">tree</a> of size 3 is guaranteed to have an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>. Thats why you need at least 4 leafs to test.</p>
-</div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The code for this is at Stepik.7.14.ExerciseBreak.ProveFourPointTheorem.py</p>
+<p>For a detailed explaination of why this is, see <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test%2FFour%20Point%20Condition%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Test/Four Point Condition Algorithm</a>.</p>
 </div>
 </li>
 <li>
@@ -14740,7 +14839,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -14802,7 +14901,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_c55956cc416148943ccd35d9b6313d97.svg" alt="Dot diagram"></p>
+<p><img src="dot_23ec8db6470187d70e753d03d41b9cfa.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
@@ -14988,7 +15087,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -15057,7 +15156,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_dd2b0ca7814296288f883a1b3413a5f4.svg" alt="Dot diagram"></p>
+<p><img src="dot_969173d161039e32fb7ae605c61d69df.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
