@@ -143,7 +143,7 @@
 <li><a href="#H_Additive%20Distance%20Matrix%20Test">Additive Distance Matrix Test</a></li>
 <ul>
 <li><a href="#H_Four%20Point%20Condition%20Algorithm">Four Point Condition Algorithm</a></li>
-<li><a href="#H_Equation%20Algorithm">Equation Algorithm</a></li>
+<li><a href="#H_Linear%20System%20Algorithm">Linear System Algorithm</a></li>
 </ul>
 <li><a href="#H_Same%20Subtree%20Detection">Same Subtree Detection</a></li>
 <li><a href="#H_Trim%20Distance%20Matrix">Trim Distance Matrix</a></li>
@@ -10030,15 +10030,178 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Could the differences found by this algorithm help determine how "close" a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is to being an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>?</p>
 </div>
-<a name="H_Equation%20Algorithm"></a><h4>Equation Algorithm</h4>
+<a name="H_Linear%20System%20Algorithm"></a><h4>Linear System Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test%2FLinear%20System%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
+</ul>
+</div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
-<p>TODO: MOVE THE LOGIC FROM <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">ADDITIVE DISTANCE MATRIX</a> BOOKMARK HERE.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is more illustrative than it is a hard and fast algorithm. It's just explaining that the values in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> come from what are essentially linear equations, and that if you know the structure of the <a href="#BM_(tree)%2Fi">tree</a>, you can solve the system of linear equations to figure out what that <a href="#BM_(tree)%2Fi">tree</a>'s weights should be.</p>
+</div>
+<p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, if you already know the structure of the <a href="#BM_(tree)%2Fi">tree</a>, with edge weights that satisfy that <a href="#BM_(tree)%2Fi">tree</a> are derivable from that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> structure...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cat</th>
+<th>Lion</th>
+<th>Bear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cat</td>
+<td>0</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Lion</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Bear</td>
+<td>4</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_9efe0131b95aacb3aa51fbb4cd8f18843707a13e.svg" alt="Kroki diagram output"></p>
+<p>... the distances between species must have been calculated as follows:</p>
+<pre><code>dist(Cat, Lion) = dist(Cat, A1) + dist(A1, Lion)`
+dist(Cat, Bear) = dist(Cat, A1) + dist(A1, A2) + dist(A2, Bear)`
+dist(Lion, Bear) = dist(Lion, A1) + dist(A1, A2) + dist(A2, Bear)`
+</code></pre>
+<p>This is a system of linear equations that may be solved using standard algebra. For example, each <code>dist()</code> above is representable as either a variable or a constant...</p>
+<pre><code>2 = dist(Cat, Lion)  = dist(Lion, Cat)
+4 = dist(Cat, Bear)  = dist(Bear, Cat)
+3 = dist(Lion, Bear) = dist(Bear, Lion)
+w = dist(Cat, A1)    = dist(A1, Cat)
+x = dist(Lion, A1)   = dist(A1, Lion)
+y = dist(A1, A2)     = dist(A2, A1)
+z = dist(A2, Bear)   = dist(Bear, A2)
+</code></pre>
+<p>... , which converts each calculation above to the following equations ...</p>
+<pre><code>2 = w + x
+4 = w + y + z
+3 = x + y + z
+</code></pre>
+<p><img src="svgbob_2f13ccbb0caa3ef9d6c3abe089b7f6bd3f123ce5.svg" alt="Kroki diagram output"></p>
+<p>Solving this system of linear equations results in. ..</p>
+<pre><code>x = 0.5
+w = 1.5
+z = 2.5 - y
+</code></pre>
+<p>As such, the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a> because there exists a <a href="#BM_(tree)%2Fi">tree</a> that satisfies it. Any of the following edge weights will work with this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<pre><code>x = 0.5, w = 1.5, y = 0.5, z = 2.0
+x = 0.5, w = 1.5, y = 1.0, z = 1.5
+x = 0.5, w = 1.5, y = 1.5, z = 1.0
+...
+</code></pre>
+<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (A2 is an internal node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2). If you limit your search scope to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially the same as <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s but edges broken up by splicing nodes inbetween.</p>
+<p>The example above collapsed into a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
+<p><img src="svgbob_242bb8fb861330d4a7f257bc69f0673ae8b12b7e.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This <a href="#BM_(simple%20tree)%2Fi">simple tree</a> version gets solved to <code>w = 2</code>, <code>x = 1</code>, and <code>z = 2</code>.</p>
+<p>The Pevzner book states that if a matrix is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>, there's a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits it.</p>
+</div>
+<p>The term additive is used because the weights of all edges along the path between leaves (i, j) add to <code>dist(i, j)</code> in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. Not all <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are additive. For example, no <a href="#BM_(simple%20tree)%2Fi">simple tree</a> exists that satisfies the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>S1</th>
+<th>S2</th>
+<th>S3</th>
+<th>S4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>0</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>3</td>
+<td>0</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>3</td>
+<td>5</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 1:</p>
+<p><img src="svgbob_74cdc79c5f9b82937ba473b3e3e632aab5cb6b4e.svg" alt="Kroki diagram output"></p>
+<pre><code>dist(S1, S2) is 3 = w + x
+dist(S1, S3) is 4 = w + y
+dist(S1, S4) is 3 = w + z
+dist(S2, S3) is 4 = x + y
+dist(S2, S4) is 5 = x + z
+dist(S3, S4) is 2 = y + z
+</code></pre>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 2:</p>
+<p><img src="svgbob_310a023ae046f0c94fc708941d7e494797cf787b.svg" alt="Kroki diagram output"></p>
+<pre><code>dist(S1, S2) is 3 = w + x
+dist(S1, S3) is 4 = w + u + y
+dist(S1, S4) is 3 = w + u + z
+dist(S2, S3) is 4 = x + u + y
+dist(S2, S4) is 5 = x + u + z
+dist(S3, S4) is 2 = y + z
+</code></pre>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 3:</p>
+<p><img src="svgbob_27b6be0c6cb6193b60f5164ee5e83ce0f0389d38.svg" alt="Kroki diagram output"></p>
+<pre><code>dist(S1, S2) is 4 = w + u + y
+dist(S1, S3) is 3 = w + x
+dist(S1, S4) is 3 = w + u + z
+dist(S2, S3) is 4 = x + u + y
+dist(S2, S4) is 2 = y + z
+dist(S3, S4) is 5 = x + u + z
+</code></pre>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>etc..</p>
+</li>
+</ul>
+<p>A solution isn't viable if a variable ends up as a negative value (negative weight means negative distance, which doesn't make any sense). The initial example in this section is one that has multiple solutions where some are not viable because some variables end up up as negative values.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There is no code for this section since writing a generic linear systems solver is out of scope. There are Python packages you can use if you really want to do this.</p>
+</div>
 <a name="H_Same%20Subtree%20Detection"></a><h3>Same Subtree Detection</h3>
 <a name="H_Trim%20Distance%20Matrix"></a><h3>Trim Distance Matrix</h3>
 <a name="H_Bald%20Distance%20Matrix"></a><h3>Bald Distance Matrix</h3>
@@ -13029,8 +13192,8 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The restrictions placed on <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s simplify the process of working backwards from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>.</p>
 </li>
 <li>
-<p><a name="BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi"></a><strong>additive matrix</strong> - Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if there exists a <a href="#BM_(tree)%2Fi">tree</a> with edge weights that satisfy that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>.</p>
-<p>For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> structure...</p>
+<p><a name="BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi"></a><strong>additive matrix</strong> - Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if there exists a <a href="#BM_(tree)%2Fi">tree</a> with edge weights that satisfy that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (referred to as fit), that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>For example, the following <a href="#BM_(tree)%2Fi">tree</a> fits the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
 <table>
 <thead>
 <tr>
@@ -13045,7 +13208,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <td>Cat</td>
 <td>0</td>
 <td>2</td>
-<td>4</td>
+<td>3</td>
 </tr>
 <tr>
 <td>Lion</td>
@@ -13055,92 +13218,48 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </tr>
 <tr>
 <td>Bear</td>
-<td>4</td>
+<td>3</td>
 <td>3</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<p><img src="svgbob_8a24e0c5247c6d3c9d66b8f0cf6695d8e2b6a851.svg" alt="Kroki diagram output"></p>
-<p>... the distances between species must be calculated as follows:</p>
-<ul>
-<li><code>dist(Cat, Lion) = dist(Cat, Feline) + dist(Feline, Lion)</code></li>
-<li><code>dist(Cat, Bear) = dist(Cat, Feline) + dist(Feline, Animal) + dist(Animal, Bear)</code></li>
-<li><code>dist(Lion, Bear) = dist(Lion, Feline) + dist(Feline, Animal) + dist(Animal, Bear)</code></li>
-</ul>
-<p>This is a system of linear equations that may be solved using standard algebra. For example, each dist function call is representable as either a variable or a constant...</p>
-<ul>
-<li><code>2 = dist(Cat, Lion)      = dist(Lion, Cat)</code></li>
-<li><code>4 = dist(Cat, Bear)      = dist(Bear, Cat)</code></li>
-<li><code>3 = dist(Lion, Bear)     = dist(Bear, Lion)</code></li>
-<li><code>w = dist(Cat, Feline)    = dist(Feline, Cat)</code></li>
-<li><code>x = dist(Lion, Feline)   = dist(Feline, Lion)</code></li>
-<li><code>y = dist(Feline, Animal) = dist(Animal, Feline)</code></li>
-<li><code>z = dist(Animal, Bear)   = dist(Bear, Animal)</code></li>
-</ul>
-<p>..., which converts each calculation above to following equations...</p>
-<ul>
-<li><code>2 = w + x</code></li>
-<li><code>4 = w + y + z</code></li>
-<li><code>3 = x + y + z</code></li>
-</ul>
-<p><img src="svgbob_78e29e04183882e23cf8a3411572c49b179661fc.svg" alt="Kroki diagram output"></p>
-<p>Solving this system of linear equations results in...</p>
-<ul>
-<li><code>x = 0.5</code></li>
-<li><code>w = 1.5</code></li>
-<li><code>z = 2.5 - y</code></li>
-</ul>
-<p>As such, the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a> because there exists a <a href="#BM_(tree)%2Fi">tree</a> that satisfies it. Any of the following edge weights will work with this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<ul>
-<li><code>x = 0.5</code>, <code>w = 1.5</code>, <code>y = 0.5</code>, <code>z = 2.0</code></li>
-<li><code>x = 0.5</code>, <code>w = 1.5</code>, <code>y = 1.0</code>, <code>z = 1.5</code></li>
-<li><code>x = 0.5</code>, <code>w = 1.5</code>, <code>y = 1.5</code>, <code>z = 1.0</code></li>
-<li>...</li>
-</ul>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's both a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> and a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (Feline to Bear is a non-branching path with &gt; 0 nodes in between). The <a href="#BM_(tree)%2Fi">tree</a> doesn't have to be rooted or non-simple. In fact, I suspect the book is implying that it should be both un-rooted and simple. I'm guessing that if you limit your search scope to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially the same as <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s but with extra nodes spliced between non-branching paths.</p>
-<p>The example above as a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
-<p><img src="svgbob_f3846233feb740fda161cb3ffdf8d1f9d33c9404.svg" alt="Kroki diagram output"></p>
-<p>This <a href="#BM_(simple%20tree)%2Fi">simple tree</a> version gets solved to <code>w = 2</code>, <code>x = 1</code>, and <code>z = 2</code>.</p>
-<p>The Pevzner book states that if a matrix is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>, there's a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits it.</p>
-</div>
-<p>The term additive is used because the weights of all edges along the path between leaves i and j in a <a href="#BM_(tree)%2Fi">tree</a> fitting a matrix D add to <code>dist(i, j)</code>. Not all <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are additive. For example, no 4-leaf <a href="#BM_(simple%20tree)%2Fi">simple tree</a> exists that satisfies the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><img src="svgbob_e5ec5970ccdbca871edbc896779d5d1131ed9055.svg" alt="Kroki diagram output"></p>
+<p>Some <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> don't have a <a href="#BM_(tree)%2Fi">tree</a> that fits. For example, there is no <a href="#BM_(tree)%2Fi">tree</a> that fits the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>S1</th>
-<th>S2</th>
-<th>S3</th>
-<th>S4</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>S1</td>
+<td>v0</td>
 <td>0</td>
 <td>3</td>
 <td>4</td>
 <td>3</td>
 </tr>
 <tr>
-<td>S2</td>
+<td>v1</td>
 <td>3</td>
 <td>0</td>
 <td>4</td>
 <td>5</td>
 </tr>
 <tr>
-<td>S3</td>
+<td>v2</td>
 <td>4</td>
 <td>4</td>
 <td>0</td>
 <td>2</td>
 </tr>
 <tr>
-<td>S4</td>
+<td>v3</td>
 <td>3</td>
 <td>5</td>
 <td>2</td>
@@ -13148,59 +13267,6 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </tr>
 </tbody>
 </table>
-<ul>
-<li>
-<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 1:</p>
-<p><img src="svgbob_aeb82bce61a329489efb970443826a72b075e6d2.svg" alt="Kroki diagram output"></p>
-<ul>
-<li>dist(S1, S2) is 3 = w + x</li>
-<li>dist(S1, S3) is 4 = w + y</li>
-<li>dist(S1, S4) is 3 = w + z</li>
-<li>dist(S2, S3) is 4 = x + y</li>
-<li>dist(S2, S4) is 5 = x + z</li>
-<li>dist(S3, S4) is 2 = y + z</li>
-</ul>
-<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
-</li>
-<li>
-<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 2:</p>
-<p><img src="svgbob_310a023ae046f0c94fc708941d7e494797cf787b.svg" alt="Kroki diagram output"></p>
-<ul>
-<li>dist(S1, S2) is 3 = w + x</li>
-<li>dist(S1, S3) is 4 = w + u + y</li>
-<li>dist(S1, S4) is 3 = w + u + z</li>
-<li>dist(S2, S3) is 4 = x + u + y</li>
-<li>dist(S2, S4) is 5 = x + u + z</li>
-<li>dist(S3, S4) is 2 = y + z</li>
-</ul>
-<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
-</li>
-<li>
-<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 3:</p>
-<p><img src="svgbob_27b6be0c6cb6193b60f5164ee5e83ce0f0389d38.svg" alt="Kroki diagram output"></p>
-<ul>
-<li>dist(S1, S2) is 4 = w + u + y</li>
-<li>dist(S1, S3) is 3 = w + x</li>
-<li>dist(S1, S4) is 3 = w + u + z</li>
-<li>dist(S2, S3) is 4 = x + u + y</li>
-<li>dist(S2, S4) is 2 = y + z</li>
-<li>dist(S3, S4) is 5 = x + u + z</li>
-</ul>
-<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
-</li>
-<li>
-<p>etc..</p>
-</li>
-</ul>
-<p>When choosing a <a href="#BM_(tree)%2Fi">tree</a> structure, it's important to remember some key intuitions about solving systems of linear equations: A system of linear equations where ...</p>
-<ol>
-<li>the number of equations &lt;= the number of variables usually has at least one solution. However, some of those solutions may not be viable because some variables might solve to negative values but it doesn't make sense to have a negative distance. The initial example in this section is one that has multiple solutions where some are not viable because they result in some variables ending up as negative values.</li>
-<li>the number of equations &gt; the number of variables may have a solution but usually doesn't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.</li>
-</ol>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There are two ways of determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive. The first method is that, at some point, <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a> will fail when you try to find an additive pair in a bald matrix. The second method is to use the <a href="#BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi">four point condition</a>. I'll document each algorithm when it comes time to write out.</p>
-</div>
 </li>
 <li>
 <p><a name="BM_(limb%20length)%2Fi"></a><strong>limb length</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, a limb is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the limbs in the following graph are highlighted in red...</p>
@@ -13342,36 +13408,19 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </div>
 </li>
 <li>
-<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The algorithm takes 4 leaf nodes and tests different pairings of those 4 to test if any pass a set of conditions. ...</p>
-<pre class="hljs"><code><span class="hljs-comment"># Pairs of leaf node pairs</span>
-pair_combos = (
-    ((l0, l1), (l2, l3)),
-    ((l0, l2), (l1, l3)),
-    ((l0, l3), (l1, l2))
-)
-<span class="hljs-comment"># Different orders to test pair_combos to see if they match conditions</span>
-test_orders = (
-    (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>),
-    (<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>),
-    (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)
-)
-<span class="hljs-comment"># Find at least one order of pair combos that passes the test</span>
-<span class="hljs-keyword">for</span> p1_idx, p2_idx, p3_idx <span class="hljs-keyword">in</span> test_orders:
-    p1_1, p1_2 = pair_combos[p1_idx]
-    p2_1, p2_2 = pair_combos[p2_idx]
-    p3_1, p3_2 = pair_combos[p3_idx]
-    s1 = dm[p1_1] + dm[p1_2]
-    s2 = dm[p2_1] + dm[p2_2]
-    s3 = dm[p3_1] + dm[p3_2]
+<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. Given four leaf nodes, the algorithm checks different permutations of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...</p>
+<pre class="hljs"><code><span class="hljs-keyword">for</span> a, b, c, d <span class="hljs-keyword">in</span> permutations(quartet, r=<span class="hljs-number">4</span>):  <span class="hljs-comment"># find one perm that passes the following test</span>
+    s1 = dist_mat[a][b] + dist_mat[c][d]  <span class="hljs-comment"># sum of dists for (a,b) and (c,d)</span>
+    s2 = dist_mat[a][c] + dist_mat[b][d]  <span class="hljs-comment"># sum of dists for (a,c) and (b,d)</span>
+    s3 = dist_mat[a][d] + dist_mat[b][c]  <span class="hljs-comment"># sum of dists for (a,d) and (b,c)</span>
     <span class="hljs-keyword">if</span> s1 &lt;= s2 == s3:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
-<p>If all possible leaf node quartets pass the above conditions, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>For a detailed explaination of why this is, see <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test%2FFour%20Point%20Condition%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Test/Four Point Condition Algorithm</a>.</p>
-</div>
+<p>For example, the leaf nodes (v0, v2, v4, v6) pass this test ...</p>
+<p><img src="dot_233f87ca954b982c788c15bd0952f010.svg" alt="Dot diagram"></p>
+<p><code><span style="background-color: violet; color: black; padding: 3px">dist(v0, v2)</span> + <span style="background-color: tan; color: black; padding: 3px">dist(v4, v6)</span> &lt;= <span style="background-color: gold; color: black; padding: 3px">dist(v0, v6)</span> + <span style="background-color: pink; color: black; padding: 3px">dist(v2, v4)</span> == <span style="background-color: turquoise; color: black; padding: 3px">dist(v0, v4)</span> + <span style="background-color: orange; color: black; padding: 3px">dist(v2, v6)</span></code></p>
+<p>If all possible leaf node quartets pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
 </li>
 <li>
 <p><a name="BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where a leaf has been removed.</p>

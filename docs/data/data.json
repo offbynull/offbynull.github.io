@@ -207,20 +207,6 @@
             }
         },
         {
-            "name": "US Army Field Manual (FM) 6-22 Leader Development",
-            "source": {
-                "type": "document",
-                "url": "https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/fm6_22.pdf"
-            }
-        },
-        {
-            "name": "US Army Army Doctrine Publication (ADP) 6-22 Army Leadership and the Profession",
-            "source": {
-                "type": "document",
-                "url": "https://fas.org/irp/doddir/army/adp6_22.pdf"
-            }
-        },
-        {
             "name": "Data Science from Scratch 2nd Edition",
             "source": {
                 "type": "book",

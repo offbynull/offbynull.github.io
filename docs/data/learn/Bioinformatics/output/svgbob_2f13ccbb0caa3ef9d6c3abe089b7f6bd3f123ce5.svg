@@ -82,8 +82,8 @@ tspan.head{
 <line marker-end="url(#circle)" marker-start="url(#circle)" x1="92" x2="156" y1="8" y2="136"/>
 </g>
 <g>
-<text x="1" y="76">
-Feline
+<text x="17" y="108">
+w
 </text>
 </g>
 <g>
@@ -92,13 +92,33 @@ Cat
 </text>
 </g>
 <g>
+<text x="33" y="76">
+A1
+</text>
+</g>
+<g>
+<text x="57" y="44">
+y
+</text>
+</g>
+<g>
 <text x="81" y="156">
 Lion
 </text>
 </g>
 <g>
+<text x="89" y="108">
+x
+</text>
+</g>
+<g>
 <text x="105" y="12">
-Animal
+A2
+</text>
+</g>
+<g>
+<text x="137" y="76">
+z
 </text>
 </g>
 <g>

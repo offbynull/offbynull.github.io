@@ -6941,23 +6941,228 @@ phylogeny.AdditiveDistanceMatrixTest_FourPointCondition
 Could the differences found by this algorithm help determine how "close" a distance matrix is to being an additive distance matrix?
 ```
 
-#### Equation Algorithm
+#### Linear System Algorithm
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Test\/Linear System Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+```
 
 **ALGORITHM**:
 
-TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
+```{note}
+This is more illustrative than it is a hard and fast algorithm. It's just explaining that the values in an additive distance matrix come from what are essentially linear equations, and that if you know the structure of the tree, you can solve the system of linear equations to figure out what that tree's weights should be.
+```
 
-TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
+Given an additive distance matrix, if you already know the structure of the tree, with edge weights that satisfy that tree are derivable from that distance matrix. For example, given the following distance matrix and tree structure...
+   
+|      | Cat | Lion | Bear |
+|------|-----|------|------|
+| Cat  |  0  |  2   |  4   |
+| Lion |  2  |  0   |  3   |
+| Bear |  4  |  3   |  0   |
 
-TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
+```{svgbob}
+           * A2
+          / \
+         /   \
+        /     \
+    A1 *       \
+      / \       \
+     /   \       \
+    /     \       \
+   *       *       *
+  Cat     Lion    Bear
+```
 
-TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
+... the distances between species must have been calculated as follows:
 
-TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
+```
+dist(Cat, Lion) = dist(Cat, A1) + dist(A1, Lion)`
+dist(Cat, Bear) = dist(Cat, A1) + dist(A1, A2) + dist(A2, Bear)`
+dist(Lion, Bear) = dist(Lion, A1) + dist(A1, A2) + dist(A2, Bear)`
+```
 
-TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
+This is a system of linear equations that may be solved using standard algebra. For example, each `dist()` above is representable as either a variable or a constant...
 
-TODO: MOVE THE LOGIC FROM ADDITIVE DISTANCE MATRIX BOOKMARK HERE.
+```
+2 = dist(Cat, Lion)  = dist(Lion, Cat)
+4 = dist(Cat, Bear)  = dist(Bear, Cat)
+3 = dist(Lion, Bear) = dist(Bear, Lion)
+w = dist(Cat, A1)    = dist(A1, Cat)
+x = dist(Lion, A1)   = dist(A1, Lion)
+y = dist(A1, A2)     = dist(A2, A1)
+z = dist(A2, Bear)   = dist(Bear, A2)
+```
+
+... , which converts each calculation above to the following equations ...
+
+```
+2 = w + x
+4 = w + y + z
+3 = x + y + z
+```
+
+```{svgbob}
+           * A2
+          / \
+       y /   \
+        /     \
+    A1 *       \ z
+      / \       \
+  w  /   \ x     \
+    /     \       \
+   *       *       *
+  Cat     Lion    Bear
+```
+
+Solving this system of linear equations results in. ..
+
+```
+x = 0.5
+w = 1.5
+z = 2.5 - y
+```
+
+As such, the example distance matrix is an additive matrix because there exists a tree that satisfies it. Any of the following edge weights will work with this distance matrix...
+
+```
+x = 0.5, w = 1.5, y = 0.5, z = 2.0
+x = 0.5, w = 1.5, y = 1.0, z = 1.5
+x = 0.5, w = 1.5, y = 1.5, z = 1.0
+...
+```
+
+The example above tests against a tree that's a non-simple tree (A2 is an internal node with degree_GRAPH of 2). If you limit your search scope to simple trees and find nothing, there won't be any non-simple trees either: Non-simple trees are essentially the same as simple trees but edges broken up by splicing nodes inbetween.
+
+The example above collapsed into a simple tree:
+
+```{svgbob}
+       * A2
+      /|\ 
+     / | \
+    /  |  \ 
+   /   |   \
+  /    |    \
+ *     *     *
+Cat   Lion  Bear
+```
+
+````{note}
+This simple tree version gets solved to `w = 2`, `x = 1`, and `z = 2`.  
+
+The Pevzner book states that if a matrix is an additive matrix, there's a unique simple tree that fits it.
+````
+
+The term additive is used because the weights of all edges along the path between leaves (i, j) add to `dist(i, j)` in the distance matrix. Not all distance matrices are additive. For example, no simple tree exists that satisfies the following distance matrix...
+
+|    | S1 | S2 | S3 | S4 |
+|----|----|----|----|----|
+| S1 | 0  | 3  | 4  | 3  |
+| S2 | 3  | 0  | 4  | 5  |
+| S3 | 4  | 4  | 0  | 2  |
+| S4 | 3  | 5  | 2  | 0  |
+
+ * Test simple tree 1:
+   
+   ```{svgbob}
+              S2
+              *
+              | x
+              |
+        w     |     
+   S1 *-------*-------* S3
+              |     y
+              |
+            z |
+              *
+              S4
+   ```
+   
+   ```
+   dist(S1, S2) is 3 = w + x
+   dist(S1, S3) is 4 = w + y
+   dist(S1, S4) is 3 = w + z
+   dist(S2, S3) is 4 = x + y
+   dist(S2, S4) is 5 = x + z
+   dist(S3, S4) is 2 = y + z
+   ```
+  
+   Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+
+ * Test simple tree 2:
+   
+   ```{svgbob}
+              S2
+              *
+            x |
+              |
+        w     |
+   S1 *-------*
+               \
+                \ u
+                 \
+                  *-------* S3
+                  |     y
+                  |
+                  | z
+                  *
+                  S4
+   ```
+  
+   ```
+   dist(S1, S2) is 3 = w + x
+   dist(S1, S3) is 4 = w + u + y
+   dist(S1, S4) is 3 = w + u + z
+   dist(S2, S3) is 4 = x + u + y
+   dist(S2, S4) is 5 = x + u + z
+   dist(S3, S4) is 2 = y + z
+   ```
+  
+   Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+
+ * Test simple tree 3:
+   
+   ```{svgbob}
+              S3
+              *
+            x |
+              |
+        w     |
+   S1 *-------*
+               \
+                \ u
+                 \
+                  *-------* S2
+                  |     y
+                  |
+                  | z
+                  *
+                  S4
+
+   * "Same structure to previous example"
+     "but species assigned to different leafs."
+   ```
+  
+   ```
+   dist(S1, S2) is 4 = w + u + y
+   dist(S1, S3) is 3 = w + x
+   dist(S1, S4) is 3 = w + u + z
+   dist(S2, S3) is 4 = x + u + y
+   dist(S2, S4) is 2 = y + z
+   dist(S3, S4) is 5 = x + u + z
+   ```
+  
+   Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+
+ * etc..
+
+A solution isn't viable if a variable ends up as a negative value (negative weight means negative distance, which doesn't make any sense). The initial example in this section is one that has multiple solutions where some are not viable because some variables end up up as negative values. 
+
+```{note}
+There is no code for this section since writing a generic linear systems solver is out of scope. There are Python packages you can use if you really want to do this.
+```
 
 ### Same Subtree Detection
 
@@ -10181,203 +10386,37 @@ graph_show
 
    The restrictions placed on simple trees simplify the process of working backwards from a distance matrix to a phylogenetic tree.
 
- * `{bm} additive matrix/(additive matrix|additive matrices|additive distance matrix|additive distance matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix, that distance matrix is said to be an additive matrix.
+ * `{bm} additive matrix/(additive matrix|additive matrices|additive distance matrix|additive distance matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix (referred to as fit), that distance matrix is said to be an additive distance matrix.
 
-   For example, given the following distance matrix and tree structure...
+   For example, the following tree fits the following distance matrix ...
    
    |      | Cat | Lion | Bear |
    |------|-----|------|------|
-   | Cat  |  0  |  2   |  4   |
+   | Cat  |  0  |  2   |  3   |
    | Lion |  2  |  0   |  3   |
-   | Bear |  4  |  3   |  0   |
+   | Bear |  3  |  3   |  0   |
 
    ```{svgbob}
-              * Animal
-             / \
-            /   \
-           /     \
-   Feline *       \
-         / \       \
-        /   \       \
-       /     \       \
+              *
+             /|\
+            / | \
+           /  |  \
+          /   |   \
+         /    |    \
+      1 /   1 |     \ 2
+       /      |      \
       *       *       *
      Cat     Lion    Bear
    ```
 
-   ... the distances between species must be calculated as follows:
+   Some distance matrices don't have a tree that fits. For example, there is no tree that fits the following distance matrix ...
 
-   * `dist(Cat, Lion) = dist(Cat, Feline) + dist(Feline, Lion)`
-   * `dist(Cat, Bear) = dist(Cat, Feline) + dist(Feline, Animal) + dist(Animal, Bear)`
-   * `dist(Lion, Bear) = dist(Lion, Feline) + dist(Feline, Animal) + dist(Animal, Bear)`
-
-   This is a system of linear equations that may be solved using standard algebra. For example, each dist function call is representable as either a variable or a constant...
-
-   * `2 = dist(Cat, Lion)      = dist(Lion, Cat)`
-   * `4 = dist(Cat, Bear)      = dist(Bear, Cat)`
-   * `3 = dist(Lion, Bear)     = dist(Bear, Lion)`
-   * `w = dist(Cat, Feline)    = dist(Feline, Cat)`
-   * `x = dist(Lion, Feline)   = dist(Feline, Lion)`
-   * `y = dist(Feline, Animal) = dist(Animal, Feline)`
-   * `z = dist(Animal, Bear)   = dist(Bear, Animal)`
-
-   ..., which converts each calculation above to following equations...   
-   
-   * `2 = w + x`
-   * `4 = w + y + z`
-   * `3 = x + y + z`
-
-   ```{svgbob}
-              * Animal
-             / \
-          y /   \
-           /     \
-   Feline *       \ z
-         / \       \
-     w  /   \ x     \
-       /     \       \
-      *       *       *
-     Cat     Lion    Bear
-   ```
-
-   Solving this system of linear equations results in...
-
-   * `x = 0.5`
-   * `w = 1.5`
-   * `z = 2.5 - y`
-
-   As such, the example distance matrix is an additive matrix because there exists a tree that satisfies it. Any of the following edge weights will work with this distance matrix...
-
-   * `x = 0.5`, `w = 1.5`, `y = 0.5`, `z = 2.0`
-   * `x = 0.5`, `w = 1.5`, `y = 1.0`, `z = 1.5`
-   * `x = 0.5`, `w = 1.5`, `y = 1.5`, `z = 1.0`
-   * ...
-
-   ````{note}
-   The example above tests against a tree that's both a rooted tree and a non-simple tree (Feline to Bear is a non-branching path with > 0 nodes in between). The tree doesn't have to be rooted or non-simple. In fact, I suspect the book is implying that it should be both un-rooted and simple. I'm guessing that if you limit your search scope to simple trees and find nothing, there won't be any non-simple trees either: Non-simple trees are essentially the same as simple trees but with extra nodes spliced between non-branching paths.
-
-   The example above as a simple tree:
-
-
-   ```{svgbob}
-               z
-          *--------* Bear 
-         / \
-     w  /   \ x
-       /     \
-      *       *
-     Cat     Lion
-   ```
-
-   This simple tree version gets solved to `w = 2`, `x = 1`, and `z = 2`.  
-
-   The Pevzner book states that if a matrix is an additive matrix, there's a unique simple tree that fits it.
-   ````
-
-   The term additive is used because the weights of all edges along the path between leaves i and j in a tree fitting a matrix D add to `dist(i, j)`. Not all distance matrices are additive. For example, no 4-leaf simple tree exists that satisfies the following distance matrix...
-
-   |    | S1 | S2 | S3 | S4 |
+   |    | v0 | v1 | v2 | v3 |
    |----|----|----|----|----|
-   | S1 | 0  | 3  | 4  | 3  |
-   | S2 | 3  | 0  | 4  | 5  |
-   | S3 | 4  | 4  | 0  | 2  |
-   | S4 | 3  | 5  | 2  | 0  |
-
-   * Test simple tree 1:
-   
-     ```{svgbob}
-                S2
-                *
-                | x
-                |
-          w     |     
-     S1 *-------*-------* S3
-                |     y
-                |    
-              z |
-                *
-                S4
-     ```
-  
-     * dist(S1, S2) is 3 = w + x
-     * dist(S1, S3) is 4 = w + y
-     * dist(S1, S4) is 3 = w + z
-     * dist(S2, S3) is 4 = x + y
-     * dist(S2, S4) is 5 = x + z
-     * dist(S3, S4) is 2 = y + z
-  
-     Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
-
-   * Test simple tree 2:
-   
-     ```{svgbob}
-                S2
-                *
-              x |
-                |
-          w     |
-     S1 *-------*
-                 \
-                  \ u
-                   \
-                    *-------* S3
-                    |     y
-                    |
-                    | z
-                    *
-                    S4
-     ```
-  
-     * dist(S1, S2) is 3 = w + x
-     * dist(S1, S3) is 4 = w + u + y
-     * dist(S1, S4) is 3 = w + u + z
-     * dist(S2, S3) is 4 = x + u + y
-     * dist(S2, S4) is 5 = x + u + z
-     * dist(S3, S4) is 2 = y + z
-  
-     Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
-
-   * Test simple tree 3:
-   
-     ```{svgbob}
-                S3
-                *
-              x |
-                |
-          w     |
-     S1 *-------*
-                 \
-                  \ u
-                   \
-                    *-------* S2
-                    |     y
-                    |
-                    | z
-                    *
-                    S4
-
-     * "Same structure to previous example"
-       "but species assigned to different leafs."
-     ```
-  
-     * dist(S1, S2) is 4 = w + u + y
-     * dist(S1, S3) is 3 = w + x
-     * dist(S1, S4) is 3 = w + u + z
-     * dist(S2, S3) is 4 = x + u + y
-     * dist(S2, S4) is 2 = y + z
-     * dist(S3, S4) is 5 = x + u + z
-  
-     Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
-
-   * etc..
-
-   When choosing a tree structure, it's important to remember some key intuitions about solving systems of linear equations: A system of linear equations where ...
-
-   1. the number of equations <= the number of variables usually has at least one solution. However, some of those solutions may not be viable because some variables might solve to negative values but it doesn't make sense to have a negative distance. The initial example in this section is one that has multiple solutions where some are not viable because they result in some variables ending up as negative values. 
-   2. the number of equations > the number of variables may have a solution but usually doesn't. This is because a solved variable from a subset of those equations typically won't work when plugged in to equations not in that set. The examples shown above are ones in which no solution exists.
-
-   ```{note}
-   There are two ways of determining if a distance matrix is additive. The first method is that, at some point, additive phylogeny will fail when you try to find an additive pair in a bald matrix. The second method is to use the four point condition. I'll document each algorithm when it comes time to write out.
-   ```
+   | v0 | 0  | 3  | 4  | 3  |
+   | v1 | 3  | 0  | 4  | 5  |
+   | v2 | 4  | 4  | 0  | 2  |
+   | v3 | 3  | 5  | 2  | 0  |
 
  * `{bm} limb length` - In the context of phylogenetic trees, a limb is defined as the edge between a leaf node and its parent (node it's connected to). For example, the limbs in the following graph are highlighted in red...
 
@@ -10810,39 +10849,109 @@ graph_show
    Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get limb length for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.
    ````
 
- * `{bm} four point condition/(four point condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. The algorithm takes 4 leaf nodes and tests different pairings of those 4 to test if any pass a set of conditions. ...
+ * `{bm} four point condition/(four point condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. Given four leaf nodes, the algorithm checks different permutation_NORMs of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...
 
    ```python
-   # Pairs of leaf node pairs
-   pair_combos = (
-       ((l0, l1), (l2, l3)),
-       ((l0, l2), (l1, l3)),
-       ((l0, l3), (l1, l2))
-   )
-   # Different orders to test pair_combos to see if they match conditions
-   test_orders = (
-       (0, 1, 2),
-       (0, 2, 1),
-       (1, 2, 0)
-   )
-   # Find at least one order of pair combos that passes the test
-   for p1_idx, p2_idx, p3_idx in test_orders:
-       p1_1, p1_2 = pair_combos[p1_idx]
-       p2_1, p2_2 = pair_combos[p2_idx]
-       p3_1, p3_2 = pair_combos[p3_idx]
-       s1 = dm[p1_1] + dm[p1_2]
-       s2 = dm[p2_1] + dm[p2_2]
-       s3 = dm[p3_1] + dm[p3_2]
+   for a, b, c, d in permutations(quartet, r=4):  # find one perm that passes the following test
+       s1 = dist_mat[a][b] + dist_mat[c][d]  # sum of dists for (a,b) and (c,d)
+       s2 = dist_mat[a][c] + dist_mat[b][d]  # sum of dists for (a,c) and (b,d)
+       s3 = dist_mat[a][d] + dist_mat[b][c]  # sum of dists for (a,d) and (b,c)
        if s1 <= s2 == s3:
            return True
    return False
    ```
 
-   If all possible leaf node quartets pass the above conditions, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
+   For example, the leaf nodes (v0, v2, v4, v6) pass this test ...
 
-   ```{note}
-   For a detailed explaination of why this is, see Algorithms/Distance Phylogeny/Additive Distance Matrix Test/Four Point Condition Algorithm_TOPIC.
+   ```{dot}
+   graph G {
+   graph[rankdir=LR]
+   node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+   edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    subgraph cluster_two2 {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v0, v2) + dist(v4, v6)"
+     z_v0 -- z_i0 [label=1, color=violet, penwidth=2.5]
+     z_v1 -- z_i0 [label=1]
+     z_i0 -- z_i1 [label=1, color=violet, penwidth=2.5]
+     z_v2 -- z_i1 [label=1, color=violet, penwidth=2.5]
+     z_v3 -- z_i1 [label=1]
+     z_i1 -- z_i2 [label=1]
+     z_v4 -- z_i2 [label=1, color=tan, penwidth=2.5]
+     z_i2 -- z_i3 [label=1, color=tan, penwidth=2.5]
+     z_i3 -- z_v5 [label=1]
+     z_i3 -- z_v6 [label=1, color=tan, penwidth=2.5]
+     z_v0 [label= "v0", style=filled, fillcolor="violet"] 
+     z_v1 [label= "v1"] 
+     z_i0 [label= "i0"] 
+     z_i1 [label= "i1"] 
+     z_v2 [label= "v2", style=filled, fillcolor="violet"] 
+     z_v3 [label= "v3"] 
+     z_i2 [label= "i2"] 
+     z_i3 [label= "i3"] 
+     z_v4 [label= "v4", style=filled, fillcolor="tan"] 
+     z_v5 [label= "v5"] 
+     z_v6 [label= "v6", style=filled, fillcolor="tan"]
+    }
+    subgraph cluster_two {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v0, v6) + dist(v2, v4)"
+     y_v0 -- y_i0 [label=1, color=gold, penwidth=2.5]
+     y_v1 -- y_i0 [label=1]
+     y_i0 -- y_i1 [label=1, color=gold, penwidth=2.5]
+     y_v2 -- y_i1 [label=1, color=pink, penwidth=2.5]
+     y_v3 -- y_i1 [label=1]
+     y_i1 -- y_i2 [label=1, color="pink:invis:gold", penwidth=2.5]
+     y_v4 -- y_i2 [label=1, color=pink, penwidth=2.5]
+     y_i2 -- y_i3 [label=1, color=gold, penwidth=2.5]
+     y_i3 -- y_v5 [label=1]
+     y_i3 -- y_v6 [label=1, color=gold, penwidth=2.5]
+     y_v0 [label= "v0", style=filled, fillcolor="gold"] 
+     y_v1 [label= "v1"] 
+     y_i0 [label= "i0"] 
+     y_i1 [label= "i1"] 
+     y_v2 [label= "v2", style=filled, fillcolor="pink"] 
+     y_v3 [label= "v3"] 
+     y_i2 [label= "i2"] 
+     y_i3 [label= "i3"] 
+     y_v4 [label= "v4", style=filled, fillcolor="pink"] 
+     y_v5 [label= "v5"] 
+     y_v6 [label= "v6", style=filled, fillcolor="gold"]
+    }
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v0, v4) + dist(v2, v6)"
+     x_v0 -- x_i0 [label=1, color=turquoise, penwidth=2.5]
+     x_v1 -- x_i0 [label=1]
+     x_i0 -- x_i1 [label=1, color=turquoise, penwidth=2.5]
+     x_v2 -- x_i1 [label=1, color=orange, penwidth=2.5]
+     x_v3 -- x_i1 [label=1]
+     x_i1 -- x_i2 [label=1, color="orange:invis:turquoise", penwidth=2.5]
+     x_v4 -- x_i2 [label=1, color=turquoise, penwidth=2.5]
+     x_i2 -- x_i3 [label=1, color=orange, penwidth=2.5]
+     x_i3 -- x_v5 [label=1]
+     x_i3 -- x_v6 [label=1, color=orange, penwidth=2.5]
+     x_v0 [label= "v0", style=filled, fillcolor="turquoise"] 
+     x_v1 [label= "v1"] 
+     x_i0 [label= "i0"] 
+     x_i1 [label= "i1"] 
+     x_v2 [label= "v2", style=filled, fillcolor="orange"] 
+     x_v3 [label= "v3"] 
+     x_i2 [label= "i2"] 
+     x_i3 [label= "i3"] 
+     x_v4 [label= "v4", style=filled, fillcolor="turquoise"] 
+     x_v5 [label= "v5"] 
+     x_v6 [label= "v6", style=filled, fillcolor="orange"]
+    }
+   }
    ```
+   
+   <code>`{h}violet dist(v0, v2)` + `{h}tan dist(v4, v6)` <= `{h}gold dist(v0, v6)` + `{h}pink dist(v2, v4)` == `{h}turquoise dist(v0, v4)` + `{h}orange dist(v2, v6)`</code>
+
+   If all possible leaf node quartets pass the above test, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
 
  * `{bm} trimmed distance matrix/(trimmed distance matrix|trimmed distance matrices)/i` - An additive distance matrix where a leaf has been removed.
 
