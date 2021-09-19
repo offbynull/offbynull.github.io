@@ -140,6 +140,7 @@
 <ul>
 <li><a href="#H_Tree%20to%20Additive%20Distance%20Matrix">Tree to Additive Distance Matrix</a></li>
 <li><a href="#H_Tree%20to%20Simple%20Tree">Tree to Simple Tree</a></li>
+<li><a href="#H_Additive%20Distance%20Matrix%20Cardinality">Additive Distance Matrix Cardinality</a></li>
 <li><a href="#H_Additive%20Distance%20Matrix%20Test">Additive Distance Matrix Test</a></li>
 <ul>
 <li><a href="#H_Four%20Point%20Condition%20Algorithm">Four Point Condition Algorithm</a></li>
@@ -9795,10 +9796,10 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </table>
 <p><img src="svgbob_a74e35c81b15ac05ccf607f36f8e723935570513.svg" alt="Kroki diagram output"></p>
 <p>However, that same <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> can map to an infinite number of non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s (and vice-versa)...</p>
-<p><img src="svgbob_b4f4ca82d6f97be5e630c82822ec664f138c69d3.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_403c04944e435cd926cbba7d906dc419b29619d7.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>To clarify: This property / restriction is important because when reconstructing a <a href="#BM_(tree)%2Fi">tree</a> from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if you restrict yourself to a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> you'll only ever have 1 <a href="#BM_(tree)%2Fi">tree</a> to reconstruct to. This makes the algorithms simpler.</p>
+<p>To clarify: This property / restriction is important because when reconstructing a <a href="#BM_(tree)%2Fi">tree</a> from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if you restrict yourself to a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> you'll only ever have 1 <a href="#BM_(tree)%2Fi">tree</a> to reconstruct to. This makes the algorithms simpler. This is discussed further in the cardinality subsection.</p>
 </div>
 <p>The second property is that the direction of evolution isn't maintained in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: It's an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> with undirected edges. This is a useful property because, while a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> may provide enough information to infer common ancestry, it doesn't provide enough information to know the true parent-child relationships between those ancestors. For example, any of the internal nodes in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> may be the top-level entity that all other entities are descendants of ...</p>
 <p><img src="svgbob_f62876489da68170731df6b6d472bcccbba0af31.svg" alt="Kroki diagram output"></p>
@@ -9840,7 +9841,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
+<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -9901,12 +9902,154 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>... is NOT a simple tree</p>
 </div>
 <p></p>
+<a name="H_Additive%20Distance%20Matrix%20Cardinality"></a><h3>Additive Distance Matrix Cardinality</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This was discussed briefly in the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> section, but it's being discussed here in its own section because it's important.</p>
+</div>
+<p><strong>WHAT</strong>: There's a 1-to-1 mapping between an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. That is, a unique <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will map to a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and vice-versa.</p>
+<p>This isn't the case for non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s. A non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> will only ever generate one <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, but that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will map to many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s.</p>
+<p><strong>WHY</strong>: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially derived from <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s by splicing nodes inbetween edges (breaking up an edge into multiple edges). For example, any of the following non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s...</p>
+<p><img src="svgbob_c19f51e04775f2f929fb819f2fd231788887981a.svg" alt="Kroki diagram output"></p>
+<p>... will collapse to the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 merged by adding weights) ...</p>
+<p><img src="svgbob_34ccd200d7f22f62100f4341c9d3d4550b63bda7.svg" alt="Kroki diagram output"></p>
+<p>All of the <a href="#BM_(tree)%2Fi">tree</a>s above, both the non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and the <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, will generate the following <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cat</th>
+<th>Lion</th>
+<th>Bear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cat</td>
+<td>0</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Lion</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Bear</td>
+<td>4</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Similarly, this <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will only ever map to the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> shown above or one of its many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> derivatives (3 of which are shown above). There is no other <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that this <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> can map to / no other <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that will generate this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In otherwords, it isn't possible for...</p>
+<ul>
+<li>two different <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s to map to the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
+<li>two different <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> to map to the same <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</li>
+</ul>
+<p>Working backwards from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is less complex when limiting the <a href="#BM_(tree)%2Fi">tree</a> to a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, because there's only <a href="#BM_(simple%20tree)%2Fi">simple tree</a> possible (vs many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s).</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>This section is more of a concept that an algorithm. The following just generates an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> from a <a href="#BM_(tree)%2Fi">tree</a> and says if that <a href="#BM_(tree)%2Fi">tree</a> is unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (it should be if it's a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>). There is no code to show for it because it's just calling things from previous sections (generating a <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and checking if a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
+<p><a href="ch7_code/src/phylogeny/CardinalityTest.py">ch7_code/src/phylogeny/CardinalityTest.py</a> (lines 15 to 19):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cardinality_test</span>(<span class="hljs-params">g: Graph[N, ND, E, <span class="hljs-built_in">float</span>]</span>) -&gt; <span class="hljs-built_in">tuple</span>[DistanceMatrix, <span class="hljs-built_in">bool</span>]:</span>
+    <span class="hljs-keyword">return</span> (
+        to_additive_distance_matrix(g),
+        is_simple_tree(g)
+    )
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_aa1feda6737daab4bc422403da61d84e.svg" alt="Dot diagram"></p>
+<p>... produces the additive distance matrix ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>The tree is simple. This is the ONLY simple tree possible for this additive distance matrix and vice-versa.</p>
+</div>
+<p></p>
 <a name="H_Additive%20Distance%20Matrix%20Test"></a><h3>Additive Distance Matrix Test</h3>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Determine if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> without knowing the <a href="#BM_(tree)%2Fi">tree</a> structure beforehand.</p>
@@ -9940,7 +10083,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>I'm almost certain this inequality should be &lt; instead of &lt;=, because in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> you can't have an edge weight of 0, right? An edge weight of 0 would indicate that the nodes at each end of an edge are the same entity.</p>
 </div>
 <p>All of the information required for the above calculation is available in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><a href="ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py">ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py</a> (lines 12 to 35):</p>
+<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 12 to 35):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">four_point_test</span>(<span class="hljs-params">dm: DistanceMatrix, l0: N, l1: N, l2: N, l3: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
     <span class="hljs-comment"># Pairs of leaf node pairs</span>
     pair_combos = (
@@ -9967,7 +10110,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
 <p>If a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>, its leaf node quartets will also pass this test. That is, if all leaf node quartets in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> ...</p>
-<p><a href="ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py">ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py</a> (lines 40 to 52):</p>
+<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 40 to 52):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_additive</span>(<span class="hljs-params">dm: DistanceMatrix</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
     <span class="hljs-comment"># Recall that an additive distance matrix of size &lt;= 3 is guaranteed to be an additive distance</span>
     <span class="hljs-comment"># matrix (try it and see -- any distances you use will always end up fitting a tree). Thats why</span>
@@ -10032,12 +10175,6 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </div>
 <a name="H_Linear%20System%20Algorithm"></a><h4>Linear System Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test%2FLinear%20System%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-</ul>
-</div>
 <p><strong>ALGORITHM</strong>:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -10106,13 +10243,12 @@ x = 0.5, w = 1.5, y = 1.0, z = 1.5
 x = 0.5, w = 1.5, y = 1.5, z = 1.0
 ...
 </code></pre>
-<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (A2 is an internal node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2). If you limit your search scope to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially the same as <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s but edges broken up by splicing nodes inbetween.</p>
-<p>The example above collapsed into a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
-<p><img src="svgbob_242bb8fb861330d4a7f257bc69f0673ae8b12b7e.svg" alt="Kroki diagram output"></p>
+<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (A2 is an internal node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2). If you limit your search to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s that have had edges broken up by splicing nodes inbetween (<a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 nodes).</p>
+<p>The non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> example above collapsed into a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
+<p><img src="svgbob_da0e7825576bb7895069ddd56443653ece61dac9.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This <a href="#BM_(simple%20tree)%2Fi">simple tree</a> version gets solved to <code>w = 2</code>, <code>x = 1</code>, and <code>z = 2</code>.</p>
-<p>The Pevzner book states that if a matrix is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>, there's a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits it.</p>
+<p>The path A1-A2-Bear has been collapased into A1-Bear, where the weight of the newly collpased edge is represented by a (formerly y+z). Using the same <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above gets solved to <code>w = 2, x = 1, a = 2</code>.</p>
 </div>
 <p>The term additive is used because the weights of all edges along the path between leaves (i, j) add to <code>dist(i, j)</code> in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. Not all <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are additive. For example, no <a href="#BM_(simple%20tree)%2Fi">simple tree</a> exists that satisfies the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <table>
@@ -14888,7 +15024,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -14950,7 +15086,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_23ec8db6470187d70e753d03d41b9cfa.svg" alt="Dot diagram"></p>
+<p><img src="dot_c3ac8b1ea75860903f90962569e9317b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
@@ -15136,7 +15272,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -15205,7 +15341,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_969173d161039e32fb7ae605c61d69df.svg" alt="Dot diagram"></p>
+<p><img src="dot_6e2c88876a6814a011dac2562d5d1af2.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>

@@ -6598,7 +6598,7 @@ However, that same additive distance matrix can map to an infinite number of non
       a                     a                   a       
     3 |                   2 |                 4 |                etc...  
       d                     d                   b         
-    1 |                   2 |                3 / \ 1    
+    1 |                   2 |                3 / \ 1.5  
       b                     b                 y   f     
    1 / \ 2               0 / \ 2                   \ 0.5
     e   z                 e   z                     z   
@@ -6607,7 +6607,7 @@ However, that same additive distance matrix can map to an infinite number of non
 ```
 
 ```{note}
-To clarify: This property / restriction is important because when reconstructing a tree from the distance matrix, if you restrict yourself to a simple tree you'll only ever have 1 tree to reconstruct to. This makes the algorithms simpler.
+To clarify: This property / restriction is important because when reconstructing a tree from the distance matrix, if you restrict yourself to a simple tree you'll only ever have 1 tree to reconstruct to. This makes the algorithms simpler. This is discussed further in the cardinality subsection.
 ```
 
 The second property is that the direction of evolution isn't maintained in a simple tree: It's an unrooted tree with undirected edges. This is a useful property because, while a distance matrix may provide enough information to infer common ancestry, it doesn't provide enough information to know the true parent-child relationships between those ancestors. For example, any of the internal nodes in the following simple tree may be the top-level entity that all other entities are descendants of ...
@@ -6755,12 +6755,91 @@ test
 [[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i1,v4,7]]
 ```
 
+### Additive Distance Matrix Cardinality
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Cardinality)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+```
+
+```{note}
+This was discussed briefly in the simple tree section, but it's being discussed here in its own section because it's important.
+```
+
+**WHAT**: There's a 1-to-1 mapping between an additive distance matrix and a simple tree. That is, a unique additive distance matrix will map to a unique simple tree and vice-versa.
+
+This isn't the case for non-simple trees. A non-simple tree will only ever generate one additive distance matrix, but that additive distance matrix will map to many non-simple trees.
+
+**WHY**: Non-simple trees are essentially derived from simple trees by splicing nodes inbetween edges (breaking up an edge into multiple edges). For example, any of the following non-simple trees...
+
+```{svgbob}
+           *                                 *                                 *           
+          / \                               / \                               / \          
+     0.5 /   \                         1.0 /   \                             /   \ 0.5     
+        /     \                           *     \                           /     *       
+       *       \ 2.0                     / \     \ 1.5                     *       \               etc...
+      / \       \                   1.0 /   \     \                       / \       \      
+ 1.5 /   \ 0.5   \                     *     \ 0.5 \                 1.5 /   \ 0.5   \ 1.0 
+    /     \       \               0.5 /       \     \                   /     \       \    
+   *       *       *                 *         *     *                 *       *       *   
+  Cat     Lion    Bear              Cat       Lion  Bear              Cat     Lion    Bear 
+```
+
+... will collapse to the following simple tree (edges connected by nodes of degree_GRAPH 2 merged by adding weights) ...
+
+```{svgbob}
+           * Bear
+          /
+     2.5 /
+        /
+       *
+      / \ 
+ 1.5 /   \ 0.5
+    /     \
+   *       *
+  Cat     Lion
+```
+
+All of the trees above, both the non-simple trees and the simple tree, will generate the following additive distance matrix ...
+
+|      | Cat | Lion | Bear |
+|------|-----|------|------|
+| Cat  |  0  |  2   |  4   |
+| Lion |  2  |  0   |  3   |
+| Bear |  4  |  3   |  0   |
+
+Similarly, this additive distance matrix will only ever map to the simple tree shown above or one of its many non-simple tree derivatives (3 of which are shown above). There is no other simple tree that this additive distance matrix can map to / no other simple tree that will generate this distance matrix. In otherwords, it isn't possible for...
+
+ * two different simple trees to map to the same distance matrix.
+ * two different distance matrices to map to the same simple tree.
+ 
+Working backwards from a distance matrix to a tree is less complex when limiting the tree to a simple tree, because there's only simple tree possible (vs many non-simple trees).
+
+**ALGORITHM**:
+
+This section is more of a concept that an algorithm. The following just generates an additive distance matrix from a tree and says if that tree is unique to that additive distance matrix (it should be if it's a simple tree). There is no code to show for it because it's just calling things from previous sections (generating a additive distance matrix and checking if a simple tree).
+
+```{output}
+ch7_code/src/phylogeny/CardinalityTest.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.CardinalityTest
+[[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i2,v4,4], [i1,v5,7]]
+```
+
 ### Additive Distance Matrix Test
 
 `{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Test)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
 **WHAT**: Determine if a distance matrix is an additive distance matrix without knowing the tree structure beforehand.
@@ -6916,7 +6995,7 @@ I'm almost certain this inequality should be < instead of <=, because in a phylo
 All of the information required for the above calculation is available in the distance matrix...
 
 ```{output}
-ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py
+ch7_code/src/phylogeny/FourPointCondition.py
 python
 # MARKDOWN_QUARTET_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_QUARTET_TEST
 ```
@@ -6924,13 +7003,13 @@ python
 If a distance matrix was derived from a tree / fits a tree, its leaf node quartets will also pass this test. That is, if all leaf node quartets in a distance matrix pass the above test, the distance matrix is an additive distance matrix ...
 
 ```{output}
-ch7_code/src/phylogeny/AdditiveDistanceMatrixTest_FourPointCondition.py
+ch7_code/src/phylogeny/FourPointCondition.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.AdditiveDistanceMatrixTest_FourPointCondition
+phylogeny.FourPointCondition
 [0, 3, 8, 7]
 [3, 0, 9, 8]
 [8, 9, 0, 5]
@@ -6944,10 +7023,6 @@ Could the differences found by this algorithm help determine how "close" a dista
 #### Linear System Algorithm
 
 `{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Test\/Linear System Algorithm)_TOPIC/`
-
-```{prereq}
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-```
 
 **ALGORITHM**:
 
@@ -7034,25 +7109,25 @@ x = 0.5, w = 1.5, y = 1.5, z = 1.0
 ...
 ```
 
-The example above tests against a tree that's a non-simple tree (A2 is an internal node with degree_GRAPH of 2). If you limit your search scope to simple trees and find nothing, there won't be any non-simple trees either: Non-simple trees are essentially the same as simple trees but edges broken up by splicing nodes inbetween.
+The example above tests against a tree that's a non-simple tree (A2 is an internal node with degree_GRAPH of 2). If you limit your search to simple trees and find nothing, there won't be any non-simple trees either: Non-simple trees are essentially simple trees that have had edges broken up by splicing nodes inbetween (degree_GRAPH 2 nodes).
 
-The example above collapsed into a simple tree:
+The non-simple tree example above collapsed into a simple tree:
 
 ```{svgbob}
+           * Bear
+          /
+       a /
+        /
        * A2
-      /|\ 
-     / | \
-    /  |  \ 
-   /   |   \
-  /    |    \
- *     *     *
-Cat   Lion  Bear
+      / \ 
+   w /   \ x
+    /     \
+   *       *
+  Cat     Lion
 ```
 
 ````{note}
-This simple tree version gets solved to `w = 2`, `x = 1`, and `z = 2`.  
-
-The Pevzner book states that if a matrix is an additive matrix, there's a unique simple tree that fits it.
+The path A1-A2-Bear has been collapased into A1-Bear, where the weight of the newly collpased edge is represented by a (formerly y+z). Using the same additive distance matrix, the simple tree above gets solved to `w = 2, x = 1, a = 2`.  
 ````
 
 The term additive is used because the weights of all edges along the path between leaves (i, j) add to `dist(i, j)` in the distance matrix. Not all distance matrices are additive. For example, no simple tree exists that satisfies the following distance matrix...
