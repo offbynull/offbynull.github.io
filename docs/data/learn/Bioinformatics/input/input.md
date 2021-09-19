@@ -7241,6 +7241,258 @@ There is no code for this section since writing a generic linear systems solver 
 
 ### Same Subtree Detection
 
+`{bm} /(Algorithms\/Distance Phylogeny\/Same Subtree Detection)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+```
+
+**WHAT**: Given a simple tree, splitting that simple tree on a leaf node's parent breaks it up into several subtrees. For example, the following simple tree has been split on i1 (parent of leaf node v3), resulting in 4 different subtrees ...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ v0 -- i0
+ v1 -- i0 
+ i0 -- i1 [style="dashed"]
+ v2 -- i1 [style="dashed"]
+ v3 -- i1 [style="dashed"]
+ i1 -- i2 [style="dashed"]
+ v4 -- i2
+ i2 -- i3 
+ i3 -- v5 
+ i3 -- v6
+ v0 [style="filled", fillcolor="green"]
+ v1 [style="filled", fillcolor="green"]
+ i0 [style="filled", fillcolor="green"]
+ i1 [style="filled", fillcolor="gray"]
+ v2 [style="filled", fillcolor="yellow"]
+ v3 [style="filled", fillcolor="pink"]
+ i2 [style="filled", fillcolor="cyan"]
+ i3 [style="filled", fillcolor="cyan"]
+ v4 [style="filled", fillcolor="cyan"]
+ v5 [style="filled", fillcolor="cyan"]
+ v6 [style="filled", fillcolor="cyan"]
+}
+```
+
+ * `{h}green  v0, v1, i0`
+ * `{h}yellow v2`
+ * `{h}pink   v3`
+ * `{h}cyan   v4, i2, i3, v5, v6`
+
+
+In the above example, it's clear which *leaf nodes* belong to which subtree (e.g. v4 and v6 are in the same subtree).
+
+This section discusses how to perform this with just the additive distance matrix. That is, given just the additive distance matrix for a simple tree (not the simple tree itself), determine if two *leaf nodes* belong to the same subtree had that simple tree been split on some leaf node's parent.
+
+**WHY**: Using just an additive distance matrix to determind if two *leaf nodes* belong to the same subtree of simple tree split on some leaf node's parent is critical to finding finding the unique simple tree for an additive distance matrix.
+
+```{code}
+Recall that an additive distance matrix fits a unique simple tree.
+```
+
+**ALGORITHM**:
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+
+   To understand why the pair producing the minimum value is the correct limb length, consider what happens when you break the edges on v2's parent (i1): The tree breaks into 4 distinct subtrees (colored below as green, yellow, pink, and cyan)...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0
+    v1 -- i0 
+    i0 -- i1 [style="dashed"]
+    v2 -- i1 [style="dashed"]
+    v3 -- i1 [style="dashed"]
+    i1 -- i2 [style="dashed"]
+    v4 -- i2
+    i2 -- i3 
+    i3 -- v5 
+    i3 -- v6
+    v0 [style="filled", fillcolor="green"]
+    v1 [style="filled", fillcolor="green"]
+    i0 [style="filled", fillcolor="green"]
+    i1 [style="filled", fillcolor="gray"]
+    v2 [style="filled", fillcolor="yellow"]
+    v3 [style="filled", fillcolor="pink"]
+    i2 [style="filled", fillcolor="cyan"]
+    i3 [style="filled", fillcolor="cyan"]
+    v4 [style="filled", fillcolor="cyan"]
+    v5 [style="filled", fillcolor="cyan"]
+    v6 [style="filled", fillcolor="cyan"]
+   }
+   ```
+
+   If the two leaf nodes chosen are within the same subtree, the path will _never_ travel through v2's parent (i1). For example, the path (v4, v5) never travels through v2's parent, meaning that the formula derived earlier no longer holds true: `{kt} d_{L, A} + d_{L, B} = d_{A, B} + 2 \cdot d_{L, Lp}` ...
+
+    * Lp = i0
+    * L = v2
+    * A = v4
+    * B = v5
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    subgraph cluster_two {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v4, v5) + 2 * dist(v2, i1)"
+     y_v0 -- y_i0
+     y_v1 -- y_i0 
+     y_i0 -- y_i1
+     y_v2 -- y_i1 [color="red:invis:red", penwidth="2.5"]
+     y_v3 -- y_i1
+     y_i1 -- y_i2
+     y_v4 -- y_i2 [color="purple", penwidth="2.5"]
+     y_i2 -- y_i3 [color="purple", penwidth="2.5"]
+     y_i3 -- y_v5 [color="purple", penwidth="2.5"]
+     y_i3 -- y_v6
+     y_v0 [label= "v0", style="filled", fillcolor="green"]
+     y_v1 [label= "v1", style="filled", fillcolor="green"]
+     y_i0 [label= "i0", style="filled", fillcolor="green"]
+     y_i1 [label= "i1", style="filled", fillcolor="gray"]
+     y_v2 [label= "v2", style="filled", fillcolor="yellow"]
+     y_v3 [label= "v3", style="filled", fillcolor="pink"]
+     y_i2 [label= "i2", style="filled", fillcolor="cyan"]
+     y_i3 [label= "i3", style="filled", fillcolor="cyan"]
+     y_v4 [label= "v4", style="filled", fillcolor="cyan"]
+     y_v5 [label= "v5", style="filled", fillcolor="cyan"]
+     y_v6 [label= "v6", style="filled", fillcolor="cyan"]
+    }
+    subgraph cluster_one {
+     fontname="Courier-Bold"
+     fontsize=10
+     label="dist(v4, v2) + dist(v5, v2)"
+     x_v0 -- x_i0
+     x_v1 -- x_i0 
+     x_i0 -- x_i1
+     x_v2 -- x_i1 [color="blue:invis:orange", penwidth="2.5"]
+     x_v3 -- x_i1
+     x_i1 -- x_i2 [color="blue:invis:orange", penwidth="2.5"]
+     x_v4 -- x_i2 [color="blue", penwidth="2.5"]
+     x_i2 -- x_i3 [color="orange", penwidth="2.5"]
+     x_i3 -- x_v5 [color="orange", penwidth="2.5"]
+     x_i3 -- x_v6
+     x_v0 [label= "v0", style="filled", fillcolor="green"]
+     x_v1 [label= "v1", style="filled", fillcolor="green"]
+     x_i0 [label= "i0", style="filled", fillcolor="green"]
+     x_i1 [label= "i1", style="filled", fillcolor="gray"]
+     x_v2 [label= "v2", style="filled", fillcolor="yellow"]
+     x_v3 [label= "v3", style="filled", fillcolor="pink"]
+     x_i2 [label= "i2", style="filled", fillcolor="cyan"]
+     x_i3 [label= "i3", style="filled", fillcolor="cyan"]
+     x_v4 [label= "v4", style="filled", fillcolor="cyan"]
+     x_v5 [label= "v5", style="filled", fillcolor="cyan"]
+     x_v6 [label= "v6", style="filled", fillcolor="cyan"]
+    }
+   }
+   ```
+
+   Notice how the diagram for the left-hand side of the equation has more highlighted edges than the diagram for the right-hand side. This means that it's possible for the left-hand side's result to larger than the right-hand side's result: `{kt} d_{L, A} + d_{L, B} \geq d_{A, B} + 2 \cdot d_{L, Lp}`. 
+
+   ```{note}
+   Why is it greater than OR equal? I suppose it has to do with edges having a weight of 0. So for example, in the example graph above, if the edge (i1, i2) had a weight of 0 then the RHS and LHS would be equal.
+
+   But, does it make sense to have 0 weight edges? If an edge has a 0 weight, why is it ever there? Doesn't it mean that species represented by both sides of the edge are exactly the same (0 distance)? The book says >= so that's what I'm going with.
+   ```
+
+   Solving the above equation for dist(L, Lp) is as follows:
+
+    * `{kt} d_{L, A} + d_{L, B} \geq d_{A, B} + 2 \cdot d_{L, Lp}`
+    * `{kt} d_{L, A} + d_{L, B} - d_{A, B} \geq 2 \cdot d_{L, Lp}`
+    * `{kt} (d_{L, A} + d_{L, B} - d_{A, B}) \div 2 \geq d_{L, Lp}`
+
+   This important distinction is why selecting the minimum works: If the two leaf nodes chosen are within ...
+
+    * different subtrees, it's guaranteed that path(A,B) will go through Lp, resulting in the formula...
+
+      `{kt} (d_{L, A} + d_{L, B} - d_{A, B}) \div 2 = d_{L, Lp}`
+
+    * the same subtree, the path(A,B) will not go through Lp, resulting in the formula...
+
+      `{kt} (d_{L, A} + d_{L, B} - d_{A, B}) \div 2 \geq d_{L, Lp}`
+    
+   The left-hand side of the two equations above are the same, meaning that all node pairs get evaluated the same way. Those that are within the same subtree will be >= to the limb length, while those that are within different subtrees will be = to the limb length. The second case (different subtrees) is what gives the limb length value, and that will always be <= to the first case (same subtree). This is why choosing the minimum works.
+
+   ````{note}
+   From the book:
+
+   > Exercise Break: The algorithm proposed on the previous step computes LimbLength(j) in O(n2) time (for an n x n distance matrix). Design an algorithm that computes LimbLength(j) in O(n) time.
+
+   The answer to this is obvious now that I've gone through and reasoned about things above.
+
+   For the limb length formula to work, you need to find leaf nodes (A, B) whose path travels through leaf node L's parent (Lp). Originally, the book had you try all combination of leafs (L excluded) and take the minimum. That works, but you don't need to try all possible pairs. Instead, you can just pick any leaf (that isn't L) for A and test against every other node (that isn't L) to find B -- as with the original method, you pick the B that produces the minimum value.
+   
+   Because a phylogenetic tree is a connected graph (a path exists between each node and all other nodes), at least 1 path will exist starting from A that travels through Lp.
+
+   ```python
+   leaf_nodes.remove(L)  # remove L from the set
+   A = leaf_nodes.pop()  # removes and returns an arbitrary leaf node
+   B = min(leafs, key=lambda x: (dist(L, A) + dist(L, x) - dist(A, x)) / 2)
+   ```
+
+   For example, imagine that you're trying to find v2's limb length in the following graph...
+
+   ```{dot}
+   graph G {
+    graph[rankdir=LR]
+    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+    v0 -- i0
+    v1 -- i0
+    i0 -- i1
+    v2 -- i1
+    v3 -- i1
+    i1 -- i2
+    v4 -- i2
+    i2 -- i3
+    i3 -- v5
+    i3 -- v6
+   }
+   ```
+
+   Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get limb length for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.
+   ````
+
 ### Trim Distance Matrix
 
 ### Bald Distance Matrix
