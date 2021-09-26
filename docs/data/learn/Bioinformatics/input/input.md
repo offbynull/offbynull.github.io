@@ -6511,7 +6511,7 @@ phylogeny.TreeToAdditiveDistanceMatrix
 Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
 ```
 
-**WHAT**: An unrooted tree where ...
+**WHAT**: Convert a tree into a simple tree. A simple tree is an unrooted tree where ...
 
  * every internal node has a degree_GRAPH > 2.
  * every edge has a weight of > 0.
@@ -6768,11 +6768,12 @@ Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
 This was discussed briefly in the simple tree section, but it's being discussed here in its own section because it's important.
 ```
 
-**WHAT**: There's a 1-to-1 mapping between an additive distance matrix and a simple tree. That is, a unique additive distance matrix will map to a unique simple tree and vice-versa.
+**WHAT**: Determine the cardinality of between an additive distance matrix and a type of tree. For, ...
 
-This isn't the case for non-simple trees. A non-simple tree will only ever generate one additive distance matrix, but that additive distance matrix will map to many non-simple trees.
+ * simple trees, there's a 1-to-1 mapping for tree to / from additive distance matrix. That is, a unique simple tree will map to a unique additive distance and vice-versa.
+ * non-simple trees, there's a 1-to-many mapping for tree to / from additive distance matrix. That is, a non-simple tree will only ever generate one additive distance matrix but that additive distance matrix will map to many non-simple trees.
 
-**WHY**: Non-simple trees are essentially derived from simple trees by splicing nodes inbetween edges (breaking up an edge into multiple edges). For example, any of the following non-simple trees...
+**WHY**: Non-simple trees are essentially derived from simple trees by splicing nodes in between edges (breaking up an edge into multiple edges). For example, any of the following non-simple trees...
 
 ```{svgbob}
            *                                 *                                 *           
@@ -7266,9 +7267,9 @@ graph G {
 
 The weight for a leaf node's limb is referred to as its limb length. For example, in the diagram above the limb length for node v1 is 2.
 
-Given an additive distance matrix, there exists a unique simple tree that fits that matrix. It's possible to compute limb lengths for that simple tree just from the additive distance matrix itself. That is, the distances between leaf nodes provide enough information to derive the limb lengths for any / all leaf nodes.
+Given an additive distance matrix, there exists a unique simple tree that fits that matrix. Compute the limb length of any leaf node in that simple tree just from the additive distance matrix. That is, the distances between leaf nodes provide enough information to derive the limb lengths for any / all leaf nodes.
 
-**WHY**: Deriving limb lengths from an additive distance matrix is critical to constructing the unique simple tree for that additive distance matrix.
+**WHY**: Deriving limb lengths from just the additive distance matrix is required by the algorithm that constructs the unique simple tree for that additive distance matrix.
 
 **ALGORITHM**:
 
@@ -7788,7 +7789,7 @@ phylogeny.LimbLength
 Algorithms/Distance Phylogeny/Limb Length_TOPIC
 ```
 
-**WHAT**: Given a simple tree, splitting that simple tree on a leaf node's parent breaks it up into several subtrees. For example, the following simple tree has been split on v2's parent, resulting in 4 different subtrees ...
+**WHAT**: Splitting a simple tree on the parent of one of its leaf nodes breaks it up into several subtrees. For example, the following simple tree has been split on v2's parent, resulting in 4 different subtrees ...
 
 ```{dot}
 graph G {
@@ -7832,7 +7833,7 @@ graph G {
 
 Given just the additive distance matrix for a simple tree (not the simple tree itself), determine if two *leaf nodes* belong to the same subtree had that simple tree been split on some leaf node's parent.
 
-**WHY**: Determining if two leaf nodes are within the same subtree from just the additive distance matrix is critical to constructing the unique simple tree for that additive distance matrix.
+**WHY**: Determining if two leaf nodes are within the same subtree from just the additive distance matrix is required by the algorithm that constructs the unique simple tree for that additive distance matrix.
 
 **ALGORITHM**:
 
@@ -8077,9 +8078,219 @@ phylogeny.SubtreeDetect
 
 ### Trim Distance Matrix
 
+`{bm} /(Algorithms\/Distance Phylogeny\/Trim Distance Matrix)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+```
+
+**WHAT**: Remove a limb from an additive distance matrix just as it would get removed from its corresponding unique simple tree.
+
+**WHY**: Trimmed distance matrices are required for constructing the unique simple tree for an additive distance matrix.
+
+**ALGORITHM**:
+
+Recall that for any additive distance matrix, there exists a unique simple tree that fits that matrix. For example, the following simple tree is unique to the following distance matrix...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ subgraph cluster_rhs {
+  v0 -- i0 [label=11]
+  v1 -- i0 [label=2]
+  i0 -- i1 [label=4]
+  i1 -- v2 [label=6]
+  i1 -- v3 [label=7]
+ }
+}
+```
+
+|    | v0 | v1 | v2 | v3 |
+|----|----|----|----|----|
+| v0 | 0  | 13 | 21 | 22 |
+| v1 | 13 | 0  | 12 | 13 |
+| v2 | 21 | 12 | 0  | 13 |
+| v3 | 22 | 13 | 13 | 0  |
+
+Trimming v2 off that simple tree would result in ...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ subgraph cluster_rhs {
+  fontname="Courier-Bold"
+  fontsize=10
+  label="v3 trimmed"
+  v0 -- i0 [label=11]
+  v1 -- i0 [label=2]
+  i0 -- v3 [label=11]
+ }
+}
+```
+
+|    | v0 | v1 | v3 |
+|----|----|----|----|
+| v0 | 0  | 13 | 22 |
+| v1 | 13 | 0  | 13 |
+| v3 | 22 | 13 | 0  |
+
+Notice how when v2 gets trimmed off, the ...
+
+ * simple tree merges path(i0, v2) into a single edge. Simple trees can't have nodes with degree_GRAPH 2 (train of non-branching edges not allowed).
+ * additive distance matrix row and column for v3 disappear. All other leaf nodes remain with the same distances.
+   
+As such, removing the row and column for some leaf node in an additive distance matrix is equivalent to removing its limb from the corresponding unique simple tree then merging together any edges connected by nodes of degree_GRAPH 2.
+
+```{output}
+ch7_code/src/phylogeny/TrimDistanceMatrix.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.TrimDistanceMatrix
+2
+[0 , 13, 21, 22]
+[13, 0 , 12, 13]
+[21, 12, 0 , 13]
+[22, 13, 13, 0 ]
+```
+
 ### Bald Distance Matrix
 
+`{bm} /(Algorithms\/Distance Phylogeny\/Bald Distance Matrix)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Limb Length_TOPIC
+```
+
+`{bm-disable} (5')/i` <!-- Needs to be disabled because v3's is conflicting with 3' -->
+`{bm-disable} (3')/i` <!-- Needs to be disabled because v5's is conflicting with 5' -->
+
+**WHAT**: Set a limb length to 0 in an additive distance matrix just as it would get set to 0 in its corresponding unique simple tree. Technically, a simple tree can't have edge weights that are <= 0. This is a special case, typically used as an intermediate operation of some larger algorithm.
+
+**WHY**: Balded distance matrices are required for constructing the unique simple tree for an additive distance matrix.
+
+**ALGORITHM**:
+
+Recall that for any additive distance matrix, there exists a unique simple tree that fits that matrix. For example, the following simple tree is unique to the following distance matrix...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ subgraph cluster_rhs {
+  v0 -- i0 [label=11]
+  v1 -- i0 [label=2]
+  v2 -- i0 [label=10]
+  i0 -- i2 [label=4]
+  i2 -- i1 [label=3]
+  i1 -- v3 [label=3]
+  i1 -- v4 [label=4]
+  i2 -- v5 [label=7]
+ }
+}
+```
+
+|    | v0 | v1 | v2 | v3 | v4 | v5 |
+|----|----|----|----|----|----|----|
+| v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+| v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+| v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+| v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+| v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+| v5 | 22 | 13 | 21 | 13 | 14 | 0  |
+
+Setting v5's limb length to 0 (balding v5) would result in ...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ subgraph cluster_rhs {
+  fontname="Courier-Bold"
+  fontsize=10
+  label="v5 balded"
+  v0 -- i0 [label=11]
+  v1 -- i0 [label=2]
+  v2 -- i0 [label=10]
+  i0 -- i2 [label=4]
+  i2 -- i1 [label=3]
+  i1 -- v3 [label=3]
+  i1 -- v4 [label=4]
+  i2 -- v5 [label=0 style=dashed]
+ }
+}
+```
+
+|    | v0 | v1 | v2 | v3 | v4 | v5 |
+|----|----|----|----|----|----|----|
+| v0 | 0  | 13 | 21 | 21 | 22 | 15 |
+| v1 | 13 | 0  | 12 | 12 | 13 | 6  |
+| v2 | 21 | 12 | 0  | 20 | 21 | 14 |
+| v3 | 21 | 12 | 20 | 0  | 7  | 6  |
+| v4 | 22 | 13 | 21 | 7  | 0  | 7  |
+| v5 | 15 | 6  | 14 | 6  | 7  | 0  |
+
+```{note}
+Can a limb length be 0 in a simple tree? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.
+```
+
+Notice how of the two distance matrices, all distances are the same except for v5's distances. Each v5 distance in the balded distance matrix is equivalent to the corresponding distance in the original distance matrix subtracted by v5's original limb length...
+
+|    |     v0      |     v1      |     v2      |     v3      |     v4      |     v5      |
+|----|-------------|-------------|-------------|-------------|-------------|-------------|
+| v0 |     0       |     13      |     21      |     21      |     22      | 22 - 7 = 15 |
+| v1 |     13      |     0       |     12      |     12      |     13      | 13 - 7 = 6  |
+| v2 |     21      |     12      |     0       |     20      |     21      | 21 - 7 = 14 |
+| v3 |     21      |     12      |     20      |     0       |     7       | 13 - 7 = 6  |
+| v4 |     22      |     13      |     21      |     7       |     0       | 14 - 7 = 7  |
+| v5 | 22 - 7 = 15 | 13 - 7 = 6  | 21 - 7 = 14 | 13 - 7 = 6  | 14 - 7 = 7  | 0           |
+
+Where as v5 was originally contributing 7 to distances, after balding it contributes 0.
+
+As such, subtracting some leaf node's limb length from its distances in an additive distance matrix is equivalent to balding that leaf node's limb in its corresponding simple tree.
+
+```{output}
+ch7_code/src/phylogeny/BaldDistanceMatrix.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.BaldDistanceMatrix
+5
+[0,  13, 21, 21, 22, 22]
+[13, 0,  12, 12, 13, 13]
+[21, 12, 0,  20, 21, 21]
+[21, 12, 20, 0,  7,  13]
+[22, 13, 21, 7,  0,  14]
+[22, 13, 21, 13, 14, 0 ]
+```
+
+`{bm-enable} (5')/i` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
+`{bm-enable} (3')/i` <!-- Re-enabling. Needed to be disabled because v5's is conflicting with 5' -->
+
 ### Limb Attachment
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Limb Attachment)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Trim Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Bald Distance Matrix_TOPIC
+```
 
 See note in limb attachment definition.
 
@@ -11487,9 +11698,16 @@ graph_show
 
    If all possible leaf node quartets pass the above test, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
 
- * `{bm} trimmed distance matrix/(trimmed distance matrix|trimmed distance matrices)/i` - An additive distance matrix where a leaf has been removed.
+ * `{bm} trimmed distance matrix/(trimmed distance matrix|trimmed distance matrices)/i` - A distance matrix where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's limb in the corresponding simple tree and merging together any edges connected by nodes of degree_GRAPH 2.
+ 
+   For example, removing v2 from the following distance matrix... 
 
-   For example, given the following tree and accompanying distance matrix...
+   |             | v0 | v1 | `{h}red v2` | v3 |
+   |-------------|----|----|-------------|----|
+   | v0          | 0  | 13 | 21          | 22 |
+   | v1          | 13 | 0  | 12          | 13 |
+   | `{h}red v2` | 21 | 12 | 0           | 13 |
+   | v3          | 22 | 13 | 13          | 0  |
 
    ```{dot}
    graph G {
@@ -11507,14 +11725,13 @@ graph_show
    }
    ```
 
-   |    | v0 | v1 | v2 | v3 |
-   |----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 22 |
-   | v1 | 13 | 0  | 12 | 13 |
-   | v2 | 21 | 12 | 0  | 13 |
-   | v3 | 22 | 13 | 13 | 0  |
+   ... results in v2's row and column being removed ...
 
-   Trimming v3 off that tree would result in ...
+   |    | v0 | v1 | v3 |
+   |----|----|----|----|
+   | v0 | 0  | 13 | 22 |
+   | v1 | 13 | 0  | 13 |
+   | v3 | 22 | 13 | 0  |
 
    ```{dot}
    graph G {
@@ -11528,33 +11745,25 @@ graph_show
      label="v3 trimmed"
      v0 -- i0 [label=11]
      v1 -- i0 [label=2]
-     i0 -- v2 [label=10]
+     i0 -- v3 [label=11]
     }
    }
    ```
 
-   |    | v0 | v1 | v2 |
-   |----|----|----|----|
-   | v0 | 0  | 13 | 21 |
-   | v1 | 13 | 0  | 12 |
-   | v2 | 21 | 12 | 0  |
+ * `{bm} balded distance matrix/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i` - An additive distance matrix where the distances in a leaf node's row and column have been subtracted by that leaf node's limb length. This is equivalent to setting the leaf node's limb length to 0 in the corresponding simple tree.
+ 
+   `{bm-disable} (5')/i` <!-- Needs to be disabled because v3's is conflicting with 3' -->
 
-   ```{note}
-   Notice that with v3 removed from the additive distance matrix, path(i0, v2) merges into a single edge. Recall that ...
+   For example, balding v5's limb length in the following distance matrix ...
 
-    * phylogenetic trees are simple trees: a simple tree can't have a node with degree_GRAPH 2 (a train of non-branching edges is not allowed)
-    * for any additive distance matrix, there exists a unique simple tree that fits that matrix
-  
-   The trimmed version of the tree fits the trimmed version of the distance matrix.
-   ```
-   
-   The trimmed distance matrix is the same as the original distance matrix but with v3's row and v3 column removed. In other words, removing some leaf's row and column in an additive distance matrix is equivalent to removing it from the tree. The tree structure or edge weights aren't required.
-
-   Trimmed distance matrices are used as part of the algorithm that constructs the unique tree for an additive distance matrix (limb re-attachment and additive phylogeny).
-
- * `{bm} balded distance matrix/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i` - An additive distance matrix where a leaf's limb length has been set to 0.
-
-   For example, given the following tree and accompanying distance matrix...
+   |    | v0 | v1 | v2 | v3 | v4 | v5 |
+   |----|----|----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+   | v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+   | v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+   | v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+   | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+   | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
 
    ```{dot}
    graph G {
@@ -11575,16 +11784,17 @@ graph_show
    }
    ```
 
+   ... results in ...
+
+
    |    | v0 | v1 | v2 | v3 | v4 | v5 |
    |----|----|----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 21 | 22 | 22 |
-   | v1 | 13 | 0  | 12 | 12 | 13 | 13 |
-   | v2 | 21 | 12 | 0  | 20 | 21 | 21 |
-   | v3 | 21 | 12 | 20 | 0  | 7  | 13 |
-   | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
-   | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
-
-   Setting v5's limb length to 0 on that tree would result in ...
+   | v0 | 0  | 13 | 21 | 21 | 22 | 15 |
+   | v1 | 13 | 0  | 12 | 12 | 13 | 6  |
+   | v2 | 21 | 12 | 0  | 20 | 21 | 14 |
+   | v3 | 21 | 12 | 20 | 0  | 7  | 6  |
+   | v4 | 22 | 13 | 21 | 7  | 0  | 7  |
+   | v5 | 15 | 6  | 14 | 6  | 7  | 0  |
 
    ```{dot}
    graph G {
@@ -11608,38 +11818,16 @@ graph_show
    }
    ```
 
-   |    | v0 | v1 | v2 | v3 | v4 | v5 |
-   |----|----|----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 21 | 22 | 15 |
-   | v1 | 13 | 0  | 12 | 12 | 13 | 6  |
-   | v2 | 21 | 12 | 0  | 20 | 21 | 14 |
-   | v3 | 21 | 12 | 20 | 0  | 7  | 6  |
-   | v4 | 22 | 13 | 21 | 7  | 0  | 7  |
-   | v5 | 15 | 6  | 14 | 6  | 7  | 0  |
-
    ```{note}
-   Can a limb length be 0 in a phylogenetic tree? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.
+   Technically, an edge weight of 0 is a violation of the simple tree requirement of having edge weights > 0. This is a special case.
    ```
-
-   Notice how of the two distance matrices, v5's entries (each entry in v5 row and v5 column) in the the balded distance matrix is equivalent to that in the original distance matrix subtracted by v5's limb length...
-
-   |    |     v0      |     v1      |     v2      |     v3      |     v4      |     v5      |
-   |----|-------------|-------------|-------------|-------------|-------------|-------------|
-   | v0 |     0       |     13      |     21      |     21      |     22      | 22 - 7 = 15 |
-   | v1 |     13      |     0       |     12      |     12      |     13      | 13 - 7 = 6  |
-   | v2 |     21      |     12      |     0       |     20      |     21      | 21 - 7 = 14 |
-   | v3 |     21      |     12      |     20      |     0       |     7       | 13 - 7 = 6  |
-   | v4 |     22      |     13      |     21      |     7       |     0       | 14 - 7 = 7  |
-   | v5 | 22 - 7 = 15 | 13 - 7 = 6  | 21 - 7 = 14 | 13 - 7 = 6  | 14 - 7 = 7  | 0           |
-
-   In other words, subtracting some leaf's limb length from its distance values in an additive distance matrix (row and column in an additive matrix) is equivalent to removing it from the tree. The tree structure or edge weights aren't required.
 
    ```{note}
    How do you know the limb length from just the distance matrix? See the algorithm to determine limb length for any leaf from just the distance matrix.
    ```
-
-   Bald distance matrices are used as part of the algorithm that constructs the unique tree for an additive distance matrix (limb re-attachment and additive phylogeny).
    
+   `{bm-enable} (5')/i` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
+
  * `{bm} limb attachment` - Limb attachment is the idea of attaching a new leaf node to some existing tree. The new leaf's limb may be attached by either...
     
     * attaching to an existing internal node

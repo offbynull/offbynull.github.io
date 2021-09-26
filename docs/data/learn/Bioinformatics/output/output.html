@@ -9732,7 +9732,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: An <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> where ...</p>
+<p><strong>WHAT</strong>: Convert a <a href="#BM_(tree)%2Fi">tree</a> into a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> where ...</p>
 <ul>
 <li>every internal node has a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> &gt; 2.</li>
 <li>every edge has a weight of &gt; 0.</li>
@@ -9841,7 +9841,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
+<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -9915,9 +9915,12 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This was discussed briefly in the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> section, but it's being discussed here in its own section because it's important.</p>
 </div>
-<p><strong>WHAT</strong>: There's a 1-to-1 mapping between an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. That is, a unique <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will map to a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and vice-versa.</p>
-<p>This isn't the case for non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s. A non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> will only ever generate one <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, but that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will map to many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s.</p>
-<p><strong>WHY</strong>: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially derived from <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s by splicing nodes inbetween edges (breaking up an edge into multiple edges). For example, any of the following non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s...</p>
+<p><strong>WHAT</strong>: Determine the cardinality of between an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and a type of <a href="#BM_(tree)%2Fi">tree</a>. For, ...</p>
+<ul>
+<li><a href="#BM_(simple%20tree)%2Fi">simple tree</a>s, there's a 1-to-1 mapping for <a href="#BM_(tree)%2Fi">tree</a> to / from <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> will map to a unique additive distance and vice-versa.</li>
+<li>non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s, there's a 1-to-many mapping for <a href="#BM_(tree)%2Fi">tree</a> to / from <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> will only ever generate one <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> but that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will map to many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s.</li>
+</ul>
+<p><strong>WHY</strong>: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially derived from <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s by splicing nodes in between edges (breaking up an edge into multiple edges). For example, any of the following non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s...</p>
 <p><img src="svgbob_c19f51e04775f2f929fb819f2fd231788887981a.svg" alt="Kroki diagram output"></p>
 <p>... will collapse to the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 merged by adding weights) ...</p>
 <p><img src="svgbob_34ccd200d7f22f62100f4341c9d3d4550b63bda7.svg" alt="Kroki diagram output"></p>
@@ -10083,7 +10086,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>I'm almost certain this inequality should be &lt; instead of &lt;=, because in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> you can't have an edge weight of 0, right? An edge weight of 0 would indicate that the nodes at each end of an edge are the same entity.</p>
 </div>
 <p>All of the information required for the above calculation is available in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 12 to 35):</p>
+<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 12 to 38):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">four_point_test</span>(<span class="hljs-params">dm: DistanceMatrix, l0: N, l1: N, l2: N, l3: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
     <span class="hljs-comment"># Pairs of leaf node pairs</span>
     pair_combos = (
@@ -10095,7 +10098,10 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
     test_orders = (
         (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>),
         (<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>),
-        (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)
+        (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>),
+        (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>),
+        (<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),
+        (<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)
     )
     <span class="hljs-comment"># Find at least one order of pair combos that passes the test</span>
     <span class="hljs-keyword">for</span> p1_idx, p2_idx, p3_idx <span class="hljs-keyword">in</span> test_orders:
@@ -10110,7 +10116,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
 <p>If a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>, its leaf node quartets will also pass this test. That is, if all leaf node quartets in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> ...</p>
-<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 40 to 52):</p>
+<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 43 to 55):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_additive</span>(<span class="hljs-params">dm: DistanceMatrix</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
     <span class="hljs-comment"># Recall that an additive distance matrix of size &lt;= 3 is guaranteed to be an additive distance</span>
     <span class="hljs-comment"># matrix (try it and see -- any distances you use will always end up fitting a tree). Thats why</span>
@@ -10351,8 +10357,8 @@ dist(S3, S4) is 5 = x + u + z
 <p><strong>WHAT</strong>: A <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> in the following graph are highlighted in red...</p>
 <p><img src="dot_6ce5e7586348dfe441bdf5856c3f5877.svg" alt="Dot diagram"></p>
 <p>The weight for a leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is referred to as its <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. For example, in the diagram above the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for node v1 is 2.</p>
-<p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. It's possible to compute <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> just from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> itself. That is, the distances between leaf nodes provide enough information to derive the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for any / all leaf nodes.</p>
-<p><strong>WHY</strong>: Deriving <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is critical to constructing the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. Compute the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of any leaf node in that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> just from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, the distances between leaf nodes provide enough information to derive the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for any / all leaf nodes.</p>
+<p><strong>WHY</strong>: Deriving <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s from just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is required by the algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>To conceptualize how this algorithm works, consider the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and its corresponding <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>...</p>
 <p><img src="dot_2ce9085dbbfd0f88d09667f2cefdce21.svg" alt="Dot diagram"></p>
@@ -10620,7 +10626,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Limb Length</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, splitting that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> on a leaf node's parent breaks it up into several <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> has been split on v2's parent, resulting in 4 different <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s ...</p>
+<p><strong>WHAT</strong>: Splitting a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> on the parent of one of its leaf nodes breaks it up into several <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> has been split on v2's parent, resulting in 4 different <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s ...</p>
 <p><img src="dot_87753d86b95006a2fb6c20e3959bb261.svg" alt="Dot diagram"></p>
 <ul>
 <li><span style="background-color: green; color: white; padding: 3px">v0, v1, i0</span></li>
@@ -10629,7 +10635,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <li><span style="background-color: cyan; color: black; padding: 3px">v4, i2, i3, v5, v6</span></li>
 </ul>
 <p>Given just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> for a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (not the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> itself), determine if two <em>leaf nodes</em> belong to the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> had that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> been split on some leaf node's parent.</p>
-<p><strong>WHY</strong>: Determining if two leaf nodes are within the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> from just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is critical to constructing the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHY</strong>: Determining if two leaf nodes are within the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> from just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is required by the algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm is essentially the formulas from the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm. Recall that those formulas are ...</p>
 <ul>
@@ -10854,8 +10860,579 @@ the same subtree.</p>
 </div>
 <p></p>
 <a name="H_Trim%20Distance%20Matrix"></a><h3>Trim Distance Matrix</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Remove a <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> just as it would get removed from its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
+<p><strong>WHY</strong>: <a href="#BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi">Trimmed distance matrices</a> are required for constructing the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Recall that for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is unique to the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><img src="dot_4e5daffbacf71191e85a5881e8367790.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Trimming v2 off that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> would result in ...</p>
+<p><img src="dot_8970363f8d351a28a22328fbfd029f13.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Notice how when v2 gets trimmed off, the ...</p>
+<ul>
+<li><a href="#BM_(simple%20tree)%2Fi">simple tree</a> merges path(i0, v2) into a single edge. <a href="#BM_(simple%20tree)%2Fi">Simple tree</a>s can't have nodes with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (train of non-branching edges not allowed).</li>
+<li><a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> row and column for v3 disappear. All other leaf nodes remain with the same distances.</li>
+</ul>
+<p>As such, removing the row and column for some leaf node in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to removing its <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> from the corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> then merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
+<p><a href="ch7_code/src/phylogeny/TrimDistanceMatrix.py">ch7_code/src/phylogeny/TrimDistanceMatrix.py</a> (lines 13 to 28):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">trim</span>(<span class="hljs-params">dm: DistanceMatrix, l: N</span>) -&gt; <span class="hljs-literal">None</span>:</span>
+    dm.delete(l)
+    <span class="hljs-comment"># The distance matrix's delete function handles row/column removal for a leaf node. It's</span>
+    <span class="hljs-comment"># reproduced below to show what happens...</span>
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># def delete(self, id: N):</span>
+    <span class="hljs-comment">#     if id not in self._keys:</span>
+    <span class="hljs-comment">#         raise ValueError(f'{id} does not already exists')</span>
+    <span class="hljs-comment">#     dels = []</span>
+    <span class="hljs-comment">#     for i1, i2 in self._data.keys():</span>
+    <span class="hljs-comment">#         if i1 == id or i2 == id:</span>
+    <span class="hljs-comment">#             dels.append((i1, i2))</span>
+    <span class="hljs-comment">#     for key in dels:</span>
+    <span class="hljs-comment">#         del self._data[key]</span>
+    <span class="hljs-comment">#     self._keys.remove(id)</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the additive distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>13.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... trimming leaf node 2 results in ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>3</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
 <a name="H_Bald%20Distance%20Matrix"></a><h3>Bald Distance Matrix</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Limb Length</a></li>
+</ul>
+</div>
+<p> <!-- Needs to be disabled because v3's is conflicting with 3' -->
+ <!-- Needs to be disabled because v5's is conflicting with 5' --></p>
+<p><strong>WHAT</strong>: Set a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to 0 in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> just as it would get set to 0 in its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. Technically, a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have edge weights that are &lt;= 0. This is a special case, typically used as an intermediate operation of some larger algorithm.</p>
+<p><strong>WHY</strong>: <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">Balded distance matrices</a> are required for constructing the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Recall that for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is unique to the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><img src="dot_e304cd9917c7e5b9d72c4e876e260cba.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Setting v5's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to 0 (balding v5) would result in ...</p>
+<p><img src="dot_504f11240750f6a2add064fe593ca205.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>6</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>7</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>15</td>
+<td>6</td>
+<td>14</td>
+<td>6</td>
+<td>7</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Can a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> be 0 in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.</p>
+</div>
+<p>Notice how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, all distances are the same except for v5's distances. Each v5 distance in the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is equivalent to the corresponding distance in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> subtracted by v5's original <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22 - 7 = 15</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13 - 7 = 6</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21 - 7 = 14</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13 - 7 = 6</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14 - 7 = 7</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22 - 7 = 15</td>
+<td>13 - 7 = 6</td>
+<td>21 - 7 = 14</td>
+<td>13 - 7 = 6</td>
+<td>14 - 7 = 7</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Where as v5 was originally contributing 7 to distances, after balding it contributes 0.</p>
+<p>As such, subtracting some leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> from its distances in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to balding that leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> in its corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
+<p><a href="ch7_code/src/phylogeny/BaldDistanceMatrix.py">ch7_code/src/phylogeny/BaldDistanceMatrix.py</a> (lines 14 to 20):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bald</span>(<span class="hljs-params">dm: DistanceMatrix, l: N</span>) -&gt; <span class="hljs-literal">None</span>:</span>
+    l_len = limb_length(dm, l)
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> dm.leaf_ids_it():
+        <span class="hljs-keyword">if</span> n == l:
+            <span class="hljs-keyword">continue</span>
+        dm[l, n] -= l_len
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the additive distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... trimming leaf node 5 results in ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>15.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>7.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>15.0</td>
+<td>6.0</td>
+<td>14.0</td>
+<td>6.0</td>
+<td>7.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
+<p> <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
+ <!-- Re-enabling. Needed to be disabled because v5's is conflicting with 5' --></p>
 <a name="H_Limb%20Attachment"></a><h3>Limb Attachment</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Attachment)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Trim Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald Distance Matrix</a></li>
+</ul>
+</div>
 <p>See note in <a href="#BM_(limb%20attachment)%2Fi">limb attachment</a> definition.</p>
 <a name="H_Neighbour%20Detection"></a><h3>Neighbour Detection</h3>
 <a name="H_Simple%20Tree%20Reconstruction"></a><h3>Simple Tree Reconstruction</h3>
@@ -13954,16 +14531,15 @@ the same subtree.</p>
 <p>If all possible leaf node quartets pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
 </li>
 <li>
-<p><a name="BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where a leaf has been removed.</p>
-<p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a> and accompanying <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><img src="dot_4e5daffbacf71191e85a5881e8367790.svg" alt="Dot diagram"></p>
+<p><a name="BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
+<p>For example, removing v2 from the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <table>
 <thead>
 <tr>
 <th></th>
 <th>v0</th>
 <th>v1</th>
-<th>v2</th>
+<th><span style="background-color: red; color: white; padding: 3px">v2</span></th>
 <th>v3</th>
 </tr>
 </thead>
@@ -13983,7 +14559,7 @@ the same subtree.</p>
 <td>13</td>
 </tr>
 <tr>
-<td>v2</td>
+<td><span style="background-color: red; color: white; padding: 3px">v2</span></td>
 <td>21</td>
 <td>12</td>
 <td>0</td>
@@ -13998,15 +14574,15 @@ the same subtree.</p>
 </tr>
 </tbody>
 </table>
-<p>Trimming v3 off that <a href="#BM_(tree)%2Fi">tree</a> would result in ...</p>
-<p><img src="dot_6a109324ab04f1a066f363c371982971.svg" alt="Dot diagram"></p>
+<p><img src="dot_4e5daffbacf71191e85a5881e8367790.svg" alt="Dot diagram"></p>
+<p>... results in v2's row and column being removed ...</p>
 <table>
 <thead>
 <tr>
 <th></th>
 <th>v0</th>
 <th>v1</th>
-<th>v2</th>
+<th>v3</th>
 </tr>
 </thead>
 <tbody>
@@ -14014,38 +14590,99 @@ the same subtree.</p>
 <td>v0</td>
 <td>0</td>
 <td>13</td>
-<td>21</td>
+<td>22</td>
 </tr>
 <tr>
 <td>v1</td>
 <td>13</td>
 <td>0</td>
-<td>12</td>
+<td>13</td>
 </tr>
 <tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Notice that with v3 removed from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, path(i0, v2) merges into a single edge. Recall that ...</p>
-<ul>
-<li><a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s are <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s: a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have a node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (a train of non-branching edges is not allowed)</li>
-<li>for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix</li>
-</ul>
-<p>The trimmed version of the <a href="#BM_(tree)%2Fi">tree</a> fits the trimmed version of the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
-</div>
-<p>The <a href="#BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi">trimmed distance matrix</a> is the same as the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> but with v<a href="#BM_(3')%2Fi">3'</a>s row and v3 column removed. In other words, removing some leaf's row and column in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to removing it from the <a href="#BM_(tree)%2Fi">tree</a>. The <a href="#BM_(tree)%2Fi">tree</a> structure or edge weights aren't required.</p>
-<p><a href="#BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi">Trimmed distance matrices</a> are used as part of the algorithm that constructs the unique <a href="#BM_(tree)%2Fi">tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (<a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> re-attachment and <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>).</p>
+<p><img src="dot_8970363f8d351a28a22328fbfd029f13.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p><a name="BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi"></a><strong>balded distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where a leaf's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> has been set to 0.</p>
-<p>For example, given the following <a href="#BM_(tree)%2Fi">tree</a> and accompanying <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<p><a name="BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi"></a><strong>balded distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where the distances in a leaf node's row and column have been subtracted by that leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. This is equivalent to setting the leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to 0 in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
+<p> <!-- Needs to be disabled because v3's is conflicting with 3' --></p>
+<p>For example, balding v5's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> in the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
 <p><img src="dot_e304cd9917c7e5b9d72c4e876e260cba.svg" alt="Dot diagram"></p>
+<p>... results in ...</p>
 <table>
 <thead>
 <tr>
@@ -14066,7 +14703,7 @@ the same subtree.</p>
 <td>21</td>
 <td>21</td>
 <td>22</td>
-<td>22</td>
+<td>15</td>
 </tr>
 <tr>
 <td>v1</td>
@@ -14075,7 +14712,7 @@ the same subtree.</p>
 <td>12</td>
 <td>12</td>
 <td>13</td>
-<td>13</td>
+<td>6</td>
 </tr>
 <tr>
 <td>v2</td>
@@ -14084,7 +14721,7 @@ the same subtree.</p>
 <td>0</td>
 <td>20</td>
 <td>21</td>
-<td>21</td>
+<td>14</td>
 </tr>
 <tr>
 <td>v3</td>
@@ -14093,7 +14730,7 @@ the same subtree.</p>
 <td>20</td>
 <td>0</td>
 <td>7</td>
-<td>13</td>
+<td>6</td>
 </tr>
 <tr>
 <td>v4</td>
@@ -14102,170 +14739,29 @@ the same subtree.</p>
 <td>21</td>
 <td>7</td>
 <td>0</td>
-<td>14</td>
+<td>7</td>
 </tr>
 <tr>
 <td>v5</td>
-<td>22</td>
-<td>13</td>
-<td>21</td>
-<td>13</td>
+<td>15</td>
+<td>6</td>
 <td>14</td>
+<td>6</td>
+<td>7</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<p>Setting v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to 0 on that <a href="#BM_(tree)%2Fi">tree</a> would result in ...</p>
 <p><img src="dot_504f11240750f6a2add064fe593ca205.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-<th>v4</th>
-<th>v5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>21</td>
-<td>22</td>
-<td>15</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>12</td>
-<td>13</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>20</td>
-<td>21</td>
-<td>14</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>21</td>
-<td>12</td>
-<td>20</td>
-<td>0</td>
-<td>7</td>
-<td>6</td>
-</tr>
-<tr>
-<td>v4</td>
-<td>22</td>
-<td>13</td>
-<td>21</td>
-<td>7</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<td>v5</td>
-<td>15</td>
-<td>6</td>
-<td>14</td>
-<td>6</td>
-<td>7</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Can a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> be 0 in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.</p>
+<p>Technically, an edge weight of 0 is a violation of the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> requirement of having edge weights &gt; 0. This is a special case.</p>
 </div>
-<p>Notice how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, v<a href="#BM_(5')%2Fi">5'</a>s entries (each entry in v5 row and v5 column) in the the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is equivalent to that in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> subtracted by v<a href="#BM_(5')%2Fi">5'</a>s <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-<th>v4</th>
-<th>v5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>13</td>
-<td>21</td>
-<td>21</td>
-<td>22</td>
-<td>22 - 7 = 15</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>13</td>
-<td>0</td>
-<td>12</td>
-<td>12</td>
-<td>13</td>
-<td>13 - 7 = 6</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>21</td>
-<td>12</td>
-<td>0</td>
-<td>20</td>
-<td>21</td>
-<td>21 - 7 = 14</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>21</td>
-<td>12</td>
-<td>20</td>
-<td>0</td>
-<td>7</td>
-<td>13 - 7 = 6</td>
-</tr>
-<tr>
-<td>v4</td>
-<td>22</td>
-<td>13</td>
-<td>21</td>
-<td>7</td>
-<td>0</td>
-<td>14 - 7 = 7</td>
-</tr>
-<tr>
-<td>v5</td>
-<td>22 - 7 = 15</td>
-<td>13 - 7 = 6</td>
-<td>21 - 7 = 14</td>
-<td>13 - 7 = 6</td>
-<td>14 - 7 = 7</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>In other words, subtracting some leaf's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> from its distance values in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (row and column in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a>) is equivalent to removing it from the <a href="#BM_(tree)%2Fi">tree</a>. The <a href="#BM_(tree)%2Fi">tree</a> structure or edge weights aren't required.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>How do you know the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> from just the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>? See the algorithm to determine <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for any leaf from just the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
 </div>
-<p><a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">Bald distance matrices</a> are used as part of the algorithm that constructs the unique <a href="#BM_(tree)%2Fi">tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (<a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> re-attachment and <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>).</p>
+<p> <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' --></p>
 </li>
 <li>
 <p><a name="BM_(limb%20attachment)%2Fi"></a><strong>limb attachment</strong> - <a href="#BM_(limb%20attachment)%2Fi">Limb attachment</a> is the idea of attaching a new leaf node to some existing <a href="#BM_(tree)%2Fi">tree</a>. The new leaf's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> may be attached by either...</p>
@@ -15481,7 +15977,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_b1f2c71133448ae3ebaa4870afc30e17.svg" alt="Dot diagram"></p>
+<p><img src="dot_05d5a25d8ff9c8b1755e71e41eaa3036.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
@@ -15667,7 +16163,7 @@ walk_weight = <span class="hljs-number">0</span>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -15736,7 +16232,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_65391afb3dbe453eae943b8cab14d8ca.svg" alt="Dot diagram"></p>
+<p><img src="dot_86488a709988a46ff6c90036f1b561ef.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>

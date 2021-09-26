@@ -20,7 +20,10 @@ def four_point_test(dm: DistanceMatrix, l0: N, l1: N, l2: N, l3: N) -> bool:
     test_orders = (
         (0, 1, 2),
         (0, 2, 1),
-        (1, 2, 0)
+        (1, 0, 2),
+        (1, 2, 0),
+        (2, 0, 1),
+        (2, 1, 0)
     )
     # Find at least one order of pair combos that passes the test
     for p1_idx, p2_idx, p3_idx in test_orders:
