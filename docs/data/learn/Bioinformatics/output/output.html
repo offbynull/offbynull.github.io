@@ -146,10 +146,10 @@
 <li><a href="#H_Four%20Point%20Condition%20Algorithm">Four Point Condition Algorithm</a></li>
 <li><a href="#H_Linear%20System%20Algorithm">Linear System Algorithm</a></li>
 </ul>
+<li><a href="#H_Limb%20Length">Limb Length</a></li>
 <li><a href="#H_Same%20Subtree%20Detection">Same Subtree Detection</a></li>
 <li><a href="#H_Trim%20Distance%20Matrix">Trim Distance Matrix</a></li>
 <li><a href="#H_Bald%20Distance%20Matrix">Bald Distance Matrix</a></li>
-<li><a href="#H_Limb%20Length">Limb Length</a></li>
 <li><a href="#H_Limb%20Attachment">Limb Attachment</a></li>
 <li><a href="#H_Neighbour%20Detection">Neighbour Detection</a></li>
 <li><a href="#H_Simple%20Tree%20Reconstruction">Simple Tree Reconstruction</a></li>
@@ -9841,7 +9841,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
+<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -10338,49 +10338,6 @@ dist(S3, S4) is 5 = x + u + z
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>There is no code for this section since writing a generic linear systems solver is out of scope. There are Python packages you can use if you really want to do this.</p>
 </div>
-<a name="H_Same%20Subtree%20Detection"></a><h3>Same Subtree Detection</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Detection)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
-</ul>
-</div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, splitting that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> on a leaf node's parent breaks it up into several <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> has been split on i1 (parent of leaf node v2), resulting in 4 different <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s ...</p>
-<p><img src="dot_7f7231778ec1df6e92a27177e52d022a.svg" alt="Dot diagram"></p>
-<ul>
-<li><span style="background-color: green; color: white; padding: 3px">v0, v1, i0</span></li>
-<li><span style="background-color: yellow; color: black; padding: 3px">v2</span></li>
-<li><span style="background-color: pink; color: black; padding: 3px">v3</span></li>
-<li><span style="background-color: cyan; color: black; padding: 3px">v4, i2, i3, v5, v6</span></li>
-</ul>
-<p>In the above example, it's clear which <em>leaf nodes</em> belong to which <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> (e.g. v4 and v6 are in the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>).</p>
-<p>This section discusses how to perform this with just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, given just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> for a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (not the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> itself), determine if two <em>leaf nodes</em> belong to the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> had that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> been split on some leaf node's parent.</p>
-<p><strong>WHY</strong>: Using just an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to determind if two <em>leaf nodes</em> belong to the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> of <a href="#BM_(simple%20tree)%2Fi">simple tree</a> split on some leaf node's parent is critical to finding finding the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> fits a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
-</div>
-<p><strong>ALGORITHM</strong>:</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
-<a name="H_Trim%20Distance%20Matrix"></a><h3>Trim Distance Matrix</h3>
-<a name="H_Bald%20Distance%20Matrix"></a><h3>Bald Distance Matrix</h3>
 <a name="H_Limb%20Length"></a><h3>Limb Length</h3>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -10395,7 +10352,7 @@ dist(S3, S4) is 5 = x + u + z
 <p><img src="dot_6ce5e7586348dfe441bdf5856c3f5877.svg" alt="Dot diagram"></p>
 <p>The weight for a leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is referred to as its <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. For example, in the diagram above the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for node v1 is 2.</p>
 <p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. It's possible to compute <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> just from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> itself. That is, the distances between leaf nodes provide enough information to derive the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for any / all leaf nodes.</p>
-<p><strong>WHY</strong>: Deriving <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is a critical constructing the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHY</strong>: Deriving <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is critical to constructing the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>To conceptualize how this algorithm works, consider the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and its corresponding <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>...</p>
 <p><img src="dot_2ce9085dbbfd0f88d09667f2cefdce21.svg" alt="Dot diagram"></p>
@@ -10489,7 +10446,7 @@ dist(S3, S4) is 5 = x + u + z
 <p><img src="dot_276f3df9c3fc7d23f14a0984964d0686.svg" alt="Dot diagram"></p>
 <p>Now, consider the paths between each of the two nodes in the path above (v1 and v5) and v2: <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> ...</p>
 <p><img src="dot_188fe43ede6da8ad09ce44fa84eabf77.svg" alt="Dot diagram"></p>
-<p>Notice how the same set of edges are highlighted the same number of times <em>except for v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a></em>. Adding <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i0)</span> to <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> gets rid of this exception, making it so that each edge is highlighted an equal number of times ...</p>
+<p>Notice how the edges highlighted between <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> and <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> would be the same had it not been for the two highlights on v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a>. Adding <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i0)</span> to <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> makes it so that so that each edge is highlighted an equal number of times ...</p>
 <p><img src="dot_be3424051e002c75fa44c9de8ac7357c.svg" alt="Dot diagram"></p>
 <p><span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> = <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> + <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i1)</span></p>
 <p>Contrast the above to what happens when the pair of leaf nodes selected DOESN'T travel through v2's parent. For example, <span style="background-color: purple; color: white; padding: 3px">path(v4,v5)</span> doesn't travel through v2's parent ...</p>
@@ -10557,14 +10514,147 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><img src="dot_bbe2c1719425a3eccdeb2cb1d01c1a5d.svg" alt="Dot diagram"></p>
 <p>Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.</p>
 </div>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
-<p>TODO: ADD CODE HERE AND CONTINUE WITH SAME <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> DETECTION</p>
+<p><a href="ch7_code/src/phylogeny/LimbLength.py">ch7_code/src/phylogeny/LimbLength.py</a> (lines 13 to 19):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">limb_length</span>(<span class="hljs-params">dm: DistanceMatrix, l: N</span>) -&gt; <span class="hljs-built_in">float</span>:</span>
+    leaf_nodes = dm.leaf_ids()
+    leaf_nodes.remove(l)
+    a = leaf_nodes.pop()
+    b = <span class="hljs-built_in">min</span>(leaf_nodes, key=<span class="hljs-keyword">lambda</span> x: (dm[l, a] + dm[l, x] - dm[a, x]) / <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">return</span> (dm[l, a] + dm[l, b] - dm[a, b]) / <span class="hljs-number">2</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the additive distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>19.0</td>
+<td>20.0</td>
+<td>29.0</td>
+<td>40.0</td>
+<td>36.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>11.0</td>
+<td>20.0</td>
+<td>31.0</td>
+<td>27.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>19.0</td>
+<td>10.0</td>
+<td>0.0</td>
+<td>11.0</td>
+<td>20.0</td>
+<td>31.0</td>
+<td>27.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>20.0</td>
+<td>11.0</td>
+<td>11.0</td>
+<td>0.0</td>
+<td>21.0</td>
+<td>32.0</td>
+<td>28.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>29.0</td>
+<td>20.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>0.0</td>
+<td>17.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>40.0</td>
+<td>31.0</td>
+<td>31.0</td>
+<td>32.0</td>
+<td>17.0</td>
+<td>0.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>36.0</td>
+<td>27.0</td>
+<td>27.0</td>
+<td>28.0</td>
+<td>13.0</td>
+<td>6.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>The limb for leaf node 2 in its unique simple tree has a weight of 5.0</p>
+</div>
+<p></p>
+<a name="H_Same%20Subtree%20Detection"></a><h3>Same Subtree Detection</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Detection)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, splitting that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> on a leaf node's parent breaks it up into several <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> has been split on i1 (parent of leaf node v2), resulting in 4 different <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s ...</p>
+<p><img src="dot_7f7231778ec1df6e92a27177e52d022a.svg" alt="Dot diagram"></p>
+<ul>
+<li><span style="background-color: green; color: white; padding: 3px">v0, v1, i0</span></li>
+<li><span style="background-color: yellow; color: black; padding: 3px">v2</span></li>
+<li><span style="background-color: pink; color: black; padding: 3px">v3</span></li>
+<li><span style="background-color: cyan; color: black; padding: 3px">v4, i2, i3, v5, v6</span></li>
+</ul>
+<p>In the above example, it's clear which <em>leaf nodes</em> belong to which <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> (e.g. v4 and v6 are in the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>).</p>
+<p>This section discusses how to perform this with just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, given just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> for a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (not the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> itself), determine if two <em>leaf nodes</em> belong to the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> had that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> been split on some leaf node's parent.</p>
+<p><strong>WHY</strong>: Using just an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to determind if two <em>leaf nodes</em> belong to the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> of <a href="#BM_(simple%20tree)%2Fi">simple tree</a> split on some leaf node's parent is critical to finding finding the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall that an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> fits a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<p>TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR <a href="#BM_(subtree%7Csub-tree)%2Fi">SUBTREE</a> AND <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">LIMB</a>, THEN REDUCE THE TERMINOLOGY FOR <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.</p>
+<a name="H_Trim%20Distance%20Matrix"></a><h3>Trim Distance Matrix</h3>
+<a name="H_Bald%20Distance%20Matrix"></a><h3>Bald Distance Matrix</h3>
 <a name="H_Limb%20Attachment"></a><h3>Limb Attachment</h3>
 <p>See note in <a href="#BM_(limb%20attachment)%2Fi">limb attachment</a> definition.</p>
 <a name="H_Neighbour%20Detection"></a><h3>Neighbour Detection</h3>
@@ -15330,7 +15420,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_c3ac8b1ea75860903f90962569e9317b.svg" alt="Dot diagram"></p>
+<p><img src="dot_d07f39724b0244e91fc9d85045d515d3.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
@@ -15585,7 +15675,7 @@ walk_weight = <span class="hljs-number">0</span>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_6e2c88876a6814a011dac2562d5d1af2.svg" alt="Dot diagram"></p>
+<p><img src="dot_81557650b0306fe3cb0161159c11bb06.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>

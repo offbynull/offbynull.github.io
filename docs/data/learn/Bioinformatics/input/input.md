@@ -7239,100 +7239,6 @@ A solution isn't viable if a variable ends up as a negative value (negative weig
 There is no code for this section since writing a generic linear systems solver is out of scope. There are Python packages you can use if you really want to do this.
 ```
 
-### Same Subtree Detection
-
-`{bm} /(Algorithms\/Distance Phylogeny\/Same Subtree Detection)_TOPIC/`
-
-```{prereq}
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
-```
-
-**WHAT**: Given a simple tree, splitting that simple tree on a leaf node's parent breaks it up into several subtrees. For example, the following simple tree has been split on i1 (parent of leaf node v2), resulting in 4 different subtrees ...
-
-```{dot}
-graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- v0 -- i0
- v1 -- i0 
- i0 -- i1 [style="dashed"]
- v2 -- i1 [style="dashed"]
- v3 -- i1 [style="dashed"]
- i1 -- i2 [style="dashed"]
- v4 -- i2
- i2 -- i3 
- i3 -- v5 
- i3 -- v6
- v0 [style="filled", fillcolor="green"]
- v1 [style="filled", fillcolor="green"]
- i0 [style="filled", fillcolor="green"]
- i1 [style="filled", fillcolor="gray"]
- v2 [style="filled", fillcolor="yellow"]
- v3 [style="filled", fillcolor="pink"]
- i2 [style="filled", fillcolor="cyan"]
- i3 [style="filled", fillcolor="cyan"]
- v4 [style="filled", fillcolor="cyan"]
- v5 [style="filled", fillcolor="cyan"]
- v6 [style="filled", fillcolor="cyan"]
-}
-```
-
- * `{h}green  v0, v1, i0`
- * `{h}yellow v2`
- * `{h}pink   v3`
- * `{h}cyan   v4, i2, i3, v5, v6`
-
-
-In the above example, it's clear which *leaf nodes* belong to which subtree (e.g. v4 and v6 are in the same subtree).
-
-This section discusses how to perform this with just the additive distance matrix. That is, given just the additive distance matrix for a simple tree (not the simple tree itself), determine if two *leaf nodes* belong to the same subtree had that simple tree been split on some leaf node's parent.
-
-**WHY**: Using just an additive distance matrix to determind if two *leaf nodes* belong to the same subtree of simple tree split on some leaf node's parent is critical to finding finding the unique simple tree for an additive distance matrix.
-
-```{note}
-Recall that an additive distance matrix fits a unique simple tree.
-```
-
-**ALGORITHM**:
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
-
-
-### Trim Distance Matrix
-
-### Bald Distance Matrix
-
 ### Limb Length
 
 `{bm} /(Algorithms\/Distance Phylogeny\/Limb Length)_TOPIC/`
@@ -7362,7 +7268,7 @@ The weight for a leaf node's limb is referred to as its limb length. For example
 
 Given an additive distance matrix, there exists a unique simple tree that fits that matrix. It's possible to compute limb lengths for that simple tree just from the additive distance matrix itself. That is, the distances between leaf nodes provide enough information to derive the limb lengths for any / all leaf nodes.
 
-**WHY**: Deriving limb lengths from an additive distance matrix is a critical constructing the unique simple tree for that additive distance matrix.
+**WHY**: Deriving limb lengths from an additive distance matrix is critical to constructing the unique simple tree for that additive distance matrix.
 
 **ALGORITHM**:
 
@@ -7452,7 +7358,7 @@ graph G {
 }
 ```
 
-Notice how the same set of edges are highlighted the same number of times _except for v2's limb_. Adding `{h}red 2 * path(v2,i0)` to `{h}pink path(v1,v5)` gets rid of this exception, making it so that each edge is highlighted an equal number of times ...
+Notice how the edges highlighted between `{h}pink path(v1,v5)` and `{h}orange path(v1,v2)` + `{h}blue path(v2,v5)` would be the same had it not been for the two highlights on v2's limb. Adding `{h}red 2 * path(v2,i0)` to `{h}pink path(v1,v5)` makes it so that so that each edge is highlighted an equal number of times ...
 
 ```{dot}
 graph G {
@@ -7852,21 +7758,117 @@ graph G {
 Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get limb length for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.
 ````
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+```{output}
+ch7_code/src/phylogeny/LimbLength.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+```{ch7}
+phylogeny.LimbLength
+2
+[0 , 13, 19, 20, 29, 40, 36]
+[13, 0 , 10, 11, 20, 31, 27]
+[19, 10, 0 , 11, 20, 31, 27]
+[20, 11, 11, 0 , 21, 32, 28]
+[29, 20, 20, 21, 0 , 17, 13]
+[40, 31, 31, 32, 17, 0 , 6 ]
+[36, 27, 27, 28, 13, 6 , 0 ]
+```
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+### Same Subtree Detection
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+`{bm} /(Algorithms\/Distance Phylogeny\/Same Subtree Detection)_TOPIC/`
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+```{prereq}
+Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+```
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+**WHAT**: Given a simple tree, splitting that simple tree on a leaf node's parent breaks it up into several subtrees. For example, the following simple tree has been split on i1 (parent of leaf node v2), resulting in 4 different subtrees ...
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ v0 -- i0
+ v1 -- i0 
+ i0 -- i1 [style="dashed"]
+ v2 -- i1 [style="dashed"]
+ v3 -- i1 [style="dashed"]
+ i1 -- i2 [style="dashed"]
+ v4 -- i2
+ i2 -- i3 
+ i3 -- v5 
+ i3 -- v6
+ v0 [style="filled", fillcolor="green"]
+ v1 [style="filled", fillcolor="green"]
+ i0 [style="filled", fillcolor="green"]
+ i1 [style="filled", fillcolor="gray"]
+ v2 [style="filled", fillcolor="yellow"]
+ v3 [style="filled", fillcolor="pink"]
+ i2 [style="filled", fillcolor="cyan"]
+ i3 [style="filled", fillcolor="cyan"]
+ v4 [style="filled", fillcolor="cyan"]
+ v5 [style="filled", fillcolor="cyan"]
+ v6 [style="filled", fillcolor="cyan"]
+}
+```
 
-TODO: ADD CODE HERE AND CONTINUE WITH SAME SUBTREE DETECTION
+ * `{h}green  v0, v1, i0`
+ * `{h}yellow v2`
+ * `{h}pink   v3`
+ * `{h}cyan   v4, i2, i3, v5, v6`
+
+
+In the above example, it's clear which *leaf nodes* belong to which subtree (e.g. v4 and v6 are in the same subtree).
+
+This section discusses how to perform this with just the additive distance matrix. That is, given just the additive distance matrix for a simple tree (not the simple tree itself), determine if two *leaf nodes* belong to the same subtree had that simple tree been split on some leaf node's parent.
+
+**WHY**: Using just an additive distance matrix to determind if two *leaf nodes* belong to the same subtree of simple tree split on some leaf node's parent is critical to finding finding the unique simple tree for an additive distance matrix.
+
+```{note}
+Recall that an additive distance matrix fits a unique simple tree.
+```
+
+**ALGORITHM**:
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+TODO: THE WHAT AND WHY SECTIONS ARE STILL CONFUSING, AND THE TEXT BELOW IS A DIRECT COPY OF TERMINOLOGY SECTION. CLEAN UP BELOW, THEN ABOVE, THEN ADD A TERMINOLOGY FOR SUBTREE AND LIMB, THEN REDUCE THE TERMINOLOGY FOR LIMB LENGTH BECAUSE THATS WHERE ALL THE STUFF BELOW COMES FROM.
+
+
+### Trim Distance Matrix
+
+### Bald Distance Matrix
 
 ### Limb Attachment
 

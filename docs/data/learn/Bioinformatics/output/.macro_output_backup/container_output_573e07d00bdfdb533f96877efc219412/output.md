@@ -46,7 +46,7 @@ v1 -- i0 [label="2.0"]
 v2 -- i0 [label="10.0"]
 i0 -- i1 [label="4.0"]
 i1 -- v4 [label="7.0"]
-i1 -- v3 [label="6.0"]
+v3 -- i1 [label="6.0"]
 }
 ```
 
