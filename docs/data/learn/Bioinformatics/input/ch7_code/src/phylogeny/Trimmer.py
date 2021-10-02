@@ -24,7 +24,7 @@ def trim_tree(tree: Graph[N, ND, E, float], leaf: N) -> None:
     edge = next(tree.get_outputs(leaf))
     tree.delete_edge(edge)
     tree.delete_node(leaf)
-    merge_nodes_of_degree2(tree)
+    merge_nodes_of_degree2(tree)  # make sure its a simple tree
 # MARKDOWN
 
 

@@ -8294,7 +8294,12 @@ Algorithms/Distance Phylogeny/Trim_TOPIC
 Algorithms/Distance Phylogeny/Bald_TOPIC
 ```
 
-**WHAT**: Imagine that you have a simple tree and an additive distance matrix, where that simple tree would be the unique simple tree for that additive distance matrix had a missing leaf node been attached to it. For example, the following simple tree doesn't have leaf node v2 but the accompanying additive distance matrix does...
+**WHAT**: Given an ...
+
+ 1. additive distance matrix for simple tree T
+ 2. simple tree T with limb L `{bm-target} trimmed/(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i` off
+
+... this algorithm determines where limb L should be added in the given simple tree such that it fits the additive distance matrix. For example, the following simple tree would map to the following additive distance matrix had v2's limb branched out from some specific location...
 
 ```{dot}
 graph G {
@@ -8320,7 +8325,7 @@ graph G {
 | v2 | 21 | 12 | 0  | 13 |
 | v3 | 22 | 13 | 13 | 0  |
 
-To get the above simple tree to fit to the above additive distance matrix, v2's limb needs to get attached somewhere specific in the simple tree. That specific location is what this algorithm determines. It could be that v2's limb needs to attach to either ...
+That specific location is what this algorithm determines. It could be that v2's limb needs to branch from either ...
 
  * an internal node ...
 
@@ -8384,7 +8389,7 @@ Attaching a new limb to an existing leaf node is never possible because...
 
 `{bm-disable} (5')/i` <!-- Needs to be disabled because v5's is conflicting with 5' -->
 
-The additive distance matrix below is for the simple tree below had v5 been added to it somewhere ...
+The simple tree below would fit the additive distance matrix below had v5's limb been added to it somewhere ...
    
 ```{dot}
 graph G {
@@ -8421,7 +8426,7 @@ There's enough information available in this additive distance matrix to determi
 Recall that same subset algorithm says that two leaf nodes in DIFFERENT subsets are guaranteed to travel over v5's parent.
 ```
 
-The key to this algorithm is figuring out where along that path (v0 to v3) v5's limb (limb length of 7) should be added. Imagine that you already had the answer in front of you: v5's limb is to be added 4 units from i0 towards i2 ...
+The key to this algorithm is figuring out where along that path (v0 to v3) v5's limb (limb length of 7) should be injected. Imagine that you already had the answer in front of you: v5's limb should be added 4 units from i0 towards i2 ...
 
 ```{dot}
 graph G {
@@ -8447,7 +8452,7 @@ graph G {
 }
 ```
 
-Consider the answer above with v5 `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i`...
+Consider the answer above with v5's limb `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i`...
 
 ```{dot}
 graph G {
@@ -8499,10 +8504,10 @@ graph G {
   fontname="Courier-Bold"
   fontsize=10
   label="dist(v0,v5) = dist(v0,i1) + 0 = dist(v0,i1)"
-  v0 -- i0 [label=11, color="violet:invis:blue", penwidth=2.5]
+  v0 -- i0 [label=11, color="blue:invis:violet", penwidth=2.5]
   v1 -- i0 [label=2]
   v2 -- i0 [label=10]
-  i0 -- i1 [label=4, color="violet:invis:blue", penwidth=2.5]
+  i0 -- i1 [label=4, color="blue:invis:violet", penwidth=2.5]
   i1 -- i2 [label=3]
   i2 -- v3 [label=3]
   i2 -- v4 [label=4]
@@ -8511,7 +8516,15 @@ graph G {
 }
 ```
 
-Essentially, the balded distance matrix is saying that the path from v0 to v5's parent has a distance of 15. In the original simple tree, walking 15 units on the path from v0 to v3 takes you to where that parent should be. Since there is no internal node there, one is added by breaking the edge and v5's limb is attached to it.
+Essentially, the balded distance matrix is enough to tell you that the path from v0 to v5's parent has a distance of 15. The balded tree itself isn't required.
+
+```{output}
+ch7_code/src/phylogeny/UntrimTree.py
+python
+# MARKDOWN_DIST_TO_PARENT\s*\n([\s\S]+)\n\s*# MARKDOWN_DIST_TO_PARENT
+```
+
+In the original simple tree, walking a distance of 15 on the path from v0 to v3 takes you to where v5's parent should be. Since there is no internal node there, one is first added by breaking the edge before attaching v5's limb to it ...
 
 ```{dot}
 graph G {
@@ -8564,10 +8577,13 @@ graph G {
 }
 ```
 
-If there ...
+Had there been an internal node already there, the limb would get attached to that existing internal node.
 
- * is an internal node there, the limb gets attached to it.
- * isn't an internal node there, the edge is broken by injecting a new one, which the limb gets attached to...
+```{output}
+ch7_code/src/phylogeny/UntrimTree.py
+python
+# MARKDOWN_WALK_TO_PARENT\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK_TO_PARENT
+```
 
 ```{output}
 ch7_code/src/phylogeny/UntrimTree.py
@@ -11994,7 +12010,7 @@ graph_show
 
    If all possible leaf node quartets pass the above test, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
 
- * `{bm} trimmed distance matrix/(trimmed distance matrix|trimmed distance matrices)/i` - A distance matrix where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's limb in the corresponding simple tree and merging together any edges connected by nodes of degree_GRAPH 2.
+ * `{bm} trimmed distance matrix/(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i` - A distance matrix where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's limb in the corresponding simple tree and merging together any edges connected by nodes of degree_GRAPH 2.
  
    For example, removing v2 from the following distance matrix... 
 
@@ -12126,7 +12142,7 @@ graph_show
 
  * `{bm} additive phylogeny` - An algorithm that finds the unique simple tree for some additive distance matrix.
 
-   The algorithm recursively `{bm-target} trim/(trimmed distance matrix|trimmed distance matrices)/i`s the node for the last row/column in a distance matrix until the size is 2x2. The simple tree for any 2x2 distance matrix is obvious as ...
+   The algorithm recursively trims the node for the last row/column in a distance matrix until the size is 2x2. The simple tree for any 2x2 distance matrix is obvious as ...
    
    * it only consists of 2 nodes
    * it only consists of a single edge (nodes of degree_GRAPH 2 not allowed in simple trees, meaning train of non-branching edges not allowed)
@@ -13604,7 +13620,7 @@ graph_show
    }
    ```
 
-   However, unlike additive phylogeny, this algorithm `{bm-target} trim/(trimmed distance matrix|trimmed distance matrices)/i`s the distance matrix by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the distance matrix is 2x2, then finds the limb lengths for those pairs and attaches them to the tree as it backs out of the recursion.
+   However, unlike additive phylogeny, this algorithm trims the distance matrix by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the distance matrix is 2x2, then finds the limb lengths for those pairs and attaches them to the tree as it backs out of the recursion.
 
    Because this algorithm is intended to approximate non-additive distance matrices, the original limb length algorithm won't work. Instead, a new limb length algorithm approximates the limb length for neighbouring nodes by averaging total distances.
 

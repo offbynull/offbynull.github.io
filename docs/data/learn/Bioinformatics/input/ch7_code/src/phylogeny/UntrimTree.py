@@ -43,14 +43,13 @@ def to_dot(g: Graph) -> str:
     nodes = sorted(g.get_nodes())
     for n in nodes:
         ret += f'{n}\n'
-    for e in g.get_edges():
+    for e in sorted(g.get_edges()):
         n1, n2, weight = g.get_edge(e)
         ret += f'{n1} -- {n2} [label="{weight}"]\n'
     ret += '}'
     return ret
 
 
-# MARKDOWN
 def find_trimmed_leaf(dist_mat: DistanceMatrix[N], trimmed_tree: Graph[N, ND, E, float]) -> N:
     trimmed_tree_leaves = {n for n in trimmed_tree.get_nodes() if trimmed_tree.get_degree(n) == 1}
     dist_mat_leaves = dist_mat.leaf_ids()
@@ -62,6 +61,7 @@ def find_trimmed_leaf(dist_mat: DistanceMatrix[N], trimmed_tree: Graph[N, ND, E,
     return leaves_diff.pop()
 
 
+# MARKDOWN_DIST_TO_PARENT
 def find_pair_traveling_thru_leaf_parent(dist_mat: DistanceMatrix, leaf_node: N) -> tuple[N, N]:
     leaf_set = dist_mat.leaf_ids() - {leaf_node}
     for l1, l2 in product(leaf_set, repeat=2):
@@ -74,13 +74,15 @@ def find_distance_to_leaf_parent(dist_mat: DistanceMatrix, from_leaf_node: N, to
     balded_dist_mat = dist_mat.copy()
     bald_distance_matrix(balded_dist_mat, to_leaf_node)
     return balded_dist_mat[from_leaf_node, to_leaf_node]
+# MARKDOWN_DIST_TO_PARENT
 
 
+# MARKDOWN_WALK_TO_PARENT
 def walk_until_distance(
         tree: Graph[N, ND, E, float],
         n_start: N,
         n_end: N,
-        desired_dist: float
+        dist: float
 ) -> Union[
     tuple[Literal['NODE'], N],
     tuple[Literal['EDGE'], E, N, N, float, float]
@@ -94,35 +96,43 @@ def walk_until_distance(
         n2 = next(n for n in ends if n != last_edge_end)
         weight = tree.get_edge_data(edge)
         dist_walked_with_weight = dist_walked + weight
-        if dist_walked_with_weight > desired_dist:
+        if dist_walked_with_weight > dist:
             return 'EDGE', edge, n1, n2, dist_walked, weight
-        elif dist_walked_with_weight == desired_dist:
+        elif dist_walked_with_weight == dist:
             return 'NODE', n2
         dist_walked = dist_walked_with_weight
         last_edge_end = n2
     raise ValueError('Bad inputs')
+# MARKDOWN_WALK_TO_PARENT
 
 
+# MARKDOWN
 def untrim_tree(
         dist_mat: DistanceMatrix,
         trimmed_tree: Graph[N, ND, E, float],
         gen_node_id: Callable[[], N],
         gen_edge_id: Callable[[], E]
 ) -> None:
-    trimmed_n = find_trimmed_leaf(dist_mat, trimmed_tree)
-    trimmed_limb_len = find_limb_length(dist_mat, trimmed_n)
-    leaf1, leaf2 = find_pair_traveling_thru_leaf_parent(dist_mat, trimmed_n)
-    trimmed_parent_dist = find_distance_to_leaf_parent(dist_mat, leaf1, trimmed_n)
-    res = walk_until_distance(trimmed_tree, leaf1, leaf2, trimmed_parent_dist)
+    # Which node was trimmed?
+    n_trimmed = find_trimmed_leaf(dist_mat, trimmed_tree)
+    # Find a pair whose path that goes through the trimmed node's parent
+    n_start, n_end = find_pair_traveling_thru_leaf_parent(dist_mat, n_trimmed)
+    # What's the distance from n_start to the trimmed node's parent?
+    parent_dist = find_distance_to_leaf_parent(dist_mat, n_start, n_trimmed)
+    # Walk the path from n_start to n_end, stopping once walk dist reaches parent_dist (where trimmed node's parent is)
+    res = walk_until_distance(trimmed_tree, n_start, n_end, parent_dist)
     stopped_on = res[0]
     if stopped_on == 'NODE':
+        # It stopped on an existing internal node -- the limb should be added to this node
         parent_n = res[1]
     elif stopped_on == 'EDGE':
+        # It stopped on an edge -- a new internal node should be injected to break the edge, then the limb should extend
+        # from that node.
         edge, n1, n2, walked_dist, edge_weight = res[1:]
         parent_n = gen_node_id()
         trimmed_tree.insert_node(parent_n)
         n1_to_parent_id = gen_edge_id()
-        n1_to_parent_weight = trimmed_parent_dist - walked_dist
+        n1_to_parent_weight = parent_dist - walked_dist
         trimmed_tree.insert_edge(n1_to_parent_id, n1, parent_n, n1_to_parent_weight)
         parent_to_n2_id = gen_edge_id()
         parent_to_n2_weight = edge_weight - n1_to_parent_weight
@@ -130,9 +140,11 @@ def untrim_tree(
         trimmed_tree.delete_edge(edge)
     else:
         raise ValueError('???')
+    # Add the limb
     limb_e = gen_edge_id()
-    trimmed_tree.insert_node(trimmed_n)
-    trimmed_tree.insert_edge(limb_e, parent_n, trimmed_n, trimmed_limb_len)
+    limb_len = find_limb_length(dist_mat, n_trimmed)
+    trimmed_tree.insert_node(n_trimmed)
+    trimmed_tree.insert_edge(limb_e, parent_n, n_trimmed, limb_len)
 # MARKDOWN
 
 
@@ -152,7 +164,7 @@ def main():
         dist_mat = create_distance_matrix(mat)
         is_additive(dist_mat)  # Ensure additive
         trimmed_n = find_trimmed_leaf(dist_mat, trimmed_tree)  # Ensure tree is for dist_mat minus a missing limb
-        print('Given the distance matrix representing simple tree T...')
+        print('Given the additive distance matrix for simple tree T...')
         print()
         print('<table>')
         print('<thead><tr>')
@@ -170,13 +182,13 @@ def main():
         print('</tbody>')
         print('</table>')
         print()
-        print(f'... and simple tree representing trim(T, {trimmed_n})...')
+        print(f'... and simple tree trim(T, {trimmed_n})...')
         print()
         print('```{dot}')
         print(f'{to_dot(trimmed_tree)}')
         print('```')
         print()
-        print('... , simple tree T is ...')
+        print(f'... , {trimmed_n} is injected at the appropriate location to become simple tree T ...')
         print()
         _next_edge_id = 0
         def gen_edge_id():
@@ -201,27 +213,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# t = create_graph([['v0','i0',11], ['v1','i0',2], ['v2','i0',10], ['i0','i2',7], ['i2','v3',3], ['i2','v4',4]])
-# m = create_distance_matrix([
-#     [0,  13, 21, 21, 22, 22],
-#     [13, 0,  12, 12, 13, 13],
-#     [21, 12, 0,  20, 21, 21],
-#     [21, 12, 20, 0,  7,  13],
-#     [22, 13, 21, 7,  0,  14],
-#     [22, 13, 21, 13, 14, 0 ]
-# ])
-#
-# _next_edge_id = 0
-# def gen_edge_id():
-#     global _next_edge_id
-#     _next_edge_id += 1
-#     return f'E{_next_edge_id}'
-#
-# _next_node_id = 0
-# def gen_node_id():
-#     global _next_node_id
-#     _next_node_id += 1
-#     return f'N{_next_node_id}'
-#
-# untrim_tree(m, t, gen_node_id, gen_edge_id)

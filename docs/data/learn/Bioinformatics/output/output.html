@@ -10965,7 +10965,7 @@ different subtrees.</p>
     edge = <span class="hljs-built_in">next</span>(tree.get_outputs(leaf))
     tree.delete_edge(edge)
     tree.delete_node(leaf)
-    merge_nodes_of_degree2(tree)
+    merge_nodes_of_degree2(tree)  <span class="hljs-comment"># make sure its a simple tree</span>
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -11439,7 +11439,12 @@ different subtrees.</p>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Imagine that you have a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, where that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> would be the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> had a missing leaf node been attached to it. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't have leaf node v2 but the accompanying <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> does...</p>
+<p><strong>WHAT</strong>: Given an ...</p>
+<ol>
+<li><a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> for <a href="#BM_(simple%20tree)%2Fi">simple tree</a> T</li>
+<li><a href="#BM_(simple%20tree)%2Fi">simple tree</a> T with <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> L <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">trimmed</a> off</li>
+</ol>
+<p>... this algorithm determines where <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> L should be added in the given <a href="#BM_(simple%20tree)%2Fi">simple tree</a> such that it fits the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> would map to the following <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> had v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> branched out from some specific location...</p>
 <p><img src="dot_d59e5cc5d23e349cc4668d23c9e4f80c.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11482,7 +11487,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>To get the above <a href="#BM_(simple%20tree)%2Fi">simple tree</a> to fit to the above <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> needs to get attached somewhere specific in the <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. That specific location is what this algorithm determines. It could be that v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> needs to attach to either ...</p>
+<p>That specific location is what this algorithm determines. It could be that v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> needs to branch from either ...</p>
 <ul>
 <li>
 <p>an internal node ...</p>
@@ -11504,7 +11509,7 @@ different subtrees.</p>
 <p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p> <!-- Needs to be disabled because v5's is conflicting with 5' --></p>
-<p>The <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> below is for the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> below had v5 been added to it somewhere ...</p>
+<p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> below would fit the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> below had v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> been added to it somewhere ...</p>
 <p><img src="dot_474a7e4cf5bc49a86d6321e9fb6ca532.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11584,9 +11589,9 @@ different subtrees.</p>
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Recall that same subset algorithm says that two leaf nodes in DIFFERENT subsets are guaranteed to travel over v5's parent.</p>
 </div>
-<p>The key to this algorithm is figuring out where along that path (v0 to v3) v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> (<a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 7) should be added. Imagine that you already had the answer in front of you: v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is to be added 4 units from i0 towards i2 ...</p>
+<p>The key to this algorithm is figuring out where along that path (v0 to v3) v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> (<a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 7) should be injected. Imagine that you already had the answer in front of you: v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> should be added 4 units from i0 towards i2 ...</p>
 <p><img src="dot_7fd5d55328c43bca2193b9548728df02.svg" alt="Dot diagram"></p>
-<p>Consider the answer above with v5 <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
+<p>Consider the answer above with v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
 <p><img src="dot_782638a05800732e25c548f888d031b4.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11664,27 +11669,10 @@ different subtrees.</p>
 <li>dist(v2,v5) = dist(v2,i1) + 0 = dist(v2,i1)</li>
 <li>etc..</li>
 </ul>
-<p><img src="dot_a89467ad838f1aca47aa8e8e75677ffd.svg" alt="Dot diagram"></p>
-<p>Essentially, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is saying that the path from v0 to v5's parent has a distance of 15. In the original <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, walking 15 units on the path from v0 to v3 takes you to where that parent should be. Since there is no internal node there, one is added by breaking the edge and v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is attached to it.</p>
-<p><img src="dot_b37fe50f63d1a3ab5722ac6b80a41430.svg" alt="Dot diagram"></p>
-<p>If there ...</p>
-<ul>
-<li>is an internal node there, the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> gets attached to it.</li>
-<li>isn't an internal node there, the edge is broken by injecting a new one, which the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> gets attached to...</li>
-</ul>
-<p><a href="ch7_code/src/phylogeny/UntrimTree.py">ch7_code/src/phylogeny/UntrimTree.py</a> (lines 54 to 136):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_trimmed_leaf</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N], trimmed_tree: Graph[N, ND, E, <span class="hljs-built_in">float</span>]</span>) -&gt; N:</span>
-    trimmed_tree_leaves = {n <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> trimmed_tree.get_nodes() <span class="hljs-keyword">if</span> trimmed_tree.get_degree(n) == <span class="hljs-number">1</span>}
-    dist_mat_leaves = dist_mat.leaf_ids()
-    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(dist_mat_leaves) - <span class="hljs-number">1</span> != <span class="hljs-built_in">len</span>(trimmed_tree_leaves):
-        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f'Bad inputs <span class="hljs-subst">{dist_mat_leaves}</span> vs <span class="hljs-subst">{trimmed_tree_leaves}</span>'</span>)
-    leaves_diff = dist_mat_leaves - trimmed_tree_leaves
-    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(leaves_diff) != <span class="hljs-number">1</span>:
-        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f'Bad inputs <span class="hljs-subst">{leaves_diff}</span>'</span>)
-    <span class="hljs-keyword">return</span> leaves_diff.pop()
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_pair_traveling_thru_leaf_parent</span>(<span class="hljs-params">dist_mat: DistanceMatrix, leaf_node: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[N, N]:</span>
+<p><img src="dot_beaa27212249bfd3c9e90e3ff22371b8.svg" alt="Dot diagram"></p>
+<p>Essentially, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is enough to tell you that the path from v0 to v5's parent has a distance of 15. The balded <a href="#BM_(tree)%2Fi">tree</a> itself isn't required.</p>
+<p><a href="ch7_code/src/phylogeny/UntrimTree.py">ch7_code/src/phylogeny/UntrimTree.py</a> (lines 65 to 77):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_pair_traveling_thru_leaf_parent</span>(<span class="hljs-params">dist_mat: DistanceMatrix, leaf_node: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[N, N]:</span>
     leaf_set = dist_mat.leaf_ids() - {leaf_node}
     <span class="hljs-keyword">for</span> l1, l2 <span class="hljs-keyword">in</span> product(leaf_set, repeat=<span class="hljs-number">2</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_same_subtree(dist_mat, leaf_node, l1, l2):
@@ -11696,13 +11684,16 @@ different subtrees.</p>
     balded_dist_mat = dist_mat.copy()
     bald_distance_matrix(balded_dist_mat, to_leaf_node)
     <span class="hljs-keyword">return</span> balded_dist_mat[from_leaf_node, to_leaf_node]
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk_until_distance</span>(<span class="hljs-params">
+</code></pre>
+<p>In the original <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, walking a distance of 15 on the path from v0 to v3 takes you to where v5's parent should be. Since there is no internal node there, one is first added by breaking the edge before attaching v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> to it ...</p>
+<p><img src="dot_b37fe50f63d1a3ab5722ac6b80a41430.svg" alt="Dot diagram"></p>
+<p>Had there been an internal node already there, the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> would get attached to that existing internal node.</p>
+<p><a href="ch7_code/src/phylogeny/UntrimTree.py">ch7_code/src/phylogeny/UntrimTree.py</a> (lines 81 to 106):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk_until_distance</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, <span class="hljs-built_in">float</span>],
         n_start: N,
         n_end: N,
-        desired_dist: <span class="hljs-built_in">float</span>
+        dist: <span class="hljs-built_in">float</span>
 </span>) -&gt; <span class="hljs-type">Union</span>[
     <span class="hljs-built_in">tuple</span>[<span class="hljs-type">Literal</span>['NODE'], N],
     <span class="hljs-built_in">tuple</span>[<span class="hljs-type">Literal</span>['EDGE'], E, N, N, <span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]
@@ -11716,49 +11707,57 @@ different subtrees.</p>
         n2 = <span class="hljs-built_in">next</span>(n <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> ends <span class="hljs-keyword">if</span> n != last_edge_end)
         weight = tree.get_edge_data(edge)
         dist_walked_with_weight = dist_walked + weight
-        <span class="hljs-keyword">if</span> dist_walked_with_weight &gt; desired_dist:
+        <span class="hljs-keyword">if</span> dist_walked_with_weight &gt; dist:
             <span class="hljs-keyword">return</span> <span class="hljs-string">'EDGE'</span>, edge, n1, n2, dist_walked, weight
-        <span class="hljs-keyword">elif</span> dist_walked_with_weight == desired_dist:
+        <span class="hljs-keyword">elif</span> dist_walked_with_weight == dist:
             <span class="hljs-keyword">return</span> <span class="hljs-string">'NODE'</span>, n2
         dist_walked = dist_walked_with_weight
         last_edge_end = n2
     <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Bad inputs'</span>)
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">untrim_tree</span>(<span class="hljs-params">
+</code></pre>
+<p><a href="ch7_code/src/phylogeny/UntrimTree.py">ch7_code/src/phylogeny/UntrimTree.py</a> (lines 110 to 148):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">untrim_tree</span>(<span class="hljs-params">
         dist_mat: DistanceMatrix,
         trimmed_tree: Graph[N, ND, E, <span class="hljs-built_in">float</span>],
-        node_id_generator: <span class="hljs-type">Callable</span>[[], N],
-        edge_id_generator: <span class="hljs-type">Callable</span>[[], E]
+        gen_node_id: <span class="hljs-type">Callable</span>[[], N],
+        gen_edge_id: <span class="hljs-type">Callable</span>[[], E]
 </span>) -&gt; <span class="hljs-literal">None</span>:</span>
-    trimmed_n = find_trimmed_leaf(dist_mat, trimmed_tree)
-    trimmed_limb_len = find_limb_length(dist_mat, trimmed_n)
-    leaf1, leaf2 = find_pair_traveling_thru_leaf_parent(dist_mat, trimmed_n)
-    trimmed_parent_dist = find_distance_to_leaf_parent(dist_mat, leaf1, trimmed_n)
-    res = walk_until_distance(trimmed_tree, leaf1, leaf2, trimmed_parent_dist)
+    <span class="hljs-comment"># Which node was trimmed?</span>
+    n_trimmed = find_trimmed_leaf(dist_mat, trimmed_tree)
+    <span class="hljs-comment"># Find a pair whose path that goes through the trimmed node's parent</span>
+    n_start, n_end = find_pair_traveling_thru_leaf_parent(dist_mat, n_trimmed)
+    <span class="hljs-comment"># What's the distance from n_start to the trimmed node's parent?</span>
+    parent_dist = find_distance_to_leaf_parent(dist_mat, n_start, n_trimmed)
+    <span class="hljs-comment"># Walk the path from n_start to n_end, stopping once walk dist reaches parent_dist (where trimmed node's parent is)</span>
+    res = walk_until_distance(trimmed_tree, n_start, n_end, parent_dist)
     stopped_on = res[<span class="hljs-number">0</span>]
     <span class="hljs-keyword">if</span> stopped_on == <span class="hljs-string">'NODE'</span>:
+        <span class="hljs-comment"># It stopped on an existing internal node -- the limb should be added to this node</span>
         parent_n = res[<span class="hljs-number">1</span>]
     <span class="hljs-keyword">elif</span> stopped_on == <span class="hljs-string">'EDGE'</span>:
+        <span class="hljs-comment"># It stopped on an edge -- a new internal node should be injected to break the edge, then the limb should extend</span>
+        <span class="hljs-comment"># from that node.</span>
         edge, n1, n2, walked_dist, edge_weight = res[<span class="hljs-number">1</span>:]
-        parent_n = node_id_generator()
+        parent_n = gen_node_id()
         trimmed_tree.insert_node(parent_n)
-        n1_to_parent_id = edge_id_generator()
-        n1_to_parent_weight = trimmed_parent_dist - walked_dist
+        n1_to_parent_id = gen_edge_id()
+        n1_to_parent_weight = parent_dist - walked_dist
         trimmed_tree.insert_edge(n1_to_parent_id, n1, parent_n, n1_to_parent_weight)
-        parent_to_n2_id = edge_id_generator()
+        parent_to_n2_id = gen_edge_id()
         parent_to_n2_weight = edge_weight - n1_to_parent_weight
         trimmed_tree.insert_edge(parent_to_n2_id, parent_n, n2, parent_to_n2_weight)
         trimmed_tree.delete_edge(edge)
     <span class="hljs-keyword">else</span>:
         <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'???'</span>)
-    limb_e = edge_id_generator()
-    trimmed_tree.insert_node(trimmed_n)
-    trimmed_tree.insert_edge(limb_e, parent_n, trimmed_n, trimmed_limb_len)
+    <span class="hljs-comment"># Add the limb</span>
+    limb_e = gen_edge_id()
+    limb_len = find_limb_length(dist_mat, n_trimmed)
+    trimmed_tree.insert_node(n_trimmed)
+    trimmed_tree.insert_edge(limb_e, parent_n, n_trimmed, limb_len)
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given the distance matrix representing simple tree T...</p>
+<p>Given the additive distance matrix for simple tree T...</p>
 <table>
 <thead><tr>
 <th></th>
@@ -11826,10 +11825,10 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>... and simple tree representing trim(T, v5)...</p>
-<p><img src="dot_993862b5db5ddcb9283374cf1141d68d.svg" alt="Dot diagram"></p>
-<p>... , simple tree T is ...</p>
-<p><img src="dot_8f16312b8c08e93cb966c4f29f314c05.svg" alt="Dot diagram"></p>
+<p>... and simple tree trim(T, v5)...</p>
+<p><img src="dot_947428a9fad00efc08c05fcfe2286cfb.svg" alt="Dot diagram"></p>
+<p>... , v5 is injected at the appropriate location to become simple tree T ...</p>
+<p><img src="dot_732ee38514b240e67ad8b3b760b395eb.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
@@ -14931,7 +14930,7 @@ different subtrees.</p>
 <p>If all possible leaf node quartets pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
 </li>
 <li>
-<p><a name="BM_(trimmed%20distance%20matrix%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
+<p><a name="BM_(trim%20distance%20matrix%7Ctrimmed%20distance%20matrix%7Ctrim%20distance%20matrices%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
 <p>For example, removing v2 from the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <table>
 <thead>
@@ -15165,7 +15164,7 @@ different subtrees.</p>
 </li>
 <li>
 <p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p>The algorithm recursively <a href="#BM_(trimmed distance matrix|trimmed distance matrices)/i">trim</a>s the node for the last row/column in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> until the size is 2x2. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious as ...</p>
+<p>The algorithm recursively trims the node for the last row/column in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> until the size is 2x2. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious as ...</p>
 <ul>
 <li>it only consists of 2 nodes</li>
 <li>it only consists of a single edge (nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 not allowed in <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s, meaning train of non-branching edges not allowed)</li>
@@ -16022,7 +16021,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -16084,7 +16083,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_6c4451c41814e7a19e99322c850bc932.svg" alt="Dot diagram"></p>
+<p><img src="dot_2fa6d949d3f466cea25d7e3035c49329.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
@@ -16339,7 +16338,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_cffa5fbf39c74065538e8159eb47e292.svg" alt="Dot diagram"></p>
+<p><img src="dot_0f0e2c5a4b16c208af8cfcc279c0f5ae.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -16557,7 +16556,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tbody>
 </table>
 <p><img src="dot_d0010bac57ea6a9ead9cf3d10ce6f86e.svg" alt="Dot diagram"></p>
-<p>However, unlike <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, this algorithm <a href="#BM_(trimmed distance matrix|trimmed distance matrices)/i">trim</a>s the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is 2x2, then finds the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for those pairs and attaches them to the <a href="#BM_(tree)%2Fi">tree</a> as it backs out of the recursion.</p>
+<p>However, unlike <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, this algorithm trims the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is 2x2, then finds the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for those pairs and attaches them to the <a href="#BM_(tree)%2Fi">tree</a> as it backs out of the recursion.</p>
 <p>Because this algorithm is intended to approximate non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>, the original <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm won't work. Instead, a new <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm approximates the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for neighbouring nodes by averaging total distances.</p>
 <p>TODO: EXPLAIN THE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
 TODO: EXPLAIN THE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
