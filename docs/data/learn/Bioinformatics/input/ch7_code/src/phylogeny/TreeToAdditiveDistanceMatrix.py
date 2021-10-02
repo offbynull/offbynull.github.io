@@ -36,7 +36,7 @@ def to_dot(g: Graph) -> str:
 
 
 # MARKDOWN
-def find_path(g: Graph, n1: N, n2: N) -> list[E]:
+def find_path(g: Graph[N, ND, E, float], n1: N, n2: N) -> list[E]:
     if not g.has_node(n1) or not g.has_node(n2):
         ValueError('Node missing')
     if n1 == n2:

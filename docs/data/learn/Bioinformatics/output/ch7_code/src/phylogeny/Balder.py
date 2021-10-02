@@ -1,21 +1,31 @@
-from itertools import combinations
 from sys import stdin
 from typing import TypeVar
 
 from distance_matrix.DistanceMatrix import DistanceMatrix
+from graph.UndirectedGraph import Graph
 from helpers.InputUtils import str_to_list
 from phylogeny.FourPointCondition import is_additive
+from phylogeny.LimbLength import find_limb_length
 
 N = TypeVar('N')
+ND = TypeVar('ND')
+E = TypeVar('E')
 
 
 # MARKDOWN
-def find_limb_length(dm: DistanceMatrix, l: N) -> float:
-    leaf_nodes = dm.leaf_ids()
-    leaf_nodes.remove(l)
-    a = leaf_nodes.pop()
-    b = min(leaf_nodes, key=lambda x: (dm[l, a] + dm[l, x] - dm[a, x]) / 2)
-    return (dm[l, a] + dm[l, b] - dm[a, b]) / 2
+def bald_distance_matrix(dm: DistanceMatrix, leaf: N) -> None:
+    limb_len = find_limb_length(dm, leaf)
+    for n in dm.leaf_ids_it():
+        if n == leaf:
+            continue
+        dm[leaf, n] -= limb_len
+
+
+def bald_tree(tree: Graph[N, ND, E, float], leaf: N) -> None:
+    if tree.get_degree(leaf) != 1:
+        raise ValueError('Not a leaf node')
+    limb = next(tree.get_outputs(leaf))
+    tree.update_edge_data(limb, 0.0)
 # MARKDOWN
 
 
@@ -48,8 +58,24 @@ def main():
         print('</tbody>')
         print('</table>')
         print()
-        leaf_limb_len = find_limb_length(dist_mat, leaf_id)
-        print(f'The limb for leaf node {leaf_id} in its unique simple tree has a weight of {leaf_limb_len}')
+        print(f'... trimming leaf node {leaf_id} results in ...')
+        print()
+        bald_distance_matrix(dist_mat, leaf_id)
+        print('<table>')
+        print('<thead><tr>')
+        print('<th></th>')
+        for l in sorted(dist_mat.leaf_ids_it()):
+            print(f'<th>{l}</th>')
+        print('</tr></thead>')
+        print('<tbody>')
+        for l1 in sorted(dist_mat.leaf_ids_it()):
+            print('<tr>')
+            print(f'<td>{l1}</td>')
+            for l2 in sorted(dist_mat.leaf_ids_it()):
+                print(f'<td>{dist_mat[l1, l2]}</td>')
+            print('</tr>')
+        print('</tbody>')
+        print('</table>')
         print()
     finally:
         print("</div>", end="\n\n")

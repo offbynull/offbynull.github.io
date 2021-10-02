@@ -8076,9 +8076,9 @@ phylogeny.SubtreeDetect
 [36, 27, 27, 28, 13, 6 , 0 ]
 ```
 
-### Trim Distance Matrix
+### Trim
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Trim Distance Matrix)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Trim)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
@@ -8150,13 +8150,13 @@ Notice how when v2 gets trimmed off, the ...
 As such, removing the row and column for some leaf node in an additive distance matrix is equivalent to removing its limb from the corresponding unique simple tree then merging together any edges connected by nodes of degree_GRAPH 2.
 
 ```{output}
-ch7_code/src/phylogeny/TrimDistanceMatrix.py
+ch7_code/src/phylogeny/Trimmer.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.TrimDistanceMatrix
+phylogeny.Trimmer
 2
 [0 , 13, 21, 22]
 [13, 0 , 12, 13]
@@ -8164,9 +8164,9 @@ phylogeny.TrimDistanceMatrix
 [22, 13, 13, 0 ]
 ```
 
-### Bald Distance Matrix
+### Bald
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Bald Distance Matrix)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Bald)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Limb Length_TOPIC
@@ -8264,13 +8264,13 @@ Where as v5 was originally contributing 7 to distances, after balding it contrib
 As such, subtracting some leaf node's limb length from its distances in an additive distance matrix is equivalent to balding that leaf node's limb in its corresponding simple tree.
 
 ```{output}
-ch7_code/src/phylogeny/BaldDistanceMatrix.py
+ch7_code/src/phylogeny/Balder.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.BaldDistanceMatrix
+phylogeny.Balder
 5
 [0,  13, 21, 21, 22, 22]
 [13, 0,  12, 12, 13, 13]
@@ -8283,18 +8283,18 @@ phylogeny.BaldDistanceMatrix
 `{bm-enable} (5')/i` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
 `{bm-enable} (3')/i` <!-- Re-enabling. Needed to be disabled because v5's is conflicting with 5' -->
 
-### Limb Attachment
+### Un-trim Tree
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Limb Attachment)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Un-trim Tree)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Limb Length_TOPIC
 Algorithms/Distance Phylogeny/Same Subtree Detection_TOPIC
-Algorithms/Distance Phylogeny/Trim Distance Matrix_TOPIC
-Algorithms/Distance Phylogeny/Bald Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Trim_TOPIC
+Algorithms/Distance Phylogeny/Bald_TOPIC
 ```
 
-**WHAT**: Imagine that you have a simple tree and an additive distance matrix. The additive distance matrix would map to that simple tree if a missing leaf node were to attach to it at some specific location. For example, the following simple tree doesn't have leaf node v2 but the accompanying additive distance matrix does...
+**WHAT**: Imagine that you have a simple tree and an additive distance matrix, where that simple tree would be the unique simple tree for that additive distance matrix had a missing leaf node been attached to it. For example, the following simple tree doesn't have leaf node v2 but the accompanying additive distance matrix does...
 
 ```{dot}
 graph G {
@@ -8305,7 +8305,7 @@ graph G {
  subgraph cluster_rhs {
   fontname="Courier-Bold"
   fontsize=10
-  label="v3 trimmed"
+  label="v2 trimmed"
   v0 -- i0 [label=11]
   v1 -- i0 [label=2]
   i0 -- v3 [label=11]
@@ -8320,7 +8320,7 @@ graph G {
 | v2 | 21 | 12 | 0  | 13 |
 | v3 | 22 | 13 | 13 | 0  |
 
-To get the above simple tree to map to the above additive distance matrix, v2's limb needs to get attached to either ...
+To get the above simple tree to fit to the above additive distance matrix, v2's limb needs to get attached somewhere specific in the simple tree. That specific location is what this algorithm determines. It could be that v2's limb needs to attach to either ...
 
  * an internal node ...
 
@@ -8377,123 +8377,14 @@ Attaching a new limb to an existing leaf node is never possible because...
 1. it'll turn that existing leaf node to an internal node, which doesn't make sense because in the context of phylogenetic trees leaf nodes identify known entities.
 2. it will cease to be a simple tree -- simple trees can't have nodes of degree_GRAPH 2 (train of edges not allowed).
 ```
- 
-This algorithm figures out where v2's limb should attach in the above simple tree such that it maps to the above distance matrix. In abstract terms, given a simple tree that's missing limb L and its corresponding additive distance matrix with limb L, the algorithm attaches limb L such that the simple tree maps to the additive distance matrix.
 
 **WHY**: This is a fundamental operation in additive phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
 
 **ALGORITHM**:
 
-TODO: THIS IS THE LIMB DEFINITION SECTION BELOW. CLEAN IT UP (SOME NOTES ARE WITHIN). THE WHAT / WHY ABOVE IS GOOD ENOUGH.
-
-TODO: THIS IS THE LIMB DEFINITION SECTION BELOW. CLEAN IT UP (SOME NOTES ARE WITHIN). THE WHAT / WHY ABOVE IS GOOD ENOUGH.
-
-TODO: THIS IS THE LIMB DEFINITION SECTION BELOW. CLEAN IT UP (SOME NOTES ARE WITHIN). THE WHAT / WHY ABOVE IS GOOD ENOUGH.
-
-TODO: THIS IS THE LIMB DEFINITION SECTION BELOW. CLEAN IT UP (SOME NOTES ARE WITHIN). THE WHAT / WHY ABOVE IS GOOD ENOUGH.
-
-TODO: THIS IS THE LIMB DEFINITION SECTION BELOW. CLEAN IT UP (SOME NOTES ARE WITHIN). THE WHAT / WHY ABOVE IS GOOD ENOUGH.
-
-TODO: THIS IS THE LIMB DEFINITION SECTION BELOW. CLEAN IT UP (SOME NOTES ARE WITHIN). THE WHAT / WHY ABOVE IS GOOD ENOUGH.
-
-
-
-TODO: REMOVE EVERYTHING UNTIL THE BM-DISABLE TAG (AROUND 100 OR SO LINES DOWN)
-
-TODO: REMOVE EVERYTHING UNTIL THE BM-DISABLE TAG (AROUND 100 OR SO LINES DOWN)
-
-TODO: REMOVE EVERYTHING UNTIL THE BM-DISABLE TAG (AROUND 100 OR SO LINES DOWN)
-
-TODO: REMOVE EVERYTHING UNTIL THE BM-DISABLE TAG (AROUND 100 OR SO LINES DOWN)
-
-Limb attachment is the idea of attaching a new leaf node to some existing tree. The new leaf's limb may be attached by either...
-    
- * attaching to an existing internal node
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_1 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="v3 added at node(i0)"
-     v0_z -- i0_z [label=11]
-     i0_z -- v1_z [label=3]
-     i0_z -- v2_z [label=4]
-     i0_z -- v3_z [label=2]
-     v0_z [label=v0]
-     v1_z [label=v1]
-     v2_z [label=v2]
-     v3_z [label=v3]
-     i0_z [label=i0, style=filled, fillcolor=tan]
-    }
-    subgraph cluster_0 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="Original"
-     v0_x -- i0_x [label=11]
-     i0_x -- v1_x [label=3]
-     i0_x -- v2_x [label=4]
-     v0_x [label=v0]
-     v1_x [label=v1]
-     v2_x [label=v2]
-     i0_x [label=i0, style=filled, fillcolor=tan]
-    }
-   }
-   ```
-
- * adding an internal node inbetween an edge (breaking it into two) and attaching to that internal node
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_2 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="v3 added along edge(i0,v2)"
-     v0_y -- i0_y [label=11]
-     i0_y -- v1_y [label=3]
-     i0_y -- i1_y [label=1, color=tan, penwidth=2.5]
-     i1_y -- v2_y [label=3, color=tan, penwidth=2.5]
-     i1_y -- v3_y [label=1]
-     v0_y [label=v0]
-     v1_y [label=v1]
-     v2_y [label=v2]
-     v3_y [label=v3]
-     i0_y [label=i0]
-     i1_y [label=i1]
-    }
-    subgraph cluster_0 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="Original"
-     v0_x -- i0_x [label=11]
-     i0_x -- v1_x [label=3]
-     i0_x -- v2_x [label=4, color=tan, penwidth=2.5]
-     v0_x [label=v0]
-     v1_x [label=v1]
-     v2_x [label=v2]
-     i0_x [label=i0]
-    }
-   }
-   ```
-
-Given a simple tree before the addition of a leaf node and the additive distance matrix after the addition of that leaf node, there's enough information to determine where that leaf node should be added on the simple tree such that it produces the additive distance matrix. In other words, given ...
-   
-1. tree_without_L -- a simple tree WITHOUT leaf node L
-2. distmat_with_L -- an additive distance matrix WITH leaf node L
-   
-... there exists an algorithm to find where on tree_without_L leaf node L should be added: tree_without_L + distmat_with_L = tree_with_L.
-
 `{bm-disable} (5')/i` <!-- Needs to be disabled because v5's is conflicting with 5' -->
 
-For example, the following simple tree is to have v5 added somewhere to it...
+The additive distance matrix below is for the simple tree below had v5 been added to it somewhere ...
    
 ```{dot}
 graph G {
@@ -8511,8 +8402,6 @@ graph G {
  }
 }
 ```
-   
-... and the following additive distance matrix is produced once v5 has been added...
 
 |    | v0 | v1 | v2 | v3 | v4 | v5 |
 |----|----|----|----|----|----|----|
@@ -8523,10 +8412,16 @@ graph G {
 | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
 | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
 
-There's enough information available in the above simple tree and additive distance matrix to determine v5's...
+There's enough information available in this additive distance matrix to determine ...
 
-* limb length: 7 (calculated using the limb length algorithm)
-* attachment location: 4 units out from i0 towards i2 (calculated using the algorithm described below)
+* v5's limb length: 7 (calculated using the limb length algorithm)
+* a pair of nodes whose path travels over v5's parent: v0 and v3 (calculated using the same subset algorithm)
+
+```{note}
+Recall that same subset algorithm says that two leaf nodes in DIFFERENT subsets are guaranteed to travel over v5's parent.
+```
+
+The key to this algorithm is figuring out where along that path (v0 to v3) v5's limb (limb length of 7) should be added. Imagine that you already had the answer in front of you: v5's limb is to be added 4 units from i0 towards i2 ...
 
 ```{dot}
 graph G {
@@ -8545,12 +8440,14 @@ graph G {
   i1 -- i2 [label=3]
   i2 -- v3 [label=3]
   i2 -- v4 [label=4]
-  i1 -- v5 [label=7, penwidth=2.5]
+  i1 -- v5 [label=7, color=tan, penwidth=2.5]
+  i1 [style=filled, fillcolor=tan]
+  v5 [style=filled, fillcolor=tan]
  }
 }
 ```
 
-To find the attachment location, consider the simple tree above with v5 `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i`...
+Consider the answer above with v5 `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i`...
 
 ```{dot}
 graph G {
@@ -8569,216 +8466,29 @@ graph G {
   i1 -- i2 [label=3]
   i2 -- v3 [label=3]
   i2 -- v4 [label=4]
-  i1 -- v5 [label=0, style=dashed, penwidth=2.5]
+  i1 -- v5 [label=0, color=tan, style=dashed, penwidth=2.5]
+  i1 [style=filled, fillcolor=tan]
+  v5 [style=filled, fillcolor=tan]
  }
 }
 ```
-   
-Since v5's limb length is 0, v5's limb doesn't contribute to the distance of any path to / from v5. For example, ...
 
-* `{kt} d_{v0,v5} = d_{v0,i1} + 0 = d_{v0,i1}`
-* `{kt} d_{v4,v5} = d_{v4,i1} + 0 = d_{v4,i1}`
-* `{kt} d_{v2,v5} = d_{v2,i1} + 0 = d_{v2,i1}`
+|    | v0          | v1          | v2          | v3          | v4          | v5          |
+|----|-------------|-------------|-------------|-------------|-------------|-------------|
+| v0 |          0  |          13 |          21 |          21 |          22 | 22 - 7 = 15 |
+| v1 |          13 |          0  |          12 |          12 |          13 | 13 - 7 = 6  |
+| v2 |          21 |          12 |          0  |          20 |          21 | 21 - 7 = 14 |
+| v3 |          21 |          12 |          20 |          0  |          7  | 13 - 7 = 6  |
+| v4 |          22 |          13 |          21 |          7  |          0  | 14 - 7 = 7  |
+| v5 | 22 - 7 = 15 | 13 - 7 = 6  | 21 - 7 = 14 | 13 - 7 = 6  | 14 - 7 = 7  |          0  |
+
+Since v5's limb length is 0, it doesn't contribute to the distance of any path to / from v5. As such, the distance of any path to / from v5 is actually the distance to / from its parent. For example, ...
+
+* dist(v0,v5) = dist(v0,i1) + 0 = dist(v0,i1)
+* dist(v4,v5) = dist(v4,i1) + 0 = dist(v4,i1)
+* dist(v2,v5) = dist(v2,i1) + 0 = dist(v2,i1)
 * etc..
 
-REFERENCE THE DETECT SAME SUBTREE ALGORITHM AND POSSIBLE SHORTEN THE STUFF BELOW BECAUSE THAT'S WHAT IT'S DOING. THE DETECT SAME SUBTREE ALGORITHM WILL HAVE THE LIMB LENGTH SET TO 0, WHICH IS WHAT THE FORMULAS BELOW ARE DOING.
-
-REFERENCE THE DETECT SAME SUBTREE ALGORITHM AND POSSIBLE SHORTEN THE STUFF BELOW BECAUSE THAT'S WHAT IT'S DOING. THE DETECT SAME SUBTREE ALGORITHM WILL HAVE THE LIMB LENGTH SET TO 0, WHICH IS WHAT THE FORMULAS BELOW ARE DOING.
-
-REFERENCE THE DETECT SAME SUBTREE ALGORITHM AND POSSIBLE SHORTEN THE STUFF BELOW BECAUSE THAT'S WHAT IT'S DOING. THE DETECT SAME SUBTREE ALGORITHM WILL HAVE THE LIMB LENGTH SET TO 0, WHICH IS WHAT THE FORMULAS BELOW ARE DOING.
-
-REFERENCE THE DETECT SAME SUBTREE ALGORITHM AND POSSIBLE SHORTEN THE STUFF BELOW BECAUSE THAT'S WHAT IT'S DOING. THE DETECT SAME SUBTREE ALGORITHM WILL HAVE THE LIMB LENGTH SET TO 0, WHICH IS WHAT THE FORMULAS BELOW ARE DOING.
-
-REFERENCE THE DETECT SAME SUBTREE ALGORITHM AND POSSIBLE SHORTEN THE STUFF BELOW BECAUSE THAT'S WHAT IT'S DOING. THE DETECT SAME SUBTREE ALGORITHM WILL HAVE THE LIMB LENGTH SET TO 0, WHICH IS WHAT THE FORMULAS BELOW ARE DOING.
-
-This leads to the insight that given any two leaf nodes A and B in the above balded tree (that aren't v5), ...
-   
-* `{kt} d_{A,v5} + d_{B,v5} = d_{A,B}`, if path(A,B) travels through i1 (v5's parent).
-
-  For example, path(v0,v3) travels through i1 (v5's parent)...
-   
-  ```{dot}
-  graph G {
-   graph[rankdir=LR]
-   node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-   edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-   ranksep=0.25
-   subgraph cluster_rhs {
-    fontname="Courier-Bold"
-    fontsize=10
-    label="dist(v0, v3)"
-    v0_x -- i0_x [label=11, color=violet, penwidth=2.5]
-    v1_x -- i0_x [label=2]
-    v2_x -- i0_x [label=10]
-    i0_x -- i1_x [label=4, color=violet, penwidth=2.5]
-    i1_x -- i2_x [label=3, color=violet, penwidth=2.5]
-    i2_x -- v3_x [label=3, color=violet, penwidth=2.5]
-    i2_x -- v4_x [label=4]
-    i1_x -- v5_x [label=0, style=dashed]
-    v0_x [label=v0]
-    v1_x [label=v1]
-    v2_x [label=v2]
-    v3_x [label=v3]
-    v4_x [label=v4]
-    v5_x [label=v5]
-    i0_x [label=i0]
-    i1_x [label=i1, style=filled, fillcolor=gray]
-    i2_x [label=i2]
-    i2_x [label=i2]
-    i1_x [label=i1]
-   }
-   subgraph cluster_lhs {
-    fontname="Courier-Bold"
-    fontsize=10
-    label="dist(v0, v5) + dist(v3, v5)"
-    v0_y -- i0_y [label=11, color=orange, penwidth=2.5]
-    v1_y -- i0_y [label=2]
-    v2_y -- i0_y [label=10]
-    i0_y -- i1_y [label=4, color=orange, penwidth=2.5]
-    i1_y -- i2_y [label=3, color=blue, penwidth=2.5]
-    i2_y -- v3_y [label=3, color=blue, penwidth=2.5]
-    i2_y -- v4_y [label=4]
-    i1_y -- v5_y [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
-    v0_y [label=v0]
-    v1_y [label=v1]
-    v2_y [label=v2]
-    v3_y [label=v3]
-    v4_y [label=v4]
-    v5_y [label=v5]
-    i0_y [label=i0]
-    i1_y [label=i1, style=filled, fillcolor=gray]
-    i2_y [label=i2]
-    i2_y [label=i2]
-    i1_y [label=i1]
-   }
-  }
-  ```
-  
-  `{kt} \colorbox{orange}{$d_{v0,v5}$} + \colorbox{blue}{$\textcolor{white}{d_{v3,v5}}$} = \colorbox{violet}{$d_{v0,v3}$}`
-
-  Notice that, not counting v5's limb (because it contributes nothing to distance), the same edges are highlighted in both diagrams.
-
-* `{kt} d_{A,v5} + d_{B,v5} > d_{A,B}`, if path(A,B) DOES NOT travel through i1 (v5's parent).
-   
-  For example, path(v0,v2) does NOT travel through i1 (v5's parent)...
-   
-  ```{dot}
-  graph G {
-   graph[rankdir=LR]
-   node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-   edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-   ranksep=0.25
-   subgraph cluster_rhs {
-    fontname="Courier-Bold"
-    fontsize=10
-    label="dist(v0, v2)"
-    v0_x -- i0_x [label=11, color=tan, penwidth=2.5]
-    v1_x -- i0_x [label=2]
-    v2_x -- i0_x [label=10, color=tan, penwidth=2.5]
-    i0_x -- i1_x [label=4]
-    i1_x -- i2_x [label=3]
-    i2_x -- v3_x [label=3]
-    i2_x -- v4_x [label=4]
-    i1_x -- v5_x [label=0, style=dashed]
-    v0_x [label=v0]
-    v1_x [label=v1]
-    v2_x [label=v2]
-    v3_x [label=v3]
-    v4_x [label=v4]
-    v5_x [label=v5]
-    i0_x [label=i0]
-    i1_x [label=i1, style=filled, fillcolor=gray]
-    i2_x [label=i2]
-    i2_x [label=i2]
-    i1_x [label=i1]
-   }
-   subgraph cluster_lhs {
-    fontname="Courier-Bold"
-    fontsize=10
-    label="dist(v0, v5) + dist(v2, v5)"
-    v0_y -- i0_y [label=11, color=pink, penwidth=2.5]
-    v1_y -- i0_y [label=2]
-    v2_y -- i0_y [label=10, color=green, penwidth=2.5]
-    i0_y -- i1_y [label=4, color="green:invis:pink", penwidth=2.5]
-    i1_y -- i2_y [label=3]
-    i2_y -- v3_y [label=3]
-    i2_y -- v4_y [label=4]
-    i1_y -- v5_y [label=0, color="green:invis:pink", penwidth=2.5, style=dashed]
-    v0_y [label=v0]
-    v1_y [label=v1]
-    v2_y [label=v2]
-    v3_y [label=v3]
-    v4_y [label=v4]
-    v5_y [label=v5]
-    i0_y [label=i0]
-    i1_y [label=i1, style=filled, fillcolor=gray]
-    i2_y [label=i2]
-    i2_y [label=i2]
-    i1_y [label=i1]
-   }
-  }
-  ```
-
-  `{kt} \colorbox{pink}{$d_{v0,v5}$} + \colorbox{lime}{$d_{v2,v5}$} > \colorbox{tan}{$d_{v0,v2}$}`
-
-  Notice that, not counting v5's limb (because it contributes nothing to distance), more edges are highlighted for the left-hand side of the equation vs the right-hand side.
-
-```{note}
-Other than the v5's limb, I think no other edge in the tree should ever have a weight of 0. That's why this will always be >, because v0 and v2 traverse more edges to get to v5 than they do to get to each other, and those edges have positive weights (not zero).
-     
-A edge weight of 0 means the species on both sides of an edge are the same, which should never be case (why have an edge at all then? why not merge the edge into a single node? they represent the same thing). v5's limb is explicitly being set to 0 because it's a temporary thing the algorithm requires.
-```
-
-The above equations can be abstracted out to the formulas ...
-
-* `{kt} d_{A, L} + d_{B, L} = d_{A, B}` if path(A,B) does travel through the parent of L
-* `{kt} d_{A, L} + d_{B, L} > d_{A, B}` if path(A,B) does not travel through the parent of L
-
-, where...
-   
- * A, B, are leaf nodes.
- * L is the leaf node for the `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i` limb (limb length = 0).
-
-```{note}
-The logic described above is very reminiscent of the algorithm for finding a leaf node's limb length from just the distance matrix. The formula is = if A and B are within the different subtrees, but > if the same.
-
-When writing notes in the algorithm section, break this out into a "subtree detection" algorithm that'll tell you if 2 nodes are in the same subtree vs different subtrees.
-```
-   
-All distances in the formulas above are between leaf nodes in the balded tree. As such, the balded tree isn't needed -- the balded distance matrix itself contains all the information needed to find paths that v5's limb branches off of.
-
-```python
-# Algorithm to find paths
-b_dm = bald(distmat_with_L, L)
-for A, B in product(nodes, nodes):
-  if A == B: continue
-  if A == L or B == L: continue
-  if b_dm[A][L] + b_dm[B][L] == b_dm[A][B]:
-    candidate_pairs.append((A, B))
-  elif b_dm[A][L] + b_dm[B][L] > b_dm[A][B]:
-    pass  # doesn't travel through L's parent
-  else:
-    raise ValueError('Should never happen')
-
-# Even better algorithm to find paths
-#   Pick a single node and scan through all other nodes.Since a tree / simple
-#   tree is a connected graph (path exists between every pair of vertices),
-#   this will always produce correct results.
-b_dm = bald(distmat_with_L, L)
-A = nodes[0]
-for B in nodes:
-  if A == B: continue
-  if A == L or B == L: continue
-  if b_dm[A][L] + b_dm[B][L] == b_dm[A][B]:
-    candidate_pairs.append((A, B))
-  elif b_dm[A][L] + b_dm[B][L] > b_dm[A][B]:
-    pass  # doesn't travel through L's parent
-  else:
-    raise ValueError('Should never happen')
-```
-   
-For the example above, if `{kt} d_{A,v5} + d_{B,v5} = d_{A,B}` is true for some pair of nodes A and B (that aren't v5) in the balded matrix, v5's limb branches off somewhere along path(A,B). Since the tree was already exposed, it's obvious that path(v0,v3) is one of the candidates:
-
 ```{dot}
 graph G {
  graph[rankdir=LR]
@@ -8788,105 +8498,20 @@ graph G {
  subgraph cluster_rhs {
   fontname="Courier-Bold"
   fontsize=10
-  label="dist(v0, v3)"
-  v0_x -- i0_x [label=11, color=violet, penwidth=2.5]
-  v1_x -- i0_x [label=2]
-  v2_x -- i0_x [label=10]
-  i0_x -- i1_x [label=4, color=violet, penwidth=2.5]
-  i1_x -- i2_x [label=3, color=violet, penwidth=2.5]
-  i2_x -- v3_x [label=3, color=violet, penwidth=2.5]
-  i2_x -- v4_x [label=4]
-  i1_x -- v5_x [label=0, style=dashed]
-  v0_x [label=v0]
-  v1_x [label=v1]
-  v2_x [label=v2]
-  v3_x [label=v3]
-  v4_x [label=v4]
-  v5_x [label=v5]
-  i0_x [label=i0]
-  i1_x [label=i1, style=filled, fillcolor=gray]
-  i2_x [label=i2]
-  i2_x [label=i2]
-  i1_x [label=i1]
- }
- subgraph cluster_lhs {
-  fontname="Courier-Bold"
-  fontsize=10
-  label="dist(v0, v5) + dist(v3, v5)"
-  v0_y -- i0_y [label=11, color=orange, penwidth=2.5]
-  v1_y -- i0_y [label=2]
-  v2_y -- i0_y [label=10]
-  i0_y -- i1_y [label=4, color=orange, penwidth=2.5]
-  i1_y -- i2_y [label=3, color=blue, penwidth=2.5]
-  i2_y -- v3_y [label=3, color=blue, penwidth=2.5]
-  i2_y -- v4_y [label=4]
-  i1_y -- v5_y [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
-  v0_y [label=v0]
-  v1_y [label=v1]
-  v2_y [label=v2]
-  v3_y [label=v3]
-  v4_y [label=v4]
-  v5_y [label=v5]
-  i0_y [label=i0]
-  i1_y [label=i1, style=filled, fillcolor=gray]
-  i2_y [label=i2]
-  i2_y [label=i2]
-  i1_y [label=i1]
+  label="dist(v0,v5) = dist(v0,i1) + 0 = dist(v0,i1)"
+  v0 -- i0 [label=11, color="violet:invis:blue", penwidth=2.5]
+  v1 -- i0 [label=2]
+  v2 -- i0 [label=10]
+  i0 -- i1 [label=4, color="violet:invis:blue", penwidth=2.5]
+  i1 -- i2 [label=3]
+  i2 -- v3 [label=3]
+  i2 -- v4 [label=4]
+  i1 -- v5 [label=0, color=violet, style=dashed, penwidth=2.5]
  }
 }
 ```
-   
-`{kt} \colorbox{orange}{$d_{v0,v5}$} + \colorbox{blue}{$\textcolor{white}{d_{v3,v5}}$} = \colorbox{violet}{$d_{v0,v3}$}`
 
-|    |       v0       |       v1       |       v2       |       v3       |       v4       |       v5       |
-|----|----------------|----------------|----------------|----------------|----------------|----------------|
-| v0 |       0        |       13       |       21       | `{h}violet 21` |       22       | `{h}orange 15` |
-| v1 |       13       |       0        |       12       |       12       |       13       |       6        |
-| v2 |       21       |       12       |       0        |       20       |       21       |       14       |
-| v3 |       21       |       12       |       20       |       0        |       7        |       6        |
-| v4 |       22       |       13       |       21       |       7        |       0        |       7        |
-| v5 |       15       |       6        |       14       |  `{h}blue 6`   |       7        |       0        |
-
-However, other paths that v5's limb branches off are ...
-
- * path(v0, v4) / path(v4, v0): `{kt} d_{v0,v5} + d_{v4, v5} = d_{v0, v4}`
- * path(v1, v4) / path(v4, v1): `{kt} d_{v1,v5} + d_{v4, v5} = d_{v1, v4}`
- * path(v2, v4) / path(v4, v2): `{kt} d_{v2,v5} + d_{v4, v5} = d_{v2, v4}`
- * path(v0, v3) / path(v4, v3): `{kt} d_{v0,v5} + d_{v3, v5} = d_{v0, v3}`
- * path(v1, v3) / path(v4, v3): `{kt} d_{v1,v5} + d_{v3, v5} = d_{v1, v3}`
- * path(v2, v3) / path(v4, v3): `{kt} d_{v2,v5} + d_{v3, v5} = d_{v2, v3}`
-
-Once a path has been identified, the actual point on that path where L's limb branches off is determined by either ...
-   
- * pulling `{kt} d_{A,L}` from bald(distmat_with_L, L) and walking that many units on path(A,B) from A on tree_without_L.
- * pulling `{kt} d_{L,B}` from bald(distmat_with_L, L) and walking that many units on path(A,B) from B on tree_without_L.
-
-..., either works. If the walk stops at a ...
-
- * node, L branches from that node.
- * edge, a new internal node is put in-between that edge and L branches from that new node.
-
-```python
-# Get distance where limb should be injected
-inject_dist = balded_distmat_with_L[A][L]
-# Given a path, ensure that you're walking it from A (tree = undirected graph so it
-# may be in reverse order)
-if path[-1].end_node == A:
-  reverse_path(path)
-# Walk
-walk_weight = 0
-for edge in path:
-  walk_weight += edge.weight
-  if walk_weight == inject_dist:
-    tree_without_L.add_edge(edge.end_node, L, L_limb_length)
-    break
-  elif walk_weight > inject_dist:
-    edge1, new_internal_node, edge2 = tree_without_L.break_edge(edge)
-    tree_without_L.add_edge(new_internal_node, L, L_limb_length)
-# At this point tree_without_L should have L attached on to it
-```
-
-In the example above, path(v0,v4) was one of the identified paths that v5 branches from. Since the balded distance matrix states that `{kt} d_{v0,v5}=15`, the branch point for v5's limb would be 15 units down when walking path(v0,v4) from v0 ...
+Essentially, the balded distance matrix is saying that the path from v0 to v5's parent has a distance of 15. In the original simple tree, walking 15 units on the path from v0 to v3 takes you to where that parent should be. Since there is no internal node there, one is added by breaking the edge and v5's limb is attached to it.
 
 ```{dot}
 graph G {
@@ -8897,14 +8522,14 @@ graph G {
  subgraph cluster_rhs {
   fontname="Courier-Bold"
   fontsize=10
-  label="15 units from v0, edge is broken and v5's limb added"
+  label="path(v0,v3) from v0, v5 attached 15 units in"
   v0_y -- i0_y [label=11, dir=forward, color=purple, penwidth=2.5]
   v1_y -- i0_y [label=2]
   v2_y -- i0_y [label=10]
   i0_y -- i1_y [label=4, dir=forward, color=purple, penwidth=2.5]
   i1_y -- i2_y [label=3, dir=forward, color=purple, penwidth=2.5]
-  i2_y -- v3_y [label=3]
-  i2_y -- v4_y [label=4, dir=forward, color=purple, penwidth=2.5]
+  i2_y -- v3_y [label=3, dir=forward, color=purple, penwidth=2.5]
+  i2_y -- v4_y [label=4]
   i1_y -- v5_y [label=7, style=dashed, color=purple, penwidth=2.5]
   v0_y [label=v0]
   v1_y [label=v1]
@@ -8921,13 +8546,13 @@ graph G {
  subgraph cluster_lhs {
   fontname="Courier-Bold"
   fontsize=10
-  label="path(v0,v4) on tree_without_L, starting from v0"
+  label="path(v0,v3) from v0"
   v0_x -- i0_x [label=11, dir=forward, color=purple, penwidth=2.5]
   v1_x -- i0_x [label=2]
   v2_x -- i0_x [label=10]
   i0_x -- i2_x [label=7, dir=forward, color=purple, penwidth=2.5]
-  i2_x -- v3_x [label=2]
-  i2_x -- v4_x [label=4, dir=forward, color=purple, penwidth=2.5]
+  i2_x -- v3_x [label=3, dir=forward, color=purple, penwidth=2.5]
+  i2_x -- v4_x [label=4]
   v0_x [label=v0]
   v1_x [label=v1]
   v2_x [label=v2]
@@ -8939,27 +8564,29 @@ graph G {
 }
 ```
 
+If there ...
+
+ * is an internal node there, the limb gets attached to it.
+ * isn't an internal node there, the edge is broken by injecting a new one, which the limb gets attached to...
+
+```{output}
+ch7_code/src/phylogeny/UntrimTree.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.UntrimTree
+[[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i2,7], [i2,v3,3], [i2,v4,4]]
+[0,  13, 21, 21, 22, 22]
+[13, 0,  12, 12, 13, 13]
+[21, 12, 0,  20, 21, 21]
+[21, 12, 20, 0,  7,  13]
+[22, 13, 21, 7,  0,  14]
+[22, 13, 21, 13, 14, 0 ]
+```
+
 `{bm-enable} (5')/i` <!-- Re-enable 5' now that section is finished -->
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
-
-TODO: REMOVE LIMB ATTACHMENT DEFINITION ONCE THIS IS COMPLETE
 
 ### Neighbour Detection
 
@@ -12496,538 +12123,6 @@ graph_show
    ```
    
    `{bm-enable} (5')/i` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
-
- * `{bm} limb attachment` - Limb attachment is the idea of attaching a new leaf node to some existing tree. The new leaf's limb may be attached by either...
-    
-    * attaching to an existing internal node
-
-      ```{dot}
-      graph G {
-       graph[rankdir=LR]
-       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-       ranksep=0.25
-       subgraph cluster_1 {
-        fontname="Courier-Bold"
-        fontsize=10
-        label="v3 added at node(i0)"
-        v0_z -- i0_z [label=11]
-        i0_z -- v1_z [label=3]
-        i0_z -- v2_z [label=4]
-        i0_z -- v3_z [label=2]
-        v0_z [label=v0]
-        v1_z [label=v1]
-        v2_z [label=v2]
-        v3_z [label=v3]
-        i0_z [label=i0, style=filled, fillcolor=tan]
-       }
-       subgraph cluster_0 {
-        fontname="Courier-Bold"
-        fontsize=10
-        label="Original"
-        v0_x -- i0_x [label=11]
-        i0_x -- v1_x [label=3]
-        i0_x -- v2_x [label=4]
-        v0_x [label=v0]
-        v1_x [label=v1]
-        v2_x [label=v2]
-        i0_x [label=i0, style=filled, fillcolor=tan]
-       }
-      }
-      ```
-
-    * adding an internal node inbetween an edge (breaking it into two) and attaching to that internal node
-
-      ```{dot}
-      graph G {
-       graph[rankdir=LR]
-       node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-       edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-       ranksep=0.25
-       subgraph cluster_2 {
-        fontname="Courier-Bold"
-        fontsize=10
-        label="v3 added along edge(i0,v2)"
-        v0_y -- i0_y [label=11]
-        i0_y -- v1_y [label=3]
-        i0_y -- i1_y [label=1, color=tan, penwidth=2.5]
-        i1_y -- v2_y [label=3, color=tan, penwidth=2.5]
-        i1_y -- v3_y [label=1]
-        v0_y [label=v0]
-        v1_y [label=v1]
-        v2_y [label=v2]
-        v3_y [label=v3]
-        i0_y [label=i0]
-        i1_y [label=i1]
-       }
-       subgraph cluster_0 {
-        fontname="Courier-Bold"
-        fontsize=10
-        label="Original"
-        v0_x -- i0_x [label=11]
-        i0_x -- v1_x [label=3]
-        i0_x -- v2_x [label=4, color=tan, penwidth=2.5]
-        v0_x [label=v0]
-        v1_x [label=v1]
-        v2_x [label=v2]
-        i0_x [label=i0]
-       }
-      }
-      ```
- 
-   ```{note}
-   Attaching a new limb to an existing leaf node is never possible because...
-
-   1. it'll turn that existing leaf node to an internal node, which doesn't make sense because in the context of phylogenetic trees leaf nodes identify known organisms
-   2. it will cease to be a simple tree -- simple trees can't have nodes of degree_GRAPH 2 (train of edges not allowed).
-   ```
-
-   Given a simple tree before the addition of a leaf node and the additive distance matrix after the addition of that leaf node, there's enough information to determine where that leaf node should be added on the simple tree such that it produces the additive distance matrix. In other words, given ...
-   
-   1. tree_without_L -- a simple tree WITHOUT leaf node L
-   2. distmat_with_L -- an additive distance matrix WITH leaf node L
-   
-   ... there exists an algorithm to find where on tree_without_L leaf node L should be added: tree_without_L + distmat_with_L = tree_with_L.
-
-   `{bm-disable} (5')/i` <!-- Needs to be disabled because v5's is conflicting with 5' -->
-
-   For example, the following simple tree is to have v5 added somewhere to it...
-   
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_rhs {
-     v0 -- i0 [label=11]
-     v1 -- i0 [label=2]
-     v2 -- i0 [label=10]
-     i0 -- i2 [label=7]
-     i2 -- v3 [label=2]
-     i2 -- v4 [label=4]
-    }
-   }
-   ```
-   
-   ... and the following additive distance matrix is produced once v5 has been added...
-
-   |    | v0 | v1 | v2 | v3 | v4 | v5 |
-   |----|----|----|----|----|----|----|
-   | v0 | 0  | 13 | 21 | 21 | 22 | 22 |
-   | v1 | 13 | 0  | 12 | 12 | 13 | 13 |
-   | v2 | 21 | 12 | 0  | 20 | 21 | 21 |
-   | v3 | 21 | 12 | 20 | 0  | 7  | 13 |
-   | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
-   | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
-
-   There's enough information available in the above simple tree and additive distance matrix to determine v5's...
-
-   * limb length: 7 (calculated using the limb length algorithm)
-   * attachment location: 4 units out from i0 towards i2 (calculated using the algorithm described below)
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_rhs {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="v5 attached"
-     v0 -- i0 [label=11]
-     v1 -- i0 [label=2]
-     v2 -- i0 [label=10]
-     i0 -- i1 [label=4]
-     i1 -- i2 [label=3]
-     i2 -- v3 [label=3]
-     i2 -- v4 [label=4]
-     i1 -- v5 [label=7, penwidth=2.5]
-    }
-   }
-   ```
-
-   To find the attachment location, consider the simple tree above with v5 `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i`...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_rhs {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="v5 balded"
-     v0 -- i0 [label=11]
-     v1 -- i0 [label=2]
-     v2 -- i0 [label=10]
-     i0 -- i1 [label=4]
-     i1 -- i2 [label=3]
-     i2 -- v3 [label=3]
-     i2 -- v4 [label=4]
-     i1 -- v5 [label=0, style=dashed, penwidth=2.5]
-    }
-   }
-   ```
-   
-   Since v5's limb length is 0, v5's limb doesn't contribute to the distance of any path to / from v5. For example, ...
-
-   * `{kt} d_{v0,v5} = d_{v0,i1} + 0 = d_{v0,i1}`
-   * `{kt} d_{v4,v5} = d_{v4,i1} + 0 = d_{v4,i1}`
-   * `{kt} d_{v2,v5} = d_{v2,i1} + 0 = d_{v2,i1}`
-   * etc..
-
-   This leads to the insight that given any two leaf nodes A and B in the above balded tree (that aren't v5), ...
-   
-   * `{kt} d_{A,v5} + d_{B,v5} = d_{A,B}`, if path(A,B) travels through i1 (v5's parent).
-
-     For example, path(v0,v3) travels through i1 (v5's parent)...
-   
-     ```{dot}
-     graph G {
-      graph[rankdir=LR]
-      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-      edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-      ranksep=0.25
-      subgraph cluster_rhs {
-       fontname="Courier-Bold"
-       fontsize=10
-       label="dist(v0, v3)"
-       v0_x -- i0_x [label=11, color=violet, penwidth=2.5]
-       v1_x -- i0_x [label=2]
-       v2_x -- i0_x [label=10]
-       i0_x -- i1_x [label=4, color=violet, penwidth=2.5]
-       i1_x -- i2_x [label=3, color=violet, penwidth=2.5]
-       i2_x -- v3_x [label=3, color=violet, penwidth=2.5]
-       i2_x -- v4_x [label=4]
-       i1_x -- v5_x [label=0, style=dashed]
-       v0_x [label=v0]
-       v1_x [label=v1]
-       v2_x [label=v2]
-       v3_x [label=v3]
-       v4_x [label=v4]
-       v5_x [label=v5]
-       i0_x [label=i0]
-       i1_x [label=i1, style=filled, fillcolor=gray]
-       i2_x [label=i2]
-       i2_x [label=i2]
-       i1_x [label=i1]
-      }
-      subgraph cluster_lhs {
-       fontname="Courier-Bold"
-       fontsize=10
-       label="dist(v0, v5) + dist(v3, v5)"
-       v0_y -- i0_y [label=11, color=orange, penwidth=2.5]
-       v1_y -- i0_y [label=2]
-       v2_y -- i0_y [label=10]
-       i0_y -- i1_y [label=4, color=orange, penwidth=2.5]
-       i1_y -- i2_y [label=3, color=blue, penwidth=2.5]
-       i2_y -- v3_y [label=3, color=blue, penwidth=2.5]
-       i2_y -- v4_y [label=4]
-       i1_y -- v5_y [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
-       v0_y [label=v0]
-       v1_y [label=v1]
-       v2_y [label=v2]
-       v3_y [label=v3]
-       v4_y [label=v4]
-       v5_y [label=v5]
-       i0_y [label=i0]
-       i1_y [label=i1, style=filled, fillcolor=gray]
-       i2_y [label=i2]
-       i2_y [label=i2]
-       i1_y [label=i1]
-      }
-     }
-     ```
-  
-     `{kt} \colorbox{orange}{$d_{v0,v5}$} + \colorbox{blue}{$\textcolor{white}{d_{v3,v5}}$} = \colorbox{violet}{$d_{v0,v3}$}`
-
-     Notice that, not counting v5's limb (because it contributes nothing to distance), the same edges are highlighted in both diagrams.
-
-   * `{kt} d_{A,v5} + d_{B,v5} > d_{A,B}`, if path(A,B) DOES NOT travel through i1 (v5's parent).
-   
-     For example, path(v0,v2) does NOT travel through i1 (v5's parent)...
-   
-     ```{dot}
-     graph G {
-      graph[rankdir=LR]
-      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-      edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-      ranksep=0.25
-      subgraph cluster_rhs {
-       fontname="Courier-Bold"
-       fontsize=10
-       label="dist(v0, v2)"
-       v0_x -- i0_x [label=11, color=tan, penwidth=2.5]
-       v1_x -- i0_x [label=2]
-       v2_x -- i0_x [label=10, color=tan, penwidth=2.5]
-       i0_x -- i1_x [label=4]
-       i1_x -- i2_x [label=3]
-       i2_x -- v3_x [label=3]
-       i2_x -- v4_x [label=4]
-       i1_x -- v5_x [label=0, style=dashed]
-       v0_x [label=v0]
-       v1_x [label=v1]
-       v2_x [label=v2]
-       v3_x [label=v3]
-       v4_x [label=v4]
-       v5_x [label=v5]
-       i0_x [label=i0]
-       i1_x [label=i1, style=filled, fillcolor=gray]
-       i2_x [label=i2]
-       i2_x [label=i2]
-       i1_x [label=i1]
-      }
-      subgraph cluster_lhs {
-       fontname="Courier-Bold"
-       fontsize=10
-       label="dist(v0, v5) + dist(v2, v5)"
-       v0_y -- i0_y [label=11, color=pink, penwidth=2.5]
-       v1_y -- i0_y [label=2]
-       v2_y -- i0_y [label=10, color=green, penwidth=2.5]
-       i0_y -- i1_y [label=4, color="green:invis:pink", penwidth=2.5]
-       i1_y -- i2_y [label=3]
-       i2_y -- v3_y [label=3]
-       i2_y -- v4_y [label=4]
-       i1_y -- v5_y [label=0, color="green:invis:pink", penwidth=2.5, style=dashed]
-       v0_y [label=v0]
-       v1_y [label=v1]
-       v2_y [label=v2]
-       v3_y [label=v3]
-       v4_y [label=v4]
-       v5_y [label=v5]
-       i0_y [label=i0]
-       i1_y [label=i1, style=filled, fillcolor=gray]
-       i2_y [label=i2]
-       i2_y [label=i2]
-       i1_y [label=i1]
-      }
-     }
-     ```
-
-     `{kt} \colorbox{pink}{$d_{v0,v5}$} + \colorbox{lime}{$d_{v2,v5}$} > \colorbox{tan}{$d_{v0,v2}$}`
-
-     Notice that, not counting v5's limb (because it contributes nothing to distance), more edges are highlighted for the left-hand side of the equation vs the right-hand side.
-
-     ```{note}
-     Other than the v5's limb, I think no other edge in the tree should ever have a weight of 0. That's why this will always be >, because v0 and v2 traverse more edges to get to v5 than they do to get to each other, and those edges have positive weights (not zero).
-     
-     A edge weight of 0 means the species on both sides of an edge are the same, which should never be case (why have an edge at all then? why not merge the edge into a single node? they represent the same thing). v5's limb is explicitly being set to 0 because it's a temporary thing the algorithm requires.
-     ```
-
-   The above equations can be abstracted out to the formulas ...
-
-    * `{kt} d_{A, L} + d_{B, L} = d_{A, B}` if path(A,B) does travel through the parent of L
-    * `{kt} d_{A, L} + d_{B, L} > d_{A, B}` if path(A,B) does not travel through the parent of L
-
-   , where...
-   
-    * A, B, are leaf nodes.
-    * L is the leaf node for the `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i` limb (limb length = 0).
-
-   ```{note}
-   The logic described above is very reminiscent of the algorithm for finding a leaf node's limb length from just the distance matrix. The formula is = if A and B are within the different subtrees, but > if the same.
-
-   When writing notes in the algorithm section, break this out into a "subtree detection" algorithm that'll tell you if 2 nodes are in the same subtree vs different subtrees.
-   ```
-   
-   All distances in the formulas above are between leaf nodes in the balded tree. As such, the balded tree isn't needed -- the balded distance matrix itself contains all the information needed to find paths that v5's limb branches off of.
-
-   ```python
-   # Algorithm to find paths
-   b_dm = bald(distmat_with_L, L)
-   for A, B in product(nodes, nodes):
-     if A == B: continue
-     if A == L or B == L: continue
-     if b_dm[A][L] + b_dm[B][L] == b_dm[A][B]:
-       candidate_pairs.append((A, B))
-     elif b_dm[A][L] + b_dm[B][L] > b_dm[A][B]:
-       pass  # doesn't travel through L's parent
-     else:
-       raise ValueError('Should never happen')
-
-   # Even better algorithm to find paths
-   #   Pick a single node and scan through all other nodes.Since a tree / simple
-   #   tree is a connected graph (path exists between every pair of vertices),
-   #   this will always produce correct results.
-   b_dm = bald(distmat_with_L, L)
-   A = nodes[0]
-   for B in nodes:
-     if A == B: continue
-     if A == L or B == L: continue
-     if b_dm[A][L] + b_dm[B][L] == b_dm[A][B]:
-       candidate_pairs.append((A, B))
-     elif b_dm[A][L] + b_dm[B][L] > b_dm[A][B]:
-       pass  # doesn't travel through L's parent
-     else:
-       raise ValueError('Should never happen')
-   ```
-   
-   For the example above, if `{kt} d_{A,v5} + d_{B,v5} = d_{A,B}` is true for some pair of nodes A and B (that aren't v5) in the balded matrix, v5's limb branches off somewhere along path(A,B). Since the tree was already exposed, it's obvious that path(v0,v3) is one of the candidates:
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_rhs {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v3)"
-     v0_x -- i0_x [label=11, color=violet, penwidth=2.5]
-     v1_x -- i0_x [label=2]
-     v2_x -- i0_x [label=10]
-     i0_x -- i1_x [label=4, color=violet, penwidth=2.5]
-     i1_x -- i2_x [label=3, color=violet, penwidth=2.5]
-     i2_x -- v3_x [label=3, color=violet, penwidth=2.5]
-     i2_x -- v4_x [label=4]
-     i1_x -- v5_x [label=0, style=dashed]
-     v0_x [label=v0]
-     v1_x [label=v1]
-     v2_x [label=v2]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     v5_x [label=v5]
-     i0_x [label=i0]
-     i1_x [label=i1, style=filled, fillcolor=gray]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-    subgraph cluster_lhs {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v5) + dist(v3, v5)"
-     v0_y -- i0_y [label=11, color=orange, penwidth=2.5]
-     v1_y -- i0_y [label=2]
-     v2_y -- i0_y [label=10]
-     i0_y -- i1_y [label=4, color=orange, penwidth=2.5]
-     i1_y -- i2_y [label=3, color=blue, penwidth=2.5]
-     i2_y -- v3_y [label=3, color=blue, penwidth=2.5]
-     i2_y -- v4_y [label=4]
-     i1_y -- v5_y [label=0, color="orange:invis:blue", penwidth=2.5, style=dashed]
-     v0_y [label=v0]
-     v1_y [label=v1]
-     v2_y [label=v2]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1, style=filled, fillcolor=gray]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-   }
-   ```
-   
-   `{kt} \colorbox{orange}{$d_{v0,v5}$} + \colorbox{blue}{$\textcolor{white}{d_{v3,v5}}$} = \colorbox{violet}{$d_{v0,v3}$}`
-
-   |    |       v0       |       v1       |       v2       |       v3       |       v4       |       v5       |
-   |----|----------------|----------------|----------------|----------------|----------------|----------------|
-   | v0 |       0        |       13       |       21       | `{h}violet 21` |       22       | `{h}orange 15` |
-   | v1 |       13       |       0        |       12       |       12       |       13       |       6        |
-   | v2 |       21       |       12       |       0        |       20       |       21       |       14       |
-   | v3 |       21       |       12       |       20       |       0        |       7        |       6        |
-   | v4 |       22       |       13       |       21       |       7        |       0        |       7        |
-   | v5 |       15       |       6        |       14       |  `{h}blue 6`   |       7        |       0        |
-
-   However, other paths that v5's limb branches off are ...
-
-   * path(v0, v4) / path(v4, v0): `{kt} d_{v0,v5} + d_{v4, v5} = d_{v0, v4}`
-   * path(v1, v4) / path(v4, v1): `{kt} d_{v1,v5} + d_{v4, v5} = d_{v1, v4}`
-   * path(v2, v4) / path(v4, v2): `{kt} d_{v2,v5} + d_{v4, v5} = d_{v2, v4}`
-   * path(v0, v3) / path(v4, v3): `{kt} d_{v0,v5} + d_{v3, v5} = d_{v0, v3}`
-   * path(v1, v3) / path(v4, v3): `{kt} d_{v1,v5} + d_{v3, v5} = d_{v1, v3}`
-   * path(v2, v3) / path(v4, v3): `{kt} d_{v2,v5} + d_{v3, v5} = d_{v2, v3}`
-
-   Once a path has been identified, the actual point on that path where L's limb branches off is determined by either ...
-   
-   * pulling `{kt} d_{A,L}` from bald(distmat_with_L, L) and walking that many units on path(A,B) from A on tree_without_L.
-   * pulling `{kt} d_{L,B}` from bald(distmat_with_L, L) and walking that many units on path(A,B) from B on tree_without_L.
-
-   ..., either works. If the walk stops at a ...
-
-   * node, L branches from that node.
-   * edge, a new internal node is put in-between that edge and L branches from that new node.
-
-   ```python
-   # Get distance where limb should be injected
-   inject_dist = balded_distmat_with_L[A][L]
-   # Given a path, ensure that you're walking it from A (tree = undirected graph so it
-   # may be in reverse order)
-   if path[-1].end_node == A:
-     reverse_path(path)
-   # Walk
-   walk_weight = 0
-   for edge in path:
-     walk_weight += edge.weight
-     if walk_weight == inject_dist:
-       tree_without_L.add_edge(edge.end_node, L, L_limb_length)
-       break
-     elif walk_weight > inject_dist:
-       edge1, new_internal_node, edge2 = tree_without_L.break_edge(edge)
-       tree_without_L.add_edge(new_internal_node, L, L_limb_length)
-   # At this point tree_without_L should have L attached on to it
-   ```
-
-   In the example above, path(v0,v4) was one of the identified paths that v5 branches from. Since the balded distance matrix states that `{kt} d_{v0,v5}=15`, the branch point for v5's limb would be 15 units down when walking path(v0,v4) from v0 ...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_rhs {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="15 units from v0, edge is broken and v5's limb added"
-     v0_y -- i0_y [label=11, dir=forward, color=purple, penwidth=2.5]
-     v1_y -- i0_y [label=2]
-     v2_y -- i0_y [label=10]
-     i0_y -- i1_y [label=4, dir=forward, color=purple, penwidth=2.5]
-     i1_y -- i2_y [label=3, dir=forward, color=purple, penwidth=2.5]
-     i2_y -- v3_y [label=3]
-     i2_y -- v4_y [label=4, dir=forward, color=purple, penwidth=2.5]
-     i1_y -- v5_y [label=7, style=dashed, color=purple, penwidth=2.5]
-     v0_y [label=v0]
-     v1_y [label=v1]
-     v2_y [label=v2]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1, style=filled, fillcolor=gray]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-    subgraph cluster_lhs {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="path(v0,v4) on tree_without_L, starting from v0"
-     v0_x -- i0_x [label=11, dir=forward, color=purple, penwidth=2.5]
-     v1_x -- i0_x [label=2]
-     v2_x -- i0_x [label=10]
-     i0_x -- i2_x [label=7, dir=forward, color=purple, penwidth=2.5]
-     i2_x -- v3_x [label=2]
-     i2_x -- v4_x [label=4, dir=forward, color=purple, penwidth=2.5]
-     v0_x [label=v0]
-     v1_x [label=v1]
-     v2_x [label=v2]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     i0_x [label=i0]
-     i2_x [label=i2]
-    }
-   }
-   ```
-
-   `{bm-enable} (5')/i` <!-- Re-enable 5' now that section is finished -->
 
  * `{bm} additive phylogeny` - An algorithm that finds the unique simple tree for some additive distance matrix.
 

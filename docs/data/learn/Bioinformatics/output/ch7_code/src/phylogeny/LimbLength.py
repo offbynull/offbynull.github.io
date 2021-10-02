@@ -10,7 +10,7 @@ N = TypeVar('N')
 
 
 # MARKDOWN
-def limb_length(dm: DistanceMatrix, l: N) -> float:
+def find_limb_length(dm: DistanceMatrix, l: N) -> float:
     leaf_nodes = dm.leaf_ids()
     leaf_nodes.remove(l)
     a = leaf_nodes.pop()
@@ -48,7 +48,7 @@ def main():
         print('</tbody>')
         print('</table>')
         print()
-        leaf_limb_len = limb_length(dist_mat, leaf_id)
+        leaf_limb_len = find_limb_length(dist_mat, leaf_id)
         print(f'The limb for leaf node {leaf_id} in its unique simple tree has a weight of {leaf_limb_len}')
         print()
     finally:

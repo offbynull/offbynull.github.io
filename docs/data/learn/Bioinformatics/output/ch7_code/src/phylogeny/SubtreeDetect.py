@@ -5,21 +5,21 @@ from typing import TypeVar
 from distance_matrix.DistanceMatrix import DistanceMatrix
 from helpers.InputUtils import str_to_list
 from phylogeny.FourPointCondition import is_additive
-from phylogeny.LimbLength import limb_length
+from phylogeny.LimbLength import find_limb_length
 
 N = TypeVar('N')
 
 
 # MARKDOWN
 def is_same_subtree(dm: DistanceMatrix, l: N, a: N, b: N) -> bool:
-    l_weight = limb_length(dm, l)
+    l_weight = find_limb_length(dm, l)
     test_res = (dm[l, a] + dm[l, b] - dm[a, b]) / 2
-    if l_weight == test_res:
-        return True
-    elif l_weight > test_res:
+    if test_res == l_weight:
         return False
+    elif test_res > l_weight:
+        return True
     else:
-        raise ValueError('???')
+        raise ValueError('???')  # not additive distance matrix?
 # MARKDOWN
 
 

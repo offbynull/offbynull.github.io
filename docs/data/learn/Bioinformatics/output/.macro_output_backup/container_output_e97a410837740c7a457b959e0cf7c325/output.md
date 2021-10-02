@@ -1,1 +1,0 @@
-<span style="background-color: blue; color: white; padding: 3px">6</span>
