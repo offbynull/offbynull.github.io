@@ -1,5 +1,3 @@
-`{bm-disable-all}`[ch7_code/src/phylogeny/UntrimTree.py](ch7_code/src/phylogeny/UntrimTree.py) (lines 81 to 106):`{bm-enable-all}`
-
 ```python
 def walk_until_distance(
         tree: Graph[N, ND, E, float],

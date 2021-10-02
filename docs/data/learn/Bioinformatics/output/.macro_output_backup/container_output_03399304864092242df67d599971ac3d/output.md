@@ -1,5 +1,3 @@
-`{bm-disable-all}`[ch7_code/src/phylogeny/UntrimTree.py](ch7_code/src/phylogeny/UntrimTree.py) (lines 65 to 77):`{bm-enable-all}`
-
 ```python
 def find_pair_traveling_thru_leaf_parent(dist_mat: DistanceMatrix, leaf_node: N) -> tuple[N, N]:
     leaf_set = dist_mat.leaf_ids() - {leaf_node}

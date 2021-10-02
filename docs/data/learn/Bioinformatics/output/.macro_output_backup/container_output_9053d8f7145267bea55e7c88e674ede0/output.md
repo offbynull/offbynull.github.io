@@ -95,7 +95,7 @@ v2 -- i0 [label="10.0"]
 }
 ```
 
-... , v5 is injected at the appropriate location to become simple tree T ...
+... , v5 is injected at the appropriate location to become simple tree T (un-trimmed) ...
 
 
 ```{dot}

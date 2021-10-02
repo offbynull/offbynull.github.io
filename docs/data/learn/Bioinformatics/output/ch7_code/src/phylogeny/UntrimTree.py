@@ -188,7 +188,7 @@ def main():
         print(f'{to_dot(trimmed_tree)}')
         print('```')
         print()
-        print(f'... , {trimmed_n} is injected at the appropriate location to become simple tree T ...')
+        print(f'... , {trimmed_n} is injected at the appropriate location to become simple tree T (un-trimmed) ...')
         print()
         _next_edge_id = 0
         def gen_edge_id():
