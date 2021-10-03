@@ -7781,9 +7781,9 @@ phylogeny.LimbLength
 [36, 27, 27, 28, 13, 6 , 0 ]
 ```
 
-### Same Subtree Detection
+### Same Subtree Test
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Same Subtree Detection)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Same Subtree Test)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Limb Length_TOPIC
@@ -8289,7 +8289,7 @@ phylogeny.Balder
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Limb Length_TOPIC
-Algorithms/Distance Phylogeny/Same Subtree Detection_TOPIC
+Algorithms/Distance Phylogeny/Same Subtree Test_TOPIC
 Algorithms/Distance Phylogeny/Trim_TOPIC
 Algorithms/Distance Phylogeny/Bald_TOPIC
 ```
@@ -8606,36 +8606,19 @@ phylogeny.UntrimTree
 
 `{bm-enable} (5')/i` <!-- Re-enable 5' now that section is finished -->
 
-### Neighbour Detection
+### Find Neighbours
 
-**WHAT**: Given an additive distance matrix, find a pair of nodes guaranteed to be neighbours in the corresponding unique simple tree (shared parent). In addition, for non-additive distance matrices, this algorithm approximates a pair of nodes that may be neighbours.
+`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbours)_TOPIC/`
 
-**WHY**: This is a fundamental operation in neighbour joining phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix / approximates a simple tree for a non-additive distance matrix.
+**WHAT**: Given an additive distance matrix, find a pair of leaf nodes guaranteed to be neighbours (shared parent) in its corresponding unique simple tree.
+
+```{note}
+For non-additive distance matrices, this algorithm finds a pair of nodes that are approximately neighbours.
+```
+
+**WHY**: This is a fundamental operation in neighbour joining phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
 
 **ALGORITHM**: 
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.
-
-
-
 
 The algorithm essentially boils down to edge counting. Consider the following example simple tree...
 
@@ -8672,13 +8655,13 @@ graph G {
 }
 ```
 
-If you were to choose a leaf node and gather the paths from that leaf node to all other leaf nodes, the number of times ...
+If you were to choose a leaf node, then gather the paths from that leaf node to all other leaf nodes, the limb for ...
    
-* the chosen leaf node's limb will get encountered is `leaf_count - 1` times.
-* every other limb will get encountered is 1 time.
+* the chosen leaf node gets encountered  `leaf_count - 1` times.
+* each non-chosen leaf node gets encountered once.
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeCountExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py
 python
 # MARKDOWN_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COUNT
 no_preamble
@@ -8722,13 +8705,13 @@ graph G {
 |----------------|---------|---------|---------|---------|---------|---------|---------|---------|
 | edge_count(v1) |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
 
-If you were to choose a pair of leaf nodes and add their `edge_count()`s together, ...
+If you were to choose a pair of leaf nodes and add their `edge_count()`s together, the limb for ...
    
-* the pair's limbs get counted `leaf_count` times.
-* every other limb gets counted 2 times.
+* each chosen leaf node gets encountered  `leaf_count` times.
+* each non-chosen leaf node gets encountered twice.
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeCountExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py
 python
 # MARKDOWN_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_COUNT
 no_preamble
@@ -8824,10 +8807,12 @@ graph G {
 |                | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
 |                |    6    |    4    |    2    |    6    |    6    |    2    |    2    |    2    |
 
-The key to this algorithm is to normalize the limb counts returned by `combine_counts()` such that each limb for the chosen pair matches (`leaf_count`) has the same count as the other limbs (2). To do this, each edge in the path between the chosen pair must be subtracted `leaf_count - 2` times from `combine_edge_count()`'s result.
+The key to this algorithm is to normalize limb counts returned by `combine_counts()` such that the each chosen limb's count equals to each non-chosen limb's count. That is, each chosen limb count needs to be reduced from `leaf_count` to 2.
+
+To do this, each edge in the path between the chosen pair must be subtracted `leaf_count - 2` times from `combine_edge_count()`'s result.
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeCountExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py
 python
 # MARKDOWN_NORMALIZED_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_COUNT
 no_preamble
@@ -8906,7 +8891,7 @@ The insight here is that, if the chosen pair ...
  * aren't neighbours, the path between them will have more than 2 edges: their limbs AND internal edges.
     
 ```{output}
-ch7_code/src/neighbour_detect/EdgeCountExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py
 python
 # MARKDOWN_NEIGHBOUR_PATH_EDGE_COUNT_CHECK\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_PATH_EDGE_COUNT_CHECK
 no_preamble
@@ -9092,7 +9077,7 @@ graph G {
 Notice how (i0,i1) was reduced to 2 in the example above. It turns out that any internal edges in the path between the chosen pair get reduced to a count of 2, just like the chosen pair's limb counts.
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeCountExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py
 python
 # MARKDOWN_REDUCE_TO_2_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_REDUCE_TO_2_TEST
 no_preamble
@@ -9189,7 +9174,7 @@ For example, since ...
 * v5 is on the i1 side, `edge_count(v5)` counts (i1,i2) 2 times.
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeCountExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py
 python
 # MARKDOWN_SEGREGATE_BY_EDGE\s*\n([\s\S]+)\n\s*# MARKDOWN_SEGREGATE_BY_EDGE
 no_preamble
@@ -9365,7 +9350,7 @@ In other words, internal edges are the only differentiating factor in `combine_e
 The pair with the highest total count is guaranteed to be a neighbouring pair because lesser total counts may have had their internal edges reduced.
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeCountExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py
 python
 # MARKDOWN_NEIGHBOUR_DETECT\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_DETECT
 ```
@@ -9375,16 +9360,16 @@ The graph in the example run below is the same as the graph used above. It may l
 ```
 
 ```{ch7}
-neighbour_detect.EdgeCountExplainer
+phylogeny.NeighbourJoiningMatrix_EdgeCountExplainer
 [[v0,i0], [v1,i0], [v2,i0], [i0,i1], [i1,i2], [i2,v3], [i2,v4], [i1,v5]]
 ```
 
-This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.
+This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.
 
-In the edge count version on this algorithm, `edge_count()` gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is hit. In the edge weight multiplicity version, instead of counting how many times each edge gets traversed, each time an edge gets traversed it increases the multiplicity of its weight ...
+In the edge count version on this algorithm, `edge_count()` gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is encountered. In the edge weight multiplicity version, instead of counting how many times each edge gets encountered, each time an edge gets encountered it increases the multiplicity of its weight ...
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py
 python
 # MARKDOWN_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_EDGE_MULTIPLE
 no_preamble
@@ -9474,7 +9459,7 @@ graph G {
 Similarly, where in the edge count version `combine_edge_count()` adds together the `edge_count()`s for two leaf nodes, the edge weight multiplicity version should add together the `edge_multiple()`s for two leaf nodes instead...
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py
 python
 # MARKDOWN_COMBINE_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_EDGE_MULTIPLE
 no_preamble
@@ -9543,7 +9528,7 @@ graph G {
 Similarly, where in the edge count version `combine_edge_count_and_normalize()` reduces all limbs and possibly some internals edges from `combine_edge_count()` to a count of 2, the edge multiplicity version reduces weights for those same limbs and edges to a multiple of 2...
 
 ```{output}
-ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py
 python
 # MARKDOWN_NORMALIZED_COMBINE_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_EDGE_MULTIPLE
 no_preamble
@@ -9609,20 +9594,107 @@ graph G {
 | combine_edge_count_and_normalize(v1,v2)    | 6       | 4       | 2        | 2       | 2        | 2       | 2       | 2       |
 | combine_edge_multiple_and_normalize(v1,v2) | 6\*4=24 | 4\*3=12 | 2\*11=22 | 2\*2=20 | 2\*10=60 | 2\*3=6  | 2\*4=8  | 2\*7=14 |
 
-Similar to `combine_edge_count_and_normalize()`, for any leaf node pair in a simple tree `combine_edge_multiple_and_normalize()` will have a *multiple* of ...
+Similar to `combine_edge_count_and_normalize()`, for any leaf node pair in a simple tree `combine_edge_multiple_and_normalize()` will have an *edge weight multiple* of ...
 
 * 2 for limbs.
 * \> 2 for internal edges.
    
-In other words, internal edge multiples are the only differentiating factor in `combine_edge_count_and_normalize()`'s result. Non-neighbouring pairs will have certain internal edge multiples reduced to 2 while neighbouring pairs keep internal edge multiples > 2. In a ...
+In other words, internal edge weight multiples are the only differentiating factor in `combine_edge_multiple_and_normalize()`'s result. Non-neighbouring pairs will have certain internal edge weight multiples reduced to 2 while neighbouring pairs keep internal edge weight multiples > 2. In a ...
    
-* worst case scenario, all internal edge multiples get reduced to 2.
-* best case scenario, all internal edge multiples are kept > 2.
+* worst case scenario, all internal edge weight multiples get reduced to 2.
+* best case scenario, all internal edge weight multiples are kept > 2.
    
 The pair with the highest combined multiple is guaranteed to be a neighbouring pair because lesser combined multiples may have had their internal edge multiples reduced.
-   
+
+````{note}
+Still confused?
+
+Given a simple tree, `combine_edge_multiple(A, B)` will make it so that...
+
+ * limb A has a weight multiplicity of `leaf_count`.
+ * limb B has a weight multiplicity of `leaf_count`.
+ * other limbs each have a weight multiplicity of 2.
+ * internal edges each have a weight multiplicity of > 2.
+ 
+For example, the following diagrams visualize edge weight multiplicities produced by `combine_edge_multiple()` for various pairs in a 4 leaf simple tree. Note how the selected pair's limbs have a multiplicity of 4, other limbs have a multiplicity of 2, and internal edges have a multiplicity of 4...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ subgraph cluster_4 {
+  label="combine_edge_multiple(v1,v2)"
+  fontname="Courier-Bold"
+  fontsize=10
+  v0_z -- i0_z [label=" ", penwidth=2.5, color="purple:invis:orange"]
+  v1_z -- i0_z [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange"]
+  i0_z -- i1_z [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
+  i1_z -- v2_z [label=" ", penwidth=2.5, color="purple:invis:orange"]
+  i1_z -- v3_z [label=" ", penwidth=2.5, color="purple:invis:orange:invis:orange:invis:orange"]
+  v0_z [label=v0]
+  v1_z [label=v1, style=filled, fillcolor=purple]
+  v2_z [label=v2]
+  v3_z [label=v3, style=filled, fillcolor=orange]
+  i0_z [label=i0]
+  i1_z [label=i1]
+ }
+ subgraph cluster_3 {
+  label="combine_edge_multiple(v1,v2)"
+  fontname="Courier-Bold"
+  fontsize=10
+  v0_y -- i0_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
+  v1_y -- i0_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange"]
+  i0_y -- i1_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
+  i1_y -- v2_y [label=" ", penwidth=2.5, color="purple:invis:orange:invis:orange:invis:orange"]
+  i1_y -- v3_y [label=" ", penwidth=2.5, color="orange:invis:purple"]
+  v0_y [label=v0]
+  v1_y [label=v1, style=filled, fillcolor=purple]
+  v2_y [label=v2, style=filled, fillcolor=orange]
+  v3_y [label=v3]
+  i0_y [label=i0]
+  i1_y [label=i1]
+ }
+ subgraph cluster_2 {
+  label="combine_edge_multiple(v0,v1)"
+  fontname="Courier-Bold"
+  fontsize=10
+  v0_x -- i0_x [label=" ", penwidth=2.5, color="purple:invis:orange:invis:orange:invis:orange"]
+  v1_x -- i0_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange"]
+  i0_x -- i1_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
+  i1_x -- v2_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
+  i1_x -- v3_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
+  v0_x [label=v0, style=filled, fillcolor=orange]
+  v1_x [label=v1, style=filled, fillcolor=purple]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  i0_x [label=i0]
+  i1_x [label=i1]
+ }
+}
+```
+
+`combine_edge_multiple_and_normalize(A, B)` normalizes these multiplicities such that ...
+
+ * limb A's weight multiplicity reduces to 2.
+ * limb B's weight multiplicity reduces to 2.
+ * other limbs keep their weight multiplicities at 2.
+ * if the pair are neighbours, each internal edge multiplicity remains at > 2.
+ * it the pair aren't neighbours, at least one internal edge multiplicity reduces to 2 while others remain at > 2.
+
+|                        | limb multiplicity | internal edge multiplicity   |
+|------------------------|-------------------|------------------------------|
+| neighbouring pairs     |      all = 2      |          all >= 2            |
+| non-neighbouring pairs |      all = 2      | at least one = 2, others > 2 | 
+
+Since limbs always contribute the same regardless of whether the pair is neighbouring or not (2*weight), they can be ignored. That leaves internal edge contributions as the only thing differentiating between neighbouring and non-neighbouring pairs.
+
+A simple tree with 2 or more leaf nodes is guaranteed to have at least 1 neighbouring pair. The pair producing the largest result is the one with maxed out contributions from its multiplied internal edges weights, meaning that none of those contributions were for internal edges reduced to 2\*weight. Lesser results MAY be lesser because normalization reduced some of their internal edge weights to 2\*weight, but the largest result you know for certain has all of its internal edge weights > 2\*weight.
+````
+
 ```{output}
-ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py
 python
 # MARKDOWN_NEIGHBOUR_DETECT\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_DETECT
 ```
@@ -9632,7 +9704,7 @@ The graph in the example run below is the same as the graph used above. It may l
 ```
 
 ```{ch7}
-neighbour_detect.EdgeMultiplicityExplainer
+phylogeny.NeighbourJoiningMatrix_EdgeMultiplicityExplainer
 [[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i2,v4,4], [i1,v5,7]]
 ```
 
@@ -9665,15 +9737,41 @@ The matrix produced in the example above is called a neighbour joining matrix. T
 Since only leaf node distances are being used in the summation calculation, a distance matrix suffices as the input. The actual simple tree isn't required.
 
 ```{output}
-ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py
+ch7_code/src/phylogeny/NeighbourJoiningMatrix.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-neighbour_detect.NeighbourJoiningMatrix
+phylogeny.NeighbourJoiningMatrix
 [[0,13,21,21,22,22],[13,0,12,12,13,13],[21,12,0,20,21,21],[21,12,20,0,7,13],[22,13,21,7,0,14],[22,13,21,13,14,0]]
 ```
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
+
+TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
 
 ### Distance Matrix to Tree
 
@@ -12937,7 +13035,7 @@ graph_show
    | v2 | 4  | 4  | 0  | 2  |
    | v3 | 3  | 5  | 2  | 0  |
 
- * `{bm} limb/\b(limbs?)\b/i` - Given a leaf node in a tree, that leaf node's limb is the edge between it and its parent (node it's connected to). For example, the following tree has the following limbs ...
+ * `{bm} limb` - Given a leaf node in a tree, that leaf node's limb is the edge between it and its parent (node it's connected to). For example, the following tree has the following limbs ...
 
    ```{svgbob}
    A   B
@@ -13075,7 +13173,7 @@ graph_show
    }
    ```
    
-   <code>`{h}violet dist(v0, v2)` + `{h}tan dist(v4, v6)` <= `{h}gold dist(v0, v6)` + `{h}pink dist(v2, v4)` == `{h}turquoise dist(v0, v4)` + `{h}orange dist(v2, v6)`</code>
+   `{h}violet dist(v0, v2)` + `{h}tan dist(v4, v6)` <= `{h}gold dist(v0, v6)` + `{h}pink dist(v2, v4)` == `{h}turquoise dist(v0, v4)` + `{h}orange dist(v2, v6)`
 
    If all possible leaf node quartets pass the above test, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
 
@@ -13622,1046 +13720,6 @@ graph_show
    * dist(a,d)=5 in the original distance matrix.
 
    Part of this may have to do with the assumption that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
-
- * `{bm} neighbouring leaf detection` - An algorithm that identifies a pair of neighbouring leaf nodes in the unique simple tree for some additive distance matrix, without having that unique simple tree provided.
-
-   The algorithm essentially boils down to edge counting. Consider the following example simple tree...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    fontname="Courier-Bold"
-    fontsize=10
-    subgraph cluster_one {
-     label="original"
-     v0_x -- i0_x [label=11]
-     v1_x -- i0_x [label=2]
-     v2_x -- i0_x [label=10]
-     i0_x -- i1_x [label=4]
-     i1_x -- i2_x [label=3]
-     i2_x -- v3_x [label=3]
-     i2_x -- v4_x [label=4]
-     i1_x -- v5_x [label=7]
-     v0_x [label=v0]
-     v1_x [label=v1]
-     v2_x [label=v2]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     v5_x [label=v5]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-   }
-   ```
-
-   If you were to choose a leaf node and gather the paths from that leaf node to all other leaf nodes, the number of times ...
-   
-   * the chosen leaf node's limb will get encountered is `leaf_count - 1` times.
-   * every other limb will get encountered is 1 time.
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
-   python
-   # MARKDOWN_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COUNT
-   no_preamble
-   ```
-
-   For example, given that the tree has 6 leaf nodes, `edge_count(v1)` counts v1's limb 5 times while all other limbs are counted once...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_one {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v1)"
-     v0_x -- i0_x [label=" ", penwidth=2.5, color="#ff0300"]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00:invis:#42c000:invis:#818100:invis:#c04200:invis:#ff0300"]
-     v2_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00"]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100:invis:#c04200"]
-     i1_x -- i2_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="#42c000"]
-     i2_x -- v4_x [label=" ", penwidth=2.5, color="#818100"]
-     i1_x -- v5_x [label=" ", penwidth=2.5, color="#c04200"]
-     v0_x [label=v0, style=filled, fillcolor="#ff0300"]
-     v1_x [label=v1, penwidth=5]
-     v5_x [label=v5, style=filled, fillcolor="#c04200"]
-     v4_x [label=v4, style=filled, fillcolor="#818100"]
-     v3_x [label=v3, style=filled, fillcolor="#42c000"]
-     v2_x [label=v2, style=filled, fillcolor="#03ff00"]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-    }
-   }
-   ```
-
-   |                | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
-   |----------------|---------|---------|---------|---------|---------|---------|---------|---------|
-   | edge_count(v1) |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
-
-   If you were to choose a pair of leaf nodes and add their `edge_count()`s together, ...
-   
-   * the pair's limbs get counted `leaf_count` times.
-   * every other limb gets counted 2 times.
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
-   python
-   # MARKDOWN_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_COUNT
-   no_preamble
-   ```
-
-   For example, `combine_edge_count(v1,v2)` counts v1's limb 6 times, v2's limb 6 times, and every other limb 2 times ...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_3 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count(v1,v2)"
-     v0_x -- i0_x:n [label=" ", penwidth=2.5, color="orange:invis:purple"]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:purple:invis:purple:invis:orange"]
-     v2_x -- i0_x:s [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:purple"]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange:invis:orange:invis:orange"]
-     i1_x -- i2_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i2_x -- v4_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i1_x -- v5_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     v0_x [label=v0]
-     v1_x [label=v1, style=filled, fillcolor=purple]
-     v2_x [label=v2, style=filled, fillcolor=orange]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     v5_x [label=v5]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-    subgraph cluster_1 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v2)"
-     v0_z -- i0_z [label=" ", penwidth=2.5, color=orange]
-     v1_z -- i0_z [label=" ", penwidth=2.5, color=orange]
-     v2_z -- i0_z [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange"]
-     i0_z -- i1_z [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange"]
-     i1_z -- i2_z [label=" ", penwidth=2.5, color="orange:invis:orange"]
-     i2_z -- v3_z [label=" ", penwidth=2.5, color=orange]
-     i2_z -- v4_z [label=" ", penwidth=2.5, color=orange]
-     i1_z -- v5_z [label=" ", penwidth=2.5, color=orange]
-     v0_z [label=v0]
-     v1_z [label=v1]
-     v2_z [label=v2, style=filled, fillcolor=orange]
-     v3_z [label=v3]
-     v4_z [label=v4]
-     v5_z [label=v5]
-     i0_z [label=i0]
-     i1_z [label=i1]
-     i2_z [label=i2]
-     i2_z [label=i2]
-     i1_z [label=i1]
-    }
-    subgraph cluster_2 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v1)"
-     v0_y -- i0_y [label=" ", penwidth=2.5, color=purple]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:purple:invis:purple"]
-     v2_y -- i0_y [label=" ", penwidth=2.5, color=purple]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="purple:invis:purple"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color=purple]
-     i2_y -- v4_y [label=" ", penwidth=2.5, color=purple]
-     i1_y -- v5_y [label=" ", penwidth=2.5, color=purple]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=purple]
-     v2_y [label=v2]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-   }
-   ```
-
-   |                | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
-   |----------------|---------|---------|---------|---------|---------|---------|---------|---------|
-   | edge_count(v1) |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
-   | edge_count(v2) |    3    |    2    |    1    |    1    |    5    |    1    |    1    |    1    |
-   |                | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-   |                |    6    |    4    |    2    |    6    |    6    |    2    |    2    |    2    |
-
-   The key to this algorithm is to normalize the limb counts returned by `combine_counts()` such that each limb for the chosen pair matches (`leaf_count`) has the same count as the other limbs (2). To do this, each edge in the path between the chosen pair must be subtracted `leaf_count - 2` times from `combine_edge_count()`'s result.
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
-   python
-   # MARKDOWN_NORMALIZED_COMBINE_COUNT\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_COUNT
-   no_preamble
-   ```
-
-   Continuing with the example above, the chosen pair (v1 and v2) each have a limb count of 6 while all other limbs have a count of 2. `combine_edge_count_and_normalize(v1,v2)` subtracts each edge in path(v1,v2) 4 times from the counts...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_2 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count_and_normalize(v1,v2)"
-     v0_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:purple"]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     v2_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:purple"]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange:invis:orange:invis:orange"]
-     i1_x -- i2_x [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i2_x -- v4_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i1_x -- v5_x [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     v0_x [label=v0]
-     v1_x [label=v1, style=filled, fillcolor=purple]
-     v2_x [label=v2, style=filled, fillcolor=orange]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     v5_x [label=v5]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-    subgraph cluster_1 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count(v1,v2)"
-     v0_y -- i0_y:n [label=" ", penwidth=2.5, color="orange:invis:purple"]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:purple:invis:purple:invis:orange"]
-     v2_y -- i0_y:s [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:purple"]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange:invis:orange:invis:orange"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i2_y -- v4_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i1_y -- v5_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=purple]
-     v2_y [label=v2, style=filled, fillcolor=orange]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-   }
-   ```
-
-   |                  | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
-   |------------------|---------|---------|---------|---------|---------|---------|---------|---------|
-   | edge_count(v1)   |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
-   | edge_count(v2)   |    3    |    2    |    1    |    1    |    5    |    1    |    1    |    1    |
-   | -4 * path(v1,v2) |         |         |         |   -4    |   -4    |         |         |         |
-   |                  | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-   |                  |    6    |    4    |    2    |    2    |    2    |    2    |    2    |    2    |
-
-   The insight here is that, if the chosen pair ...
-
-    * are neighbours, the path between them will only ever have 2 edges: their limbs.
-    * aren't neighbours, the path between them will have more than 2 edges: their limbs AND internal edges.
-    
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
-   python
-   # MARKDOWN_NEIGHBOUR_PATH_EDGE_COUNT_CHECK\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_PATH_EDGE_COUNT_CHECK
-   no_preamble
-   ```
-
-   For example, ...
-
-    * v1 and v2 are neighbours and as such path(v1,v2) contains only their limbs: [(v1,i0), (v2,i0)].
-    * v1 and v5 aren't neighbours and as such path(v1,v5) has internal edges in addition to their limbs: [(v1,i0), (i0,i1), (v5,i1)].
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_2 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="path(v1,v5)"
-     v0_x -- i0_x [label=" "]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color=red]
-     v2_x -- i0_x [label=" "]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color=red]
-     i1_x -- i2_x [label=" "]
-     i2_x -- v3_x [label=" "]
-     i2_x -- v4_x [label=" "]
-     i1_x -- v5_x [label=" ", penwidth=2.5, color=red]
-     v0_x [label=v0]
-     v1_x [label=v1, style=filled, fillcolor=gray]
-     v2_x [label=v2]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     v5_x [label=v5, style=filled, fillcolor=gray]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-    subgraph cluster_1 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="path(v1,v2)"
-     v0_y -- i0_y [label=" "]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color=red]
-     v2_y -- i0_y [label=" ", penwidth=2.5, color=red]
-     i0_y -- i1_y [label=" "]
-     i1_y -- i2_y [label=" "]
-     i2_y -- v3_y [label=" "]
-     i2_y -- v4_y [label=" "]
-     i1_y -- v5_y [label=" "]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=gray]
-     v2_y [label=v2, style=filled, fillcolor=gray]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-   }
-   ```
-
-   That means if the pair aren't neighbours, `combine_edge_count_and_normalize()` will normalize limb counts for the pair in addition to reducing internal edge counts. For example, since v1 and v5 aren't neighbours, `combine_edge_count_and_normalize(v1,v5)` subtracts 4 from the limb counts of v1 and v5 as well as (i0,i1)'s count ...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_4 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count_and_normalize(v1,v5)"
-     v0_w -- i0_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     v1_w -- i0_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     v2_w -- i0_w [label=" ", penwidth=2.5, color="tan:invis:pink"]
-     i0_w -- i1_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     i1_w -- i2_w [label=" ", penwidth=2.5, color="pink:invis:pink:invis:tan:invis:tan"]
-     i2_w -- v3_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     i2_w -- v4_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     i1_w -- v5_w [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     v0_w [label=v0]
-     v1_w [label=v1, style=filled, fillcolor=pink]
-     v2_w [label=v2]
-     v3_w [label=v3]
-     v4_w [label=v4]
-     v5_w [label=v5, style=filled, fillcolor=tan]
-     i0_w [label=i0]
-     i1_w [label=i1]
-     i2_w [label=i2]
-     i2_w [label=i2]
-     i1_w [label=i1]
-    }
-    subgraph cluster_3 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count(v1,v5)"
-     v0_x -- i0_x:n [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color="pink:invis:pink:invis:pink:invis:pink:invis:pink:invis:tan"]
-     v2_x -- i0_x:s [label=" ", penwidth=2.5, color="tan:invis:pink"]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color="pink:invis:pink:invis:pink:invis:tan:invis:tan:invis:tan"]
-     i1_x -- i2_x [label=" ", penwidth=2.5, color="pink:invis:pink:invis:tan:invis:tan"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     i2_x -- v4_x [label=" ", penwidth=2.5, color="pink:invis:tan"]
-     i1_x:n -- v5_x [label=" ", penwidth=2.5, color="pink:invis:tan:invis:tan:invis:tan:invis:tan:invis:tan"]
-     v0_x [label=v0]
-     v1_x [label=v1, style=filled, fillcolor=pink]
-     v2_x [label=v2]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     v5_x [label=v5, style=filled, fillcolor=tan]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-    subgraph cluster_1 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v5)"
-     v0_z -- i0_z [label=" ", penwidth=2.5, color=tan]
-     v1_z -- i0_z [label=" ", penwidth=2.5, color=tan]
-     v2_z -- i0_z [label=" ", penwidth=2.5, color=tan]
-     i0_z -- i1_z [label=" ", penwidth=2.5, color="tan:invis:tan:invis:tan"]
-     i1_z -- i2_z [label=" ", penwidth=2.5, color="tan:invis:tan"]
-     i2_z -- v3_z [label=" ", penwidth=2.5, color=tan]
-     i2_z -- v4_z [label=" ", penwidth=2.5, color=tan]
-     i1_z -- v5_z [label=" ", penwidth=2.5, color="tan:invis:tan:invis:tan:invis:tan:invis:tan"]
-     v0_z [label=v0]
-     v1_z [label=v1]
-     v2_z [label=v2]
-     v3_z [label=v3]
-     v4_z [label=v4]
-     v5_z [label=v5, style=filled, fillcolor=tan]
-     i0_z [label=i0]
-     i1_z [label=i1]
-     i2_z [label=i2]
-     i2_z [label=i2]
-     i1_z [label=i1]
-    }
-    subgraph cluster_2 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v1)"
-     v0_y -- i0_y [label=" ", penwidth=2.5, color=pink]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="pink:invis:pink:invis:pink:invis:pink:invis:pink"]
-     v2_y -- i0_y [label=" ", penwidth=2.5, color=pink]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="pink:invis:pink:invis:pink"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="pink:invis:pink"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color=pink]
-     i2_y -- v4_y [label=" ", penwidth=2.5, color=pink]
-     i1_y -- v5_y [label=" ", penwidth=2.5, color=pink]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=pink]
-     v2_y [label=v2]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-   }
-   ```
-
-   |                  | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
-   |------------------|---------|---------|---------|---------|---------|---------|---------|---------|
-   | edge_count(v1)   |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
-   | edge_count(v5)   |    3    |    2    |    1    |    1    |    1    |    1    |    1    |    5    |
-   | -4 * path(v1,v5) |   -4    |         |         |   -4    |         |         |         |   -4    |
-   |                  | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-   |                  |    2    |    4    |    2    |    2    |    2    |    2    |    2    |    2    |
-
-   Notice how (i0,i1) was reduced to 2 in the example above. It turns out that any internal edges in the path between the chosen pair get reduced to a count of 2, just like the chosen pair's limb counts.
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
-   python
-   # MARKDOWN_REDUCE_TO_2_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_REDUCE_TO_2_TEST
-   no_preamble
-   ```
-   
-   To understand why, consider what's happening in the example. For `edge_count(v1)`, notice how the count of each internal edge is consistent with the number of leaf nodes it leads to ...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_one {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v1)"
-     v0_x -- i0_x [label=" ", penwidth=2.5, color="#ff0300"]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00:invis:#42c000:invis:#818100:invis:#c04200:invis:#ff0300"]
-     v2_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00"]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100:invis:#c04200"]
-     i1_x -- i2_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="#42c000"]
-     i2_x -- v4_x [label=" ", penwidth=2.5, color="#818100"]
-     i1_x -- v5_x [label=" ", penwidth=2.5, color="#c04200"]
-     v0_x [label=v0, style=filled, fillcolor="#ff0300"]
-     v1_x [label=v1, penwidth=5]
-     v5_x [label=v5, style=filled, fillcolor="#c04200"]
-     v4_x [label=v4, style=filled, fillcolor="#818100"]
-     v3_x [label=v3, style=filled, fillcolor="#42c000"]
-     v2_x [label=v2, style=filled, fillcolor="#03ff00"]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-    }
-   }
-   ```
-
-   That is, `edge_count(v1)` counts the internal edge ...
-
-    * (i0,i1) 3 times, which is the number of nodes it leads to: [v5, v4, v3].
-    * (i1,i2) 2 times, which is the number of nodes it leads to: [v4, v3].
-   
-   Breaking an internal edge divides a tree into two sub-trees. In the case of (i1,i2), the tree separates into two sub-trees where the...
-   
-   * i1 side has 4 leaf nodes: [v0, v1, v2, v5].
-   * i2 side has 2 leaf nodes: [v4, v3].
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_one {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="sub-trees separated by (i1,i2)"
-     v0_x -- i0_x [label=" ", color=red]
-     v1_x -- i0_x [label=" ", color=red]
-     v2_x -- i0_x [label=" ", color=red]
-     i0_x -- i1_x [label=" ", color=red]
-     i1_x -- i2_x [label=" ", style=dashed]
-     i2_x -- v3_x [label=" ", color=blue]
-     i2_x -- v4_x [label=" ", color=blue]
-     i1_x -- v5_x [label=" ", color=red]
-     v0_x [label=v0, color=red]
-     v1_x [label=v1, color=red]
-     v2_x [label=v2, color=red]
-     v3_x [label=v3, color=blue]
-     v4_x [label=v4, color=blue]
-     v5_x [label=v5, color=red]
-     i0_x [label=i0, color=red]
-     i1_x [label=i1, color=red]
-     i2_x [label=i2, color=blue]
-     i2_x [label=i2, color=blue]
-    }
-   }
-   ```
-
-   Running `edge_count()` for any leaf node on the...
-
-   * i1 side will count (i1,i2) exactly 2 times (the number of leaf nodes on the i2 side).
-   * i2 side will count (i1,i2) exactly 4 times (the number of leaf nodes on the i1 side).
-
-   For example, since ...
-   
-   * v0 is on the i1 side, `edge_count(v0)` counts (i1,i2) 2 times.
-   * v1 is on the i1 side, `edge_count(v1)` counts (i1,i2) 2 times.
-   * v2 is on the i1 side, `edge_count(v2)` counts (i1,i2) 2 times.
-   * v3 is on the i2 side, `edge_count(v3)` counts (i1,i2) 4 times.
-   * v4 is on the i2 side, `edge_count(v4)` counts (i1,i2) 4 times.
-   * v5 is on the i1 side, `edge_count(v5)` counts (i1,i2) 2 times.
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
-   python
-   # MARKDOWN_SEGREGATE_BY_EDGE\s*\n([\s\S]+)\n\s*# MARKDOWN_SEGREGATE_BY_EDGE
-   no_preamble
-   ```
-
-   If the chosen pair are on opposite sides, `combine_edge_count()` will count (i1,i2) 6 times, which is the same number of times that the chosen pair's limbs get counted (the number of leaf nodes in the tree). For example, `combine_edge_count(v1,v3)` counts (i1,i2) 6 times, because v1 sits on the i1 side (adds 2 to the count) and v3 sits on the i2 side (adds 4 to the count)...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_3 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count(v1,v3)"
-     v0_x -- i0_x:n [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:brown"]
-     v2_x -- i0_x:s [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:brown:invis:brown:invis:brown"]
-     i1_x -- i2_x [label=" ", penwidth=2.5, color="orange:invis:orange:invis:brown:invis:brown:invis:brown:invis:brown"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="orange:invis:brown:invis:brown:invis:brown:invis:brown:invis:brown"]
-     i2_x:n -- v4_x [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     i1_x:n -- v5_x [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     v0_x [label=v0]
-     v1_x [label=v1, style=filled, fillcolor=orange]
-     v2_x [label=v2]
-     v3_x [label=v3, style=filled, fillcolor=brown]
-     v4_x [label=v4]
-     v5_x [label=v5]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-    }
-    subgraph cluster_1 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v3)"
-     v0_z -- i0_z [label=" ", penwidth=2.5, color=brown]
-     v1_z -- i0_z [label=" ", penwidth=2.5, color=brown]
-     v2_z -- i0_z [label=" ", penwidth=2.5, color=brown]
-     i0_z -- i1_z [label=" ", penwidth=2.5, color="brown:invis:brown:invis:brown"]
-     i1_z -- i2_z [label=" ", penwidth=2.5, color="brown:invis:brown:invis:brown:invis:brown"]
-     i2_z -- v3_z [label=" ", penwidth=2.5, color="brown:invis:brown:invis:brown:invis:brown:invis:brown"]
-     i2_z -- v4_z [label=" ", penwidth=2.5, color=brown]
-     i1_z -- v5_z [label=" ", penwidth=2.5, color=brown]
-     v0_z [label=v0]
-     v1_z [label=v1]
-     v2_z [label=v2]
-     v3_z [label=v3, style=filled, fillcolor=brown]
-     v4_z [label=v4]
-     v5_z [label=v5]
-     i0_z [label=i0]
-     i1_z [label=i1]
-     i2_z [label=i2]
-     i2_z [label=i2]
-    }
-    subgraph cluster_2 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="edge_count(v1)"
-     v0_y -- i0_y [label=" ", penwidth=2.5, color=orange]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange"]
-     v2_y -- i0_y [label=" ", penwidth=2.5, color=orange]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="orange:invis:orange"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color=orange]
-     i2_y -- v4_y [label=" ", penwidth=2.5, color=orange]
-     i1_y -- v5_y [label=" ", penwidth=2.5, color=orange]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=orange]
-     v2_y [label=v2]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-    }
-   }
-   ```
-
-   |                | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
-   |----------------|---------|---------|---------|---------|---------|---------|---------|---------|
-   | edge_count(v1) |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
-   | edge_count(v3) |    3    |    4    |    1    |    1    |    1    |    5    |    1    |    1    |
-   |                | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-   |                |    6    |    6    |    2    |    6    |    2    |    6    |    2    |    2    |
-
-   This will always be the case for any simple tree: If a chosen pair aren't neighbours, the path between them always travels over at least one internal edge. `combine_edge_count()` will always count each edge in the path `leaf_count` times. In the above example, path(v1,v3) travels over internal edges (i0,i1) and (i1,i2) and as such both those edges in addition to the limbs of v1 and v3 have a count of 6.
-   
-   Just like how `combine_edge_count_and_normalize()` reduces the counts of the chosen pair's limbs to 2, so will it reduce the count of the internal edges in the path of the chosen pair to 2. That is, all edges in the path between the chosen pair get reduced to a count of 2.
-
-   For example, path(v1,v3) has the edges [(v1,i0), (i0,i1), (i1, i2), (v3, i2)]. `combine_edge_count_and_normalize(v1,v3)` reduces the count of each edge in that path to 2 ...
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_4 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count_and_normalize(v1,v3)"
-     v0_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     v1_x -- i0_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     v2_x -- i0_x [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     i0_x -- i1_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     i1_x -- i2_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     i2_x -- v3_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     i2_x -- v4_x [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     i1_x -- v5_x [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     v0_x [label=v0]
-     v1_x [label=v1, style=filled, fillcolor=orange]
-     v2_x [label=v2]
-     v3_x [label=v3, style=filled, fillcolor=brown]
-     v4_x [label=v4]
-     v5_x [label=v5]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-    subgraph cluster_3 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="combine_edge_count(v1,v3)"
-     v0_y -- i0_y:n [label=" ", penwidth=2.5, color="orange:invis:brown"]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:brown"]
-     v2_y -- i0_y:s [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:brown:invis:brown:invis:brown"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="orange:invis:orange:invis:brown:invis:brown:invis:brown:invis:brown"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color="orange:invis:brown:invis:brown:invis:brown:invis:brown:invis:brown"]
-     i2_y:n -- v4_y [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     i1_y:n -- v5_y [label=" ", penwidth=2.5, color="brown:invis:orange"]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=orange]
-     v2_y [label=v2]
-     v3_y [label=v3, style=filled, fillcolor=brown]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-    }
-   }
-   ```
-
-   |                  | (i0,i1) | (i1,i2) | (v0,i0) | (v1,i0) | (v2,i0) | (v3,i2) | (v4,i2) | (v5,i1) |
-   |------------------|---------|---------|---------|---------|---------|---------|---------|---------|
-   | edge_count(v1)   |    3    |    2    |    1    |    5    |    1    |    1    |    1    |    1    |
-   | edge_count(v3)   |    3    |    4    |    1    |    1    |    1    |    5    |    1    |    1    |
-   | -4 * path(v1,v3) |   -4    |   -4    |         |   -4    |         |   -4    |         |         |
-   |                  | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-   |                  |    2    |    2    |    2    |    2    |    2    |    2    |    2    |    2    |
-
-   The ultimate idea is that, for any leaf node pair in a simple tree, `combine_edge_count_and_normalize()` will have a count of ...
-
-   * 2 for limbs.
-   * \> 2 for internal edges.
-   
-   In other words, internal edges are the only differentiating factor in `combine_edge_count_and_normalize()`'s result. Non-neighbouring pairs will have certain internal edge counts reduced to 2 while neighbouring pairs keep internal edge counts > 2. In a ...
-   
-   * worst case scenario, all internal edges get reduced to 2.
-   * best case scenario, all internal edges are kept > 2.
-   
-   The pair with the highest total count is guaranteed to be a neighbouring pair because lesser total counts may have had their internal edges reduced.
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeCountExplainer.py
-   python
-   # MARKDOWN_NEIGHBOUR_DETECT\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_DETECT
-   ```
-
-   ```{note}
-   The graph in the example run below is the same as the graph used above. It may look different because node positions may have shifted around.
-   ```
-
-   ```{ch7}
-   neighbour_detect.EdgeCountExplainer
-   [[v0,i0], [v1,i0], [v2,i0], [i0,i1], [i1,i2], [i2,v3], [i2,v4], [i1,v5]]
-   ```
-
-   This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.
-
-   In the edge count version on this algorithm, `edge_count()` gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is hit. In the edge weight multiplicity version, instead of counting how many times each edge gets traversed, each time an edge gets traversed it increases the multiplicity of its weight ...
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
-   python
-   # MARKDOWN_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_EDGE_MULTIPLE
-   no_preamble
-   ```
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    fontname="Courier-Bold"
-    fontsize=10
-    ranksep=0.25
-    subgraph cluster_three {
-     label="edge_multiple(v1)"
-     v0_z -- i0_z [label="(1*11)\n11"]
-     v1_z -- i0_z [label="(5*2)\n10"]
-     v2_z -- i0_z [label="(1*10)\n10"]
-     i0_z -- i1_z [label="(3*4)\n12"]
-     i1_z -- i2_z [label="(2*3)\n6"]
-     i2_z -- v3_z [label="(1*3)\n3"]
-     i2_z -- v4_z [label="(1*4)\n4"]
-     i1_z -- v5_z [label="(1*7)\n7"]
-     v0_z [label=v0]
-     v1_z [label=v1, penwidth=5]
-     v2_z [label=v2]
-     v3_z [label=v3]
-     v4_z [label=v4]
-     v5_z [label=v5]
-     i0_z [label=i0]
-     i1_z [label=i1]
-     i2_z [label=i2]
-     i2_z [label=i2]
-     i1_z [label=i1]
-    }
-    subgraph cluster_two {
-     label="edge_count(v1)"
-     v0_y -- i0_y [label=" ", penwidth=2.5, color="#ff0300"]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="#03ff00:invis:#42c000:invis:#818100:invis:#c04200:invis:#ff0300"]
-     v2_y -- i0_y [label=" ", penwidth=2.5, color="#03ff00"]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="#42c000:invis:#818100:invis:#c04200"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="#42c000:invis:#818100"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color="#42c000"]
-     i2_y -- v4_y [label=" ", penwidth=2.5, color="#818100"]
-     i1_y -- v5_y [label=" ", penwidth=2.5, color="#c04200"]
-     v0_y [label=v0, style=filled, fillcolor="#ff0300"]
-     v1_y [label=v1, penwidth=5]
-     v5_y [label=v5, style=filled, fillcolor="#c04200"]
-     v4_y [label=v4, style=filled, fillcolor="#818100"]
-     v3_y [label=v3, style=filled, fillcolor="#42c000"]
-     v2_y [label=v2, style=filled, fillcolor="#03ff00"]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-    }
-    subgraph cluster_one {
-     label="original"
-     v0_x -- i0_x [label=11]
-     v1_x -- i0_x [label=2]
-     v2_x -- i0_x [label=10]
-     i0_x -- i1_x [label=4]
-     i1_x -- i2_x [label=3]
-     i2_x -- v3_x [label=3]
-     i2_x -- v4_x [label=4]
-     i1_x -- v5_x [label=7]
-     v0_x [label=v0]
-     v1_x [label=v1]
-     v2_x [label=v2]
-     v3_x [label=v3]
-     v4_x [label=v4]
-     v5_x [label=v5]
-     i0_x [label=i0]
-     i1_x [label=i1]
-     i2_x [label=i2]
-     i2_x [label=i2]
-     i1_x [label=i1]
-    }
-   }
-   ```
-
-   |                   | (i0,i1) | (i1,i2) | (v0,i0)  | (v1,i0) | (v2,i0)  | (v3,i2) | (v4,i2) | (v5,i1) |
-   |-------------------|---------|---------|----------|---------|----------|---------|---------|---------|
-   | edge_count(v1)    | 3       | 2       | 1        | 5       | 1        | 1       | 1       | 1       |
-   | edge_multiple(v1) | 3\*4=12 | 2\*3=6  | 1\*11=11 | 5\*2=10 | 1\*10=10 | 1\*3=3  | 1\*4=4  | 1\*7=7  |
-
-   Similarly, where in the edge count version `combine_edge_count()` adds together the `edge_count()`s for two leaf nodes, the edge weight multiplicity version should add together the `edge_multiple()`s for two leaf nodes instead...
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
-   python
-   # MARKDOWN_COMBINE_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE_EDGE_MULTIPLE
-   no_preamble
-   ```
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    fontname="Courier-Bold"
-    fontsize=10
-    subgraph cluster_three {
-     label="combine_edge_multiple(v1,v2)"
-     v0_z -- i0_z [label="(2*11)\n22"]
-     v1_z -- i0_z [label="(6*2)\n12"]
-     v2_z -- i0_z [label="(6*10)\n60"]
-     i0_z -- i1_z [label="(6*4)\n24"]
-     i1_z -- i2_z [label="(4*3)\n12"]
-     i2_z -- v3_z [label="(2*3)\n6"]
-     i2_z -- v4_z [label="(2*4)\n8"]
-     i1_z -- v5_z [label="(2*7)\n14"]
-     v0_z [label=v0]
-     v1_z [label=v1, penwidth=5]
-     v2_z [label=v2, penwidth=5]
-     v3_z [label=v3]
-     v4_z [label=v4]
-     v5_z [label=v5]
-     i0_z [label=i0]
-     i1_z [label=i1]
-     i2_z [label=i2]
-     i2_z [label=i2]
-     i1_z [label=i1]
-    }
-    subgraph cluster_two {
-     label="combine_edge_count(v1,v2)"
-     v0_y -- i0_y:n [label=" ", penwidth=2.5, color="orange:invis:purple"]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:purple:invis:purple:invis:orange"]
-     v2_y -- i0_y:s [label=" ", penwidth=2.5, color="orange:invis:orange:invis:orange:invis:orange:invis:orange:invis:purple"]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange:invis:orange:invis:orange"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i2_y -- v4_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i1_y -- v5_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=purple]
-     v2_y [label=v2, style=filled, fillcolor=orange]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-   }
-   ```
-
-   |                           | (i0,i1) | (i1,i2) | (v0,i0)  | (v1,i0) | (v2,i0)  | (v3,i2) | (v4,i2) | (v5,i1) |
-   |---------------------------|---------|---------|----------|---------|----------|---------|---------|---------|
-   | combine_edge_count(v1)    | 6       | 4       | 2        | 6       | 6        | 2       | 2       | 2       |
-   | combine_edge_multiple(v1) | 6\*4=24 | 4\*3=12 | 2\*11=22 | 6\*2=20 | 6\*10=60 | 2\*3=6  | 2\*4=8  | 2\*7=14 |
-
-   Similarly, where in the edge count version `combine_edge_count_and_normalize()` reduces all limbs and possibly some internals edges from `combine_edge_count()` to a count of 2, the edge multiplicity version reduces weights for those same limbs and edges to a multiple of 2...
-
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
-   python
-   # MARKDOWN_NORMALIZED_COMBINE_EDGE_MULTIPLE\s*\n([\s\S]+)\n\s*# MARKDOWN_NORMALIZED_COMBINE_EDGE_MULTIPLE
-   no_preamble
-   ```
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    fontname="Courier-Bold"
-    fontsize=10
-    subgraph cluster_three {
-     label="combine_edge_multiple_and_normalize(v1,v2)"
-     v0_z -- i0_z [label="(2*11)\n22"]
-     v1_z -- i0_z [label="(2*2)\n4"]
-     v2_z -- i0_z [label="(2*10)\n20"]
-     i0_z -- i1_z [label="(6*4)\n24"]
-     i1_z -- i2_z [label="(4*3)\n12"]
-     i2_z -- v3_z [label="(2*3)\n6"]
-     i2_z -- v4_z [label="(2*4)\n8"]
-     i1_z -- v5_z [label="(2*7)\n14"]
-     v0_z [label=v0]
-     v1_z [label=v1, penwidth=5]
-     v2_z [label=v2, penwidth=5]
-     v3_z [label=v3]
-     v4_z [label=v4]
-     v5_z [label=v5]
-     i0_z [label=i0]
-     i1_z [label=i1]
-     i2_z [label=i2]
-     i2_z [label=i2]
-     i1_z [label=i1]
-    }
-    subgraph cluster_two {
-     label="combine_edge_count_and_normalize(v1,v2)"
-     v0_y -- i0_y [label=" ", penwidth=2.5, color="orange:invis:purple"]
-     v1_y -- i0_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     v2_y -- i0_y [label=" ", penwidth=2.5, color="orange:invis:purple"]
-     i0_y -- i1_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:purple:invis:orange:invis:orange:invis:orange"]
-     i1_y -- i2_y [label=" ", penwidth=2.5, color="purple:invis:purple:invis:orange:invis:orange"]
-     i2_y -- v3_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i2_y -- v4_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     i1_y -- v5_y [label=" ", penwidth=2.5, color="purple:invis:orange"]
-     v0_y [label=v0]
-     v1_y [label=v1, style=filled, fillcolor=purple]
-     v2_y [label=v2, style=filled, fillcolor=orange]
-     v3_y [label=v3]
-     v4_y [label=v4]
-     v5_y [label=v5]
-     i0_y [label=i0]
-     i1_y [label=i1]
-     i2_y [label=i2]
-     i2_y [label=i2]
-     i1_y [label=i1]
-    }
-   }
-   ```
-
-   |                                            | (i0,i1) | (i1,i2) | (v0,i0)  | (v1,i0) | (v2,i0)  | (v3,i2) | (v4,i2) | (v5,i1) |
-   |--------------------------------------------|---------|---------|----------|---------|----------|---------|---------|---------|
-   | combine_edge_count_and_normalize(v1,v2)    | 6       | 4       | 2        | 2       | 2        | 2       | 2       | 2       |
-   | combine_edge_multiple_and_normalize(v1,v2) | 6\*4=24 | 4\*3=12 | 2\*11=22 | 2\*2=20 | 2\*10=60 | 2\*3=6  | 2\*4=8  | 2\*7=14 |
-
-   Similar to `combine_edge_count_and_normalize()`, for any leaf node pair in a simple tree `combine_edge_multiple_and_normalize()` will have a *multiple* of ...
-
-   * 2 for limbs.
-   * \> 2 for internal edges.
-   
-   In other words, internal edge multiples are the only differentiating factor in `combine_edge_count_and_normalize()`'s result. Non-neighbouring pairs will have certain internal edge multiples reduced to 2 while neighbouring pairs keep internal edge multiples > 2. In a ...
-   
-   * worst case scenario, all internal edge multiples get reduced to 2.
-   * best case scenario, all internal edge multiples are kept > 2.
-   
-   The pair with the highest combined multiple is guaranteed to be a neighbouring pair because lesser combined multiples may have had their internal edge multiples reduced.
-   
-   ```{output}
-   ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py
-   python
-   # MARKDOWN_NEIGHBOUR_DETECT\s*\n([\s\S]+)\n\s*# MARKDOWN_NEIGHBOUR_DETECT
-   ```
-
-   ```{note}
-   The graph in the example run below is the same as the graph used above. It may look different because node positions may have shifted around.
-   ```
-
-   ```{ch7}
-   neighbour_detect.EdgeMultiplicityExplainer
-   [[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i2,v4,4], [i1,v5,7]]
-   ```
-
-   The matrix produced in the example above is called a neighbour joining matrix. The summation of `combine_edge_multiple_and_normalize()` performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that `combine_edge_multiple_and_normalize(v1,v2)` in the example graph breaks down to `edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)`. The sum of ...
-  
-   * `edge_multiple(v1)` breaks down to...
-   
-     ```
-     dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5)
-     ```
-   * `edge_multiple(v2)` breaks down to...
-   
-     ```
-     dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
-     ```
-   * `combine_edge_multiple(v2)` is simply the sum of the two summations above:
-   
-     ```
-     dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
-     dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
-     ```
-   *  `combine_edge_multiple_and_normalize(v1,v2)` is simply the above summation but with `dist(v1,v2)` removed 4 times:
-   
-     ```
-     dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
-     dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5) -
-     dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
-     ```
-
-   Since only leaf node distances are being used in the summation calculation, a distance matrix suffices as the input. The actual simple tree isn't required.
-
-   ```{output}
-   ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py
-   python
-   # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-   ```
-
-   ```{ch7}
-   neighbour_detect.NeighbourJoiningMatrix
-   [[0,13,21,21,22,22],[13,0,12,12,13,13],[21,12,0,20,21,21],[21,12,20,0,7,13],[22,13,21,7,0,14],[22,13,21,13,14,0]]
-   ```
 
  * `{bm} neighbour joining phylogeny` - An algorithm that finds the unique simple tree for some  OR approximates a simple tree for a non-additive distance matrix.
 

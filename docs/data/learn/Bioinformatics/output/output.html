@@ -147,11 +147,11 @@
 <li><a href="#H_Linear%20System%20Algorithm">Linear System Algorithm</a></li>
 </ul>
 <li><a href="#H_Limb%20Length">Limb Length</a></li>
-<li><a href="#H_Same%20Subtree%20Detection">Same Subtree Detection</a></li>
+<li><a href="#H_Same%20Subtree%20Test">Same Subtree Test</a></li>
 <li><a href="#H_Trim">Trim</a></li>
 <li><a href="#H_Bald">Bald</a></li>
 <li><a href="#H_Un-trim%20Tree">Un-trim Tree</a></li>
-<li><a href="#H_Neighbour%20Detection">Neighbour Detection</a></li>
+<li><a href="#H_Find%20Neighbours">Find Neighbours</a></li>
 <li><a href="#H_Distance%20Matrix%20to%20Tree">Distance Matrix to Tree</a></li>
 <ul>
 <li><a href="#H_UPGMA%20Algorithm">UPGMA Algorithm</a></li>
@@ -9842,7 +9842,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
+<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -10355,9 +10355,9 @@ dist(S3, S4) is 5 = x + u + z
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: A <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> in the following graph are highlighted in red...</p>
+<p><strong>WHAT</strong>: A <a href="#BM_(limb)%2Fi">limb</a> is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the <a href="#BM_(limb)%2Fi">limb</a>s in the following graph are highlighted in red...</p>
 <p><img src="dot_6ce5e7586348dfe441bdf5856c3f5877.svg" alt="Dot diagram"></p>
-<p>The weight for a leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is referred to as its <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. For example, in the diagram above the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for node v1 is 2.</p>
+<p>The weight for a leaf node's <a href="#BM_(limb)%2Fi">limb</a> is referred to as its <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. For example, in the diagram above the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for node v1 is 2.</p>
 <p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. Compute the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of any leaf node in that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> just from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, the distances between leaf nodes provide enough information to derive the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for any / all leaf nodes.</p>
 <p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -10453,7 +10453,7 @@ dist(S3, S4) is 5 = x + u + z
 <p><img src="dot_276f3df9c3fc7d23f14a0984964d0686.svg" alt="Dot diagram"></p>
 <p>Now, consider the paths between each of the two nodes in the path above (v1 and v5) and v2: <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> ...</p>
 <p><img src="dot_188fe43ede6da8ad09ce44fa84eabf77.svg" alt="Dot diagram"></p>
-<p>Notice how the edges highlighted between <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> and <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> would be the same had it not been for the two highlights on v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a>. Adding <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i0)</span> to <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> makes it so that so that each edge is highlighted an equal number of times ...</p>
+<p>Notice how the edges highlighted between <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> and <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> would be the same had it not been for the two highlights on v2's <a href="#BM_(limb)%2Fi">limb</a>. Adding <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i0)</span> to <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> makes it so that so that each edge is highlighted an equal number of times ...</p>
 <p><img src="dot_be3424051e002c75fa44c9de8ac7357c.svg" alt="Dot diagram"></p>
 <p><span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> = <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> + <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i1)</span></p>
 <p>Contrast the above to what happens when the pair of leaf nodes selected DOESN'T travel through v2's parent. For example, <span style="background-color: purple; color: white; padding: 3px">path(v4,v5)</span> doesn't travel through v2's parent ...</p>
@@ -10489,7 +10489,7 @@ dist(S3, S4) is 5 = x + u + z
 dist(L,A) + dist(L,B) - dist(A,B) = 2 * dist(L,Lp)
 (dist(L,A) + dist(L,B) - dist(A,B)) / 2 = dist(L,Lp)
 </code></pre>
-<p>The following is a conceptualization of the isolation of dist(L,Lp) happening above using the initial equality example from above. Notice how, in the end, v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is highlighted exactly once and nothing else.</p>
+<p>The following is a conceptualization of the isolation of dist(L,Lp) happening above using the initial equality example from above. Notice how, in the end, v2's <a href="#BM_(limb)%2Fi">limb</a> is highlighted exactly once and nothing else.</p>
 <p><img src="dot_1389434a06935635f2c2e770e16c4f9b.svg" alt="Dot diagram"></p>
 </li>
 <li>
@@ -10498,17 +10498,17 @@ dist(L,A) + dist(L,B) - dist(A,B) = 2 * dist(L,Lp)
 dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 (dist(L,A) + dist(L,B) - dist(A,B)) / 2 &gt; dist(L,Lp)
 </code></pre>
-<p>The following is a conceptualization of the isolation of dist(L,Lp) happening above using the initial inequality example from above. Notice how, in the end, v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is highlighted exactly once but other edges are also highlighted. That's why it's &gt; instead of =.</p>
+<p>The following is a conceptualization of the isolation of dist(L,Lp) happening above using the initial inequality example from above. Notice how, in the end, v2's <a href="#BM_(limb)%2Fi">limb</a> is highlighted exactly once but other edges are also highlighted. That's why it's &gt; instead of =.</p>
 <p><img src="dot_66d2d6f69068280ec2da42d67ed43479.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <p>Notice the left-hand side of both solved formulas are the same: (dist(L,A) + dist(L,B) - dist(A,B)) / 2</p>
-<p>The algorithm for finding <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is essentially an exhaustive test. Of all leaf node pairs (L not included), the one producing the smallest left-hand side result is guaranteed to the be L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. Anything larger will include weights from more edges than just L's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a>.</p>
+<p>The algorithm for finding <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is essentially an exhaustive test. Of all leaf node pairs (L not included), the one producing the smallest left-hand side result is guaranteed to the be L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. Anything larger will include weights from more edges than just L's <a href="#BM_(limb)%2Fi">limb</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>From the book:</p>
 <blockquote>
-<p>Exercise Break: The algorithm proposed on the previous step computes LimbLength(j) in O(n2) time (for an n x n <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>). Design an algorithm that computes LimbLength(j) in O(n) time.</p>
+<p>Exercise Break: The algorithm proposed on the previous step computes <a href="#BM_(limb)%2Fi">Limb</a>Length(j) in O(n2) time (for an n x n <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>). Design an algorithm that computes <a href="#BM_(limb)%2Fi">Limb</a>Length(j) in O(n) time.</p>
 </blockquote>
 <p>The answer to this is obvious now that I've gone through and reasoned about things above.</p>
 <p>For the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> formula to work, you need to find leaf nodes (A, B) whose path travels through leaf node L's parent (Lp). Originally, the book had you try all combination of leafs (L excluded) and take the minimum. That works, but you don't need to try all possible pairs. Instead, you can just pick any leaf (that isn't L) for A and test against every other node (that isn't L) to find B -- as with the original method, you pick the B that produces the minimum value.</p>
@@ -10619,8 +10619,8 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p>The limb for leaf node 2 in its unique simple tree has a weight of 5.0</p>
 </div>
 <p></p>
-<a name="H_Same%20Subtree%20Detection"></a><h3>Same Subtree Detection</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Detection)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Same%20Subtree%20Test"></a><h3>Same Subtree Test</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Test)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -10870,7 +10870,7 @@ different subtrees.</p>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Remove a <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, just as it would get removed from its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
+<p><strong>WHAT</strong>: Remove a <a href="#BM_(limb)%2Fi">limb</a> from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, just as it would get removed from its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
 <p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Recall that for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is unique to the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
@@ -10953,7 +10953,7 @@ different subtrees.</p>
 <li><a href="#BM_(simple%20tree)%2Fi">simple tree</a> merges path(i0, v2) into a single edge. <a href="#BM_(simple%20tree)%2Fi">Simple tree</a>s can't have nodes with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (train of non-branching edges not allowed).</li>
 <li><a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> row and column for v3 disappear. All other leaf nodes remain with the same distances.</li>
 </ul>
-<p>As such, removing the row and column for some leaf node in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to removing its <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> from the corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> then merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
+<p>As such, removing the row and column for some leaf node in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to removing its <a href="#BM_(limb)%2Fi">limb</a> from the corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> then merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
 <p><a href="ch7_code/src/phylogeny/Trimmer.py">ch7_code/src/phylogeny/Trimmer.py</a> (lines 17 to 28):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">trim_distance_matrix</span>(<span class="hljs-params">dm: DistanceMatrix, leaf: N</span>) -&gt; <span class="hljs-literal">None</span>:</span>
     dm.delete(leaf)  <span class="hljs-comment"># remove row+col for leaf</span>
@@ -11270,7 +11270,7 @@ different subtrees.</p>
 </tbody>
 </table>
 <p>Where as v5 was originally contributing 7 to distances, after balding it contributes 0.</p>
-<p>As such, subtracting some leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> from its distances in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to balding that leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> in its corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
+<p>As such, subtracting some leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> from its distances in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to balding that leaf node's <a href="#BM_(limb)%2Fi">limb</a> in its corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
 <p><a href="ch7_code/src/phylogeny/Balder.py">ch7_code/src/phylogeny/Balder.py</a> (lines 16 to 29):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bald_distance_matrix</span>(<span class="hljs-params">dm: DistanceMatrix, leaf: N</span>) -&gt; <span class="hljs-literal">None</span>:</span>
     limb_len = find_limb_length(dm, leaf)
@@ -11434,7 +11434,7 @@ different subtrees.</p>
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Limb Length</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Detection)_TOPIC%2F">Algorithms/Distance Phylogeny/Same Subtree Detection</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Test)_TOPIC%2F">Algorithms/Distance Phylogeny/Same Subtree Test</a></li>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim)_TOPIC%2F">Algorithms/Distance Phylogeny/Trim</a></li>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
 </ul>
@@ -11442,9 +11442,9 @@ different subtrees.</p>
 <p><strong>WHAT</strong>: Given an ...</p>
 <ol>
 <li><a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> for <a href="#BM_(simple%20tree)%2Fi">simple tree</a> T</li>
-<li><a href="#BM_(simple%20tree)%2Fi">simple tree</a> T with <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> L <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">trimmed</a> off</li>
+<li><a href="#BM_(simple%20tree)%2Fi">simple tree</a> T with <a href="#BM_(limb)%2Fi">limb</a> L <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">trimmed</a> off</li>
 </ol>
-<p>... this algorithm determines where <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> L should be added in the given <a href="#BM_(simple%20tree)%2Fi">simple tree</a> such that it fits the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> would map to the following <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> had v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> branched out from some specific location...</p>
+<p>... this algorithm determines where <a href="#BM_(limb)%2Fi">limb</a> L should be added in the given <a href="#BM_(simple%20tree)%2Fi">simple tree</a> such that it fits the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> would map to the following <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> had v2's <a href="#BM_(limb)%2Fi">limb</a> branched out from some specific location...</p>
 <p><img src="dot_d59e5cc5d23e349cc4668d23c9e4f80c.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11487,7 +11487,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>That specific location is what this algorithm determines. It could be that v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> needs to branch from either ...</p>
+<p>That specific location is what this algorithm determines. It could be that v2's <a href="#BM_(limb)%2Fi">limb</a> needs to branch from either ...</p>
 <ul>
 <li>
 <p>an internal node ...</p>
@@ -11500,7 +11500,7 @@ different subtrees.</p>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Attaching a new <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> to an existing leaf node is never possible because...</p>
+<p>Attaching a new <a href="#BM_(limb)%2Fi">limb</a> to an existing leaf node is never possible because...</p>
 <ol>
 <li>it'll turn that existing leaf node to an internal node, which doesn't make sense because in the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s leaf nodes identify known entities.</li>
 <li>it will cease to be a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> -- <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (train of edges not allowed).</li>
@@ -11509,7 +11509,7 @@ different subtrees.</p>
 <p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p> <!-- Needs to be disabled because v5's is conflicting with 5' --></p>
-<p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> below would fit the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> below had v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> been added to it somewhere ...</p>
+<p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> below would fit the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> below had v5's <a href="#BM_(limb)%2Fi">limb</a> been added to it somewhere ...</p>
 <p><img src="dot_474a7e4cf5bc49a86d6321e9fb6ca532.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11589,9 +11589,9 @@ different subtrees.</p>
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Recall that same subset algorithm says that two leaf nodes in DIFFERENT subsets are guaranteed to travel over v5's parent.</p>
 </div>
-<p>The key to this algorithm is figuring out where along that path (v0 to v3) v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> (<a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 7) should be injected. Imagine that you already had the answer in front of you: v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> should be added 4 units from i0 towards i2 ...</p>
+<p>The key to this algorithm is figuring out where along that path (v0 to v3) v5's <a href="#BM_(limb)%2Fi">limb</a> (<a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 7) should be injected. Imagine that you already had the answer in front of you: v5's <a href="#BM_(limb)%2Fi">limb</a> should be added 4 units from i0 towards i2 ...</p>
 <p><img src="dot_7fd5d55328c43bca2193b9548728df02.svg" alt="Dot diagram"></p>
-<p>Consider the answer above with v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
+<p>Consider the answer above with v5's <a href="#BM_(limb)%2Fi">limb</a> <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
 <p><img src="dot_782638a05800732e25c548f888d031b4.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11684,9 +11684,9 @@ different subtrees.</p>
     bald_distance_matrix(balded_dist_mat, to_leaf_node)
     <span class="hljs-keyword">return</span> balded_dist_mat[from_leaf_node, to_leaf_node]
 </code></pre>
-<p>In the original <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, walking a distance of 15 on the path from v0 to v3 takes you to where v5's parent should be. Since there is no internal node there, one is first added by breaking the edge before attaching v5's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> to it ...</p>
+<p>In the original <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, walking a distance of 15 on the path from v0 to v3 takes you to where v5's parent should be. Since there is no internal node there, one is first added by breaking the edge before attaching v5's <a href="#BM_(limb)%2Fi">limb</a> to it ...</p>
 <p><img src="dot_b37fe50f63d1a3ab5722ac6b80a41430.svg" alt="Dot diagram"></p>
-<p>Had there been an internal node already there, the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> would get attached to that existing internal node.</p>
+<p>Had there been an internal node already there, the <a href="#BM_(limb)%2Fi">limb</a> would get attached to that existing internal node.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk_until_distance</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, <span class="hljs-built_in">float</span>],
         n_start: N,
@@ -11830,26 +11830,21 @@ different subtrees.</p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
-<a name="H_Neighbour%20Detection"></a><h3>Neighbour Detection</h3>
-<p><strong>WHAT</strong>: Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, find a pair of nodes guaranteed to be neighbours in the corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (shared parent). In addition, for non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>, this algorithm approximates a pair of nodes that may be neighbours.</p>
-<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> / approximates a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<a name="H_Find%20Neighbours"></a><h3>Find Neighbours</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>WHAT</strong>: Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, find a pair of leaf nodes guaranteed to be neighbours (shared parent) in its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>For non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>, this algorithm finds a pair of nodes that are approximately neighbours.</p>
+</div>
+<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
-<p>TODO: MAKE SURE THIS IS GOOD, THEN DELETE NEIGHBOUR DETECT IN TERMINOLOGY.</p>
 <p>The algorithm essentially boils down to edge counting. Consider the following example <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
-<p>If you were to choose a leaf node and gather the paths from that leaf node to all other leaf nodes, the number of times ...</p>
+<p>If you were to choose a leaf node, then gather the paths from that leaf node to all other leaf nodes, the <a href="#BM_(limb)%2Fi">limb</a> for ...</p>
 <ul>
-<li>the chosen leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> will get encountered is <code>leaf_count - 1</code> times.</li>
-<li>every other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> will get encountered is 1 time.</li>
+<li>the chosen leaf node gets encountered  <code>leaf_count - 1</code> times.</li>
+<li>each non-chosen leaf node gets encountered once.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">edge_count</span>(<span class="hljs-params">self, l1: N</span>) -&gt; Counter[E]:</span>
     <span class="hljs-comment"># Collect paths from l1 to all other leaf nodes</span>
@@ -11866,7 +11861,7 @@ different subtrees.</p>
     <span class="hljs-comment"># Return edge counts</span>
     <span class="hljs-keyword">return</span> edge_counts
 </code></pre>
-<p>For example, given that the <a href="#BM_(tree)%2Fi">tree</a> has 6 leaf nodes, <code>edge_count(v1)</code> counts v1's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 5 times while all other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> are counted once...</p>
+<p>For example, given that the <a href="#BM_(tree)%2Fi">tree</a> has 6 leaf nodes, <code>edge_count(v1)</code> counts v1's <a href="#BM_(limb)%2Fi">limb</a> 5 times while all other <a href="#BM_(limb)%2Fi">limb</a>s are counted once...</p>
 <p><img src="dot_be00dd5022c82978ec0451b8a93c238a.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11896,17 +11891,17 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>If you were to choose a pair of leaf nodes and add their <code>edge_count()</code>s together, ...</p>
+<p>If you were to choose a pair of leaf nodes and add their <code>edge_count()</code>s together, the <a href="#BM_(limb)%2Fi">limb</a> for ...</p>
 <ul>
-<li>the pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> get counted <code>leaf_count</code> times.</li>
-<li>every other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> gets counted 2 times.</li>
+<li>each chosen leaf node gets encountered  <code>leaf_count</code> times.</li>
+<li>each non-chosen leaf node gets encountered twice.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_edge_count</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:</span>
     c1 = self.edge_count(l1)
     c2 = self.edge_count(l2)
     <span class="hljs-keyword">return</span> c1 + c2
 </code></pre>
-<p>For example, <code>combine_edge_count(v1,v2)</code> counts v1's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 6 times, v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 6 times, and every other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 2 times ...</p>
+<p>For example, <code>combine_edge_count(v1,v2)</code> counts v1's <a href="#BM_(limb)%2Fi">limb</a> 6 times, v2's <a href="#BM_(limb)%2Fi">limb</a> 6 times, and every other <a href="#BM_(limb)%2Fi">limb</a> 2 times ...</p>
 <p><img src="dot_980ac0c4600f11bdf470191f270e14f3.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11969,7 +11964,8 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>The key to this algorithm is to normalize the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts returned by <code>combine_counts()</code> such that each <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> for the chosen pair matches (<code>leaf_count</code>) has the same count as the other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> (2). To do this, each edge in the path between the chosen pair must be subtracted <code>leaf_count - 2</code> times from <code>combine_edge_count()</code>'s result.</p>
+<p>The key to this algorithm is to normalize <a href="#BM_(limb)%2Fi">limb</a> counts returned by <code>combine_counts()</code> such that the each chosen <a href="#BM_(limb)%2Fi">limb</a>'s count equals to each non-chosen <a href="#BM_(limb)%2Fi">limb</a>'s count. That is, each chosen <a href="#BM_(limb)%2Fi">limb</a> count needs to be reduced from <code>leaf_count</code> to 2.</p>
+<p>To do this, each edge in the path between the chosen pair must be subtracted <code>leaf_count - 2</code> times from <code>combine_edge_count()</code>'s result.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_edge_count_and_normalize</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:</span>
     edge_counts = self.combine_edge_count(l1, l2)
     path_edges = self.path(l1, l2)
@@ -11977,7 +11973,7 @@ different subtrees.</p>
         edge_counts[e] -= self.leaf_count - <span class="hljs-number">2</span>
     <span class="hljs-keyword">return</span> edge_counts
 </code></pre>
-<p>Continuing with the example above, the chosen pair (v1 and v2) each have a <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> count of 6 while all other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> have a count of 2. <code>combine_edge_count_and_normalize(v1,v2)</code> subtracts each edge in path(v1,v2) 4 times from the counts...</p>
+<p>Continuing with the example above, the chosen pair (v1 and v2) each have a <a href="#BM_(limb)%2Fi">limb</a> count of 6 while all other <a href="#BM_(limb)%2Fi">limb</a>s have a count of 2. <code>combine_edge_count_and_normalize(v1,v2)</code> subtracts each edge in path(v1,v2) 4 times from the counts...</p>
 <p><img src="dot_df662efca0290cfec12e5b3356609f34.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -12053,8 +12049,8 @@ different subtrees.</p>
 </table>
 <p>The insight here is that, if the chosen pair ...</p>
 <ul>
-<li>are neighbours, the path between them will only ever have 2 edges: their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>.</li>
-<li>aren't neighbours, the path between them will have more than 2 edges: their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> AND internal edges.</li>
+<li>are neighbours, the path between them will only ever have 2 edges: their <a href="#BM_(limb)%2Fi">limb</a>s.</li>
+<li>aren't neighbours, the path between them will have more than 2 edges: their <a href="#BM_(limb)%2Fi">limb</a>s AND internal edges.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_check</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
     path_edges = self.path(l1, l2)
@@ -12062,11 +12058,11 @@ different subtrees.</p>
 </code></pre>
 <p>For example, ...</p>
 <ul>
-<li>v1 and v2 are neighbours and as such path(v1,v2) contains only their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>: [(v1,i0), (v2,i0)].</li>
-<li>v1 and v5 aren't neighbours and as such path(v1,v5) has internal edges in addition to their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>: [(v1,i0), (i0,i1), (v5,i1)].</li>
+<li>v1 and v2 are neighbours and as such path(v1,v2) contains only their <a href="#BM_(limb)%2Fi">limb</a>s: [(v1,i0), (v2,i0)].</li>
+<li>v1 and v5 aren't neighbours and as such path(v1,v5) has internal edges in addition to their <a href="#BM_(limb)%2Fi">limb</a>s: [(v1,i0), (i0,i1), (v5,i1)].</li>
 </ul>
 <p><img src="dot_5a3df09ff196ebbf702909f1cb634c93.svg" alt="Dot diagram"></p>
-<p>That means if the pair aren't neighbours, <code>combine_edge_count_and_normalize()</code> will normalize <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts for the pair in addition to reducing internal edge counts. For example, since v1 and v5 aren't neighbours, <code>combine_edge_count_and_normalize(v1,v5)</code> subtracts 4 from the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts of v1 and v5 as well as (i0,i1)'s count ...</p>
+<p>That means if the pair aren't neighbours, <code>combine_edge_count_and_normalize()</code> will normalize <a href="#BM_(limb)%2Fi">limb</a> counts for the pair in addition to reducing internal edge counts. For example, since v1 and v5 aren't neighbours, <code>combine_edge_count_and_normalize(v1,v5)</code> subtracts 4 from the <a href="#BM_(limb)%2Fi">limb</a> counts of v1 and v5 as well as (i0,i1)'s count ...</p>
 <p><img src="dot_88d8e6262e9c3de072f7484bf17ab489.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -12140,7 +12136,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>Notice how (i0,i1) was reduced to 2 in the example above. It turns out that any internal edges in the path between the chosen pair get reduced to a count of 2, just like the chosen pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts.</p>
+<p>Notice how (i0,i1) was reduced to 2 in the example above. It turns out that any internal edges in the path between the chosen pair get reduced to a count of 2, just like the chosen pair's <a href="#BM_(limb)%2Fi">limb</a> counts.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reduced_to_2_check</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
     p = self.path(l1, l2)
     c = self.combine_edge_count_and_normalize(l1, l2)
@@ -12188,7 +12184,7 @@ different subtrees.</p>
             leaf_to_end[l1] = e2
     <span class="hljs-keyword">return</span> leaf_to_end
 </code></pre>
-<p>If the chosen pair are on opposite sides, <code>combine_edge_count()</code> will count (i1,i2) 6 times, which is the same number of times that the chosen pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> get counted (the number of leaf nodes in the <a href="#BM_(tree)%2Fi">tree</a>). For example, <code>combine_edge_count(v1,v3)</code> counts (i1,i2) 6 times, because v1 sits on the i1 side (adds 2 to the count) and v3 sits on the i2 side (adds 4 to the count)...</p>
+<p>If the chosen pair are on opposite sides, <code>combine_edge_count()</code> will count (i1,i2) 6 times, which is the same number of times that the chosen pair's <a href="#BM_(limb)%2Fi">limb</a>s get counted (the number of leaf nodes in the <a href="#BM_(tree)%2Fi">tree</a>). For example, <code>combine_edge_count(v1,v3)</code> counts (i1,i2) 6 times, because v1 sits on the i1 side (adds 2 to the count) and v3 sits on the i2 side (adds 4 to the count)...</p>
 <p><img src="dot_8040d6d051a27cf0ce53ee8c9254d562.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -12251,8 +12247,8 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>This will always be the case for any <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: If a chosen pair aren't neighbours, the path between them always travels over at least one internal edge. <code>combine_edge_count()</code> will always count each edge in the path <code>leaf_count</code> times. In the above example, path(v1,v3) travels over internal edges (i0,i1) and (i1,i2) and as such both those edges in addition to the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> of v1 and v3 have a count of 6.</p>
-<p>Just like how <code>combine_edge_count_and_normalize()</code> reduces the counts of the chosen pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> to 2, so will it reduce the count of the internal edges in the path of the chosen pair to 2. That is, all edges in the path between the chosen pair get reduced to a count of 2.</p>
+<p>This will always be the case for any <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: If a chosen pair aren't neighbours, the path between them always travels over at least one internal edge. <code>combine_edge_count()</code> will always count each edge in the path <code>leaf_count</code> times. In the above example, path(v1,v3) travels over internal edges (i0,i1) and (i1,i2) and as such both those edges in addition to the <a href="#BM_(limb)%2Fi">limb</a>s of v1 and v3 have a count of 6.</p>
+<p>Just like how <code>combine_edge_count_and_normalize()</code> reduces the counts of the chosen pair's <a href="#BM_(limb)%2Fi">limb</a>s to 2, so will it reduce the count of the internal edges in the path of the chosen pair to 2. That is, all edges in the path between the chosen pair get reduced to a count of 2.</p>
 <p>For example, path(v1,v3) has the edges [(v1,i0), (i0,i1), (i1, i2), (v3, i2)]. <code>combine_edge_count_and_normalize(v1,v3)</code> reduces the count of each edge in that path to 2 ...</p>
 <p><img src="dot_ceb7fc6db6ff65e9990b9744340f1b61.svg" alt="Dot diagram"></p>
 <table>
@@ -12329,7 +12325,7 @@ different subtrees.</p>
 </table>
 <p>The ultimate idea is that, for any leaf node pair in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, <code>combine_edge_count_and_normalize()</code> will have a count of ...</p>
 <ul>
-<li>2 for <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>.</li>
+<li>2 for <a href="#BM_(limb)%2Fi">limb</a>s.</li>
 <li>&gt; 2 for internal edges.</li>
 </ul>
 <p>In other words, internal edges are the only differentiating factor in <code>combine_edge_count_and_normalize()</code>'s result. Non-neighbouring pairs will have certain internal edge counts reduced to 2 while neighbouring pairs keep internal edge counts &gt; 2. In a ...</p>
@@ -12338,7 +12334,7 @@ different subtrees.</p>
 <li>best case scenario, all internal edges are kept &gt; 2.</li>
 </ul>
 <p>The pair with the highest total count is guaranteed to be a neighbouring pair because lesser total counts may have had their internal edges reduced.</p>
-<p><a href="ch7_code/src/neighbour_detect/EdgeCountExplainer.py">ch7_code/src/neighbour_detect/EdgeCountExplainer.py</a> (lines 127 to 137):</p>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py</a> (lines 127 to 137):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
     found_pair = <span class="hljs-literal">None</span>
     found_total_count = -<span class="hljs-number">1</span>
@@ -12358,10 +12354,11 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
+<th></th>
 <th>v0</th>
 <th>v1</th>
 <th>v2</th>
@@ -12371,6 +12368,7 @@ different subtrees.</p>
 </tr></thead>
 <tbody>
 <tr>
+<td>v0</td>
 <td>0</td>
 <td>22</td>
 <td>22</td>
@@ -12379,6 +12377,7 @@ different subtrees.</p>
 <td>18</td>
 </tr>
 <tr>
+<td>v1</td>
 <td>22</td>
 <td>0</td>
 <td>22</td>
@@ -12387,6 +12386,7 @@ different subtrees.</p>
 <td>18</td>
 </tr>
 <tr>
+<td>v2</td>
 <td>22</td>
 <td>22</td>
 <td>0</td>
@@ -12395,6 +12395,7 @@ different subtrees.</p>
 <td>18</td>
 </tr>
 <tr>
+<td>v3</td>
 <td>16</td>
 <td>16</td>
 <td>16</td>
@@ -12403,6 +12404,7 @@ different subtrees.</p>
 <td>20</td>
 </tr>
 <tr>
+<td>v4</td>
 <td>16</td>
 <td>16</td>
 <td>16</td>
@@ -12411,6 +12413,7 @@ different subtrees.</p>
 <td>20</td>
 </tr>
 <tr>
+<td>v5</td>
 <td>18</td>
 <td>18</td>
 <td>18</td>
@@ -12420,11 +12423,11 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_9a77e6e92c4ab82dfc2098dfb4da0291.svg" alt="Dot diagram"></p>
+<p><img src="dot_4700012f1418b944f7839335dfc7ca86.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
-<p>In the edge count version on this algorithm, <code>edge_count()</code> gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is hit. In the edge weight multiplicity version, instead of counting how many times each edge gets traversed, each time an edge gets traversed it increases the multiplicity of its weight ...</p>
+<p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
+<p>In the edge count version on this algorithm, <code>edge_count()</code> gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is encountered. In the edge weight multiplicity version, instead of counting how many times each edge gets encountered, each time an edge gets encountered it increases the multiplicity of its weight ...</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">edge_multiple</span>(<span class="hljs-params">self, l1: N</span>) -&gt; Counter[E]:</span>
     <span class="hljs-comment"># Collect paths from l1 to all other leaf nodes</span>
     path_collection = []
@@ -12527,7 +12530,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>Similarly, where in the edge count version <code>combine_edge_count_and_normalize()</code> reduces all <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> and possibly some internals edges from <code>combine_edge_count()</code> to a count of 2, the edge multiplicity version reduces weights for those same <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> and edges to a multiple of 2...</p>
+<p>Similarly, where in the edge count version <code>combine_edge_count_and_normalize()</code> reduces all <a href="#BM_(limb)%2Fi">limb</a>s and possibly some internals edges from <code>combine_edge_count()</code> to a count of 2, the edge multiplicity version reduces weights for those same <a href="#BM_(limb)%2Fi">limb</a>s and edges to a multiple of 2...</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_edge_multiple_and_normalize</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:</span>
     edge_multiples = self.combine_edge_multiple(l1, l2)
     path_edges = self.path(l1, l2)
@@ -12575,18 +12578,62 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>Similar to <code>combine_edge_count_and_normalize()</code>, for any leaf node pair in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> <code>combine_edge_multiple_and_normalize()</code> will have a <em>multiple</em> of ...</p>
+<p>Similar to <code>combine_edge_count_and_normalize()</code>, for any leaf node pair in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> <code>combine_edge_multiple_and_normalize()</code> will have an <em>edge weight multiple</em> of ...</p>
 <ul>
-<li>2 for <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>.</li>
+<li>2 for <a href="#BM_(limb)%2Fi">limb</a>s.</li>
 <li>&gt; 2 for internal edges.</li>
 </ul>
-<p>In other words, internal edge multiples are the only differentiating factor in <code>combine_edge_count_and_normalize()</code>'s result. Non-neighbouring pairs will have certain internal edge multiples reduced to 2 while neighbouring pairs keep internal edge multiples &gt; 2. In a ...</p>
+<p>In other words, internal edge weight multiples are the only differentiating factor in <code>combine_edge_multiple_and_normalize()</code>'s result. Non-neighbouring pairs will have certain internal edge weight multiples reduced to 2 while neighbouring pairs keep internal edge weight multiples &gt; 2. In a ...</p>
 <ul>
-<li>worst case scenario, all internal edge multiples get reduced to 2.</li>
-<li>best case scenario, all internal edge multiples are kept &gt; 2.</li>
+<li>worst case scenario, all internal edge weight multiples get reduced to 2.</li>
+<li>best case scenario, all internal edge weight multiples are kept &gt; 2.</li>
 </ul>
 <p>The pair with the highest combined multiple is guaranteed to be a neighbouring pair because lesser combined multiples may have had their internal edge multiples reduced.</p>
-<p><a href="ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py">ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py</a> (lines 98 to 108):</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Still confused?</p>
+<p>Given a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, <code>combine_edge_multiple(A, B)</code> will make it so that...</p>
+<ul>
+<li><a href="#BM_(limb)%2Fi">limb</a> A has a weight multiplicity of <code>leaf_count</code>.</li>
+<li><a href="#BM_(limb)%2Fi">limb</a> B has a weight multiplicity of <code>leaf_count</code>.</li>
+<li>other <a href="#BM_(limb)%2Fi">limb</a>s each have a weight multiplicity of 2.</li>
+<li>internal edges each have a weight multiplicity of &gt; 2.</li>
+</ul>
+<p>For example, the following diagrams visualize edge weight multiplicities produced by <code>combine_edge_multiple()</code> for various pairs in a 4 leaf <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. Note how the selected pair's <a href="#BM_(limb)%2Fi">limb</a>s have a multiplicity of 4, other <a href="#BM_(limb)%2Fi">limb</a>s have a multiplicity of 2, and internal edges have a multiplicity of 4...</p>
+<p><img src="dot_449bba2253f538278bfaad93a18d5cf0.svg" alt="Dot diagram"></p>
+<p><code>combine_edge_multiple_and_normalize(A, B)</code> normalizes these multiplicities such that ...</p>
+<ul>
+<li><a href="#BM_(limb)%2Fi">limb</a> A's weight multiplicity reduces to 2.</li>
+<li><a href="#BM_(limb)%2Fi">limb</a> B's weight multiplicity reduces to 2.</li>
+<li>other <a href="#BM_(limb)%2Fi">limb</a>s keep their weight multiplicities at 2.</li>
+<li>if the pair are neighbours, each internal edge multiplicity remains at &gt; 2.</li>
+<li>it the pair aren't neighbours, at least one internal edge multiplicity reduces to 2 while others remain at &gt; 2.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><a href="#BM_(limb)%2Fi">limb</a> multiplicity</th>
+<th>internal edge multiplicity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>neighbouring pairs</td>
+<td>all = 2</td>
+<td>all &gt;= 2</td>
+</tr>
+<tr>
+<td>non-neighbouring pairs</td>
+<td>all = 2</td>
+<td>at least one = 2, others &gt; 2</td>
+</tr>
+</tbody>
+</table>
+<p>Since <a href="#BM_(limb)%2Fi">limb</a>s always contribute the same regardless of whether the pair is neighbouring or not (2*weight), they can be ignored. That leaves internal edge contributions as the only thing differentiating between neighbouring and non-neighbouring pairs.</p>
+<p>A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> with 2 or more leaf nodes is guaranteed to have at least 1 neighbouring pair. The pair producing the largest result is the one with maxed out contributions from its multiplied internal edges weights, meaning that none of those contributions were for internal edges reduced to 2*weight. Lesser results MAY be lesser because normalization reduced some of their internal edge weights to 2*weight, but the largest result you know for certain has all of its internal edge weights &gt; 2*weight.</p>
+</div>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py</a> (lines 98 to 108):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
     found_pair = <span class="hljs-literal">None</span>
     found_total_count = -<span class="hljs-number">1</span>
@@ -12606,7 +12653,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12675,7 +12722,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_2de90d8bb603cee1b556d499f0046200.svg" alt="Dot diagram"></p>
+<p><img src="dot_9a1dd9b91bd358f220407522b9b342c0.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -12705,7 +12752,7 @@ dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5) -
 dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </code></pre>
 <p>Since only leaf node distances are being used in the summation calculation, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> suffices as the input. The actual <a href="#BM_(simple%20tree)%2Fi">simple tree</a> isn't required.</p>
-<p><a href="ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py">ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py</a> (lines 12 to 28):</p>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix.py</a> (lines 12 to 28):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">total_distance</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N]</span>) -&gt; <span class="hljs-built_in">dict</span>[N, <span class="hljs-built_in">float</span>]:</span>
     ret = {}
     <span class="hljs-keyword">for</span> l1 <span class="hljs-keyword">in</span> dist_mat.leaf_ids():
@@ -12863,6 +12910,19 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </table>
 </div>
 <p></p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
+<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
 <a name="H_Distance%20Matrix%20to%20Tree"></a><h3>Distance Matrix to Tree</h3>
 <a name="H_UPGMA%20Algorithm"></a><h4>UPGMA Algorithm</h4>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -15928,7 +15988,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </table>
 </li>
 <li>
-<p><a name="BM_%5Cb(limbs%3F)%5Cb%2Fi"></a><strong>limb</strong> - Given a leaf node in a <a href="#BM_(tree)%2Fi">tree</a>, that leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> is the edge between it and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the following <a href="#BM_(tree)%2Fi">tree</a> has the following <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> ...</p>
+<p><a name="BM_(limb)%2Fi"></a><strong>limb</strong> - Given a leaf node in a <a href="#BM_(tree)%2Fi">tree</a>, that leaf node's <a href="#BM_(limb)%2Fi">limb</a> is the edge between it and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the following <a href="#BM_(tree)%2Fi">tree</a> has the following <a href="#BM_(limb)%2Fi">limb</a>s ...</p>
 <p><img src="svgbob_80372a14f2a248e2ffdfdbfef223b5b15c39f7b1.svg" alt="Kroki diagram output"></p>
 <ul>
 <li>(A, D)</li>
@@ -15941,7 +16001,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </div>
 </li>
 <li>
-<p><a name="BM_(limb%20length%7Climb%20weight)%2Fi"></a><strong>limb length</strong> - Given a leaf node in a <a href="#BM_(tree)%2Fi">tree</a>, the leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is the weight assigned ot its <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a>. For example, node A has a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 2 in the following <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><a name="BM_(limb%20length%7Climb%20weight)%2Fi"></a><strong>limb length</strong> - Given a leaf node in a <a href="#BM_(tree)%2Fi">tree</a>, the leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is the weight assigned ot its <a href="#BM_(limb)%2Fi">limb</a>. For example, node A has a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 2 in the following <a href="#BM_(tree)%2Fi">tree</a>...</p>
 <p><img src="svgbob_54ab99476bd3bb4646b1899b68122441df1dc495.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -15956,11 +16016,11 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </code></pre>
 <p>For example, the leaf nodes (v0, v2, v4, v6) pass this test ...</p>
 <p><img src="dot_233f87ca954b982c788c15bd0952f010.svg" alt="Dot diagram"></p>
-<p><code><span style="background-color: violet; color: black; padding: 3px">dist(v0, v2)</span> + <span style="background-color: tan; color: black; padding: 3px">dist(v4, v6)</span> &lt;= <span style="background-color: gold; color: black; padding: 3px">dist(v0, v6)</span> + <span style="background-color: pink; color: black; padding: 3px">dist(v2, v4)</span> == <span style="background-color: turquoise; color: black; padding: 3px">dist(v0, v4)</span> + <span style="background-color: orange; color: black; padding: 3px">dist(v2, v6)</span></code></p>
+<p><span style="background-color: violet; color: black; padding: 3px">dist(v0, v2)</span> + <span style="background-color: tan; color: black; padding: 3px">dist(v4, v6)</span> &lt;= <span style="background-color: gold; color: black; padding: 3px">dist(v0, v6)</span> + <span style="background-color: pink; color: black; padding: 3px">dist(v2, v4)</span> == <span style="background-color: turquoise; color: black; padding: 3px">dist(v0, v4)</span> + <span style="background-color: orange; color: black; padding: 3px">dist(v2, v6)</span></p>
 <p>If all possible leaf node quartets pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
 </li>
 <li>
-<p><a name="BM_(trim%20distance%20matrix%7Ctrimmed%20distance%20matrix%7Ctrim%20distance%20matrices%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
+<p><a name="BM_(trim%20distance%20matrix%7Ctrimmed%20distance%20matrix%7Ctrim%20distance%20matrices%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's <a href="#BM_(limb)%2Fi">limb</a> in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
 <p>For example, removing v2 from the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <table>
 <thead>
@@ -16236,7 +16296,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> with leaf node L.</li>
 <li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> without leaf node L.</li>
 </ul>
-<p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L should be added and what L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be (<a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> attachment algorithm)...</p>
+<p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L should be added and what L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be (<a href="#BM_(limb)%2Fi">limb</a> attachment algorithm)...</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">additive_phylogeny</span>(<span class="hljs-params">distmat</span>):</span>
   n = <span class="hljs-built_in">len</span>(distmat)
   <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:
@@ -16534,1028 +16594,6 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 </ul>
 <p>Part of this may have to do with the assumption that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
-</li>
-<li>
-<p><a name="BM_(neighbouring%20leaf%20detection)%2Fi"></a><strong>neighbouring leaf detection</strong> - An algorithm that identifies a pair of neighbouring leaf nodes in the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, without having that unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> provided.</p>
-<p>The algorithm essentially boils down to edge counting. Consider the following example <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
-<p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
-<p>If you were to choose a leaf node and gather the paths from that leaf node to all other leaf nodes, the number of times ...</p>
-<ul>
-<li>the chosen leaf node's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> will get encountered is <code>leaf_count - 1</code> times.</li>
-<li>every other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> will get encountered is 1 time.</li>
-</ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">edge_count</span>(<span class="hljs-params">self, l1: N</span>) -&gt; Counter[E]:</span>
-    <span class="hljs-comment"># Collect paths from l1 to all other leaf nodes</span>
-    path_collection = []
-    <span class="hljs-keyword">for</span> l2 <span class="hljs-keyword">in</span> self.leaf_nodes:
-        <span class="hljs-keyword">if</span> l1 == l2:
-            <span class="hljs-keyword">continue</span>
-        path = self.path(l1, l2)
-        path_collection.append(path)
-    <span class="hljs-comment"># Count edges across all paths</span>
-    edge_counts = Counter()
-    <span class="hljs-keyword">for</span> path <span class="hljs-keyword">in</span> path_collection:
-        edge_counts.update(path)
-    <span class="hljs-comment"># Return edge counts</span>
-    <span class="hljs-keyword">return</span> edge_counts
-</code></pre>
-<p>For example, given that the <a href="#BM_(tree)%2Fi">tree</a> has 6 leaf nodes, <code>edge_count(v1)</code> counts v1's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 5 times while all other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> are counted once...</p>
-<p><img src="dot_be00dd5022c82978ec0451b8a93c238a.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>edge_count(v1)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>If you were to choose a pair of leaf nodes and add their <code>edge_count()</code>s together, ...</p>
-<ul>
-<li>the pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> get counted <code>leaf_count</code> times.</li>
-<li>every other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> gets counted 2 times.</li>
-</ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_edge_count</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:</span>
-    c1 = self.edge_count(l1)
-    c2 = self.edge_count(l2)
-    <span class="hljs-keyword">return</span> c1 + c2
-</code></pre>
-<p>For example, <code>combine_edge_count(v1,v2)</code> counts v1's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 6 times, v2's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 6 times, and every other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> 2 times ...</p>
-<p><img src="dot_980ac0c4600f11bdf470191f270e14f3.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>edge_count(v1)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>edge_count(v2)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td></td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-</tr>
-<tr>
-<td></td>
-<td>6</td>
-<td>4</td>
-<td>2</td>
-<td>6</td>
-<td>6</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<p>The key to this algorithm is to normalize the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts returned by <code>combine_counts()</code> such that each <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> for the chosen pair matches (<code>leaf_count</code>) has the same count as the other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> (2). To do this, each edge in the path between the chosen pair must be subtracted <code>leaf_count - 2</code> times from <code>combine_edge_count()</code>'s result.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_edge_count_and_normalize</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:</span>
-    edge_counts = self.combine_edge_count(l1, l2)
-    path_edges = self.path(l1, l2)
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> path_edges:
-        edge_counts[e] -= self.leaf_count - <span class="hljs-number">2</span>
-    <span class="hljs-keyword">return</span> edge_counts
-</code></pre>
-<p>Continuing with the example above, the chosen pair (v1 and v2) each have a <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> count of 6 while all other <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> have a count of 2. <code>combine_edge_count_and_normalize(v1,v2)</code> subtracts each edge in path(v1,v2) 4 times from the counts...</p>
-<p><img src="dot_df662efca0290cfec12e5b3356609f34.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>edge_count(v1)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>edge_count(v2)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>-4 * path(v1,v2)</td>
-<td></td>
-<td></td>
-<td></td>
-<td>-4</td>
-<td>-4</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-</tr>
-<tr>
-<td></td>
-<td>6</td>
-<td>4</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<p>The insight here is that, if the chosen pair ...</p>
-<ul>
-<li>are neighbours, the path between them will only ever have 2 edges: their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>.</li>
-<li>aren't neighbours, the path between them will have more than 2 edges: their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> AND internal edges.</li>
-</ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_check</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
-    path_edges = self.path(l1, l2)
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(path_edges) == <span class="hljs-number">2</span>
-</code></pre>
-<p>For example, ...</p>
-<ul>
-<li>v1 and v2 are neighbours and as such path(v1,v2) contains only their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>: [(v1,i0), (v2,i0)].</li>
-<li>v1 and v5 aren't neighbours and as such path(v1,v5) has internal edges in addition to their <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>: [(v1,i0), (i0,i1), (v5,i1)].</li>
-</ul>
-<p><img src="dot_5a3df09ff196ebbf702909f1cb634c93.svg" alt="Dot diagram"></p>
-<p>That means if the pair aren't neighbours, <code>combine_edge_count_and_normalize()</code> will normalize <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts for the pair in addition to reducing internal edge counts. For example, since v1 and v5 aren't neighbours, <code>combine_edge_count_and_normalize(v1,v5)</code> subtracts 4 from the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts of v1 and v5 as well as (i0,i1)'s count ...</p>
-<p><img src="dot_88d8e6262e9c3de072f7484bf17ab489.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>edge_count(v1)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>edge_count(v5)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>5</td>
-</tr>
-<tr>
-<td>-4 * path(v1,v5)</td>
-<td>-4</td>
-<td></td>
-<td></td>
-<td>-4</td>
-<td></td>
-<td></td>
-<td></td>
-<td>-4</td>
-</tr>
-<tr>
-<td></td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-</tr>
-<tr>
-<td></td>
-<td>2</td>
-<td>4</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<p>Notice how (i0,i1) was reduced to 2 in the example above. It turns out that any internal edges in the path between the chosen pair get reduced to a count of 2, just like the chosen pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limb</a> counts.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reduced_to_2_check</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
-    p = self.path(l1, l2)
-    c = self.combine_edge_count_and_normalize(l1, l2)
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">all</span>(c[edge] == <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> p)  <span class="hljs-comment"># if counts for all edges in p reduced to 2</span>
-</code></pre>
-<p>To understand why, consider what's happening in the example. For <code>edge_count(v1)</code>, notice how the count of each internal edge is consistent with the number of leaf nodes it leads to ...</p>
-<p><img src="dot_be00dd5022c82978ec0451b8a93c238a.svg" alt="Dot diagram"></p>
-<p>That is, <code>edge_count(v1)</code> counts the internal edge ...</p>
-<ul>
-<li>(i0,i1) 3 times, which is the number of nodes it leads to: [v5, v4, v3].</li>
-<li>(i1,i2) 2 times, which is the number of nodes it leads to: [v4, v3].</li>
-</ul>
-<p>Breaking an internal edge divides a <a href="#BM_(tree)%2Fi">tree</a> into two <a href="#BM_(subtree%7Csub-tree)%2Fi">sub-tree</a>s. In the case of (i1,i2), the <a href="#BM_(tree)%2Fi">tree</a> separates into two <a href="#BM_(subtree%7Csub-tree)%2Fi">sub-tree</a>s where the...</p>
-<ul>
-<li>i1 side has 4 leaf nodes: [v0, v1, v2, v5].</li>
-<li>i2 side has 2 leaf nodes: [v4, v3].</li>
-</ul>
-<p><img src="dot_2faf30aa6f812fb44557068e9fa76660.svg" alt="Dot diagram"></p>
-<p>Running <code>edge_count()</code> for any leaf node on the...</p>
-<ul>
-<li>i1 side will count (i1,i2) exactly 2 times (the number of leaf nodes on the i2 side).</li>
-<li>i2 side will count (i1,i2) exactly 4 times (the number of leaf nodes on the i1 side).</li>
-</ul>
-<p>For example, since ...</p>
-<ul>
-<li>v0 is on the i1 side, <code>edge_count(v0)</code> counts (i1,i2) 2 times.</li>
-<li>v1 is on the i1 side, <code>edge_count(v1)</code> counts (i1,i2) 2 times.</li>
-<li>v2 is on the i1 side, <code>edge_count(v2)</code> counts (i1,i2) 2 times.</li>
-<li>v3 is on the i2 side, <code>edge_count(v3)</code> counts (i1,i2) 4 times.</li>
-<li>v4 is on the i2 side, <code>edge_count(v4)</code> counts (i1,i2) 4 times.</li>
-<li>v5 is on the i1 side, <code>edge_count(v5)</code> counts (i1,i2) 2 times.</li>
-</ul>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">segregate_leaves</span>(<span class="hljs-params">self, internal_edge: E</span>) -&gt; <span class="hljs-built_in">dict</span>[N, N]:</span>
-    leaf_to_end = {}  <span class="hljs-comment"># leaf -&gt; one of the ends of internal_edge</span>
-    e1, e2 = self.tree.get_edge_ends(internal_edge)
-    <span class="hljs-keyword">for</span> l1 <span class="hljs-keyword">in</span> self.leaf_nodes:
-        <span class="hljs-comment"># If path from l1 to e1 ends with internal_edge, it means that it had to</span>
-        <span class="hljs-comment"># walk over the internal edge to get to e1, which ultimately means that l1</span>
-        <span class="hljs-comment"># it isn't on the e1 side / it's on the e2 side. Otherwise, it's on the e1</span>
-        <span class="hljs-comment"># side.</span>
-        p = self.path(l1, e1)
-        <span class="hljs-keyword">if</span> p[-<span class="hljs-number">1</span>] != internal_edge:
-            leaf_to_end[l1] = e1
-        <span class="hljs-keyword">else</span>:
-            leaf_to_end[l1] = e2
-    <span class="hljs-keyword">return</span> leaf_to_end
-</code></pre>
-<p>If the chosen pair are on opposite sides, <code>combine_edge_count()</code> will count (i1,i2) 6 times, which is the same number of times that the chosen pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> get counted (the number of leaf nodes in the <a href="#BM_(tree)%2Fi">tree</a>). For example, <code>combine_edge_count(v1,v3)</code> counts (i1,i2) 6 times, because v1 sits on the i1 side (adds 2 to the count) and v3 sits on the i2 side (adds 4 to the count)...</p>
-<p><img src="dot_8040d6d051a27cf0ce53ee8c9254d562.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>edge_count(v1)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>edge_count(v3)</td>
-<td>3</td>
-<td>4</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td></td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-</tr>
-<tr>
-<td></td>
-<td>6</td>
-<td>6</td>
-<td>2</td>
-<td>6</td>
-<td>2</td>
-<td>6</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<p>This will always be the case for any <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: If a chosen pair aren't neighbours, the path between them always travels over at least one internal edge. <code>combine_edge_count()</code> will always count each edge in the path <code>leaf_count</code> times. In the above example, path(v1,v3) travels over internal edges (i0,i1) and (i1,i2) and as such both those edges in addition to the <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> of v1 and v3 have a count of 6.</p>
-<p>Just like how <code>combine_edge_count_and_normalize()</code> reduces the counts of the chosen pair's <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> to 2, so will it reduce the count of the internal edges in the path of the chosen pair to 2. That is, all edges in the path between the chosen pair get reduced to a count of 2.</p>
-<p>For example, path(v1,v3) has the edges [(v1,i0), (i0,i1), (i1, i2), (v3, i2)]. <code>combine_edge_count_and_normalize(v1,v3)</code> reduces the count of each edge in that path to 2 ...</p>
-<p><img src="dot_ceb7fc6db6ff65e9990b9744340f1b61.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>edge_count(v1)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>edge_count(v3)</td>
-<td>3</td>
-<td>4</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>-4 * path(v1,v3)</td>
-<td>-4</td>
-<td>-4</td>
-<td></td>
-<td>-4</td>
-<td></td>
-<td>-4</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-<td>-------</td>
-</tr>
-<tr>
-<td></td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<p>The ultimate idea is that, for any leaf node pair in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, <code>combine_edge_count_and_normalize()</code> will have a count of ...</p>
-<ul>
-<li>2 for <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>.</li>
-<li>&gt; 2 for internal edges.</li>
-</ul>
-<p>In other words, internal edges are the only differentiating factor in <code>combine_edge_count_and_normalize()</code>'s result. Non-neighbouring pairs will have certain internal edge counts reduced to 2 while neighbouring pairs keep internal edge counts &gt; 2. In a ...</p>
-<ul>
-<li>worst case scenario, all internal edges get reduced to 2.</li>
-<li>best case scenario, all internal edges are kept &gt; 2.</li>
-</ul>
-<p>The pair with the highest total count is guaranteed to be a neighbouring pair because lesser total counts may have had their internal edges reduced.</p>
-<p><a href="ch7_code/src/neighbour_detect/EdgeCountExplainer.py">ch7_code/src/neighbour_detect/EdgeCountExplainer.py</a> (lines 127 to 137):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
-    found_pair = <span class="hljs-literal">None</span>
-    found_total_count = -<span class="hljs-number">1</span>
-    <span class="hljs-keyword">for</span> l1, l2 <span class="hljs-keyword">in</span> combinations(self.leaf_nodes, r=<span class="hljs-number">2</span>):
-        normalized_counts = self.combine_edge_count_and_normalize(l1, l2)
-        total_count = <span class="hljs-built_in">sum</span>(c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> normalized_counts.values())
-        <span class="hljs-keyword">if</span> total_count &gt; found_total_count:
-            found_pair = l1, l2
-            found_total_count = total_count
-    <span class="hljs-keyword">return</span> found_total_count, found_pair
-</code></pre>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The graph in the example run below is the same as the graph used above. It may look different because node positions may have shifted around.</p>
-</div>
-<div style="border:1px solid black;">
-<p></p>
-<p>Given the tree...</p>
-<p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
-<p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
-<table>
-<thead><tr>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-<th>v4</th>
-<th>v5</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>22</td>
-<td>22</td>
-<td>16</td>
-<td>16</td>
-<td>18</td>
-</tr>
-<tr>
-<td>22</td>
-<td>0</td>
-<td>22</td>
-<td>16</td>
-<td>16</td>
-<td>18</td>
-</tr>
-<tr>
-<td>22</td>
-<td>22</td>
-<td>0</td>
-<td>16</td>
-<td>16</td>
-<td>18</td>
-</tr>
-<tr>
-<td>16</td>
-<td>16</td>
-<td>16</td>
-<td>0</td>
-<td>26</td>
-<td>20</td>
-</tr>
-<tr>
-<td>16</td>
-<td>16</td>
-<td>16</td>
-<td>26</td>
-<td>0</td>
-<td>20</td>
-</tr>
-<tr>
-<td>18</td>
-<td>18</td>
-<td>18</td>
-<td>20</td>
-<td>20</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><img src="dot_9a77e6e92c4ab82dfc2098dfb4da0291.svg" alt="Dot diagram"></p>
-</div>
-<p></p>
-<p>This same reasoning works with edge weight multiplicity instead of edge counts. In this case, multiplicity is referring to a multiple for each edge, where that multiple is the counts derived above.</p>
-<p>In the edge count version on this algorithm, <code>edge_count()</code> gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is hit. In the edge weight multiplicity version, instead of counting how many times each edge gets traversed, each time an edge gets traversed it increases the multiplicity of its weight ...</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">edge_multiple</span>(<span class="hljs-params">self, l1: N</span>) -&gt; Counter[E]:</span>
-    <span class="hljs-comment"># Collect paths from l1 to all other leaf nodes</span>
-    path_collection = []
-    <span class="hljs-keyword">for</span> l2 <span class="hljs-keyword">in</span> self.leaf_nodes:
-        <span class="hljs-keyword">if</span> l1 == l2:
-            <span class="hljs-keyword">continue</span>
-        path = self.path(l1, l2)
-        path_collection.append(path)
-    <span class="hljs-comment"># Sum edge weights across all paths</span>
-    edge_weight_sums = Counter()
-    <span class="hljs-keyword">for</span> path <span class="hljs-keyword">in</span> path_collection:
-        <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> path:
-            edge_weight_sums[edge] += self.tree.get_edge_data(edge)
-    <span class="hljs-comment"># Return edge weight sums</span>
-    <span class="hljs-keyword">return</span> edge_weight_sums
-</code></pre>
-<p><img src="dot_f8a0c44f51d391e609208c8102149f44.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>edge_count(v1)</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-<td>5</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>edge_multiple(v1)</td>
-<td>3*4=12</td>
-<td>2*3=6</td>
-<td>1*11=11</td>
-<td>5*2=10</td>
-<td>1*10=10</td>
-<td>1*3=3</td>
-<td>1*4=4</td>
-<td>1*7=7</td>
-</tr>
-</tbody>
-</table>
-<p>Similarly, where in the edge count version <code>combine_edge_count()</code> adds together the <code>edge_count()</code>s for two leaf nodes, the edge weight multiplicity version should add together the <code>edge_multiple()</code>s for two leaf nodes instead...</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_edge_multiple</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:</span>
-    c1 = self.edge_multiple(l1)
-    c2 = self.edge_multiple(l2)
-    <span class="hljs-keyword">return</span> c1 + c2
-</code></pre>
-<p><img src="dot_cfaace9a1489262016ebdce7c5a60c33.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>combine_edge_count(v1)</td>
-<td>6</td>
-<td>4</td>
-<td>2</td>
-<td>6</td>
-<td>6</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr>
-<td>combine_edge_multiple(v1)</td>
-<td>6*4=24</td>
-<td>4*3=12</td>
-<td>2*11=22</td>
-<td>6*2=20</td>
-<td>6*10=60</td>
-<td>2*3=6</td>
-<td>2*4=8</td>
-<td>2*7=14</td>
-</tr>
-</tbody>
-</table>
-<p>Similarly, where in the edge count version <code>combine_edge_count_and_normalize()</code> reduces all <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> and possibly some internals edges from <code>combine_edge_count()</code> to a count of 2, the edge multiplicity version reduces weights for those same <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a> and edges to a multiple of 2...</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">combine_edge_multiple_and_normalize</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:</span>
-    edge_multiples = self.combine_edge_multiple(l1, l2)
-    path_edges = self.path(l1, l2)
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> path_edges:
-        edge_multiples[e] -= (self.leaf_count - <span class="hljs-number">2</span>) * self.tree.get_edge_data(e)
-    <span class="hljs-keyword">return</span> edge_multiples
-</code></pre>
-<p><img src="dot_b88b756b70453fbaa4fe6f126b97cd97.svg" alt="Dot diagram"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>(i0,i1)</th>
-<th>(i1,i2)</th>
-<th>(v0,i0)</th>
-<th>(v1,i0)</th>
-<th>(v2,i0)</th>
-<th>(v3,i2)</th>
-<th>(v4,i2)</th>
-<th>(v5,i1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>combine_edge_count_and_normalize(v1,v2)</td>
-<td>6</td>
-<td>4</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr>
-<td>combine_edge_multiple_and_normalize(v1,v2)</td>
-<td>6*4=24</td>
-<td>4*3=12</td>
-<td>2*11=22</td>
-<td>2*2=20</td>
-<td>2*10=60</td>
-<td>2*3=6</td>
-<td>2*4=8</td>
-<td>2*7=14</td>
-</tr>
-</tbody>
-</table>
-<p>Similar to <code>combine_edge_count_and_normalize()</code>, for any leaf node pair in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> <code>combine_edge_multiple_and_normalize()</code> will have a <em>multiple</em> of ...</p>
-<ul>
-<li>2 for <a href="#BM_%5Cb(limbs%3F)%5Cb%2Fi">limbs</a>.</li>
-<li>&gt; 2 for internal edges.</li>
-</ul>
-<p>In other words, internal edge multiples are the only differentiating factor in <code>combine_edge_count_and_normalize()</code>'s result. Non-neighbouring pairs will have certain internal edge multiples reduced to 2 while neighbouring pairs keep internal edge multiples &gt; 2. In a ...</p>
-<ul>
-<li>worst case scenario, all internal edge multiples get reduced to 2.</li>
-<li>best case scenario, all internal edge multiples are kept &gt; 2.</li>
-</ul>
-<p>The pair with the highest combined multiple is guaranteed to be a neighbouring pair because lesser combined multiples may have had their internal edge multiples reduced.</p>
-<p><a href="ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py">ch7_code/src/neighbour_detect/EdgeMultiplicityExplainer.py</a> (lines 98 to 108):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
-    found_pair = <span class="hljs-literal">None</span>
-    found_total_count = -<span class="hljs-number">1</span>
-    <span class="hljs-keyword">for</span> l1, l2 <span class="hljs-keyword">in</span> combinations(self.leaf_nodes, r=<span class="hljs-number">2</span>):
-        normalized_counts = self.combine_edge_multiple_and_normalize(l1, l2)
-        total_count = <span class="hljs-built_in">sum</span>(c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> normalized_counts.values())
-        <span class="hljs-keyword">if</span> total_count &gt; found_total_count:
-            found_pair = l1, l2
-            found_total_count = total_count
-    <span class="hljs-keyword">return</span> found_total_count, found_pair
-</code></pre>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The graph in the example run below is the same as the graph used above. It may look different because node positions may have shifted around.</p>
-</div>
-<div style="border:1px solid black;">
-<p></p>
-<p>Given the tree...</p>
-<p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
-<p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
-<table>
-<thead><tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
-<th>v4</th>
-<th>v5</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>110</td>
-<td>110</td>
-<td>88</td>
-<td>88</td>
-<td>94</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>110</td>
-<td>0</td>
-<td>110</td>
-<td>88</td>
-<td>88</td>
-<td>94</td>
-</tr>
-<tr>
-<td>v2</td>
-<td>110</td>
-<td>110</td>
-<td>0</td>
-<td>88</td>
-<td>88</td>
-<td>94</td>
-</tr>
-<tr>
-<td>v3</td>
-<td>88</td>
-<td>88</td>
-<td>88</td>
-<td>0</td>
-<td>122</td>
-<td>104</td>
-</tr>
-<tr>
-<td>v4</td>
-<td>88</td>
-<td>88</td>
-<td>88</td>
-<td>122</td>
-<td>0</td>
-<td>104</td>
-</tr>
-<tr>
-<td>v5</td>
-<td>94</td>
-<td>94</td>
-<td>94</td>
-<td>104</td>
-<td>104</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><img src="dot_2de90d8bb603cee1b556d499f0046200.svg" alt="Dot diagram"></p>
-</div>
-<p></p>
-<p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
-<ul>
-<li>
-<p><code>edge_multiple(v1)</code> breaks down to...</p>
-<pre><code>dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5)
-</code></pre>
-</li>
-<li>
-<p><code>edge_multiple(v2)</code> breaks down to...</p>
-<pre><code>dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
-</code></pre>
-</li>
-<li>
-<p><code>combine_edge_multiple(v2)</code> is simply the sum of the two summations above:</p>
-<pre><code>dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
-dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5)
-</code></pre>
-</li>
-<li>
-<p><code>combine_edge_multiple_and_normalize(v1,v2)</code> is simply the above summation but with <code>dist(v1,v2)</code> removed 4 times:</p>
-</li>
-</ul>
-<pre><code>dist(v1,v0) + dist(v1,v2) + dist(v1,v3) + dist(v1,v4) + dist(v1,v5) +
-dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5) -
-dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
-</code></pre>
-<p>Since only leaf node distances are being used in the summation calculation, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> suffices as the input. The actual <a href="#BM_(simple%20tree)%2Fi">simple tree</a> isn't required.</p>
-<p><a href="ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py">ch7_code/src/neighbour_detect/NeighbourJoiningMatrix.py</a> (lines 12 to 28):</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">total_distance</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N]</span>) -&gt; <span class="hljs-built_in">dict</span>[N, <span class="hljs-built_in">float</span>]:</span>
-    ret = {}
-    <span class="hljs-keyword">for</span> l1 <span class="hljs-keyword">in</span> dist_mat.leaf_ids():
-        ret[l1] = <span class="hljs-built_in">sum</span>(dist_mat[l1, l2] <span class="hljs-keyword">for</span> l2 <span class="hljs-keyword">in</span> dist_mat.leaf_ids())
-    <span class="hljs-keyword">return</span> ret
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_joining_matrix</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N]</span>) -&gt; DistanceMatrix[N]:</span>
-    tot_dists = total_distance(dist_mat)
-    n = dist_mat.n
-    ret = dist_mat.copy()
-    <span class="hljs-keyword">for</span> l1, l2 <span class="hljs-keyword">in</span> product(dist_mat.leaf_ids(), repeat=<span class="hljs-number">2</span>):
-        <span class="hljs-keyword">if</span> l1 == l2:
-            <span class="hljs-keyword">continue</span>
-        ret[l1, l2] = tot_dists[l1] + tot_dists[l2] - (n - <span class="hljs-number">2</span>) * dist_mat[l1, l2]
-    <span class="hljs-keyword">return</span> ret
-</code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>Given the following distance matrix...</p>
-<table>
-<thead><tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>0.0</td>
-<td>13.0</td>
-<td>21.0</td>
-<td>21.0</td>
-<td>22.0</td>
-<td>22.0</td>
-</tr>
-<tr>
-<td>1</td>
-<td>13.0</td>
-<td>0.0</td>
-<td>12.0</td>
-<td>12.0</td>
-<td>13.0</td>
-<td>13.0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>21.0</td>
-<td>12.0</td>
-<td>0.0</td>
-<td>20.0</td>
-<td>21.0</td>
-<td>21.0</td>
-</tr>
-<tr>
-<td>3</td>
-<td>21.0</td>
-<td>12.0</td>
-<td>20.0</td>
-<td>0.0</td>
-<td>7.0</td>
-<td>13.0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>22.0</td>
-<td>13.0</td>
-<td>21.0</td>
-<td>7.0</td>
-<td>0.0</td>
-<td>14.0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>22.0</td>
-<td>13.0</td>
-<td>21.0</td>
-<td>13.0</td>
-<td>14.0</td>
-<td>0.0</td>
-</tr>
-</tbody>
-</table>
-<p>... the neighbour joining matrix is ...</p>
-<table>
-<thead><tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>0.0</td>
-<td>110.0</td>
-<td>110.0</td>
-<td>88.0</td>
-<td>88.0</td>
-<td>94.0</td>
-</tr>
-<tr>
-<td>1</td>
-<td>110.0</td>
-<td>0.0</td>
-<td>110.0</td>
-<td>88.0</td>
-<td>88.0</td>
-<td>94.0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>110.0</td>
-<td>110.0</td>
-<td>0.0</td>
-<td>88.0</td>
-<td>88.0</td>
-<td>94.0</td>
-</tr>
-<tr>
-<td>3</td>
-<td>88.0</td>
-<td>88.0</td>
-<td>88.0</td>
-<td>0.0</td>
-<td>122.0</td>
-<td>104.0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>88.0</td>
-<td>88.0</td>
-<td>88.0</td>
-<td>122.0</td>
-<td>0.0</td>
-<td>104.0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>94.0</td>
-<td>94.0</td>
-<td>94.0</td>
-<td>104.0</td>
-<td>104.0</td>
-<td>0.0</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p></p>
 </li>
 <li>
 <p><a name="BM_(neighbour%20joining%20phylogeny)%2Fi"></a><strong>neighbour joining phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some  OR approximates a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
