@@ -1,0 +1,169 @@
+<!DOCTYPE html><html><head>
+            <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+            <meta content="utf-8" http-equiv="encoding">
+          <meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
+          <body class="markdown-body"><a name="H_Kubectl%20Commands"></a><h1>Kubectl Commands</h1>
+<p><a href="#BM_(kubectl)%2Fi">kubectl</a> commands are typically organized into <a href="#BM_(context)%2Fi">context</a>s, where each <a href="#BM_(context)%2Fi">context</a> is defines <a href="#BM_(context)%2Fi">context</a>ual information about the cluster: cluster location, cluster authentication, and default <a href="#BM_(namespace)%2Fi">namespace</a>. To ...</p>
+<ul>
+<li>set location, <code>kubectl config set-context {CTX} --cluster={VAL}</code></li>
+<li>set user, <code>kubectl config set-context {CTX} --user={VAL}</code></li>
+<li>set <a href="#BM_(namespace)%2Fi">namespace</a>, <code>kubectl config set-context {CTX} --namespace={VAL}</code></li>
+<li>use a <a href="#BM_(context)%2Fi">context</a>, <code>kubectl config use-context {CTX}</code></li>
+</ul>
+<p><a href="#BM_(context)%2Fi">Context</a> information is usually stored in <code>$HOME/.kube/config</code>.</p>
+<p><a href="#BM_(kubectl)%2Fi">kubectl</a> commands that target an object require a <a href="#BM_(namespace)%2Fi">namespace</a>. That <a href="#BM_(namespace)%2Fi">namespace</a> can either be supplied via ...</p>
+<ul>
+<li><code>--namespace={NS}</code> argument to target a specific <a href="#BM_(namespace)%2Fi">namespace</a>,</li>
+<li><code>--all-namespaces</code> argument to target all <a href="#BM_(namespace)%2Fi">namespace</a>s,</li>
+</ul>
+<p>, ... or through the default <a href="#BM_(namespace)%2Fi">namespace</a> set for the current <a href="#BM_(context)%2Fi">context</a>. If not set explicitly in the <a href="#BM_(context)%2Fi">context</a>, the <a href="#BM_(namespace)%2Fi">namespace</a> will be <code>default</code>.</p>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API is exposed as a RESTful interface, meaning everything is represented as an object and accessed / mutated using standard REST verbs (GET, PUT, DELETE, etc..). <a href="#BM_(kubectl)%2Fi">kubectl</a> uses this interface to access the cluster. For example, accessing https://cluster/api/v1/<a href="#BM_(namespace)%2Fi">namespace</a>s/default/<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>/obn_pod is equivalent to running <code>kubectl get pod obj_pod</code>. The difference between the two is that by default <a href="#BM_(kubectl)%2Fi">kubectl</a> formats the output in a human friendly manner, often omitting or shortening certain details. That output can be controlled using flags. Specifically, to ...</p>
+<ul>
+<li>get more detail, use <code>-o wide</code>.</li>
+<li>remove headers such that the output can be more easily piped to other tools like <code>wc</code>, use <code>--no-headers</code>.</li>
+<li>get JSON output <code>-o json</code></li>
+<li>get YAML output <code>-o yaml</code></li>
+<li>get JSON output isolated to a specific field or fields <code>-o jsonpath --template={TEMPLATE}</code>, where the template is a JSONPath expression.</li>
+</ul>
+<a name="H_Object%20Access"></a><h2>Object Access</h2>
+<p><code>get</code> / <code>describe</code> allows you to get details on a specific objects and resources. To get an overview of a ...</p>
+<ul>
+<li>list of all objects of a specific resource type using <code>kubectl get {RES}</code>.</li>
+<li>a specific object of a specific resource type using <code>kubectl get {RES} {OBJ}</code>.</li>
+</ul>
+<p><code>describe</code> provides more in-depth information vs <code>get</code>.</p>
+<a name="H_Object%20Update"></a><h2>Object Update</h2>
+<p><code>apply</code> allows you to create and update objects. To create or update using ...</p>
+<ul>
+<li>a YAML file, <code>kubectl apply -f obj.yaml</code>.</li>
+<li>a JSON file, <code>kubectl apply -f obj.json</code>.</li>
+<li>STDIN, <code>kubectl apply -f -</code>.</li>
+</ul>
+<a name="H_Object%20Delete"></a><h2>Object Delete</h2>
+<p><code>delete</code> allows you to delete an object. To delete using ...</p>
+<ul>
+<li>
+<p>a YAML file, <code>kubectl delete -f obj.yaml</code>.</p>
+</li>
+<li>
+<p>a JSON file, <code>kubectl delete -f obj.json</code>.</p>
+</li>
+<li>
+<p>STDIN, <code>kubectl apply -f -</code>.</p>
+</li>
+<li>
+<p>command line, <code>kubectl delete {RES} {OBJ}</code></p>
+</li>
+<li>
+<p><code>kubectl get componentstatuses</code> - basic cluster diagnostics</p>
+</li>
+<li>
+<p><code>kubectl get nodes</code> - list <a href="#BM_(node)%2Fi">node</a>s</p>
+</li>
+<li>
+<p><code>kubectl describe nodes {NAME}</code> - <a href="#BM_(node)%2Fi">node</a> information (roles, labels, software versions, status, capacity, load conditions, running <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>)</p>
+</li>
+<li>
+<p><code>kubectl get daemonSets --namespace={NAMESPACE} {NAME}</code> - ???</p>
+</li>
+<li>
+<p><code>kubectl get deployments --namespace={NAMESPACE} {NAME}</code> - ???</p>
+</li>
+<li>
+<p><code>kubectl get services --namespace={NAMESPACE} {NAME}</code> - ???</p>
+</li>
+<li>
+<p><code>kubectl proxy</code> - launch proxy to access services</p>
+</li>
+</ul>
+<a name="H_Terminology"></a><h1>Terminology</h1>
+<ul>
+<li>
+<p><a name="BM_(image)%2Fi"></a><strong>image</strong> - An application (or set of applications) packaged with all of its dependencies as an immutable and isolated filesystem. The filesystem typically contains all dependencies required for the application(s) run sealed at their correct version:</p>
+<ul>
+<li>libraries (e.g. correct version of libssh),</li>
+<li>applications (e.g. correct version bash and Python),</li>
+<li>files (e.g. embedded SQLite databases)</li>
+<li>etc..</li>
+</ul>
+<p><a href="#BM_(image)%2Fi">Image</a>s also typically include metadata des<a href="#BM_(Container%20Runtime%20Interface%7CCRI)%2Fi">cri</a>bing its needs and operational standards. For example, the metadata may stipulate that the <a href="#BM_(image)%2Fi">image</a> ...</p>
+<ul>
+<li>launches by running /opt/my_app/run.sh</li>
+<li>stops by signalling SIGTERM</li>
+<li>requires 4gb of memory, 1.5 CPU cores, etc..</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(container)%2Fi"></a><strong>container</strong> - An instance of an <a href="#BM_(image)%2Fi">image</a>. A <a href="#BM_(container)%2Fi">container</a> creates an isolated copy of the <a href="#BM_(image)%2Fi">image</a>'s filesystem, isolates the resources required for that <a href="#BM_(image)%2Fi">image</a>, and launches the entrypoint application for that <a href="#BM_(image)%2Fi">image</a>. That <a href="#BM_(container)%2Fi">container</a> can't see or access anything outside of the <a href="#BM_(container)%2Fi">container</a> unless explicitly allowed to by the user. For example, opening a port 8080 on a <a href="#BM_(container)%2Fi">container</a> won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the <a href="#BM_(container)%2Fi">container</a> map to some port on the host.</p>
+</li>
+<li>
+<p><a name="BM_(registry)%2Fi"></a><strong>registry</strong> - A service for storing and retrieving <a href="#BM_(image)%2Fi">image</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(multistage%20build%7Cmultistage%20image%7Cmultistage%20container%20image)%2Fi"></a><strong>multistage image</strong> - A <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> produced by merging portions of other <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a>s together. For example, to build a <a href="#BM_(multistage%20build%7Cmultistage%20image%7Cmultistage%20container%20image)%2Fi">multistage image</a> that contains Java as well as compiled C++ binaries, ...</p>
+<ol>
+<li>an <a href="#BM_(image)%2Fi">image</a> containing the JVM has its Java directory pulled out.</li>
+<li>an <a href="#BM_(image)%2Fi">image</a> containing the GNU Compiler toolchain compiles some C++ code, then those compiled binaries are pulled out.</li>
+</ol>
+<p>The end result is that the <a href="#BM_(multistage%20build%7Cmultistage%20image%7Cmultistage%20container%20image)%2Fi">multistage build</a> only contains the relevant portions of its "stages" (previous <a href="#BM_(image)%2Fi">image</a>s), leading to a more focused <a href="#BM_(image)%2Fi">image</a> with smaller size.</p>
+</li>
+<li>
+<p><a name="BM_(Open%20Container%20Initiative%20runtime%7COCI%20runtime%7COCI)%2Fi"></a><strong>open container initiative runtime</strong>- A runtime responsible for only creating and launching <a href="#BM_(container)%2Fi">container</a>s. Examples include runC, rkt, runV, gviso, etc.. Some of these use Linux isolation technology (cgroups and <a href="#BM_(namespace)%2Fi">namespace</a>s) while others use virtualization technology.</p>
+</li>
+<li>
+<p><a name="BM_(Container%20Runtime%20Interface%7CCRI)%2Fi"></a><strong>container runtime interface</strong> - A runtime responsible for the high-level management of <a href="#BM_(container)%2Fi">container</a>s and <a href="#BM_(image)%2Fi">image</a>s: <a href="#BM_(image)%2Fi">image</a> management, <a href="#BM_(image)%2Fi">image</a> distribution, <a href="#BM_(container)%2Fi">container</a> storage, <a href="#BM_(container)%2Fi">container</a> networking, etc..</p>
+<p><a href="#BM_(Container%20Runtime%20Interface%7CCRI)%2Fi">CRI</a>s are also responsible for running <a href="#BM_(container)%2Fi">container</a>s, but typically do so by delegating to an <a href="#BM_(Open%20Container%20Initiative%20runtime%7COCI%20runtime%7COCI)%2Fi">OCI runtime</a>. Examples of <a href="#BM_(Container%20Runtime%20Interface%7CCRI)%2Fi">CRI</a>s include <a href="#BM_(container)%2Fi">container</a>d, and <a href="#BM_(Container%20Runtime%20Interface%7CCRI)%2Fi">cri</a>-o.</p>
+</li>
+<li>
+<p><a name="BM_(container%20engine)%2Fi"></a><strong>container engine</strong> - A high-level application / cohesive set of applications used for all the things <a href="#BM_(Open%20Container%20Initiative%20runtime%7COCI%20runtime%7COCI)%2Fi">OCI runtime</a>s and <a href="#BM_(Container%20Runtime%20Interface%7CCRI)%2Fi">CRI</a>s are used for as well as building <a href="#BM_(image)%2Fi">image</a>s, signing <a href="#BM_(image)%2Fi">image</a>s, and several other extra features. <a href="#BM_(container%20engine)%2Fi">Container engine</a>s typically delegate to <a href="#BM_(Open%20Container%20Initiative%20runtime%7COCI%20runtime%7COCI)%2Fi">OCI runtime</a>s and <a href="#BM_(Container%20Runtime%20Interface%7CCRI)%2Fi">CRI</a>s for most of their functionality.</p>
+<p>Examples include Docker Engine and <a href="#BM_(container)%2Fi">Container</a> Tools (podman for running <a href="#BM_(container)%2Fi">container</a>s, buildah for building <a href="#BM_(image)%2Fi">image</a>s, and skopeo for <a href="#BM_(image)%2Fi">image</a> distribution).</p>
+</li>
+<li>
+<p><a name="BM_(Kubernetes)%2Fi"></a><strong>Kubernetes</strong> - A tool for orchestrating multiple <a href="#BM_(container)%2Fi">container</a>s across a set machines. Provides features such as load balancing, service naming, service discovery, automated service scaling, and automated service recovery.</p>
+</li>
+<li>
+<p><a name="BM_(node)%2Fi"></a><strong>node</strong> - A host that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses to run the <a href="#BM_(container)%2Fi">container</a>s its orchestrating.</p>
+</li>
+<li>
+<p><a name="BM_(master%20node)%2Fi"></a><strong>master node</strong> - A <a href="#BM_(node)%2Fi">node</a> responsible for the managing the cluster (scheduling, API server, etc..).</p>
+</li>
+<li>
+<p><a name="BM_(worker%20node)%2Fi"></a><strong>worker node</strong> - A <a href="#BM_(node)%2Fi">node</a> responsible for running application <a href="#BM_(container)%2Fi">container</a>s.</p>
+</li>
+<li>
+<p><a name="BM_%5Cb(pod)s%3F%5Cb%2Fi"></a><strong>pod</strong> - A set of <a href="#BM_(container)%2Fi">container</a>s all bundled together as a single deployable unit, where all <a href="#BM_(container)%2Fi">container</a>s in that bundle are intended to run on the same <a href="#BM_(node)%2Fi">node</a>. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> are typically ass<a href="#BM_(Open%20Container%20Initiative%20runtime%7COCI%20runtime%7COCI)%2Fi">oci</a>ated with microservices. For example, a microservice may contain a Java application and the database server it interfaces with.</p>
+</li>
+<li>
+<p><a name="BM_(namespace)%2Fi"></a><strong>namespace</strong> - A user-defined category for objects in a cluster (e.g. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>), allowing <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> do things such as apply isolation and access control. By default, the <a href="#BM_(kubectl)%2Fi">kubectl</a> command uses the <a href="#BM_(namespace)%2Fi">namespace</a> <code>default</code> if no <a href="#BM_(namespace)%2Fi">namespace</a> is specified.</p>
+<pre><code class="language-{note}">The book tells you to think of it like it's a folder.
+</code></pre>
+</li>
+<li>
+<p><a name="BM_(ingress)%2Fi"></a><strong>ingress</strong> - A frontend that's able to combine multiple <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> together as a single API for external consumption.</p>
+</li>
+<li>
+<p><a name="BM_(kube-system)%2Fi"></a><strong>kube-system</strong> - A <a href="#BM_(namespace)%2Fi">namespace</a> for internal cluster components (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>) that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> runs for itself. For example, <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">Kubernetes's DNS</a> service, <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">Kubernetes's proxy</a> service, etc.. all run under the <a href="#BM_(kube-system)%2Fi">kube-system</a> <a href="#BM_(namespace)%2Fi">namespace</a>.</p>
+</li>
+<li>
+<p><a name="BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi"></a><strong>kube-proxy</strong> - An internal <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">Kubernetes proxy</a> service responsible for routing traffic to the correct services and load balancing between a service's <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. Runs on every <a href="#BM_(node)%2Fi">node</a> in the cluster.</p>
+</li>
+<li>
+<p><a name="BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi"></a><strong>core-dns</strong> - An internal <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">Kubernetes DNS</a> service responsible for naming and discovery of the services running on the cluster. Older versions of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> call this <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">kube-dns</a> instead of <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">core-dns</a>.</p>
+</li>
+<li>
+<p><a name="BM_(kubernetes-dashboard%7CKubernetes%20Dashboard%7CKubernetes%20UI%7CKubernetes%20GUI%7CKubernetes's%20Dashboard%7CKubernetes's%20UI%7CKubernetes's%20GUI)%2Fi"></a><strong>kubernetes-dashboard</strong> - An internal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> service responsible for providing a GUI to interface with and explore the cluster.</p>
+</li>
+<li>
+<p><a name="BM_(kubectl)%2Fi"></a><strong>kubectl</strong> - The standard command-line client for <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
+</li>
+<li>
+<p><a name="BM_(context)%2Fi"></a><strong>context</strong> - In reference to <a href="#BM_(kubectl)%2Fi">kubectl</a>, <a href="#BM_(context)%2Fi">context</a> refers to default cluster access settings <a href="#BM_(kubectl)%2Fi">kubectl</a> applies when running some command: cluster location, cluster authentication, and default <a href="#BM_(namespace)%2Fi">namespace</a>.</p>
+</li>
+<li>
+<p><a name="BM_(DaemonSet)%2F"></a><strong>DaemonSet</strong> - An API object that allows for running something on every <a href="#BM_(node)%2Fi">node</a>.</p>
+<pre><code class="language-{note}">Unsure about this. It says it'll be described further in chapter 5 and that normally it ensures kube-proxy is running on all nodes (may not be the case on some clouds).
+</code></pre>
+</li>
+</ul>
+
+        </body></html>
