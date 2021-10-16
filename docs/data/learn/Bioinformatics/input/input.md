@@ -6350,13 +6350,9 @@ Phylogeny is the concept of inferring the evolutionary history of a set of biolo
              Cat     Lion    Bear
 ```
 
-Evolutionary history is often displayed as a tree called a phylogenetic tree, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The phylogenetic tree may be a rooted tree or an unrooted tree.
+Evolutionary history is often displayed as a tree called a phylogenetic tree, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The example above shows a phylogenetic tree for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.
 
-The example above shows a phylogenetic tree for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.
-
-The typical process for phylogeny is to first quantify how related pairs of entities are, where each relatedness quantity is referred to as a distance (e.g. `dist(cat, lion) = 2`). Then, work backwards to find a phylogenetic tree that fits / maps to those distances.
-
-The distance may be any metric so long as ...
+The typical process for phylogeny is to first measure how related a set of entities are to each other, where each measure is referred to as a distance (e.g. `dist(cat, lion) = 2`), then work backwards to find a phylogenetic tree that fits / maps to those distances. The distance may be any metric so long as ...
 
  * it computes the distance to itself as 0 (e.g. `dist(cat, cat) = 0`)
  * it computes the distance to any other entity as > 0 (e.g. `dist(cat, lion) = 2`)
@@ -6364,7 +6360,7 @@ The distance may be any metric so long as ...
  * computed distances don't leapfrog each other (e.g. `dist(cat, lion) + dist(lion, dog) >= dist(cat, dog)`)
 
 ````{note}
-The last point may be confusing. All it's saying is that taking an indirect path between two species should produce a distance that's >= the direct path. For example, the direct path between cat and dog is 6: `dist(cat, dog) = 6`. If you were to instead jump from cat to lion `dist(cat, lion) = 2`, then from lion to dog `dist(lion, dog) = 5`, that combined distance should be >= to 6...
+The leapfrogging point may be confusing. All it's saying is that taking an indirect path between two species should produce a distance that's >= the direct path. For example, the direct path between cat and dog is 6: `dist(cat, dog) = 6`. If you were to instead jump from cat to lion `dist(cat, lion) = 2`, then from lion to dog `dist(lion, dog) = 5`, that combined distance should be >= to 6...
 
 ```
 dist(cat, dog)  = 6
@@ -6395,6 +6391,14 @@ cat ------ lion
 Later on non-conforming distance matrices are discussed called non-additive distance matrices. I don't know if non-additive distance matrices are required to have this specific property, but they should have all others.
 ````
 
+Examples of metrics that may be used as distance, referred to as distance metrics, include...
+
+ * hamming distance between DNA / protein sequences.
+ * global alignment score between DNA / protein sequences.
+ * two-break count (reversal distance).
+ * number of similar physical or behavioural attributes.
+ * etc..
+
 Distances for a set of entities are typically represented as a 2D matrix that contains all possible pairings, called a distance matrix. The distance matrix for the example Cat/Lion/Bear phylogenetic tree is ...
 
 |      | Cat | Lion | Bear |
@@ -6420,14 +6424,6 @@ Distances for a set of entities are typically represented as a 2D matrix that co
 ```
 
 Note how the distance matrix has the distance for each pair slotted twice, mirrored across the diagonal of 0s (self distances). For example, the distance between bear and lion is listed twice.
-
-Examples of metrics that may be used as distance, referred to as distance metrics, include...
-
- * hamming distance between DNA sequences.
- * global alignment score between DNA sequences.
- * two-break count (reversal distance).
- * number of similar physical or behavioural attributes.
- * etc..
 
 ### Tree to Additive Distance Matrix
 
@@ -6833,9 +6829,9 @@ phylogeny.CardinalityTest
 [[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i2,v4,4], [i1,v5,7]]
 ```
 
-### Additive Distance Matrix Test
+### Test Additive Distance Matrix
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Test)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Test Additive Distance Matrix)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
@@ -6843,17 +6839,13 @@ Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
 Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
-**WHAT**: Determine if a distance matrix is an additive distance matrix without knowing the tree structure beforehand.
+**WHAT**: Determine if a distance matrix is an additive distance matrix.
 
 **WHY**: Knowing if a distance matrix is additive helps determine how the tree for that distance matrix should be constructed. For example, since it's impossible for a non-additive distance matrix to fit a tree, different algorithms are needed to approximate a tree that somewhat fits.
 
-#### Four Point Condition Algorithm
-
-`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Test\/Four Point Condition Algorithm)_TOPIC/`
-
 **ALGORITHM**:
 
-This algorithm tests pairs within each quartet of leaf nodes to ensure that they meet a certain set of conditions. For example, the following tree has the quartet of leaf nodes (v0, v2, v4, v6) ...
+This algorithm, called the four point condition algorithm, tests pairs within each quartet of leaf nodes to ensure that they meet a certain set of conditions. For example, the following tree has the quartet of leaf nodes (v0, v2, v4, v6) ...
 
 ```{dot}
 graph G {
@@ -7021,228 +7013,9 @@ phylogeny.FourPointCondition
 Could the differences found by this algorithm help determine how "close" a distance matrix is to being an additive distance matrix?
 ```
 
-#### Linear System Algorithm
+### Find Limb Length
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Test\/Linear System Algorithm)_TOPIC/`
-
-**ALGORITHM**:
-
-```{note}
-This is more illustrative than it is a hard and fast algorithm. It's just explaining that the values in an additive distance matrix come from what are essentially linear equations, and that if you know the structure of the tree, you can solve the system of linear equations to figure out what that tree's weights should be.
-```
-
-Given an additive distance matrix, if you already know the structure of the tree, with edge weights that satisfy that tree are derivable from that distance matrix. For example, given the following distance matrix and tree structure...
-   
-|      | Cat | Lion | Bear |
-|------|-----|------|------|
-| Cat  |  0  |  2   |  4   |
-| Lion |  2  |  0   |  3   |
-| Bear |  4  |  3   |  0   |
-
-```{svgbob}
-           * A2
-          / \
-         /   \
-        /     \
-    A1 *       \
-      / \       \
-     /   \       \
-    /     \       \
-   *       *       *
-  Cat     Lion    Bear
-```
-
-... the distances between species must have been calculated as follows:
-
-```
-dist(Cat, Lion) = dist(Cat, A1) + dist(A1, Lion)`
-dist(Cat, Bear) = dist(Cat, A1) + dist(A1, A2) + dist(A2, Bear)`
-dist(Lion, Bear) = dist(Lion, A1) + dist(A1, A2) + dist(A2, Bear)`
-```
-
-This is a system of linear equations that may be solved using standard algebra. For example, each `dist()` above is representable as either a variable or a constant...
-
-```
-2 = dist(Cat, Lion)  = dist(Lion, Cat)
-4 = dist(Cat, Bear)  = dist(Bear, Cat)
-3 = dist(Lion, Bear) = dist(Bear, Lion)
-w = dist(Cat, A1)    = dist(A1, Cat)
-x = dist(Lion, A1)   = dist(A1, Lion)
-y = dist(A1, A2)     = dist(A2, A1)
-z = dist(A2, Bear)   = dist(Bear, A2)
-```
-
-... , which converts each calculation above to the following equations ...
-
-```
-2 = w + x
-4 = w + y + z
-3 = x + y + z
-```
-
-```{svgbob}
-           * A2
-          / \
-       y /   \
-        /     \
-    A1 *       \ z
-      / \       \
-  w  /   \ x     \
-    /     \       \
-   *       *       *
-  Cat     Lion    Bear
-```
-
-Solving this system of linear equations results in. ..
-
-```
-x = 0.5
-w = 1.5
-z = 2.5 - y
-```
-
-As such, the example distance matrix is an additive matrix because there exists a tree that satisfies it. Any of the following edge weights will work with this distance matrix...
-
-```
-x = 0.5, w = 1.5, y = 0.5, z = 2.0
-x = 0.5, w = 1.5, y = 1.0, z = 1.5
-x = 0.5, w = 1.5, y = 1.5, z = 1.0
-...
-```
-
-The example above tests against a tree that's a non-simple tree (A2 is an internal node with degree_GRAPH of 2). If you limit your search to simple trees and find nothing, there won't be any non-simple trees either: Non-simple trees are essentially simple trees that have had edges broken up by splicing nodes inbetween (degree_GRAPH 2 nodes).
-
-The non-simple tree example above collapsed into a simple tree:
-
-```{svgbob}
-           * Bear
-          /
-       a /
-        /
-       * A2
-      / \ 
-   w /   \ x
-    /     \
-   *       *
-  Cat     Lion
-```
-
-````{note}
-The path A1-A2-Bear has been collapased into A1-Bear, where the weight of the newly collpased edge is represented by a (formerly y+z). Using the same additive distance matrix, the simple tree above gets solved to `w = 2, x = 1, a = 2`.  
-````
-
-The term additive is used because the weights of all edges along the path between leaves (i, j) add to `dist(i, j)` in the distance matrix. Not all distance matrices are additive. For example, no simple tree exists that satisfies the following distance matrix...
-
-|    | S1 | S2 | S3 | S4 |
-|----|----|----|----|----|
-| S1 | 0  | 3  | 4  | 3  |
-| S2 | 3  | 0  | 4  | 5  |
-| S3 | 4  | 4  | 0  | 2  |
-| S4 | 3  | 5  | 2  | 0  |
-
- * Test simple tree 1:
-   
-   ```{svgbob}
-              S2
-              *
-              | x
-              |
-        w     |     
-   S1 *-------*-------* S3
-              |     y
-              |
-            z |
-              *
-              S4
-   ```
-   
-   ```
-   dist(S1, S2) is 3 = w + x
-   dist(S1, S3) is 4 = w + y
-   dist(S1, S4) is 3 = w + z
-   dist(S2, S3) is 4 = x + y
-   dist(S2, S4) is 5 = x + z
-   dist(S3, S4) is 2 = y + z
-   ```
-  
-   Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
-
- * Test simple tree 2:
-   
-   ```{svgbob}
-              S2
-              *
-            x |
-              |
-        w     |
-   S1 *-------*
-               \
-                \ u
-                 \
-                  *-------* S3
-                  |     y
-                  |
-                  | z
-                  *
-                  S4
-   ```
-  
-   ```
-   dist(S1, S2) is 3 = w + x
-   dist(S1, S3) is 4 = w + u + y
-   dist(S1, S4) is 3 = w + u + z
-   dist(S2, S3) is 4 = x + u + y
-   dist(S2, S4) is 5 = x + u + z
-   dist(S3, S4) is 2 = y + z
-   ```
-  
-   Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
-
- * Test simple tree 3:
-   
-   ```{svgbob}
-              S3
-              *
-            x |
-              |
-        w     |
-   S1 *-------*
-               \
-                \ u
-                 \
-                  *-------* S2
-                  |     y
-                  |
-                  | z
-                  *
-                  S4
-
-   * "Same structure to previous example"
-     "but species assigned to different leafs."
-   ```
-  
-   ```
-   dist(S1, S2) is 4 = w + u + y
-   dist(S1, S3) is 3 = w + x
-   dist(S1, S4) is 3 = w + u + z
-   dist(S2, S3) is 4 = x + u + y
-   dist(S2, S4) is 2 = y + z
-   dist(S3, S4) is 5 = x + u + z
-   ```
-  
-   Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
-
- * etc..
-
-A solution isn't viable if a variable ends up as a negative value (negative weight means negative distance, which doesn't make any sense). The initial example in this section is one that has multiple solutions where some are not viable because some variables end up up as negative values. 
-
-```{note}
-There is no code for this section since writing a generic linear systems solver is out of scope. There are Python packages you can use if you really want to do this.
-```
-
-### Limb Length
-
-`{bm} /(Algorithms\/Distance Phylogeny\/Limb Length)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Find Limb Length)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
@@ -7250,26 +7023,9 @@ Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
 Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
-**WHAT**: A limb is defined as the edge between a leaf node and its parent (node it's connected to). For example, the limbs in the following graph are highlighted in red...
+**WHAT**: Given an additive distance matrix, there exists a unique simple tree that fits that matrix. Compute the limb length of any leaf node in that simple tree just from the additive distance matrix.
 
-```{dot}
-graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- v0 -- i0 [color="red", penwidth="2.5", label="1"]
- v1 -- i0 [color="red", penwidth="2.5", label="2"]
- i0 -- i1
- i1 -- v2 [color="red", penwidth="2.5", label="1"]
- i1 -- v3 [color="red", penwidth="2.5", label="3"]
-}
-```
-
-The weight for a leaf node's limb is referred to as its limb length. For example, in the diagram above the limb length for node v1 is 2.
-
-Given an additive distance matrix, there exists a unique simple tree that fits that matrix. Compute the limb length of any leaf node in that simple tree just from the additive distance matrix. That is, the distances between leaf nodes provide enough information to derive the limb lengths for any / all leaf nodes.
-
-**WHY**: This is a fundamental operation in additive phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
+**WHY**: This is one of the operations required to construct the unique simple tree for an additive distance matrix.
 
 **ALGORITHM**:
 
@@ -7781,12 +7537,12 @@ phylogeny.LimbLength
 [36, 27, 27, 28, 13, 6 , 0 ]
 ```
 
-### Same Subtree Test
+### Test Same Subtree
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Same Subtree Test)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Test Same Subtree)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Limb Length_TOPIC
+Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 ```
 
 **WHAT**: Splitting a simple tree on the parent of one of its leaf nodes breaks it up into several subtrees. For example, the following simple tree has been split on v2's parent, resulting in 4 different subtrees ...
@@ -7833,7 +7589,7 @@ graph G {
 
 Given just the additive distance matrix for a simple tree (not the simple tree itself), determine if two *leaf nodes* belong to the same subtree had that simple tree been split on some leaf node's parent.
 
-**WHY**: This is a fundamental operation in additive phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
+**WHY**: This is one of the operations required to construct the unique simple tree for an additive distance matrix.
 
 **ALGORITHM**:
 
@@ -8088,7 +7844,7 @@ Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 
 **WHAT**: Remove a limb from an additive distance matrix, just as it would get removed from its corresponding unique simple tree.
 
-**WHY**: This is a fundamental operation in additive phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
+**WHY**: This is one of the operations required to construct the unique simple tree for an additive distance matrix.
 
 **ALGORITHM**:
 
@@ -8169,7 +7925,7 @@ phylogeny.Trimmer
 `{bm} /(Algorithms\/Distance Phylogeny\/Bald)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Limb Length_TOPIC
+Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 ```
 
 `{bm-disable} (5')/i` <!-- Needs to be disabled because v3's is conflicting with 3' -->
@@ -8177,7 +7933,7 @@ Algorithms/Distance Phylogeny/Limb Length_TOPIC
 
 **WHAT**: Set a limb length to 0 in an additive distance matrix, just as it would be set to 0 in its corresponding unique simple tree. Technically, a simple tree can't have edge weights that are <= 0. This is a special case, typically used as an intermediate operation of some larger algorithm.
 
-**WHY**: This is a fundamental operation in additive phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
+**WHY**: This is one of the operations required to construct the unique simple tree for an additive distance matrix.
 
 **ALGORITHM**:
 
@@ -8288,8 +8044,8 @@ phylogeny.Balder
 `{bm} /(Algorithms\/Distance Phylogeny\/Un-trim Tree)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Limb Length_TOPIC
-Algorithms/Distance Phylogeny/Same Subtree Test_TOPIC
+Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+Algorithms/Distance Phylogeny/Test Same Subtree_TOPIC
 Algorithms/Distance Phylogeny/Trim_TOPIC
 Algorithms/Distance Phylogeny/Bald_TOPIC
 ```
@@ -8383,7 +8139,7 @@ Attaching a new limb to an existing leaf node is never possible because...
 2. it will cease to be a simple tree -- simple trees can't have nodes of degree_GRAPH 2 (train of edges not allowed).
 ```
 
-**WHY**: This is a fundamental operation in additive phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
+**WHY**: This is one of the operations required to construct the unique simple tree for an additive distance matrix.
 
 **ALGORITHM**:
 
@@ -8610,13 +8366,18 @@ phylogeny.UntrimTree
 
 `{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbours)_TOPIC/`
 
-**WHAT**: Given an additive distance matrix, find a pair of leaf nodes guaranteed to be neighbours (shared parent) in its corresponding unique simple tree.
-
-```{note}
-For non-additive distance matrices, this algorithm finds a pair of nodes that are approximately neighbours.
+```{prereq}
+Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
-**WHY**: This is a fundamental operation in neighbour joining phylogeny, an algorithm that constructs the unique simple tree for an additive distance matrix.
+**WHAT**: Given an distance matrix, if the distance matrix is ...
+
+ * an additive distance matrix, this algorithm finds a pair of leaf nodes guaranteed to be neighbours in its corresponding unique simple tree.
+ * a non-additive distance matrix (but close to be being additive), this algorithm approximates a pair of leaf nodes that are likely to be neighbours.
+
+**WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
 **ALGORITHM**: 
 
@@ -9747,39 +9508,445 @@ phylogeny.NeighbourJoiningMatrix
 [[0,13,21,21,22,22],[13,0,12,12,13,13],[21,12,0,20,21,21],[21,12,20,0,7,13],[22,13,21,7,0,14],[22,13,21,13,14,0]]
 ```
 
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
-TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING LIMB LENGTH ALGORITHM
-
 ### Distance Matrix to Tree
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+```
+
+**WHAT**: Given a distance matrix, convert that distance matrix into a evolutionary tree. Different algorithms are presented that either ...
+
+* find the unique simple tree for an additive distance matrix,
+* approximate a simple tree for a non-additive distance matrix,
+* approximate a tree for a distance matrix regardless of if it's additive or not.
+
+**WHY**: Recall that converting a distance matrix to a tree is the end goal of phylogeny. Given the distances between set of known / present-day entities, these algorithms will infer their evolutionary relationships.
 
 #### UPGMA Algorithm
 
+`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/UPGMA)_TOPIC/`
+
+**ALGORITHM**:
+
+Unweighted pair group method with arithmetic mean (UPGMA) is a heuristic algorithm used to estimate a binary ultrametric tree for some distance matrix.
+
+```{note}
+A binary ultrametric tree is an ultrametric tree where each internal node only branches to two children. In other words, a binary ultrametric tree is a rooted binary tree where all leaf nodes are equidistant from the root.
+```
+
+The algorithm assumes that the rate of mutation is consistent (molecular clock). For example, ...
+   
+ * every minute, around n of m nucleotides mutate.
+ * every hour, around n genome rearrangement reversals occur per genome segment of size m.
+ * etc..
+
+ This assumption is what makes the tree ultrametric. A set of present day species (leaf nodes) are assumed to all have the same amount of mutation (distance) from their shared ancestor (shared internal node).
+
+```{svgbob}
+            g      <-- "shared ancestor"
+           / \
+          /   \
+     2.5 /     \
+        /       \ 3
+       /         \
+      f           \
+     / \           \
+1.5 /   \ 1.5       e
+   /     \       1 / \ 1
+  /       \       /   \
+ a         b     c     d      <-- "present day species"
+   
+* "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g) = 4"
+```
+   
+For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.
+   
+Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation. Assume the number of genome rearrangement reversals is being used as the measure of mutation. If the rate of reversals expected per 100 years is 2, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.
+
+```{svgbob}
+                      g (mut=4)      <-- "shared ancestor"
+                     / \
+                    /   \
+               2.5 /     \
+                  /       \ 3
+                 /         \
+      (mut=1.5) f           \
+               / \           \
+          1.5 /   \ 1.5       e (mut=1)
+             /     \       1 / \ 1
+            /       \       /   \
+   (mut=0) a         b     c     d (mut=0) a      <-- "present day species"
+                (mut=0)   (mut=0)
+   
+* "a and b share ancestor f:   dist(a,f) = dist(b,f) = 1.5"
+* "c and d share ancestor e:   dist(c,e) = dist(d,e) = 1"
+* "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g) = 4"
+
+* "mut is the amount of mutation required to get any of the leaf nodes to that ancestor"
+  "and vice-versa."
+```
+
+In the example above, ...
+
+ * present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5 reversals
+ * present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1 reversal
+ * present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals
+ * present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals
+ * etc..
+ 
+Given a distance matrix, UPGMA estimates an ultrametric tree for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).
+
+```{svgbob}
+                                                                                                          g           
+                                                                                                         / \          
+                                                                                                        /   \         
+                                                                                                   2.5 /     \        
+                                                                                                      /       \ 3     
+                                                                                                     /         \      
+                                                                 f                                  f           \     
+                                                                / \                                / \           \    
+                                           e               1.5 /   \ 1.5      e               1.5 /   \ 1.5       e   
+                                        1 / \ 1               /     \      1 / \ 1               /     \       1 / \ 1
+                                         /   \               /       \      /   \               /       \       /   \ 
+ a    b    c    d             a    b    c     d             a         b    c     d             a         b     c     d
+
+      STEP1                          STEP2                           STEP3                               STEP4        
+  "(no connections)"              "(connect c, d)"                "(connect a, b)"                     "(connect e, f)"
+```
+   
+Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the distance matrix is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.
+
+|        | Ca={a} | Cb={b} | Cc={c} | Cd={d} |
+|--------|--------|--------|--------|--------|
+| Ca={a} |   0    |   3    |   4    |   3    |
+| Cb={b} |   3    |   0    |   4    |   5    |
+| Cc={c} |   4    |   4    |   0    |   2    |
+| Cd={d} |   3    |   5    |   2    |   0    |
+
+The two clusters with the minimum distance are chosen to connect in the tree. In the example distance matrix above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be connected together with a new internal node.
+
+```{svgbob}
+   e
+  / \
+ /   \
+c     d
+```
+
+````{note}
+Note what's happening here. The assumption being made that the leaf nodes for the minimum distance matrix value are always neighbours. Not always true, but probably good enough as a starting point. For example, the following distance matrix and tree would identify v0 and v2 as neighbours when in fact they aren't ...
+
+```{svgbob}
+ a             b
+  \           /
+ 1 \         / 1
+    e ----- f
+90 /    1    \ 90
+  /           \
+ d             c
+```
+
+|   | a  |  b  | c  |  d  |
+|---|----|-----|----|-----|
+| a | 0  | 91  | 3  | 92  |
+| b | 91 | 0   | 92 | 181 |
+| c | 3  | 92  | 0  | 91  |
+| d | 92 | 181 | 91 | 0   |
+
+It may be a good idea to use Algorithms/Distance Phylogeny/Find Neighbours_TOPIC to short circuit this restriction, possibly producing a better heuristic. But, the original algorithm doesn't call for it.
+````
+   
+This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:
+
+* mut(Ce) = dist(Cc, Cd) / 2 = 2 / 2 = 1
+* dist(Ce, Cc) = mut(Ce) - mut(Cc) = 1 - 0 = 1
+* dist(Ce, Cd) = mut(Ce) - mut(Cd) = 1 - 0 = 1
+
+```{svgbob}
+                                                                                                          e (mut=1)   
+                                                                                                       1 / \ 1        
+                                                     "(connect c, d)"                                   /   \         
+(mut=0) a        b        c        d (mut=0)         ------------>           (mut=0) a        b        c     d (mut=0)
+           (mut=0)        (mut=0)                                                       (mut=0)        (mut=0)        
+```
+
+The distance matrix then gets modified by merging together the recently connected clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new distance matrix distances for that cluster are computed using the formula...
+    
+```{kt}
+D_{C_1,C_2} = \frac{
+  \sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
+  }{
+    |C_1| \cdot |C_2|
+  }
+```
+
+```{output}
+ch7_code/src/phylogeny/UPGMA.py
+python
+# MARKDOWN_DIST\s*\n([\s\S]+)\n\s*# MARKDOWN_DIST
+```
+
+|          | Ca={a} | Cb={b} | Ce={c,d} |
+|----------|--------|--------|----------|
+| Ca={a}   |   0    |   3    |    3.5   |
+| Cb={b}   |   3    |   0    |    7.5   |
+| Ce={c,d} |  3.5   |  7.5   |     0    |
+
+This process repeats at each iteration until a single cluster remains. At the next iteration, Ca and Cb have the minimum distance in the previous distance matrix (distance of 3), meaning that Ca and Cb should be connected with a new internal internal node:
+   
+ * mut(Cf) = dist(Ca, Cb) / 2 = 3 / 2 = 1.5
+ * dist(Cf, Ca) = mut(Cf) - mut(Ca) = 1.5 - 0 = 1.5
+ * dist(Cf, Cb) = mut(Cf) - mut(Cb) = 1.5 - 0 = 1.5
+
+```{svgbob}
+                                                                              (mut=1.5) f                   
+                                                                                       / \                           
+                             e (mut=1)                                            1.5 /   \ 1.5          e (mut=1)   
+                          1 / \ 1                                                    /     \          1 / \ 1        
+                           /   \                  "(connect a, b)"                  /       \          /   \         
+(mut=0) a        b        c     d (mut=0)         ------------>           (mut=0)  a         b        c     d (mut=0)
+           (mut=0)        (mut=0)                                                       (mut=0)      (mut=0)         
+```
+
+|          | Cf={a,b} | Ce={c,d} |
+|----------|----------|----------|
+| Cf={a,b} |     0    |     4    |
+| Ce={c,d} |     4    |     0    |
+
+At the next iteration, Ce and Cf have the minimum distance in the previous distance matrix (distance of 4), meaning that Ce and Cf should be connected together with a new internal node:
+   
+ * mut(Cg) = dist(Cf, Ce) / 2 = 4 / 2 = 2
+ * dist(Cg, Cf) = mut(Cg) - mut(Cf) = 2 - 1.5 = 0.5
+ * dist(Cg, Ce) = mut(Cg) - mut(Ce) = 2 - 1 = 1
+
+```{svgbob}
+                                                                                                g (mut=2)
+                                                                                               / \
+                                                                                              /   \
+                                                                                         0.5 /     \ 1
+                                                                                            /       \
+                                                                                           /         \
+              f (mut=1.5)                                                       (mut=1.5) f           \             
+             / \                                                                         / \           \            
+        1.5 /   \ 1.5          e (mut=1)                                            1.5 /   \ 1.5       e (mut=1)   
+           /     \          1 / \ 1                                                    /     \       1 / \ 1        
+          /       \          /   \                  "(connect e, f)"                  /       \       /   \         
+(mut=0)  a         b        c     d (mut=0)         ------------>           (mut=0)  a         b     c     d (mut=0)
+              (mut=0)      (mut=0)                                                        (mut=0)   (mut=0)         
+```
+
+|              | Cg={a,b,c,d} |
+|--------------|--------------|
+| Cg={a,b,c,d} |       0      |
+   
+The process is complete. Only a single cluster remains (representing the root) / the ultrametric tree is fully generated.
+
+```{svgbob}
+                    g (mut=2)
+                   / \
+                  /   \
+             0.5 /     \ 1
+                /       \
+               /         \
+    (mut=1.5) f           \             
+             / \           \            
+        1.5 /   \ 1.5       e (mut=1)   
+           /     \       1 / \ 1        
+          /       \       /   \         
+(mut=0)  a         b     c     d (mut=0)
+              (mut=0)   (mut=0)         
+```
+
+Note that the generated ultrametric tree above is an estimation. The distance matrix for the example above isn't an additive distance matrix, meaning a unique simple tree doesn't exist for it. Even if it were an additive distance matrix, an ultrametric tree is a rooted tree, meaning it'll never qualify as the simple tree unique to that additive distance matrix (root node has degree_GRAPH of 2 which isn't allowed in a simple tree).
+   
+In addition, some distances in the generated ultrametric tree are wildly off from the original distance matrix distances. For example, ...
+
+ * dist(a,d)=8 in the generated ultrametric tree.
+ * dist(a,d)=5 in the original distance matrix.
+
+Part of this may have to do with the assumption that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
+
+```{output}
+ch7_code/src/phylogeny/UPGMA.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.UPGMA
+[0,  13, 21, 21, 22, 22]
+[13, 0,  12, 12, 13, 13]
+[21, 12, 0,  20, 21, 21]
+[21, 12, 20, 0,  7,  13]
+[22, 13, 21, 7,  0,  14]
+[22, 13, 21, 13, 14, 0 ]
+```
+
 #### Additive Phylogeny Algorithm
 
+```{prereq}
+Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+Algorithms/Distance Phylogeny/Test Same Subtree_TOPIC
+Algorithms/Distance Phylogeny/Trim_TOPIC
+Algorithms/Distance Phylogeny/Bald_TOPIC
+Algorithms/Distance Phylogeny/Un-trim Tree_TOPIC
+```
+
+**ALGORITHM**:
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
+TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+
 #### Neighbour Joining Algorithm
+
+```{prereq}
+Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+Algorithms/Distance Phylogeny/Find Neighbours_TOPIC
+```
+
+**ALGORITHM**:
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+
+#### Evolutionary Algorithm
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Evolutionary Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+```{note}
+This is essentially a hammer, ignoring much of the logic and techniques derived in prior sections. There is no code for this section because writing it involves doing things like writing a generic linear systems solver, evolutionary algorithms framework, etc... There are Python packages you can use if you really want to do this, but this section is more describing the overarching idea.
+
+The logic and techniques in prior section typically work much better and much faster than doing something like this, but this doesn't require as much reasoning / thinking. This idea was first hinted at in the Pevzner book when first describing how to assign weights for non-additive distance matrices.
+```
+
+Given an additive distance matrix, if you already know the structure of the tree, with edge weights that satisfy that tree are derivable from that distance matrix. For example, given the following distance matrix and tree structure...
+   
+|      | Cat | Lion | Bear |
+|------|-----|------|------|
+| Cat  |  0  |  2   |  4   |
+| Lion |  2  |  0   |  3   |
+| Bear |  4  |  3   |  0   |
+
+```{svgbob}
+           * A2
+          / \
+         /   \
+        /     \
+    A1 *       \
+      / \       \
+     /   \       \
+    /     \       \
+   *       *       *
+  Cat     Lion    Bear
+```
+
+... the distances between species must have been calculated as follows:
+
+* dist(Cat, Lion) = dist(Cat, A1) + dist(A1, Lion)`
+* dist(Cat, Bear) = dist(Cat, A1) + dist(A1, A2) + dist(A2, Bear)`
+* dist(Lion, Bear) = dist(Lion, A1) + dist(A1, A2) + dist(A2, Bear)`
+
+This is a system of linear equations that may be solved using standard algebra. For example, each `dist()` above is representable as either a variable or a constant...
+
+* 2 = dist(Cat, Lion)  = dist(Lion, Cat)
+* 4 = dist(Cat, Bear)  = dist(Bear, Cat)
+* 3 = dist(Lion, Bear) = dist(Bear, Lion)
+* w = dist(Cat, A1)    = dist(A1, Cat)
+* x = dist(Lion, A1)   = dist(A1, Lion)
+* y = dist(A1, A2)     = dist(A2, A1)
+* z = dist(A2, Bear)   = dist(Bear, A2)
+
+... , which converts each calculation above to the following equations ...
+
+* 2 = w + x
+* 4 = w + y + z
+* 3 = x + y + z
+
+```{svgbob}
+           * A2
+          / \
+       y /   \
+        /     \
+    A1 *       \ z
+      / \       \
+  w  /   \ x     \
+    /     \       \
+   *       *       *
+  Cat     Lion    Bear
+```
+
+Solving this system of linear equations results in. ..
+
+* x = 0.5
+* w = 1.5
+* z = 2.5 - y`
+
+As such, the example distance matrix is an additive matrix because there exists a tree that satisfies it. Any of the following edge weights will work with this distance matrix...
+
+* x = 0.5, w = 1.5, y = 0.5, z = 2.0
+* x = 0.5, w = 1.5, y = 1.0, z = 1.5
+* x = 0.5, w = 1.5, y = 1.5, z = 1.0
+* ...
+
+The example above tests against a tree that's a non-simple tree (A2 is an internal node with degree_GRAPH of 2). If you limit your search to simple trees and find nothing, there won't be any non-simple trees either: Non-simple trees are essentially simple trees that have had edges broken up by splicing nodes in between (degree_GRAPH 2 nodes).
+
+The non-simple tree example above collapsed into a simple tree:
+
+```{svgbob}
+           * Bear
+          /
+       a /
+        /
+       * A2
+      / \ 
+   w /   \ x
+    /     \
+   *       *
+  Cat     Lion
+```
+
+````{note}
+The path A1-A2-Bear has been collapsed into A1-Bear, where the weight of the newly collapsed edge is represented by a (formerly y+z). Using the same additive distance matrix, the simple tree above gets solved to `w = 2, x = 1, a = 2`.  
+````
+
+If the distance matrix isn't additive, something like sum of errors squared may be used to converge on an approximate set of weights that work. Similarly, evolutionary algorithms may be used in addition to approximating weights to find a simple tree that's close enough to the  
 
 # Stories
 
@@ -12834,6 +13001,14 @@ graph_show
                +--- "Mycoplasma agalactiae"
    ```
 
+ * `{bm} distance metric/(distance metric)/i` - A metric used to measure how related a pair of entities are to each other. Examples include...
+
+   * hamming distance between DNA / protein sequences.
+   * global alignment score between DNA / protein sequences.
+   * two-break count (reversal distance).
+   * number of similar physical or behavioural attributes.
+   * etc..
+
  * `{bm} distance matrix/(distance matrix|distance matrices)/i` - Given a set of n different species, a distance matrix is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...
 
    |           | Snake | Lizard | Bird | Crocodile |
@@ -13026,14 +13201,126 @@ graph_show
      Cat     Lion    Bear
    ```
 
-   Some distance matrices don't have a tree that fits. For example, there is no tree that fits the following distance matrix ...
+   The term additive is used because the weights of all edges along the path between leaves (i, j) add to `dist(i, j)` in the distance matrix. Not all distance matrices are additive. For example, no simple tree exists that satisfies the following distance matrix...
 
-   |    | v0 | v1 | v2 | v3 |
+   |    | S1 | S2 | S3 | S4 |
    |----|----|----|----|----|
-   | v0 | 0  | 3  | 4  | 3  |
-   | v1 | 3  | 0  | 4  | 5  |
-   | v2 | 4  | 4  | 0  | 2  |
-   | v3 | 3  | 5  | 2  | 0  |
+   | S1 | 0  | 3  | 4  | 3  |
+   | S2 | 3  | 0  | 4  | 5  |
+   | S3 | 4  | 4  | 0  | 2  |
+   | S4 | 3  | 5  | 2  | 0  |
+   
+    * Test simple tree 1:
+      
+      ```{svgbob}
+                 S2
+                 *
+                 | x
+                 |
+           w     |     
+      S1 *-------*-------* S3
+                 |     y
+                 |
+               z |
+                 *
+                 S4
+      ```
+      
+      ```
+      dist(S1, S2) is 3 = w + x
+      dist(S1, S3) is 4 = w + y
+      dist(S1, S4) is 3 = w + z
+      dist(S2, S3) is 4 = x + y
+      dist(S2, S4) is 5 = x + z
+      dist(S3, S4) is 2 = y + z
+      ```
+     
+      Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+   
+    * Test simple tree 2:
+      
+      ```{svgbob}
+                 S2
+                 *
+               x |
+                 |
+           w     |
+      S1 *-------*
+                  \
+                   \ u
+                    \
+                     *-------* S3
+                     |     y
+                     |
+                     | z
+                     *
+                     S4
+      ```
+     
+      ```
+      dist(S1, S2) is 3 = w + x
+      dist(S1, S3) is 4 = w + u + y
+      dist(S1, S4) is 3 = w + u + z
+      dist(S2, S3) is 4 = x + u + y
+      dist(S2, S4) is 5 = x + u + z
+      dist(S3, S4) is 2 = y + z
+      ```
+     
+      Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+   
+    * Test simple tree 3:
+      
+      ```{svgbob}
+                 S3
+                 *
+               x |
+                 |
+           w     |
+      S1 *-------*
+                  \
+                   \ u
+                    \
+                     *-------* S2
+                     |     y
+                     |
+                     | z
+                     *
+                     S4
+   
+      * "Same structure to previous example"
+        "but species assigned to different leafs."
+      ```
+     
+      ```
+      dist(S1, S2) is 4 = w + u + y
+      dist(S1, S3) is 3 = w + x
+      dist(S1, S4) is 3 = w + u + z
+      dist(S2, S3) is 4 = x + u + y
+      dist(S2, S4) is 2 = y + z
+      dist(S3, S4) is 5 = x + u + z
+      ```
+     
+      Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.
+   
+    * etc..
+
+ * `{bm} neighbour` - Given two leaf nodes in a tree, those leaf nodes are said to be neighbours if they share they connect to the same internal node. For example, leaf nodes A and B are neighbours in the following tree because they both conect to internal node D ...
+
+   ```{svgbob}
+   A   B
+   *   *
+    \ / 
+     * D
+      \
+     G * 
+      /
+     *  
+     I  
+   ```
+
+   ```{note}
+   A leaf node will only ever have 1 parent, by definition of a tree.
+   ```
 
  * `{bm} limb` - Given a leaf node in a tree, that leaf node's limb is the edge between it and its parent (node it's connected to). For example, the following tree has the following limbs ...
 
@@ -13073,7 +13360,7 @@ graph_show
     A         C
    ```
 
- * `{bm} four point condition/(four point condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. Given four leaf nodes, the algorithm checks different permutation_NORMs of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...
+ * `{bm} four point condition/(four points? condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. Given four leaf nodes, the algorithm checks different permutation_NORMs of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...
 
    ```python
    for a, b, c, d in permutations(quartet, r=4):  # find one perm that passes the following test
@@ -13504,13 +13791,7 @@ graph_show
    A binary ultrametric tree is an ultrametric tree where each internal node only branches to two children. In other words, a binary ultrametric tree is a rooted binary tree where all leaf nodes are equidistant from the root.
    ```
 
-   The algorithm assumes that the rate of mutation is consistent (molecular clock). For example, ...
-   
-   * every minute, around n of m nucleotides mutate.
-   * every hour, around n genome rearrangement reversals occur per genome segment of size m.
-   * etc..
-
-   This assumption is what makes the tree ultrametric. A set of present day species (leaf nodes) are assumed to all have the same amount of mutation (distance) from their shared ancestor (shared internal node).
+   The algorithm assumes that the rate of mutation is consistent (molecular clock). This assumption is what makes the tree ultrametric. A set of present day species (leaf nodes) are assumed to all have the same amount of mutation (distance) from their shared ancestor (shared internal node).
 
    ```{svgbob}
                g      <-- "shared ancestor"
@@ -13528,198 +13809,45 @@ graph_show
       
    * "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g) = 4"
    ```
-   
-   For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.
-   
-   Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation. Assume the number of genome rearrangement reversals is being used as the measure of mutation. If the rate of reversals expected per 100 years is 2, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.
-
-   ```{svgbob}
-                         g (mut=4)      <-- "shared ancestor"
-                        / \
-                       /   \
-                  2.5 /     \
-                     /       \ 3
-                    /         \
-         (mut=1.5) f           \
-                  / \           \
-             1.5 /   \ 1.5       e (mut=1)
-                /     \       1 / \ 1
-               /       \       /   \
-      (mut=0) a         b     c     d (mut=0) a      <-- "present day species"
-                   (mut=0)   (mut=0)
-   
-   * "a and b share ancestor f:   dist(a,f) = dist(b,f) = 1.5"
-   * "c and d share ancestor e:   dist(c,e) = dist(d,e) = 1"
-   * "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g) = 4"
-
-   * "mut is the amount of mutation required to get any of the leaf nodes to that ancestor"
-     "and vice-versa."
-   ```
-
-   In the example above, ...
-
-   * present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5 reversals
-   * present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1 reversal
-   * present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals
-   * present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals
-   * etc..
- 
-   Given a distance matrix, the UPGMA algorithm estimates an ultrametric tree for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).
-
-   ```{svgbob}
-                                                                                                             g           
-                                                                                                            / \          
-                                                                                                           /   \         
-                                                                                                      2.5 /     \        
-                                                                                                         /       \ 3     
-                                                                                                        /         \      
-                                                                    f                                  f           \     
-                                                                   / \                                / \           \    
-                                              e               1.5 /   \ 1.5      e               1.5 /   \ 1.5       e   
-                                           1 / \ 1               /     \      1 / \ 1               /     \       1 / \ 1
-                                            /   \               /       \      /   \               /       \       /   \ 
-    a    b    c    d             a    b    c     d             a         b    c     d             a         b     c     d
-
-         STEP1                          STEP2                           STEP3                               STEP4        
-     "(no connections)"              "(connect c, d)"                "(connect a, b)"                     "(connect e, f)"
-   ```
-   
-   Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the distance matrix is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.
-
-   |        | Ca={a} | Cb={b} | Cc={c} | Cd={d} |
-   |--------|--------|--------|--------|--------|
-   | Ca={a} |   0    |   3    |   4    |   3    |
-   | Cb={b} |   3    |   0    |   4    |   5    |
-   | Cc={c} |   4    |   4    |   0    |   2    |
-   | Cd={d} |   3    |   5    |   2    |   0    |
-
-   The two clusters with the minimum distance are chosen to connect in the tree. In the example distance matrix above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be connected together with a new internal node.
-
-   ```{svgbob}
-      e
-     / \
-    /   \
-   c     d
-   ```
 
    ```{note}
-   Note what's happening here. The assumption being made here is that the leaf nodes for the minimum distance matrix value are always neighbours. Not always true (as noted by the book), but probably good enough as a starting point.
-   ```
-   
-   This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:
-
-   * mut(Ce) = dist(Cc, Cd) / 2 = 2 / 2 = 1
-   * dist(Ce, Cc) = mut(Ce) - mut(Cc) = 1 - 0 = 1
-   * dist(Ce, Cd) = mut(Ce) - mut(Cd) = 1 - 0 = 1
-
-   ```{svgbob}
-                                                                                                             e (mut=1)   
-                                                                                                          1 / \ 1        
-                                                        "(connect c, d)"                                   /   \         
-   (mut=0) a        b        c        d (mut=0)         ------------>           (mut=0) a        b        c     d (mut=0)
-              (mut=0)        (mut=0)                                                       (mut=0)        (mut=0)        
+   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA_TOPIC for a full explanation of how this algorithm works.
    ```
 
-   The distance matrix then gets modified by merging together the recently connected clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new distance matrix distances for that cluster are computed using the formula...
-    
-   ```{kt}
-   D_{C_1,C_2} = \frac{
-     \sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
-     }{
-       |C_1| \cdot |C_2|
-     }
+ * `{bm} neighbour joining matrix` - A matrix produced by transforming a distance matrix such that each element is calculated as total_dist(a) + total_dist(b) - (n - 2) * dist(a, b), where...
+
+   * n is the number of leaf nodes in the distance matrix.
+   * a and b are the leaf nodes being referenced in the distance matrix.
+   * dist(a, b) returns the distance between leaf nodes a and b in the distance matrix.
+   * total dist(a) returns the sum all of distances to / from leaf node a.
+   * total dist(b) returns the sum all of distances to / from leaf node b.
+
+   The maximum element in the neighbour joining matrix is guaranteed to be for two neighbouring leaf nodes. For example, the following distance matrix produces the following neighbour joining matrix...
+
+   |    | v0 | v1 | v2 | v3 | v4 | v5 |
+   |----|----|----|----|----|----|----|
+   | v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+   | v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+   | v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+   | v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+   | v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+   | v5 | 22 | 13 | 21 | 13 | 14 | 0  |
+
+
+   |    | v0  | v1  | v2  | v3  | v4  | v5  |
+   |----|-----|-----|-----|-----|-----|-----|
+   | v0 | 0   | 110 | 110 | 88  | 88  | 94  |
+   | v1 | 110 | 0   | 110 | 88  | 88  | 94  |
+   | v2 | 110 | 110 | 0   | 88  | 88  | 94  |
+   | v3 | 88  | 88  | 88  | 0   | 122 | 104 |
+   | v4 | 88  | 88  | 88  | 122 | 0   | 104 |
+   | v5 | 94  | 94  | 94  | 104 | 104 | 0   |
+
+   The maximum element is for (v3, v4), meaning that v3 and v4 are neighbouring leaf nodes.
+
+   ```{note}
+   See Algorithms/Distance Phylogeny/Find Neighbours_TOPIC for a full explanation of how this algorithm works.
    ```
-
-   ```python
-   # code representation of formula above -- the formula essentially averages the distances the between the
-   # leaf nodes of two clusters.
-   def cluster_dist(orig_dist_mat: DistanceMatrix, clusters: ClusterSet, c1: int, c2: int) -> float:
-     c1_set = clusters[c1]  # this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix
-     c2_set = clusters[c2]  # this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix
-     numerator = sum(orig_dist_mat[i, j] for i, j in product(c1_set, c2_set))  # sum it all up
-     denominator = len(c1_set) * len(c2_set)  # number of additions that occurred
-     return numerator / denominator
-   ```
-
-   |          | Ca={a} | Cb={b} | Ce={c,d} |
-   |----------|--------|--------|----------|
-   | Ca={a}   |   0    |   3    |    3.5   |
-   | Cb={b}   |   3    |   0    |    7.5   |
-   | Ce={c,d} |  3.5   |  7.5   |     0    |
-
-   This process repeats at each iteration until a single cluster remains. At the next iteration, Ca and Cb have the minimum distance in the previous distance matrix (distance of 3), meaning that Ca and Cb should be connected with a new internal internal node:
-   
-   * mut(Cf) = dist(Ca, Cb) / 2 = 3 / 2 = 1.5
-   * dist(Cf, Ca) = mut(Cf) - mut(Ca) = 1.5 - 0 = 1.5
-   * dist(Cf, Cb) = mut(Cf) - mut(Cb) = 1.5 - 0 = 1.5
-
-   ```{svgbob}
-                                                                                 (mut=1.5) f                   
-                                                                                          / \                           
-                                e (mut=1)                                            1.5 /   \ 1.5          e (mut=1)   
-                             1 / \ 1                                                    /     \          1 / \ 1        
-                              /   \                  "(connect a, b)"                  /       \          /   \         
-   (mut=0) a        b        c     d (mut=0)         ------------>           (mut=0)  a         b        c     d (mut=0)
-              (mut=0)        (mut=0)                                                       (mut=0)      (mut=0)         
-   ```
-
-   |          | Cf={a,b} | Ce={c,d} |
-   |----------|----------|----------|
-   | Cf={a,b} |     0    |     4    |
-   | Ce={c,d} |     4    |     0    |
-
-   At the next iteration, Ce and Cf have the minimum distance in the previous distance matrix (distance of 4), meaning that Ce and Cf should be connected together with a new internal node:
-   
-   * mut(Cg) = dist(Cf, Ce) / 2 = 4 / 2 = 2
-   * dist(Cg, Cf) = mut(Cg) - mut(Cf) = 2 - 1.5 = 0.5
-   * dist(Cg, Ce) = mut(Cg) - mut(Ce) = 2 - 1 = 1
-
-   ```{svgbob}
-                                                                                                   g (mut=2)
-                                                                                                  / \
-                                                                                                 /   \
-                                                                                            0.5 /     \ 1
-                                                                                               /       \
-                                                                                              /         \
-                 f (mut=1.5)                                                       (mut=1.5) f           \             
-                / \                                                                         / \           \            
-           1.5 /   \ 1.5          e (mut=1)                                            1.5 /   \ 1.5       e (mut=1)   
-              /     \          1 / \ 1                                                    /     \       1 / \ 1        
-             /       \          /   \                  "(connect e, f)"                  /       \       /   \         
-   (mut=0)  a         b        c     d (mut=0)         ------------>           (mut=0)  a         b     c     d (mut=0)
-                 (mut=0)      (mut=0)                                                        (mut=0)   (mut=0)         
-   ```
-
-   |              | Cg={a,b,c,d} |
-   |--------------|--------------|
-   | Cg={a,b,c,d} |       0      |
-   
-   The process is complete. Only a single cluster remains (representing the root) / the ultrametric tree is fully generated.
-
-   ```{svgbob}
-                       g (mut=2)
-                      / \
-                     /   \
-                0.5 /     \ 1
-                   /       \
-                  /         \
-       (mut=1.5) f           \             
-                / \           \            
-           1.5 /   \ 1.5       e (mut=1)   
-              /     \       1 / \ 1        
-             /       \       /   \         
-   (mut=0)  a         b     c     d (mut=0)
-                 (mut=0)   (mut=0)         
-   ```
-
-   Note that the generated ultrametric tree above is an estimation. The distance matrix for the example above isn't an additive distance matrix, meaning a unique simple tree doesn't exist for it. Even if it were an additive distance matrix, an ultrametric tree is a rooted tree, meaning it'll never qualify as the simple tree unique to that additive distance matrix (root node has degree_GRAPH of 2 which isn't allowed in a simple tree).
-   
-   In addition, some distances in the generated ultrametric tree are wildly off from the original distance matrix distances. For example, ...
-
-   * dist(a,d)=8 in the generated ultrametric tree.
-   * dist(a,d)=5 in the original distance matrix.
-
-   Part of this may have to do with the assumption that the closest two nodes in the distance matrix are neighbors in the ultrametric tree.
 
  * `{bm} neighbour joining phylogeny` - An algorithm that finds the unique simple tree for some  OR approximates a simple tree for a non-additive distance matrix.
 

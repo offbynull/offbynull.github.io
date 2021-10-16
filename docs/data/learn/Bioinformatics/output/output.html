@@ -141,13 +141,9 @@
 <li><a href="#H_Tree%20to%20Additive%20Distance%20Matrix">Tree to Additive Distance Matrix</a></li>
 <li><a href="#H_Tree%20to%20Simple%20Tree">Tree to Simple Tree</a></li>
 <li><a href="#H_Additive%20Distance%20Matrix%20Cardinality">Additive Distance Matrix Cardinality</a></li>
-<li><a href="#H_Additive%20Distance%20Matrix%20Test">Additive Distance Matrix Test</a></li>
-<ul>
-<li><a href="#H_Four%20Point%20Condition%20Algorithm">Four Point Condition Algorithm</a></li>
-<li><a href="#H_Linear%20System%20Algorithm">Linear System Algorithm</a></li>
-</ul>
-<li><a href="#H_Limb%20Length">Limb Length</a></li>
-<li><a href="#H_Same%20Subtree%20Test">Same Subtree Test</a></li>
+<li><a href="#H_Test%20Additive%20Distance%20Matrix">Test Additive Distance Matrix</a></li>
+<li><a href="#H_Find%20Limb%20Length">Find Limb Length</a></li>
+<li><a href="#H_Test%20Same%20Subtree">Test Same Subtree</a></li>
 <li><a href="#H_Trim">Trim</a></li>
 <li><a href="#H_Bald">Bald</a></li>
 <li><a href="#H_Un-trim%20Tree">Un-trim Tree</a></li>
@@ -157,6 +153,7 @@
 <li><a href="#H_UPGMA%20Algorithm">UPGMA Algorithm</a></li>
 <li><a href="#H_Additive%20Phylogeny%20Algorithm">Additive Phylogeny Algorithm</a></li>
 <li><a href="#H_Neighbour%20Joining%20Algorithm">Neighbour Joining Algorithm</a></li>
+<li><a href="#H_Evolutionary%20Algorithm">Evolutionary Algorithm</a></li>
 </ul>
 </ul>
 </ul>
@@ -701,7 +698,7 @@ SSSII
 <li>C is encountered, decrement the counter.</li>
 </ul>
 <p><strong>WHY</strong>: Given the DNA <a href="#BM_(sequence)%2Fi">sequence</a> of an organism, some segments may have lower count of Gs vs Cs.</p>
-<p>During replication, some segments of DNA stay single-stranded for a much longer time than other segments. <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">Single-stranded DNA</a> is 100 times more susceptible to mutations than <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. Specifically, in <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, C has a greater tendency to mutate to T. When that <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a> re-binds to a neighbouring strand, the positions of any nucleotides that mutated from C to T will change on the neighbouring strand from G to A.</p>
+<p>During replication, some segments of DNA stay single-stranded for a much longer time than other segments. <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">Single-stranded DNA</a> is 100 times more susceptible to mutations than <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. Specifically, in <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>, C has a greater tendency to mutate to T. When that <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a> re-binds to a <a href="#BM_(neighbour)%2Fi">neighbour</a>ing strand, the positions of any nucleotides that mutated from C to T will change on the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing strand from G to A.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Recall that the <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s of ...</p>
@@ -1637,7 +1634,7 @@ SSSII
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm scans over all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a set of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s, enumerates the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> neighbourhood of each <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, and uses the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s from the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> neighbourhood to build out possible <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrices</a>. Of all the <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrices</a> built, it selects the one with the lowest score.</p>
+<p>This algorithm scans over all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a set of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s, enumerates the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> <a href="#BM_(neighbour)%2Fi">neighbour</a>hood of each <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, and uses the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s from the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> <a href="#BM_(neighbour)%2Fi">neighbour</a>hood to build out possible <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrices</a>. Of all the <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrices</a> built, it selects the one with the lowest score.</p>
 <p>Neither k nor the mismatches allowed by the <a href="#BM_(motif)%2Fi">motif</a> is known. As such, the algorithm may need to be repeated multiple times with different value combinations.</p>
 <p>Even for trivial inputs, this algorithm falls over very quickly. It's intended to help conceptualize the problem of <a href="#BM_(motif)%2Fi">motif</a> finding.</p>
 <p><a href="ch2_code/src/ExhaustiveMotifMatrixSearch.py">ch2_code/src/ExhaustiveMotifMatrixSearch.py</a> (lines 9 to 41):</p>
@@ -6489,7 +6486,7 @@ G  0  0  0  1
 </code></pre>
 </div>
 <p></p>
-<p>To recap, the full <a href="#BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi">divide-and-conquer algorithm</a> is as follows: For the middle column in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, find a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through. Then, sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. The edges between these found nodes can be determined by finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> between each found node and its neighbouring found node. Concatenate these edges to construct the path.</p>
+<p>To recap, the full <a href="#BM_(divide-and-conquer%20algorithm%7Cdivide%20and%20conquer%20algorithm)%2Fi">divide-and-conquer algorithm</a> is as follows: For the middle column in an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>, find a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through. Then, sub-divide the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> based on that node. Recursively repeat this process on each sub-division until you have a node from each column -- these are the nodes in a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. The edges between these found nodes can be determined by finding a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> between each found node and its <a href="#BM_(neighbour)%2Fi">neighbour</a>ing found node. Concatenate these edges to construct the path.</p>
 <p><a href="ch5_code/src/global_alignment/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/global_alignment/Global_FindNodeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 29):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_node_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: <span class="hljs-type">List</span>[ELEM],
@@ -6575,13 +6572,13 @@ GACGT
 </div>
 <p></p>
 <p>A slightly more complicated but also more elegant / efficient solution is to extend the algorithm to find the edges for the nodes that it finds. In other words, rather than finding just nodes that maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>s travel through, find the edges where those nodes are the edge source (node that the edge starts from).</p>
-<p>The algorithm finds all nodes that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of its immediate neighbours is also a found node. It may be that the node immediately to the ...</p>
+<p>The algorithm finds all nodes that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through at both column n and column n + 1. For a found node in column n, it's guaranteed that at least one of its immediate <a href="#BM_(neighbour)%2Fi">neighbour</a>s is also a found node. It may be that the node immediately to the ...</p>
 <ul>
 <li>right of it (same row but column n + 1) is also a found node.</li>
 <li>bottom of it (1 row down and column n) is also a found node.</li>
 <li>bottom-right of it (1 row down and column n + 1) is also a found node.</li>
 </ul>
-<p>Of the immediate neighbours that are also found nodes, the one forming the edge with the highest weight is the edge that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through.</p>
+<p>Of the immediate <a href="#BM_(neighbour)%2Fi">neighbour</a>s that are also found nodes, the one forming the edge with the highest weight is the edge that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through.</p>
 <p><a href="ch5_code/src/global_alignment/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py">ch5_code/src/global_alignment/Global_FindEdgeThatMaxAlignmentPathTravelsThroughAtColumn.py</a> (lines 10 to 65):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_edge_that_max_alignment_path_travels_through_at_col</span>(<span class="hljs-params">
         v: <span class="hljs-type">List</span>[ELEM],
@@ -6660,7 +6657,7 @@ G  0  0  0  1
 <p><img src="svgbob_b2c41c83c7024803003127e32de4f185dec7bdbe.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p>Since edges are being pulled out, the step that path finds between two neighbouring found nodes is no longer required. This is because sub-division of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.</p>
+<p>Since edges are being pulled out, the step that path finds between two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing found nodes is no longer required. This is because sub-division of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> happens on edges rather than nodes -- eventually all edges in the path will be walked as part of the recursive subdivision.</p>
 </li>
 </ul>
 <p><a href="ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_EdgeVariant.py">ch5_code/src/global_alignment/GlobalAlignment_DivideAndConquer_EdgeVariant.py</a> (lines 10 to 80):</p>
@@ -8792,7 +8789,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>The following <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> algorithm relies on three non-trivial components:</p>
 <ol>
 <li>A spatial indexing algorithm bins points that are close together, such that it's fast to look up the set of dots that are within the proximity of some other dot. The spatial indexing algorithm used by this implementation is called a quad <a href="#BM_(tree)%2Fi">tree</a>.</li>
-<li>A clustering algorithm connects dots going in the same direction to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The clustering algorithm used by this implementation is iterative, doing multiple rounds of connecting within a set of constraints (e.g. the neighbouring dot has to be within some limit / in some angle for it to connect).</li>
+<li>A clustering algorithm connects dots going in the same direction to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The clustering algorithm used by this implementation is iterative, doing multiple rounds of connecting within a set of constraints (e.g. the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing dot has to be within some limit / in some angle for it to connect).</li>
 <li>A filtering algorithm that trims/merges overlapping <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as well as removes superfluous <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s returned by the clustering algorithm. The filtering algorithm used by this implementation is simple off-the-cuff heuristics.</li>
 </ol>
 <p>These components are complicated and not specific to bioinformatics. As such, this section doesn't discuss them in detail but the source code is available (entrypoint is displayed below)).</p>
@@ -8898,7 +8895,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>The algorithm relies on the concept of <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a>s and <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacencies</a>...</p>
 <ul>
 <li>
-<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">Adjacency</a>: Two neighbouring <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> that follow each other just as they do in the desired <a href="#BM_(genome)%2Fi">genome</a>. For example, ...</p>
+<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">Adjacency</a>: Two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> that follow each other just as they do in the desired <a href="#BM_(genome)%2Fi">genome</a>. For example, ...</p>
 <ul>
 <li>
 <p>this undesired <a href="#BM_(genome)%2Fi">genome</a> has B and C next to each other and the tail of B is followed by the head of C, just as in the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
@@ -8915,7 +8912,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 </li>
 <li>
-<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">Breakpoint</a>: Two neighbouring <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> don't fit the definition of an <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacency</a>. For example, ...</p>
+<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">Breakpoint</a>: Two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> don't fit the definition of an <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacency</a>. For example, ...</p>
 <ul>
 <li>
 <p>this undesired <a href="#BM_(genome)%2Fi">genome</a> has B and C next to each other but the tail of B is NOT followed by the head of C, as it is in the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
@@ -9418,7 +9415,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>For a cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle is when you pick a node, follow the blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ..., until you arrive back at the same node. If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. Otherwise, you can calculate the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p>For a linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s, a single red-blue cycle isn't actually a cycle because: Pick the termination node, follow a blue edge, then follow the red edge, then follow the blue edge, then follow the red edge, ... until you arrive back at the termination node (what if there are actual cyclic red-blue loops as well like in cyclic <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s?). If the blue and red <a href="#BM_(genome)%2Fi">genome</a>s match perfectly, the number of red-blue cycles should equal the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1. Otherwise, you can <strong>ESTIMATE</strong> the number of reversals needed to get them to equal by subtracting the number of red-blue cycles by the number of <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s + 1.</p>
 <p>To calculate the real number of reversals need for linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (not estimate), there's a <a href="https://dl.acm.org/doi/10.1145/300515.300516">paper on ACM DL</a> that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.</p>
-<p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> definition.</p>
+<p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> definition.</p>
 </div>
 <a name="H_Distance%20Phylogeny"></a><h2>Distance Phylogeny</h2>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny)_TOPIC%2F"></a><strong></strong></p>
@@ -9430,10 +9427,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </div>
 <p><a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">Phylogeny</a> is the concept of inferring the evolutionary history of a set of biological entities (e.g. animal species, viruses, etc..) by inspecting properties of those entities for relatedness (e.g. phenotypic, genotypic, etc..).</p>
 <p><img src="svgbob_9ad92bcc26081dc1ee059aa771d26eb82d6e4ad4.svg" alt="Kroki diagram output"></p>
-<p>Evolutionary history is often displayed as a <a href="#BM_(tree)%2Fi">tree</a> called a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> may be a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> or an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>.</p>
-<p>The example above shows a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.</p>
-<p>The typical process for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is to first quantify how related pairs of entities are, where each relatedness quantity is referred to as a distance (e.g. <code>dist(cat, lion) = 2</code>). Then, work backwards to find a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> that fits / maps to those distances.</p>
-<p>The distance may be any metric so long as ...</p>
+<p>Evolutionary history is often displayed as a <a href="#BM_(tree)%2Fi">tree</a> called a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The example above shows a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.</p>
+<p>The typical process for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is to first measure how related a set of entities are to each other, where each measure is referred to as a distance (e.g. <code>dist(cat, lion) = 2</code>), then work backwards to find a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> that fits / maps to those distances. The distance may be any metric so long as ...</p>
 <ul>
 <li>it computes the distance to itself as 0 (e.g. <code>dist(cat, cat) = 0</code>)</li>
 <li>it computes the distance to any other entity as &gt; 0 (e.g. <code>dist(cat, lion) = 2</code>)</li>
@@ -9442,7 +9437,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The last point may be confusing. All it's saying is that taking an indirect path between two species should produce a distance that's &gt;= the direct path. For example, the direct path between cat and dog is 6: <code>dist(cat, dog) = 6</code>. If you were to instead jump from cat to lion <code>dist(cat, lion) = 2</code>, then from lion to dog <code>dist(lion, dog) = 5</code>, that combined distance should be &gt;= to 6...</p>
+<p>The leapfrogging point may be confusing. All it's saying is that taking an indirect path between two species should produce a distance that's &gt;= the direct path. For example, the direct path between cat and dog is 6: <code>dist(cat, dog) = 6</code>. If you were to instead jump from cat to lion <code>dist(cat, lion) = 2</code>, then from lion to dog <code>dist(lion, dog) = 5</code>, that combined distance should be &gt;= to 6...</p>
 <pre><code>dist(cat, dog)  = 6
 dist(cat, lion) = 2
 dist(lion, dog) = 5
@@ -9455,6 +9450,14 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><img src="svgbob_a535ea37908c1e912c089d9ea621240bae63f541.svg" alt="Kroki diagram output"></p>
 <p>Later on non-conforming <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are discussed called non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>. I don't know if non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a> are required to have this specific property, but they should have all others.</p>
 </div>
+<p>Examples of metrics that may be used as distance, referred to as <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s, include...</p>
+<ul>
+<li><a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between DNA / protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> score between DNA / protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
+<li>number of similar physical or behavioural attributes.</li>
+<li>etc..</li>
+</ul>
 <p>Distances for a set of entities are typically represented as a 2D matrix that contains all possible pairings, called a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example Cat/Lion/Bear <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is ...</p>
 <table>
 <thead>
@@ -9488,14 +9491,6 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </table>
 <p><img src="svgbob_a4884cea1f03dad70aa6cd67fa7232f3a6772e94.svg" alt="Kroki diagram output"></p>
 <p>Note how the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has the distance for each pair slotted twice, mirrored across the diagonal of 0s (self distances). For example, the distance between bear and lion is listed twice.</p>
-<p>Examples of metrics that may be used as distance, referred to as distance metrics, include...</p>
-<ul>
-<li><a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
-<li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> score between DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
-<li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
-<li>number of similar physical or behavioural attributes.</li>
-<li>etc..</li>
-</ul>
 <a name="H_Tree%20to%20Additive%20Distance%20Matrix"></a><h3>Tree to Additive Distance Matrix</h3>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(tree)%2Fi">tree</a>, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> generated from that <a href="#BM_(tree)%2Fi">tree</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
@@ -9804,7 +9799,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </div>
 <p>The second property is that the direction of evolution isn't maintained in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: It's an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> with undirected edges. This is a useful property because, while a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> may provide enough information to infer common ancestry, it doesn't provide enough information to know the true parent-child relationships between those ancestors. For example, any of the internal nodes in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> may be the top-level entity that all other entities are descendants of ...</p>
 <p><img src="svgbob_f62876489da68170731df6b6d472bcccbba0af31.svg" alt="Kroki diagram output"></p>
-<p>The third property is that weights must be &gt; 0, which is because of the restriction on distance metrics specified in the parent section: The distance between any to entities must be &gt; 0. That is, it doesn't make sense for the distance between two entities to be ...</p>
+<p>The third property is that weights must be &gt; 0, which is because of the restriction on <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s specified in the parent section: The distance between any to entities must be &gt; 0. That is, it doesn't make sense for the distance between two entities to be ...</p>
 <ul>
 <li>&lt; 0 because distance represents how diverged the entities are from each other. Having a negative amount of divergence doesn't make sense.</li>
 <li>= 0 because then the two nodes between the edge would represent the same entity. Having more than one representation of the same entity in the <a href="#BM_(tree)%2Fi">tree</a> doesn't make sense.</li>
@@ -9842,7 +9837,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
+<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -10046,8 +10041,8 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree is simple. This is the ONLY simple tree possible for this additive distance matrix and vice-versa.</p>
 </div>
 <p></p>
-<a name="H_Additive%20Distance%20Matrix%20Test"></a><h3>Additive Distance Matrix Test</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Test%20Additive%20Distance%20Matrix"></a><h3>Test Additive Distance Matrix</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -10056,12 +10051,10 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Determine if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> without knowing the <a href="#BM_(tree)%2Fi">tree</a> structure beforehand.</p>
+<p><strong>WHAT</strong>: Determine if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>WHY</strong>: Knowing if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is additive helps determine how the <a href="#BM_(tree)%2Fi">tree</a> for that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> should be constructed. For example, since it's impossible for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to fit a <a href="#BM_(tree)%2Fi">tree</a>, different algorithms are needed to approximate a <a href="#BM_(tree)%2Fi">tree</a> that somewhat fits.</p>
-<a name="H_Four%20Point%20Condition%20Algorithm"></a><h4>Four Point Condition Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test%2FFour%20Point%20Condition%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm tests pairs within each quartet of leaf nodes to ensure that they meet a certain set of conditions. For example, the following <a href="#BM_(tree)%2Fi">tree</a> has the quartet of leaf nodes (v0, v2, v4, v6) ...</p>
+<p>This algorithm, called the <a href="#BM_(four%20points%3F%20condition%7Cfour%20point%20theorem)%2Fi">four point condition</a> algorithm, tests pairs within each quartet of leaf nodes to ensure that they meet a certain set of conditions. For example, the following <a href="#BM_(tree)%2Fi">tree</a> has the quartet of leaf nodes (v0, v2, v4, v6) ...</p>
 <p><img src="dot_d1edbcb3745180a7312db2a6e743e4fe.svg" alt="Dot diagram"></p>
 <p>A quartet makes up 3 different pair combinations (pairs of pairs). For example, the example quartet above has the 3 pair combinations ...</p>
 <ul>
@@ -10180,173 +10173,8 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Could the differences found by this algorithm help determine how "close" a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is to being an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>?</p>
 </div>
-<a name="H_Linear%20System%20Algorithm"></a><h4>Linear System Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Test%2FLinear%20System%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>ALGORITHM</strong>:</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This is more illustrative than it is a hard and fast algorithm. It's just explaining that the values in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> come from what are essentially linear equations, and that if you know the structure of the <a href="#BM_(tree)%2Fi">tree</a>, you can solve the system of linear equations to figure out what that <a href="#BM_(tree)%2Fi">tree</a>'s weights should be.</p>
-</div>
-<p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, if you already know the structure of the <a href="#BM_(tree)%2Fi">tree</a>, with edge weights that satisfy that <a href="#BM_(tree)%2Fi">tree</a> are derivable from that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> structure...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Cat</th>
-<th>Lion</th>
-<th>Bear</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Cat</td>
-<td>0</td>
-<td>2</td>
-<td>4</td>
-</tr>
-<tr>
-<td>Lion</td>
-<td>2</td>
-<td>0</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Bear</td>
-<td>4</td>
-<td>3</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><img src="svgbob_9efe0131b95aacb3aa51fbb4cd8f18843707a13e.svg" alt="Kroki diagram output"></p>
-<p>... the distances between species must have been calculated as follows:</p>
-<pre><code>dist(Cat, Lion) = dist(Cat, A1) + dist(A1, Lion)`
-dist(Cat, Bear) = dist(Cat, A1) + dist(A1, A2) + dist(A2, Bear)`
-dist(Lion, Bear) = dist(Lion, A1) + dist(A1, A2) + dist(A2, Bear)`
-</code></pre>
-<p>This is a system of linear equations that may be solved using standard algebra. For example, each <code>dist()</code> above is representable as either a variable or a constant...</p>
-<pre><code>2 = dist(Cat, Lion)  = dist(Lion, Cat)
-4 = dist(Cat, Bear)  = dist(Bear, Cat)
-3 = dist(Lion, Bear) = dist(Bear, Lion)
-w = dist(Cat, A1)    = dist(A1, Cat)
-x = dist(Lion, A1)   = dist(A1, Lion)
-y = dist(A1, A2)     = dist(A2, A1)
-z = dist(A2, Bear)   = dist(Bear, A2)
-</code></pre>
-<p>... , which converts each calculation above to the following equations ...</p>
-<pre><code>2 = w + x
-4 = w + y + z
-3 = x + y + z
-</code></pre>
-<p><img src="svgbob_2f13ccbb0caa3ef9d6c3abe089b7f6bd3f123ce5.svg" alt="Kroki diagram output"></p>
-<p>Solving this system of linear equations results in. ..</p>
-<pre><code>x = 0.5
-w = 1.5
-z = 2.5 - y
-</code></pre>
-<p>As such, the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a> because there exists a <a href="#BM_(tree)%2Fi">tree</a> that satisfies it. Any of the following edge weights will work with this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<pre><code>x = 0.5, w = 1.5, y = 0.5, z = 2.0
-x = 0.5, w = 1.5, y = 1.0, z = 1.5
-x = 0.5, w = 1.5, y = 1.5, z = 1.0
-...
-</code></pre>
-<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (A2 is an internal node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2). If you limit your search to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s that have had edges broken up by splicing nodes inbetween (<a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 nodes).</p>
-<p>The non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> example above collapsed into a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
-<p><img src="svgbob_da0e7825576bb7895069ddd56443653ece61dac9.svg" alt="Kroki diagram output"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The path A1-A2-Bear has been collapased into A1-Bear, where the weight of the newly collpased edge is represented by a (formerly y+z). Using the same <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above gets solved to <code>w = 2, x = 1, a = 2</code>.</p>
-</div>
-<p>The term additive is used because the weights of all edges along the path between leaves (i, j) add to <code>dist(i, j)</code> in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. Not all <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are additive. For example, no <a href="#BM_(simple%20tree)%2Fi">simple tree</a> exists that satisfies the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>S1</th>
-<th>S2</th>
-<th>S3</th>
-<th>S4</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>S1</td>
-<td>0</td>
-<td>3</td>
-<td>4</td>
-<td>3</td>
-</tr>
-<tr>
-<td>S2</td>
-<td>3</td>
-<td>0</td>
-<td>4</td>
-<td>5</td>
-</tr>
-<tr>
-<td>S3</td>
-<td>4</td>
-<td>4</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr>
-<td>S4</td>
-<td>3</td>
-<td>5</td>
-<td>2</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>
-<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 1:</p>
-<p><img src="svgbob_74cdc79c5f9b82937ba473b3e3e632aab5cb6b4e.svg" alt="Kroki diagram output"></p>
-<pre><code>dist(S1, S2) is 3 = w + x
-dist(S1, S3) is 4 = w + y
-dist(S1, S4) is 3 = w + z
-dist(S2, S3) is 4 = x + y
-dist(S2, S4) is 5 = x + z
-dist(S3, S4) is 2 = y + z
-</code></pre>
-<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
-</li>
-<li>
-<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 2:</p>
-<p><img src="svgbob_310a023ae046f0c94fc708941d7e494797cf787b.svg" alt="Kroki diagram output"></p>
-<pre><code>dist(S1, S2) is 3 = w + x
-dist(S1, S3) is 4 = w + u + y
-dist(S1, S4) is 3 = w + u + z
-dist(S2, S3) is 4 = x + u + y
-dist(S2, S4) is 5 = x + u + z
-dist(S3, S4) is 2 = y + z
-</code></pre>
-<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
-</li>
-<li>
-<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 3:</p>
-<p><img src="svgbob_27b6be0c6cb6193b60f5164ee5e83ce0f0389d38.svg" alt="Kroki diagram output"></p>
-<pre><code>dist(S1, S2) is 4 = w + u + y
-dist(S1, S3) is 3 = w + x
-dist(S1, S4) is 3 = w + u + z
-dist(S2, S3) is 4 = x + u + y
-dist(S2, S4) is 2 = y + z
-dist(S3, S4) is 5 = x + u + z
-</code></pre>
-<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
-</li>
-<li>
-<p>etc..</p>
-</li>
-</ul>
-<p>A solution isn't viable if a variable ends up as a negative value (negative weight means negative distance, which doesn't make any sense). The initial example in this section is one that has multiple solutions where some are not viable because some variables end up up as negative values.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There is no code for this section since writing a generic linear systems solver is out of scope. There are Python packages you can use if you really want to do this.</p>
-</div>
-<a name="H_Limb%20Length"></a><h3>Limb Length</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Find%20Limb%20Length"></a><h3>Find Limb Length</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -10355,11 +10183,8 @@ dist(S3, S4) is 5 = x + u + z
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: A <a href="#BM_(limb)%2Fi">limb</a> is defined as the edge between a leaf node and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the <a href="#BM_(limb)%2Fi">limb</a>s in the following graph are highlighted in red...</p>
-<p><img src="dot_6ce5e7586348dfe441bdf5856c3f5877.svg" alt="Dot diagram"></p>
-<p>The weight for a leaf node's <a href="#BM_(limb)%2Fi">limb</a> is referred to as its <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. For example, in the diagram above the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for node v1 is 2.</p>
-<p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. Compute the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of any leaf node in that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> just from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, the distances between leaf nodes provide enough information to derive the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for any / all leaf nodes.</p>
-<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHAT</strong>: Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. Compute the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of any leaf node in that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> just from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHY</strong>: This is one of the operations required to construct the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>To conceptualize how this algorithm works, consider the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and its corresponding <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>...</p>
 <p><img src="dot_2ce9085dbbfd0f88d09667f2cefdce21.svg" alt="Dot diagram"></p>
@@ -10619,12 +10444,12 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p>The limb for leaf node 2 in its unique simple tree has a weight of 5.0</p>
 </div>
 <p></p>
-<a name="H_Same%20Subtree%20Test"></a><h3>Same Subtree Test</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Test)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Test%20Same%20Subtree"></a><h3>Test Same Subtree</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Same%20Subtree)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Splitting a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> on the parent of one of its leaf nodes breaks it up into several <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> has been split on v2's parent, resulting in 4 different <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s ...</p>
@@ -10636,7 +10461,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <li><span style="background-color: cyan; color: black; padding: 3px">v4, i2, i3, v5, v6</span></li>
 </ul>
 <p>Given just the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> for a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> (not the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> itself), determine if two <em>leaf nodes</em> belong to the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> had that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> been split on some leaf node's parent.</p>
-<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHY</strong>: This is one of the operations required to construct the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm is essentially the formulas from the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm. Recall that those formulas are ...</p>
 <ul>
@@ -10871,7 +10696,7 @@ different subtrees.</p>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Remove a <a href="#BM_(limb)%2Fi">limb</a> from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, just as it would get removed from its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
-<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHY</strong>: This is one of the operations required to construct the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Recall that for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is unique to the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <p><img src="dot_4e5daffbacf71191e85a5881e8367790.svg" alt="Dot diagram"></p>
@@ -11045,13 +10870,13 @@ different subtrees.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
 </ul>
 </div>
 <p> <!-- Needs to be disabled because v3's is conflicting with 3' -->
  <!-- Needs to be disabled because v5's is conflicting with 5' --></p>
 <p><strong>WHAT</strong>: Set a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to 0 in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, just as it would be set to 0 in its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. Technically, a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> can't have edge weights that are &lt;= 0. This is a special case, typically used as an intermediate operation of some larger algorithm.</p>
-<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHY</strong>: This is one of the operations required to construct the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Recall that for any <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is unique to the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <p><img src="dot_e304cd9917c7e5b9d72c4e876e260cba.svg" alt="Dot diagram"></p>
@@ -11433,8 +11258,8 @@ different subtrees.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FLimb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Limb Length</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FSame%20Subtree%20Test)_TOPIC%2F">Algorithms/Distance Phylogeny/Same Subtree Test</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Same%20Subtree)_TOPIC%2F">Algorithms/Distance Phylogeny/Test Same Subtree</a></li>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim)_TOPIC%2F">Algorithms/Distance Phylogeny/Trim</a></li>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
 </ul>
@@ -11506,7 +11331,7 @@ different subtrees.</p>
 <li>it will cease to be a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> -- <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can't have nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 (train of edges not allowed).</li>
 </ol>
 </div>
-<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHY</strong>: This is one of the operations required to construct the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p> <!-- Needs to be disabled because v5's is conflicting with 5' --></p>
 <p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> below would fit the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> below had v5's <a href="#BM_(limb)%2Fi">limb</a> been added to it somewhere ...</p>
@@ -11832,12 +11657,20 @@ different subtrees.</p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
 <a name="H_Find%20Neighbours"></a><h3>Find Neighbours</h3>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>WHAT</strong>: Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, find a pair of leaf nodes guaranteed to be neighbours (shared parent) in its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>For non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>, this algorithm finds a pair of nodes that are approximately neighbours.</p>
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+</ul>
 </div>
-<p><strong>WHY</strong>: This is a fundamental operation in <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, an algorithm that constructs the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>WHAT</strong>: Given an <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is ...</p>
+<ul>
+<li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, this algorithm finds a pair of leaf nodes guaranteed to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s in its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</li>
+<li>a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive), this algorithm approximates a pair of leaf nodes that are likely to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
+</ul>
+<p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm essentially boils down to edge counting. Consider the following example <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
@@ -12049,8 +11882,8 @@ different subtrees.</p>
 </table>
 <p>The insight here is that, if the chosen pair ...</p>
 <ul>
-<li>are neighbours, the path between them will only ever have 2 edges: their <a href="#BM_(limb)%2Fi">limb</a>s.</li>
-<li>aren't neighbours, the path between them will have more than 2 edges: their <a href="#BM_(limb)%2Fi">limb</a>s AND internal edges.</li>
+<li>are <a href="#BM_(neighbour)%2Fi">neighbour</a>s, the path between them will only ever have 2 edges: their <a href="#BM_(limb)%2Fi">limb</a>s.</li>
+<li>aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, the path between them will have more than 2 edges: their <a href="#BM_(limb)%2Fi">limb</a>s AND internal edges.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_check</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
     path_edges = self.path(l1, l2)
@@ -12058,11 +11891,11 @@ different subtrees.</p>
 </code></pre>
 <p>For example, ...</p>
 <ul>
-<li>v1 and v2 are neighbours and as such path(v1,v2) contains only their <a href="#BM_(limb)%2Fi">limb</a>s: [(v1,i0), (v2,i0)].</li>
-<li>v1 and v5 aren't neighbours and as such path(v1,v5) has internal edges in addition to their <a href="#BM_(limb)%2Fi">limb</a>s: [(v1,i0), (i0,i1), (v5,i1)].</li>
+<li>v1 and v2 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s and as such path(v1,v2) contains only their <a href="#BM_(limb)%2Fi">limb</a>s: [(v1,i0), (v2,i0)].</li>
+<li>v1 and v5 aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s and as such path(v1,v5) has internal edges in addition to their <a href="#BM_(limb)%2Fi">limb</a>s: [(v1,i0), (i0,i1), (v5,i1)].</li>
 </ul>
 <p><img src="dot_5a3df09ff196ebbf702909f1cb634c93.svg" alt="Dot diagram"></p>
-<p>That means if the pair aren't neighbours, <code>combine_edge_count_and_normalize()</code> will normalize <a href="#BM_(limb)%2Fi">limb</a> counts for the pair in addition to reducing internal edge counts. For example, since v1 and v5 aren't neighbours, <code>combine_edge_count_and_normalize(v1,v5)</code> subtracts 4 from the <a href="#BM_(limb)%2Fi">limb</a> counts of v1 and v5 as well as (i0,i1)'s count ...</p>
+<p>That means if the pair aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, <code>combine_edge_count_and_normalize()</code> will normalize <a href="#BM_(limb)%2Fi">limb</a> counts for the pair in addition to reducing internal edge counts. For example, since v1 and v5 aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, <code>combine_edge_count_and_normalize(v1,v5)</code> subtracts 4 from the <a href="#BM_(limb)%2Fi">limb</a> counts of v1 and v5 as well as (i0,i1)'s count ...</p>
 <p><img src="dot_88d8e6262e9c3de072f7484bf17ab489.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -12247,7 +12080,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>This will always be the case for any <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: If a chosen pair aren't neighbours, the path between them always travels over at least one internal edge. <code>combine_edge_count()</code> will always count each edge in the path <code>leaf_count</code> times. In the above example, path(v1,v3) travels over internal edges (i0,i1) and (i1,i2) and as such both those edges in addition to the <a href="#BM_(limb)%2Fi">limb</a>s of v1 and v3 have a count of 6.</p>
+<p>This will always be the case for any <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: If a chosen pair aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, the path between them always travels over at least one internal edge. <code>combine_edge_count()</code> will always count each edge in the path <code>leaf_count</code> times. In the above example, path(v1,v3) travels over internal edges (i0,i1) and (i1,i2) and as such both those edges in addition to the <a href="#BM_(limb)%2Fi">limb</a>s of v1 and v3 have a count of 6.</p>
 <p>Just like how <code>combine_edge_count_and_normalize()</code> reduces the counts of the chosen pair's <a href="#BM_(limb)%2Fi">limb</a>s to 2, so will it reduce the count of the internal edges in the path of the chosen pair to 2. That is, all edges in the path between the chosen pair get reduced to a count of 2.</p>
 <p>For example, path(v1,v3) has the edges [(v1,i0), (i0,i1), (i1, i2), (v3, i2)]. <code>combine_edge_count_and_normalize(v1,v3)</code> reduces the count of each edge in that path to 2 ...</p>
 <p><img src="dot_ceb7fc6db6ff65e9990b9744340f1b61.svg" alt="Dot diagram"></p>
@@ -12328,12 +12161,12 @@ different subtrees.</p>
 <li>2 for <a href="#BM_(limb)%2Fi">limb</a>s.</li>
 <li>&gt; 2 for internal edges.</li>
 </ul>
-<p>In other words, internal edges are the only differentiating factor in <code>combine_edge_count_and_normalize()</code>'s result. Non-neighbouring pairs will have certain internal edge counts reduced to 2 while neighbouring pairs keep internal edge counts &gt; 2. In a ...</p>
+<p>In other words, internal edges are the only differentiating factor in <code>combine_edge_count_and_normalize()</code>'s result. Non-<a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs will have certain internal edge counts reduced to 2 while <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs keep internal edge counts &gt; 2. In a ...</p>
 <ul>
 <li>worst case scenario, all internal edges get reduced to 2.</li>
 <li>best case scenario, all internal edges are kept &gt; 2.</li>
 </ul>
-<p>The pair with the highest total count is guaranteed to be a neighbouring pair because lesser total counts may have had their internal edges reduced.</p>
+<p>The pair with the highest total count is guaranteed to be a <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair because lesser total counts may have had their internal edges reduced.</p>
 <p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py</a> (lines 127 to 137):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
     found_pair = <span class="hljs-literal">None</span>
@@ -12423,7 +12256,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_4700012f1418b944f7839335dfc7ca86.svg" alt="Dot diagram"></p>
+<p><img src="dot_776b132541fd612505647ad051fef14d.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12583,12 +12416,12 @@ different subtrees.</p>
 <li>2 for <a href="#BM_(limb)%2Fi">limb</a>s.</li>
 <li>&gt; 2 for internal edges.</li>
 </ul>
-<p>In other words, internal edge weight multiples are the only differentiating factor in <code>combine_edge_multiple_and_normalize()</code>'s result. Non-neighbouring pairs will have certain internal edge weight multiples reduced to 2 while neighbouring pairs keep internal edge weight multiples &gt; 2. In a ...</p>
+<p>In other words, internal edge weight multiples are the only differentiating factor in <code>combine_edge_multiple_and_normalize()</code>'s result. Non-<a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs will have certain internal edge weight multiples reduced to 2 while <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs keep internal edge weight multiples &gt; 2. In a ...</p>
 <ul>
 <li>worst case scenario, all internal edge weight multiples get reduced to 2.</li>
 <li>best case scenario, all internal edge weight multiples are kept &gt; 2.</li>
 </ul>
-<p>The pair with the highest combined multiple is guaranteed to be a neighbouring pair because lesser combined multiples may have had their internal edge multiples reduced.</p>
+<p>The pair with the highest combined multiple is guaranteed to be a <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair because lesser combined multiples may have had their internal edge multiples reduced.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Still confused?</p>
@@ -12606,8 +12439,8 @@ different subtrees.</p>
 <li><a href="#BM_(limb)%2Fi">limb</a> A's weight multiplicity reduces to 2.</li>
 <li><a href="#BM_(limb)%2Fi">limb</a> B's weight multiplicity reduces to 2.</li>
 <li>other <a href="#BM_(limb)%2Fi">limb</a>s keep their weight multiplicities at 2.</li>
-<li>if the pair are neighbours, each internal edge multiplicity remains at &gt; 2.</li>
-<li>it the pair aren't neighbours, at least one internal edge multiplicity reduces to 2 while others remain at &gt; 2.</li>
+<li>if the pair are <a href="#BM_(neighbour)%2Fi">neighbour</a>s, each internal edge multiplicity remains at &gt; 2.</li>
+<li>it the pair aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, at least one internal edge multiplicity reduces to 2 while others remain at &gt; 2.</li>
 </ul>
 <table>
 <thead>
@@ -12619,19 +12452,19 @@ different subtrees.</p>
 </thead>
 <tbody>
 <tr>
-<td>neighbouring pairs</td>
+<td><a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs</td>
 <td>all = 2</td>
 <td>all &gt;= 2</td>
 </tr>
 <tr>
-<td>non-neighbouring pairs</td>
+<td>non-<a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs</td>
 <td>all = 2</td>
 <td>at least one = 2, others &gt; 2</td>
 </tr>
 </tbody>
 </table>
-<p>Since <a href="#BM_(limb)%2Fi">limb</a>s always contribute the same regardless of whether the pair is neighbouring or not (2*weight), they can be ignored. That leaves internal edge contributions as the only thing differentiating between neighbouring and non-neighbouring pairs.</p>
-<p>A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> with 2 or more leaf nodes is guaranteed to have at least 1 neighbouring pair. The pair producing the largest result is the one with maxed out contributions from its multiplied internal edges weights, meaning that none of those contributions were for internal edges reduced to 2*weight. Lesser results MAY be lesser because normalization reduced some of their internal edge weights to 2*weight, but the largest result you know for certain has all of its internal edge weights &gt; 2*weight.</p>
+<p>Since <a href="#BM_(limb)%2Fi">limb</a>s always contribute the same regardless of whether the pair is <a href="#BM_(neighbour)%2Fi">neighbour</a>ing or not (2*weight), they can be ignored. That leaves internal edge contributions as the only thing differentiating between <a href="#BM_(neighbour)%2Fi">neighbour</a>ing and non-<a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs.</p>
+<p>A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> with 2 or more leaf nodes is guaranteed to have at least 1 <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair. The pair producing the largest result is the one with maxed out contributions from its multiplied internal edges weights, meaning that none of those contributions were for internal edges reduced to 2*weight. Lesser results MAY be lesser because normalization reduced some of their internal edge weights to 2*weight, but the largest result you know for certain has all of its internal edge weights &gt; 2*weight.</p>
 </div>
 <p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py</a> (lines 98 to 108):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:</span>
@@ -12653,7 +12486,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12722,10 +12555,10 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_9a1dd9b91bd358f220407522b9b342c0.svg" alt="Dot diagram"></p>
+<p><img src="dot_d6c44c1a7044839d584b2aeb830c947b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>The matrix produced in the example above is called a neighbour joining matrix. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
+<p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
 <ul>
 <li>
 <p><code>edge_multiple(v1)</code> breaks down to...</p>
@@ -12910,23 +12743,522 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </table>
 </div>
 <p></p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
-<p>TODO: ADD A TERMINOLOGY FOR NEIGHBOUR JOINING MATRIX, THEN CONTINUE TO FIGURE OUT NEIGHBOUR JOINING <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM</p>
 <a name="H_Distance%20Matrix%20to%20Tree"></a><h3>Distance Matrix to Tree</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, convert that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> into a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a>. Different algorithms are presented that either ...</p>
+<ul>
+<li>find the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>,</li>
+<li>approximate a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>,</li>
+<li>approximate a <a href="#BM_(tree)%2Fi">tree</a> for a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> regardless of if it's additive or not.</li>
+</ul>
+<p><strong>WHY</strong>: Recall that converting a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is the end goal of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Given the distances between set of known / present-day entities, these algorithms will infer their evolutionary relationships.</p>
 <a name="H_UPGMA%20Algorithm"></a><h4>UPGMA Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>ALGORITHM</strong>:</p>
+<p><a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">Unweighted pair group method with arithmetic mean</a> (<a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>) is a heuristic algorithm used to estimate a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for some <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> where each internal node only branches to two children. In other words, a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a> where all leaf nodes are equidistant from the root.</p>
+</div>
+<p>The algorithm assumes that the rate of mutation is consistent (<a href="#BM_(molecular%20clock)%2Fi">molecular clock</a>). For example, ...</p>
+<ul>
+<li>every minute, around n of m nucleotides mutate.</li>
+<li>every hour, around n <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals occur per <a href="#BM_(genome)%2Fi">genome</a> segment of size m.</li>
+<li>etc..</li>
+</ul>
+<p>This assumption is what makes the <a href="#BM_(tree)%2Fi">tree</a> <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric</a>. A set of present day species (leaf nodes) are assumed to all have the same amount of mutation (distance) from their shared ancestor (shared internal node).</p>
+<p><img src="svgbob_9c45e3a8fedf42d570c570b7c417173e7ed57970.svg" alt="Kroki diagram output"></p>
+<p>For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.</p>
+<p>Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation. Assume the number of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals is being used as the measure of mutation. If the rate of reversals expected per 100 years is 2, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.</p>
+<p><img src="svgbob_55b2b7d647c259a686085e583dce32da8851a4b6.svg" alt="Kroki diagram output"></p>
+<p>In the example above, ...</p>
+<ul>
+<li>present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5 reversals</li>
+<li>present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1 reversal</li>
+<li>present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals</li>
+<li>present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals</li>
+<li>etc..</li>
+</ul>
+<p>Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> estimates an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).</p>
+<p><img src="svgbob_3d816b9d61032209afd8294044f1caf010c46928.svg" alt="Kroki diagram output"></p>
+<p>Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Ca={a}</th>
+<th>Cb={b}</th>
+<th>Cc={c}</th>
+<th>Cd={d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ca={a}</td>
+<td>0</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Cb={b}</td>
+<td>3</td>
+<td>0</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Cc={c}</td>
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Cd={d}</td>
+<td>3</td>
+<td>5</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The two clusters with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node.</p>
+<p><img src="svgbob_33e1b85dbaff91ad5a6f7d584fbcd812e2c84362.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Note what's happening here. The assumption being made that the leaf nodes for the minimum <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> value are always <a href="#BM_(neighbour)%2Fi">neighbour</a>s. Not always true, but probably good enough as a starting point. For example, the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> would identify v0 and v2 as <a href="#BM_(neighbour)%2Fi">neighbour</a>s when in fact they aren't ...</p>
+<p><img src="svgbob_d8273b1705b944b7eedb9a09ae7d33d6c994f20d.svg" alt="Kroki diagram output"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>0</td>
+<td>91</td>
+<td>3</td>
+<td>92</td>
+</tr>
+<tr>
+<td>b</td>
+<td>91</td>
+<td>0</td>
+<td>92</td>
+<td>181</td>
+</tr>
+<tr>
+<td>c</td>
+<td>3</td>
+<td>92</td>
+<td>0</td>
+<td>91</td>
+</tr>
+<tr>
+<td>d</td>
+<td>92</td>
+<td>181</td>
+<td>91</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>It may be a good idea to use <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbours</a> to short circuit this restriction, possibly producing a better heuristic. But, the original algorithm doesn't call for it.</p>
+</div>
+<p>This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:</p>
+<ul>
+<li>mut(Ce) = dist(Cc, Cd) / 2 = 2 / 2 = 1</li>
+<li>dist(Ce, Cc) = mut(Ce) - mut(Cc) = 1 - 0 = 1</li>
+<li>dist(Ce, Cd) = mut(Ce) - mut(Cd) = 1 - 0 = 1</li>
+</ul>
+<p><img src="svgbob_43abd429f61152576f3c8e328872adaa265aa9d1.svg" alt="Kroki diagram output"></p>
+<p>The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> then gets modified by merging together the recently <a href="#BM_(connected)%2Fi">connected</a> clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances for that cluster are computed using the formula...</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><msub><mi>C</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow></munder><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></munder><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">D_{C_1,C_2} = \frac{
+\sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
+}{
+|C_1| \cdot |C_2|
+}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mpunct mtight">,</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.511818em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.575818em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.825818em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.39981em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p><a href="ch7_code/src/phylogeny/UPGMA.py">ch7_code/src/phylogeny/UPGMA.py</a> (lines 58 to 64):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cluster_dist</span>(<span class="hljs-params">dm_orig: DistanceMatrix, c_set: ClusterSet, c1: <span class="hljs-built_in">str</span>, c2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">float</span>:</span>
+    c1_set = c_set[c1]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
+    c2_set = c_set[c2]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
+    numerator = <span class="hljs-built_in">sum</span>(dm_orig[i, j] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> product(c1_set, c2_set))  <span class="hljs-comment"># sum it all up</span>
+    denominator = <span class="hljs-built_in">len</span>(c1_set) * <span class="hljs-built_in">len</span>(c2_set)  <span class="hljs-comment"># number of additions that occurred</span>
+    <span class="hljs-keyword">return</span> numerator / denominator
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Ca={a}</th>
+<th>Cb={b}</th>
+<th>Ce={c,d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ca={a}</td>
+<td>0</td>
+<td>3</td>
+<td>3.5</td>
+</tr>
+<tr>
+<td>Cb={b}</td>
+<td>3</td>
+<td>0</td>
+<td>7.5</td>
+</tr>
+<tr>
+<td>Ce={c,d}</td>
+<td>3.5</td>
+<td>7.5</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>This process repeats at each iteration until a single cluster remains. At the next iteration, Ca and Cb have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 3), meaning that Ca and Cb should be <a href="#BM_(connected)%2Fi">connected</a> with a new internal internal node:</p>
+<ul>
+<li>mut(Cf) = dist(Ca, Cb) / 2 = 3 / 2 = 1.5</li>
+<li>dist(Cf, Ca) = mut(Cf) - mut(Ca) = 1.5 - 0 = 1.5</li>
+<li>dist(Cf, Cb) = mut(Cf) - mut(Cb) = 1.5 - 0 = 1.5</li>
+</ul>
+<p><img src="svgbob_962e2ba14c7994a6bd258ad28c99dfca555738f5.svg" alt="Kroki diagram output"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cf={a,b}</th>
+<th>Ce={c,d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cf={a,b}</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Ce={c,d}</td>
+<td>4</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>At the next iteration, Ce and Cf have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 4), meaning that Ce and Cf should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node:</p>
+<ul>
+<li>mut(Cg) = dist(Cf, Ce) / 2 = 4 / 2 = 2</li>
+<li>dist(Cg, Cf) = mut(Cg) - mut(Cf) = 2 - 1.5 = 0.5</li>
+<li>dist(Cg, Ce) = mut(Cg) - mut(Ce) = 2 - 1 = 1</li>
+</ul>
+<p><img src="svgbob_98ab2c91ad7bd2b3913d79cfa991112d4dcecaa7.svg" alt="Kroki diagram output"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cg={a,b,c,d}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cg={a,b,c,d}</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The process is complete. Only a single cluster remains (representing the root) / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
+<p><img src="svgbob_d60f7033a6d15c3337efd4d2055adb9ef9dfb1f8.svg" alt="Kroki diagram output"></p>
+<p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
+<p>In addition, some distances in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> are wildly off from the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances. For example, ...</p>
+<ul>
+<li>dist(a,d)=8 in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</li>
+<li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
+</ul>
+<p>Part of this may have to do with the assumption that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
+<p><a href="ch7_code/src/phylogeny/UPGMA.py">ch7_code/src/phylogeny/UPGMA.py</a> (lines 68 to 137):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_clusters_with_min_dist</span>(<span class="hljs-params">dm: DistanceMatrix, c_set: ClusterSet</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]:</span>
+    <span class="hljs-keyword">assert</span> c_set.active_count() &gt; <span class="hljs-number">1</span>
+    min_n1_id = <span class="hljs-literal">None</span>
+    min_n2_id = <span class="hljs-literal">None</span>
+    min_dist = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> n1, n2 <span class="hljs-keyword">in</span> product(c_set.active(), repeat=<span class="hljs-number">2</span>):
+        <span class="hljs-keyword">if</span> n1 == n2:
+            <span class="hljs-keyword">continue</span>
+        d = dm[n1, n2]
+        <span class="hljs-keyword">if</span> min_dist <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> d &lt; min_dist:
+            min_n1_id = n1
+            min_n2_id = n2
+            min_dist = d
+    <span class="hljs-keyword">assert</span> min_n1_id <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> min_n2_id <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> min_dist <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">return</span> min_n1_id, min_n2_id, min_dist
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cluster_merge</span>(<span class="hljs-params">
+        dm: DistanceMatrix,
+        dm_orig: DistanceMatrix,
+        c_set: ClusterSet,
+        old_id1: <span class="hljs-built_in">str</span>,
+        old_id2: <span class="hljs-built_in">str</span>,
+        new_id: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-literal">None</span>:</span>
+    c_set.merge(new_id, old_id1, old_id2)  <span class="hljs-comment"># create new cluster w/ elements from old - old_ids deactived+new_id actived</span>
+    new_dists = {}
+    <span class="hljs-keyword">for</span> existing_id <span class="hljs-keyword">in</span> dm.leaf_ids():
+        <span class="hljs-keyword">if</span> existing_id == old_id1 <span class="hljs-keyword">or</span> existing_id == old_id2:
+            <span class="hljs-keyword">continue</span>
+        new_dist = cluster_dist(dm_orig, c_set, new_id, existing_id)
+        new_dists[existing_id] = new_dist
+    dm.merge(new_id, old_id1, old_id2, new_dists)  <span class="hljs-comment"># remove old ids and replace with new_id that has new distances</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">upgma</span>(<span class="hljs-params">dm: DistanceMatrix</span>) -&gt; <span class="hljs-built_in">tuple</span>[Graph, <span class="hljs-built_in">str</span>]:</span>
+    g = Graph()
+    c_set = ClusterSet(dm)  <span class="hljs-comment"># primed with leaf nodes (all active)</span>
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> dm.leaf_ids_it():
+        g.insert_node(node, <span class="hljs-number">0</span>)  <span class="hljs-comment"># initial node weights (each leaf node has an age of 0)</span>
+    dm_orig = dm.copy()
+    <span class="hljs-comment"># set node ages</span>
+    next_node_id = <span class="hljs-number">0</span>
+    next_edge_id = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> c_set.active_count() &gt; <span class="hljs-number">1</span>:
+        min_n1_id, min_n2_id, min_dist = find_clusters_with_min_dist(dm, c_set)
+        new_node_id = next_node_id
+        new_node_age = min_dist / <span class="hljs-number">2</span>
+        g.insert_node(<span class="hljs-string">f'C<span class="hljs-subst">{new_node_id}</span>'</span>, new_node_age)
+        next_node_id += <span class="hljs-number">1</span>
+        g.insert_edge(<span class="hljs-string">f'E<span class="hljs-subst">{next_edge_id}</span>'</span>, min_n1_id, <span class="hljs-string">f'C<span class="hljs-subst">{new_node_id}</span>'</span>)
+        next_edge_id += <span class="hljs-number">1</span>
+        g.insert_edge(<span class="hljs-string">f'E<span class="hljs-subst">{next_edge_id}</span>'</span>, min_n2_id, <span class="hljs-string">f'C<span class="hljs-subst">{new_node_id}</span>'</span>)
+        next_edge_id += <span class="hljs-number">1</span>
+        cluster_merge(dm, dm_orig, c_set, min_n1_id, min_n2_id, <span class="hljs-string">f'C<span class="hljs-subst">{new_node_id}</span>'</span>)
+    <span class="hljs-comment"># set amount of age added by each edge</span>
+    nodes_by_age = <span class="hljs-built_in">sorted</span>([(n, g.get_node_data(n)) <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> g.get_nodes()], key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
+    set_edges = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># edges that have already had their weights set</span>
+    <span class="hljs-keyword">for</span> child_n, child_age <span class="hljs-keyword">in</span> nodes_by_age:
+        <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_outputs(child_n):
+            <span class="hljs-keyword">if</span> e <span class="hljs-keyword">in</span> set_edges:
+                <span class="hljs-keyword">continue</span>
+            parent_n = [n <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> g.get_edge_ends(e) <span class="hljs-keyword">if</span> n != child_n].pop()
+            parent_age = g.get_node_data(parent_n)
+            weight = parent_age - child_age
+            g.update_edge_data(e, weight)
+            set_edges.add(e)
+    root_id = c_set.active().pop()
+    <span class="hljs-keyword">return</span> g, root_id
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the distance matrix ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... the UPGMA generated tree is ...</p>
+<p><img src="dot_408775f539d289934497a01da76bf7d6.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Same%20Subtree)_TOPIC%2F">Algorithms/Distance Phylogeny/Test Same Subtree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim)_TOPIC%2F">Algorithms/Distance Phylogeny/Trim</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FUn-trim%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Un-trim Tree</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
 <a name="H_Neighbour%20Joining%20Algorithm"></a><h4>Neighbour Joining Algorithm</h4>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbours</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<p>TODO: <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE</p>
+<a name="H_Evolutionary%20Algorithm"></a><h4>Evolutionary Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FEvolutionary%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>ALGORITHM</strong>:</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is essentially a hammer, ignoring much of the logic and techniques derived in prior sections. There is no code for this section because writing it involves doing things like writing a generic linear systems solver, evolutionary algorithms framework, etc... There are Python packages you can use if you really want to do this, but this section is more describing the overarching idea.</p>
+<p>The logic and techniques in prior section typically work much better and much faster than doing something like this, but this doesn't require as much reasoning / thinking. This idea was first hinted at in the Pevzner book when first describing how to assign weights for non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>.</p>
+</div>
+<p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, if you already know the structure of the <a href="#BM_(tree)%2Fi">tree</a>, with edge weights that satisfy that <a href="#BM_(tree)%2Fi">tree</a> are derivable from that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> structure...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cat</th>
+<th>Lion</th>
+<th>Bear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cat</td>
+<td>0</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Lion</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Bear</td>
+<td>4</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_9efe0131b95aacb3aa51fbb4cd8f18843707a13e.svg" alt="Kroki diagram output"></p>
+<p>... the distances between species must have been calculated as follows:</p>
+<ul>
+<li>dist(Cat, Lion) = dist(Cat, A1) + dist(A1, Lion)`</li>
+<li>dist(Cat, Bear) = dist(Cat, A1) + dist(A1, A2) + dist(A2, Bear)`</li>
+<li>dist(Lion, Bear) = dist(Lion, A1) + dist(A1, A2) + dist(A2, Bear)`</li>
+</ul>
+<p>This is a system of linear equations that may be solved using standard algebra. For example, each <code>dist()</code> above is representable as either a variable or a constant...</p>
+<ul>
+<li>2 = dist(Cat, Lion)  = dist(Lion, Cat)</li>
+<li>4 = dist(Cat, Bear)  = dist(Bear, Cat)</li>
+<li>3 = dist(Lion, Bear) = dist(Bear, Lion)</li>
+<li>w = dist(Cat, A1)    = dist(A1, Cat)</li>
+<li>x = dist(Lion, A1)   = dist(A1, Lion)</li>
+<li>y = dist(A1, A2)     = dist(A2, A1)</li>
+<li>z = dist(A2, Bear)   = dist(Bear, A2)</li>
+</ul>
+<p>... , which converts each calculation above to the following equations ...</p>
+<ul>
+<li>2 = w + x</li>
+<li>4 = w + y + z</li>
+<li>3 = x + y + z</li>
+</ul>
+<p><img src="svgbob_2f13ccbb0caa3ef9d6c3abe089b7f6bd3f123ce5.svg" alt="Kroki diagram output"></p>
+<p>Solving this system of linear equations results in. ..</p>
+<ul>
+<li>x = 0.5</li>
+<li>w = 1.5</li>
+<li>z = 2.5 - y`</li>
+</ul>
+<p>As such, the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive matrix</a> because there exists a <a href="#BM_(tree)%2Fi">tree</a> that satisfies it. Any of the following edge weights will work with this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
+<ul>
+<li>x = 0.5, w = 1.5, y = 0.5, z = 2.0</li>
+<li>x = 0.5, w = 1.5, y = 1.0, z = 1.5</li>
+<li>x = 0.5, w = 1.5, y = 1.5, z = 1.0</li>
+<li>...</li>
+</ul>
+<p>The example above tests against a <a href="#BM_(tree)%2Fi">tree</a> that's a non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> (A2 is an internal node with <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2). If you limit your search to <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s and find nothing, there won't be any non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s either: Non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s are essentially <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s that have had edges broken up by splicing nodes in between (<a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 nodes).</p>
+<p>The non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> example above collapsed into a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>:</p>
+<p><img src="svgbob_da0e7825576bb7895069ddd56443653ece61dac9.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The path A1-A2-Bear has been collapsed into A1-Bear, where the weight of the newly collapsed edge is represented by a (formerly y+z). Using the same <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above gets solved to <code>w = 2, x = 1, a = 2</code>.</p>
+</div>
+<p>If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> isn't additive, something like <a href="#BM_(sum%20of%20squared%20errors%7Csum%20of%20square%20error%7Csum%20of%20errors%20squared)%2Fi">sum of errors squared</a> may be used to converge on an approximate set of weights that work. Similarly, evolutionary algorithms may be used in addition to approximating weights to find a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that's close enough to the</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -15710,13 +16042,13 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><a name="BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi"></a><strong>breakpoint</strong> - Given two <a href="#BM_(genome)%2Fi">genome</a>s that share <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s, where one <a href="#BM_(genome)%2Fi">genome</a> has the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in desired order and direction while the other does not, an ...</p>
 <ul>
 <li>
-<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacency</a> is when two neighbouring <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> are following each other just as they do in the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
+<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacency</a> is when two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> are following each other just as they do in the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
 <p><img src="svgbob_0eeb1c6bdbb8c831beacb96ed553a24786b51106.svg" alt="Kroki diagram output"></p>
 <p><img src="svgbob_38f85e31e85b1a0e4922855af392c0423a9cda9a.svg" alt="Kroki diagram output"></p>
 <p><img src="svgbob_0688b38f16f6f4a626db94a63389ec54f36fac30.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a> is when two neighbouring <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> don't fit the definition of an <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacency</a>: They aren't following each other just as they do in the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
+<p><a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">breakpoint</a> is when two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s in the undesired <a href="#BM_(genome)%2Fi">genome</a> don't fit the definition of an <a href="#BM_(adjacent%7Cadjacency%7Cadjacencies%7Cbreakpoint)_GR%2Fi">adjacency</a>: They aren't following each other just as they do in the desired <a href="#BM_(genome)%2Fi">genome</a>.</p>
 <p><img src="svgbob_499a43209f898efb42fff1bb55780d8c5001df23.svg" alt="Kroki diagram output"></p>
 <p><img src="svgbob_05d2980e44e429d3d51e6349e29ff7734c7097ff.svg" alt="Kroki diagram output"></p>
 </li>
@@ -15806,6 +16138,16 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><img src="svgbob_f7b1705852841b00a5ecb758d6e39af634d6898e.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
+<p><a name="BM_(distance%20metric)%2Fi"></a><strong>distance metric</strong> - A metric used to measure how related a pair of entities are to each other. Examples include...</p>
+<ul>
+<li><a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between DNA / protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> score between DNA / protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
+<li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
+<li>number of similar physical or behavioural attributes.</li>
+<li>etc..</li>
+</ul>
+</li>
+<li>
 <p><a name="BM_(distance%20matrix%7Cdistance%20matrices)%2Fi"></a><strong>distance matrix</strong> - Given a set of n different species, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
 <table>
 <thead>
@@ -15848,7 +16190,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tr>
 </tbody>
 </table>
-<p>The distance metric can be anything so long as it meets the following properties:</p>
+<p>The <a href="#BM_(distance%20metric)%2Fi">distance metric</a> can be anything so long as it meets the following properties:</p>
 <ul>
 <li>Must produce a non-negative distance -- dist(A,B) &gt;= 0</li>
 <li>Must produce the same distance regardless of species order -- dist(A,B) == dist(B,A)</li>
@@ -15860,7 +16202,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><img src="svgbob_3f0c5795b674de5612a12db473d621ed2ed53e92.svg" alt="Kroki diagram output"></p>
 <p>A, B, and C are species.</p>
 </div>
-<p>Common distance metrics include...</p>
+<p>Common <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s include...</p>
 <ul>
 <li><a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
 <li><a href="#BM_(levenshtein%20distance%7Cstring%20distance)%2Fi">levenshtein distance</a> between the DNA <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
@@ -15944,41 +16286,41 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tbody>
 </table>
 <p><img src="svgbob_e5ec5970ccdbca871edbc896779d5d1131ed9055.svg" alt="Kroki diagram output"></p>
-<p>Some <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> don't have a <a href="#BM_(tree)%2Fi">tree</a> that fits. For example, there is no <a href="#BM_(tree)%2Fi">tree</a> that fits the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<p>The term additive is used because the weights of all edges along the path between leaves (i, j) add to <code>dist(i, j)</code> in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. Not all <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are additive. For example, no <a href="#BM_(simple%20tree)%2Fi">simple tree</a> exists that satisfies the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>v0</th>
-<th>v1</th>
-<th>v2</th>
-<th>v3</th>
+<th>S1</th>
+<th>S2</th>
+<th>S3</th>
+<th>S4</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>v0</td>
+<td>S1</td>
 <td>0</td>
 <td>3</td>
 <td>4</td>
 <td>3</td>
 </tr>
 <tr>
-<td>v1</td>
+<td>S2</td>
 <td>3</td>
 <td>0</td>
 <td>4</td>
 <td>5</td>
 </tr>
 <tr>
-<td>v2</td>
+<td>S3</td>
 <td>4</td>
 <td>4</td>
 <td>0</td>
 <td>2</td>
 </tr>
 <tr>
-<td>v3</td>
+<td>S4</td>
 <td>3</td>
 <td>5</td>
 <td>2</td>
@@ -15986,6 +16328,55 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tr>
 </tbody>
 </table>
+<ul>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 1:</p>
+<p><img src="svgbob_74cdc79c5f9b82937ba473b3e3e632aab5cb6b4e.svg" alt="Kroki diagram output"></p>
+<pre><code>dist(S1, S2) is 3 = w + x
+dist(S1, S3) is 4 = w + y
+dist(S1, S4) is 3 = w + z
+dist(S2, S3) is 4 = x + y
+dist(S2, S4) is 5 = x + z
+dist(S3, S4) is 2 = y + z
+</code></pre>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 2:</p>
+<p><img src="svgbob_310a023ae046f0c94fc708941d7e494797cf787b.svg" alt="Kroki diagram output"></p>
+<pre><code>dist(S1, S2) is 3 = w + x
+dist(S1, S3) is 4 = w + u + y
+dist(S1, S4) is 3 = w + u + z
+dist(S2, S3) is 4 = x + u + y
+dist(S2, S4) is 5 = x + u + z
+dist(S3, S4) is 2 = y + z
+</code></pre>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>Test <a href="#BM_(simple%20tree)%2Fi">simple tree</a> 3:</p>
+<p><img src="svgbob_27b6be0c6cb6193b60f5164ee5e83ce0f0389d38.svg" alt="Kroki diagram output"></p>
+<pre><code>dist(S1, S2) is 4 = w + u + y
+dist(S1, S3) is 3 = w + x
+dist(S1, S4) is 3 = w + u + z
+dist(S2, S3) is 4 = x + u + y
+dist(S2, S4) is 2 = y + z
+dist(S3, S4) is 5 = x + u + z
+</code></pre>
+<p>Attempting to solve this produces inconsistent results. Solved values for each variable don't work across all equations present.</p>
+</li>
+<li>
+<p>etc..</p>
+</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(neighbour)%2Fi"></a><strong>neighbour</strong> - Given two leaf nodes in a <a href="#BM_(tree)%2Fi">tree</a>, those leaf nodes are said to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s if they share they connect to the same internal node. For example, leaf nodes A and B are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(tree)%2Fi">tree</a> because they both conect to internal node D ...</p>
+<p><img src="svgbob_80372a14f2a248e2ffdfdbfef223b5b15c39f7b1.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A leaf node will only ever have 1 parent, by definition of a <a href="#BM_(tree)%2Fi">tree</a>.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(limb)%2Fi"></a><strong>limb</strong> - Given a leaf node in a <a href="#BM_(tree)%2Fi">tree</a>, that leaf node's <a href="#BM_(limb)%2Fi">limb</a> is the edge between it and its parent (node it's <a href="#BM_(connected)%2Fi">connected</a> to). For example, the following <a href="#BM_(tree)%2Fi">tree</a> has the following <a href="#BM_(limb)%2Fi">limb</a>s ...</p>
@@ -16005,7 +16396,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><img src="svgbob_54ab99476bd3bb4646b1899b68122441df1dc495.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(four%20point%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. Given four leaf nodes, the algorithm checks different permutations of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...</p>
+<p><a name="BM_(four%20points%3F%20condition%7Cfour%20point%20theorem)%2Fi"></a><strong>four point condition</strong> - An algorithm for determining if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. Given four leaf nodes, the algorithm checks different permutations of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...</p>
 <pre class="hljs"><code><span class="hljs-keyword">for</span> a, b, c, d <span class="hljs-keyword">in</span> permutations(quartet, r=<span class="hljs-number">4</span>):  <span class="hljs-comment"># find one perm that passes the following test</span>
     s1 = dist_mat[a][b] + dist_mat[c][d]  <span class="hljs-comment"># sum of dists for (a,b) and (c,d)</span>
     s2 = dist_mat[a][c] + dist_mat[b][d]  <span class="hljs-comment"># sum of dists for (a,c) and (b,d)</span>
@@ -16414,186 +16805,166 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>A binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> where each internal node only branches to two children. In other words, a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a <a href="#BM_(rooted%20binary%20tree)%2Fi">rooted binary tree</a> where all leaf nodes are equidistant from the root.</p>
 </div>
-<p>The algorithm assumes that the rate of mutation is consistent (<a href="#BM_(molecular%20clock)%2Fi">molecular clock</a>). For example, ...</p>
-<ul>
-<li>every minute, around n of m nucleotides mutate.</li>
-<li>every hour, around n <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals occur per <a href="#BM_(genome)%2Fi">genome</a> segment of size m.</li>
-<li>etc..</li>
-</ul>
-<p>This assumption is what makes the <a href="#BM_(tree)%2Fi">tree</a> <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric</a>. A set of present day species (leaf nodes) are assumed to all have the same amount of mutation (distance) from their shared ancestor (shared internal node).</p>
+<p>The algorithm assumes that the rate of mutation is consistent (<a href="#BM_(molecular%20clock)%2Fi">molecular clock</a>). This assumption is what makes the <a href="#BM_(tree)%2Fi">tree</a> <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric</a>. A set of present day species (leaf nodes) are assumed to all have the same amount of mutation (distance) from their shared ancestor (shared internal node).</p>
 <p><img src="svgbob_9c45e3a8fedf42d570c570b7c417173e7ed57970.svg" alt="Kroki diagram output"></p>
-<p>For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.</p>
-<p>Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation. Assume the number of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals is being used as the measure of mutation. If the rate of reversals expected per 100 years is 2, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.</p>
-<p><img src="svgbob_ee39b0a3edfae44730d250d1fa8748f503fcdc3e.svg" alt="Kroki diagram output"></p>
-<p>In the example above, ...</p>
-<ul>
-<li>present day species a and b (leaf nodes) have the same amount of mutation (distance) from shared ancestor f (shared internal node): 1.5 reversals</li>
-<li>present day species c and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor e (shared internal node): 1 reversal</li>
-<li>present day species a and c (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals</li>
-<li>present day species a and d (leaf nodes) have the same amount of mutation (distance) from shared ancestor g (shared internal node): 4 reversals</li>
-<li>etc..</li>
-</ul>
-<p>Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, the <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> algorithm estimates an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).</p>
-<p><img src="svgbob_3d816b9d61032209afd8294044f1caf010c46928.svg" alt="Kroki diagram output"></p>
-<p>Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Ca={a}</th>
-<th>Cb={b}</th>
-<th>Cc={c}</th>
-<th>Cd={d}</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ca={a}</td>
-<td>0</td>
-<td>3</td>
-<td>4</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Cb={b}</td>
-<td>3</td>
-<td>0</td>
-<td>4</td>
-<td>5</td>
-</tr>
-<tr>
-<td>Cc={c}</td>
-<td>4</td>
-<td>4</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr>
-<td>Cd={d}</td>
-<td>3</td>
-<td>5</td>
-<td>2</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>The two clusters with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node.</p>
-<p><img src="svgbob_33e1b85dbaff91ad5a6f7d584fbcd812e2c84362.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Note what's happening here. The assumption being made here is that the leaf nodes for the minimum <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> value are always neighbours. Not always true (as noted by the book), but probably good enough as a starting point.</p>
+<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA</a> for a full explanation of how this algorithm works.</p>
 </div>
-<p>This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:</p>
+</li>
+<li>
+<p><a name="BM_(neighbour%20joining%20matrix)%2Fi"></a><strong>neighbour joining matrix</strong> - A matrix produced by transforming a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> such that each element is calculated as total_dist(a) + total_dist(b) - (n - 2) * dist(a, b), where...</p>
 <ul>
-<li>mut(Ce) = dist(Cc, Cd) / 2 = 2 / 2 = 1</li>
-<li>dist(Ce, Cc) = mut(Ce) - mut(Cc) = 1 - 0 = 1</li>
-<li>dist(Ce, Cd) = mut(Ce) - mut(Cd) = 1 - 0 = 1</li>
+<li>n is the number of leaf nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
+<li>a and b are the leaf nodes being referenced in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
+<li>dist(a, b) returns the distance between leaf nodes a and b in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
+<li>total dist(a) returns the sum all of distances to / from leaf node a.</li>
+<li>total dist(b) returns the sum all of distances to / from leaf node b.</li>
 </ul>
-<p><img src="svgbob_43abd429f61152576f3c8e328872adaa265aa9d1.svg" alt="Kroki diagram output"></p>
-<p>The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> then gets modified by merging together the recently <a href="#BM_(connected)%2Fi">connected</a> clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances for that cluster are computed using the formula...</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><msub><mi>C</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow></munder><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></munder><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">D_{C_1,C_2} = \frac{
-\sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
-}{
-|C_1| \cdot |C_2|
-}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mpunct mtight">,</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.511818em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.575818em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.825818em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.39981em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<pre class="hljs"><code><span class="hljs-comment"># code representation of formula above -- the formula essentially averages the distances the between the</span>
-<span class="hljs-comment"># leaf nodes of two clusters.</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cluster_dist</span>(<span class="hljs-params">orig_dist_mat: DistanceMatrix, clusters: ClusterSet, c1: <span class="hljs-built_in">int</span>, c2: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">float</span>:</span>
-  c1_set = clusters[c1]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
-  c2_set = clusters[c2]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
-  numerator = <span class="hljs-built_in">sum</span>(orig_dist_mat[i, j] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> product(c1_set, c2_set))  <span class="hljs-comment"># sum it all up</span>
-  denominator = <span class="hljs-built_in">len</span>(c1_set) * <span class="hljs-built_in">len</span>(c2_set)  <span class="hljs-comment"># number of additions that occurred</span>
-  <span class="hljs-keyword">return</span> numerator / denominator
-</code></pre>
+<p>The maximum element in the <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a> is guaranteed to be for two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes. For example, the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> produces the following <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>...</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>Ca={a}</th>
-<th>Cb={b}</th>
-<th>Ce={c,d}</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Ca={a}</td>
+<td>v0</td>
 <td>0</td>
-<td>3</td>
-<td>3.5</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22</td>
 </tr>
 <tr>
-<td>Cb={b}</td>
-<td>3</td>
+<td>v1</td>
+<td>13</td>
 <td>0</td>
-<td>7.5</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13</td>
 </tr>
 <tr>
-<td>Ce={c,d}</td>
-<td>3.5</td>
-<td>7.5</td>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<p>This process repeats at each iteration until a single cluster remains. At the next iteration, Ca and Cb have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 3), meaning that Ca and Cb should be <a href="#BM_(connected)%2Fi">connected</a> with a new internal internal node:</p>
-<ul>
-<li>mut(Cf) = dist(Ca, Cb) / 2 = 3 / 2 = 1.5</li>
-<li>dist(Cf, Ca) = mut(Cf) - mut(Ca) = 1.5 - 0 = 1.5</li>
-<li>dist(Cf, Cb) = mut(Cf) - mut(Cb) = 1.5 - 0 = 1.5</li>
-</ul>
-<p><img src="svgbob_962e2ba14c7994a6bd258ad28c99dfca555738f5.svg" alt="Kroki diagram output"></p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>Cf={a,b}</th>
-<th>Ce={c,d}</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Cf={a,b}</td>
+<td>v0</td>
 <td>0</td>
-<td>4</td>
+<td>110</td>
+<td>110</td>
+<td>88</td>
+<td>88</td>
+<td>94</td>
 </tr>
 <tr>
-<td>Ce={c,d}</td>
-<td>4</td>
+<td>v1</td>
+<td>110</td>
+<td>0</td>
+<td>110</td>
+<td>88</td>
+<td>88</td>
+<td>94</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>110</td>
+<td>110</td>
+<td>0</td>
+<td>88</td>
+<td>88</td>
+<td>94</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>88</td>
+<td>88</td>
+<td>88</td>
+<td>0</td>
+<td>122</td>
+<td>104</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>88</td>
+<td>88</td>
+<td>88</td>
+<td>122</td>
+<td>0</td>
+<td>104</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>94</td>
+<td>94</td>
+<td>94</td>
+<td>104</td>
+<td>104</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<p>At the next iteration, Ce and Cf have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 4), meaning that Ce and Cf should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node:</p>
-<ul>
-<li>mut(Cg) = dist(Cf, Ce) / 2 = 4 / 2 = 2</li>
-<li>dist(Cg, Cf) = mut(Cg) - mut(Cf) = 2 - 1.5 = 0.5</li>
-<li>dist(Cg, Ce) = mut(Cg) - mut(Ce) = 2 - 1 = 1</li>
-</ul>
-<p><img src="svgbob_98ab2c91ad7bd2b3913d79cfa991112d4dcecaa7.svg" alt="Kroki diagram output"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Cg={a,b,c,d}</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Cg={a,b,c,d}</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>The process is complete. Only a single cluster remains (representing the root) / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
-<p><img src="svgbob_d60f7033a6d15c3337efd4d2055adb9ef9dfb1f8.svg" alt="Kroki diagram output"></p>
-<p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
-<p>In addition, some distances in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> are wildly off from the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances. For example, ...</p>
-<ul>
-<li>dist(a,d)=8 in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</li>
-<li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
-</ul>
-<p>Part of this may have to do with the assumption that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
+<p>The maximum element is for (v3, v4), meaning that v3 and v4 are <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbours</a> for a full explanation of how this algorithm works.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(neighbour%20joining%20phylogeny)%2Fi"></a><strong>neighbour joining phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some  OR approximates a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
@@ -16624,8 +16995,8 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tbody>
 </table>
 <p><img src="dot_d0010bac57ea6a9ead9cf3d10ce6f86e.svg" alt="Dot diagram"></p>
-<p>However, unlike <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, this algorithm trims the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is 2x2, then finds the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for those pairs and attaches them to the <a href="#BM_(tree)%2Fi">tree</a> as it backs out of the recursion.</p>
-<p>Because this algorithm is intended to approximate non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>, the original <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm won't work. Instead, a new <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm approximates the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for neighbouring nodes by averaging total distances.</p>
+<p>However, unlike <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, this algorithm trims the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> by finding pairs of <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes using the <a href="#BM_(neighbour)%2Fi">neighbour</a> leaf detection algorithm. The algorithm recursively removes <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is 2x2, then finds the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s for those pairs and attaches them to the <a href="#BM_(tree)%2Fi">tree</a> as it backs out of the recursion.</p>
+<p>Because this algorithm is intended to approximate non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>, the original <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm won't work. Instead, a new <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm approximates the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for <a href="#BM_(neighbour)%2Fi">neighbour</a>ing nodes by averaging total distances.</p>
 <p>TODO: EXPLAIN THE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
 TODO: EXPLAIN THE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
 TODO: EXPLAIN THE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> ALGORITHM HERE -- SECTION 7.17.
