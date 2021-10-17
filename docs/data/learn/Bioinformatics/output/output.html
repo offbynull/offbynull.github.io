@@ -148,6 +148,7 @@
 <li><a href="#H_Bald">Bald</a></li>
 <li><a href="#H_Un-trim%20Tree">Un-trim Tree</a></li>
 <li><a href="#H_Find%20Neighbours">Find Neighbours</a></li>
+<li><a href="#H_Approximate%20Neighbour%20Limb%20Lengths">Approximate Neighbour Limb Lengths</a></li>
 <li><a href="#H_Distance%20Matrix%20to%20Tree">Distance Matrix to Tree</a></li>
 <ul>
 <li><a href="#H_UPGMA%20Algorithm">UPGMA Algorithm</a></li>
@@ -9841,7 +9842,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
+<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -10350,7 +10351,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><img src="dot_2ce9085dbbfd0f88d09667f2cefdce21.svg" alt="Dot diagram"></p>
 <p>Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.</p>
 </div>
-<p><a href="ch7_code/src/phylogeny/LimbLength.py">ch7_code/src/phylogeny/LimbLength.py</a> (lines 13 to 19):</p>
+<p><a href="ch7_code/src/phylogeny/FindLimbLength.py">ch7_code/src/phylogeny/FindLimbLength.py</a> (lines 13 to 19):</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_limb_length</span>(<span class="hljs-params">dm: DistanceMatrix, l: N</span>) -&gt; <span class="hljs-built_in">float</span>:</span>
     leaf_nodes = dm.leaf_ids()
     leaf_nodes.remove(l)
@@ -12191,7 +12192,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12260,7 +12261,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_ee16cbdf7540812cc5522595eb0622a0.svg" alt="Dot diagram"></p>
+<p><img src="dot_b1580b3b8eea7813a2ba75c3a5f2536b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12490,7 +12491,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12559,7 +12560,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_2d84de70370be1202258a95394c2a055.svg" alt="Dot diagram"></p>
+<p><img src="dot_84686c0b6ef6ef27c112f297e3b53e53.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -12745,6 +12746,120 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tr>
 </tbody>
 </table>
+</div>
+<p></p>
+<a name="H_Approximate%20Neighbour%20Limb%20Lengths"></a><h3>Approximate Neighbour Limb Lengths</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FApproximate%20Neighbour%20Limb%20Lengths)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive) and two leaf nodes that are suspected to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s, this algorithm approximates the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s of those <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</p>
+<p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>Recall that the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm determines the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a> have inconsistent distances (not additive means no <a href="#BM_(tree)%2Fi">tree</a> exists that fits those distances).</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The algorithm is an extension of the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm, essentially running the same computation multiple times and averaging out the results. For example, v1 and v2 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
+<p>Since they're <a href="#BM_(neighbour)%2Fi">neighbour</a>s, they share the same parent node, meaning that the ...</p>
+<ul>
+<li>path from v1 to any other leaf node travels over v1's parent.</li>
+<li>path from v2 to any other leaf node travels over v0's parent.</li>
+</ul>
+<p><img src="dot_733281bf7d0b32a752b24ae8e837ae49.svg" alt="Dot diagram"></p>
+<p>Recall that to find the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for L, the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two <em><a href="#BM_(neighbour)%2Fi">neighbour</a>ing</em> leaf nodes, that test isn't required here. The path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent.</p>
+<p>Since the path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where N is L's <a href="#BM_(neighbour)%2Fi">neighbour</a> and X is every other leaf node that isn't L or N. The averaging makes it so that if the input <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> were ...</p>
+<ul>
+<li>additive, it'd produce the correct <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>.</li>
+<li>non-additive, it'd approximate a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> that's probably good enough (assuming the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is close to being additive).</li>
+</ul>
+<p><a href="ch7_code/src/phylogeny/ApproximateLimbLength.py">ch7_code/src/phylogeny/ApproximateLimbLength.py</a> (lines 14 to 23):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approximate_limb_length</span>(<span class="hljs-params">dm: DistanceMatrix, l: N, l_neighbour: N</span>):</span>
+    leaf_nodes = dm.leaf_ids()
+    leaf_nodes.remove(l)
+    leaf_nodes.remove(l_neighbour)
+    lengths = []
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> leaf_nodes:
+        length = (dm[l, l_neighbour] + dm[l, x] - dm[l_neighbour, x]) / <span class="hljs-number">2</span>
+        lengths.append(length)
+    <span class="hljs-keyword">return</span> mean(lengths)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>The limb length for leaf node ...</p>
+<ul>
+<li>1 is approximated to be 2.0</li>
+<li>2 is approximated to be 10.0</li>
+</ul>
 </div>
 <p></p>
 <a name="H_Distance%20Matrix%20to%20Tree"></a><h3>Distance Matrix to Tree</h3>
@@ -13288,7 +13403,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tbody>
 </table>
 <p>... the tree generated by additive phylogeny is ...</p>
-<p><img src="dot_87e82ea282637994eeffd36ee8c5abf0.svg" alt="Dot diagram"></p>
+<p><img src="dot_2efd7a8b2a0086ebcd042fdb2e247870.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -16545,10 +16660,11 @@ dist(S3, S4) is 5 = x + u + z
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
-<p>For example, the leaf nodes (v0, v2, v4, v6) pass this test ...</p>
-<p><img src="dot_233f87ca954b982c788c15bd0952f010.svg" alt="Dot diagram"></p>
-<p><span style="background-color: violet; color: black; padding: 3px">dist(v0, v2)</span> + <span style="background-color: tan; color: black; padding: 3px">dist(v4, v6)</span> &lt;= <span style="background-color: gold; color: black; padding: 3px">dist(v0, v6)</span> + <span style="background-color: pink; color: black; padding: 3px">dist(v2, v4)</span> == <span style="background-color: turquoise; color: black; padding: 3px">dist(v0, v4)</span> + <span style="background-color: orange; color: black; padding: 3px">dist(v2, v6)</span></p>
 <p>If all possible leaf node quartets pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Test Additive Distance Matrix</a> for a full explanation of how this algorithm works.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(trim%20distance%20matrix%7Ctrimmed%20distance%20matrix%7Ctrim%20distance%20matrices%7Ctrimmed%20distance%20matrices)%2Fi"></a><strong>trimmed distance matrix</strong> - A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's <a href="#BM_(limb)%2Fi">limb</a> in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a> and merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>

@@ -7524,13 +7524,13 @@ Pick v4 as your A node, then try the formula with every other leaf node as B (ex
 ````
 
 ```{output}
-ch7_code/src/phylogeny/LimbLength.py
+ch7_code/src/phylogeny/FindLimbLength.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.LimbLength
+phylogeny.FindLimbLength
 2
 [0 , 13, 19, 20, 29, 40, 36]
 [13, 0 , 10, 11, 20, 31, 27]
@@ -9510,6 +9510,119 @@ python
 ```{ch7}
 phylogeny.NeighbourJoiningMatrix
 [[0,13,21,21,22,22],[13,0,12,12,13,13],[21,12,0,20,21,21],[21,12,20,0,7,13],[22,13,21,7,0,14],[22,13,21,13,14,0]]
+```
+
+### Approximate Neighbour Limb Lengths
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Approximate Neighbour Limb Lengths)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+```
+
+**WHAT**: Given a non-additive distance matrix (but close to be being additive) and two leaf nodes that are suspected to be neighbours, this algorithm approximates the limb lengths of those neighbours.
+
+**WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
+
+Recall that the standard limb length finding algorithm determines the limb length of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-additive distance matrices have inconsistent distances (not additive means no tree exists that fits those distances).
+
+**ALGORITHM**: 
+
+The algorithm is an extension of the standard limb length finding algorithm, essentially running the same computation multiple times and averaging out the results. For example, v1 and v2 are neighbours in the following simple tree...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_one {
+  label="original"
+  v0_x -- i0_x [label=11]
+  v1_x -- i0_x [label=2]
+  v2_x -- i0_x [label=10]
+  i0_x -- i1_x [label=4]
+  i1_x -- i2_x [label=3]
+  i2_x -- v3_x [label=3]
+  i2_x -- v4_x [label=4]
+  i1_x -- v5_x [label=7]
+  v0_x [label=v0]
+  v1_x [label=v1]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+Since they're neighbours, they share the same parent node, meaning that the ...
+
+ * path from v1 to any other leaf node travels over v1's parent.
+ * path from v2 to any other leaf node travels over v0's parent.
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ subgraph cluster_one {
+  fontname="Courier-Bold"
+  fontsize=10
+  label="path from v1 to all other nodes"
+  v0_x -- i0_x [label=" ", penwidth=2.5, color="#ff0300"]
+  v1_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00:invis:#42c000:invis:#818100:invis:#c04200:invis:#ff0300"]
+  v2_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00"]
+  i0_x -- i1_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100:invis:#c04200"]
+  i1_x -- i2_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100"]
+  i2_x -- v3_x [label=" ", penwidth=2.5, color="#42c000"]
+  i2_x -- v4_x [label=" ", penwidth=2.5, color="#818100"]
+  i1_x -- v5_x [label=" ", penwidth=2.5, color="#c04200"]
+  v0_x [label=v0, style=filled, fillcolor="#ff0300"]
+  v1_x [label=v1, penwidth=5]
+  v5_x [label=v5, style=filled, fillcolor="#c04200"]
+  v4_x [label=v4, style=filled, fillcolor="#818100"]
+  v3_x [label=v3, style=filled, fillcolor="#42c000"]
+  v2_x [label=v2, style=filled, fillcolor="#03ff00", penwidth=5]
+  i0_x [label=i0, style=filled, fillcolor="gray"]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+ }
+}
+```
+
+Recall that to find the limb length for L, the standard limb length algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two _neighbouring_ leaf nodes, that test isn't required here. The path from L's neighbour to every other node always travels over L's parent.
+
+Since the path from L's neighbour to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate limb length: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where N is L's neighbour and X is every other leaf node that isn't L or N. The averaging makes it so that if the input distance matrix were ...
+
+ * additive, it'd produce the correct limb length.
+ * non-additive, it'd approximate a limb length that's probably good enough (assuming the distance matrix is close to being additive).
+
+```{output}
+ch7_code/src/phylogeny/ApproximateLimbLength.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.ApproximateLimbLength
+1
+2
+[0,  13, 21, 21, 22, 22]
+[13, 0,  12, 12, 13, 13]
+[21, 12, 0,  20, 21, 21]
+[21, 12, 20, 0,  7,  13]
+[22, 13, 21, 7,  0,  14]
+[22, 13, 21, 13, 14, 0 ]
 ```
 
 ### Distance Matrix to Tree
@@ -13412,97 +13525,11 @@ graph_show
    return False
    ```
 
-   For example, the leaf nodes (v0, v2, v4, v6) pass this test ...
-
-   ```{dot}
-   graph G {
-   graph[rankdir=LR]
-   node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-   edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    subgraph cluster_two2 {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v2) + dist(v4, v6)"
-     z_v0 -- z_i0 [label=1, color=violet, penwidth=2.5]
-     z_v1 -- z_i0 [label=1]
-     z_i0 -- z_i1 [label=1, color=violet, penwidth=2.5]
-     z_v2 -- z_i1 [label=1, color=violet, penwidth=2.5]
-     z_v3 -- z_i1 [label=1]
-     z_i1 -- z_i2 [label=1]
-     z_v4 -- z_i2 [label=1, color=tan, penwidth=2.5]
-     z_i2 -- z_i3 [label=1, color=tan, penwidth=2.5]
-     z_i3 -- z_v5 [label=1]
-     z_i3 -- z_v6 [label=1, color=tan, penwidth=2.5]
-     z_v0 [label= "v0", style=filled, fillcolor="violet"] 
-     z_v1 [label= "v1"] 
-     z_i0 [label= "i0"] 
-     z_i1 [label= "i1"] 
-     z_v2 [label= "v2", style=filled, fillcolor="violet"] 
-     z_v3 [label= "v3"] 
-     z_i2 [label= "i2"] 
-     z_i3 [label= "i3"] 
-     z_v4 [label= "v4", style=filled, fillcolor="tan"] 
-     z_v5 [label= "v5"] 
-     z_v6 [label= "v6", style=filled, fillcolor="tan"]
-    }
-    subgraph cluster_two {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v6) + dist(v2, v4)"
-     y_v0 -- y_i0 [label=1, color=gold, penwidth=2.5]
-     y_v1 -- y_i0 [label=1]
-     y_i0 -- y_i1 [label=1, color=gold, penwidth=2.5]
-     y_v2 -- y_i1 [label=1, color=pink, penwidth=2.5]
-     y_v3 -- y_i1 [label=1]
-     y_i1 -- y_i2 [label=1, color="pink:invis:gold", penwidth=2.5]
-     y_v4 -- y_i2 [label=1, color=pink, penwidth=2.5]
-     y_i2 -- y_i3 [label=1, color=gold, penwidth=2.5]
-     y_i3 -- y_v5 [label=1]
-     y_i3 -- y_v6 [label=1, color=gold, penwidth=2.5]
-     y_v0 [label= "v0", style=filled, fillcolor="gold"] 
-     y_v1 [label= "v1"] 
-     y_i0 [label= "i0"] 
-     y_i1 [label= "i1"] 
-     y_v2 [label= "v2", style=filled, fillcolor="pink"] 
-     y_v3 [label= "v3"] 
-     y_i2 [label= "i2"] 
-     y_i3 [label= "i3"] 
-     y_v4 [label= "v4", style=filled, fillcolor="pink"] 
-     y_v5 [label= "v5"] 
-     y_v6 [label= "v6", style=filled, fillcolor="gold"]
-    }
-    subgraph cluster_one {
-     fontname="Courier-Bold"
-     fontsize=10
-     label="dist(v0, v4) + dist(v2, v6)"
-     x_v0 -- x_i0 [label=1, color=turquoise, penwidth=2.5]
-     x_v1 -- x_i0 [label=1]
-     x_i0 -- x_i1 [label=1, color=turquoise, penwidth=2.5]
-     x_v2 -- x_i1 [label=1, color=orange, penwidth=2.5]
-     x_v3 -- x_i1 [label=1]
-     x_i1 -- x_i2 [label=1, color="orange:invis:turquoise", penwidth=2.5]
-     x_v4 -- x_i2 [label=1, color=turquoise, penwidth=2.5]
-     x_i2 -- x_i3 [label=1, color=orange, penwidth=2.5]
-     x_i3 -- x_v5 [label=1]
-     x_i3 -- x_v6 [label=1, color=orange, penwidth=2.5]
-     x_v0 [label= "v0", style=filled, fillcolor="turquoise"] 
-     x_v1 [label= "v1"] 
-     x_i0 [label= "i0"] 
-     x_i1 [label= "i1"] 
-     x_v2 [label= "v2", style=filled, fillcolor="orange"] 
-     x_v3 [label= "v3"] 
-     x_i2 [label= "i2"] 
-     x_i3 [label= "i3"] 
-     x_v4 [label= "v4", style=filled, fillcolor="turquoise"] 
-     x_v5 [label= "v5"] 
-     x_v6 [label= "v6", style=filled, fillcolor="orange"]
-    }
-   }
-   ```
-   
-   `{h}violet dist(v0, v2)` + `{h}tan dist(v4, v6)` <= `{h}gold dist(v0, v6)` + `{h}pink dist(v2, v4)` == `{h}turquoise dist(v0, v4)` + `{h}orange dist(v2, v6)`
-
    If all possible leaf node quartets pass the above test, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
+
+   ```{note}
+   See Algorithms/Distance Phylogeny/Test Additive Distance Matrix_TOPIC for a full explanation of how this algorithm works.
+   ```
 
  * `{bm} trimmed distance matrix/(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i` - A distance matrix where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's limb in the corresponding simple tree and merging together any edges connected by nodes of degree_GRAPH 2.
  

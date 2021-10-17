@@ -7,7 +7,7 @@ from graph.UndirectedGraph import Graph
 from helpers.InputUtils import str_to_list
 from phylogeny.Balder import bald_distance_matrix
 from phylogeny.FourPointCondition import is_additive
-from phylogeny.LimbLength import find_limb_length
+from phylogeny.FindLimbLength import find_limb_length
 from phylogeny.SubtreeDetect import is_same_subtree
 from phylogeny.TreeToAdditiveDistanceMatrix import find_path
 from phylogeny.TreeToSimpleTree import is_tree

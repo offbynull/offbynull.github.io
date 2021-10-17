@@ -1,25 +1,25 @@
 from itertools import combinations
+from statistics import mean
 from sys import stdin
 from typing import TypeVar
 
 from distance_matrix.DistanceMatrix import DistanceMatrix
 from helpers.InputUtils import str_to_list
 from phylogeny.FourPointCondition import is_additive
-from phylogeny.FindLimbLength import find_limb_length
 
 N = TypeVar('N')
 
 
 # MARKDOWN
-def is_same_subtree(dm: DistanceMatrix, l: N, a: N, b: N) -> bool:
-    l_weight = find_limb_length(dm, l)
-    test_res = (dm[l, a] + dm[l, b] - dm[a, b]) / 2
-    if test_res == l_weight:
-        return False
-    elif test_res > l_weight:
-        return True
-    else:
-        raise ValueError('???')  # not additive distance matrix?
+def approximate_limb_length(dm: DistanceMatrix, l: N, l_neighbour: N):
+    leaf_nodes = dm.leaf_ids()
+    leaf_nodes.remove(l)
+    leaf_nodes.remove(l_neighbour)
+    lengths = []
+    for x in leaf_nodes:
+        length = (dm[l, l_neighbour] + dm[l, x] - dm[l_neighbour, x]) / 2
+        lengths.append(length)
+    return mean(lengths)
 # MARKDOWN
 
 
@@ -28,14 +28,13 @@ def main():
     print("`{bm-disable-all}`", end="\n\n")
     try:
         mat = []
-        split_leaf_id = int(stdin.readline().strip())
-        test_leaf_id1, test_leaf_id2 = [int(v) for v in stdin.readline().strip().split()]
+        leaf1_id = int(stdin.readline().strip())
+        leaf2_id = int(stdin.readline().strip())
         for line in stdin:
             row = [float(e) for e in str_to_list(line.strip(), 0)[0]]
             mat.append(row)
         dist_mat = DistanceMatrix.create_from_matrix(mat)
-        assert is_additive(dist_mat), 'Not a additive distance matrix'
-        print('Given the additive distance matrix...')
+        print('Given distance matrix...')
         print()
         print('<table>')
         print('<thead><tr>')
@@ -53,12 +52,11 @@ def main():
         print('</tbody>')
         print('</table>')
         print()
-        print(f'Had the tree been split on leaf node {split_leaf_id}\'s parent, leaf nodes {test_leaf_id1} and {test_leaf_id2} would reside in ')
-        same_subtree = is_same_subtree(dist_mat, split_leaf_id, test_leaf_id1, test_leaf_id2)
-        if same_subtree:
-            print('the same subtree.')
-        else:
-            print('different subtrees.')
+        print('The limb length for leaf node ...')
+        leaf1_limb_len = approximate_limb_length(dist_mat, leaf1_id, leaf2_id)
+        print(f' * {leaf1_id} is approximated to be {leaf1_limb_len}')
+        leaf2_limb_len = approximate_limb_length(dist_mat, leaf2_id, leaf1_id)
+        print(f' * {leaf2_id} is approximated to be {leaf2_limb_len}')
         print()
     finally:
         print("</div>", end="\n\n")

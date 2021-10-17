@@ -5,7 +5,7 @@ from distance_matrix.DistanceMatrix import DistanceMatrix
 from graph.UndirectedGraph import Graph
 from helpers.InputUtils import str_to_list
 from phylogeny.FourPointCondition import is_additive
-from phylogeny.LimbLength import find_limb_length
+from phylogeny.FindLimbLength import find_limb_length
 
 N = TypeVar('N')
 ND = TypeVar('ND')
