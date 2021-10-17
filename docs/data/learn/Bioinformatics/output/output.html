@@ -10949,7 +10949,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>Setting v5's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to 0 (balding v5) would result in ...</p>
+<p>Setting v5's limb length to 0 (balding v5) would result in ...</p>
 <p><img src="dot_504f11240750f6a2add064fe593ca205.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11024,7 +11024,7 @@ different subtrees.</p>
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Can a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> be 0 in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>? I don't think so, but the book seems to imply that it's possible. But, if the distance between the two nodes on an edge is 0, wouldn't that make them the same organism? Maybe this is just a temporary thing for this algorithm.</p>
 </div>
-<p>Notice how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, all distances are the same except for v5's distances. Each v5 distance in the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is equivalent to the corresponding distance in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> subtracted by v5's original <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>...</p>
+<p>Notice how of the two <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a>, all distances are the same except for v5's distances. Each v5 distance in the balded distance matrix is equivalent to the corresponding distance in the original distance matrix subtracted by v5's original limb length...</p>
 <table>
 <thead>
 <tr>
@@ -11334,7 +11334,7 @@ different subtrees.</p>
 <p><strong>WHY</strong>: This is one of the operations required to construct the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p> <!-- Needs to be disabled because v5's is conflicting with 5' --></p>
-<p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> below would fit the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> below had v5's <a href="#BM_(limb)%2Fi">limb</a> been added to it somewhere ...</p>
+<p>The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> below would fit the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> below had v5's limb been added to it somewhere ...</p>
 <p><img src="dot_474a7e4cf5bc49a86d6321e9fb6ca532.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11407,16 +11407,16 @@ different subtrees.</p>
 </table>
 <p>There's enough information available in this <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> to determine ...</p>
 <ul>
-<li>v5's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>: 7 (calculated using the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm)</li>
+<li>v5's limb length: 7 (calculated using the limb length algorithm)</li>
 <li>a pair of nodes whose path travels over v5's parent: v0 and v3 (calculated using the same subset algorithm)</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Recall that same subset algorithm says that two leaf nodes in DIFFERENT subsets are guaranteed to travel over v5's parent.</p>
 </div>
-<p>The key to this algorithm is figuring out where along that path (v0 to v3) v5's <a href="#BM_(limb)%2Fi">limb</a> (<a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 7) should be injected. Imagine that you already had the answer in front of you: v5's <a href="#BM_(limb)%2Fi">limb</a> should be added 4 units from i0 towards i2 ...</p>
+<p>The key to this algorithm is figuring out where along that path (v0 to v3) v5's limb (limb length of 7) should be injected. Imagine that you already had the answer in front of you: v5's limb should be added 4 units from i0 towards i2 ...</p>
 <p><img src="dot_7fd5d55328c43bca2193b9548728df02.svg" alt="Dot diagram"></p>
-<p>Consider the answer above with v5's <a href="#BM_(limb)%2Fi">limb</a> <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
+<p>Consider the answer above with v5's limb <a href="#BM_(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i">balded</a>...</p>
 <p><img src="dot_782638a05800732e25c548f888d031b4.svg" alt="Dot diagram"></p>
 <table>
 <thead>
@@ -11487,7 +11487,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>Since v5's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is 0, it doesn't contribute to the distance of any path to / from v5. As such, the distance of any path to / from v5 is actually the distance to / from its parent. For example, ...</p>
+<p>Since v5's limb length is 0, it doesn't contribute to the distance of any path to / from v5. As such, the distance of any path to / from v5 is actually the distance to / from its parent. For example, ...</p>
 <ul>
 <li>dist(v0,v5) = dist(v0,i1) + 0 = dist(v0,i1)</li>
 <li>dist(v4,v5) = dist(v4,i1) + 0 = dist(v4,i1)</li>
@@ -11495,7 +11495,7 @@ different subtrees.</p>
 <li>etc..</li>
 </ul>
 <p><img src="dot_beaa27212249bfd3c9e90e3ff22371b8.svg" alt="Dot diagram"></p>
-<p>Essentially, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is enough to tell you that the path from v0 to v5's parent has a distance of 15. The balded <a href="#BM_(tree)%2Fi">tree</a> itself isn't required.</p>
+<p>Essentially, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is enough to tell you that the path from v0 to v5's parent has a distance of 15. The balded tree itself isn't required.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_pair_traveling_thru_leaf_parent</span>(<span class="hljs-params">dist_mat: DistanceMatrix, leaf_node: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[N, N]:</span>
     leaf_set = dist_mat.leaf_ids() - {leaf_node}
     <span class="hljs-keyword">for</span> l1, l2 <span class="hljs-keyword">in</span> product(leaf_set, repeat=<span class="hljs-number">2</span>):
@@ -11509,7 +11509,7 @@ different subtrees.</p>
     bald_distance_matrix(balded_dist_mat, to_leaf_node)
     <span class="hljs-keyword">return</span> balded_dist_mat[from_leaf_node, to_leaf_node]
 </code></pre>
-<p>In the original <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, walking a distance of 15 on the path from v0 to v3 takes you to where v5's parent should be. Since there is no internal node there, one is first added by breaking the edge before attaching v5's <a href="#BM_(limb)%2Fi">limb</a> to it ...</p>
+<p>In the original <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, walking a distance of 15 on the path from v0 to v3 takes you to where v5's parent should be. Since there is no internal node there, one is first added by breaking the edge before attaching v5's limb to it ...</p>
 <p><img src="dot_b37fe50f63d1a3ab5722ac6b80a41430.svg" alt="Dot diagram"></p>
 <p>Had there been an internal node already there, the <a href="#BM_(limb)%2Fi">limb</a> would get attached to that existing internal node.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">walk_until_distance</span>(<span class="hljs-params">
@@ -12761,7 +12761,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </ul>
 <p><strong>WHY</strong>: Recall that converting a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is the end goal of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Given the distances between set of known / present-day entities, these algorithms will infer their evolutionary relationships.</p>
 <a name="H_UPGMA%20Algorithm"></a><h4>UPGMA Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">Unweighted pair group method with arithmetic mean</a> (<a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>) is a heuristic algorithm used to estimate a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for some <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -13136,6 +13136,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FAdditive%20Phylogeny%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -13157,6 +13158,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
 <p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
 <a name="H_Neighbour%20Joining%20Algorithm"></a><h4>Neighbour Joining Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -16491,7 +16493,7 @@ dist(S3, S4) is 5 = x + u + z
 <li>
 <p><a name="BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi"></a><strong>balded distance matrix</strong> - An <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> where the distances in a leaf node's row and column have been subtracted by that leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. This is equivalent to setting the leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to 0 in the corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
 <p> <!-- Needs to be disabled because v3's is conflicting with 3' --></p>
-<p>For example, balding v5's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> in the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<p>For example, balding v5's limb length in the following distance matrix ...</p>
 <table>
 <thead>
 <tr>
@@ -16809,7 +16811,7 @@ dist(S3, S4) is 5 = x + u + z
 <p><img src="svgbob_9c45e3a8fedf42d570c570b7c417173e7ed57970.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA</a> for a full explanation of how this algorithm works.</p>
+<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA Algorithm</a> for a full explanation of how this algorithm works.</p>
 </div>
 </li>
 <li>

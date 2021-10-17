@@ -7928,8 +7928,8 @@ phylogeny.Trimmer
 Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 ```
 
-`{bm-disable} (5')/i` <!-- Needs to be disabled because v3's is conflicting with 3' -->
-`{bm-disable} (3')/i` <!-- Needs to be disabled because v5's is conflicting with 5' -->
+`{bm-disable} 5'` <!-- Needs to be disabled because v3's is conflicting with 3' -->
+`{bm-disable} 3'` <!-- Needs to be disabled because v5's is conflicting with 5' -->
 
 **WHAT**: Set a limb length to 0 in an additive distance matrix, just as it would be set to 0 in its corresponding unique simple tree. Technically, a simple tree can't have edge weights that are <= 0. This is a special case, typically used as an intermediate operation of some larger algorithm.
 
@@ -8036,8 +8036,8 @@ phylogeny.Balder
 [22, 13, 21, 13, 14, 0 ]
 ```
 
-`{bm-enable} (5')/i` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
-`{bm-enable} (3')/i` <!-- Re-enabling. Needed to be disabled because v5's is conflicting with 5' -->
+`{bm-enable} 5'` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
+`{bm-enable} 3'` <!-- Re-enabling. Needed to be disabled because v5's is conflicting with 5' -->
 
 ### Un-trim Tree
 
@@ -8053,7 +8053,7 @@ Algorithms/Distance Phylogeny/Bald_TOPIC
 **WHAT**: Given an ...
 
  1. additive distance matrix for simple tree T
- 2. simple tree T with limb L `{bm-target} trimmed/(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i` off
+ 2. simple tree T with limb L `{bm-target} trimmed/trimmed distance matrix` off
 
 ... this algorithm determines where limb L should be added in the given simple tree such that it fits the additive distance matrix. For example, the following simple tree would map to the following additive distance matrix had v2's limb branched out from some specific location...
 
@@ -8143,7 +8143,7 @@ Attaching a new limb to an existing leaf node is never possible because...
 
 **ALGORITHM**:
 
-`{bm-disable} (5')/i` <!-- Needs to be disabled because v5's is conflicting with 5' -->
+`{bm-disable} 5'` <!-- Needs to be disabled because v5's is conflicting with 5' -->
 
 The simple tree below would fit the additive distance matrix below had v5's limb been added to it somewhere ...
    
@@ -8208,7 +8208,7 @@ graph G {
 }
 ```
 
-Consider the answer above with v5's limb `{bm-target} balded/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i`...
+Consider the answer above with v5's limb `{bm-target} balded/balded distance matrix`...
 
 ```{dot}
 graph G {
@@ -8360,7 +8360,7 @@ phylogeny.UntrimTree
 [22, 13, 21, 13, 14, 0 ]
 ```
 
-`{bm-enable} (5')/i` <!-- Re-enable 5' now that section is finished -->
+`{bm-enable} 5'` <!-- Re-enable 5' now that section is finished -->
 
 ### Find Neighbours
 
@@ -9528,7 +9528,7 @@ Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 
 #### UPGMA Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/UPGMA)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/UPGMA Algorithm)_TOPIC/`
 
 **ALGORITHM**:
 
@@ -9787,6 +9787,8 @@ phylogeny.UPGMA
 
 #### Additive Phylogeny Algorithm
 
+`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Additive Phylogeny Algorithm)_TOPIC/`
+
 ```{prereq}
 Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 Algorithms/Distance Phylogeny/Test Same Subtree_TOPIC
@@ -9816,6 +9818,8 @@ TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
 TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
 
 #### Neighbour Joining Algorithm
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Neighbour Joining Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
@@ -10404,7 +10408,7 @@ Non-ribosomal peptides (NRP) however, aren't synthesized via the central dogma o
 
 Each segment of an NRP synthetase protein responsible for the outputting a single amino acid is called an adenylation domain. The example above has 5 adenylation domains, each of which is responsible for outputting a single amino acid of the peptide it produces.
 
-NRPs may be `{bm-target} cyclic/(cyclopeptide|cyclic peptide)/i`. Common use-cases for NRPs:
+NRPs may be `{bm-target} cyclic/cyclopeptide`. Common use-cases for NRPs:
 
  * antibiotics
  * anti-tumor agents
@@ -13518,7 +13522,7 @@ graph_show
 
  * `{bm} balded distance matrix/(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i` - An additive distance matrix where the distances in a leaf node's row and column have been subtracted by that leaf node's limb length. This is equivalent to setting the leaf node's limb length to 0 in the corresponding simple tree.
  
-   `{bm-disable} (5')/i` <!-- Needs to be disabled because v3's is conflicting with 3' -->
+   `{bm-disable} 5'` <!-- Needs to be disabled because v3's is conflicting with 3' -->
 
    For example, balding v5's limb length in the following distance matrix ...
 
@@ -13592,7 +13596,7 @@ graph_show
    How do you know the limb length from just the distance matrix? See the algorithm to determine limb length for any leaf from just the distance matrix.
    ```
    
-   `{bm-enable} (5')/i` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
+   `{bm-enable} 5'` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
 
  * `{bm} additive phylogeny` - An algorithm that finds the unique simple tree for some additive distance matrix.
 
@@ -13811,7 +13815,7 @@ graph_show
    ```
 
    ```{note}
-   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA_TOPIC for a full explanation of how this algorithm works.
+   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA Algorithm_TOPIC for a full explanation of how this algorithm works.
    ```
 
  * `{bm} neighbour joining matrix` - A matrix produced by transforming a distance matrix such that each element is calculated as total_dist(a) + total_dist(b) - (n - 2) * dist(a, b), where...
