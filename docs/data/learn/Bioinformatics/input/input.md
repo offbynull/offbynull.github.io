@@ -6425,6 +6425,10 @@ Distances for a set of entities are typically represented as a 2D matrix that co
 
 Note how the distance matrix has the distance for each pair slotted twice, mirrored across the diagonal of 0s (self distances). For example, the distance between bear and lion is listed twice.
 
+```{note}
+Just to make it explicit: The ultimate point of this section is to work backwards from a distance matrix to a phylogenetic tree (essentially the concept of phylogeny -- inferring evolutionary history of a set of known / present-day organisms based on how different they are).
+```
+
 ### Tree to Additive Distance Matrix
 
 `{bm} /(Algorithms\/Distance Phylogeny\/Tree to Additive Distance Matrix)_TOPIC/`
@@ -9790,32 +9794,64 @@ phylogeny.UPGMA
 `{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Additive Phylogeny Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
-Algorithms/Distance Phylogeny/Test Same Subtree_TOPIC
 Algorithms/Distance Phylogeny/Trim_TOPIC
-Algorithms/Distance Phylogeny/Bald_TOPIC
 Algorithms/Distance Phylogeny/Un-trim Tree_TOPIC
 ```
 
 **ALGORITHM**:
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+Additive phylogeny is a recursive algorithm that finds the unique simple tree for some additive distance matrix. At each recursive step, the algorithm trims off a single leaf node from the distance matrix, stopping once the distance matrix consists of only two leaf nodes. The simple tree for any 2x2 distance matrix is obvious as ...
+   
+ * it only consists of 2 nodes
+ * it only consists of a single edge (nodes of degree_GRAPH 2 not allowed in simple trees, meaning train of non-branching edges not allowed)
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+For example, the following 2x2 distance matrix has the following simple tree...
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+|    | v0 | v1 |
+|----|----|----|
+| v0 | 0  | 14 |
+| v1 | 14 | 0  |
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+```{svgbob}
+v0
+  \
+   \ 14
+    \
+     v1 
+```
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+```{output}
+ch7_code/src/phylogeny/AdditivePhylogeny.py
+python
+# MARKDOWN_OBVIOUS_TREE\s*\n([\s\S]+)\n\s*# MARKDOWN_OBVIOUS_TREE
+```
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+As the algorithm returns from each recursive step, it has 2 pieces of information:
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+ * an additive distance matrix containing trimmed leaf node L.
+ * a simple tree not containing trimmed leaf node L.
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+That's enough information to know where on the returned tree L's limb should be added and what L's limb length should be (un-trimming the tree). At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
 
-TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK
+```{output}
+ch7_code/src/phylogeny/AdditivePhylogeny.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.AdditivePhylogeny
+[0,  13, 21, 21, 22, 22]
+[13, 0,  12, 12, 13, 13]
+[21, 12, 0,  20, 21, 21]
+[21, 12, 20, 0,  7,  13]
+[22, 13, 21, 7,  0,  14]
+[22, 13, 21, 13, 14, 0 ]
+```
+
+```{note}
+The book is inconsistent about whether simple trees can have internal edges of weight 0. Early in the book it says that it can and later on it says that it goes back on that and says internal edges of weight 0 aren't actually allowed. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).
+```
 
 #### Neighbour Joining Algorithm
 
@@ -13182,7 +13218,7 @@ graph_show
 
    The restrictions placed on simple trees simplify the process of working backwards from a distance matrix to a phylogenetic tree.
 
- * `{bm} additive matrix/(additive matrix|additive matrices|additive distance matrix|additive distance matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix (referred to as fit), that distance matrix is said to be an additive distance matrix.
+ * `{bm} additive distance matrix/(additive matrix|additive matrices|additive distance matrix|additive distance matrices)/i` - Given a distance matrix, if there exists a tree with edge weights that satisfy that distance matrix (referred to as fit), that distance matrix is said to be an additive distance matrix.
 
    For example, the following tree fits the following distance matrix ...
    
@@ -13598,68 +13634,17 @@ graph_show
    
    `{bm-enable} 5'` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
 
- * `{bm} additive phylogeny` - An algorithm that finds the unique simple tree for some additive distance matrix.
-
-   The algorithm recursively trims the node for the last row/column in a distance matrix until the size is 2x2. The simple tree for any 2x2 distance matrix is obvious as ...
-   
-   * it only consists of 2 nodes
-   * it only consists of a single edge (nodes of degree_GRAPH 2 not allowed in simple trees, meaning train of non-branching edges not allowed)
-
-   For example, the following 2x2 distance matrix has the following simple tree...
-
-   |    | v0 | v1 |
-   |----|----|----|
-   | v0 | 0  | 14 |
-   | v1 | 14 | 0  |
-
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_x {
-     v0_x -- v1_x [label=14]
-     v0_x [label=v0]
-     v1_x [label=v1]
-    }
-   }
-   ```
-
-   ```python
-   def additive_phylogeny(distmat):
-     n = len(distmat)
-     if n == 2:
-       return obvious_graph(distmat)
-     L = n - 1  # node in last row/col of distmat
-     trimmed_dm = trim(distmat, L)
-     additive_phylogeny(trimmed_dm)
-     ...
-   ```
+ * `{bm} additive phylogeny` - A recursive algorithm that finds the unique simple tree for some additive distance matrix. At each recursive step, the algorithm trims a node off the last distance matrix until it has only two nodes. The simple tree for any two leaf nodes is a those two nodes connected by a single edge.
 
    As the algorithm returns from each recursive step, it has 2 pieces of information:
 
    * an additive distance matrix with leaf node L.
    * a simple tree without leaf node L.
 
-   That's enough information to know where on the returned tree L should be added and what L's limb length should be (limb attachment algorithm)...
-
-   ```python
-   def additive_phylogeny(distmat):
-     n = len(distmat)
-     if n == 2:
-       return obvious_graph(distmat)
-     L = n - 1  # node in last row/col of distmat
-     trimmed_dm = trim(distmat, L)
-     simple_tree = additive_phylogeny(trimmed_dm)
-     attach_limb(simple_tree, L)
-     return simple_tree
-   ```
-
-   At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
+   That's enough information to know where on the returned tree L should be added and what L's limb length should be. At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
 
    ```{note}
-   Later on the book goes on to say explicitly say that the simple tree won't have any internal edges of weight 0. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).
+   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
    ```
 
  * `{bm} sum of squared errors/(sum of squared errors|sum of square error|sum of errors squared)/i` - Sum of errors squared is an algorithm used to quantify how far off some estimation / prediction is.

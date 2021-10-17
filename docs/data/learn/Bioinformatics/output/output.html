@@ -9491,6 +9491,10 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </table>
 <p><img src="svgbob_a4884cea1f03dad70aa6cd67fa7232f3a6772e94.svg" alt="Kroki diagram output"></p>
 <p>Note how the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has the distance for each pair slotted twice, mirrored across the diagonal of 0s (self distances). For example, the distance between bear and lion is listed twice.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Just to make it explicit: The ultimate point of this section is to work backwards from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> (essentially the concept of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> -- inferring evolutionary history of a set of known / present-day organisms based on how different they are).</p>
+</div>
 <a name="H_Tree%20to%20Additive%20Distance%20Matrix"></a><h3>Tree to Additive Distance Matrix</h3>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(tree)%2Fi">tree</a>, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> generated from that <a href="#BM_(tree)%2Fi">tree</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
@@ -9837,7 +9841,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
+<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -12187,7 +12191,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12256,7 +12260,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_776b132541fd612505647ad051fef14d.svg" alt="Dot diagram"></p>
+<p><img src="dot_ee16cbdf7540812cc5522595eb0622a0.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12555,7 +12559,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_d6c44c1a7044839d584b2aeb830c947b.svg" alt="Dot diagram"></p>
+<p><img src="dot_2d84de70370be1202258a95394c2a055.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -13132,7 +13136,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_408775f539d289934497a01da76bf7d6.svg" alt="Dot diagram"></p>
+<p><img src="dot_742eaee537c4c04d3b6984cc2e3a2c43.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -13140,23 +13144,157 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Same%20Subtree)_TOPIC%2F">Algorithms/Distance Phylogeny/Test Same Subtree</a></li>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim)_TOPIC%2F">Algorithms/Distance Phylogeny/Trim</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
 <li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FUn-trim%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Un-trim Tree</a></li>
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
-<p>TODO: MOVE BOOKMARK HERE THEN SHORTEN BOOKMARK</p>
+<p><a href="#BM_(additive%20phylogeny)%2Fi">Additive phylogeny</a> is a recursive algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. At each recursive step, the algorithm trims off a single leaf node from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, stopping once the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> consists of only two leaf nodes. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious as ...</p>
+<ul>
+<li>it only consists of 2 nodes</li>
+<li>it only consists of a single edge (nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 not allowed in <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s, meaning train of non-branching edges not allowed)</li>
+</ul>
+<p>For example, the following 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_64427b0b4402aafe7a3102b5777d5a031cf020b7.svg" alt="Kroki diagram output"></p>
+<p><a href="ch7_code/src/phylogeny/AdditivePhylogeny.py">ch7_code/src/phylogeny/AdditivePhylogeny.py</a> (lines 31 to 46):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">to_obvious_graph</span>(<span class="hljs-params">
+        dm: DistanceMatrix,
+        gen_edge_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+</span>) -&gt; Graph:</span>
+    <span class="hljs-keyword">if</span> dm.n != <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Distance matrix must only contain 2 leaf nodes'</span>)
+    l1, l2 = dm.leaf_ids()
+    g = Graph()
+    g.insert_node(l1)
+    g.insert_node(l2)
+    g.insert_edge(
+        gen_edge_id(),
+        l1,
+        l2,
+        dm[l1, l2]
+    )
+    <span class="hljs-keyword">return</span> g
+</code></pre>
+<p>As the algorithm returns from each recursive step, it has 2 pieces of information:</p>
+<ul>
+<li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> containing trimmed leaf node L.</li>
+<li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> not containing trimmed leaf node L.</li>
+</ul>
+<p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L's <a href="#BM_(limb)%2Fi">limb</a> should be added and what L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be (un-trimming the <a href="#BM_(tree)%2Fi">tree</a>). At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><a href="ch7_code/src/phylogeny/AdditivePhylogeny.py">ch7_code/src/phylogeny/AdditivePhylogeny.py</a> (lines 52 to 65):</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">additive_phylogeny</span>(<span class="hljs-params">
+        dm: DistanceMatrix,
+        gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>],
+        gen_edge_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+</span>) -&gt; Graph:</span>
+    <span class="hljs-keyword">if</span> dm.n == <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">return</span> to_obvious_graph(dm, gen_edge_id)
+    n = <span class="hljs-built_in">next</span>(dm.leaf_ids_it())
+    dm_untrimmed = dm.copy()
+    trim_distance_matrix(dm, n)
+    g = additive_phylogeny(dm, gen_node_id, gen_node_id)
+    untrim_tree(dm_untrimmed, g, gen_node_id, gen_edge_id)
+    <span class="hljs-keyword">return</span> g
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the distance matrix ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... the tree generated by additive phylogeny is ...</p>
+<p><img src="dot_87e82ea282637994eeffd36ee8c5abf0.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book is inconsistent about whether <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can have internal edges of weight 0. Early in the book it says that it can and later on it says that it goes back on that and says internal edges of weight 0 aren't actually allowed. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).</p>
+</div>
 <a name="H_Neighbour%20Joining%20Algorithm"></a><h4>Neighbour Joining Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -16255,7 +16393,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p>The restrictions placed on <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s simplify the process of working backwards from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>.</p>
 </li>
 <li>
-<p><a name="BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi"></a><strong>additive matrix</strong> - Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if there exists a <a href="#BM_(tree)%2Fi">tree</a> with edge weights that satisfy that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (referred to as fit), that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><a name="BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi"></a><strong>additive distance matrix</strong> - Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if there exists a <a href="#BM_(tree)%2Fi">tree</a> with edge weights that satisfy that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (referred to as fit), that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p>For example, the following <a href="#BM_(tree)%2Fi">tree</a> fits the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
 <table>
 <thead>
@@ -16646,64 +16784,16 @@ dist(S3, S4) is 5 = x + u + z
 <p> <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' --></p>
 </li>
 <li>
-<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - An algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p>The algorithm recursively trims the node for the last row/column in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> until the size is 2x2. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is obvious as ...</p>
-<ul>
-<li>it only consists of 2 nodes</li>
-<li>it only consists of a single edge (nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2 not allowed in <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s, meaning train of non-branching edges not allowed)</li>
-</ul>
-<p>For example, the following 2x2 <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>v0</th>
-<th>v1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>v0</td>
-<td>0</td>
-<td>14</td>
-</tr>
-<tr>
-<td>v1</td>
-<td>14</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><img src="dot_d0010bac57ea6a9ead9cf3d10ce6f86e.svg" alt="Dot diagram"></p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">additive_phylogeny</span>(<span class="hljs-params">distmat</span>):</span>
-  n = <span class="hljs-built_in">len</span>(distmat)
-  <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:
-    <span class="hljs-keyword">return</span> obvious_graph(distmat)
-  L = n - <span class="hljs-number">1</span>  <span class="hljs-comment"># node in last row/col of distmat</span>
-  trimmed_dm = trim(distmat, L)
-  additive_phylogeny(trimmed_dm)
-  ...
-</code></pre>
+<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - A recursive algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. At each recursive step, the algorithm trims a node off the last <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> until it has only two nodes. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is a those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge.</p>
 <p>As the algorithm returns from each recursive step, it has 2 pieces of information:</p>
 <ul>
 <li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> with leaf node L.</li>
 <li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> without leaf node L.</li>
 </ul>
-<p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L should be added and what L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be (<a href="#BM_(limb)%2Fi">limb</a> attachment algorithm)...</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">additive_phylogeny</span>(<span class="hljs-params">distmat</span>):</span>
-  n = <span class="hljs-built_in">len</span>(distmat)
-  <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:
-    <span class="hljs-keyword">return</span> obvious_graph(distmat)
-  L = n - <span class="hljs-number">1</span>  <span class="hljs-comment"># node in last row/col of distmat</span>
-  trimmed_dm = trim(distmat, L)
-  simple_tree = additive_phylogeny(trimmed_dm)
-  attach_limb(simple_tree, L)
-  <span class="hljs-keyword">return</span> simple_tree
-</code></pre>
-<p>At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L should be added and what L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be. At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Later on the book goes on to say explicitly say that the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> won't have any internal edges of weight 0. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).</p>
+<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FAdditive%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm</a> for a full explanation of how this algorithm works.</p>
 </div>
 </li>
 <li>
