@@ -16,8 +16,8 @@ def approximate_limb_length(dm: DistanceMatrix, l: N, l_neighbour: N):
     leaf_nodes.remove(l)
     leaf_nodes.remove(l_neighbour)
     lengths = []
-    for x in leaf_nodes:
-        length = (dm[l, l_neighbour] + dm[l, x] - dm[l_neighbour, x]) / 2
+    for k in leaf_nodes:
+        length = (dm[l, l_neighbour] + dm[l, k] - dm[l_neighbour, k]) / 2
         lengths.append(length)
     return mean(lengths)
 # MARKDOWN
@@ -52,7 +52,7 @@ def main():
         print('</tbody>')
         print('</table>')
         print()
-        print('The limb length for leaf node ...')
+        print(f'... and given that {leaf1_id} and {leaf2_id} are neighbours, the limb length for leaf node ...')
         leaf1_limb_len = approximate_limb_length(dist_mat, leaf1_id, leaf2_id)
         print(f' * {leaf1_id} is approximated to be {leaf1_limb_len}')
         leaf2_limb_len = approximate_limb_length(dist_mat, leaf2_id, leaf1_id)

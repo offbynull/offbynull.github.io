@@ -9512,9 +9512,9 @@ phylogeny.NeighbourJoiningMatrix
 [[0,13,21,21,22,22],[13,0,12,12,13,13],[21,12,0,20,21,21],[21,12,20,0,7,13],[22,13,21,7,0,14],[22,13,21,13,14,0]]
 ```
 
-### Approximate Neighbour Limb Lengths
+### Find Neighbour Limb Lengths
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Approximate Neighbour Limb Lengths)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbour Limb Lengths)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
@@ -9524,7 +9524,7 @@ Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
-Recall that the standard limb length finding algorithm determines the limb length of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-additive distance matrices have inconsistent distances (not additive means no tree exists that fits those distances).
+Recall that the standard limb length finding algorithm determines the limb length of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-additive distance matrices have inconsistent distances -- non-additive means no tree exists that fits its distances.
 
 **ALGORITHM**: 
 
@@ -9624,6 +9624,194 @@ phylogeny.ApproximateLimbLength
 [22, 13, 21, 7,  0,  14]
 [22, 13, 21, 13, 14, 0 ]
 ```
+
+The code above invokes `approximate_limb_length` twice, once for each leaf node in the pair. This in inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate computation.
+
+The averaging algorithm maps to the formula ...
+
+```{kt}
+\frac{1}{n-2} \cdot \sum_{k \isin S-\{l1,l2\}}{\frac{D_{l1,l2} + D_{l1,k} - D_{l2,k}}{2}}
+```
+
+... where ...
+
+ * l1 and l2 are the neighbouring leaf nodes,
+ * S is the set of leaf nodes in the distance matrix,
+ * n is the size of S.
+
+Just like the code, the formula removes l1 and l2 from the set of leaf nodes (S) for the average's summation. The number of leaf nodes (n) is subtracted by 2 for the average's division because l1 and l2 aren't included. To optimize, consider what happens when you re-organize the formula as follows...
+
+ 1. Break up the division in the summation...
+
+    ```{kt}
+    \frac{1}{n-2} \cdot \sum_{k \isin S-\{l1,l2\}}{(\frac{D_{l1,l2}}{2} + \frac{D_{l1,k}}{2} - \frac{D_{l2,k}}{2})}
+    ```
+
+ 1. Pull out `{kt} \frac{D_{l1,l2}}{2}` as a term of its own...
+
+    ```{kt}
+    \frac{D_{l1,l2}}{2} + \frac{1}{n-2} \cdot \sum_{k \isin S-\{l1,l2\}}{(\frac{D_{l1,k}}{2} - \frac{D_{l2,k}}{2})}
+    ```
+    
+    ```{note}
+    Confused about what's happening above? Think about it like this...
+    
+    * mean([0+0.5, 0+1, 0+0.25]) = 0.833
+    * mean([1+0.5, 1+1, 1+0.25]) = 1.833
+    * mean([2+0.5, 2+1, 2+0.25]) = 2.833
+    * mean([3+0.5, 3+1, 3+0.25]) = 3.833
+    * ...
+    
+    If you're including some constant amount for each element in the averaging, the result of the average will include that constant amount. In the case above, `{kt} \frac{D_{l1,l2}}{2}` is a     constant being added at each element of the average.
+    ```
+
+ 1. Combine the terms in the summation back together ...
+
+    ```{kt}
+    \frac{D_{l1,l2}}{2} + \frac{1}{n-2} \cdot \sum_{k \isin S-\{l1,l2\}}{\frac{D_{l1,k} - D_{l2,k}}{2}}
+    ```
+
+ 1. Factor out `{kt} \frac{1}{2}` from the entire equation...
+
+    ```{kt}
+    \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot \sum_{k \isin S-\{l1,l2\}}{D_{l1,k} - D_{l2,k}})
+    ```
+
+    ```{note}
+    Confused about what's happening above? It's just distributing and pulling out. For example, given the formula 5/2 + x*(3/2 + 5/2 + 9/2) ...
+
+    1. 5/2 + 3x/2 + 5x/2 + 9x/2 -- distribute x
+    1. 1/2 * (5 + 3x + 5x + 9x) -- all terms are divided by 2 now, so pull out 1/2
+    1. 1/2 * (5 + x*(3 + 5 + 9)) -- pull x back out
+    ```
+
+ 1. Break up the summation into two simpler summations ...
+    
+    ```{kt}
+    \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}} - \sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}))
+    ```
+
+    ```{note}
+    Confused about what's happening above? Think about it like this...
+
+    (9-1)+(8-2)+(7-3) = 9+8+7-1-2-3 = 24+(-6) = 24-6 = sum([9,8,7])-sum([1,2,3])
+
+    It's just re-ordering the operations so that it can be represented as two sums. It's perfectly valid.
+    ```
+
+The above formula calculates the limb length for l1. To instead find the formula for l2, just swap l1 and l2 ...
+
+```{kt}
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}} - \sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}))
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l2,l1} + \frac{1}{n-2} \cdot (\sum_{k \isin S-\{l2,l1\}}{D_{l2,k}} - \sum_{k \isin S-\{l2,l1\}}{D_{l1,k}}))
+```
+
+Note how the two are almost exactly the same. `{kt} D_{l1,l2} = D_{l2,l1}`, and `{kt} S-\{l1,l2\} = S-\{l2,l1\}`, and both summations are still there. The only exception is the order in which the summations are being subtracted ...
+
+```{kt}
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}} - \textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}}))
+```
+
+Consider what happens when you re-organize the formula for l2 as follows...
+
+ 1. Convert the summation subtraction to an addition of a negative...
+
+    ```{kt}
+    len(l2) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}} + (- \textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}}))
+    ```
+
+ 1. Swap the order of the summation addition...
+  
+    ```{kt}
+    len(l2) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (-\textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} + \textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
+    ```
+
+ 1. Factor out -1 from summation addition ...
+
+    ```{kt}
+    len(l2) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot -1 \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
+    ```
+
+ 1. Simplify ...
+
+    ```{kt}
+    len(l2) = \frac{1}{2} \cdot (D_{l1,l2} + - \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
+    ```
+
+ 1. Simplify ...
+
+    ```{kt}
+    len(l2) = \frac{1}{2} \cdot (D_{l1,l2} - \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
+    ```
+
+After this re-organization, the two match up almost exactly. The only difference is that an addition has been swapped to a subtraction...
+
+```{kt}
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l2,l1\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l2,l1\}}{D_{l2,k}}}))
+```
+
+The point of this optimization is that the summation calculation only need to be performed once. The result can be used to calculate the limb length for both of the neighbouring leaf nodes...
+
+```{kt}
+res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}})
+\newline
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
+```
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+
+### Attach Neighbours to Tree
 
 ### Distance Matrix to Tree
 
