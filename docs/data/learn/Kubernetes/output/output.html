@@ -6,33 +6,51 @@
 <div class="toc">
 <ul>
 <li><a href="#H_Introduction">Introduction</a></li>
+<li><a href="#H_Concepts">Concepts</a></li>
+<ul>
 <li><a href="#H_Containers">Containers</a></li>
 <li><a href="#H_Pods">Pods</a></li>
 <li><a href="#H_Nodes">Nodes</a></li>
-<li><a href="#H_Objects">Objects</a></li>
+<li><a href="#H_Deployments">Deployments</a></li>
+<li><a href="#H_Service">Service</a></li>
+</ul>
+<li><a href="#H_Labels%20and%20Annotations">Labels and Annotations</a></li>
+<li><a href="#H1_Service">Service</a></li>
+<ul>
+<li><a href="#H_Routing">Routing</a></li>
+<li><a href="#H_Exposure">Exposure</a></li>
+<ul>
+<li><a href="#H_Cluster%20IP">Cluster IP</a></li>
+<li><a href="#H_Node%20Port">Node Port</a></li>
+<li><a href="#H_Load%20Balancer">Load Balancer</a></li>
+</ul>
+</ul>
+<li><a href="#H_Pod">Pod</a></li>
+<ul>
+<li><a href="#H_Shared%20Volumes">Shared Volumes</a></li>
+</ul>
 <li><a href="#H_Kubectl%20Cheatsheet">Kubectl Cheatsheet</a></li>
 <ul>
-<li><a href="#H_Object%20Access">Object Access</a></li>
-<li><a href="#H_Object%20Update">Object Update</a></li>
-<li><a href="#H_Object%20Delete">Object Delete</a></li>
-<li><a href="#H_Object%20Label">Object Label</a></li>
+<li><a href="#H_Object">Object</a></li>
 <li><a href="#H_Proxy">Proxy</a></li>
-<li><a href="#H_Debugging">Debugging</a></li>
+<li><a href="#H_Debug">Debug</a></li>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
 <a name="H_Introduction"></a><h1>Introduction</h1>
-<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> is a service orchestration framework that provides many of the plumbing pieces required for running services. These services include ...</p>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> is a <a href="#BM_(service)%2Fi">service</a> orchestration framework that provides many of the plumbing pieces required for running <a href="#BM_(service)%2Fi">service</a>s. These <a href="#BM_(service)%2Fi">service</a>s include ...</p>
 <ul>
-<li>DNS for naming and discovery of services,</li>
-<li>Load balancer to distribute requests across many instances of a service,</li>
-<li>Automatic recovery when a service crashes,</li>
-<li>Automatic scaling when a service comes under load,</li>
-<li>Password / certificate / secrets management for services,</li>
+<li>DNS for naming and discovery of <a href="#BM_(service)%2Fi">service</a>s,</li>
+<li>Load balancer to distribute requests across many instances of a <a href="#BM_(service)%2Fi">service</a>,</li>
+<li>Automatic recovery when a <a href="#BM_(service)%2Fi">service</a> crashes,</li>
+<li>Automatic scaling when a <a href="#BM_(service)%2Fi">service</a> comes under load,</li>
+<li>Password / certificate / secrets management for <a href="#BM_(service)%2Fi">service</a>s,</li>
 <li>etc..</li>
 </ul>
-<a name="H_Containers"></a><h1>Containers</h1>
+<a name="H_Concepts"></a><h1>Concepts</h1>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API is exposed as a RESTful interface, meaning everything is represented as an object and accessed / mutated using standard REST verbs (GET, PUT, DELETE, etc..). The following sub-sections gives a overview of the different object types as well as other high-level concepts.</p>
+<a name="H_Containers"></a><h2>Containers</h2>
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> is structured around <a href="#BM_(container)%2Fi">container</a>s.</p>
 <p><img src="svgbob_f6d6eb5e8cf3c348cd91f60b2ccc3e7c9930dac2.svg" alt="Kroki diagram output"></p>
 <p>In the <a href="#BM_(context)%2Fi">context</a> of <a href="#BM_(container)%2Fi">container</a>s, an ...</p>
@@ -49,7 +67,7 @@
 <ul>
 <li>launches by running /opt/my_app/run.sh</li>
 <li>stops by signalling SIGTERM</li>
-<li>requires 4gb of memory, 1.5 CPU cores, etc..A <a href="#BM_(container)%2Fi">container</a> is an instance of an application requires that services be exposed as <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a>s. An <a href="#BM_(image)%2Fi">image</a> is</li>
+<li>requires 4gb of memory, 1.5 CPU cores, etc..A <a href="#BM_(container)%2Fi">container</a> is an instance of an application requires that <a href="#BM_(service)%2Fi">service</a>s be exposed as <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a>s. An <a href="#BM_(image)%2Fi">image</a> is</li>
 </ul>
 </li>
 <li>
@@ -66,21 +84,235 @@
 <p><img src="svgbob_a28730c1c9bb6f382bb8e320a51ca1cfa2db0bb2.svg" alt="Kroki diagram output"></p>
 <p><a href="#BM_%5Cb(OCI%20runtime%7COCI)s%3F%5Cb%2F">OCI</a>s and OCRs are also the basis for <a href="#BM_(container%20engine)%2Fi">container engine</a>s, tools that are responsible for creating and running <a href="#BM_(container)%2Fi">container</a>s (similar in nature <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> without the orchestration) as well as creating <a href="#BM_(image)%2Fi">image</a>s and other high-level functionality such as local testing of <a href="#BM_(container)%2Fi">container</a>s. Docker Engine is an example of a <a href="#BM_(container%20engine)%2Fi">container engine</a>.</p>
 <p><img src="svgbob_3d4187f5433dd286b08d28526577c57afdc47ec0.svg" alt="Kroki diagram output"></p>
-<a name="H_Pods"></a><h1>Pods</h1>
-<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> organizes services as a set of <a href="#BM_(container)%2Fi">container</a>s called <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
+<a name="H_Pods"></a><h2>Pods</h2>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> organizes <a href="#BM_(service)%2Fi">service</a>s as a set of <a href="#BM_(container)%2Fi">container</a>s called <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, where each <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is an isolated set of <a href="#BM_(image)%2Fi">image</a>s.</p>
 <p><img src="svgbob_8d2cfeb35f065eab2cd86b95f1e67993abc1c8f8.svg" alt="Kroki diagram output"></p>
-<p>Each <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is an isolated set of <a href="#BM_(image)%2Fi">image</a>s that are required for each other to work. For example, a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> may contain an <a href="#BM_(image)%2Fi">image</a> for an HTTP application server, a SQL database, and an ElasticSearch instance. When running, all three of those <a href="#BM_(container)%2Fi">container</a>s would discover and talk to each other to form an instance of whatever service that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is for.</p>
-<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> often orchestrates <a href="#BM_(container)%2Fi">container</a>s over a cluster of machines. The <a href="#BM_(container)%2Fi">container</a>s for a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are guaranteed to all be running on the same machine.</p>
 <p>Similar to <a href="#BM_(image)%2Fi">image</a>s, you can think of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> as a blueprint. Many instances of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> may be running on the cluster at the same time, often in an effort to distribute load and / or provide redundancy.</p>
 <p><img src="svgbob_46eb41f24299bcd3c3b5c9c095e72b0226f14776.svg" alt="Kroki diagram output"></p>
-<a name="H_Nodes"></a><h1>Nodes</h1>
+<p><a href="#BM_(container)%2Fi">Container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are isolated in terms of their resource requirements (e.g. CPU, memory, and disk), but they share the same ...</p>
+<ul>
+<li>network (<a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> have the same IP, same host, and share the port space).</li>
+<li>IPC bus (<a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can communicate with each other over POSIX message queues / System V IPC channels).</li>
+<li>volumes (<a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> may have shared storage assigned to them in addition to their isolated storage).</li>
+</ul>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> orchestrates <a href="#BM_(container)%2Fi">container</a>s over a cluster of machines. The <a href="#BM_(container)%2Fi">container</a>s for a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are guaranteed to all be running on the same machine. As such, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are usually structured in a way that their <a href="#BM_(container)%2Fi">container</a>s are tightly coupled and scale together. For example, a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> with two <a href="#BM_(container)%2Fi">container</a>s, a WordPress server and its required MySQL database server, is a bad usage example because those two ...</p>
+<ol>
+<li>don't scale uniformly (e.g. you'll likely need to scale the database up before the WordPress server).</li>
+<li>don't communicate over anything other than the network (e.g. they don't need a shared volume).</li>
+<li>are intended to be distributed (e.g. it's okay for them to be running on separate machines).</li>
+</ol>
+<p>Contrast that to an example of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> with two <a href="#BM_(container)%2Fi">container</a>s, an application server and an associated log watcher. This is a good example because the two <a href="#BM_(container)%2Fi">container</a>s ...</p>
+<ol>
+<li>communicate over the filesystem (e.g. application server is writing logs to a shared volume and the log watcher is tailing them).</li>
+<li>aren't intended to be distributed (e.g. log watcher is intended for locally produced logs).</li>
+<li>are written by different teams (e.g. SRE team wrote the log watcher <a href="#BM_(image)%2Fi">image</a> while another team wrote the application server <a href="#BM_(image)%2Fi">image</a>).</li>
+</ol>
+<a name="H_Nodes"></a><h2>Nodes</h2>
 <p><a href="#BM_(node)%2Fi">Node</a>s are the machines that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> run on. A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> cluster often contains multiple <a href="#BM_(node)%2Fi">node</a>s, each with a certain amount of resources. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> get assigned to <a href="#BM_(node)%2Fi">node</a>s based on their resource requirements. For example, if a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> A requires 2gb of memory and <a href="#BM_(node)%2Fi">node</a> C has 24 gigs available, that <a href="#BM_(node)%2Fi">node</a> may get assigned to run that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
-<p><img src="svgbob_78eee2c8da126153e758426f22b9737fba03eca8.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_fc6073ce9dd71ac1b2fa56b7775e45eca6d21eaf.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> typically attempts to schedule multiple instances of the same <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> on different <a href="#BM_(node)%2Fi">node</a>s, such that a downed <a href="#BM_(node)%2Fi">node</a> won't take out all instances of the <a href="#BM_(service)%2Fi">service</a> that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> runs. In the example above, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instances of the same type are spread out across the 3 <a href="#BM_(node)%2Fi">node</a>s.</p>
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> has a leader-follower architecture, meaning that of the <a href="#BM_(node)%2Fi">node</a>s a small subset is chosen to lead / manage the others. The leaders are referred to as <a href="#BM_(master%20node)%2Fi">master node</a>s while the followers are referred to as <a href="#BM_(worker%20node)%2Fi">worker node</a>s.</p>
 <p><img src="svgbob_90abf3344c1d253481a3a392500782cca41f92fd.svg" alt="Kroki diagram output"></p>
 <p>A <a href="#BM_(master%20node)%2Fi">master node</a> can still run <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> just like the <a href="#BM_(worker%20node)%2Fi">worker node</a>s, but some of its resources will be tied up for the purpose of managing <a href="#BM_(worker%20node)%2Fi">worker node</a>s.</p>
-<a name="H_Objects"></a><h1>Objects</h1>
-<p>TODO: Talk about how internally k8s treats everything like an object and the types of objects: <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, <a href="#BM_(node)%2Fi">node</a>s, services, deployments, etc... Talk about <a href="#BM_(label%7Cannotation)%2Fi">label</a>s and <a href="#BM_(label%7Cannotation)%2Fi">annotation</a>s</p>
+<a name="H_Deployments"></a><h2>Deployments</h2>
+<a name="H_Service"></a><h2>Service</h2>
+<p><a href="#BM_(service)%2Fi">Service</a>s are a discovery and load balancing mechanism. A <a href="#BM_(service)%2Fi">service</a> exposes a set of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> under a single fixed unified hostname and IP, routing traffic to that set by load balancing incoming requests across the set. Any external application would need to use a <a href="#BM_(service)%2Fi">service</a>'s hostname because the IP / host of the single <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instances aren't fixed, exposed, or known. That is, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are transient and aren't guaranteed to always reside on the same <a href="#BM_(node)%2Fi">node</a>. As they shutdown, come up, restart, move between <a href="#BM_(node)%2Fi">node</a>s, etc.., there's no implicit mechanism that requestors can use to route their requests accordingly.</p>
+<p>A <a href="#BM_(service)%2Fi">service</a> fixes this my internally tracking such changes and providing a single unified point of access.</p>
+<p><img src="svgbob_9fcafa853ed3eccdae11b6e4d860f6208b276d0e.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book mentions why DNS can't be used directly. For example, having a basic DNS <a href="#BM_(service)%2Fi">service</a> which returns a list of all up-and-running <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> IPs won't work because ...</p>
+<ol>
+<li>applications and operating systems often cache DNS results, meaning that changes won't be visible immediately.</li>
+<li>applications often only use the first IP given back by a DNS result, meaning that requests won't balance.</li>
+</ol>
+<p>The <a href="#BM_(service)%2Fi">service</a> fixes this because it acts as a load balancing proxy and its IP / host never changes (DNS caching won't break anything).</p>
+</div>
+<a name="H_Labels%20and%20Annotations"></a><h1>Labels and Annotations</h1>
+<p>Objects within <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> may be assigned key-value pairs. Two types of key-value pair assignments exist:</p>
+<ul>
+<li><a href="#BM_(label)%2Fi">Label</a>s - key-value assignments for logical grouping of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> objects. These allow for organizing objects into groups, such that users can target a group as a whole (e.g. give me all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> designed by the SRE team).</li>
+<li><a href="#BM_(annotation%7Cannotate)%2Fi">Annotation</a>s - key-value assignments for metadata on <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> objects. These allow tools and libraries to gather ancillary information about the object, such that they can perform some task.</li>
+</ul>
+<p>In other words, <a href="#BM_(label)%2Fi">label</a>s are used to identity objects while <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s are not. For example if you have different classes of <a href="#BM_(worker%20node)%2Fi">worker node</a>s in your cluster, it may be a good idea to <a href="#BM_(label)%2Fi">label</a> each <a href="#BM_(node)%2Fi">node</a> with its class. That way, if you wanted to deprecate a specific class, you'd be able to targe them as a group and shut them down.</p>
+<p><a href="#BM_(label)%2Fi">Label</a>s are targeted using a simple language called <a href="#BM_(label%20selector)%2Fi">label selector</a>s.</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key=value</code></td>
+<td><code>key</code> is set to <code>value</code></td>
+</tr>
+<tr>
+<td><code>key!=value</code></td>
+<td><code>key</code> is not set to <code>value</code></td>
+</tr>
+<tr>
+<td><code>key in (value1, value2, ...)</code></td>
+<td><code>key</code> is either <code>value1</code>, <code>value2</code>, ...</td>
+</tr>
+<tr>
+<td><code>key notin (value1, value2, ...)</code></td>
+<td><code>key</code> is neither <code>value1</code>, <code>value2</code>, ...</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td>a value is set for <code>key</code></td>
+</tr>
+<tr>
+<td><code>!key</code></td>
+<td>a value not set for <code>key</code></td>
+</tr>
+<tr>
+<td><code>key1=value1,key2=value2</code></td>
+<td><code>key1</code> is set to <code>value1</code> and <code>key2</code> is set to <code>value2</code></td>
+</tr>
+</tbody>
+</table>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses <a href="#BM_(label)%2Fi">label</a>s for many of its internal <a href="#BM_(service)%2Fi">service</a>s. For example, <a href="#BM_(label%20selector)%2Fi">label selector</a>s are used for deciding ...</p>
+<ul>
+<li>the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> which a <a href="#BM_(service)%2Fi">service</a> routes traffic to.</li>
+<li>which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are allowed to communicate with each other over the internal network.</li>
+<li>the <a href="#BM_(node)%2Fi">node</a>s which a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can be scheduled on.</li>
+<li>etc..</li>
+</ul>
+<p>If there are a large number of keys / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s, either because the organization set them directly or because they're being set by external tools, the chance of a collision increases. To combat this, keys for <a href="#BM_(label)%2Fi">label</a>s and <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s can optionally include a prefix (separated by a slash) that maps to a DNS subdomain to help disambiguate it. For example, <code>company.com/my_key</code> rather than just having <code>my_key</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book states that key name itself can be at most 63 chars. If a prefix is included, it doesn't get included in that limit. A prefix can be up to 253 chars.</p>
+</div>
+<a name="H1_Service"></a><h1>Service</h1>
+<p>TODO: put in sample manifest</p>
+<a name="H_Routing"></a><h2>Routing</h2>
+<p>A <a href="#BM_(service)%2Fi">service</a> tracks the status of the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> it routes to to determine which ones are healthy and load balances requests accordingly. A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s health is determined by two factors:</p>
+<ul>
+<li><a href="#BM_(liveness%20probe)%2Fi">liveness probe</a>s - When an existing instance of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> fails a user-defined test that checks if it's still running, the <a href="#BM_(service)%2Fi">service</a> stops routing traffic to it.</li>
+<li><a href="#BM_(readiness%20probe)%2Fi">readiness probe</a>s - When a new instance of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> comes up, the <a href="#BM_(service)%2Fi">service</a> won't route traffic to it until it passes a user-defined test that says it's ready.</li>
+</ul>
+<p>These probes are defined directly in the <a href="#BM_(pod%20manifest)%2Fi">pod manifest</a>.</p>
+<p><img src="svgbob_4db118f49983e7aa72c7b4a50af69abf5161819b.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Internally, an <a href="#BM_(endpoints)%2Fi">EndPoints</a> object is used to track <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. When you create a <a href="#BM_(service)%2Fi">service</a>, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> automatically creates an accompanying <a href="#BM_(endpoints)%2Fi">EndPoints</a> object that the <a href="#BM_(service)%2Fi">service</a> makes use of.</p>
+</div>
+<a name="H_Exposure"></a><h2>Exposure</h2>
+<p>TODO: talk about the different levels which a <a href="#BM_(service)%2Fi">service</a> can be exposed (e.g. internally in the cluster vs externally)</p>
+<a name="H_Cluster%20IP"></a><h3>Cluster IP</h3>
+<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>ClusterIP</code> are only accessible from within the cluster. The hostname for a ClusterIP <a href="#BM_(service)%2Fi">service</a> is broken down as follows: NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER</p>
+<ul>
+<li><em>NAME</em> is the name of the <a href="#BM_(service)%2Fi">service</a>.</li>
+<li><em><a href="#BM_(namespace)%2Fi">NAMESPACE</a></em> is the <a href="#BM_(namespace)%2Fi">namespace</a> the <a href="#BM_(service)%2Fi">service</a> is in (defaults to <code>default</code>).</li>
+<li>svc is a constant that identifies the host is for a <a href="#BM_(service)%2Fi">service</a>.</li>
+<li><em>CLUSTER</em> is the name of the cluster (defaults to <code>cluster.local.</code>).</li>
+</ul>
+<p>Depending on what level you're working in, a hostname may be shortened. For example, if the requestor and the <a href="#BM_(service)%2Fi">service</a> are within ...</p>
+<ul>
+<li>the same <a href="#BM_(namespace)%2Fi">namespace</a> and cluster, hostname NAME is sufficient.</li>
+<li>the same cluster but not the same <a href="#BM_(namespace)%2Fi">namespace</a>, hostname NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a> is sufficient.</li>
+<li>different clusters, the full hostname NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER is required.</li>
+</ul>
+<a name="H_Node%20Port"></a><h3>Node Port</h3>
+<p>TODO: Talk about setting <a href="#BM_(node)%2Fi">node</a> ports on a <a href="#BM_(service)%2Fi">service</a>, where a port is opened on all <a href="#BM_(node)%2Fi">node</a>s of the cluster that routes to the <a href="#BM_(service)%2Fi">service</a></p>
+<p>TODO: Talk about setting <a href="#BM_(node)%2Fi">node</a> ports on a <a href="#BM_(service)%2Fi">service</a>, where a port is opened on all <a href="#BM_(node)%2Fi">node</a>s of the cluster that routes to the <a href="#BM_(service)%2Fi">service</a></p>
+<p>TODO: Talk about setting <a href="#BM_(node)%2Fi">node</a> ports on a <a href="#BM_(service)%2Fi">service</a>, where a port is opened on all <a href="#BM_(node)%2Fi">node</a>s of the cluster that routes to the <a href="#BM_(service)%2Fi">service</a></p>
+<a name="H_Load%20Balancer"></a><h3>Load Balancer</h3>
+<p>TODO: Talk about setting a <a href="#BM_(service)%2Fi">service</a> as load balancer, requires cloud support</p>
+<p>TODO: Talk about setting a <a href="#BM_(service)%2Fi">service</a> as load balancer, requires cloud support</p>
+<p>TODO: Talk about setting a <a href="#BM_(service)%2Fi">service</a> as load balancer, requires cloud support</p>
+<a name="H_Pod"></a><h1>Pod</h1>
+<p>A <a href="#BM_(pod%20manifest)%2Fi">pod manifest</a> is a <a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a> of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (blueprint of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>).</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my_pod</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">gcr.io/my_company/my_pod:v1</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my_pod</span>
+      <span class="hljs-attr">resources:</span>
+        <span class="hljs-attr">requests:</span>
+          <span class="hljs-attr">cpu:</span> <span class="hljs-string">"500m"</span>
+          <span class="hljs-attr">memory:</span> <span class="hljs-string">"128Mi"</span>
+        <span class="hljs-attr">limits:</span>
+          <span class="hljs-attr">cpu:</span> <span class="hljs-string">"1000m"</span>
+          <span class="hljs-attr">memory:</span> <span class="hljs-string">"256Mi"</span>
+      <span class="hljs-attr">volumeMounts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">"/data"</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">"kuard-data"</span>
+      <span class="hljs-attr">ports:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">8080</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">http</span>
+          <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">livenessProbe:</span>
+        <span class="hljs-attr">httpGet:</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">/healthy</span>
+          <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
+        <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">5</span>
+        <span class="hljs-attr">timeoutSeconds:</span> <span class="hljs-number">1</span>
+        <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
+        <span class="hljs-attr">failureThreshold:</span> <span class="hljs-number">3</span>
+      <span class="hljs-attr">livenessProbe:</span>
+        <span class="hljs-attr">httpGet:</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">/ready</span>
+          <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
+        <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">5</span>
+        <span class="hljs-attr">timeoutSeconds:</span> <span class="hljs-number">1</span>
+        <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
+        <span class="hljs-attr">failureThreshold:</span> <span class="hljs-number">3</span>
+  <span class="hljs-attr">volumes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">"my_data"</span>
+      <span class="hljs-attr">hostPath:</span>
+        <span class="hljs-attr">path:</span> <span class="hljs-string">"/var/lib/my_data"</span>  <span class="hljs-comment"># literally mounts a path from the worker node? not persistant if node modes</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">"my_data_nfs"</span>
+      <span class="hljs-attr">nfs:</span>
+        <span class="hljs-attr">server:</span> <span class="hljs-string">nfs.server.location</span>
+        <span class="hljs-attr">path:</span> <span class="hljs-string">"/path/on/nfs"</span>
+</code></pre>
+<p><a href="#BM_(pod%20manifest)%2Fi">Pod manifest</a>s are typically broken into two sections:</p>
+<ul>
+<li><code>spec/containers</code> - the <a href="#BM_(container)%2Fi">container</a>s that make up the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>spec/volumes</code> - the volumes required by the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s <a href="#BM_(container)%2Fi">container</a>s.</li>
+</ul>
+<a name="H_Shared%20Volumes"></a><h2>Shared Volumes</h2>
+<p>Shared volumes are declared under <code>spec/volumes</code> of the <a href="#BM_(pod%20manifest)%2Fi">pod manifest</a> and mounted on <a href="#BM_(container)%2Fi">container</a>s under <code>containers/VolumeMount</code>. For example, ...</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my_pod</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">gcr.io/my_company/my_pod:v1</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my_pod</span>
+      <span class="hljs-attr">volumeMounts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">"/data"</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">"kuard-data"</span>
+      <span class="hljs-string">...</span>
+  <span class="hljs-attr">volumes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">"my_data"</span>
+      <span class="hljs-attr">hostPath:</span>
+        <span class="hljs-attr">path:</span> <span class="hljs-string">"/var/lib/my_data"</span>
+</code></pre>
+<p>Each volume declaration must have a <code>name</code> followed by a configuration. Type types of volumes supported are ...</p>
+<ul>
+<li>
+<p><code>hostPath</code> - A volume that's backed by a directory directly on the <a href="#BM_(worker%20node)%2Fi">worker node</a> running the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. This won't persist if the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> gets moved to another <a href="#BM_(worker%20node)%2Fi">worker node</a>.</p>
+<pre class="hljs"><code><span class="hljs-attr">hostPath:</span>
+  <span class="hljs-attr">path:</span> <span class="hljs-string">"/var/lib/my_data"</span>  <span class="hljs-comment"># literally a path from the worker node</span>
+</code></pre>
+</li>
+<li>
+<p><code>nfs</code> - A volume that's backed by NFS storage.</p>
+<pre class="hljs"><code><span class="hljs-attr">nfs:</span>
+  <span class="hljs-attr">server:</span> <span class="hljs-string">nfs.server.location</span>
+  <span class="hljs-attr">path:</span> <span class="hljs-string">"/path/on/nfs"</span>
+</code></pre>
+</li>
+</ul>
 <a name="H_Kubectl%20Cheatsheet"></a><h1>Kubectl Cheatsheet</h1>
 <p><a href="#BM_(kubectl)%2Fi">kubectl</a> commands are typically organized into <a href="#BM_(context)%2Fi">context</a>s, where each <a href="#BM_(context)%2Fi">context</a> is defines <a href="#BM_(context)%2Fi">context</a>ual information about the cluster: cluster location, cluster authentication, and default <a href="#BM_(namespace)%2Fi">namespace</a>. To ...</p>
 <ul>
@@ -104,7 +336,7 @@
 <li>get YAML output <code>-o yaml</code></li>
 <li>get JSON output isolated to a specific field or fields <code>-o jsonpath --template={TEMPLATE}</code>, where the template is a JSONPath expression.</li>
 </ul>
-<a name="H_Object%20Access"></a><h2>Object Access</h2>
+<a name="H_Object"></a><h2>Object</h2>
 <p><code>get</code> / <code>describe</code> allows you to get details on a specific objects and resources. To get an overview of a ...</p>
 <ul>
 <li>list of all objects of a specific resource type using <code>kubectl get {RES}</code>.</li>
@@ -115,12 +347,13 @@
 <ul>
 <li><code>kubectl get componentstatuses</code> - basic cluster diagnostics</li>
 <li><code>kubectl get nodes</code> - list <a href="#BM_(node)%2Fi">node</a>s</li>
-<li><code>kubectl describe nodes {NAME}</code> - <a href="#BM_(node)%2Fi">node</a> information (roles, <a href="#BM_(label%7Cannotation)%2Fi">label</a>s, software versions, running <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, etc..)</li>
+<li><code>kubectl get nodes --selector='class=high-mem'</code> - list <a href="#BM_(node)%2Fi">node</a>s that have <a href="#BM_(label)%2Fi">label</a> class set to high-mem (<a href="#BM_(label%20selector)%2Fi">label selector</a>)</li>
+<li><code>kubectl get nodes --selector='class=high-mem,!gpu'</code> - list <a href="#BM_(node)%2Fi">node</a>s that have <a href="#BM_(label)%2Fi">label</a> class set to high-mem but <a href="#BM_(label)%2Fi">label</a> gpu unset (<a href="#BM_(label%20selector)%2Fi">label selector</a>)</li>
+<li><code>kubectl describe nodes {NAME}</code> - <a href="#BM_(node)%2Fi">node</a> information</li>
 <li><code>kubectl get daemonSets --namespace={NAMESPACE} {NAME}</code></li>
 <li><code>kubectl get deployments --namespace={NAMESPACE} {NAME}</code></li>
 <li><code>kubectl get services --namespace={NAMESPACE} {NAME}</code></li>
 </ul>
-<a name="H_Object%20Update"></a><h2>Object Update</h2>
 <p><code>apply</code> allows you to create and update objects. To create or update using ...</p>
 <ul>
 <li>a YAML file, <code>kubectl apply -f obj.yaml</code>.</li>
@@ -132,7 +365,11 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Is this true? See <code>kubectl apply</code> with prune flag.</p>
 </div>
-<a name="H_Object%20Delete"></a><h2>Object Delete</h2>
+<p><code>edit</code> is shorthand for <code>get</code> and <code>apply</code> in that it'll open the YAML in an editor and allow you to make changes directly.</p>
+<ul>
+<li><code>kubectl edit deployment {NAME}</code></li>
+<li><code>kubectl edit service {NAME}</code></li>
+</ul>
 <p><code>delete</code> allows you to delete an object. To delete using ...</p>
 <ul>
 <li>a YAML file, <code>kubectl delete -f obj.yaml</code>.</li>
@@ -140,27 +377,62 @@
 <li>STDIN, <code>kubectl apply -f -</code>.</li>
 <li>command line, <code>kubectl delete {RES} {OBJ}</code></li>
 </ul>
-<a name="H_Object%20Label"></a><h2>Object Label</h2>
-<p><code>label</code> allows you to <a href="#BM_(label%7Cannotation)%2Fi">label</a> an object.</p>
+<p><code>label</code> / <code>annotate</code> allows you to <a href="#BM_(label)%2Fi">label</a> / <a href="#BM_(annotation%7Cannotate)%2Fi">annotate</a> an object.</p>
 <ul>
-<li><code>kubectl label pods my_pod mark=55a</code> - set <a href="#BM_(label%7Cannotation)%2Fi">label</a> mark to value 55a on <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> my_pod.</li>
-<li><code>kubectl label --overwrite pods my_pod mark=77a</code> - overwrite <a href="#BM_(label%7Cannotation)%2Fi">label</a> mark to value 77a on <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> my_pod.</li>
-<li><code>kubectl label pods my_pod mark-</code> - remove <a href="#BM_(label%7Cannotation)%2Fi">label</a> mark from <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> my_pod.</li>
+<li><code>kubectl label pods {POD} mark=55a</code> - set <a href="#BM_(label)%2Fi">label</a> mark to value 55a on a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (no overwrite).</li>
+<li><code>kubectl label --overwrite pods {POD} mark=77a</code> - overwrite <a href="#BM_(label)%2Fi">label</a> mark to value 77a on a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl label --overwrite pods {POD} mark=77a,end=fff</code> - overwrite <a href="#BM_(label)%2Fi">label</a> mark to value 77a and end to value fff on a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl label pods {POD} mark-</code> - remove <a href="#BM_(label)%2Fi">label</a> mark from a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
 </ul>
-<p>Note that without the overwrite flag, an existing <a href="#BM_(label%7Cannotation)%2Fi">label</a> won't be replaced.</p>
+<p>When referencing objects, the ...</p>
+<ul>
+<li><code>--selector</code> flag can be fed in a <a href="#BM_(label%20selector)%2Fi">label selector</a> that filters those objects.</li>
+<li><code>--all</code> flag can target everything.</li>
+</ul>
 <a name="H_Proxy"></a><h2>Proxy</h2>
 <p><code>proxy</code> allows you to launch a proxy that lets you talk internally with the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server.</p>
 <ul>
 <li><code>kubectl proxy</code></li>
 </ul>
-<a name="H_Debugging"></a><h2>Debugging</h2>
-<p>TODO: CONTINUE FORM CH4 DEBUGGING COMMANDS SECTION</p>
-<p>TODO: CONTINUE FORM CH4 DEBUGGING COMMANDS SECTION</p>
-<p>TODO: CONTINUE FORM CH4 DEBUGGING COMMANDS SECTION</p>
-<p>TODO: CONTINUE FORM CH4 DEBUGGING COMMANDS SECTION</p>
-<p>TODO: CONTINUE FORM CH4 DEBUGGING COMMANDS SECTION</p>
-<p>TODO: CONTINUE FORM CH4 DEBUGGING COMMANDS SECTION</p>
-<p>TODO: CONTINUE FORM CH4 DEBUGGING COMMANDS SECTION</p>
+<a name="H_Debug"></a><h2>Debug</h2>
+<p><code>logs</code> allows you to view outputs of a <a href="#BM_(container)%2Fi">container</a>.</p>
+<ul>
+<li><code>kubectl logs {POD}</code> - get logs for a single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl logs {POD} -c {CONTAINER}</code> - get logs for a <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl logs {POD} -c {CONTAINER} -f</code> - tail logs for a <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+</ul>
+<p><code>exec</code> allows you to run a command on a <a href="#BM_(container)%2Fi">container</a>.</p>
+<ul>
+<li><code>kubectl exec -it {POD} -- ps uax</code> - execute ps on a single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl exec -it {POD} -- bash</code> - execute bash on a single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> and interact with it.</li>
+<li><code>kubectl exec -it {POD} -c {CONTAINER} -- bash</code> - execute bash on a <a href="#BM_(container)%2Fi">container</a> within <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> and interact with it.</li>
+</ul>
+<p><code>attach</code> allows you to attach to a <a href="#BM_(container)%2Fi">container</a>'s main running process.</p>
+<ul>
+<li><code>kubectl attach -it {POD}</code> - attach to main process on a single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl attach -it {POD} -c {CONTAINER}</code> - attach to main process on a <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>attach</code> is similar to <code>logs</code> with the tailing flag but also allows you pipe into stdin.</p>
+</div>
+<p><code>cp</code> allows you to copy files between your machine and a <a href="#BM_(container)%2Fi">container</a>.</p>
+<ul>
+<li><code>kubetctl cp {POD}:{POD_PATH} {LOCAL_PATH}</code> - copy from single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to local path.</li>
+<li><code>kubetctl cp {LOCAL_PATH} {POD}:{POD_PATH}</code> - copy from local path to a single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubetctl cp {POD}:{POD_PATH} {LOCAL_PATH} -c {CONTAINER}</code> - copy from a <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to local path.</li>
+</ul>
+<p><code>port-forward</code> allows you to connect to a open port on a <a href="#BM_(container)%2Fi">container</a> or connect to a <a href="#BM_(service)%2Fi">service</a>.</p>
+<ul>
+<li><code>kubectl port-forward {POD} 8080:80</code> - forward port 8080 locally to port 80 on a single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl port-forward {POD} 8080:80 -c {CONTAINER}</code> - forward port 8080 locally to port 80 on a <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
+<li><code>kubectl port-forward services/{SERVICE} 8080:80</code> - forward port 8080 locally to port 80 for some <a href="#BM_(service)%2Fi">service</a>.</li>
+</ul>
+<p><code>top</code> allows you to see cluster usage.</p>
+<ul>
+<li><code>kubectl top nodes</code> - view <a href="#BM_(node)%2Fi">node</a> resource usages.</li>
+<li><code>kubectl top pods</code> - view <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> resource usages.</li>
+</ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -171,7 +443,7 @@
 <p><a name="BM_(container)%2Fi"></a><strong>container</strong> - An instance of an <a href="#BM_(image)%2Fi">image</a>. A <a href="#BM_(container)%2Fi">container</a> creates an isolated copy of the <a href="#BM_(image)%2Fi">image</a>'s filesystem, isolates the resources required for that <a href="#BM_(image)%2Fi">image</a>, and launches the entrypoint application for that <a href="#BM_(image)%2Fi">image</a>. That <a href="#BM_(container)%2Fi">container</a> can't see or access anything outside of the <a href="#BM_(container)%2Fi">container</a> unless explicitly allowed to by the user. For example, opening a port 8080 on a <a href="#BM_(container)%2Fi">container</a> won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the <a href="#BM_(container)%2Fi">container</a> map to some port on the host.</p>
 </li>
 <li>
-<p><a name="BM_(registry)%2Fi"></a><strong>registry</strong> - A service for storing and retrieving <a href="#BM_(image)%2Fi">image</a>s.</p>
+<p><a name="BM_(registry)%2Fi"></a><strong>registry</strong> - A <a href="#BM_(service)%2Fi">service</a> for storing and retrieving <a href="#BM_(image)%2Fi">image</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(multistage%20build%7Cmultistage%20image%7Cmultistage%20container%20image)%2Fi"></a><strong>multistage image</strong> - A <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> produced by merging portions of other <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a>s together. For example, to build a <a href="#BM_(multistage%20build%7Cmultistage%20image%7Cmultistage%20container%20image)%2Fi">multistage image</a> that contains Java as well as compiled C++ binaries, ...</p>
@@ -193,7 +465,7 @@
 <p>Examples include Docker Engine and <a href="#BM_(container)%2Fi">Container</a> Tools (podman for running <a href="#BM_(container)%2Fi">container</a>s, buildah for building <a href="#BM_(image)%2Fi">image</a>s, and skopeo for <a href="#BM_(image)%2Fi">image</a> distribution).</p>
 </li>
 <li>
-<p><a name="BM_(Kubernetes)%2Fi"></a><strong>Kubernetes</strong> - A tool for orchestrating multiple <a href="#BM_(container)%2Fi">container</a>s across a set machines. Provides features such as load balancing, service naming, service discovery, automated service scaling, and automated service recovery.</p>
+<p><a name="BM_(Kubernetes)%2Fi"></a><strong>Kubernetes</strong> - A tool for orchestrating multiple <a href="#BM_(container)%2Fi">container</a>s across a set machines. Provides features such as load balancing, <a href="#BM_(service)%2Fi">service</a> naming, <a href="#BM_(service)%2Fi">service</a> discovery, automated <a href="#BM_(service)%2Fi">service</a> scaling, and automated <a href="#BM_(service)%2Fi">service</a> recovery.</p>
 </li>
 <li>
 <p><a name="BM_(node)%2Fi"></a><strong>node</strong> - A host that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses to run the <a href="#BM_(container)%2Fi">container</a>s its orchestrating.</p>
@@ -205,7 +477,7 @@
 <p><a name="BM_(worker%20node)%2Fi"></a><strong>worker node</strong> - A <a href="#BM_(node)%2Fi">node</a> responsible for running application <a href="#BM_(container)%2Fi">container</a>s.</p>
 </li>
 <li>
-<p><a name="BM_%5Cb(pod)s%3F%5Cb%2Fi"></a><strong>pod</strong> - A set of <a href="#BM_(container)%2Fi">container</a>s all bundled together as a single deployable unit, where all <a href="#BM_(container)%2Fi">container</a>s in that bundle are intended to run on the same <a href="#BM_(node)%2Fi">node</a>. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> are typically associated with microservices. For example, a microservice may contain a Java application and the database server it interfaces with.</p>
+<p><a name="BM_%5Cb(pod)s%3F%5Cb%2Fi"></a><strong>pod</strong> - A set of <a href="#BM_(container)%2Fi">container</a>s all bundled together as a single deployable unit, where all <a href="#BM_(container)%2Fi">container</a>s in that bundle are intended to run on the same <a href="#BM_(node)%2Fi">node</a>.</p>
 </li>
 <li>
 <p><a name="BM_(namespace)%2Fi"></a><strong>namespace</strong> - A user-defined category for objects in a cluster (e.g. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>), allowing <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> do things such as apply isolation and access control. By default, the <a href="#BM_(kubectl)%2Fi">kubectl</a> command uses the <a href="#BM_(namespace)%2Fi">namespace</a> <code>default</code> if no <a href="#BM_(namespace)%2Fi">namespace</a> is specified.</p>
@@ -218,16 +490,16 @@
 <p><a name="BM_(ingress)%2Fi"></a><strong>ingress</strong> - A frontend that's able to combine multiple <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> together as a single API for external consumption.</p>
 </li>
 <li>
-<p><a name="BM_(kube-system)%2Fi"></a><strong>kube-system</strong> - A <a href="#BM_(namespace)%2Fi">namespace</a> for internal cluster components (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>) that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> runs for itself. For example, <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">Kubernetes's DNS</a> service, <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">Kubernetes's proxy</a> service, etc.. all run under the <a href="#BM_(kube-system)%2Fi">kube-system</a> <a href="#BM_(namespace)%2Fi">namespace</a>.</p>
+<p><a name="BM_(kube-system)%2Fi"></a><strong>kube-system</strong> - A <a href="#BM_(namespace)%2Fi">namespace</a> for internal cluster components (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>) that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> runs for itself. For example, <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">Kubernetes's DNS</a> <a href="#BM_(service)%2Fi">service</a>, <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">Kubernetes's proxy</a> <a href="#BM_(service)%2Fi">service</a>, etc.. all run under the <a href="#BM_(kube-system)%2Fi">kube-system</a> <a href="#BM_(namespace)%2Fi">namespace</a>.</p>
 </li>
 <li>
-<p><a name="BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi"></a><strong>kube-proxy</strong> - An internal <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">Kubernetes proxy</a> service responsible for routing traffic to the correct services and load balancing between a service's <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. Runs on every <a href="#BM_(node)%2Fi">node</a> in the cluster.</p>
+<p><a name="BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi"></a><strong>kube-proxy</strong> - An internal <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">Kubernetes proxy</a> <a href="#BM_(service)%2Fi">service</a> responsible for routing traffic to the correct <a href="#BM_(service)%2Fi">service</a>s and load balancing between a <a href="#BM_(service)%2Fi">service</a>'s <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. Runs on every <a href="#BM_(node)%2Fi">node</a> in the cluster.</p>
 </li>
 <li>
-<p><a name="BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi"></a><strong>core-dns</strong> - An internal <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">Kubernetes DNS</a> service responsible for naming and discovery of the services running on the cluster. Older versions of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> call this <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">kube-dns</a> instead of <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">core-dns</a>.</p>
+<p><a name="BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi"></a><strong>core-dns</strong> - An internal <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">Kubernetes DNS</a> <a href="#BM_(service)%2Fi">service</a> responsible for naming and discovery of the <a href="#BM_(service)%2Fi">service</a>s running on the cluster. Older versions of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> call this <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">kube-dns</a> instead of <a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">core-dns</a>.</p>
 </li>
 <li>
-<p><a name="BM_(kubernetes-dashboard%7CKubernetes%20Dashboard%7CKubernetes%20UI%7CKubernetes%20GUI%7CKubernetes's%20Dashboard%7CKubernetes's%20UI%7CKubernetes's%20GUI)%2Fi"></a><strong>kubernetes-dashboard</strong> - An internal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> service responsible for providing a GUI to interface with and explore the cluster.</p>
+<p><a name="BM_(kubernetes-dashboard%7CKubernetes%20Dashboard%7CKubernetes%20UI%7CKubernetes%20GUI%7CKubernetes's%20Dashboard%7CKubernetes's%20UI%7CKubernetes's%20GUI)%2Fi"></a><strong>kubernetes-dashboard</strong> - An internal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(service)%2Fi">service</a> responsible for providing a GUI to interface with and explore the cluster.</p>
 </li>
 <li>
 <p><a name="BM_(kubectl)%2Fi"></a><strong>kubectl</strong> - The standard command-line client for <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
@@ -243,8 +515,56 @@
 </div>
 </li>
 <li>
-<p><a name="BM_(label%7Cannotation)%2Fi"></a><strong>label</strong> - Objects in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> can have <a href="#BM_(label%7Cannotation)%2Fi">label</a>s and <a href="#BM_(label%7Cannotation)%2Fi">annotation</a>s applied to them, such that objects with specific <a href="#BM_(label%7Cannotation)%2Fi">label</a>s and / or <a href="#BM_(label%7Cannotation)%2Fi">annotation</a>s can be targeted as a group.</p>
+<p><a name="BM_(label)%2Fi"></a><strong>label</strong> - User-defined key-value pairs assigned to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> objects to group those objects together. <a href="#BM_(label)%2Fi">Label</a>ing objects makes it so they can be accessed as a set (e.g. target all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> with authoring team set to SRE). Unlike <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s, <a href="#BM_(label)%2Fi">label</a>s aren't for assigning metadata to objects.</p>
+</li>
+<li>
+<p><a name="BM_(label%20selector)%2Fi"></a><strong>label selector</strong> - An expression language used to find objects with <a href="#BM_(label)%2Fi">label</a>s. For example...</p>
+<ul>
+<li><code>key=value</code></li>
+<li><code>key!=value</code></li>
+<li><code>key in (value1, value2)</code></li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(annotation%7Cannotate)%2Fi"></a><strong>annotation</strong> - User-defined key-value pairs assigned to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> objects that acts as metadata for other tools and libraries. Unlike <a href="#BM_(label)%2Fi">label</a>s, <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s aren't for grouping objects together.</p>
+</li>
+<li>
+<p><a name="BM_(declarative%20configuration)%2Fi"></a><strong>declarative configuration</strong> - A form of configuring where the configuration is submitted as a state and the system adjusts itself to match that state.</p>
+</li>
+<li>
+<p><a name="BM_(imperative%20configuration)%2Fi"></a><strong>imperative configuration</strong> - A form of configuring where the configuration is submitted as a set of instructions and the system runs those instructions.</p>
+</li>
+<li>
+<p><a name="BM_(pod%20manifest)%2Fi"></a><strong>pod manifest</strong> - A <a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a> for a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, listing out things like <a href="#BM_(image)%2Fi">image</a>s required and resource mappings (e.g. ports). This is effectively a blueprint for a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, similar to how an <a href="#BM_(image)%2Fi">image</a> is a blueprint for a <a href="#BM_(container)%2Fi">container</a>.</p>
+</li>
+<li>
+<p><a name="BM_(health%20check)%2Fi"></a><strong>health check</strong> - A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> mechanism that checks the state of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> and performs corrective action if it deems necessary. This includes both ensuring that the main <a href="#BM_(container)%2Fi">container</a> process is running, <a href="#BM_(liveness%20probe)%2Fi">liveness probe</a>s, and <a href="#BM_(readiness%20probe)%2Fi">readiness probe</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(liveness%20probe)%2Fi"></a><strong>liveness probe</strong> - A user-defined task that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> runs to ensure that a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is running correctly. For example, an HTTP server that stalls when for more than 15 seconds before returning a response may be deemed as no longer live.</p>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> restarts a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> if it deems it as no longer alive.</p>
+</li>
+<li>
+<p><a name="BM_(readiness%20probe)%2Fi"></a><strong>readiness probe</strong> - A user-defined task that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> runs to ensure that a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is in a position to accept requests. For example, an HTTP server that has all of its worker threads busy processing requests may be deemed as not ready.</p>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> stops routing requests to a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> if its no longer ready (removed from load balancer).</p>
+</li>
+<li>
+<p><a name="BM_(utilization)%2Fi"></a><strong>utilization</strong> - A metric that tracks the amount of resources in use vs the amount of resources available.</p>
+</li>
+<li>
+<p><a name="BM_(resource%20request)%2Fi"></a><strong>resource request</strong> - The minimum amount of resources required to run an <a href="#BM_(image)%2Fi">image</a> (not a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>).</p>
+</li>
+<li>
+<p><a name="BM_(resource%20limit)%2Fi"></a><strong>resource limit</strong> - The maximum amount of resources that an <a href="#BM_(image)%2Fi">image</a> (not a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>) may take up.</p>
+<p>If <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> needs to scale down a resource for a <a href="#BM_(container)%2Fi">container</a> that isn't dynamic (e.g. a running process can have its CPU usage reduced but you can't force a running process to give up memory its holding on to), the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> gets restarted with that resource scaled down.</p>
+</li>
+<li>
+<p><a name="BM_(service)%2Fi"></a><strong>service</strong> - A set of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> exposed under a single named network <a href="#BM_(service)%2Fi">service</a>. Requests coming in to the <a href="#BM_(service)%2Fi">service</a> and are load balanced across the set of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
+</li>
+<li>
+<p><a name="BM_(endpoints)%2Fi"></a><strong>endpoints</strong> - A low-level object that's used by <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to map a <a href="#BM_(service)%2Fi">service</a> to the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> it routes to. In other words, an <a href="#BM_(endpoints)%2Fi">endpoints</a> (note the plural) object is an abstraction that references a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
 </li>
 </ul>
+<p></p>
 
         </body></html>
