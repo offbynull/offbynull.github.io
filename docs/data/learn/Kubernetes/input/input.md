@@ -16,9 +16,17 @@ Kubernetes is a service orchestration framework that provides many of the plumbi
 
 # Concepts
 
-Kubernetes API is exposed as a RESTful interface, meaning everything is represented as an object and accessed / mutated using standard REST verbs (GET, PUT, DELETE, etc..). The following sub-sections gives a overview of the different object types as well as other high-level concepts.
+`{bm} /(Concepts)_TOPIC/i`
+
+Kubernetes breaks down its orchestration as a set of objects. Each object is of a specific type (referred to as resource) and those objects coordinate and manage each other through linkages (referred to as labels). For example, a load balancer object is an instance of resource Service and each copy of a running application it pipes requests to is an instance of resource Pod, and the load balancer is linked to the application using labels.
+
+Objects are operated on using verbs (e.g. GET, PUT, DELETE, etc..) using either a standard command-line interface (kubectl) or a REST interface.
+
+The following sub-sections gives a overview of the main resources as well as other high-level concepts.
 
 ## Containers
+
+`{bm} /(Concepts\/Containers)_TOPIC/i`
 
 Kubernetes is structured around containers.
 
@@ -76,22 +84,28 @@ OCIs and OCRs are also the basis for container engines, tools that are responsib
 
 ## Pods
 
-Kubernetes organizes services as a set of containers called pods, where each pod is an isolated set of images.
+`{bm} /(Concepts\/Pods)_TOPIC/i`
 
-```{svgbob}
-.------------------------.
-|          podA          |
-|                        |
-|  .--------.            |
-|  | imageA | .--------. |
-|  '--------' | imageB | |
-| .--------.  '--------' |
-| | imageC |             |
-| '--------'             |
-'------------------------'
+```{prereq}
+Concepts/Containers_TOPIC
 ```
 
-Similar to images, you can think of a pod as a blueprint. Many instances of a pod may be running on the cluster at the same time, often in an effort to distribute load and / or provide redundancy.
+Containers are deployed in Kubernetes via pods. A pod is is a set of containers grouped together, often containers that are so tightly coupled or are required to work in close proximity of each other (e.g. on the same host).
+
+```{svgbob}
+.--------------------------------.
+|               podA             |
+|                                |
+|  .------------.                |
+|  | containerA | .------------. |
+|  '------------' | containerB | |
+| .------------.  '------------' |
+| | containerC |                 |
+| '------------'                 |
+'--------------------------------'
+```
+
+Many copies of a pod may be running on the cluster at the same time, often in an effort to distribute load and / or provide redundancy.
 
 ```{svgbob}
                       .---------.
@@ -133,6 +147,12 @@ Contrast that to an example of a pod with two containers, an application server 
  3. are written by different teams (e.g. SRE team wrote the log watcher image while another team wrote the application server image).
 
 ## Nodes
+
+`{bm} /(Concepts\/Nodes)_TOPIC/i`
+
+```{prereq}
+Concepts/Pods_TOPIC
+```
 
 Nodes are the machines that pods run on. A Kubernetes cluster often contains multiple nodes, each with a certain amount of resources. Pods get assigned to nodes based on their resource requirements. For example, if a pod A requires 2gb of memory and node C has 24 gigs available, that node may get assigned to run that pod.
 
@@ -179,9 +199,14 @@ Kubernetes has a leader-follower architecture, meaning that of the nodes a small
 
 A master node can still run pods just like the worker nodes, but some of its resources will be tied up for the purpose of managing worker nodes.
 
-## Deployments
+## Services
 
-## Service
+`{bm} /(Concepts\/Services)_TOPIC/i`
+
+```{prereq}
+Concepts/Pods_TOPIC
+Concepts/Nodes_TOPIC
+```
 
 Services are a discovery and load balancing mechanism. A service exposes a set of pods under a single fixed unified hostname and IP, routing traffic to that set by load balancing incoming requests across the set. Any external application would need to use a service's hostname because the IP / host of the single pod instances aren't fixed, exposed, or known. That is, pods are transient and aren't guaranteed to always reside on the same node. As they shutdown, come up, restart, move between nodes, etc.., there's no implicit mechanism that requestors can use to route their requests accordingly.
 
@@ -207,7 +232,73 @@ The book mentions why DNS can't be used directly. For example, having a basic DN
 The service fixes this because it acts as a load balancing proxy and its IP / host never changes (DNS caching won't break anything).
 ```
 
+## Replica Sets
+
+`{bm} /(Concepts\/Replica Sets)_TOPIC/i`
+
+```{prereq}
+Concepts/Pods_TOPIC
+```
+
+A replica set is an abstraction that's used to ensure a certain number of copies of some pod are always up and running. Typical scenarios where replica sets are used include ...
+
+ * sharding (e.g. workers that pull job out of a queue for processing).
+ * scale (e.g. microservices that scale horizontally).
+ * redundancy (e.g. leader-follower architectures such as Redis-style replica servers).
+
+## Deployments
+
+`{bm} /(Concepts\/Deployments)_TOPIC/i`
+
+```{prereq}
+Concepts/Services_TOPIC
+Concepts/Replica Sets_TOPIC
+```
+
+A deployment is an abstraction used to bring together pods, replica sets, and services under a single umbrella. It's intended to represent a single version of some application being deployed on Kubernetes. All of the pieces required for that application to run are housed under one roof.
+
+Deployments make it easy to upgrade between versions of the applications they represent via a rolling upgrade that keeps the application online during the upgrade. Old pods are transitioned to new pods as a stream instead of all at once, ensuring that the application is responsive throughout the upgrade process. Likewise, they allow for rolling back an update should it have any problems.
+
+## Daemon Sets
+
+`{bm} /(Concepts\/Daemon Sets)_TOPIC/i`
+
+```{prereq}
+Concepts/Replica Sets_TOPIC
+Concepts/Deployments_TOPIC
+```
+
+A daemon set is an abstraction that's used to ensure that a set of nodes each have a copy of some pod always up and running. Typical scenarios where a daemon set is used include ...
+
+ * node log collection (e.g. logstash agent).
+ * node monitoring (e.g. zabbix agent).
+
+The above scenarios are ones which break container / pod isolation. That is, a daemon set is intended to run pods that are coupled to nodes and sometimes those pods will do things such as mount the node's root filesystem and run commands to either install software or gather information.
+
+Similar to how a replica set has a corresponding deployment that helps with upgrades, a daemon set has a daemon sets object that helps manage its upgrades.
+
+## Jobs
+
+`{bm} /(Concepts\/Jobs)_TOPIC/i`
+
+```{prereq}
+Concepts/Pods_TOPIC
+Concepts/Deployments_TOPIC
+```
+
+A job is an abstraction that's used to run a set of pods performing a one-off task. Unlike a deployment, the pods running under a job don't need the same level of management (e.g. multiple replicas, upgrade strategies, etc..). Once a job completes, it's over.
+
+Typical scenarios where a job is used include ...
+
+ * database migration
+ * database compaction
+ * log file removal
+
+Jobs can also be scheduled to run at specific intervals / times.
+
 # Labels and Annotations
+
+`{bm} /(Concepts\/Labels and Annotations)_TOPIC/i`
 
 Objects within Kubernetes may be assigned key-value pairs. Two types of key-value pair assignments exist:
 
@@ -241,6 +332,10 @@ If there are a large number of keys / annotations, either because the organizati
 The book states that key name itself can be at most 63 chars. If a prefix is included, it doesn't get included in that limit. A prefix can be up to 253 chars.
 ```
 
+# Manifests
+
+TODO: discuss manifest YAML, metadata/labels and metadata/annotations, resources vs objects, etc.. and kubectl commands to apply
+
 # Service
 
 TODO: put in sample manifest
@@ -272,11 +367,9 @@ Internally, an EndPoints object is used to track pods. When you create a service
 
 ## Exposure
 
-TODO: talk about the different levels which a service can be exposed (e.g. internally in the cluster vs externally)
+The service type defines where a service gets exposed to and how it gets exposed. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...
 
-### Cluster IP
-
-Services of type `ClusterIP` are only accessible from within the cluster. The hostname for a ClusterIP service is broken down as follows: NAME.NAMESPACE.svc.CLUSTER
+Services of type ClusterIP are only accessible from within the cluster. The hostname for a ClusterIP service is broken down as follows: NAME.NAMESPACE.svc.CLUSTER
 
  * *NAME* is the name of the service.
  * *NAMESPACE* is the namespace the service is in (defaults to `default`).
@@ -289,21 +382,23 @@ Depending on what level you're working in, a hostname may be shortened. For exam
  * the same cluster but not the same namespace, hostname NAME.NAMESPACE is sufficient.
  * different clusters, the full hostname NAME.NAMESPACE.svc.CLUSTER is required.
 
-### Node Port
+The IP for a ClusterIP service is stable as well, just like the hostname.
 
-TODO: Talk about setting node ports on a service, where a port is opened on all nodes of the cluster that routes to the service
+```{note}
+Internally, a ClusterIP service uses kube-proxy to route requests to relevant pods (EndPoints).
+```
 
-TODO: Talk about setting node ports on a service, where a port is opened on all nodes of the cluster that routes to the service
+TODO: Add sample YAML
 
-TODO: Talk about setting node ports on a service, where a port is opened on all nodes of the cluster that routes to the service
+Services of type NodePort are accessible from outside the cluster. Every worker node opens a port (either user-defined or assigned by the system) that routes requests to the service. Since nodes are transient, there is no single point of access to the service.
 
-### Load Balancer
+TODO: Add sample YAML
 
-TODO: Talk about setting a service as load balancer, requires cloud support
+Services of type LoadBalancer are accessible from outside the cluster. When the LoadBalancer type is used, the cloud provider running the cluster assigning their version of a load balancer to route external HTTP requests to the Kubernetes Ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
 
-TODO: Talk about setting a service as load balancer, requires cloud support
+There is no built-in Kubernetes implementation of Ingress. Kubernetes provides the interface but someone must provide the implementation, called an Ingress controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the Ingress implementation abstracts that out.
 
-TODO: Talk about setting a service as load balancer, requires cloud support
+TODO: Add sample YAML
 
 # Pod
 
@@ -363,6 +458,10 @@ Pod manifests are typically broken into two sections:
  * `spec/containers` - the containers that make up the pod.
  * `spec/volumes` - the volumes required by the pod's containers.
 
+## Resources
+
+## Probes
+
 ## Shared Volumes
 
 Shared volumes are declared under `spec/volumes` of the pod manifest and mounted on containers under `containers/VolumeMount`. For example, ...
@@ -403,6 +502,177 @@ Each volume declaration must have a `name` followed by a configuration. Type typ
      path: "/path/on/nfs"
    ```
 
+## Image Pull Policy
+
+# Replica Set
+
+```yaml
+apiVersion: v1
+kind: ReplicaSet
+metadata:
+  name: my-rs
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: "2"
+    spec:
+      containers:
+        - name: my_container
+          image: "gcr.io/my_container:v1"
+```
+
+The number of replicas the replica set should aim for is controlled by `spec/replicas`.
+
+Note that the manifest for the replica set includes the manifest of the pods it should create. This is called a pod template.
+
+You can distinguish a pod created by a replica set vs one created manually by checking the annotation key `kubernetes.io/create-by` on the pod.
+
+```{note}
+If deleting a replica set, use `--cascade=false` in kubectl if you don't want the pods created by the replica set to get deleted as well.
+```
+
+## Autoscaling
+
+TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml
+
+The number of replicas in a replica set can be automatically scaled up an down through Kubernetes's horizontal pod autoscaling component. Replicas are scaled based on some user-defined criteria (e.g. high cpu usage).
+
+```{note}
+This feature depends on a pod called heapster that tracks metrics. Most Kubernetes installations include it by default.
+```
+
+```{note}
+The book warns about setting replicas manual and setting replicas using HPA -- they fight with each other.
+```
+
+TODO: talk about vertical autoscaling + yaml -- it looks like this is in beta?
+
+# Deployment
+
+```yaml
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: my_container
+          image: "gcr.io/my_container:v1"
+```
+
+Note that the manifest for the deployment includes the manifest of the replicaset.
+
+Add `kubernetes.io/change-cause` annotation to add a custom message for the deployment, viewable when browing the history of the rollout
+
+## Strategy
+
+TODO: `spec/strategy` defines the way rollouts should occur.
+
+TODO: discuss the recreate strategy + add yaml -- one-shot update, everything shuts down and restarts
+
+TODO: discuss the rolling update strategy + add yaml --
+
+maxUnavailable (num or percent of pods that can be down during rollout) / maxSurge (num or percent of EXTRA pods that can be running during the rollout) -- so if you set unavail to 0% and surge to >0% (it'll bring up x% new pods first then shut down x% old pods, repeat until all updated), it'll rollout faster vs if you set unavail to > 0% and surge to 0% (it'll shutdown x% old pods first then bring up x% new pods, repeat until all updated)
+
+for rolling, it'll always wait till the current iterations new pods probes report healthy + ready before moving to next iteration -- you should have defined these probes otherwise deployments are blind
+
+minReadySeconds -- waits at least n seconds till the readiness probe reports okay before continuing -- an extra wait to make sure nothing's immediately crashing
+
+progressDeadlineSeconds -- if any stage of the rollout waits for this long, the rollout is marked as failed. each time pods are brought down / up, it's a stage
+
+
+
+## Undo
+
+TODO: discuss kubectl rollout undo deployments {DEPLOYMENT} command to roll back
+
+TODO: set spec/revisionHistoryLimit to limit the number of revisions kept for undo -- useful when many frequent updates are happening
+
+# Daemon Set
+
+```yaml
+apiVersion: v1
+kind: DaemonSet
+metadata:
+  name: my-ds
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node_label_key1: value1
+        node_label_key1: value2
+      containers:
+      - name: my-app
+        image: my-app/my-app:v1
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+          readOnly: true
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+```
+
+TODO: spec/template/spec/nodeSelector defines the node labels to target
+
+TODO: notice how volumes are using hostPath, which goes into the node directly
+
+# Daemon Sets
+
+TODO: this is the equivalent of deployment for daemon set, it has rollingupdates just like a deployment does
+
+# Job
+
+```yaml
+apiVersion: v1
+kind: Job
+metadata:
+  name: my-job
+spec:
+  parallelism: 5
+  completions: 10
+  template:
+    spec:
+      containers:
+      - name: my-app
+        image: gcr.io/my-app:v1
+        imagePullPolicy: Always
+        args:
+        - "--arg1"
+        - "--arg2"
+      restartPolicy: OnFailure   # restart pod if it didn't complete successfully, can also be Never
+```
+
+TODO: for one-off tasks, defined using pod templates
+
+TODO: parallelism defines how many of the pods run at once, completion is how many need to complete
+
+TODO: kubectl is the easiest way to run jobs? looks confusing see ch12. job needs to be explicitly deleted once it's finished
+
+TODO: don't use labels, because people create lots of jobs and if you start labeling pods and there's a naming conflict bad/unexpected things happen (ch12)
+
+TODO: don't set restartPolicy to never, because what happens is that the internal component responsible for restarts won't restart it and as such the job will see it hasn't restarted and restart it itself. this causes a lot of junk in the cluster.
+
+TODO: liveness probes can be used to detect if the a pod is dead in a job as well
+
+TODO: use CronJob type to have it be scheduled by time
+
+# Cluster Autoscaler
+
+TODO: it looks like this is an external component? if not enough resources to run a pod, provision more nodes from the cloud provider
+
 # Kubectl Cheatsheet
 
 kubectl commands are typically organized into contexts, where each context is defines contextual information about the cluster: cluster location, cluster authentication, and default namespace. To ...
@@ -429,7 +699,7 @@ Kubernetes API is exposed as a RESTful interface, meaning everything is represen
  * get YAML output `-o yaml`
  * get JSON output isolated to a specific field or fields `-o jsonpath --template={TEMPLATE}`, where the template is a JSONPath expression.
 
-## Object
+## CRUD
 
 `get` / `describe` allows you to get details on a specific objects and resources. To get an overview of a ...
 
@@ -448,6 +718,8 @@ Examples of object access:
  * `kubectl get daemonSets --namespace={NAMESPACE} {NAME}`
  * `kubectl get deployments --namespace={NAMESPACE} {NAME}`
  * `kubectl get services --namespace={NAMESPACE} {NAME}`
+
+Add `--watch` flag to have kubectl continually provide updates.
 
 `apply` allows you to create and update objects. To create or update using ...
 
@@ -473,6 +745,8 @@ Is this true? See `kubectl apply` with prune flag.
  * STDIN, `kubectl apply -f -`.
  * command line, `kubectl delete {RES} {OBJ}`
 
+In certain cases, the object being deleted has parental links to other objects. For example, a replica set is the parent of the pods it creates and watches. If you delete these parent objects, by default their children go with it unless the `--cascade=false` flag is used.
+
 `label` / `annotate` allows you to label / annotate an object.
 
  * `kubectl label pods {POD} mark=55a` - set label mark to value 55a on a pod (no overwrite).
@@ -484,6 +758,17 @@ When referencing objects, the ...
 
  * `--selector` flag can be fed in a label selector that filters those objects.
  * `--all` flag can target everything.
+
+## Rollout
+
+`rollout` allows you to monitor and control deployment rollouts.
+
+ * `kubectl rollout status deployments {DEPLOYMENT}` - monitor rollout
+ * `kubectl rollout pause deployments {DEPLOYMENT}` - pause rollout
+ * `kubectl rollout resume deployments {DEPLOYMENT}` - resume rollout
+ * `kubectl rollout history deployments {DEPLOYMENT}` - view rollout history
+ * `kubectl rollout undo deployments {DEPLOYMENT}` - undo rollout (works regardless state -- e.g. if a rollout is currently in progress or not)
+ * `kubectl rollout undo deployments {DEPLOYMENT} --to-revision={REV}` - undo rollout to a previous revision (see rollout history command)
 
 ## Proxy
 
@@ -533,6 +818,8 @@ When referencing objects, the ...
 
 # Terminology
 
+ * `{bm} resource` - A class of Kubernetes object (e.g. pod, replica set, deployment, etc..). 
+
  * `{bm} image` - An application (or set of applications) packaged with all of its dependencies as an immutable and isolated filesystem. The filesystem typically contains all dependencies required for the application(s) run sealed at their correct version.
 
    Images also typically include metadata describing its needs and operational standards (e.g. memory requirements).
@@ -566,15 +853,15 @@ When referencing objects, the ...
 
  * `{bm} worker node` - A node responsible for running application containers.
 
- * `{bm} pod/\b(pod)s?\b/i` - A set of containers all bundled together as a single deployable unit, where all containers in that bundle are intended to run on the same node.
+ * `{bm} pod/\b(pod)s?\b/i` - A set of containers all bundled together as a single unit, where all containers in that bundle are intended to run on the same node.
+
+ * `{bm} pod template` - The blueprint for creating pods.
 
  * `{bm} namespace` - A user-defined category for objects in a cluster (e.g. pods), allowing Kubernetes do things such as apply isolation and access control. By default, the kubectl command uses the namespace `default` if no namespace is specified.
 
    ```{note}
    The book tells you to think of it like it's a folder.
    ```
-
- * `{bm} ingress` - A frontend that's able to combine multiple pods together as a single API for external consumption.
 
  * `{bm} kube-system` - A namespace for internal cluster components (pods) that Kubernetes runs for itself. For example, Kubernetes's DNS service, Kubernetes's proxy service, etc.. all run under the kube-system namespace.
 
@@ -587,12 +874,6 @@ When referencing objects, the ...
  * `{bm} kubectl` - The standard command-line client for Kubernetes.
 
  * `{bm} context` - In reference to kubectl, context refers to default cluster access settings kubectl applies when running some command: cluster location, cluster authentication, and default namespace.
-
- * `{bm} DaemonSet/(DaemonSet)/` - An API object that allows for running something on every node.
-
-   ```{note}
-   Unsure about this. It says it'll be described further in chapter 5 and that normally it ensures kube-proxy is running on all nodes (may not be the case on some clouds).
-   ```
 
  * `{bm} label` - User-defined key-value pairs assigned to Kubernetes objects to group those objects together. Labeling objects makes it so they can be accessed as a set (e.g. target all pods with authoring team set to SRE). Unlike annotations, labels aren't for assigning metadata to objects.
 
@@ -632,6 +913,24 @@ When referencing objects, the ...
 
  * `{bm} endpoints` - A low-level object that's used by Kubernetes to map a service to the pods it routes to. In other words, an endpoints (note the plural) object is an abstraction that references a pod.
 
+ * `{bm} ingress` - A Kubernetes resource that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This resource is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of this interfaces are referred to as Ingress controllers and are provided by third-parties.
 
+ * `{bm} replica set` `{bm} /(ReplicaSet)/` - A Kubernetes resource that ensures a pod has a certain number of instances running at any time.
 
- `{bm-error} Did you mean endpoints?/(endpoint)/i`
+ * `{bm} reconciliation loop` - A loop that continually observes state and attempts to reconcile it to some desired state if it deviates. See declarative configuration.
+
+ * `{bm} horizontal pod autoscaling` `{bm} /\b(HPA)\b/` - A feature that automatically scales the number of replicas in a replica sets based on user-defined criteria.
+
+ * `{bm} vertical pod autoscaling` `{bm} /\b(VPA)\b/` - A feature that automatically scales up the resource requirements for some pod based on user-defined criteria.
+
+ * `{bm} cluster autoscaler` - A component that automatically scales the number of nodes in a cluster based on need.
+
+ * `{bm} deployment` - A Kubernetes resource that groups together all objects required for some application (e.g. pods, services, ...).
+
+ * `{bm} daemon set` `{bm} /(DaemonSet)/` - A Kubernetes resource that ensures a set of nodes always have an instance of some pod running.
+
+ * `{bm} job` - A Kubernetes resource that launches as a pod to perform some one-of task.
+
+`{bm-error} Did you mean endpoints?/(endpoint)/i`
+
+`{bm-error} Missing topic reference/(_TOPIC)/i`
