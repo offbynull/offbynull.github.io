@@ -1,0 +1,1 @@
+<span style="background-color: red; color: white; padding: 3px">(11+11)/2=11</span>

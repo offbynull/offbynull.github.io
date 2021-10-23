@@ -153,7 +153,8 @@
 <li><a href="#H_Average%20Algorithm">Average Algorithm</a></li>
 <li><a href="#H_Optimized%20Average%20Algorithm">Optimized Average Algorithm</a></li>
 </ul>
-<li><a href="#H_Attach%20Neighbours%20to%20Tree">Attach Neighbours to Tree</a></li>
+<li><a href="#H_Merge%20Neighbours">Merge Neighbours</a></li>
+<li><a href="#H_Un-Merge%20Neighbours">Un-Merge Neighbours</a></li>
 <li><a href="#H_Distance%20Matrix%20to%20Tree">Distance Matrix to Tree</a></li>
 <ul>
 <li><a href="#H_UPGMA%20Algorithm">UPGMA Algorithm</a></li>
@@ -9847,7 +9848,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
+<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -12266,7 +12267,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_cf42611b0a09b5ab5e7d57011d9a161d.svg" alt="Dot diagram"></p>
+<p><img src="dot_7d662e6b562ce991c149beebb7985e9d.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12496,7 +12497,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12565,7 +12566,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_137a31fc34280453ea2c9d810029486b.svg" alt="Dot diagram"></p>
+<p><img src="dot_8bb00e27ee2ddb6cd5afeb9ce40f406c.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -12771,15 +12772,15 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
 <p>Since they're <a href="#BM_(neighbour)%2Fi">neighbour</a>s, they share the same parent node, meaning that the ...</p>
 <ul>
-<li>path from v1 to any other leaf node travels over v1's parent.</li>
-<li>path from v2 to any other leaf node travels over v0's parent.</li>
+<li>path from v1 to any other leaf node travels over v2's parent.</li>
+<li>path from v2 to any other leaf node travels over v1's parent.</li>
 </ul>
 <p><img src="dot_733281bf7d0b32a752b24ae8e837ae49.svg" alt="Dot diagram"></p>
 <p>Recall that to find the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for L, the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two <em><a href="#BM_(neighbour)%2Fi">neighbour</a>ing</em> leaf nodes, that test isn't required here. The path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent.</p>
-<p>Since the path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where ...</p>
+<p>Since the path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>: 0.5 * (dist(L,N) + dist(L,X) + dist(N,X)),  where ...</p>
 <ul>
 <li>N is L's <a href="#BM_(neighbour)%2Fi">neighbour</a>.</li>
-<li>X is every other leaf node that isn't L or N.</li>
+<li>X is a leaf node that isn't L or N.</li>
 </ul>
 <p>The averaging makes it so that if the input <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> were ...</p>
 <ul>
@@ -13109,7 +13110,491 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </ul>
 </div>
 <p></p>
-<a name="H_Attach%20Neighbours%20to%20Tree"></a><h3>Attach Neighbours to Tree</h3>
+<a name="H_Merge%20Neighbours"></a><h3>Merge Neighbours</h3>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FMerge%20Neighbours)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>:  Given a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive) and two leaf nodes that are suspected to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s, this algorithm merges them together. That is, the row/column for each <a href="#BM_(neighbour)%2Fi">neighbour</a> is removed from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and a new row/column is inserted that represents them as merged.</p>
+<p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>At a high-level, this algorithm essentially boils down to balding each of the <a href="#BM_(neighbour)%2Fi">neighbour</a>s and combining them together. For example, v0 and v1 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Balding both v0 and v1 results in ...</p>
+<p><img src="dot_d70127552cc7a7b3da6a33d760e69ea9.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td><span style="background-color: red; color: white; padding: 3px">0</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">0</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+</tr>
+<tr>
+<td>v1</td>
+<td><span style="background-color: red; color: white; padding: 3px">0</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">0</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+</tr>
+<tr>
+<td>v2</td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">10</span></td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">11</span></td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Merging together balded v0 and balded v1 is done by iterating over the other leaf nodes and averaging the distances between that leaf node and the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes (e.g. the merged distance to v2 is calculated as dist(v0,v2) + dist(v1,v2) / 2)...</p>
+<p><img src="dot_3d01f4a0fab8e57bf0bfa96673b676e3.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>M</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td><span style="background-color: red; color: white; padding: 3px">0</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">(10+10)/2=10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">(10+10)/2=10</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">(11+11)/2=11</span></td>
+<td><span style="background-color: red; color: white; padding: 3px">(11+11)/2=11</span></td>
+</tr>
+<tr>
+<td>v2</td>
+<td><span style="background-color: red; color: white; padding: 3px">(10+10)/2=10</span></td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td><span style="background-color: red; color: white; padding: 3px">(10+10)/2=10</span></td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td><span style="background-color: red; color: white; padding: 3px">(11+11)/2=11</span></td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td><span style="background-color: red; color: white; padding: 3px">(11+11)/2=11</span></td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Notice how when both v0 and v1 are balded, their distances to other leaf nodes are exactly the same. This will always be the case with <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. So why average it out instead of just taking the distinct value? Averaging helps with understanding the part coming up.</p>
+</div>
+<p><a href="ch7_code/src/phylogeny/MergeNeighbours_AdditiveExplainer.py">ch7_code/src/phylogeny/MergeNeighbours_AdditiveExplainer.py</a> (lines 22 to 36):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">bald_and_merge_neighbours</span>(<span class="hljs-params">
+        dm: DistanceMatrix,
+        l1: N,
+        l2: N,
+        gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+</span>) -&gt; <span class="hljs-literal">None</span>:
+    bald_distance_matrix(dm, l1)
+    bald_distance_matrix(dm, l2)
+    m_id = gen_node_id()
+    m_dists = {x: (dm[l1, x] + dm[l2, x]) / <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> dm.leaf_ids_it()}
+    m_dists[m_id] = <span class="hljs-number">0</span>
+    dm.insert(m_id, m_dists)
+    dm.delete(l1)
+    dm.delete(l2)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given additive distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... and given that v0 and v1 are neighbours, balding and merging v0 and v1 results in ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>N1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>N1</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>10.0</td>
+<td>11.0</td>
+<td>11.0</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>10.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>10.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>11.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>11.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
+<p>The problem with the above algorithm is that balding a <a href="#BM_(limb)%2Fi">limb</a> can't be done on a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. That is, since a <a href="#BM_(tree)%2Fi">tree</a> doesn't exist for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, it's impossible to get a definitive <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> to use for balding.</p>
+<p>Recall that to find the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for L, the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two <em><a href="#BM_(neighbour)%2Fi">neighbour</a>ing</em> leaf nodes, that test isn't required here. The path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent. For example, since v1 and v2 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s, they share the same parent node, meaning that the ...</p>
+<ul>
+<li>path from v1 to any other leaf node travels over v2's parent.</li>
+<li>path from v2 to any other leaf node travels over v1's parent.</li>
+</ul>
+<p><img src="dot_733281bf7d0b32a752b24ae8e837ae49.svg" alt="Dot diagram"></p>
+<p>Since the path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent, it's possible to bald and merge the <a href="#BM_(neighbour)%2Fi">neighbour</a>s <em>for each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a></em>. That is, based on the core computation from the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm, each leaf node in the non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> has its own view of what the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be:</p>
+<ul>
+<li>len(l1) = 0.5 * (dist(l1,l2) + dist(l1,x) - dist(l2,x))</li>
+<li>len(l2) = 0.5 * (dist(l2,l1) + dist(l2,x) - dist(l1,x))</li>
+</ul>
+<p>where ...</p>
+<ul>
+<li>l1 and l2 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
+<li>x is a leaf node that isn't l1 or l2.</li>
+</ul>
+<p>By computing both and averaging, you get an approximation for what the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be for the merged node. For example, For example, v0 and v1 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>21</td>
+<td>22</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>20</td>
+<td>21</td>
+<td>21</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>21</td>
+<td>12</td>
+<td>20</td>
+<td>0</td>
+<td>7</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>7</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>22</td>
+<td>13</td>
+<td>21</td>
+<td>13</td>
+<td>14</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>len(v0) = 0.5 * (dist(v0,v1) + dist(v0,v3) - dist(v1,v3)) = 0.5 * (13 + 21 - 12) = 11</li>
+<li>len(v1) = 0.5 * (dist(v1,v0) + dist(v1,v3) - dist(v0,v3)) = 0.5 * (13 + 12 - 21) = 2</li>
+<li>balded_dist(v0,v5) = dist(v0,v3) - len(v0) = 21 - 11 = 10</li>
+<li>balded_dist(v1,v5) = dist(v1,v3) - len(v1) = 11 - 2 = 10</li>
+<li>merged(v0,v1) to v3 = (10 + 10) / 2 = 10</li>
+</ul>
+<p>TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW</p>
+<p>TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW</p>
+<p>TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW</p>
+<p>TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW</p>
+<p>TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mo stretchy="false">(</mo><mn>0.5</mn><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mo stretchy="false">(</mo><mn>0.5</mn><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>0</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac><mspace linebreak="newline" height="0.5em"></mspace><mfrac><mrow><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mo stretchy="false">(</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>1</mn></mrow></msub><mo>+</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>+</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mo stretchy="false">(</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>0</mn></mrow></msub><mo>+</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac><mspace linebreak="newline" height="0.5em"></mspace><mfrac><mrow><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>1</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>+</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>0</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>+</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub></mrow><mn>2</mn></mfrac><mspace linebreak="newline" height="0.5em"></mspace><mfrac><mrow><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>1</mn></mrow></msub><mo>+</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>0</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub></mrow><mn>2</mn></mfrac><mspace linebreak="newline" height="0.5em"></mspace><mfrac><mrow><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>0.5</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>0</mn></mrow></msub></mrow><mn>2</mn></mfrac><mspace linebreak="newline" height="0.5em"></mspace><mfrac><mrow><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><mn>1</mn><mo>⋅</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>0</mn></mrow></msub></mrow><mn>2</mn></mfrac><mspace linebreak="newline" height="0.5em"></mspace><mfrac><mrow><msub><mi>D</mi><mrow><mi>v</mi><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>3</mn></mrow></msub><mo>−</mo><msub><mi>D</mi><mrow><mi>v</mi><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mn>0</mn></mrow></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{D_{v0,v3} - (0.5 \cdot (D_{v0,v1} + D_{v0,v3} - D_{v1,v3})) + D_{v1,v3} - (0.5 \cdot (D_{v1,v0} + D_{v1,v3} - D_{v0,v3}))}{2}
+\[0.5em]
+\frac{D_{v0,v3} - (0.5 \cdot D_{v0,v1} + 0.5 \cdot D_{v0,v3} - 0.5 \cdot D_{v1,v3})) + (D_{v1,v3} - (0.5 \cdot D_{v1,v0} + 0.5 \cdot D_{v1,v3} - 0.5 \cdot D_{v0,v3})}{2}
+\[0.5em]
+\frac{D_{v0,v3} - 0.5 \cdot D_{v0,v1} - 0.5 \cdot D_{v0,v3} + 0.5 \cdot D_{v1,v3} + D_{v1,v3} - 0.5 \cdot D_{v1,v0} - 0.5 \cdot D_{v1,v3} + 0.5 \cdot D_{v0,v3}}{2}
+\[0.5em]
+\frac{D_{v0,v3} - 0.5 \cdot D_{v0,v1} + 0.5 \cdot D_{v1,v3} + D_{v1,v3} - 0.5 \cdot D_{v1,v0} - 0.5 \cdot D_{v1,v3}}{2}
+\[0.5em]
+\frac{D_{v0,v3} - 0.5 \cdot D_{v0,v1} + D_{v1,v3} - 0.5 \cdot D_{v1,v0}}{2}
+\[0.5em]
+\frac{D_{v0,v3} + D_{v1,v3} - 1 \cdot D_{v1,v0}}{2}
+\[0.5em]
+\frac{D_{v0,v3} + D_{v1,v3} - D_{v1,v0}}{2}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>TODO: ADD CODE EXAMPLE HERE</p>
+<p>TODO: ADD CODE EXAMPLE HERE</p>
+<p>TODO: ADD CODE EXAMPLE HERE</p>
+<p>TODO: ADD CODE EXAMPLE HERE</p>
+<p>TODO: ADD CODE EXAMPLE HERE</p>
+<p>TODO: ADD CODE EXAMPLE HERE</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<p>TODO: ADD INVERSE <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">LIMB LENGTH</a> EXPLAINER</p>
+<a name="H_Un-Merge%20Neighbours"></a><h3>Un-Merge Neighbours</h3>
 <a name="H_Distance%20Matrix%20to%20Tree"></a><h3>Distance Matrix to Tree</h3>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -13499,7 +13984,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_3b53087c2f7f641b8c65d1af3be0d276.svg" alt="Dot diagram"></p>
+<p><img src="dot_b7b4ec7bca96b41f686165c33ef491de.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -13651,7 +14136,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the tree generated by additive phylogeny is ...</p>
-<p><img src="dot_9dd048a20881062a311c0bb65ca4b1d5.svg" alt="Dot diagram"></p>
+<p><img src="dot_af9ace5b374dbae98e5f70701fb53163.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">

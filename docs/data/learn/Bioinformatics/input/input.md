@@ -9569,8 +9569,8 @@ graph G {
 
 Since they're neighbours, they share the same parent node, meaning that the ...
 
- * path from v1 to any other leaf node travels over v1's parent.
- * path from v2 to any other leaf node travels over v0's parent.
+ * path from v1 to any other leaf node travels over v2's parent.
+ * path from v2 to any other leaf node travels over v1's parent.
 
 ```{dot}
 graph G {
@@ -9606,10 +9606,10 @@ graph G {
 
 Recall that to find the limb length for L, the standard limb length algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two _neighbouring_ leaf nodes, that test isn't required here. The path from L's neighbour to every other node always travels over L's parent.
 
-Since the path from L's neighbour to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate limb length: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where ...
+Since the path from L's neighbour to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate limb length: 0.5 * (dist(L,N) + dist(L,X) + dist(N,X)),  where ...
 
  * N is L's neighbour.
- * X is every other leaf node that isn't L or N.
+ * X is a leaf node that isn't L or N.
  
 The averaging makes it so that if the input distance matrix were ...
 
@@ -9827,7 +9827,330 @@ phylogeny.FindNeighbourLimbLengths_Optimized
 [22, 13, 21, 13, 14, 0 ]
 ```
 
-### Attach Neighbours to Tree
+### Merge Neighbours
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+Algorithms/Distance Phylogeny/Bald_TOPIC
+```
+
+**WHAT**:  Given a non-additive distance matrix (but close to be being additive) and two leaf nodes that are suspected to be neighbours, this algorithm merges them together. That is, the row/column for each neighbour is removed from the distance matrix and a new row/column is inserted that represents them as merged.
+
+**WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
+
+**ALGORITHM**: 
+
+At a high-level, this algorithm essentially boils down to balding each of the neighbours and combining them together. For example, v0 and v1 are neighbours in the following simple tree...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_one {
+  label="original"
+  v0_x -- i0_x [label=11]
+  v1_x -- i0_x [label=2]
+  v2_x -- i0_x [label=10]
+  i0_x -- i1_x [label=4]
+  i1_x -- i2_x [label=3]
+  i2_x -- v3_x [label=3]
+  i2_x -- v4_x [label=4]
+  i1_x -- v5_x [label=7]
+  v0_x [label=v0]
+  v1_x [label=v1]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+|    | v0 | v1 | v2 | v3 | v4 | v5 |
+|----|----|----|----|----|----|----|
+| v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+| v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+| v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+| v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+| v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+| v5 | 22 | 13 | 21 | 13 | 14 | 0  |
+
+Balding both v0 and v1 results in ...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_one {
+  label="v0 and v1 balded"
+  v0_x -- i0_x [label=0, style=dashed]
+  v1_x -- i0_x [label=0, style=dashed]
+  v2_x -- i0_x [label=10]
+  i0_x -- i1_x [label=4]
+  i1_x -- i2_x [label=3]
+  i2_x -- v3_x [label=3]
+  i2_x -- v4_x [label=4]
+  i1_x -- v5_x [label=7]
+  v0_x [label=v0]
+  v1_x [label=v1]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+|    |     v0      |     v1      |     v2      |     v3      |      v4     |     v5      |
+|----|-------------|-------------|-------------|-------------|-------------|-------------|
+| v0 | `{h}red 0 ` | `{h}red 0 ` | `{h}red 10` | `{h}red 10` | `{h}red 11` | `{h}red 11` |
+| v1 | `{h}red 0 ` | `{h}red 0 ` | `{h}red 10` | `{h}red 10` | `{h}red 11` | `{h}red 11` |
+| v2 | `{h}red 10` | `{h}red 10` |         0   |         20  |         21  |         21  |
+| v3 | `{h}red 10` | `{h}red 10` |         20  |         0   |         7   |         13  |
+| v4 | `{h}red 11` | `{h}red 11` |         21  |         7   |         0   |         14  |
+| v5 | `{h}red 11` | `{h}red 11` |         21  |         13  |         14  |         0   |
+
+Merging together balded v0 and balded v1 is done by iterating over the other leaf nodes and averaging the distances between that leaf node and the neighbouring leaf nodes (e.g. the merged distance to v2 is calculated as dist(v0,v2) + dist(v1,v2) / 2)...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_one {
+  label="v0 and v1 balded and merged"
+  M_x -- i0_x [label=0, style=dashed]
+  v2_x -- i0_x [label=10]
+  i0_x -- i1_x [label=4]
+  i1_x -- i2_x [label=3]
+  i2_x -- v3_x [label=3]
+  i2_x -- v4_x [label=4]
+  i1_x -- v5_x [label=7]
+  M_x [label=M]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+|    |           M           |          v2           |          v3           |           v4          |          v5           |
+|----|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
+| M  |           `{h}red 0 ` | `{h}red (10+10)/2=10` | `{h}red (10+10)/2=10` | `{h}red (11+11)/2=11` | `{h}red (11+11)/2=11` |
+| v2 | `{h}red (10+10)/2=10` |                   0   |                   20  |                   21  |                   21  |
+| v3 | `{h}red (10+10)/2=10` |                   20  |                   0   |                   7   |                   13  |
+| v4 | `{h}red (11+11)/2=11` |                   21  |                   7   |                   0   |                   14  |
+| v5 | `{h}red (11+11)/2=11` |                   21  |                   13  |                   14  |                   0   |
+
+```{note}
+Notice how when both v0 and v1 are balded, their distances to other leaf nodes are exactly the same. This will always be the case with neighbouring leaf nodes in an additive distance matrix. So why average it out instead of just taking the distinct value? Averaging helps with understanding the part coming up.
+```
+
+```{output}
+ch7_code/src/phylogeny/MergeNeighbours_AdditiveExplainer.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.MergeNeighbours_AdditiveExplainer
+v0
+v1
+[0,  13, 21, 21, 22, 22]
+[13, 0,  12, 12, 13, 13]
+[21, 12, 0,  20, 21, 21]
+[21, 12, 20, 0,  7,  13]
+[22, 13, 21, 7,  0,  14]
+[22, 13, 21, 13, 14, 0 ]
+```
+
+The problem with the above algorithm is that balding a limb can't be done on a non-additive distance matrix. That is, since a tree doesn't exist for a non-additive distance matrix, it's impossible to get a definitive limb length to use for balding.
+
+Recall that to find the limb length for L, the standard limb length algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two _neighbouring_ leaf nodes, that test isn't required here. The path from L's neighbour to every other node always travels over L's parent. For example, since v1 and v2 are neighbours, they share the same parent node, meaning that the ...
+
+ * path from v1 to any other leaf node travels over v2's parent.
+ * path from v2 to any other leaf node travels over v1's parent.
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ subgraph cluster_one {
+  fontname="Courier-Bold"
+  fontsize=10
+  label="path from v1 to all other nodes"
+  v0_x -- i0_x [label=" ", penwidth=2.5, color="#ff0300"]
+  v1_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00:invis:#42c000:invis:#818100:invis:#c04200:invis:#ff0300"]
+  v2_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00"]
+  i0_x -- i1_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100:invis:#c04200"]
+  i1_x -- i2_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100"]
+  i2_x -- v3_x [label=" ", penwidth=2.5, color="#42c000"]
+  i2_x -- v4_x [label=" ", penwidth=2.5, color="#818100"]
+  i1_x -- v5_x [label=" ", penwidth=2.5, color="#c04200"]
+  v0_x [label=v0, style=filled, fillcolor="#ff0300"]
+  v1_x [label=v1, penwidth=5]
+  v5_x [label=v5, style=filled, fillcolor="#c04200"]
+  v4_x [label=v4, style=filled, fillcolor="#818100"]
+  v3_x [label=v3, style=filled, fillcolor="#42c000"]
+  v2_x [label=v2, style=filled, fillcolor="#03ff00", penwidth=5]
+  i0_x [label=i0, style=filled, fillcolor="gray"]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+ }
+}
+```
+
+Since the path from L's neighbour to every other node always travels over L's parent, it's possible to bald and merge the neighbours _for each leaf node in the distance matrix_. That is, based on the core computation from the standard limb length algorithm, each leaf node in the non-additive distance matrix has its own view of what the limb length should be:
+
+ * len(l1) = 0.5 * (dist(l1,l2) + dist(l1,x) - dist(l2,x))
+ * len(l2) = 0.5 * (dist(l2,l1) + dist(l2,x) - dist(l1,x))
+
+where ...
+
+ * l1 and l2 are neighbours.
+ * x is a leaf node that isn't l1 or l2.
+
+By computing both and averaging, you get an approximation for what the limb length should be for the merged node. For example, For example, v0 and v1 are neighbours in the following simple tree...
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_one {
+  label="original"
+  v0_x -- i0_x [label=11]
+  v1_x -- i0_x [label=2]
+  v2_x -- i0_x [label=10]
+  i0_x -- i1_x [label=4]
+  i1_x -- i2_x [label=3]
+  i2_x -- v3_x [label=3]
+  i2_x -- v4_x [label=4]
+  i1_x -- v5_x [label=7]
+  v0_x [label=v0]
+  v1_x [label=v1]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+|    | v0 | v1 | v2 | v3 | v4 | v5 |
+|----|----|----|----|----|----|----|
+| v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+| v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+| v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+| v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+| v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+| v5 | 22 | 13 | 21 | 13 | 14 | 0  |
+
+ * len(v0) = 0.5 * (dist(v0,v1) + dist(v0,v3) - dist(v1,v3)) = 0.5 * (13 + 21 - 12) = 11
+ * len(v1) = 0.5 * (dist(v1,v0) + dist(v1,v3) - dist(v0,v3)) = 0.5 * (13 + 12 - 21) = 2
+ * balded_dist(v0,v5) = dist(v0,v3) - len(v0) = 21 - 11 = 10
+ * balded_dist(v1,v5) = dist(v1,v3) - len(v1) = 11 - 2 = 10
+ * merged(v0,v1) to v3 = (10 + 10) / 2 = 10
+
+TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
+
+TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
+
+TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
+
+TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
+
+TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
+
+```{kt}
+\frac{D_{v0,v3} - (0.5 \cdot (D_{v0,v1} + D_{v0,v3} - D_{v1,v3})) + D_{v1,v3} - (0.5 \cdot (D_{v1,v0} + D_{v1,v3} - D_{v0,v3}))}{2}
+\\[0.5em]
+\frac{D_{v0,v3} - (0.5 \cdot D_{v0,v1} + 0.5 \cdot D_{v0,v3} - 0.5 \cdot D_{v1,v3})) + (D_{v1,v3} - (0.5 \cdot D_{v1,v0} + 0.5 \cdot D_{v1,v3} - 0.5 \cdot D_{v0,v3})}{2}
+\\[0.5em]
+\frac{D_{v0,v3} - 0.5 \cdot D_{v0,v1} - 0.5 \cdot D_{v0,v3} + 0.5 \cdot D_{v1,v3} + D_{v1,v3} - 0.5 \cdot D_{v1,v0} - 0.5 \cdot D_{v1,v3} + 0.5 \cdot D_{v0,v3}}{2}
+\\[0.5em]
+\frac{D_{v0,v3} - 0.5 \cdot D_{v0,v1} + 0.5 \cdot D_{v1,v3} + D_{v1,v3} - 0.5 \cdot D_{v1,v0} - 0.5 \cdot D_{v1,v3}}{2}
+\\[0.5em]
+\frac{D_{v0,v3} - 0.5 \cdot D_{v0,v1} + D_{v1,v3} - 0.5 \cdot D_{v1,v0}}{2}
+\\[0.5em]
+\frac{D_{v0,v3} + D_{v1,v3} - 1 \cdot D_{v1,v0}}{2}
+\\[0.5em]
+\frac{D_{v0,v3} + D_{v1,v3} - D_{v1,v0}}{2}
+```
+
+TODO: ADD CODE EXAMPLE HERE
+
+TODO: ADD CODE EXAMPLE HERE
+
+TODO: ADD CODE EXAMPLE HERE
+
+TODO: ADD CODE EXAMPLE HERE
+
+TODO: ADD CODE EXAMPLE HERE
+
+TODO: ADD CODE EXAMPLE HERE
+
+
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+
+### Un-Merge Neighbours
 
 ### Distance Matrix to Tree
 
