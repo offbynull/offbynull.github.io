@@ -149,6 +149,10 @@
 <li><a href="#H_Un-trim%20Tree">Un-trim Tree</a></li>
 <li><a href="#H_Find%20Neighbours">Find Neighbours</a></li>
 <li><a href="#H_Find%20Neighbour%20Limb%20Lengths">Find Neighbour Limb Lengths</a></li>
+<ul>
+<li><a href="#H_Average%20Algorithm">Average Algorithm</a></li>
+<li><a href="#H_Optimized%20Average%20Algorithm">Optimized Average Algorithm</a></li>
+</ul>
 <li><a href="#H_Attach%20Neighbours%20to%20Tree">Attach Neighbours to Tree</a></li>
 <li><a href="#H_Distance%20Matrix%20to%20Tree">Distance Matrix to Tree</a></li>
 <ul>
@@ -323,7 +327,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AATA', 'GAAA', 'AACA', 'ACAA', 'AAAC', 'AAAG', 'AAGA', 'AAAT', 'ATAA', 'AAAA', 'CAAA', 'TAAA', 'AGAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AGAA', 'AAAG', 'TAAA', 'AACA', 'AAAC', 'AAAT', 'GAAA', 'AATA', 'ACAA', 'ATAA', 'CAAA', 'AAAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -455,12 +459,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
-<li>TTAAA = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
+<li>CCCTT = 6 occurrences</li>
 <li>AAGGG = 6 occurrences</li>
+<li>TTAAA = 6 occurrences</li>
 <li>TGATC = 6 occurrences</li>
 <li>TTTAA = 6 occurrences</li>
-<li>CCCTT = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -534,18 +538,18 @@
 <p></p>
 <p>Found clusters of k=9 (at least 6 occurrences in window of 20) in TTTTTTTTTTTTTCCCTTTTTTTTTCCCTTTTTTTTTTTTT at...</p>
 <ul>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
 <li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1678,7 +1682,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>AAAGA<br>AAAGA<br>AAAGA</p>
+<p>AAATG<br>AAATG<br>AAATG</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2127,7 +2131,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>GAG<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Gibbs%20Sampling%20Algorithm"></a><h4>Gibbs Sampling Algorithm</h4>
@@ -2201,7 +2205,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2948,20 +2952,20 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <ul>
 <li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 </ul>
 </div>
 <p></p>
@@ -5839,7 +5843,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_ab84aa35fde2f93daddd72efc6c90379.svg" alt="Dot diagram"></p>
+<p><img src="dot_5c6e77c49b93eebf11f5e64cb3d1a347.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5897,7 +5901,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_a43ff5f4af5599db691d6628eb03f479.svg" alt="Dot diagram"></p>
+<p><img src="dot_48b69e21873e0b67d9382766e83886d1.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6045,13 +6049,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_01bcd3f1033382ace377db30252d4545.svg" alt="Dot diagram"></p>
+<p><img src="dot_01caf0facea39f3fee0a33565989b99f.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_6dbc41a1800d46216656490d39cb8c46.svg" alt="Dot diagram"></p>
+<p><img src="dot_b6cfa0fe433831c225dbd27408b18873.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6088,7 +6092,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_a09102bafe5b38c7f607d4ca21d993b6.svg" alt="Latex diagram"></p>
+<p><img src="latex_e33c1b5f5ed8ef03e38c1362753fe428.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6099,7 +6103,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_c7a9d20e32619ca72fe4d676a7add41a.svg" alt="Latex diagram"></p>
+<p><img src="latex_9372e9ec6299195f19e107e1e362cdcd.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6160,9 +6164,9 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_3c420708166456a63775288fda9b471e.svg" alt="Latex diagram"></p>
+<p><img src="latex_e7b389382ee6824b505f0b59f08c6d1f.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
--GAT
+GA-T
 </code></pre>
 <p>Weight: 1.0</p>
 </div>
@@ -6438,7 +6442,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_43248bd7a32d88e994e0d6d2e7bfced6.svg" alt="Latex diagram"></p>
+<p><img src="latex_665510f06b5813a8f29eae9bc12101be.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6446,7 +6450,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_e12c74f31933c1c909d9f2f16a8e6f0e.svg" alt="Latex diagram"></p>
+<p><img src="latex_f5edbeed2d67c47394d2d99952943017.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6788,7 +6792,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_dfb798d2b379f8af11ec9b5c283e23db.svg" alt="Latex diagram"></p>
+<p><img src="latex_8e9692b10814bcad12db97d13a5f379f.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6871,7 +6875,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_692fe383534f50aa2fb4867e9a7577ad.svg" alt="Latex diagram"></p>
+<p><img src="latex_d987e561187d178bf2706461723535b3.svg" alt="Latex diagram"></p>
 <pre><code>AG-AC
 AGAAC
 </code></pre>
@@ -7029,7 +7033,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_8431ca1b5ada6b54dee4ba2808dd0252.svg" alt="Latex diagram"></p>
+<p><img src="latex_52e91cdd039406151b9b06de34eda695.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7112,7 +7116,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_7ad5b146c868e681581bc568561d5210.svg" alt="Latex diagram"></p>
+<p><img src="latex_1ce6e3b941e9bf33f1195608c98d027a.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
 A-AC
 </code></pre>
@@ -7269,7 +7273,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_d7f5d48cd3f763d8b2074503f8131ca6.svg" alt="Latex diagram"></p>
+<p><img src="latex_717433881437c44c01386eb31810aaa2.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7352,7 +7356,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_358973590e1abcd63a229b592f7213c4.svg" alt="Latex diagram"></p>
+<p><img src="latex_6f05e1f57b7421015969d8f553170945.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7619,7 +7623,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_4532f01b648099faa89a98fc076439d0.svg" alt="Latex diagram"></p>
+<p><img src="latex_ab8766eb59eacf9bd854f820dfee1f85.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7705,9 +7709,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_16d41f8218b7c7d613e6c9a2576b99c6.svg" alt="Latex diagram"></p>
-<pre><code>TAGGCGG----AT
-TA--C--CCCCAT
+<p><img src="latex_73674a17b1d9db7559c366ce606d533e.svg" alt="Latex diagram"></p>
+<pre><code>TAGG----CGGAT
+TA--CCCCC--AT
 </code></pre>
 <p>Weight: 1.4999999999999998</p>
 </div>
@@ -7740,7 +7744,7 @@ TA--C--CCCCAT
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_30d98615f54107854eeb99c3c586524c.svg" alt="Latex diagram"></p>
+<p><img src="latex_b6acb3eaebb339c56675caab36b7ad3a.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7858,7 +7862,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_334958c3d4b0eef0742a26af9173cc31.svg" alt="Latex diagram"></p>
+<p><img src="latex_a41a9b45efcd7ea8c014551c98de4bad.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -8052,9 +8056,9 @@ G G T -1
 G G G 1
 </code></pre>
 <p>... the global alignment is...</p>
-<pre><code>---TATTATT--AT
-GATTATGATT--AT
----TACCATTACAT
+<pre><code>--T-ATTATTA--T
+GATTATGATTA--T
+--T-ACCATTACAT
 </code></pre>
 <p>Weight: 0.0</p>
 </div>
@@ -8763,9 +8767,9 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Result...</p>
 <p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
 <ul>
-<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
@@ -8870,11 +8874,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Final synteny graph...</p>
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
+<li>{'y': ('A0', 883, 1018), 'x': ('B0', 957, 1104), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 661, 823), 'x': ('B0', 459, 628), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 530, 587), 'x': ('B0', 710, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 879, 1018), 'x': ('B0', 953, 1104), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 660, 823), 'x': ('B0', 459, 629), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 212, 364), 'x': ('B0', 233, 392), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 212, 363), 'x': ('B0', 233, 391), 'type': 'NORMAL'}</li>
 </ul>
 </div>
 <p></p>
@@ -9152,22 +9156,22 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>START
 <ul>
-<li>CE(X_t, Z_h)</li>
-<li>SE(X_t, X_h)</li>
 <li>CE(X_h, Z_t)</li>
-<li>SE(Z_t, Z_h)</li>
+<li>SE(X_h, X_t)</li>
+<li>CE(X_t, Z_h)</li>
+<li>SE(Z_h, Z_t)</li>
 </ul>
 </li>
 <li>START
 <ul>
-<li>CE(A_t, D_h)</li>
-<li>SE(A_t, A_h)</li>
-<li>CE(A_h, B_t)</li>
-<li>SE(B_t, B_h)</li>
 <li>CE(B_h, C_t)</li>
-<li>SE(C_t, C_h)</li>
+<li>SE(B_h, B_t)</li>
+<li>CE(A_h, B_t)</li>
+<li>SE(A_h, A_t)</li>
+<li>CE(A_t, D_h)</li>
+<li>SE(D_h, D_t)</li>
 <li>CE(C_h, D_t)</li>
-<li>SE(D_t, D_h)</li>
+<li>SE(C_h, C_t)</li>
 </ul>
 </li>
 </ul>
@@ -9388,23 +9392,23 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>
 <p>Initial red_p_list=[['+A', '-B', '-C', '+D'], ['+E']]</p>
-<p><img src="dot_f171d57bc8b6536687a47f6a6c548def.svg" alt="Dot diagram"></p>
+<p><img src="dot_0afb466568831579c71a17748319c91c.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-C', '+D'], ['+E']]</p>
-<p><img src="dot_0a2ce0e997069dab9011b604c29c27db.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '-B', '-C', '-D'], ['+E']]</p>
+<p><img src="dot_7c23de80408280e1492e6ebd916942df.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-C', '-E', '+D']]</p>
-<p><img src="dot_2df6ad52b5188e9dc2ebbd8994dea7ce.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-C', '-D'], ['+E']]</p>
+<p><img src="dot_eb53ed44237767f35e57862447b1560c.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+A', '+B', '-C', '-E', '-D']]</p>
-<p><img src="dot_2d82d0a2c68aa83733217e42eba4f58d.svg" alt="Dot diagram"></p>
+<p><img src="dot_ae72ee752f7452e4e71ffef8a739d846.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</p>
-<p><img src="dot_be60f4f1d9d02b0e6071be328e3784cf.svg" alt="Dot diagram"></p>
+<p><img src="dot_d61917b72c768e414b2b86eb013b113d.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <p>Recall that the breakpoint graph is undirected. A permutation may have been walked in either direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
@@ -11657,7 +11661,7 @@ different subtrees.</p>
 <p>... and simple tree trim(T, v5)...</p>
 <p><img src="dot_947428a9fad00efc08c05fcfe2286cfb.svg" alt="Dot diagram"></p>
 <p>... , v5 is injected at the appropriate location to become simple tree T (un-trimmed) ...</p>
-<p><img src="dot_161663c05ac037dd80d3463d127da1e3.svg" alt="Dot diagram"></p>
+<p><img src="dot_732ee38514b240e67ad8b3b760b395eb.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
@@ -12193,7 +12197,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12262,7 +12266,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_69b6631b65decd7f4d6e215bea677598.svg" alt="Dot diagram"></p>
+<p><img src="dot_cf42611b0a09b5ab5e7d57011d9a161d.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12492,7 +12496,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12561,7 +12565,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_64989f7d0f22acabbba92e604930b6d1.svg" alt="Dot diagram"></p>
+<p><img src="dot_137a31fc34280453ea2c9d810029486b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -12760,6 +12764,8 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><strong>WHAT</strong>: Given a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive) and two leaf nodes that are suspected to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s, this algorithm approximates the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s of those <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</p>
 <p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p>Recall that the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm determines the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a> have inconsistent distances -- non-additive means no <a href="#BM_(tree)%2Fi">tree</a> exists that fits its distances.</p>
+<a name="H_Average%20Algorithm"></a><h4>Average Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm is an extension of the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm, essentially running the same computation multiple times and averaging out the results. For example, v1 and v2 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
@@ -12770,13 +12776,18 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </ul>
 <p><img src="dot_733281bf7d0b32a752b24ae8e837ae49.svg" alt="Dot diagram"></p>
 <p>Recall that to find the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for L, the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two <em><a href="#BM_(neighbour)%2Fi">neighbour</a>ing</em> leaf nodes, that test isn't required here. The path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent.</p>
-<p>Since the path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where N is L's <a href="#BM_(neighbour)%2Fi">neighbour</a> and X is every other leaf node that isn't L or N. The averaging makes it so that if the input <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> were ...</p>
+<p>Since the path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where ...</p>
+<ul>
+<li>N is L's <a href="#BM_(neighbour)%2Fi">neighbour</a>.</li>
+<li>X is every other leaf node that isn't L or N.</li>
+</ul>
+<p>The averaging makes it so that if the input <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> were ...</p>
 <ul>
 <li>additive, it'd produce the correct <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>.</li>
 <li>non-additive, it'd approximate a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> that's probably good enough (assuming the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is close to being additive).</li>
 </ul>
-<p><a href="ch7_code/src/phylogeny/ApproximateLimbLength.py">ch7_code/src/phylogeny/ApproximateLimbLength.py</a> (lines 14 to 23):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">approximate_limb_length</span>(<span class="hljs-params">dm: DistanceMatrix, l: N, l_neighbour: N</span>):
+<p><a href="ch7_code/src/phylogeny/FindNeighbourLimbLengths.py">ch7_code/src/phylogeny/FindNeighbourLimbLengths.py</a> (lines 12 to 27):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">approximate_limb_length_using_neighbour</span>(<span class="hljs-params">dm: DistanceMatrix, l: N, l_neighbour: N</span>) -&gt; <span class="hljs-built_in">float</span>:
     leaf_nodes = dm.leaf_ids()
     leaf_nodes.remove(l)
     leaf_nodes.remove(l_neighbour)
@@ -12785,6 +12796,12 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
         length = (dm[l, l_neighbour] + dm[l, k] - dm[l_neighbour, k]) / <span class="hljs-number">2</span>
         lengths.append(length)
     <span class="hljs-keyword">return</span> mean(lengths)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_neighbouring_limb_lengths</span>(<span class="hljs-params">dm: DistanceMatrix, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
+    l1_len = approximate_limb_length_using_neighbour(dm, l1, l2)
+    l2_len = approximate_limb_length_using_neighbour(dm, l2, l1)
+    <span class="hljs-keyword">return</span> l1_len, l2_len
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -12863,8 +12880,17 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </ul>
 </div>
 <p></p>
-<p>The code above invokes <code>approximate_limb_length</code> twice, once for each leaf node in the pair. This in inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate computation.</p>
-<p>The averaging algorithm maps to the formula ...</p>
+<a name="H_Optimized%20Average%20Algorithm"></a><h4>Optimized Average Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FOptimized%20Average%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The unoptimized algorithm performs the computation once for each leaf node in the pair. This in inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate work.</p>
+<p>The unoptimized algorithm maps to the formula ...</p>
 <p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><mfrac><mrow><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub><mo>−</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{n-2} \cdot \sum_{k \isin S-{l1,l2}}{\frac{D_{l1,l2} + D_{l1,k} - D_{l2,k}}{2}}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.876335em;vertical-align:-1.516005em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span><span class="mrel mtight">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span><span class="mbin mtight">−</span><span class="mopen mtight">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span><span class="mclose mtight">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></span></p>
 <p>... where ...</p>
@@ -12888,10 +12914,10 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Confused about what's happening above? Think about it like this...</p>
 <ul>
-<li>mean([0+0.5, 0+1, 0+0.25]) = 0.833</li>
-<li>mean([1+0.5, 1+1, 1+0.25]) = 1.833</li>
-<li>mean([2+0.5, 2+1, 2+0.25]) = 2.833</li>
-<li>mean([3+0.5, 3+1, 3+0.25]) = 3.833</li>
+<li>mean([0+0.5, 0+1, 0+0.25]) = 0.833 = 0+mean([0.5, 1, 0.25])</li>
+<li>mean([1+0.5, 1+1, 1+0.25]) = 1.833 = 1+mean([0.5, 1, 0.25])</li>
+<li>mean([2+0.5, 2+1, 2+0.25]) = 2.833 = 2+mean([0.5, 1, 0.25])</li>
+<li>mean([3+0.5, 3+1, 3+0.25]) = 3.833 = 3+mean([0.5, 1, 0.25])</li>
 <li>...</li>
 </ul>
 <p>If you're including some constant amount for each element in the averaging, the result of the average will include that constant amount. In the case above, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{D_{l1,l2}}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3364109999999998em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9914109999999998em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.51308em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3487714285714287em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29011428571428566em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span> is a     constant being added at each element of the average.</p>
@@ -12978,29 +13004,111 @@ len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
 \newline
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span><span class="mbin mtight" style="color:#7f7f00;">−</span><span class="mopen mtight" style="color:#7f7f00;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">2</span><span class="mclose mtight" style="color:#7f7f00;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span><span class="mbin mtight" style="color:#007f7f;">−</span><span class="mopen mtight" style="color:#007f7f;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">1</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mclose mtight" style="color:#007f7f;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span></p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
-<p>TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)</p>
+<p>Depending on your architecture, this optimized form can be tweaked even further for better performance. Recall that the distance of anything to itself is always zero, meaning that...</p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">D_{l1,l1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> doesn't contribute anything to the first summation.</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">D_{l2,l2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> doesn't contribute anything to the second summation.</li>
+</ul>
+<p>If the cost of removing those terms from their respective summations is higher than the cost of keeping them in (adding that extra 0), you might as well not remove them...</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>r</mi><mi>e</mi><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><mstyle mathcolor="#7f7f00"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo>−</mo><mstyle mathcolor="#007f7f"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>+</mo></mstyle><mi>r</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>−</mo></mstyle><mi>r</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-{l2}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-{l1}}{D_{l2,k}}})
+\newline
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span><span class="mbin mtight" style="color:#7f7f00;">−</span><span class="mopen mtight" style="color:#7f7f00;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">2</span><span class="mclose mtight" style="color:#7f7f00;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span><span class="mbin mtight" style="color:#007f7f;">−</span><span class="mopen mtight" style="color:#007f7f;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">1</span><span class="mclose mtight" style="color:#007f7f;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span></p>
+<p>Similarly, removing both l2 from the first summation and l1 from the second summation doesn't actually change the result. The first summation will add <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">D_{l1,l2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> but the second summation will remove <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">D_{l1,l2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>, resulting in an overall contribution of 0. If the cost of removing those terms from their respective summations is higher than the cost of keeping them in, you might as well not remove them...</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>r</mi><mi>e</mi><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><mstyle mathcolor="#7f7f00"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo>−</mo><mstyle mathcolor="#007f7f"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>+</mo></mstyle><mi>r</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>−</mo></mstyle><mi>r</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S}{D_{l2,k}}})
+\newline
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.3794880000000003em;vertical-align:-1.329483em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.329483em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.3794880000000003em;vertical-align:-1.329483em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.329483em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span></p>
+<p><a href="ch7_code/src/phylogeny/FindNeighbourLimbLengths_Optimized.py">ch7_code/src/phylogeny/FindNeighbourLimbLengths_Optimized.py</a> (lines 12 to 19):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_neighbouring_limb_lengths</span>(<span class="hljs-params">dm: DistanceMatrix, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
+    l1_dist_sum = <span class="hljs-built_in">sum</span>(dm[l1, k] <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> dm.leaf_ids())
+    l2_dist_sum = <span class="hljs-built_in">sum</span>(dm[l2, k] <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> dm.leaf_ids())
+    res = (l1_dist_sum - l2_dist_sum) / (dm.n - <span class="hljs-number">2</span>)
+    l1_len = (dm[l1, l2] + res) / <span class="hljs-number">2</span>
+    l2_len = (dm[l1, l2] - res) / <span class="hljs-number">2</span>
+    <span class="hljs-keyword">return</span> l1_len, l2_len
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given distance matrix...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>21.0</td>
+<td>22.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>20.0</td>
+<td>21.0</td>
+<td>21.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>21.0</td>
+<td>12.0</td>
+<td>20.0</td>
+<td>0.0</td>
+<td>7.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>14.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>22.0</td>
+<td>13.0</td>
+<td>21.0</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... and given that 1 and 2 are neighbours, the limb length for leaf node ...</p>
+<ul>
+<li>1 is approximated to be 2.0</li>
+<li>2 is approximated to be 10.0</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Attach%20Neighbours%20to%20Tree"></a><h3>Attach Neighbours to Tree</h3>
 <a name="H_Distance%20Matrix%20to%20Tree"></a><h3>Distance Matrix to Tree</h3>
 <p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F"></a><strong></strong></p>
@@ -13391,7 +13499,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_8cde4c8e4e823ccfc6d390903be54e1f.svg" alt="Dot diagram"></p>
+<p><img src="dot_3b53087c2f7f641b8c65d1af3be0d276.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -13543,7 +13651,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the tree generated by additive phylogeny is ...</p>
-<p><img src="dot_8f1f2ee04978ff0f3d93faaf0b3d6479.svg" alt="Dot diagram"></p>
+<p><img src="dot_9dd048a20881062a311c0bb65ca4b1d5.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -13746,14 +13854,14 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGGCGGTTC', start_index=160, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGCGGCT', start_index=161, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGGT', start_index=161, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGCGGCT', start_index=161, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGAT', start_index=161, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=161, occurrence_count=4)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=162, occurrence_count=4)</li>
@@ -13761,17 +13869,17 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>KmerCluster(kmer='CATCAGGCG', start_index=164, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCATCAGGC', start_index=165, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGCGATGG', start_index=199, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCGGTATG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGATCCTG', start_index=232, occurrence_count=3)</li>
@@ -13789,12 +13897,12 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -13857,8 +13965,8 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>GAAAGAAAAAGGAAGGAA<br>GAAAAAAAAAGGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>TAAAGAAAAGGAAAAAAA<br>AGAAGAACAGTAAAATAA<br>GAAAAATCAAAAAAATAA</p>
-<p>Score is: 18</p>
+<p>CAGGAAAAGAAAGAAAAA<br>AAGAAAAAAAAAGGAAAA<br>AAGAAAAAGAAAAAAAAA<br>AAGAAAAGGAAAAAAAGA<br>ATGATAATAATATTTATA<br>AAGATAGTGAAAAATCAA</p>
+<p>Score is: 22</p>
 </div>
 <p></p>
 <a name="H_Non-ribosomal%20Peptides"></a><h2>Non-ribosomal Peptides</h2>
@@ -14126,10 +14234,10 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>Mapping synteny graph matches to IDs using x-axis genome...</p>
 <ul>
 <li>G2C1_B0 = {'y': ('G1C1', 456122, 490876), 'x': ('G2C1', 26146, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B1 = {'y': ('G1C1', 403833, 428047), 'x': ('G2C1', 55610, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B2 = {'y': ('G1C1', 356151, 384120), 'x': ('G2C1', 88487, 113644), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403834, 428046), 'x': ('G2C1', 55611, 78340), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356151, 384123), 'x': ('G2C1', 88484, 113644), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
-<li>G2C1_B4 = {'y': ('G1C1', 772154, 835273), 'x': ('G2C1', 287182, 351664), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772154, 825262), 'x': ('G2C1', 287182, 342448), 'type': 'NORMAL'}</li>
 <li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
 <li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
 <li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
@@ -14187,14 +14295,14 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p><img src="syntenygraph_aa18ecc0bccea2e4d491f745259e60c6.png" alt="Synteny Graph"></p>
 <p>Mapping synteny graph matches to IDs using x-axis genome...</p>
 <ul>
-<li>G2C1_B0 = {'y': ('G1C1', 456122, 490876), 'x': ('G2C1', 26146, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B1 = {'y': ('G1C1', 403835, 428050), 'x': ('G2C1', 55607, 78339), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B2 = {'y': ('G1C1', 356153, 384123), 'x': ('G2C1', 88484, 113642), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B0 = {'y': ('G1C1', 456122, 490875), 'x': ('G2C1', 26147, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428046), 'x': ('G2C1', 55611, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356150, 384123), 'x': ('G2C1', 88484, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
-<li>G2C1_B4 = {'y': ('G1C1', 772154, 835262), 'x': ('G2C1', 287182, 351653), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772154, 825102), 'x': ('G2C1', 287182, 342288), 'type': 'NORMAL'}</li>
 <li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
 <li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
-<li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
+<li>G2C1_B7 = {'y': ('G1C1', 276781, 355692), 'x': ('G2C1', 740078, 815603), 'type': 'NORMAL'}</li>
 <li>G2C1_B8 = {'y': ('G1C1', 529629, 591336), 'x': ('G2C1', 816444, 878201), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B9 = {'y': ('G1C1', 491197, 509162), 'x': ('G2C1', 880483, 897382), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
@@ -14207,11 +14315,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <ul>
 <li>
 <p>INITIAL red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '-G2C1_B7', '-G2C1_B6', '-G2C1_B5', '-G2C1_B4', '-G2C1_B3', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_839a46eeb2878e4235db19b433ea9df8.svg" alt="Dot diagram"></p>
+<p><img src="dot_c29e96ea550d21c66cf2666b79cf7a5c.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '+G2C1_B3', '+G2C1_B4', '+G2C1_B5', '+G2C1_B6', '+G2C1_B7', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_749b005463d89159408b452458bfeaab.svg" alt="Dot diagram"></p>
+<p><img src="dot_12c7277dbd0cc7659c5bc35d8ef3b118.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 </div>

@@ -9526,6 +9526,10 @@ Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 
 Recall that the standard limb length finding algorithm determines the limb length of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-additive distance matrices have inconsistent distances -- non-additive means no tree exists that fits its distances.
 
+#### Average Algorithm
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbour Limb Lengths\/Average Algorithm)_TOPIC/`
+
 **ALGORITHM**: 
 
 The algorithm is an extension of the standard limb length finding algorithm, essentially running the same computation multiple times and averaging out the results. For example, v1 and v2 are neighbours in the following simple tree...
@@ -9602,19 +9606,24 @@ graph G {
 
 Recall that to find the limb length for L, the standard limb length algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two _neighbouring_ leaf nodes, that test isn't required here. The path from L's neighbour to every other node always travels over L's parent.
 
-Since the path from L's neighbour to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate limb length: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where N is L's neighbour and X is every other leaf node that isn't L or N. The averaging makes it so that if the input distance matrix were ...
+Since the path from L's neighbour to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate limb length: (dist(L,N) + dist(L,X) - dist(N,X)) / 2,  where ...
+
+ * N is L's neighbour.
+ * X is every other leaf node that isn't L or N.
+ 
+The averaging makes it so that if the input distance matrix were ...
 
  * additive, it'd produce the correct limb length.
  * non-additive, it'd approximate a limb length that's probably good enough (assuming the distance matrix is close to being additive).
 
 ```{output}
-ch7_code/src/phylogeny/ApproximateLimbLength.py
+ch7_code/src/phylogeny/FindNeighbourLimbLengths.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.ApproximateLimbLength
+phylogeny.FindNeighbourLimbLengths
 1
 2
 [0,  13, 21, 21, 22, 22]
@@ -9625,9 +9634,19 @@ phylogeny.ApproximateLimbLength
 [22, 13, 21, 13, 14, 0 ]
 ```
 
-The code above invokes `approximate_limb_length` twice, once for each leaf node in the pair. This in inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate computation.
+#### Optimized Average Algorithm
 
-The averaging algorithm maps to the formula ...
+`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbour Limb Lengths\/Optimized Average Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
+```
+
+**ALGORITHM**: 
+
+The unoptimized algorithm performs the computation once for each leaf node in the pair. This in inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate work.
+
+The unoptimized algorithm maps to the formula ...
 
 ```{kt}
 \frac{1}{n-2} \cdot \sum_{k \isin S-\{l1,l2\}}{\frac{D_{l1,l2} + D_{l1,k} - D_{l2,k}}{2}}
@@ -9656,10 +9675,10 @@ Just like the code, the formula removes l1 and l2 from the set of leaf nodes (S)
     ```{note}
     Confused about what's happening above? Think about it like this...
     
-    * mean([0+0.5, 0+1, 0+0.25]) = 0.833
-    * mean([1+0.5, 1+1, 1+0.25]) = 1.833
-    * mean([2+0.5, 2+1, 2+0.25]) = 2.833
-    * mean([3+0.5, 3+1, 3+0.25]) = 3.833
+    * mean([0+0.5, 0+1, 0+0.25]) = 0.833 = 0+mean([0.5, 1, 0.25])
+    * mean([1+0.5, 1+1, 1+0.25]) = 1.833 = 1+mean([0.5, 1, 0.25])
+    * mean([2+0.5, 2+1, 2+0.25]) = 2.833 = 2+mean([0.5, 1, 0.25])
+    * mean([3+0.5, 3+1, 3+0.25]) = 3.833 = 3+mean([0.5, 1, 0.25])
     * ...
     
     If you're including some constant amount for each element in the averaging, the result of the average will include that constant amount. In the case above, `{kt} \frac{D_{l1,l2}}{2}` is a     constant being added at each element of the average.
@@ -9765,51 +9784,48 @@ len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 ```
 
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+Depending on your architecture, this optimized form can be tweaked even further for better performance. Recall that the distance of anything to itself is always zero, meaning that...
 
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+ * `{kt} D_{l1,l1}` doesn't contribute anything to the first summation.
+ * `{kt} D_{l2,l2}` doesn't contribute anything to the second summation.
+ 
+If the cost of removing those terms from their respective summations is higher than the cost of keeping them in (adding that extra 0), you might as well not remove them...
 
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+```{kt}
+res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1\}}{D_{l2,k}}})
+\newline
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
+```
 
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+Similarly, removing both l2 from the first summation and l1 from the second summation doesn't actually change the result. The first summation will add `{kt} D_{l1,l2}` but the second summation will remove `{kt} D_{l1,l2}`, resulting in an overall contribution of 0. If the cost of removing those terms from their respective summations is higher than the cost of keeping them in, you might as well not remove them...
 
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+```{kt}
+res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S}{D_{l2,k}}})
+\newline
+len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
+\newline
+len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
+```
 
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+```{output}
+ch7_code/src/phylogeny/FindNeighbourLimbLengths_Optimized.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
-
-TODO: ADD CODE THEN MAYBE SPLIT THIS UP INTO TWO ALGORITHMS (AVERAGE ALGORITHM VS CACHE ALGORITHM)
+```{ch7}
+phylogeny.FindNeighbourLimbLengths_Optimized
+1
+2
+[0,  13, 21, 21, 22, 22]
+[13, 0,  12, 12, 13, 13]
+[21, 12, 0,  20, 21, 21]
+[21, 12, 20, 0,  7,  13]
+[22, 13, 21, 7,  0,  14]
+[22, 13, 21, 13, 14, 0 ]
+```
 
 ### Attach Neighbours to Tree
 
