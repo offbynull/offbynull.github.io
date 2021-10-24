@@ -6429,6 +6429,16 @@ Note how the distance matrix has the distance for each pair slotted twice, mirro
 Just to make it explicit: The ultimate point of this section is to work backwards from a distance matrix to a phylogenetic tree (essentially the concept of phylogeny -- inferring evolutionary history of a set of known / present-day organisms based on how different they are).
 ```
 
+```{note}
+The best way to move forward with this, assuming that you're brand new to it, is to first understand the following four sub-sections...
+
+* Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+* Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
+* Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+
+Then jump to the algorithm you want to learn (subsection) within Algorithms/Distance Phylogeny/Distance Matrix to Tree_TOPIC and work from the prerequisites to the algorithm. Otherwise all the sections in between comes off as disjointed because it's building the intermediate knowledge required for the final algorithms.
+```
+
 ### Tree to Additive Distance Matrix
 
 `{bm} /(Algorithms\/Distance Phylogeny\/Tree to Additive Distance Matrix)_TOPIC/`
@@ -7448,7 +7458,7 @@ In the above formulas, L's limb length is represented as dist(L,Lp). Except for 
     subgraph cluster_one {
      fontname="Courier-Bold"
      fontsize=10
-     label="path(v2,v5) + path(v2,v5)"
+     label="path(v2,v5) + path(v2,v4)"
      x_v0 [label=v0]
      x_v1 [label=v1]
      x_v2 [label=v2]
@@ -9831,16 +9841,16 @@ phylogeny.FindNeighbourLimbLengths_Optimized
 [22, 13, 21, 13, 14, 0 ]
 ```
 
-### Merge Neighbours
+### Bald and Merge Neighbours
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Bald and Merge Neighbours)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Bald_TOPIC
 Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
 ```
 
-**WHAT**:  Given a non-additive distance matrix (but close to be being additive) and two leaf nodes that are suspected to be neighbours, this algorithm merges them together. That is, the row/column for each neighbour is removed from the distance matrix and a new row/column is inserted that represents them as merged.
+**WHAT**: Given a non-additive distance matrix (but close to be being additive) and two leaf nodes that are suspected to be neighbours, this algorithm merges them together. That is, the row/column for each neighbour is removed from the distance matrix and a new row/column is inserted that represents them as merged.
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
@@ -9980,7 +9990,7 @@ graph G {
 | v5 | `{h}red (11+11)/2=11` |                   21  |                   13  |                   14  |                   0   |
 
 ```{note}
-Notice how when both v0 and v1 are balded, their distances to other leaf nodes are exactly the same. This will always be the case with neighbouring leaf nodes in an additive distance matrix. So, why average it instead of just taking the distinct value? Because averaging helps with understanding the part coming up.
+Notice how when both v0 and v1 are balded, their distances to other leaf nodes are exactly the same. So, why average it instead of just taking the distinct value? Because averaging helps with understanding the revised form of the algorithm explained in another section.
 ```
 
 ```{output}
@@ -10083,9 +10093,9 @@ v1
 [22, 14, 20, 12, 15, 0 ]
 ```
 
-#### Optimized Inverse Algorithm
+#### Inverse Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours\/Optimized Inverse Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours\/Inverse Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Merge Neighbours/Average Algorithm_TOPIC
@@ -10093,19 +10103,308 @@ Algorithms/Distance Phylogeny/Merge Neighbours/Average Algorithm_TOPIC
 
 **ALGORITHM**: 
 
-TODO: OPTIMIZATION EXPLAINER
+This algorithm flips around the idea of finding a limb length to perform the same thing as the averaging algorithm. Instead of finding a limb length, it finds everything in the path EXCEPT for the limb length.
 
-TODO: OPTIMIZATION EXPLAINER
+For example, consider the following simple tree and corresponding additive distance matrix ...
 
-TODO: OPTIMIZATION EXPLAINER
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_one {
+  label="original"
+  v0_x -- i0_x [label=11]
+  v1_x -- i0_x [label=2]
+  v2_x -- i0_x [label=10]
+  i0_x -- i1_x [label=4]
+  i1_x -- i2_x [label=3]
+  i2_x -- v3_x [label=3]
+  i2_x -- v4_x [label=4]
+  i1_x -- v5_x [label=7]
+  v0_x [label=v0]
+  v1_x [label=v1]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
 
-TODO: OPTIMIZATION EXPLAINER
+|    | v0 | v1 | v2 | v3 | v4 | v5 |
+|----|----|----|----|----|----|----|
+| v0 | 0  | 13 | 21 | 21 | 22 | 22 |
+| v1 | 13 | 0  | 12 | 12 | 13 | 13 |
+| v2 | 21 | 12 | 0  | 20 | 21 | 21 |
+| v3 | 21 | 12 | 20 | 0  | 7  | 13 |
+| v4 | 22 | 13 | 21 | 7  | 0  | 14 |
+| v5 | 22 | 13 | 21 | 13 | 14 | 0  |
 
- * len(v0) = 0.5 * (dist(v0,v1) + dist(v0,v3) - dist(v1,v3)) = 0.5 * (13 + 21 - 12) = 11
- * len(v1) = 0.5 * (dist(v1,v0) + dist(v1,v3) - dist(v0,v3)) = 0.5 * (13 + 12 - 21) = 2
- * balded_dist(v0,v5) = dist(v0,v3) - len(v0) = 21 - 11 = 10
- * balded_dist(v1,v5) = dist(v1,v3) - len(v1) = 11 - 2 = 10
- * merged(v0,v1) to v3 = (10 + 10) / 2 = 10
+Assume that you hadn't already seen the tree but somehow already knew that v0 and v1 are neighbours. Consider what happens when you use the standard limb length algorithm to find v0's limb length from v3 ...
+
+ * len(v0) = (dist(v0,v1) + dist(v0,v3) - dist(v1,v3)) / 2
+ * len(v0) = (13 + 21 - 12) / 2
+ * len(v0) = 11
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_three {
+  label="(path(v0,v1) + path(v0,v3) - path(v1,v3)) / 2"
+  v0_z -- i0_z [label=" ", color="blue", penwidth="2.5"]
+  v1_z -- i0_z [label=" "]
+  v2_z -- i0_z [label=" "]
+  i0_z -- i1_z [label=" "]
+  i1_z -- i2_z [label=" "]
+  i2_z -- v3_z [label=" "]
+  i2_z -- v4_z [label=" "]
+  i1_z -- v5_z [label=" "]
+  v0_z [label=v0]
+  v1_z [label=v1]
+  v2_z [label=v2]
+  v3_z [label=v3]
+  v4_z [label=v4]
+  v5_z [label=v5]
+  i0_z [label=i0]
+  i1_z [label=i1]
+  i2_z [label=i2]
+  i2_z [label=i2]
+  i1_z [label=i1]
+ }
+ subgraph cluster_two {
+  label="path(v0,v1) + path(v0,v3) - path(v1,v3)"
+  v0_y -- i0_y [color="blue:invis:blue", penwidth="2.5"]
+  v1_y -- i0_y [label=" "]
+  v2_y -- i0_y [label=" "]
+  i0_y -- i1_y [label=" "]
+  i1_y -- i2_y [label=" "]
+  i2_y -- v3_y [label=" "]
+  i2_y -- v4_y [label=" "]
+  i1_y -- v5_y [label=" "]
+  v0_y [label=v0]
+  v1_y [label=v1]
+  v2_y [label=v2]
+  v3_y [label=v3]
+  v4_y [label=v4]
+  v5_y [label=v5]
+  i0_y [label=i0]
+  i1_y [label=i1]
+  i2_y [label=i2]
+  i2_y [label=i2]
+  i1_y [label=i1]
+ }
+ subgraph cluster_one {
+  label="path(v0,v1) + path(v0,v3)"
+  v0_x -- i0_x [label=" ", color="blue:invis:blue", penwidth="2.5"]
+  v1_x -- i0_x [label=" ", color="blue", penwidth="2.5"]
+  v2_x -- i0_x [label=" "]
+  i0_x -- i1_x [label=" ", color="blue", penwidth="2.5"]
+  i1_x -- i2_x [label=" ", color="blue", penwidth="2.5"]
+  i2_x -- v3_x [label=" ", color="blue", penwidth="2.5"]
+  i2_x -- v4_x [label=" "]
+  i1_x -- v5_x [label=" "]
+  v0_x [label=v0]
+  v1_x [label=v1]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+By slightly tweaking the terms in the expression above, it's possible to instead find the distance between the neighbouring pair's parent (i1) and v3 ...
+
+ * inverse_len(v3) = (dist(v0,v3) + dist(v1,v3) - dist(v0,v1)) / 2
+ * inverse_len(v3) = (21 + 12 - 13) / 2
+ * inverse_len(v3) = 10 = dist(v0,v3) - len(v0) = dist(v1,v3) - len(v1)
+
+```{note}
+All the same distances are being used in this new computation, they're just being added / subtracted in a different order.
+```
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_three {
+  label="(dist(v0,v3) + dist(v1,v3) - dist(v0,v1)) / 2"
+  v0_z -- i0_z [label=" "]
+  v1_z -- i0_z [label=" "]
+  v2_z -- i0_z [label=" "]
+  i0_z -- i1_z [label=" ", color="blue", penwidth="2.5"]
+  i1_z -- i2_z [label=" ", color="blue", penwidth="2.5"]
+  i2_z -- v3_z [label=" ", color="blue", penwidth="2.5"]
+  i2_z -- v4_z [label=" "]
+  i1_z -- v5_z [label=" "]
+  v0_z [label=v0]
+  v1_z [label=v1]
+  v2_z [label=v2]
+  v3_z [label=v3]
+  v4_z [label=v4]
+  v5_z [label=v5]
+  i0_z [label=i0]
+  i1_z [label=i1]
+  i2_z [label=i2]
+  i2_z [label=i2]
+  i1_z [label=i1]
+ }
+ subgraph cluster_two {
+  label="dist(v0,v3) + dist(v1,v3) - dist(v0,v1)"
+  v0_y -- i0_y [label=" "]
+  v1_y -- i0_y [label=" "]
+  v2_y -- i0_y [label=" "]
+  i0_y -- i1_y [label=" ", color="blue:invis:blue", penwidth="2.5"]
+  i1_y -- i2_y [label=" ", color="blue:invis:blue", penwidth="2.5"]
+  i2_y -- v3_y [label=" ", color="blue:invis:blue", penwidth="2.5"]
+  i2_y -- v4_y [label=" "]
+  i1_y -- v5_y [label=" "]
+  v0_y [label=v0]
+  v1_y [label=v1]
+  v2_y [label=v2]
+  v3_y [label=v3]
+  v4_y [label=v4]
+  v5_y [label=v5]
+  i0_y [label=i0]
+  i1_y [label=i1]
+  i2_y [label=i2]
+  i2_y [label=i2]
+  i1_y [label=i1]
+ }
+ subgraph cluster_one {
+  label="dist(v0,v3) + dist(v1,v3)"
+  v0_x -- i0_x [label=" ", color="blue", penwidth="2.5"]
+  v1_x -- i0_x [label=" ", color="blue", penwidth="2.5"]
+  v2_x -- i0_x [label=" "]
+  i0_x -- i1_x [label=" ", color="blue:invis:blue", penwidth="2.5"]
+  i1_x -- i2_x [label=" ", color="blue:invis:blue", penwidth="2.5"]
+  i2_x -- v3_x [label=" ", color="blue:invis:blue", penwidth="2.5"]
+  i2_x -- v4_x [label=" "]
+  i1_x -- v5_x [label=" "]
+  v0_x [label=v0]
+  v1_x [label=v1]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+The inverse_len function above in abstracted form is 0.5 * (dist(L,X) + dist(N,X) - dist(L,N)), where ...
+
+ * L and N are neighbours.
+ * X is a leaf node that isn't L or N.
+
+Note that the distance calculate by inverse_len example above is exactly the same distance you'd get for v3 when balding and merging v0 and v1 using the averaging algorithm. That is, instead of using the averaging algorithm to bald and merge the neighbouring pair, you can just inject inverse_len's result for each leaf node into the distance matrix and remove the neighbouring pair.
+
+The inverse_len for leaf node ...
+
+ * v2: 0.5 * (dist(v0,v2) + dist(v1,v2) - dist(v0,v1)) = 0.5 * (21 + 12 - 13) = 10
+ * v3: 0.5 * (dist(v0,v3) + dist(v1,v3) - dist(v0,v1)) = 0.5 * (21 + 12 - 13) = 10
+ * v4: 0.5 * (dist(v0,v4) + dist(v1,v4) - dist(v0,v1)) = 0.5 * (22 + 13 - 13) = 11
+ * v5: 0.5 * (dist(v0,v5) + dist(v1,v5) - dist(v0,v1)) = 0.5 * (22 + 13 - 13) = 11
+
+|    |             M            |             v2           |            v3            |             v4           |            v5            |
+|----|--------------------------|--------------------------|--------------------------|--------------------------|--------------------------|
+| M  | `{h}red 0 `              | `{h}red (21+12-13)/2=10` | `{h}red (21+12-13)/2=10` | `{h}red (21+12-13)/2=10` | `{h}red (21+12-13)/2=10` |
+| v2 | `{h}red (21+12-13)/2=10` |                      0   |                      20  |                      21  |                      21  |
+| v3 | `{h}red (21+12-13)/2=10` |                      20  |                      0   |                      7   |                      13  |
+| v4 | `{h}red (21+12-13)/2=10` |                      21  |                      7   |                      0   |                      14  |
+| v5 | `{h}red (22+13-13)/2=11` |                      21  |                      13  |                      14  |                      0   |
+
+```{dot}
+graph G {
+ graph[rankdir=LR]
+ node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+ edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
+ ranksep=0.25
+ fontname="Courier-Bold"
+ fontsize=10
+ subgraph cluster_one {
+  label="v0 and v1 balded and merged"
+  M_x -- i0_x [label=0, style=dashed]
+  v2_x -- i0_x [label=10]
+  i0_x -- i1_x [label=4]
+  i1_x -- i2_x [label=3]
+  i2_x -- v3_x [label=3]
+  i2_x -- v4_x [label=4]
+  i1_x -- v5_x [label=7]
+  M_x [label=M]
+  v2_x [label=v2]
+  v3_x [label=v3]
+  v4_x [label=v4]
+  v5_x [label=v5]
+  i0_x [label=i0]
+  i1_x [label=i1]
+  i2_x [label=i2]
+  i2_x [label=i2]
+  i1_x [label=i1]
+ }
+}
+```
+
+In fact, inverse_len is just the simplified expression form of the averaging algorithm. Consider the steps you have to go through for each leaf node to bald and merge the neighbouring pair v0 and v1 using the averaging algorithm. For example, to figure out the balded distance between v3 and the merged node, the steps are ...
+
+`{bm-disable} 3'`
+
+ 1. Get v3's view of v0's limb length:
+ 
+    len(v0) = 0.5 * (dist(v0,v1) + dist(v0,v3) - dist(v1,v3))
+
+ 2. Get v3's view of v1's limb length:
+ 
+    len(v1) = 0.5 * (dist(v1,v0) + dist(v1,v3) - dist(v0,v3))
+
+ 3. Bald v0 for v3 using step 1's result:
+ 
+    bald_dist(v0,v5) = dist(v0,v3) - len(v0)
+
+ 4. Bald v1 for v3 using step 2's result:
+ 
+    bald_dist(v1,v5) = dist(v1,v3) - len(v1)
+
+ 5. Average results from step 3 and 4 to produce the merged node's distance for v3:
+ 
+    merge(v0,v1) = (bald_dist(v0,v5) + bald_dist(v1,v5)) / 2
+
+`{bm-enable} 3'`
+
+Consider what happens when you combine all of the above steps together as a single expression ...
+
+```{kt}
+\frac{D_{v0,v3} - (0.5 \cdot (D_{v0,v1} + D_{v0,v3} - D_{v1,v3})) + D_{v1,v3} - (0.5 \cdot (D_{v1,v0} + D_{v1,v3} - D_{v0,v3}))}{2}
+```
+
+Simplifying that expression results in ...
 
 ```{kt}
 \frac{D_{v0,v3} - (0.5 \cdot (D_{v0,v1} + D_{v0,v3} - D_{v1,v3})) + D_{v1,v3} - (0.5 \cdot (D_{v1,v0} + D_{v1,v3} - D_{v0,v3}))}{2}
@@ -10123,26 +10422,116 @@ TODO: OPTIMIZATION EXPLAINER
 \frac{D_{v0,v3} + D_{v1,v3} - D_{v1,v0}}{2}
 ```
 
+The simplified form of the expression is exactly the computation that the inverse_len example ran for v3 ...
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+ * inverse_len(v3) = (dist(v0,v3) + dist(v1,v3) - dist(v0,v1)) / 2
+ * inverse_len(v3) = (21 + 12 - 13) / 2
+ * inverse_len(v3) = 10 = dist(v0,v3) - len(v0) = dist(v1,v3) - len(v1)
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+Since this algorithm is doing the same thing as the averaging algorithm, it'll work on non-additive distance matrices in the exact same way as the averaging algorithm. It's just the averaging algorithm in simplified / optimized form. For example, the following non-additive distance matrix is a slightly tweaked version of the additive distance matrix in the initial example where v0 and v1 are neighbours...
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+|    | v0 | v1 | v2 | v3 | v4 | v5 |
+|----|----|----|----|----|----|----|
+| v0 | 0  | 14 | 22 | 20 | 23 | 22 |
+| v1 | 14 | 0  | 12 | 10 | 12 | 14 |
+| v2 | 22 | 12 | 0  | 20 | 22 | 20 |
+| v3 | 20 | 10 | 20 | 0  | 8  | 12 |
+| v4 | 23 | 12 | 22 | 8  | 0  | 15 |
+| v5 | 22 | 14 | 20 | 12 | 15 | 0  |
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+Assuming v0 and v1 are still neighbours, the merged distance for ...
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+ * v2: 0.5 * (dist(v0,v2) + dist(v1,v2) - dist(v0,v1)) = 0.5 * (22 + 12 - 14) = 10
+ * v3: 0.5 * (dist(v0,v3) + dist(v1,v3) - dist(v0,v1)) = 0.5 * (20 + 10 - 14) = 8
+ * v4: 0.5 * (dist(v0,v4) + dist(v1,v4) - dist(v0,v1)) = 0.5 * (23 + 12 - 14) = 10.5
+ * v5: 0.5 * (dist(v0,v5) + dist(v1,v5) - dist(v0,v1)) = 0.5 * (22 + 14 - 14) = 11
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+|    |             M              |             v2           |            v3            |             v4             |            v5            |
+|----|----------------------------|--------------------------|--------------------------|----------------------------|--------------------------|
+| M  | `{h}red 0 `                | `{h}red (22+12-14)/2=10` | `{h}red (20+10-14)/2=8`  | `{h}red (23+12-14)/2=10.5` | `{h}red (22+14-14)/2=11` |
+| v2 | `{h}red (22+12-14)/2=10`   |                      0   |                      20  |                      22    |                      20  |
+| v3 | `{h}red (20+10-14)/2=8`    |                      20  |                      0   |                      8     |                      12  |
+| v4 | `{h}red (23+12-14)/2=10.5` |                      22  |                      8   |                      0     |                      15  |
+| v5 | `{h}red (22+14-14)/2=11`   |                      20  |                      12  |                      15    |                      0   |
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+```{output}
+ch7_code/src/phylogeny/MergeNeighbours_Optimized.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+```{ch7}
+phylogeny.MergeNeighbours_Optimized
+v0
+v1
+[0 , 14, 22, 20, 23, 22]
+[14, 0 , 12, 10, 12, 14]
+[22, 12, 0 , 20, 22, 20]
+[20, 10, 20, 0 , 8 , 12]
+[23, 12, 22, 8 , 0 , 15]
+[22, 14, 20, 12, 15, 0 ]
+```
 
-TODO: ADD INVERSE LIMB LENGTH EXPLAINER
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
 
-### Un-Merge Neighbours
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
+TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
+
 
 ### Distance Matrix to Tree
 
@@ -10490,8 +10879,9 @@ The book is inconsistent about whether simple trees can have internal edges of w
 `{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Neighbour Joining Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 Algorithms/Distance Phylogeny/Find Neighbours_TOPIC
+Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths_TOPIC
+Algorithms/Distance Phylogeny/Bald and Merge Neighbours_TOPIC
 ```
 
 **ALGORITHM**:

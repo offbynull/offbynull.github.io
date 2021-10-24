@@ -1,0 +1,1 @@
+<span style="background-color: red; color: white; padding: 3px">(20+10-14)/2=8</span>
