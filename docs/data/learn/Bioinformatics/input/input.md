@@ -9606,7 +9606,7 @@ graph G {
 
 Recall that to find the limb length for L, the standard limb length algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two _neighbouring_ leaf nodes, that test isn't required here. The path from L's neighbour to every other node always travels over L's parent.
 
-Since the path from L's neighbour to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate limb length: 0.5 * (dist(L,N) + dist(L,X) + dist(N,X)),  where ...
+Since the path from L's neighbour to every other node always travels over L's parent, the core computation from the standard algorithm is performed multiple times and averaged to produce an approximate limb length: 0.5 * (dist(L,N) + dist(L,X) - dist(N,X)),  where ...
 
  * N is L's neighbour.
  * X is a leaf node that isn't L or N.
@@ -9615,6 +9615,10 @@ The averaging makes it so that if the input distance matrix were ...
 
  * additive, it'd produce the correct limb length.
  * non-additive, it'd approximate a limb length that's probably good enough (assuming the distance matrix is close to being additive).
+
+```{note}
+Still confused? Think about it like this: When the distance matrix is non-additive, each X has a different "view" of what the limb length should be. You're averaging their views to get a single limb length value.
+```
 
 ```{output}
 ch7_code/src/phylogeny/FindNeighbourLimbLengths.py
@@ -9722,7 +9726,7 @@ The above formula calculates the limb length for l1. To instead find the formula
 
 ```{kt}
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}} - \sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}))
-\newline
+\\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l2,l1} + \frac{1}{n-2} \cdot (\sum_{k \isin S-\{l2,l1\}}{D_{l2,k}} - \sum_{k \isin S-\{l2,l1\}}{D_{l1,k}}))
 ```
 
@@ -9730,7 +9734,7 @@ Note how the two are almost exactly the same. `{kt} D_{l1,l2} = D_{l2,l1}`, and 
 
 ```{kt}
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
-\newline
+\\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}} - \textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}}))
 ```
 
@@ -9770,7 +9774,7 @@ After this re-organization, the two match up almost exactly. The only difference
 
 ```{kt}
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
-\newline
+\\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l2,l1\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l2,l1\}}{D_{l2,k}}}))
 ```
 
@@ -9778,9 +9782,9 @@ The point of this optimization is that the summation calculation only need to be
 
 ```{kt}
 res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}})
-\newline
+\\[0.5em]
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
-\newline
+\\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 ```
 
@@ -9793,9 +9797,9 @@ If the cost of removing those terms from their respective summations is higher t
 
 ```{kt}
 res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1\}}{D_{l2,k}}})
-\newline
+\\[0.5em]
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
-\newline
+\\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 ```
 
@@ -9803,9 +9807,9 @@ Similarly, removing both l2 from the first summation and l1 from the second summ
 
 ```{kt}
 res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S}{D_{l2,k}}})
-\newline
+\\[0.5em]
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
-\newline
+\\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 ```
 
@@ -9832,13 +9836,17 @@ phylogeny.FindNeighbourLimbLengths_Optimized
 `{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 Algorithms/Distance Phylogeny/Bald_TOPIC
+Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
 ```
 
 **WHAT**:  Given a non-additive distance matrix (but close to be being additive) and two leaf nodes that are suspected to be neighbours, this algorithm merges them together. That is, the row/column for each neighbour is removed from the distance matrix and a new row/column is inserted that represents them as merged.
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
+
+#### Average Algorithm
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours\/Average Algorithm)_TOPIC/`
 
 **ALGORITHM**: 
 
@@ -9930,7 +9938,7 @@ graph G {
 | v4 | `{h}red 11` | `{h}red 11` |         21  |         7   |         0   |         14  |
 | v5 | `{h}red 11` | `{h}red 11` |         21  |         13  |         14  |         0   |
 
-Merging together balded v0 and balded v1 is done by iterating over the other leaf nodes and averaging the distances between that leaf node and the neighbouring leaf nodes (e.g. the merged distance to v2 is calculated as dist(v0,v2) + dist(v1,v2) / 2)...
+Merging together balded v0 and balded v1 is done by iterating over the other leaf nodes and averaging their balded distances (e.g. the merged distance to v2 is calculated as dist(v0,v2) + dist(v1,v2) / 2)...
 
 ```{dot}
 graph G {
@@ -9972,7 +9980,7 @@ graph G {
 | v5 | `{h}red (11+11)/2=11` |                   21  |                   13  |                   14  |                   0   |
 
 ```{note}
-Notice how when both v0 and v1 are balded, their distances to other leaf nodes are exactly the same. This will always be the case with neighbouring leaf nodes in an additive distance matrix. So why average it out instead of just taking the distinct value? Averaging helps with understanding the part coming up.
+Notice how when both v0 and v1 are balded, their distances to other leaf nodes are exactly the same. This will always be the case with neighbouring leaf nodes in an additive distance matrix. So, why average it instead of just taking the distinct value? Because averaging helps with understanding the part coming up.
 ```
 
 ```{output}
@@ -9993,114 +10001,111 @@ v1
 [22, 13, 21, 13, 14, 0 ]
 ```
 
-The problem with the above algorithm is that balding a limb can't be done on a non-additive distance matrix. That is, since a tree doesn't exist for a non-additive distance matrix, it's impossible to get a definitive limb length to use for balding.
-
-Recall that to find the limb length for L, the standard limb length algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two _neighbouring_ leaf nodes, that test isn't required here. The path from L's neighbour to every other node always travels over L's parent. For example, since v1 and v2 are neighbours, they share the same parent node, meaning that the ...
-
- * path from v1 to any other leaf node travels over v2's parent.
- * path from v2 to any other leaf node travels over v1's parent.
-
-```{dot}
-graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- ranksep=0.25
- subgraph cluster_one {
-  fontname="Courier-Bold"
-  fontsize=10
-  label="path from v1 to all other nodes"
-  v0_x -- i0_x [label=" ", penwidth=2.5, color="#ff0300"]
-  v1_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00:invis:#42c000:invis:#818100:invis:#c04200:invis:#ff0300"]
-  v2_x -- i0_x [label=" ", penwidth=2.5, color="#03ff00"]
-  i0_x -- i1_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100:invis:#c04200"]
-  i1_x -- i2_x [label=" ", penwidth=2.5, color="#42c000:invis:#818100"]
-  i2_x -- v3_x [label=" ", penwidth=2.5, color="#42c000"]
-  i2_x -- v4_x [label=" ", penwidth=2.5, color="#818100"]
-  i1_x -- v5_x [label=" ", penwidth=2.5, color="#c04200"]
-  v0_x [label=v0, style=filled, fillcolor="#ff0300"]
-  v1_x [label=v1, penwidth=5]
-  v5_x [label=v5, style=filled, fillcolor="#c04200"]
-  v4_x [label=v4, style=filled, fillcolor="#818100"]
-  v3_x [label=v3, style=filled, fillcolor="#42c000"]
-  v2_x [label=v2, style=filled, fillcolor="#03ff00", penwidth=5]
-  i0_x [label=i0, style=filled, fillcolor="gray"]
-  i1_x [label=i1]
-  i2_x [label=i2]
-  i2_x [label=i2]
- }
-}
-```
-
-Since the path from L's neighbour to every other node always travels over L's parent, it's possible to bald and merge the neighbours _for each leaf node in the distance matrix_. That is, based on the core computation from the standard limb length algorithm, each leaf node in the non-additive distance matrix has its own view of what the limb length should be:
-
- * len(l1) = 0.5 * (dist(l1,l2) + dist(l1,x) - dist(l2,x))
- * len(l2) = 0.5 * (dist(l2,l1) + dist(l2,x) - dist(l1,x))
-
-where ...
-
- * l1 and l2 are neighbours.
- * x is a leaf node that isn't l1 or l2.
-
-By computing both and averaging, you get an approximation for what the limb length should be for the merged node. For example, For example, v0 and v1 are neighbours in the following simple tree...
-
-```{dot}
-graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- ranksep=0.25
- fontname="Courier-Bold"
- fontsize=10
- subgraph cluster_one {
-  label="original"
-  v0_x -- i0_x [label=11]
-  v1_x -- i0_x [label=2]
-  v2_x -- i0_x [label=10]
-  i0_x -- i1_x [label=4]
-  i1_x -- i2_x [label=3]
-  i2_x -- v3_x [label=3]
-  i2_x -- v4_x [label=4]
-  i1_x -- v5_x [label=7]
-  v0_x [label=v0]
-  v1_x [label=v1]
-  v2_x [label=v2]
-  v3_x [label=v3]
-  v4_x [label=v4]
-  v5_x [label=v5]
-  i0_x [label=i0]
-  i1_x [label=i1]
-  i2_x [label=i2]
-  i2_x [label=i2]
-  i1_x [label=i1]
- }
-}
-```
+The problem with the above algorithm is that balding a limb can't be done on a non-additive distance matrix. That is, since a tree doesn't exist for a non-additive distance matrix, it's impossible to get a definitive limb length to use for balding. In such cases, a limb length for each path being balded can be approximated. For example, the following non-additive distance matrix is a slightly tweaked version of the additive distance matrix in the initial example where v0 and v1 are neighbours...
 
 |    | v0 | v1 | v2 | v3 | v4 | v5 |
 |----|----|----|----|----|----|----|
-| v0 | 0  | 13 | 21 | 21 | 22 | 22 |
-| v1 | 13 | 0  | 12 | 12 | 13 | 13 |
-| v2 | 21 | 12 | 0  | 20 | 21 | 21 |
-| v3 | 21 | 12 | 20 | 0  | 7  | 13 |
-| v4 | 22 | 13 | 21 | 7  | 0  | 14 |
-| v5 | 22 | 13 | 21 | 13 | 14 | 0  |
+| v0 | 0  | 14 | 22 | 20 | 23 | 22 |
+| v1 | 14 | 0  | 12 | 10 | 12 | 14 |
+| v2 | 22 | 12 | 0  | 20 | 22 | 20 |
+| v3 | 20 | 10 | 20 | 0  | 8  | 12 |
+| v4 | 23 | 12 | 22 | 8  | 0  | 15 |
+| v5 | 22 | 14 | 20 | 12 | 15 | 0  |
+
+`{bm-disable} 3'`
+`{bm-disable} 5'`
+
+Assuming v0 and v1 are still neighbours, the limb length for v0 based on ...
+
+ * v2's view: 0.5 * (dist(v0,v1) + dist(v0,v2) - dist(v1,v2)) = 0.5 * (14 + 22 - 12) = 12
+ * v3's view: 0.5 * (dist(v0,v1) + dist(v0,v3) - dist(v1,v3)) = 0.5 * (14 + 20 - 10) = 12
+ * v4's view: 0.5 * (dist(v0,v1) + dist(v0,v4) - dist(v1,v4)) = 0.5 * (14 + 23 - 12) = 12.5
+ * v5's view: 0.5 * (dist(v0,v1) + dist(v0,v5) - dist(v1,v5)) = 0.5 * (14 + 22 - 14) = 11
+
+Similarly, assuming v0 and v1 are still neighbours, the limb length for v1 based on ...
+
+ * v2's view: 0.5 * (dist(v0,v1) + dist(v1,v2) - dist(v0,v2)) = 0.5 * (14 + 12 - 22) = 2
+ * v3's view: 0.5 * (dist(v0,v1) + dist(v1,v3) - dist(v0,v3)) = 0.5 * (14 + 10 - 20) = 2
+ * v4's view: 0.5 * (dist(v0,v1) + dist(v1,v4) - dist(v0,v4)) = 0.5 * (14 + 12 - 23) = 1.5
+ * v5's view: 0.5 * (dist(v0,v1) + dist(v1,v5) - dist(v0,v5)) = 0.5 * (14 + 14 - 22) = 3
+
+`{bm-enable} 3'`
+`{bm-enable} 5'`
+
+Note how the limb lengths above are very close to the corresponding limb lengths in the original un-tweaked additive distance matrix: 12 for v0, 2 for v1.
+
+```{note}
+Confused where the above computations are coming from? See "view" of a limb length is described in Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC.
+```
+
+To bald a limb in the distance matrix, each leaf node needs its view of the limb length subtracted from its distance. Balding v0 and v1 results in ...
+
+|    |          v0           |          v1          |        v2         |        v3        |          v4           |        v5         |
+|----|-----------------------|----------------------|-------------------|------------------|-----------------------|-------------------|
+| v0 | `{h}red 0 `           | `{h}red ?????`       | `{h}red 22-12=10` | `{h}red 20-12=8` | `{h}red 23-12.5=10.5` | `{h}red 22-11=11` |
+| v1 | `{h}red ?????`        | `{h}red 0 `          | `{h}red 12-2=10`  | `{h}red 10-2=8`  | `{h}red 12-1.5=10.5`  | `{h}red 14-3=11`  |
+| v2 | `{h}red 22-12=10`     | `{h}red 12-2=10`     |                0  |               20 |                    22 |                20 |
+| v3 | `{h}red 20-12=8`      | `{h}red 10-2=8`      |                20 |               0  |                    8  |                12 |
+| v4 | `{h}red 23-12.5=10.5` | `{h}red 12-1.5=10.5` |                22 |               8  |                    0  |                15 |
+| v5 | `{h}red 22-11=11`     | `{h}red 14-3=11`     |                20 |               12 |                    15 |                0  |
+
+Merging together v0 and v1 happens just as it did before, by averaging together the balded distances for each leaf node...
+
+|    |             M               |        v2         |        v3        |          v4           |        v5         |
+|----|-----------------------------|-------------------|------------------|-----------------------|-------------------|
+| M  | `{h}red 0 `                 | `{h}red 22-12=10` | `{h}red 20-12=8` | `{h}red 23-12.5=10.5` | `{h}red 22-11=11` |
+| v2 | `{h}red (10+10)/2=10`       |                0  |               20 |                    22 |                20 |
+| v3 | `{h}red (8+8)/2=8`          |                20 |               0  |                    8  |                12 |
+| v4 | `{h}red (10.5+10.5)/2=10.5` |                22 |               8  |                    0  |                15 |
+| v5 | `{h}red (11+11)/2=11`       |                20 |               12 |                    15 |                0  |
+
+Note that dist(v0,v1) is unknown in the balded matrix (denoted by a bunch of question marks). That doesn't matter because dist(v0,v1) merges into dist(M,M), which must always be 0 (the distance from anything to itself is always 0).
+
+```{note}
+This algorithm approximates for non-additive distance matrices, but also produces the correct value for additive distance matrices.
+```
+
+```{output}
+ch7_code/src/phylogeny/MergeNeighbours.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.MergeNeighbours
+v0
+v1
+[0 , 14, 22, 20, 23, 22]
+[14, 0 , 12, 10, 12, 14]
+[22, 12, 0 , 20, 22, 20]
+[20, 10, 20, 0 , 8 , 12]
+[23, 12, 22, 8 , 0 , 15]
+[22, 14, 20, 12, 15, 0 ]
+```
+
+#### Optimized Inverse Algorithm
+
+`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours\/Optimized Inverse Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny/Merge Neighbours/Average Algorithm_TOPIC
+```
+
+**ALGORITHM**: 
+
+TODO: OPTIMIZATION EXPLAINER
+
+TODO: OPTIMIZATION EXPLAINER
+
+TODO: OPTIMIZATION EXPLAINER
+
+TODO: OPTIMIZATION EXPLAINER
 
  * len(v0) = 0.5 * (dist(v0,v1) + dist(v0,v3) - dist(v1,v3)) = 0.5 * (13 + 21 - 12) = 11
  * len(v1) = 0.5 * (dist(v1,v0) + dist(v1,v3) - dist(v0,v3)) = 0.5 * (13 + 12 - 21) = 2
  * balded_dist(v0,v5) = dist(v0,v3) - len(v0) = 21 - 11 = 10
  * balded_dist(v1,v5) = dist(v1,v3) - len(v1) = 11 - 2 = 10
  * merged(v0,v1) to v3 = (10 + 10) / 2 = 10
-
-TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
-
-TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
-
-TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
-
-TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
-
-TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELOW
 
 ```{kt}
 \frac{D_{v0,v3} - (0.5 \cdot (D_{v0,v1} + D_{v0,v3} - D_{v1,v3})) + D_{v1,v3} - (0.5 \cdot (D_{v1,v0} + D_{v1,v3} - D_{v0,v3}))}{2}
@@ -10117,19 +10122,6 @@ TODO: FIX THE ABOVE DESCRIPTION, ADD CODE, THEN WALK THROUGH SIMPLIFICATION BELO
 \\[0.5em]
 \frac{D_{v0,v3} + D_{v1,v3} - D_{v1,v0}}{2}
 ```
-
-TODO: ADD CODE EXAMPLE HERE
-
-TODO: ADD CODE EXAMPLE HERE
-
-TODO: ADD CODE EXAMPLE HERE
-
-TODO: ADD CODE EXAMPLE HERE
-
-TODO: ADD CODE EXAMPLE HERE
-
-TODO: ADD CODE EXAMPLE HERE
-
 
 
 TODO: ADD INVERSE LIMB LENGTH EXPLAINER
