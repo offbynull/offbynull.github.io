@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Concepts/Replica Sets_TOPIC
- * Concepts/Deployments_TOPIC
+ * Resources/Pods/Ports_TOPIC
 
 </div>
 

@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Concepts/Pods_TOPIC
- * Concepts/Deployments_TOPIC
+ * Resources/Pods/Probes_TOPIC
 
 </div>
 

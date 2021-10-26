@@ -220,7 +220,12 @@ podA
 </g>
 <g>
 <text x="297" y="60">
-blueprint
+pod
+</text>
+</g>
+<g>
+<text x="329" y="60">
+template
 </text>
 </g>
 <g>

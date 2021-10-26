@@ -11844,7 +11844,7 @@ graph_show
 # Ideas
 
  * CPU optimized C++ global alignment - Simple global alignment is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.
- * GPU optimized C++ global alignment - Simple global alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well.
+ * GPU optimized C++ global alignment - Simple global alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well. (divide and conquer might be a good idea because it'll work on super fat sequences)
  * GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.
  * Deep-learning Regulatory Motif Detection - Try training a deep learning model to "find" regulatory motifs for new transcription factors based on past training data.
 

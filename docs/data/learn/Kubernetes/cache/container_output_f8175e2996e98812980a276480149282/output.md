@@ -2,7 +2,8 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Concepts/Containers_TOPIC
+ * Resources/Pods/Volumes_TOPIC
+ * Configuration Map_TOPIC
 
 </div>
 

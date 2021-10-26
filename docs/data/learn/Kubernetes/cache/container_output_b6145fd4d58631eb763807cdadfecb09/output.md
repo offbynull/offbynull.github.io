@@ -2,8 +2,9 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Concepts/Pods_TOPIC
- * Concepts/Nodes_TOPIC
+ * Introduction_TOPIC
+ * Introduction/Configuration_TOPIC
+ * Introduction/Labels_TOPIC
 
 </div>
 

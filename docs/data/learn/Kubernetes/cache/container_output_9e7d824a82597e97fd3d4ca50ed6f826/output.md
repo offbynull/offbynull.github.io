@@ -2,7 +2,8 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Concepts/Pods_TOPIC
+ * Resources/Pods/Configuration_TOPIC
+ * Resources/Pods/Volumes_TOPIC
 
 </div>
 

@@ -2,8 +2,8 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Concepts/Services_TOPIC
- * Concepts/Replica Sets_TOPIC
+ * Resources/Replica Sets_TOPIC
+ * Resources/Deployments_TOPIC
 
 </div>
 

@@ -15597,7 +15597,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <a name="H_Ideas"></a><h1>Ideas</h1>
 <ul>
 <li>CPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</li>
-<li>GPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well.</li>
+<li>GPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well. (divide and conquer might be a good idea because it'll work on super fat <a href="#BM_(sequence)%2Fi">sequence</a>s)</li>
 <li>GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</li>
 <li>Deep-learning <a href="#BM_(regulatory%20motif)%2Fi">Regulatory Motif</a> Detection - Try training a deep learning model to "find" <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>s for new <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s based on past training data.</li>
 </ul>
