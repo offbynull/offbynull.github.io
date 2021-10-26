@@ -331,7 +331,7 @@
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Kmers within hamming distance 1 of AAAA: {'AAGA', 'AGAA', 'AAAG', 'TAAA', 'AACA', 'AAAC', 'AAAT', 'GAAA', 'AATA', 'ACAA', 'ATAA', 'CAAA', 'AAAA'}</p>
+<p>Kmers within hamming distance 1 of AAAA: {'ATAA', 'AACA', 'AAAC', 'GAAA', 'ACAA', 'AAAT', 'CAAA', 'AAAG', 'AGAA', 'AAGA', 'AATA', 'TAAA', 'AAAA'}</p>
 </div>
 <p></p>
 <a name="H_Find%20Locations"></a><h3>Find Locations</h3>
@@ -463,12 +463,12 @@
 <p></p>
 <p>Top 5-mer frequencies for GGGACTGAACAAACAAATTTGGGAGGGCACGGGTTAAAGGAGATGATGATTCAAAGGGT:</p>
 <ul>
+<li>TGATC = 6 occurrences</li>
+<li>TTTAA = 6 occurrences</li>
 <li>GATCA = 6 occurrences</li>
 <li>CCCTT = 6 occurrences</li>
 <li>AAGGG = 6 occurrences</li>
 <li>TTAAA = 6 occurrences</li>
-<li>TGATC = 6 occurrences</li>
-<li>TTTAA = 6 occurrences</li>
 </ul>
 </div>
 <p></p>
@@ -544,16 +544,16 @@
 <ul>
 <li>KmerCluster(kmer='CAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AGAAAAAAA', start_index=0, occurrence_count=6)</li>
-<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=0, occurrence_count=6)</li>
+<li>KmerCluster(kmer='TAAAAAAAA', start_index=0, occurrence_count=6)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=0, occurrence_count=7)</li>
 <li>KmerCluster(kmer='GAAAAAAAA', start_index=1, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAGA', start_index=26, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAG', start_index=26, occurrence_count=7)</li>
-<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
-<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
 <li>KmerCluster(kmer='AAAAAAAAA', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAC', start_index=27, occurrence_count=6)</li>
+<li>KmerCluster(kmer='AAAAAAAAT', start_index=27, occurrence_count=6)</li>
 </ul>
 </div>
 <p></p>
@@ -1686,7 +1686,7 @@ SSSII
 <p>Searching for motif of k=5 and a max of 1 mismatches in the following...</p>
 <p>ATAAAGGGATA<br>ACAGAAATGAT<br>TGAAATAACCT</p>
 <p>Found the motif matrix...</p>
-<p>AAATG<br>AAATG<br>AAATG</p>
+<p>ATAAT<br>ATAAT<br>ATAAT</p>
 </div>
 <p></p>
 <a name="H_Median%20String%20Algorithm"></a><h4>Median String Algorithm</h4>
@@ -2135,7 +2135,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GCC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>GAG<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Gibbs%20Sampling%20Algorithm"></a><h4>Gibbs Sampling Algorithm</h4>
@@ -2209,7 +2209,7 @@ SSSII
 <p>AAATTGACGCAT<br>GACGACCACGTT<br>CGTCAGCGCCTG<br>GCTGAGCACCGG<br>AGTTCGGGACAG</p>
 <p>Running 1000 iterations...</p>
 <p>Best found the motif matrix...</p>
-<p>GAC<br>GAC<br>GTC<br>CAC<br>GAC</p>
+<p>GAC<br>GAC<br>GCC<br>GAG<br>GAC</p>
 </div>
 <p></p>
 <a name="H_Motif%20Matrix%20Hybrid%20Alphabet"></a><h3>Motif Matrix Hybrid Alphabet</h3>
@@ -2954,19 +2954,19 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <p><img src="dot_8ca9fb7886e86704dc01b1bffd1d6dd1.svg" alt="Dot diagram"></p>
 <p>... and the Hamiltonian paths are ...</p>
 <ul>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
+<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
+<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
+<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
-<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
-<li>TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA</li>
-<li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
-<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
-<li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
 <li>CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC</li>
+<li>GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT</li>
+<li>TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA</li>
 <li>AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG</li>
 <li>TTA -&gt; TAG -&gt; AGT -&gt; GTT -&gt; TTA -&gt; TAC -&gt; ACT -&gt; CTT</li>
 <li>TTA -&gt; TAC -&gt; ACT -&gt; CTT -&gt; TTA -&gt; TAG -&gt; AGT -&gt; GTT</li>
@@ -5847,7 +5847,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_5c6e77c49b93eebf11f5e64cb3d1a347.svg" alt="Dot diagram"></p>
+<p><img src="dot_000bacb11a1651241e16e505830ab31e.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -5905,7 +5905,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_48b69e21873e0b67d9382766e83886d1.svg" alt="Dot diagram"></p>
+<p><img src="dot_315426b869e6c4fb63ef68e48f851ab2.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; B -&gt; C -&gt; E</li>
@@ -6053,13 +6053,13 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="border:1px solid black;">
 <p></p>
 <p>Given the following graph...</p>
-<p><img src="dot_01caf0facea39f3fee0a33565989b99f.svg" alt="Dot diagram"></p>
+<p><img src="dot_178cd453d55fd535b5488d28b529a0c2.svg" alt="Dot diagram"></p>
 <p>... the path with the max weight between A and E ...</p>
 <ul>
 <li>Maximum path = A -&gt; C -&gt; E</li>
 <li>Maximum weight = 4.0</li>
 </ul>
-<p><img src="dot_b6cfa0fe433831c225dbd27408b18873.svg" alt="Dot diagram"></p>
+<p><img src="dot_8f5145677b3b43173a1c8ef136163426.svg" alt="Dot diagram"></p>
 <p>The edges in blue signify the incoming edge that was selected for that node.</p>
 </div>
 <p></p>
@@ -6096,7 +6096,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_e33c1b5f5ed8ef03e38c1362753fe428.svg" alt="Latex diagram"></p>
+<p><img src="latex_ff32c897627430505ba188703be1d05e.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6107,7 +6107,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <p>... is as follows...</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_9372e9ec6299195f19e107e1e362cdcd.svg" alt="Latex diagram"></p>
+<p><img src="latex_b15f446204c8f90af3fa526133e05a11.svg" alt="Latex diagram"></p>
 <p>NOTE: Each edge is labeled with the elements selected from the 1st sequence, 2nd sequence, and edge weight.</p>
 </div>
 <p></p>
@@ -6168,7 +6168,7 @@ G  0  0  0  1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_e7b389382ee6824b505f0b59f08c6d1f.svg" alt="Latex diagram"></p>
+<p><img src="latex_148a493a710b097feca4ff9287b8a20d.svg" alt="Latex diagram"></p>
 <pre><code>TAAT
 GA-T
 </code></pre>
@@ -6446,7 +6446,7 @@ GACGT
 </ol>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_665510f06b5813a8f29eae9bc12101be.svg" alt="Latex diagram"></p>
+<p><img src="latex_539aa4c9412be2f54aea834e08f31d2f.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>Insights #3 and #4 in the list above are the key for this algorithm. Consider an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> getting split down a column into two. The first half has edges traveling in the normal direction but the second half has its edges reversed...</p>
@@ -6454,7 +6454,7 @@ GACGT
 <p>Populate node weights for both halves. Then, pair up half 1's last column with half 2's first column. For each row in the pair, add together the node weights in that row. The row with the maximum sum is for a node that a maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> travels through (insight #4 above). That maximum sum will always end up being the weight of the sink node in the original non-split <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (insight #3 above).</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_f5edbeed2d67c47394d2d99952943017.svg" alt="Latex diagram"></p>
+<p><img src="latex_7306d547cf3d4eb48cb21caab56b4a60.svg" alt="Latex diagram"></p>
 </div>
 <p></p>
 <p>One way to think about what's happening above is that the algorithm is converging on to the same answer but at a different spot in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> (the same edge weights are being added). Normally the algorithm converges on to the bottom-right node of the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>. If it were to instead converge on the column just before, the answer would be the same, but the node's position in that column may be different -- it may be any node that ultimately drives to the bottom-right node.</p>
@@ -6796,7 +6796,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_8e9692b10814bcad12db97d13a5f379f.svg" alt="Latex diagram"></p>
+<p><img src="latex_3df63dfc0d5f411eb21b54ea671cbe69.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -6879,7 +6879,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_d987e561187d178bf2706461723535b3.svg" alt="Latex diagram"></p>
+<p><img src="latex_abd17c5b8aa2a4703a255c00e6c578ac.svg" alt="Latex diagram"></p>
 <pre><code>AG-AC
 AGAAC
 </code></pre>
@@ -7037,7 +7037,7 @@ GG-T
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_52e91cdd039406151b9b06de34eda695.svg" alt="Latex diagram"></p>
+<p><img src="latex_f7218e70493ad6c1fdceb71dda5eb519.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7120,7 +7120,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_1ce6e3b941e9bf33f1195608c98d027a.svg" alt="Latex diagram"></p>
+<p><img src="latex_734ca090b4f68670a15f7449773b9dc5.svg" alt="Latex diagram"></p>
 <pre><code>AGAC
 A-AC
 </code></pre>
@@ -7277,7 +7277,7 @@ TT-TTT
 </ul>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_717433881437c44c01386eb31810aaa2.svg" alt="Latex diagram"></p>
+<p><img src="latex_aeacfe8c6a66ecab6242374110af4cc7.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7360,7 +7360,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the local alignment is...</p>
-<p><img src="latex_6f05e1f57b7421015969d8f553170945.svg" alt="Latex diagram"></p>
+<p><img src="latex_b6d25589def0992460b5c0d95c9c1f17.svg" alt="Latex diagram"></p>
 <pre><code>GAA
 GAA
 </code></pre>
@@ -7627,7 +7627,7 @@ Score from indels using extended gap scoring:  -5   + -0.1 + -0.1 + -5   = -10.2
 <p>Each added edge represents a contiguous set of <a href="#BM_(indel)%2Fi">indel</a>s. Contiguous <a href="#BM_(indel)%2Fi">indel</a>s are penalized by choosing the normal <a href="#BM_(indel)%2Fi">indel</a> score for the first <a href="#BM_(indel)%2Fi">indel</a> in the list (e.g. score of -5), then all other <a href="#BM_(indel)%2Fi">indel</a>s are scored using a better <em>extended</em> <a href="#BM_(indel)%2Fi">indel</a> score (e.g. score of -0.1). As such, the maximum <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> will choose one of these contiguous <a href="#BM_(indel)%2Fi">indel</a> edges over individual <a href="#BM_(indel)%2Fi">indel</a> edges or poor substitution choices such as those in <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> / <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring matrices.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_ab8766eb59eacf9bd854f820dfee1f85.svg" alt="Latex diagram"></p>
+<p><img src="latex_730222afedc77c01943fc315e42992aa.svg" alt="Latex diagram"></p>
 <p>NOTE: Purple and red edges are extended indel edges.</p>
 </div>
 <p></p>
@@ -7713,9 +7713,9 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_73674a17b1d9db7559c366ce606d533e.svg" alt="Latex diagram"></p>
-<pre><code>TAGG----CGGAT
-TA--CCCCC--AT
+<p><img src="latex_fae3b6e18027cce31f274cf8759d3d2a.svg" alt="Latex diagram"></p>
+<pre><code>TA----GGCGGAT
+TACCCC--C--AT
 </code></pre>
 <p>Weight: 1.4999999999999998</p>
 </div>
@@ -7748,7 +7748,7 @@ TA--CCCCC--AT
 <p>The source node and sink node are at the top-left node and bottom-right node (respectively) of the diagonal layer.</p>
 <div style="border:1px solid black;">
 <p></p>
-<p><img src="latex_b6acb3eaebb339c56675caab36b7ad3a.svg" alt="Latex diagram"></p>
+<p><img src="latex_ee884a61370d303627cb798cd15bc48b.svg" alt="Latex diagram"></p>
 <p>NOTE: Orange edges are "free rides" from source / Purple edges are "free rides" to sink.</p>
 </div>
 <p></p>
@@ -7866,7 +7866,7 @@ G  -1  -1  -1   1
 
 </code></pre>
 <p>... the global alignment is...</p>
-<p><img src="latex_a41a9b45efcd7ea8c014551c98de4bad.svg" alt="Latex diagram"></p>
+<p><img src="latex_e3d930cac12ca600babd456891386935.svg" alt="Latex diagram"></p>
 <pre><code>TGGC----GG
 T--CCCCC--
 </code></pre>
@@ -8771,11 +8771,11 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Result...</p>
 <p><img src="genomicdotplot_c6498a2362a7e631585651f772932d3a.svg" alt="Genomic Dot Plot"></p>
 <ul>
+<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 11, 15), 'x': ('B0', 21, 25), 'type': 'NORMAL'}</li>
 <li>{'y': ('A0', 16, 20), 'x': ('B0', 14, 18), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 0, 4), 'x': ('B0', 28, 32), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 8, 12), 'x': ('B0', 27, 31), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 5, 9), 'x': ('B0', 0, 4), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -8878,11 +8878,10 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>Final synteny graph...</p>
 <p><img src="syntenygraphpost_cf5ef177eb7cd4bb5a185d50761cf7e9.svg" alt="Synteny Graph"></p>
 <ul>
-<li>{'y': ('A0', 883, 1018), 'x': ('B0', 957, 1104), 'type': 'NORMAL'}</li>
-<li>{'y': ('A0', 385, 453), 'x': ('B0', 862, 935), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>{'y': ('A0', 212, 364), 'x': ('B0', 233, 392), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 879, 1018), 'x': ('B0', 953, 1104), 'type': 'NORMAL'}</li>
+<li>{'y': ('A0', 384, 587), 'x': ('B0', 710, 936), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>{'y': ('A0', 661, 823), 'x': ('B0', 459, 628), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 530, 587), 'x': ('B0', 710, 771), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>{'y': ('A0', 212, 363), 'x': ('B0', 233, 391), 'type': 'NORMAL'}</li>
 </ul>
 </div>
 <p></p>
@@ -9168,14 +9167,14 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </li>
 <li>START
 <ul>
+<li>CE(C_h, D_t)</li>
+<li>SE(C_h, C_t)</li>
 <li>CE(B_h, C_t)</li>
 <li>SE(B_h, B_t)</li>
 <li>CE(A_h, B_t)</li>
 <li>SE(A_h, A_t)</li>
 <li>CE(A_t, D_h)</li>
 <li>SE(D_h, D_t)</li>
-<li>CE(C_h, D_t)</li>
-<li>SE(C_h, C_t)</li>
 </ul>
 </li>
 </ul>
@@ -9396,23 +9395,23 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <ul>
 <li>
 <p>Initial red_p_list=[['+A', '-B', '-C', '+D'], ['+E']]</p>
-<p><img src="dot_0afb466568831579c71a17748319c91c.svg" alt="Dot diagram"></p>
+<p><img src="dot_897226d2234aef0c3564387d3f0438de.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '-B', '-C', '-D'], ['+E']]</p>
-<p><img src="dot_7c23de80408280e1492e6ebd916942df.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-C', '+D'], ['+E']]</p>
+<p><img src="dot_99fb7bbbeb92ee0d4cd070244cf398c4.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-C', '-D'], ['+E']]</p>
-<p><img src="dot_eb53ed44237767f35e57862447b1560c.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-D', '+C'], ['+E']]</p>
+<p><img src="dot_d861cf60d293adaac49b9768348dee68.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-C', '-E', '-D']]</p>
-<p><img src="dot_ae72ee752f7452e4e71ffef8a739d846.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+A', '+B', '-D', '+C', '+E']]</p>
+<p><img src="dot_71045e440d2232f9af8d0f048c44b1ed.svg" alt="Dot diagram"></p>
 </li>
 <li>
-<p>red_p_list=[['+A', '+B', '-D'], ['+C', '+E']]</p>
-<p><img src="dot_d61917b72c768e414b2b86eb013b113d.svg" alt="Dot diagram"></p>
+<p>red_p_list=[['+C', '+E'], ['+A', '+B', '-D']]</p>
+<p><img src="dot_78d9644adba20b05ba3fb2d127adc01e.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <p>Recall that the breakpoint graph is undirected. A permutation may have been walked in either direction (clockwise vs counter-clockwise) and there are multiple nodes to start walking from. If the output looks like it's going backwards, that's just as correct as if it looked like it's going forward.</p>
@@ -12280,7 +12279,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_6f28556552893f1359a860ca61c3814d.svg" alt="Dot diagram"></p>
+<p><img src="dot_20a49c375885fbe5f3f1394a24712f80.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12579,7 +12578,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_f60f56e1bc24b84c33f664730b108c4b.svg" alt="Dot diagram"></p>
+<p><img src="dot_65781dec531ea83dd89a065eceb23e63.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14769,7 +14768,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_83bddd4b0277cda95c6082c32881effc.svg" alt="Dot diagram"></p>
+<p><img src="dot_90113383221c1b9be5e9e97ae2a8b3c3.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14921,7 +14920,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the tree generated by additive phylogeny is ...</p>
-<p><img src="dot_0f9faf3d3d83f19fdc633312562133f9.svg" alt="Dot diagram"></p>
+<p><img src="dot_b67a80001a5864ae570171cce1a5dbc4.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15125,31 +15124,31 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>Ori vicinity (min pos): 4719166</p>
 <p>In the ori vicinity, found clusters of k=9 (at least 3 occurrences in window of 500) in ... at...</p>
 <ul>
-<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGTGCTGG', start_index=9, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CCGCGCTGG', start_index=9, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCGGCGGTA', start_index=52, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCGGCGGT', start_index=53, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGAAGATC', start_index=98, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGGCGGTTC', start_index=160, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGCGGGT', start_index=161, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGCGGCT', start_index=161, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGAT', start_index=161, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGCGGCT', start_index=161, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGCGGGT', start_index=161, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=161, occurrence_count=4)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=162, occurrence_count=4)</li>
 <li>KmerCluster(kmer='ATCAGGCGG', start_index=163, occurrence_count=4)</li>
 <li>KmerCluster(kmer='CATCAGGCG', start_index=164, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCATCAGGC', start_index=165, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CGGCGATGG', start_index=199, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCGGTATG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGCGGTTCG', start_index=210, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GGCAGTACG', start_index=210, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CAGGCGGTT', start_index=212, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGC', start_index=213, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGA', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCAGGCGGT', start_index=213, occurrence_count=3)</li>
-<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='TCAGGCGGG', start_index=213, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTCAGGCGG', start_index=214, occurrence_count=3)</li>
+<li>KmerCluster(kmer='ATCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GTCAGGCGG', start_index=214, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGTCAGGCG', start_index=215, occurrence_count=3)</li>
@@ -15165,15 +15164,15 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>KmerCluster(kmer='ATCACCATT', start_index=500, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TCCTTTTTA', start_index=513, occurrence_count=3)</li>
 <li>KmerCluster(kmer='ATCCTTTTT', start_index=514, occurrence_count=3)</li>
-<li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GATCCTTAT', start_index=515, occurrence_count=3)</li>
+<li>KmerCluster(kmer='GATCCTTTT', start_index=515, occurrence_count=3)</li>
 <li>KmerCluster(kmer='GGATCCTTT', start_index=516, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CTGATCCTT', start_index=517, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGATCCTT', start_index=517, occurrence_count=3)</li>
 <li>KmerCluster(kmer='AGGATCCTT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CGGATCATT', start_index=517, occurrence_count=3)</li>
-<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCGGATCCC', start_index=518, occurrence_count=3)</li>
+<li>KmerCluster(kmer='CAGGATCCT', start_index=518, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCCGGATCC', start_index=519, occurrence_count=3)</li>
 <li>KmerCluster(kmer='TTATCCAGA', start_index=522, occurrence_count=3)</li>
 <li>KmerCluster(kmer='CCAGGTTTT', start_index=529, occurrence_count=3)</li>
@@ -15236,7 +15235,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Organism is baker's yeast. Suspected genes influenced by transcription factor: THI12, YHL017W, SYN8, YCG1, UBX5, and KEI1.</p>
 <p>Searching for 18-mer across a set of 6 gene upstream regions...</p>
-<p>CAGGAAAAGAAAGAAAAA<br>AAGAAAAAAAAAGGAAAA<br>AAGAAAAAGAAAAAAAAA<br>AAGAAAAGGAAAAAAAGA<br>ATGATAATAATATTTATA<br>AAGATAGTGAAAAATCAA</p>
+<p>GAAAAGAAAGAAAAAGGA<br>GAAAAGAAAAAGAAAAAA<br>GAAAGAAAAAGAAAAAAA<br>AAAAGGAAAAAAAGAAGA<br>GAAATGAAAAGGAACAGT<br>AAAATCAAAAAAATAAAT</p>
 <p>Score is: 22</p>
 </div>
 <p></p>
@@ -15505,15 +15504,15 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>Mapping synteny graph matches to IDs using x-axis genome...</p>
 <ul>
 <li>G2C1_B0 = {'y': ('G1C1', 456122, 490876), 'x': ('G2C1', 26146, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B1 = {'y': ('G1C1', 403834, 428046), 'x': ('G2C1', 55611, 78340), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B2 = {'y': ('G1C1', 356151, 384123), 'x': ('G2C1', 88484, 113644), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428055), 'x': ('G2C1', 55602, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356150, 384121), 'x': ('G2C1', 88486, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
-<li>G2C1_B4 = {'y': ('G1C1', 772154, 825262), 'x': ('G2C1', 287182, 342448), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772154, 835264), 'x': ('G2C1', 287182, 351655), 'type': 'NORMAL'}</li>
 <li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
 <li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
-<li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
+<li>G2C1_B7 = {'y': ('G1C1', 276781, 355692), 'x': ('G2C1', 740078, 815603), 'type': 'NORMAL'}</li>
 <li>G2C1_B8 = {'y': ('G1C1', 529629, 591336), 'x': ('G2C1', 816444, 878201), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B9 = {'y': ('G1C1', 491197, 509162), 'x': ('G2C1', 880483, 897382), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B9 = {'y': ('G1C1', 491198, 509162), 'x': ('G2C1', 880483, 897381), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
 </div>
 <p></p>
@@ -15567,13 +15566,13 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>Mapping synteny graph matches to IDs using x-axis genome...</p>
 <ul>
 <li>G2C1_B0 = {'y': ('G1C1', 456122, 490875), 'x': ('G2C1', 26147, 55215), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B1 = {'y': ('G1C1', 403833, 428046), 'x': ('G2C1', 55611, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
-<li>G2C1_B2 = {'y': ('G1C1', 356150, 384123), 'x': ('G2C1', 88484, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B1 = {'y': ('G1C1', 403833, 428051), 'x': ('G2C1', 55606, 78341), 'type': 'REVERSE_COMPLEMENT'}</li>
+<li>G2C1_B2 = {'y': ('G1C1', 356150, 384124), 'x': ('G2C1', 88483, 113645), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B3 = {'y': ('G1C1', 596687, 770257), 'x': ('G2C1', 119776, 270535), 'type': 'NORMAL'}</li>
-<li>G2C1_B4 = {'y': ('G1C1', 772154, 825102), 'x': ('G2C1', 287182, 342288), 'type': 'NORMAL'}</li>
+<li>G2C1_B4 = {'y': ('G1C1', 772155, 835261), 'x': ('G2C1', 287183, 351652), 'type': 'NORMAL'}</li>
 <li>G2C1_B5 = {'y': ('G1C1', 835398, 948473), 'x': ('G2C1', 385360, 498503), 'type': 'NORMAL'}</li>
 <li>G2C1_B6 = {'y': ('G1C1', 90, 262351), 'x': ('G2C1', 498629, 739753), 'type': 'NORMAL'}</li>
-<li>G2C1_B7 = {'y': ('G1C1', 276781, 355692), 'x': ('G2C1', 740078, 815603), 'type': 'NORMAL'}</li>
+<li>G2C1_B7 = {'y': ('G1C1', 276780, 355692), 'x': ('G2C1', 740077, 815603), 'type': 'NORMAL'}</li>
 <li>G2C1_B8 = {'y': ('G1C1', 529629, 591336), 'x': ('G2C1', 816444, 878201), 'type': 'REVERSE_COMPLEMENT'}</li>
 <li>G2C1_B9 = {'y': ('G1C1', 491197, 509162), 'x': ('G2C1', 880483, 897382), 'type': 'REVERSE_COMPLEMENT'}</li>
 </ul>
@@ -15586,11 +15585,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <ul>
 <li>
 <p>INITIAL red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '-G2C1_B7', '-G2C1_B6', '-G2C1_B5', '-G2C1_B4', '-G2C1_B3', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_c29e96ea550d21c66cf2666b79cf7a5c.svg" alt="Dot diagram"></p>
+<p><img src="dot_f8ab9badd4c1e04246b0acafcf6925a8.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>red_p_list=[['+G2C1_B0', '+G2C1_B1', '+G2C1_B2', '+G2C1_B3', '+G2C1_B4', '+G2C1_B5', '+G2C1_B6', '+G2C1_B7', '+G2C1_B8', '+G2C1_B9']]</p>
-<p><img src="dot_12c7277dbd0cc7659c5bc35d8ef3b118.svg" alt="Dot diagram"></p>
+<p><img src="dot_da97992266966ec432f5101440600199.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 </div>
