@@ -34,28 +34,32 @@
 <li><a href="#H_Exposure">Exposure</a></li>
 </ul>
 <li><a href="#H_Replica%20Sets">Replica Sets</a></li>
+<ul>
+<li><a href="#H_Replication">Replication</a></li>
+</ul>
 <li><a href="#H_Deployments">Deployments</a></li>
+<ul>
+<li><a href="#H_Upgrade%20Strategy">Upgrade Strategy</a></li>
+<li><a href="#H_Undo">Undo</a></li>
+<li><a href="#H_Change%20Cause">Change Cause</a></li>
+</ul>
 <li><a href="#H_Daemon%20Sets">Daemon Sets</a></li>
 <li><a href="#H_Jobs">Jobs</a></li>
-</ul>
-<li><a href="#H_Replica%20Set">Replica Set</a></li>
-<ul>
-<li><a href="#H_Autoscaling">Autoscaling</a></li>
-</ul>
-<li><a href="#H_Deployment">Deployment</a></li>
-<ul>
-<li><a href="#H_Strategy">Strategy</a></li>
-<li><a href="#H_Undo">Undo</a></li>
 </ul>
 <li><a href="#H_Daemon%20Set">Daemon Set</a></li>
 <li><a href="#H1_Daemon%20Sets">Daemon Sets</a></li>
 <li><a href="#H_Job">Job</a></li>
 <li><a href="#H_Configuration%20Map">Configuration Map</a></li>
+<li><a href="#H_Autoscaling">Autoscaling</a></li>
+<ul>
+<li><a href="#H_Horizontal%20Pod%20Autoscaling">Horizontal Pod Autoscaling</a></li>
+<li><a href="#H_Vertical%20Pod%20Autoscaling">Vertical Pod Autoscaling</a></li>
 <li><a href="#H_Cluster%20Autoscaler">Cluster Autoscaler</a></li>
+</ul>
 <li><a href="#H_Kubectl%20Cheatsheet">Kubectl Cheatsheet</a></li>
 <ul>
 <li><a href="#H_CRUD">CRUD</a></li>
-<li><a href="#H1_Deployment">Deployment</a></li>
+<li><a href="#H_Deployment">Deployment</a></li>
 <li><a href="#H_Proxy">Proxy</a></li>
 <li><a href="#H_Debug">Debug</a></li>
 </ul>
@@ -198,6 +202,7 @@ kubectl set pods my_pod --requests='cpu=500m,memory=128Mi'
           <span class="hljs-attr">memory:</span> <span class="hljs-string">"128Mi"</span>
 </code></pre>
 <pre><code>kubectl apply -f obj.yaml
+kubectl delete -f obj.yaml
 </code></pre>
 </li>
 </ul>
@@ -638,16 +643,8 @@ kubectl set pods my_pod --requests='cpu=500m,memory=128Mi'
 <p>Internally, an <a href="#BM_(endpoints)%2Fi">EndPoints</a> object is used to track <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. When you create a <a href="#BM_(service)%2Fi">service</a>, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> automatically creates an accompanying <a href="#BM_(endpoints)%2Fi">EndPoints</a> object that the <a href="#BM_(service)%2Fi">service</a> makes use of.</p>
 </div>
 <a name="H_Exposure"></a><h3>Exposure</h3>
-<p>TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE</p>
-<p>The <a href="#BM_(service)%2Fi">service</a> type defines where and how a <a href="#BM_(service)%2Fi">service</a> gets exposed. For example, a <a href="#BM_(service)%2Fi">service</a> may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...</p>
-<p><a href="#BM_(service)%2Fi">Service</a>s of type ClusterIP are only accessible from within the cluster. The hostname for a ClusterIP <a href="#BM_(service)%2Fi">service</a> is broken down as follows: NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER</p>
+<p>The <a href="#BM_(service)%2Fi">service</a> type defines where and how a <a href="#BM_(service)%2Fi">service</a> gets exposed, controlled via the <code>spec.type</code> manifest pth. For example, a <a href="#BM_(service)%2Fi">service</a> may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...</p>
+<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>ClusterIP</code> are only accessible from within the cluster. The hostname for a <code>ClusterIP</code> <a href="#BM_(service)%2Fi">service</a> is broken down as follows: NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER</p>
 <ul>
 <li><em>NAME</em> is the name of the <a href="#BM_(service)%2Fi">service</a>.</li>
 <li><em><a href="#BM_(namespace)%2Fi">NAMESPACE</a></em> is the <a href="#BM_(namespace)%2Fi">namespace</a> the <a href="#BM_(service)%2Fi">service</a> is in (defaults to <code>default</code>).</li>
@@ -660,17 +657,50 @@ TODO: CONTINUE FROM HERE</p>
 <li>the same cluster but not the same <a href="#BM_(namespace)%2Fi">namespace</a>, hostname NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a> is sufficient.</li>
 <li>different clusters, the full hostname NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER is required.</li>
 </ul>
-<p>The IP for a ClusterIP <a href="#BM_(service)%2Fi">service</a> is stable as well, just like the hostname.</p>
+<p>The IP for a <code>ClusterIP</code> <a href="#BM_(service)%2Fi">service</a> is stable as well, just like the hostname.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Internally, a ClusterIP <a href="#BM_(service)%2Fi">service</a> uses <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">kube-proxy</a> to route requests to relevant <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (<a href="#BM_(endpoints)%2Fi">EndPoints</a>).</p>
+<p>Internally, a <code>ClusterIP</code> <a href="#BM_(service)%2Fi">service</a> uses <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">kube-proxy</a> to route requests to relevant <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (<a href="#BM_(endpoints)%2Fi">EndPoints</a>).</p>
 </div>
-<p>TODO: Add sample YAML</p>
-<p><a href="#BM_(service)%2Fi">Service</a>s of type <a href="#BM_(node)%2Fi">Node</a>Port are accessible from outside the cluster. Every <a href="#BM_(worker%20node)%2Fi">worker node</a> opens a port (either user-defined or assigned by the system) that routes requests to the <a href="#BM_(service)%2Fi">service</a>. Since <a href="#BM_(node)%2Fi">node</a>s are transient, there is no single point of access to the <a href="#BM_(service)%2Fi">service</a>.</p>
-<p>TODO: Add sample YAML</p>
-<p><a href="#BM_(service)%2Fi">Service</a>s of type LoadBalancer are accessible from outside the cluster. When the LoadBalancer type is used, the cloud provider running the cluster assigning their version of a load balancer to route external HTTP requests to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(ingress)%2Fi">Ingress</a> component. <a href="#BM_(ingress)%2Fi">Ingress</a> then determines what <a href="#BM_(service)%2Fi">service</a> that request should be routed to based on details within the HTTP parameters (e.g. Host).</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">ClusterIP</span>
+</code></pre>
+<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>NodePort</code> are accessible from outside the cluster. Every <a href="#BM_(worker%20node)%2Fi">worker node</a> opens a port (either user-defined or assigned by the system) that routes requests to the <a href="#BM_(service)%2Fi">service</a>. Since <a href="#BM_(node)%2Fi">node</a>s are transient, there is no single point of access to the <a href="#BM_(service)%2Fi">service</a>.</p>
+<p>When <code>NodePort</code> is used as the type, the manifest path <code>spec.ports[].nodePort</code> defines the port on the <a href="#BM_(worker%20node)%2Fi">worker node</a> to open.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">NodePort</span>
+  <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
+      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span>
+      <span class="hljs-attr">nodePort:</span> <span class="hljs-number">8080</span>
+    <span class="hljs-string">...</span>
+</code></pre>
+<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>LoadBalancer</code> are accessible from outside the cluster. When the <code>LoadBalancer</code> type is used, the cloud provider running the cluster assigning their version of a load balancer to route external HTTP requests to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(ingress)%2Fi">Ingress</a> component. <a href="#BM_(ingress)%2Fi">Ingress</a> then determines what <a href="#BM_(service)%2Fi">service</a> that request should be routed to based on details within the HTTP parameters (e.g. Host).</p>
 <p>There is no built-in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> implementation of <a href="#BM_(ingress)%2Fi">Ingress</a>. <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> provides the interface but someone must provide the implementation, called an <a href="#BM_(ingress)%2Fi">Ingress</a> controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the <a href="#BM_(ingress)%2Fi">Ingress</a> implementation abstracts that out.</p>
-<p>TODO: Add sample YAML</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">LoadBalancer</span>
+  <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
+      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span>
+      <span class="hljs-attr">nodePort:</span> <span class="hljs-number">8080</span>
+    <span class="hljs-string">...</span>
+</code></pre>
+<p>Once provisioned, the object will have the manifest path <code>status.loadBalancer.ingress.ip[]</code> added to it, which states the IP of the load balancer forwarding requests to this <a href="#BM_(service)%2Fi">service</a>.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">LoadBalancer</span>
+  <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
+      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span>
+      <span class="hljs-attr">nodePort:</span> <span class="hljs-number">8080</span>
+    <span class="hljs-string">...</span>
+<span class="hljs-attr">status:</span>
+  <span class="hljs-attr">loadBalancer:</span>
+    <span class="hljs-attr">ingress:</span>
+      <span class="hljs-attr">ip:</span> <span class="hljs-number">192.0</span><span class="hljs-number">.5</span><span class="hljs-number">.6</span>
+</code></pre>
 <a name="H_Replica%20Sets"></a><h2>Replica Sets</h2>
 <p><a name="BM_(Resources%5C%2FReplica%20Sets)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -685,6 +715,49 @@ TODO: CONTINUE FROM HERE</p>
 <li>scale (e.g. micro<a href="#BM_(service)%2Fi">service</a>s that scale horizontally).</li>
 <li>redundancy (e.g. leader-follower architectures such as Redis-style replica servers).</li>
 </ul>
+<p>Example manifest:</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ReplicaSet</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-replicaset</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
+        <span class="hljs-attr">version:</span> <span class="hljs-string">v1.0.1</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+</code></pre>
+<a name="H_Replication"></a><h3>Replication</h3>
+<p>A <a href="#BM_(replica%20set)%2Fi">replica set</a> determines how many replicas it needs via the <code>spec.replicas</code> manifest path, and it determines how to create missing replicas using the <code>spec.template</code> manifest path.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
+        <span class="hljs-attr">version:</span> <span class="hljs-string">v1.0.1</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+</code></pre>
+<p>Recall that, to link objects together, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses loosely coupled linkages via <a href="#BM_(label)%2Fi">label</a>s rather than hierarchial parent-child relationships. As such, the <a href="#BM_(pod%20template)%2Fi">pod template</a> should have a unique set of <a href="#BM_(label)%2Fi">label</a>s assigned that the <a href="#BM_(replica%20set)%2Fi">replica set</a> can look for to determine how many instances are running. Regardless of how those instances were launched (via the <a href="#BM_(replica%20set)%2Fi">replica set</a> or something else), the <a href="#BM_(replica%20set)%2Fi">replica set</a> will account for them.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can distinguish a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> created by a <a href="#BM_(replica%20set)%2Fi">replica set</a> vs one created manually by checking the <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a> key <code>kubernetes.io/create-by</code> on the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
+<p>If deleting a <a href="#BM_(replica%20set)%2Fi">replica set</a>, use <code>--cascade=false</code> in <a href="#BM_(kubectl)%2Fi">kubectl</a> if you don't want the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> created by the <a href="#BM_(replica%20set)%2Fi">replica set</a> to get deleted as well.</p>
+</div>
+<p>A <a href="#BM_(replica%20set)%2Fi">replica set</a> doesn't have to use the <a href="#BM_(label)%2Fi">label</a>s in the <a href="#BM_(pod%20template)%2Fi">pod template</a>. It can have its own set of <a href="#BM_(label)%2Fi">label</a>s that it looks for via the <code>spec.selector.matchLabels</code> manifest path.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
+</code></pre>
 <a name="H_Deployments"></a><h2>Deployments</h2>
 <p><a name="BM_(Resources%5C%2FDeployments)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -696,6 +769,38 @@ TODO: CONTINUE FROM HERE</p>
 </div>
 <p>A <a href="#BM_(deployment)%2Fi">deployment</a> is an abstraction used to bring together <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, <a href="#BM_(replica%20set)%2Fi">replica set</a>s, and <a href="#BM_(service)%2Fi">service</a>s under a single umbrella. It's intended to represent a single version of some application being deployed on <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. All of the pieces required for that application to run are housed under one roof.</p>
 <p><a href="#BM_(deployment)%2Fi">Deployment</a>s make it easy to upgrade between versions of the applications they represent via a rolling upgrade that keeps the application online during the upgrade. Old <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are transitioned to new <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> as a stream instead of all at once, ensuring that the application is responsive throughout the upgrade process. Likewise, they allow for rolling back an update should it have any problems.</p>
+<p>The manifest for a <a href="#BM_(deployment)%2Fi">deployment</a> builds of the manifest for a <a href="#BM_(replica%20set)%2Fi">replica set</a> (same fields used). Example manifest:</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-deployment</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span> 
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">1</span>
+  <span class="hljs-attr">template:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
+        <span class="hljs-attr">version:</span> <span class="hljs-string">v1.0.1</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my_container</span>
+          <span class="hljs-attr">image:</span> <span class="hljs-string">"gcr.io/my_container:v1"</span>
+</code></pre>
+<a name="H_Upgrade%20Strategy"></a><h3>Upgrade Strategy</h3>
+<p>TODO: <code>spec/strategy</code> defines the way rollouts should occur.</p>
+<p>TODO: discuss the recreate strategy + add yaml -- one-shot update, everything shuts down and restarts</p>
+<p>TODO: discuss the rolling update strategy + add yaml --</p>
+<p>maxUnavailable (num or percent of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that can be down during rollout) / maxSurge (num or percent of EXTRA <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that can be running during the rollout) -- so if you set unavail to 0% and surge to &gt;0% (it'll bring up x% new <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> first then shut down x% old <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, repeat until all updated), it'll rollout faster vs if you set unavail to &gt; 0% and surge to 0% (it'll shutdown x% old <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> first then bring up x% new <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, repeat until all updated)</p>
+<p>for rolling, it'll always wait till the current iterations new <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> probes report healthy + ready before moving to next iteration -- you should have defined these probes otherwise <a href="#BM_(deployment)%2Fi">deployment</a>s are blind</p>
+<p>minReadySeconds -- waits at least n seconds till the <a href="#BM_(readiness%20probe)%2Fi">readiness probe</a> reports okay before continuing -- an extra wait to make sure nothing's immediately crashing</p>
+<p>progressDeadlineSeconds -- if any stage of the rollout waits for this long, the rollout is marked as failed. each time <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are brought down / up, it's a stage</p>
+<a name="H_Undo"></a><h3>Undo</h3>
+<p>TODO: discuss <a href="#BM_(kubectl)%2Fi">kubectl</a> rollout undo <a href="#BM_(deployment)%2Fi">deployment</a>s {<a href="#BM_(deployment)%2Fi">DEPLOYMENT</a>} command to roll back</p>
+<p>TODO: set spec/revisionHistoryLimit to limit the number of revisions kept for undo -- useful when many frequent updates are happening</p>
+<a name="H_Change%20Cause"></a><h3>Change Cause</h3>
+<p>TODO: add <code>kubernetes.io/change-cause</code> <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a> to add a custom message for the <a href="#BM_(deployment)%2Fi">deployment</a>, viewable when browing the history of the rollout</p>
 <a name="H_Daemon%20Sets"></a><h2>Daemon Sets</h2>
 <p><a name="BM_(Resources%5C%2FDaemon%20Sets)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -729,68 +834,6 @@ TODO: CONTINUE FROM HERE</p>
 <li>log file removal</li>
 </ul>
 <p><a href="#BM_(job)%2Fi">Job</a>s can also be scheduled to run at specific intervals / times.</p>
-<a name="H_Replica%20Set"></a><h1>Replica Set</h1>
-<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
-<span class="hljs-attr">kind:</span> <span class="hljs-string">ReplicaSet</span>
-<span class="hljs-attr">metadata:</span>
-  <span class="hljs-attr">name:</span> <span class="hljs-string">my-rs</span>
-<span class="hljs-attr">spec:</span>
-  <span class="hljs-attr">replicas:</span> <span class="hljs-number">1</span>
-  <span class="hljs-attr">template:</span>
-    <span class="hljs-attr">metadata:</span>
-      <span class="hljs-attr">labels:</span>
-        <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
-        <span class="hljs-attr">version:</span> <span class="hljs-string">"2"</span>
-    <span class="hljs-attr">spec:</span>
-      <span class="hljs-attr">containers:</span>
-        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my_container</span>
-          <span class="hljs-attr">image:</span> <span class="hljs-string">"gcr.io/my_container:v1"</span>
-</code></pre>
-<p>The number of replicas the <a href="#BM_(replica%20set)%2Fi">replica set</a> should aim for is controlled by <code>spec/replicas</code>.</p>
-<p>Note that the manifest for the <a href="#BM_(replica%20set)%2Fi">replica set</a> includes the manifest of the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> it should create. This is called a <a href="#BM_(pod%20template)%2Fi">pod template</a>.</p>
-<p>You can distinguish a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> created by a <a href="#BM_(replica%20set)%2Fi">replica set</a> vs one created manually by checking the <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a> key <code>kubernetes.io/create-by</code> on the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>If deleting a <a href="#BM_(replica%20set)%2Fi">replica set</a>, use <code>--cascade=false</code> in <a href="#BM_(kubectl)%2Fi">kubectl</a> if you don't want the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> created by the <a href="#BM_(replica%20set)%2Fi">replica set</a> to get deleted as well.</p>
-</div>
-<a name="H_Autoscaling"></a><h2>Autoscaling</h2>
-<p>TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml</p>
-<p>The number of replicas in a <a href="#BM_(replica%20set)%2Fi">replica set</a> can be automatically scaled up an down through <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>'s <a href="#BM_(horizontal%20pod%20autoscaling)%2Fi">horizontal pod autoscaling</a> component. Replicas are scaled based on some user-defined criteria (e.g. high cpu usage).</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This feature depends on a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> called heapster that tracks metrics. Most <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> installations include it by default.</p>
-</div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The book warns about setting replicas manual and setting replicas using <a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a> -- they fight with each other.</p>
-</div>
-<p>TODO: talk about vertical autoscaling + yaml -- it looks like this is in beta?</p>
-<a name="H_Deployment"></a><h1>Deployment</h1>
-<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
-<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
-<span class="hljs-attr">metadata:</span>
-  <span class="hljs-attr">name:</span> <span class="hljs-string">my-deployment</span>
-<span class="hljs-attr">spec:</span>
-  <span class="hljs-attr">replicas:</span> <span class="hljs-number">1</span>
-  <span class="hljs-attr">template:</span>
-    <span class="hljs-attr">spec:</span>
-      <span class="hljs-attr">containers:</span>
-        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my_container</span>
-          <span class="hljs-attr">image:</span> <span class="hljs-string">"gcr.io/my_container:v1"</span>
-</code></pre>
-<p>Note that the manifest for the <a href="#BM_(deployment)%2Fi">deployment</a> includes the manifest of the replicaset.</p>
-<p>Add <code>kubernetes.io/change-cause</code> <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a> to add a custom message for the <a href="#BM_(deployment)%2Fi">deployment</a>, viewable when browing the history of the rollout</p>
-<a name="H_Strategy"></a><h2>Strategy</h2>
-<p>TODO: <code>spec/strategy</code> defines the way rollouts should occur.</p>
-<p>TODO: discuss the recreate strategy + add yaml -- one-shot update, everything shuts down and restarts</p>
-<p>TODO: discuss the rolling update strategy + add yaml --</p>
-<p>maxUnavailable (num or percent of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that can be down during rollout) / maxSurge (num or percent of EXTRA <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that can be running during the rollout) -- so if you set unavail to 0% and surge to &gt;0% (it'll bring up x% new <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> first then shut down x% old <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, repeat until all updated), it'll rollout faster vs if you set unavail to &gt; 0% and surge to 0% (it'll shutdown x% old <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> first then bring up x% new <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, repeat until all updated)</p>
-<p>for rolling, it'll always wait till the current iterations new <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> probes report healthy + ready before moving to next iteration -- you should have defined these probes otherwise <a href="#BM_(deployment)%2Fi">deployment</a>s are blind</p>
-<p>minReadySeconds -- waits at least n seconds till the <a href="#BM_(readiness%20probe)%2Fi">readiness probe</a> reports okay before continuing -- an extra wait to make sure nothing's immediately crashing</p>
-<p>progressDeadlineSeconds -- if any stage of the rollout waits for this long, the rollout is marked as failed. each time <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are brought down / up, it's a stage</p>
-<a name="H_Undo"></a><h2>Undo</h2>
-<p>TODO: discuss <a href="#BM_(kubectl)%2Fi">kubectl</a> rollout undo <a href="#BM_(deployment)%2Fi">deployment</a>s {<a href="#BM_(deployment)%2Fi">DEPLOYMENT</a>} command to roll back</p>
-<p>TODO: set spec/revisionHistoryLimit to limit the number of revisions kept for undo -- useful when many frequent updates are happening</p>
 <a name="H_Daemon%20Set"></a><h1>Daemon Set</h1>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">DaemonSet</span>
@@ -863,7 +906,22 @@ TODO: CONTINUE FROM HERE</p>
     key1 = value1
     ket1 = value2
 </span></code></pre>
-<a name="H_Cluster%20Autoscaler"></a><h1>Cluster Autoscaler</h1>
+<a name="H_Autoscaling"></a><h1>Autoscaling</h1>
+<a name="H_Horizontal%20Pod%20Autoscaling"></a><h2>Horizontal Pod Autoscaling</h2>
+<p>TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml</p>
+<p>The number of replicas in a <a href="#BM_(replica%20set)%2Fi">replica set</a> can be automatically scaled up an down through <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>'s <a href="#BM_(horizontal%20pod%20autoscaling)%2Fi">horizontal pod autoscaling</a> component. Replicas are scaled based on some user-defined criteria (e.g. high cpu usage).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This feature depends on a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> called heapster that tracks metrics. Most <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> installations include it by default.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book warns about setting replicas manual and setting replicas using <a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a> -- they fight with each other.</p>
+</div>
+<p>TODO: talk about vertical autoscaling + yaml -- it looks like this is in beta?</p>
+<a name="H_Vertical%20Pod%20Autoscaling"></a><h2>Vertical Pod Autoscaling</h2>
+<p>TODO: figure this out</p>
+<a name="H_Cluster%20Autoscaler"></a><h2>Cluster Autoscaler</h2>
 <p>TODO: it looks like this is an external component? if not enough <a href="#BM_(resource)%2Fi">resource</a>s to run a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, provision more <a href="#BM_(node)%2Fi">node</a>s from the cloud provider</p>
 <a name="H_Kubectl%20Cheatsheet"></a><h1>Kubectl Cheatsheet</h1>
 <p><a href="#BM_(kubectl)%2Fi">kubectl</a> commands are typically organized into <a href="#BM_(context)%2Fi">context</a>s, where each <a href="#BM_(context)%2Fi">context</a> is defines <a href="#BM_(context)%2Fi">context</a>ual information about the cluster: cluster location, cluster authentication, and default <a href="#BM_(namespace)%2Fi">namespace</a>. To ...</p>
@@ -943,7 +1001,7 @@ TODO: CONTINUE FROM HERE</p>
 <li><code>--selector</code> flag can be fed in a <a href="#BM_(label%20selector)%2Fi">label selector</a> that filters those objects.</li>
 <li><code>--all</code> flag can target everything.</li>
 </ul>
-<a name="H1_Deployment"></a><h2>Deployment</h2>
+<a name="H_Deployment"></a><h2>Deployment</h2>
 <p><code>rollout</code> allows you to monitor and control <a href="#BM_(deployment)%2Fi">deployment</a> rollouts.</p>
 <ul>
 <li><code>kubectl rollout status deployments {DEPLOYMENT}</code> - monitor rollout</li>

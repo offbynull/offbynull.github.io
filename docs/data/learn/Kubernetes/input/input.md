@@ -168,6 +168,7 @@ Objects can either be accessed and mutated through a standard command-line inter
 
    ```
    kubectl apply -f obj.yaml
+   kubectl delete -f obj.yaml
    ```
 
 Generally, declarative configurations are preferred over imperative configurations. When a declarative configuration is submitted, Kubernetes runs a reconciliation loop in the background to automatically mutate the state of the object to the one in the manifest. Contrast this to the imperative configuration method, where the mutations have to be manually submitted by the user one by one.
@@ -768,18 +769,9 @@ Internally, an EndPoints object is used to track pods. When you create a service
 
 ### Exposure
 
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
-TODO: CONTINUE FROM HERE
+The service type defines where and how a service gets exposed, controlled via the `spec.type` manifest pth. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...
 
-The service type defines where and how a service gets exposed. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...
-
-Services of type ClusterIP are only accessible from within the cluster. The hostname for a ClusterIP service is broken down as follows: NAME.NAMESPACE.svc.CLUSTER
+Services of type `ClusterIP` are only accessible from within the cluster. The hostname for a `ClusterIP` service is broken down as follows: NAME.NAMESPACE.svc.CLUSTER
 
  * *NAME* is the name of the service.
  * *NAMESPACE* is the namespace the service is in (defaults to `default`).
@@ -792,23 +784,63 @@ Depending on what level you're working in, a hostname may be shortened. For exam
  * the same cluster but not the same namespace, hostname NAME.NAMESPACE is sufficient.
  * different clusters, the full hostname NAME.NAMESPACE.svc.CLUSTER is required.
 
-The IP for a ClusterIP service is stable as well, just like the hostname.
+The IP for a `ClusterIP` service is stable as well, just like the hostname.
 
 ```{note}
-Internally, a ClusterIP service uses kube-proxy to route requests to relevant pods (EndPoints).
+Internally, a `ClusterIP` service uses kube-proxy to route requests to relevant pods (EndPoints).
 ```
 
-TODO: Add sample YAML
+```yaml
+spec:
+  type: ClusterIP
+```
 
-Services of type NodePort are accessible from outside the cluster. Every worker node opens a port (either user-defined or assigned by the system) that routes requests to the service. Since nodes are transient, there is no single point of access to the service.
+Services of type `NodePort` are accessible from outside the cluster. Every worker node opens a port (either user-defined or assigned by the system) that routes requests to the service. Since nodes are transient, there is no single point of access to the service.
 
-TODO: Add sample YAML
+When `NodePort` is used as the type, the manifest path `spec.ports[].nodePort` defines the port on the worker node to open.
 
-Services of type LoadBalancer are accessible from outside the cluster. When the LoadBalancer type is used, the cloud provider running the cluster assigning their version of a load balancer to route external HTTP requests to the Kubernetes Ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
+```yaml
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+      nodePort: 8080
+    ...
+```
+
+Services of type `LoadBalancer` are accessible from outside the cluster. When the `LoadBalancer` type is used, the cloud provider running the cluster assigning their version of a load balancer to route external HTTP requests to the Kubernetes Ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
 
 There is no built-in Kubernetes implementation of Ingress. Kubernetes provides the interface but someone must provide the implementation, called an Ingress controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the Ingress implementation abstracts that out.
 
-TODO: Add sample YAML
+```yaml
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+      nodePort: 8080
+    ...
+```
+
+Once provisioned, the object will have the manifest path `status.loadBalancer.ingress.ip[]` added to it, which states the IP of the load balancer forwarding requests to this service.
+
+```yaml
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+      nodePort: 8080
+    ...
+status:
+  loadBalancer:
+    ingress:
+      ip: 192.0.5.6
+```
 
 ## Replica Sets
 
@@ -824,6 +856,61 @@ A replica set is an abstraction that's used to ensure a certain number of copies
  * scale (e.g. microservices that scale horizontally).
  * redundancy (e.g. leader-follower architectures such as Redis-style replica servers).
 
+Example manifest:
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: v1.0.1
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+```
+
+### Replication
+
+A replica set determines how many replicas it needs via the `spec.replicas` manifest path, and it determines how to create missing replicas using the `spec.template` manifest path.
+
+```yaml
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: v1.0.1
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+```
+
+Recall that, to link objects together, Kubernetes uses loosely coupled linkages via labels rather than hierarchial parent-child relationships. As such, the pod template should have a unique set of labels assigned that the replica set can look for to determine how many instances are running. Regardless of how those instances were launched (via the replica set or something else), the replica set will account for them.
+
+```{note}
+You can distinguish a pod created by a replica set vs one created manually by checking the annotation key `kubernetes.io/create-by` on the pod.
+
+If deleting a replica set, use `--cascade=false` in kubectl if you don't want the pods created by the replica set to get deleted as well.
+```
+
+A replica set doesn't have to use the labels in the pod template. It can have its own set of labels that it looks for via the `spec.selector.matchLabels` manifest path.
+
+```yaml
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+```
+
 ## Deployments
 
 `{bm} /(Resources\/Deployments)_TOPIC/i`
@@ -836,6 +923,54 @@ Resources/Replica Sets_TOPIC
 A deployment is an abstraction used to bring together pods, replica sets, and services under a single umbrella. It's intended to represent a single version of some application being deployed on Kubernetes. All of the pieces required for that application to run are housed under one roof.
 
 Deployments make it easy to upgrade between versions of the applications they represent via a rolling upgrade that keeps the application online during the upgrade. Old pods are transitioned to new pods as a stream instead of all at once, ensuring that the application is responsive throughout the upgrade process. Likewise, they allow for rolling back an update should it have any problems.
+
+The manifest for a deployment builds of the manifest for a replica set (same fields used). Example manifest:
+
+```yaml
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  selector:
+    matchLabels:
+      app: my-app 
+  replicas: 1
+  template:
+      labels:
+        app: my-app
+        version: v1.0.1
+    spec:
+      containers:
+        - name: my_container
+          image: "gcr.io/my_container:v1"
+```
+
+### Upgrade Strategy
+
+TODO: `spec/strategy` defines the way rollouts should occur.
+
+TODO: discuss the recreate strategy + add yaml -- one-shot update, everything shuts down and restarts
+
+TODO: discuss the rolling update strategy + add yaml --
+
+maxUnavailable (num or percent of pods that can be down during rollout) / maxSurge (num or percent of EXTRA pods that can be running during the rollout) -- so if you set unavail to 0% and surge to >0% (it'll bring up x% new pods first then shut down x% old pods, repeat until all updated), it'll rollout faster vs if you set unavail to > 0% and surge to 0% (it'll shutdown x% old pods first then bring up x% new pods, repeat until all updated)
+
+for rolling, it'll always wait till the current iterations new pods probes report healthy + ready before moving to next iteration -- you should have defined these probes otherwise deployments are blind
+
+minReadySeconds -- waits at least n seconds till the readiness probe reports okay before continuing -- an extra wait to make sure nothing's immediately crashing
+
+progressDeadlineSeconds -- if any stage of the rollout waits for this long, the rollout is marked as failed. each time pods are brought down / up, it's a stage
+
+### Undo
+
+TODO: discuss kubectl rollout undo deployments {DEPLOYMENT} command to roll back
+
+TODO: set spec/revisionHistoryLimit to limit the number of revisions kept for undo -- useful when many frequent updates are happening
+
+### Change Cause
+
+TODO: add `kubernetes.io/change-cause` annotation to add a custom message for the deployment, viewable when browing the history of the rollout
 
 ## Daemon Sets
 
@@ -873,97 +1008,6 @@ Typical scenarios where a job is used include ...
  * log file removal
 
 Jobs can also be scheduled to run at specific intervals / times.
-
-
-# Replica Set
-
-```yaml
-apiVersion: v1
-kind: ReplicaSet
-metadata:
-  name: my-rs
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: my-app
-        version: "2"
-    spec:
-      containers:
-        - name: my_container
-          image: "gcr.io/my_container:v1"
-```
-
-The number of replicas the replica set should aim for is controlled by `spec/replicas`.
-
-Note that the manifest for the replica set includes the manifest of the pods it should create. This is called a pod template.
-
-You can distinguish a pod created by a replica set vs one created manually by checking the annotation key `kubernetes.io/create-by` on the pod.
-
-```{note}
-If deleting a replica set, use `--cascade=false` in kubectl if you don't want the pods created by the replica set to get deleted as well.
-```
-
-## Autoscaling
-
-TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml
-
-The number of replicas in a replica set can be automatically scaled up an down through Kubernetes's horizontal pod autoscaling component. Replicas are scaled based on some user-defined criteria (e.g. high cpu usage).
-
-```{note}
-This feature depends on a pod called heapster that tracks metrics. Most Kubernetes installations include it by default.
-```
-
-```{note}
-The book warns about setting replicas manual and setting replicas using HPA -- they fight with each other.
-```
-
-TODO: talk about vertical autoscaling + yaml -- it looks like this is in beta?
-
-# Deployment
-
-```yaml
-apiVersion: v1
-kind: Deployment
-metadata:
-  name: my-deployment
-spec:
-  replicas: 1
-  template:
-    spec:
-      containers:
-        - name: my_container
-          image: "gcr.io/my_container:v1"
-```
-
-Note that the manifest for the deployment includes the manifest of the replicaset.
-
-Add `kubernetes.io/change-cause` annotation to add a custom message for the deployment, viewable when browing the history of the rollout
-
-## Strategy
-
-TODO: `spec/strategy` defines the way rollouts should occur.
-
-TODO: discuss the recreate strategy + add yaml -- one-shot update, everything shuts down and restarts
-
-TODO: discuss the rolling update strategy + add yaml --
-
-maxUnavailable (num or percent of pods that can be down during rollout) / maxSurge (num or percent of EXTRA pods that can be running during the rollout) -- so if you set unavail to 0% and surge to >0% (it'll bring up x% new pods first then shut down x% old pods, repeat until all updated), it'll rollout faster vs if you set unavail to > 0% and surge to 0% (it'll shutdown x% old pods first then bring up x% new pods, repeat until all updated)
-
-for rolling, it'll always wait till the current iterations new pods probes report healthy + ready before moving to next iteration -- you should have defined these probes otherwise deployments are blind
-
-minReadySeconds -- waits at least n seconds till the readiness probe reports okay before continuing -- an extra wait to make sure nothing's immediately crashing
-
-progressDeadlineSeconds -- if any stage of the rollout waits for this long, the rollout is marked as failed. each time pods are brought down / up, it's a stage
-
-
-
-## Undo
-
-TODO: discuss kubectl rollout undo deployments {DEPLOYMENT} command to roll back
-
-TODO: set spec/revisionHistoryLimit to limit the number of revisions kept for undo -- useful when many frequent updates are happening
 
 # Daemon Set
 
@@ -1058,7 +1102,29 @@ data:
     ket1 = value2
 ```
 
-# Cluster Autoscaler
+# Autoscaling
+
+## Horizontal Pod Autoscaling
+
+TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml
+
+The number of replicas in a replica set can be automatically scaled up an down through Kubernetes's horizontal pod autoscaling component. Replicas are scaled based on some user-defined criteria (e.g. high cpu usage).
+
+```{note}
+This feature depends on a pod called heapster that tracks metrics. Most Kubernetes installations include it by default.
+```
+
+```{note}
+The book warns about setting replicas manual and setting replicas using HPA -- they fight with each other.
+```
+
+TODO: talk about vertical autoscaling + yaml -- it looks like this is in beta?
+
+## Vertical Pod Autoscaling
+
+TODO: figure this out
+
+## Cluster Autoscaler
 
 TODO: it looks like this is an external component? if not enough resources to run a pod, provision more nodes from the cloud provider
 

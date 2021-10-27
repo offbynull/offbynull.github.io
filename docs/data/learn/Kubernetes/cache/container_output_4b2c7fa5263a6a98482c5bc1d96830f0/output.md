@@ -2,6 +2,6 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-Internally, a ClusterIP service uses kube-proxy to route requests to relevant pods (EndPoints).
+Internally, a `ClusterIP` service uses kube-proxy to route requests to relevant pods (EndPoints).
 </div>
 
