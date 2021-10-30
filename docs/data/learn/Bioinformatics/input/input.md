@@ -10801,7 +10801,7 @@ python
 ```
 
 ```{ch7}
-phylogeny.AdditivePhylogeny
+phylogeny.AdditivePhylogeny_Verbose
 [0,  13, 21, 21, 22, 22]
 [13, 0,  12, 12, 13, 13]
 [21, 12, 0,  20, 21, 21]
@@ -10872,7 +10872,7 @@ python
 ```
 
 ```{ch7}
-phylogeny.NeighbourJoiningPhylogeny
+phylogeny.NeighbourJoiningPhylogeny_Verbose
 [0 , 14, 22, 20, 23, 22]
 [14, 0 , 12, 10, 12, 14]
 [22, 12, 0 , 20, 22, 20]
@@ -14550,14 +14550,21 @@ graph_show
    
    `{bm-enable} 5'` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
 
- * `{bm} additive phylogeny` - A recursive algorithm that finds the unique simple tree for some additive distance matrix. At each recursive step, the algorithm trims a node off the last distance matrix until it has only two nodes. The simple tree for any two leaf nodes is a those two nodes connected by a single edge.
+ * `{bm} additive phylogeny` - A recursive algorithm that finds the unique simple tree for some additive distance matrix. The algorithm `{bm-target} trim/trimmed distance matrix`s a single leaf node as it each recursive step until the distance matrix has a size of two. The simple tree for any two leaf nodes is a those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the tree and attaching it on.
+ 
+   At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
 
-   As the algorithm returns from each recursive step, it has 2 pieces of information:
+   TODO: INSERT EXAMPLE HERE
 
-   * an additive distance matrix with leaf node L.
-   * a simple tree without leaf node L.
+   TODO: INSERT EXAMPLE HERE
 
-   That's enough information to know where on the returned tree L should be added and what L's limb length should be. At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
+   TODO: INSERT EXAMPLE HERE
+
+   TODO: INSERT EXAMPLE HERE
+
+   TODO: INSERT EXAMPLE HERE
+
+   TODO: INSERT EXAMPLE HERE
 
    ```{note}
    See Algorithms/Distance Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
@@ -14761,7 +14768,7 @@ graph_show
    
    At each recursive step, the algorithm replaces a pair of neighbouring leaf nodes in the distance matrix with their shared parent (parent is promoted to a leaf node). It does this until only two nodes are left. The simple tree for any two leaf nodes is a those two nodes connected by a single edge.
 
-   As the algorithm returns from each recursive step, it has 2 pieces of information:
+   As the algorithm returns from each recursive step, it has 3 pieces of information:
 
    * there exists two neighbouring leaf nodes L1 and L2.
    * a distance matrix containing L1 and L2.
