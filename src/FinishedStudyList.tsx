@@ -56,10 +56,10 @@ export class FinishedStudyItem extends React.Component<FinishedStudyItemProps, F
     }
 
     public render() {
-        const year = this.props.entry.year || 'WIP';
+        const isWip = this.props.entry.year === undefined;
         return (
             <li>
-                <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> ({year})
+                <a href={this.props.entry.notesUrl}>{this.props.entry.name}</a> {isWip ? '(WIP)' : ''}
             </li>
         );
         // switch (this.props.entry.source.type) {

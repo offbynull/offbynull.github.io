@@ -64,15 +64,15 @@ export class App extends React.Component<AppProps, AppState> {
         </div>
         <div className="nav">
           <span className="item"><a href="#study_notes">notes</a></span>
-          <span className="item"><a href="#study_backlog">backlog</a></span>
+          {/* <span className="item"><a href="#study_backlog">backlog</a></span> */}
           <span className="item"><a href="data/learn/Anki/output/output.html">anki</a></span>
         </div>
         <h1 id="study_notes">notes</h1>
         <div>Personal notes from past and current books / online courses / self-studies.</div>
         {this.state.data === undefined ? <div>Loading...</div> : <FinishedStudyList notes={Immutable.List(this.state.data.finishedStudyList)} />}
-        <h1 id="study_backlog">backlog</h1>
+        {/* <h1 id="study_backlog">backlog</h1>
         <span>Personal backlog of books / courses / etc..</span>
-        {this.state.data === undefined ? <div>Loading...</div> : <PendingStudyList notes={Immutable.List(this.state.data.pendingStudyList)} />}
+        {this.state.data === undefined ? <div>Loading...</div> : <PendingStudyList notes={Immutable.List(this.state.data.pendingStudyList)} />} */}
       </div>
     );
   }
