@@ -79,7 +79,7 @@ def additive_phylogeny(
 ) -> Graph:
     if dm.n == 2:
         g = to_obvious_graph(dm, gen_edge_id)
-        output_tree_callback('Obvious tree...', g)
+        output_tree_callback('Obvious simple tree...', g)
         return g
     n = next(dm.leaf_ids_it())
     dm_untrimmed = dm.copy()

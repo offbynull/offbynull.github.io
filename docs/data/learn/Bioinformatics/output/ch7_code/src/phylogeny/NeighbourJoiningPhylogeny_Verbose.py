@@ -91,13 +91,13 @@ def neighbour_joining_phylogeny(
 ) -> Graph:
     if dm.n == 2:
         g = to_obvious_graph(dm, gen_edge_id)
-        output_tree_callback('Obvious tree...', g)
+        output_tree_callback('Obvious simple tree...', g)
         return g
     l1, l2 = find_neighbours(dm)
     l1_len, l2_len = find_neighbouring_limb_lengths(dm, l1, l2)
     dm_trimmed = dm.copy()
     p = expose_neighbour_parent(dm_trimmed, l1, l2, gen_node_id)  # p added to dm_trimmed while l1, l2 removed
-    output_dm_callback(f'Removed neighbours {l1, l2} and added their parent {p} to produce distance matrix ...', dm_trimmed)
+    output_dm_callback(f'Replaced neighbours {l1, l2} with their parent {p} to produce distance matrix ...', dm_trimmed)
     g = neighbour_joining_phylogeny(dm_trimmed, gen_node_id, gen_edge_id, output_dm_callback, output_tree_callback)
     g.insert_node(l1)
     g.insert_node(l2)
@@ -161,10 +161,6 @@ def main():
             print('```')
             print()
         tree = neighbour_joining_phylogeny(dist_mat, gen_node_id, gen_edge_id, output_dm, output_tree)
-        print()
-        print('```{dot}')
-        print(f'{to_dot(tree)}')
-        print('```')
         print()
     finally:
         print("</div>", end="\n\n")

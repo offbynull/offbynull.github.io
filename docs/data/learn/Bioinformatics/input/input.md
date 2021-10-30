@@ -14550,21 +14550,85 @@ graph_show
    
    `{bm-enable} 5'` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
 
- * `{bm} additive phylogeny` - A recursive algorithm that finds the unique simple tree for some additive distance matrix. The algorithm `{bm-target} trim/trimmed distance matrix`s a single leaf node as it each recursive step until the distance matrix has a size of two. The simple tree for any two leaf nodes is a those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the tree and attaching it on.
+ * `{bm} additive phylogeny` - A recursive algorithm that finds the unique simple tree for some additive distance matrix. The algorithm `{bm-target} trim/trimmed distance matrix`s a single leaf node at each recursive step until the distance matrix has a size of two. The simple tree for any two leaf nodes is a those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the tree and attaching it on.
  
-   At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
+   At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix. For example, ...
+   
+   * Initial distance matrix ...
 
-   TODO: INSERT EXAMPLE HERE
-
-   TODO: INSERT EXAMPLE HERE
-
-   TODO: INSERT EXAMPLE HERE
-
-   TODO: INSERT EXAMPLE HERE
-
-   TODO: INSERT EXAMPLE HERE
-
-   TODO: INSERT EXAMPLE HERE
+     |    | v0 | v1 | v2 | v3 |
+     |----|----|----|----|----|
+     | v0 | 0  | 13 | 21 | 22 |
+     | v1 | 13 | 0  | 12 | 13 |
+     | v2 | 21 | 12 | 0  | 13 |
+     | v3 | 22 | 13 | 13 | 0  |
+   
+   * Trim v1 to produce distance matrix ...
+   
+     |    | v0 | v2 | v3 |
+     |----|----|----|----|
+     | v0 | 0  | 21 | 22 |
+     | v2 | 21 | 0  | 13 |
+     | v3 | 22 | 13 | 0  |
+   
+   * Trim v0 to produce distance matrix ...
+   
+     |    | v2 | v3 |
+     |----|----|----|
+     | v2 | 0  | 13 |
+     | v3 | 13 | 0  |
+   
+   * Distance matrix maps to the obvious simple tree...
+   
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[fontname="Courier-Bold", fontsize=10]
+      v2
+      v3
+      v3 -- v2 [label="13.0"]
+     }
+     ```
+   
+   * Attach v0 to produce tree...
+   
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[fontname="Courier-Bold", fontsize=10]
+      N1
+      v0
+      v2
+      v3
+      v3 -- N1 [label="7.0"]
+      N1 -- v2 [label="6.0"]
+      N1 -- v0 [label="15.0"]
+     }
+     ```
+   
+   
+   * Attach v1 to produce tree...
+   
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[fontname="Courier-Bold", fontsize=10]
+      N1
+      N2
+      v0
+      v1
+      v2
+      v3
+      v3 -- N1 [label="7.0"]
+      N1 -- v2 [label="6.0"]
+      v0 -- N2 [label="11.0"]
+      N2 -- N1 [label="4.0"]
+      N2 -- v1 [label="2.0"]
+     }
+     ```
 
    ```{note}
    See Algorithms/Distance Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
@@ -14765,16 +14829,89 @@ graph_show
  
    * find the unique simple tree for an additive distance matrix.
    * approximate a simple tree for a non-additive distance matrix.
+
+   The algorithm finds and `{bm-target} replace/trimmed distance matrix`s a pair of neighbouring leaf nodes in the distance matrix with their shared parent at each recursive step (parent is promoted to a leaf node) until the distance matrix has a size of two. The simple tree for any two leaf nodes is a those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by attaching the neighbours removed from the distance at that step to their parent in the tree.
+
+   ```{note}
+   The term neighbouring means having a shared parent in the tree, not next to each other in the distance matrix.
+   ```
+
+   At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix. For example, ...
    
-   At each recursive step, the algorithm replaces a pair of neighbouring leaf nodes in the distance matrix with their shared parent (parent is promoted to a leaf node). It does this until only two nodes are left. The simple tree for any two leaf nodes is a those two nodes connected by a single edge.
+   * Initial non-additive distance matrix ...
 
-   As the algorithm returns from each recursive step, it has 3 pieces of information:
+     |    | v0 | v1 | v2 | v3 |
+     |----|----|----|----|----|
+     | v0 | 0  | 16 | 22 | 22 |
+     | v1 | 16 | 0  | 13 | 12 |
+     | v2 | 22 | 13 | 0  | 11 |
+     | v3 | 22 | 12 | 11 | 0  |
 
-   * there exists two neighbouring leaf nodes L1 and L2.
-   * a distance matrix containing L1 and L2.
-   * a simple tree missing L1 and L2 but containing their shared parent P.
+   * Replace neighbours (v1, v0) with their parent N1 to produce distance matrix ...
 
-   That's enough information to know where on the returned tree L1 and L2 should be attached (at P) and what their limb lengths should be. At the end, the algorithm will have constructed a simple tree for the distance matrix.
+     |    | N1  | v2 | v3 |
+     |----|-----|----|----|
+     | N1 | 0   | 22 | 22 |
+     | v2 | 9.5 | 0  | 11 |
+     | v3 | 9   | 11 | 0  |
+
+   * Replace neighbours (v2, v3) with their parent N2 to produce distance matrix ...
+
+     |    |  N1  |  N2  |
+     |----|------|------|
+     | N1 | 0    | 3.75 |
+     | N2 | 3.75 | 0    |
+
+   * Distance matrix maps to the obvious simple tree...
+
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[fontname="Courier-Bold", fontsize=10]
+     N1
+     N2
+     N2 -- N1 [label="3.75"]
+     }
+     ```
+
+   * Attach (v2, v3) to N2 to produce tree...
+
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[fontname="Courier-Bold", fontsize=10]
+     N1
+     N2
+     v2
+     v3
+     N2 -- N1 [label="3.75"]
+     N2 -- v2 [label="5.75"]
+     N2 -- v3 [label="5.25"]
+     }
+     ```
+
+   * Attach (v1, v0) to N1 to produce tree...
+
+     ```{dot}
+     graph G {
+      graph[rankdir=LR]
+      node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
+      edge[fontname="Courier-Bold", fontsize=10]
+     N1
+     N2
+     v0
+     v1
+     v2
+     v3
+     N2 -- N1 [label="3.75"]
+     N2 -- v2 [label="5.75"]
+     N2 -- v3 [label="5.25"]
+     N1 -- v1 [label="3.25"]
+     N1 -- v0 [label="12.75"]
+     }
+     ```
 
    ```{note}
    See Algorithms/Distance Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.

@@ -12279,7 +12279,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_5c2684ce4eb6033a34ee1d20e4b26d04.svg" alt="Dot diagram"></p>
+<p><img src="dot_604ccd48bab4784363eb9e649abb2a7c.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12509,7 +12509,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12578,7 +12578,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_fc448c1505e7cf405913d48b66541f2f.svg" alt="Dot diagram"></p>
+<p><img src="dot_6e4736c71ded752b45a2ed5a0d5e8c90.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14734,7 +14734,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_76a7637593a80d0d8ad16fd257528bce.svg" alt="Dot diagram"></p>
+<p><img src="dot_53ee2bb431b388cfbe57b1026f312b89.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14819,24 +14819,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v2 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v0 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v3</td><td>12.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v3</td><td>12.0</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>13.0</td><td>7.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v5 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>v1</th><th>v3</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td></tr><tr><td>v3</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Obvious tree...</p>
-<p><img src="dot_ba25cfb275bac20f8e9eb4a17389d10d.svg" alt="Dot diagram"></p>
-<p>Attached v4 to produce tree...</p>
-<p><img src="dot_a37a30ddf90985ebd82a62558c6a9d15.svg" alt="Dot diagram"></p>
-<p>Attached v5 to produce tree...</p>
-<p><img src="dot_f9344a2adaae0f82575192d4d6c91422.svg" alt="Dot diagram"></p>
-<p>Attached v0 to produce tree...</p>
-<p><img src="dot_e965a8b61876e51b5081103808340a1d.svg" alt="Dot diagram"></p>
+<p>Obvious simple tree...</p>
+<p><img src="dot_4f8dc850c7f959a370ab4abe8f94d986.svg" alt="Dot diagram"></p>
 <p>Attached v2 to produce tree...</p>
-<p><img src="dot_96ea1621c545d4c843ea632d68c13d96.svg" alt="Dot diagram"></p>
+<p><img src="dot_ec363a9485449b1c170708c11a27c5ce.svg" alt="Dot diagram"></p>
+<p>Attached v5 to produce tree...</p>
+<p><img src="dot_790d3624a4bb923b11455387a9f1b53c.svg" alt="Dot diagram"></p>
+<p>Attached v4 to produce tree...</p>
+<p><img src="dot_c1f29f659e82a467e4aabf2a5388915c.svg" alt="Dot diagram"></p>
+<p>Attached v0 to produce tree...</p>
+<p><img src="dot_219952a43be4b44764b6f59facbd996c.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15002,25 +15002,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>Removed neighbours ('v3', 'v4') and added their parent N1 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v4', 'v3') with their parent N1 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
-<p>Removed neighbours ('v5', 'N1') and added their parent N2 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Removed neighbours ('v1', 'v2') and added their parent N3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Removed neighbours ('N3', 'N2') and added their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N4</th><th>v0</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>11.625</td></tr><tr><td>v0</td><td>11.625</td><td>0.0</td></tr></tbody></table>
-<p>Obvious tree...</p>
-<p><img src="dot_1279e3994a36c97f925af56dfdc65753.svg" alt="Dot diagram"></p>
-<p>Attached ('N3', 'N2') to N4 to produce tree...</p>
-<p><img src="dot_c58722faeceae8a418d494b51ecfb364.svg" alt="Dot diagram"></p>
-<p>Attached ('v1', 'v2') to N3 to produce tree...</p>
-<p><img src="dot_8b23f0b93cd8206793b72258f2a6a76e.svg" alt="Dot diagram"></p>
+<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v2', 'v1') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N3</th><th>N4</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>0.375</td></tr><tr><td>N4</td><td>0.375</td><td>0.0</td></tr></tbody></table>
+<p>Obvious simple tree...</p>
+<p><img src="dot_be14fd16e403f27a505730a47fb24818.svg" alt="Dot diagram"></p>
+<p>Attached ('v2', 'v1') to N4 to produce tree...</p>
+<p><img src="dot_8a4dc62b97c1ad0f8a86c8a1d9f2d579.svg" alt="Dot diagram"></p>
+<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
+<p><img src="dot_f75042da7da7474d9e3c003f7680caa8.svg" alt="Dot diagram"></p>
 <p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_a6363a1967a3cac9da56fc327b32d7fe.svg" alt="Dot diagram"></p>
-<p>Attached ('v3', 'v4') to N1 to produce tree...</p>
-<p><img src="dot_d5a234ddce26fdde3302bd6ab76e40b4.svg" alt="Dot diagram"></p>
-<p><img src="dot_d5a234ddce26fdde3302bd6ab76e40b4.svg" alt="Dot diagram"></p>
+<p><img src="dot_328dccd542dac1f271235540d64b689b.svg" alt="Dot diagram"></p>
+<p>Attached ('v4', 'v3') to N1 to produce tree...</p>
+<p><img src="dot_d035dd16e764c659a2600365d7ad9e24.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -18497,14 +18496,123 @@ dist(S3, S4) is 5 = x + u + z
 <p> <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' --></p>
 </li>
 <li>
-<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - A recursive algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The algorithm <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">trim</a>s a single leaf node as it each recursive step until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has a size of two. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is a those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge. Using that <a href="#BM_(tree)%2Fi">tree</a> as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the <a href="#BM_(tree)%2Fi">tree</a> and attaching it on.</p>
-<p>At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p>TODO: INSERT EXAMPLE HERE</p>
-<p>TODO: INSERT EXAMPLE HERE</p>
-<p>TODO: INSERT EXAMPLE HERE</p>
-<p>TODO: INSERT EXAMPLE HERE</p>
-<p>TODO: INSERT EXAMPLE HERE</p>
-<p>TODO: INSERT EXAMPLE HERE</p>
+<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - A recursive algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The algorithm <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">trim</a>s a single leaf node at each recursive step until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has a size of two. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is a those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge. Using that <a href="#BM_(tree)%2Fi">tree</a> as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the <a href="#BM_(tree)%2Fi">tree</a> and attaching it on.</p>
+<p>At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. For example, ...</p>
+<ul>
+<li>
+<p>Initial <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>13</td>
+<td>21</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>13</td>
+<td>0</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>12</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Trim v1 to produce <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>21</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>21</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Trim v0 to produce <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v2</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">Distance matrix</a> maps to the obvious <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<p><img src="dot_17295d277521c7d7445601414800311c.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>Attach v0 to produce <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><img src="dot_ee7b26791f6d3ee197982f570c83e294.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>Attach v1 to produce <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><img src="dot_a9a8b9059c8bf67a1d36b651e907a38a.svg" alt="Dot diagram"></p>
+</li>
+</ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FAdditive%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm</a> for a full explanation of how this algorithm works.</p>
@@ -18778,14 +18886,127 @@ dist(S3, S4) is 5 = x + u + z
 <li>find the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</li>
 <li>approximate a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</li>
 </ul>
-<p>At each recursive step, the algorithm replaces a pair of <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> with their shared parent (parent is promoted to a leaf node). It does this until only two nodes are left. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is a those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge.</p>
-<p>As the algorithm returns from each recursive step, it has 3 pieces of information:</p>
+<p>The algorithm finds and <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">replace</a>s a pair of <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> with their shared parent at each recursive step (parent is promoted to a leaf node) until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has a size of two. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is a those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge. Using that <a href="#BM_(tree)%2Fi">tree</a> as its base, the algorithm recurses out of each step by attaching the <a href="#BM_(neighbour)%2Fi">neighbour</a>s removed from the distance at that step to their parent in the <a href="#BM_(tree)%2Fi">tree</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The term <a href="#BM_(neighbour)%2Fi">neighbour</a>ing means having a shared parent in the <a href="#BM_(tree)%2Fi">tree</a>, not next to each other in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
+</div>
+<p>At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. For example, ...</p>
 <ul>
-<li>there exists two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes L1 and L2.</li>
-<li>a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> containing L1 and L2.</li>
-<li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> missing L1 and L2 but containing their shared parent P.</li>
+<li>
+<p>Initial non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0</td>
+<td>0</td>
+<td>16</td>
+<td>22</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v1</td>
+<td>16</td>
+<td>0</td>
+<td>13</td>
+<td>12</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>22</td>
+<td>13</td>
+<td>0</td>
+<td>11</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>22</td>
+<td>12</td>
+<td>11</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Replace <a href="#BM_(neighbour)%2Fi">neighbour</a>s (v1, v0) with their parent N1 to produce <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>N1</th>
+<th>v2</th>
+<th>v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N1</td>
+<td>0</td>
+<td>22</td>
+<td>22</td>
+</tr>
+<tr>
+<td>v2</td>
+<td>9.5</td>
+<td>0</td>
+<td>11</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>9</td>
+<td>11</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Replace <a href="#BM_(neighbour)%2Fi">neighbour</a>s (v2, v3) with their parent N2 to produce <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>N1</th>
+<th>N2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N1</td>
+<td>0</td>
+<td>3.75</td>
+</tr>
+<tr>
+<td>N2</td>
+<td>3.75</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">Distance matrix</a> maps to the obvious <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
+<p><img src="dot_9f4177ab91402e113243c9985f953563.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>Attach (v2, v3) to N2 to produce <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><img src="dot_3bcebffa84a180db2bd3ef759fd52701.svg" alt="Dot diagram"></p>
+</li>
+<li>
+<p>Attach (v1, v0) to N1 to produce <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><img src="dot_9a3e57b6b197a70fe4edf94c50972151.svg" alt="Dot diagram"></p>
+</li>
 </ul>
-<p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L1 and L2 should be attached (at P) and what their <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s should be. At the end, the algorithm will have constructed a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm</a> for a full explanation of how this algorithm works.</p>
