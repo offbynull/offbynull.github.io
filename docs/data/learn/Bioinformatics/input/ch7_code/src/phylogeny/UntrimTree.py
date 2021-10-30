@@ -62,7 +62,7 @@ def find_trimmed_leaf(dist_mat: DistanceMatrix[N], trimmed_tree: Graph[N, ND, E,
 
 
 # MARKDOWN_DIST_TO_PARENT
-def find_pair_traveling_thru_leaf_parent(dist_mat: DistanceMatrix, leaf_node: N) -> tuple[N, N]:
+def find_pair_traveling_thru_leaf_parent(dist_mat: DistanceMatrix[N], leaf_node: N) -> tuple[N, N]:
     leaf_set = dist_mat.leaf_ids() - {leaf_node}
     for l1, l2 in product(leaf_set, repeat=2):
         if not is_same_subtree(dist_mat, leaf_node, l1, l2):
@@ -70,7 +70,7 @@ def find_pair_traveling_thru_leaf_parent(dist_mat: DistanceMatrix, leaf_node: N)
     raise ValueError('Not found')
 
 
-def find_distance_to_leaf_parent(dist_mat: DistanceMatrix, from_leaf_node: N, to_leaf_node: N) -> float:
+def find_distance_to_leaf_parent(dist_mat: DistanceMatrix[N], from_leaf_node: N, to_leaf_node: N) -> float:
     balded_dist_mat = dist_mat.copy()
     bald_distance_matrix(balded_dist_mat, to_leaf_node)
     return balded_dist_mat[from_leaf_node, to_leaf_node]
@@ -108,7 +108,7 @@ def walk_until_distance(
 
 # MARKDOWN
 def untrim_tree(
-        dist_mat: DistanceMatrix,
+        dist_mat: DistanceMatrix[N],
         trimmed_tree: Graph[N, ND, E, float],
         gen_node_id: Callable[[], N],
         gen_edge_id: Callable[[], E]

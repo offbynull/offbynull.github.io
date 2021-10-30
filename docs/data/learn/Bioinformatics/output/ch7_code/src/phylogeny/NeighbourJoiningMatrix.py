@@ -8,6 +8,15 @@ from helpers.InputUtils import str_to_list
 N = TypeVar('N')
 
 
+def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
+    d = {}
+    for i in range(len(m)):
+        for j in range(len(m)):
+            i1, i2 = sorted([i, j])
+            d[(f'v{i1}', f'v{i2}')] = float(m[i1][i2])
+    return DistanceMatrix(d)
+
+
 # MARKDOWN
 def total_distance(dist_mat: DistanceMatrix[N]) -> dict[N, float]:
     ret = {}
@@ -45,7 +54,7 @@ def main():
     print("`{bm-disable-all}`", end="\n\n")
     try:
         dm_raw, _ = str_to_list(input().strip(), 0)
-        dm = DistanceMatrix.create_from_matrix(dm_raw)
+        dm = create_distance_matrix(dm_raw)
         print('Given the following distance matrix...')
         print()
         print('<table>')

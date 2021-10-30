@@ -12,7 +12,7 @@ E = TypeVar('E')
 
 
 # MARKDOWN
-def cardinality_test(g: Graph[N, ND, E, float]) -> tuple[DistanceMatrix, bool]:
+def cardinality_test(g: Graph[N, ND, E, float]) -> tuple[DistanceMatrix[N], bool]:
     return (
         to_additive_distance_matrix(g),
         is_simple_tree(g)

@@ -9,8 +9,17 @@ from phylogeny.FourPointCondition import is_additive
 N = TypeVar('N')
 
 
+def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
+    d = {}
+    for i in range(len(m)):
+        for j in range(len(m)):
+            i1, i2 = sorted([i, j])
+            d[(f'v{i1}', f'v{i2}')] = float(m[i1][i2])
+    return DistanceMatrix(d)
+
+
 # MARKDOWN
-def find_limb_length(dm: DistanceMatrix, l: N) -> float:
+def find_limb_length(dm: DistanceMatrix[N], l: N) -> float:
     leaf_nodes = dm.leaf_ids()
     leaf_nodes.remove(l)
     a = leaf_nodes.pop()
@@ -24,11 +33,11 @@ def main():
     print("`{bm-disable-all}`", end="\n\n")
     try:
         mat = []
-        leaf_id = int(stdin.readline().strip())
+        leaf_id = stdin.readline().strip()
         for line in stdin:
             row = [float(e) for e in str_to_list(line.strip(), 0)[0]]
             mat.append(row)
-        dist_mat = DistanceMatrix.create_from_matrix(mat)
+        dist_mat = create_distance_matrix(mat)
         assert is_additive(dist_mat), 'Not a additive distance matrix'
         print('Given the additive distance matrix...')
         print()

@@ -20,10 +20,10 @@ def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
 
 # MARKDOWN
 def expose_neighbour_parent(
-        dm: DistanceMatrix,
+        dm: DistanceMatrix[N],
         l1: N,
         l2: N,
-        gen_node_id: Callable[[], str]
+        gen_node_id: Callable[[], N]
 ) -> N:
     m_id = gen_node_id()
     m_dists = {x: (dm[l1, x] + dm[l2, x] - dm[l1, l2]) / 2 for x in dm.leaf_ids_it()}

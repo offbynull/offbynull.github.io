@@ -9983,7 +9983,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><strong>ALGORITHM</strong>:</p>
 <p>This section is more of a concept that an algorithm. The following just generates an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> from a <a href="#BM_(tree)%2Fi">tree</a> and says if that <a href="#BM_(tree)%2Fi">tree</a> is unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (it should be if it's a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>). There is no code to show for it because it's just calling things from previous sections (generating a <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and checking if a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
 <p><a href="ch7_code/src/phylogeny/CardinalityTest.py">ch7_code/src/phylogeny/CardinalityTest.py</a> (lines 15 to 19):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cardinality_test</span>(<span class="hljs-params">g: Graph[N, ND, E, <span class="hljs-built_in">float</span>]</span>) -&gt; <span class="hljs-built_in">tuple</span>[DistanceMatrix, <span class="hljs-built_in">bool</span>]:
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cardinality_test</span>(<span class="hljs-params">g: Graph[N, ND, E, <span class="hljs-built_in">float</span>]</span>) -&gt; <span class="hljs-built_in">tuple</span>[DistanceMatrix[N], <span class="hljs-built_in">bool</span>]:
     <span class="hljs-keyword">return</span> (
         to_additive_distance_matrix(g),
         is_simple_tree(g)
@@ -10103,8 +10103,8 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>I'm almost certain this inequality should be &lt; instead of &lt;=, because in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> you can't have an edge weight of 0, right? An edge weight of 0 would indicate that the nodes at each end of an edge are the same entity.</p>
 </div>
 <p>All of the information required for the above calculation is available in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>...</p>
-<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 12 to 38):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">four_point_test</span>(<span class="hljs-params">dm: DistanceMatrix, l0: N, l1: N, l2: N, l3: N</span>) -&gt; <span class="hljs-built_in">bool</span>:
+<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 21 to 47):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">four_point_test</span>(<span class="hljs-params">dm: DistanceMatrix[N], l0: N, l1: N, l2: N, l3: N</span>) -&gt; <span class="hljs-built_in">bool</span>:
     <span class="hljs-comment"># Pairs of leaf node pairs</span>
     pair_combos = (
         ((l0, l1), (l2, l3)),
@@ -10133,8 +10133,8 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
 <p>If a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>, its leaf node quartets will also pass this test. That is, if all leaf node quartets in a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> ...</p>
-<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 43 to 55):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_additive</span>(<span class="hljs-params">dm: DistanceMatrix</span>) -&gt; <span class="hljs-built_in">bool</span>:
+<p><a href="ch7_code/src/phylogeny/FourPointCondition.py">ch7_code/src/phylogeny/FourPointCondition.py</a> (lines 52 to 64):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_additive</span>(<span class="hljs-params">dm: DistanceMatrix[N]</span>) -&gt; <span class="hljs-built_in">bool</span>:
     <span class="hljs-comment"># Recall that an additive distance matrix of size &lt;= 3 is guaranteed to be an additive distance</span>
     <span class="hljs-comment"># matrix (try it and see -- any distances you use will always end up fitting a tree). Thats why</span>
     <span class="hljs-comment"># you need at least 4 leaf nodes to test.</span>
@@ -10153,35 +10153,35 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>3.0</td>
 <td>8.0</td>
 <td>7.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>3.0</td>
 <td>0.0</td>
 <td>9.0</td>
 <td>8.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>8.0</td>
 <td>9.0</td>
 <td>0.0</td>
 <td>5.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>7.0</td>
 <td>8.0</td>
 <td>5.0</td>
@@ -10369,8 +10369,8 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <p><img src="dot_2ce9085dbbfd0f88d09667f2cefdce21.svg" alt="Dot diagram"></p>
 <p>Pick v4 as your A node, then try the formula with every other leaf node as B (except v2 because that's the node you're trying to get <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for + v4 because that's your A node). At least one of path(A, B)'s will cross through v2's parent. Take the minimum, just as you did when you were trying every possible node pair across all leaf nodes in the graph.</p>
 </div>
-<p><a href="ch7_code/src/phylogeny/FindLimbLength.py">ch7_code/src/phylogeny/FindLimbLength.py</a> (lines 13 to 19):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_limb_length</span>(<span class="hljs-params">dm: DistanceMatrix, l: N</span>) -&gt; <span class="hljs-built_in">float</span>:
+<p><a href="ch7_code/src/phylogeny/FindLimbLength.py">ch7_code/src/phylogeny/FindLimbLength.py</a> (lines 22 to 28):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_limb_length</span>(<span class="hljs-params">dm: DistanceMatrix[N], l: N</span>) -&gt; <span class="hljs-built_in">float</span>:
     leaf_nodes = dm.leaf_ids()
     leaf_nodes.remove(l)
     a = leaf_nodes.pop()
@@ -10383,17 +10383,17 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+<th>v6</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>19.0</td>
@@ -10403,7 +10403,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>36.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>10.0</td>
@@ -10413,7 +10413,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>27.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>19.0</td>
 <td>10.0</td>
 <td>0.0</td>
@@ -10423,7 +10423,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>27.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>20.0</td>
 <td>11.0</td>
 <td>11.0</td>
@@ -10433,7 +10433,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>28.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>29.0</td>
 <td>20.0</td>
 <td>20.0</td>
@@ -10443,7 +10443,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>13.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>40.0</td>
 <td>31.0</td>
 <td>31.0</td>
@@ -10453,7 +10453,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 <td>6.0</td>
 </tr>
 <tr>
-<td>6</td>
+<td>v6</td>
 <td>36.0</td>
 <td>27.0</td>
 <td>27.0</td>
@@ -10464,7 +10464,7 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </tr>
 </tbody>
 </table>
-<p>The limb for leaf node 2 in its unique simple tree has a weight of 5.0</p>
+<p>The limb for leaf node v2 in its unique simple tree has a weight of 5.0</p>
 </div>
 <p></p>
 <a name="H_Test%20Same%20Subtree"></a><h3>Test Same Subtree</h3>
@@ -10606,8 +10606,8 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <p><span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> = <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> + <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i1)</span></p>
 </li>
 </ul>
-<p><a href="ch7_code/src/phylogeny/SubtreeDetect.py">ch7_code/src/phylogeny/SubtreeDetect.py</a> (lines 14 to 23):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_same_subtree</span>(<span class="hljs-params">dm: DistanceMatrix, l: N, a: N, b: N</span>) -&gt; <span class="hljs-built_in">bool</span>:
+<p><a href="ch7_code/src/phylogeny/SubtreeDetect.py">ch7_code/src/phylogeny/SubtreeDetect.py</a> (lines 23 to 32):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_same_subtree</span>(<span class="hljs-params">dm: DistanceMatrix[N], l: N, a: N, b: N</span>) -&gt; <span class="hljs-built_in">bool</span>:
     l_weight = find_limb_length(dm, l)
     test_res = (dm[l, a] + dm[l, b] - dm[a, b]) / <span class="hljs-number">2</span>
     <span class="hljs-keyword">if</span> test_res == l_weight:
@@ -10623,17 +10623,17 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
+<th>v6</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>19.0</td>
@@ -10643,7 +10643,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <td>36.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>10.0</td>
@@ -10653,7 +10653,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <td>27.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>19.0</td>
 <td>10.0</td>
 <td>0.0</td>
@@ -10663,7 +10663,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <td>27.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>20.0</td>
 <td>11.0</td>
 <td>11.0</td>
@@ -10673,7 +10673,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <td>28.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>29.0</td>
 <td>20.0</td>
 <td>20.0</td>
@@ -10683,7 +10683,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <td>13.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>40.0</td>
 <td>31.0</td>
 <td>31.0</td>
@@ -10693,7 +10693,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <td>6.0</td>
 </tr>
 <tr>
-<td>6</td>
+<td>v6</td>
 <td>36.0</td>
 <td>27.0</td>
 <td>27.0</td>
@@ -10704,7 +10704,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 </tr>
 </tbody>
 </table>
-<p>Had the tree been split on leaf node 2's parent, leaf nodes 1 and 5 would reside in
+<p>Had the tree been split on leaf node v2's parent, leaf nodes v1 and v5 would reside in
 different subtrees.</p>
 </div>
 <p></p>
@@ -10802,8 +10802,8 @@ different subtrees.</p>
 <li><a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> row and column for v3 disappear. All other leaf nodes remain with the same distances.</li>
 </ul>
 <p>As such, removing the row and column for some leaf node in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to removing its <a href="#BM_(limb)%2Fi">limb</a> from the corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> then merging together any edges <a href="#BM_(connected)%2Fi">connected</a> by nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> 2.</p>
-<p><a href="ch7_code/src/phylogeny/Trimmer.py">ch7_code/src/phylogeny/Trimmer.py</a> (lines 17 to 28):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">trim_distance_matrix</span>(<span class="hljs-params">dm: DistanceMatrix, leaf: N</span>) -&gt; <span class="hljs-literal">None</span>:
+<p><a href="ch7_code/src/phylogeny/Trimmer.py">ch7_code/src/phylogeny/Trimmer.py</a> (lines 26 to 37):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">trim_distance_matrix</span>(<span class="hljs-params">dm: DistanceMatrix[N], leaf: N</span>) -&gt; <span class="hljs-literal">None</span>:
     dm.delete(leaf)  <span class="hljs-comment"># remove row+col for leaf</span>
 
 
@@ -10821,35 +10821,35 @@ different subtrees.</p>
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>21.0</td>
 <td>22.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>12.0</td>
 <td>13.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>0.0</td>
 <td>13.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>13.0</td>
@@ -10857,29 +10857,29 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>... trimming leaf node 2 results in ...</p>
+<p>... trimming leaf node v2 results in ...</p>
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>3</th>
+<th>v0</th>
+<th>v1</th>
+<th>v3</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>22.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>13.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>0.0</td>
@@ -11119,8 +11119,8 @@ different subtrees.</p>
 </table>
 <p>Where as v5 was originally contributing 7 to distances, after balding it contributes 0.</p>
 <p>As such, subtracting some leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> from its distances in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to balding that leaf node's <a href="#BM_(limb)%2Fi">limb</a> in its corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
-<p><a href="ch7_code/src/phylogeny/Balder.py">ch7_code/src/phylogeny/Balder.py</a> (lines 16 to 29):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">bald_distance_matrix</span>(<span class="hljs-params">dm: DistanceMatrix, leaf: N</span>) -&gt; <span class="hljs-literal">None</span>:
+<p><a href="ch7_code/src/phylogeny/Balder.py">ch7_code/src/phylogeny/Balder.py</a> (lines 25 to 38):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">bald_distance_matrix</span>(<span class="hljs-params">dm: DistanceMatrix[N], leaf: N</span>) -&gt; <span class="hljs-literal">None</span>:
     limb_len = find_limb_length(dm, leaf)
     <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> dm.leaf_ids_it():
         <span class="hljs-keyword">if</span> n == leaf:
@@ -11140,16 +11140,16 @@ different subtrees.</p>
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -11158,7 +11158,7 @@ different subtrees.</p>
 <td>22.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>12.0</td>
@@ -11167,7 +11167,7 @@ different subtrees.</p>
 <td>13.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>0.0</td>
@@ -11176,7 +11176,7 @@ different subtrees.</p>
 <td>21.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>20.0</td>
@@ -11185,7 +11185,7 @@ different subtrees.</p>
 <td>13.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -11194,7 +11194,7 @@ different subtrees.</p>
 <td>14.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -11204,20 +11204,20 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>... trimming leaf node 5 results in ...</p>
+<p>... trimming leaf node v5 results in ...</p>
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -11226,7 +11226,7 @@ different subtrees.</p>
 <td>15.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>12.0</td>
@@ -11235,7 +11235,7 @@ different subtrees.</p>
 <td>6.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>0.0</td>
@@ -11244,7 +11244,7 @@ different subtrees.</p>
 <td>14.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>20.0</td>
@@ -11253,7 +11253,7 @@ different subtrees.</p>
 <td>6.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -11262,7 +11262,7 @@ different subtrees.</p>
 <td>7.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>15.0</td>
 <td>6.0</td>
 <td>14.0</td>
@@ -11519,7 +11519,7 @@ different subtrees.</p>
 </ul>
 <p><img src="dot_beaa27212249bfd3c9e90e3ff22371b8.svg" alt="Dot diagram"></p>
 <p>Essentially, the <a href="#BM_(bald%20distance%20matrix%7Cbalded%20distance%20matrix%7Cbald%20distance%20matrices%7Cbalded%20distance%20matrices)%2Fi">balded distance matrix</a> is enough to tell you that the path from v0 to v5's parent has a distance of 15. The balded tree itself isn't required.</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_pair_traveling_thru_leaf_parent</span>(<span class="hljs-params">dist_mat: DistanceMatrix, leaf_node: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[N, N]:
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_pair_traveling_thru_leaf_parent</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N], leaf_node: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[N, N]:
     leaf_set = dist_mat.leaf_ids() - {leaf_node}
     <span class="hljs-keyword">for</span> l1, l2 <span class="hljs-keyword">in</span> product(leaf_set, repeat=<span class="hljs-number">2</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_same_subtree(dist_mat, leaf_node, l1, l2):
@@ -11527,7 +11527,7 @@ different subtrees.</p>
     <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Not found'</span>)
 
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_distance_to_leaf_parent</span>(<span class="hljs-params">dist_mat: DistanceMatrix, from_leaf_node: N, to_leaf_node: N</span>) -&gt; <span class="hljs-built_in">float</span>:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_distance_to_leaf_parent</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N], from_leaf_node: N, to_leaf_node: N</span>) -&gt; <span class="hljs-built_in">float</span>:
     balded_dist_mat = dist_mat.copy()
     bald_distance_matrix(balded_dist_mat, to_leaf_node)
     <span class="hljs-keyword">return</span> balded_dist_mat[from_leaf_node, to_leaf_node]
@@ -11563,7 +11563,7 @@ different subtrees.</p>
 </code></pre>
 <p><a href="ch7_code/src/phylogeny/UntrimTree.py">ch7_code/src/phylogeny/UntrimTree.py</a> (lines 110 to 148):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">untrim_tree</span>(<span class="hljs-params">
-        dist_mat: DistanceMatrix,
+        dist_mat: DistanceMatrix[N],
         trimmed_tree: Graph[N, ND, E, <span class="hljs-built_in">float</span>],
         gen_node_id: <span class="hljs-type">Callable</span>[[], N],
         gen_edge_id: <span class="hljs-type">Callable</span>[[], E]
@@ -11674,7 +11674,7 @@ different subtrees.</p>
 <p>... and simple tree trim(T, v5)...</p>
 <p><img src="dot_947428a9fad00efc08c05fcfe2286cfb.svg" alt="Dot diagram"></p>
 <p>... , v5 is injected at the appropriate location to become simple tree T (un-trimmed) ...</p>
-<p><img src="dot_732ee38514b240e67ad8b3b760b395eb.svg" alt="Dot diagram"></p>
+<p><img src="dot_161663c05ac037dd80d3463d127da1e3.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
@@ -12106,7 +12106,7 @@ different subtrees.</p>
 <p>This will always be the case for any <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: If a chosen pair aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, the path between them always travels over at least one internal edge. <code>combine_edge_count()</code> will always count each edge in the path <code>leaf_count</code> times. In the above example, path(v1,v3) travels over internal edges (i0,i1) and (i1,i2) and as such both those edges in addition to the <a href="#BM_(limb)%2Fi">limb</a>s of v1 and v3 have a count of 6.</p>
 <p>Just like how <code>combine_edge_count_and_normalize()</code> reduces the counts of the chosen pair's <a href="#BM_(limb)%2Fi">limb</a>s to 2, so will it reduce the count of the internal edges in the path of the chosen pair to 2. That is, all edges in the path between the chosen pair get reduced to a count of 2.</p>
 <p>For example, path(v1,v3) has the edges [(v1,i0), (i0,i1), (i1, i2), (v3, i2)]. <code>combine_edge_count_and_normalize(v1,v3)</code> reduces the count of each edge in that path to 2 ...</p>
-<p><img src="dot_ceb7fc6db6ff65e9990b9744340f1b61.svg" alt="Dot diagram"></p>
+<p><img src="dot_361948ed39492a22bb69e4393387ba39.svg" alt="Dot diagram"></p>
 <table>
 <thead>
 <tr>
@@ -12190,7 +12190,7 @@ different subtrees.</p>
 <li>best case scenario, all internal edges are kept &gt; 2.</li>
 </ul>
 <p>The pair with the highest total count is guaranteed to be a <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair because lesser total counts may have had their internal edges reduced.</p>
-<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py</a> (lines 127 to 137):</p>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeCountExplainer.py</a> (lines 126 to 136):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:
     found_pair = <span class="hljs-literal">None</span>
     found_total_count = -<span class="hljs-number">1</span>
@@ -12210,7 +12210,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12279,7 +12279,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_604ccd48bab4784363eb9e649abb2a7c.svg" alt="Dot diagram"></p>
+<p><img src="dot_448d4fea1a4a3a143aabb256a1a8bbd2.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12489,7 +12489,7 @@ different subtrees.</p>
 <p>Since <a href="#BM_(limb)%2Fi">limb</a>s always contribute the same regardless of whether the pair is <a href="#BM_(neighbour)%2Fi">neighbour</a>ing or not (2*weight), they can be ignored. That leaves internal edge contributions as the only thing differentiating between <a href="#BM_(neighbour)%2Fi">neighbour</a>ing and non-<a href="#BM_(neighbour)%2Fi">neighbour</a>ing pairs.</p>
 <p>A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> with 2 or more leaf nodes is guaranteed to have at least 1 <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair. The pair producing the largest result is the one with maxed out contributions from its multiplied internal edges weights, meaning that none of those contributions were for internal edges reduced to 2*weight. Lesser results MAY be lesser because normalization reduced some of their internal edge weights to 2*weight, but the largest result you know for certain has all of its internal edge weights &gt; 2*weight.</p>
 </div>
-<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py</a> (lines 98 to 108):</p>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py</a> (lines 97 to 107):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">neighbour_detect</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">tuple</span>[N, N]]:
     found_pair = <span class="hljs-literal">None</span>
     found_total_count = -<span class="hljs-number">1</span>
@@ -12578,7 +12578,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_6e4736c71ded752b45a2ed5a0d5e8c90.svg" alt="Dot diagram"></p>
+<p><img src="dot_e58ab6eb1eaf5ddecdea7f1b8985a0b5.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -12608,7 +12608,7 @@ dist(v2,v0) + dist(v2,v1) + dist(v2,v3) + dist(v2,v4) + dist(v2,v5) -
 dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </code></pre>
 <p>Since only leaf node distances are being used in the summation calculation, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> suffices as the input. The actual <a href="#BM_(simple%20tree)%2Fi">simple tree</a> isn't required.</p>
-<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix.py</a> (lines 12 to 40):</p>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningMatrix.py">ch7_code/src/phylogeny/NeighbourJoiningMatrix.py</a> (lines 21 to 49):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">total_distance</span>(<span class="hljs-params">dist_mat: DistanceMatrix[N]</span>) -&gt; <span class="hljs-built_in">dict</span>[N, <span class="hljs-built_in">float</span>]:
     ret = {}
     <span class="hljs-keyword">for</span> l1 <span class="hljs-keyword">in</span> dist_mat.leaf_ids():
@@ -12644,16 +12644,16 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -12662,7 +12662,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>22.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>12.0</td>
@@ -12671,7 +12671,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>13.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>0.0</td>
@@ -12680,7 +12680,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>21.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>20.0</td>
@@ -12689,7 +12689,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>13.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -12698,7 +12698,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>14.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -12712,16 +12712,16 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>110.0</td>
 <td>110.0</td>
@@ -12730,7 +12730,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>94.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>110.0</td>
 <td>0.0</td>
 <td>110.0</td>
@@ -12739,7 +12739,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>94.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>110.0</td>
 <td>110.0</td>
 <td>0.0</td>
@@ -12748,7 +12748,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>94.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>88.0</td>
 <td>88.0</td>
 <td>88.0</td>
@@ -12757,7 +12757,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>104.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>88.0</td>
 <td>88.0</td>
 <td>88.0</td>
@@ -12766,7 +12766,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>104.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>94.0</td>
 <td>94.0</td>
 <td>94.0</td>
@@ -12819,12 +12819,12 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Still confused? Think about it like this: When the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is non-additive, each X has a different "view" of what the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be. You're averaging their views to get a single <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> value.</p>
 </div>
-<p><a href="ch7_code/src/phylogeny/FindNeighbourLimbLengths.py">ch7_code/src/phylogeny/FindNeighbourLimbLengths.py</a> (lines 12 to 31):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">view_of_limb_length_using_neighbour</span>(<span class="hljs-params">dm: DistanceMatrix, l: N, l_neighbour: N, l_from: N</span>) -&gt; <span class="hljs-built_in">float</span>:
+<p><a href="ch7_code/src/phylogeny/FindNeighbourLimbLengths.py">ch7_code/src/phylogeny/FindNeighbourLimbLengths.py</a> (lines 21 to 40):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">view_of_limb_length_using_neighbour</span>(<span class="hljs-params">dm: DistanceMatrix[N], l: N, l_neighbour: N, l_from: N</span>) -&gt; <span class="hljs-built_in">float</span>:
     <span class="hljs-keyword">return</span> (dm[l, l_neighbour] + dm[l, l_from] - dm[l_neighbour, l_from]) / <span class="hljs-number">2</span>
 
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">approximate_limb_length_using_neighbour</span>(<span class="hljs-params">dm: DistanceMatrix, l: N, l_neighbour: N</span>) -&gt; <span class="hljs-built_in">float</span>:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">approximate_limb_length_using_neighbour</span>(<span class="hljs-params">dm: DistanceMatrix[N], l: N, l_neighbour: N</span>) -&gt; <span class="hljs-built_in">float</span>:
     leaf_nodes = dm.leaf_ids()
     leaf_nodes.remove(l)
     leaf_nodes.remove(l_neighbour)
@@ -12835,7 +12835,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
     <span class="hljs-keyword">return</span> mean(lengths)
 
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_neighbouring_limb_lengths</span>(<span class="hljs-params">dm: DistanceMatrix, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_neighbouring_limb_lengths</span>(<span class="hljs-params">dm: DistanceMatrix[N], l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
     l1_len = approximate_limb_length_using_neighbour(dm, l1, l2)
     l2_len = approximate_limb_length_using_neighbour(dm, l2, l1)
     <span class="hljs-keyword">return</span> l1_len, l2_len
@@ -12846,16 +12846,16 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -12864,7 +12864,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>22.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>12.0</td>
@@ -12873,7 +12873,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>13.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>0.0</td>
@@ -12882,7 +12882,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>21.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>20.0</td>
@@ -12891,7 +12891,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>13.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -12900,7 +12900,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <td>14.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -12910,10 +12910,10 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </tr>
 </tbody>
 </table>
-<p>... and given that 1 and 2 are neighbours, the limb length for leaf node ...</p>
+<p>... and given that v1 and v2 are neighbours, the limb length for leaf node ...</p>
 <ul>
-<li>1 is approximated to be 2.0</li>
-<li>2 is approximated to be 10.0</li>
+<li>v1 is approximated to be 2.0</li>
+<li>v2 is approximated to be 10.0</li>
 </ul>
 </div>
 <p></p>
@@ -13043,8 +13043,8 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
 \\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.3794880000000003em;vertical-align:-1.329483em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.329483em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.3794880000000003em;vertical-align:-1.329483em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.329483em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span></div><p><a href="ch7_code/src/phylogeny/FindNeighbourLimbLengths_Optimized.py">ch7_code/src/phylogeny/FindNeighbourLimbLengths_Optimized.py</a> (lines 12 to 19):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_neighbouring_limb_lengths</span>(<span class="hljs-params">dm: DistanceMatrix, l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.3794880000000003em;vertical-align:-1.329483em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.329483em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.3794880000000003em;vertical-align:-1.329483em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.329483em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span></span></div><p><a href="ch7_code/src/phylogeny/FindNeighbourLimbLengths_Optimized.py">ch7_code/src/phylogeny/FindNeighbourLimbLengths_Optimized.py</a> (lines 21 to 28):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_neighbouring_limb_lengths</span>(<span class="hljs-params">dm: DistanceMatrix[N], l1: N, l2: N</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
     l1_dist_sum = <span class="hljs-built_in">sum</span>(dm[l1, k] <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> dm.leaf_ids())
     l2_dist_sum = <span class="hljs-built_in">sum</span>(dm[l2, k] <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> dm.leaf_ids())
     res = (l1_dist_sum - l2_dist_sum) / (dm.n - <span class="hljs-number">2</span>)
@@ -13058,16 +13058,16 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <table>
 <thead><tr>
 <th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
+<th>v0</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>v4</th>
+<th>v5</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>0</td>
+<td>v0</td>
 <td>0.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -13076,7 +13076,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <td>22.0</td>
 </tr>
 <tr>
-<td>1</td>
+<td>v1</td>
 <td>13.0</td>
 <td>0.0</td>
 <td>12.0</td>
@@ -13085,7 +13085,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <td>13.0</td>
 </tr>
 <tr>
-<td>2</td>
+<td>v2</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>0.0</td>
@@ -13094,7 +13094,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <td>21.0</td>
 </tr>
 <tr>
-<td>3</td>
+<td>v3</td>
 <td>21.0</td>
 <td>12.0</td>
 <td>20.0</td>
@@ -13103,7 +13103,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <td>13.0</td>
 </tr>
 <tr>
-<td>4</td>
+<td>v4</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -13112,7 +13112,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <td>14.0</td>
 </tr>
 <tr>
-<td>5</td>
+<td>v5</td>
 <td>22.0</td>
 <td>13.0</td>
 <td>21.0</td>
@@ -13122,10 +13122,10 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>... and given that 1 and 2 are neighbours, the limb length for leaf node ...</p>
+<p>... and given that v1 and v2 are neighbours, the limb length for leaf node ...</p>
 <ul>
-<li>1 is approximated to be 2.0</li>
-<li>2 is approximated to be 10.0</li>
+<li>v1 is approximated to be 2.0</li>
+<li>v2 is approximated to be 10.0</li>
 </ul>
 </div>
 <p></p>
@@ -13348,10 +13348,10 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>This algorithm is essentially removing two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes and bringing their shared parent to the forefront (into the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> as a leaf node). In the example above, the new leaf node M represents internal node i0 because the distance between M and i0 is 0.</p>
 <p><a href="ch7_code/src/phylogeny/ExposeNeighbourParent_AdditiveExplainer.py">ch7_code/src/phylogeny/ExposeNeighbourParent_AdditiveExplainer.py</a> (lines 22 to 37):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">expose_neighbour_parent</span>(<span class="hljs-params">
-        dm: DistanceMatrix,
+        dm: DistanceMatrix[N],
         l1: N,
         l2: N,
-        gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+        gen_node_id: <span class="hljs-type">Callable</span>[[], N]
 </span>) -&gt; N:
     bald_distance_matrix(dm, l1)
     bald_distance_matrix(dm, l2)
@@ -13709,10 +13709,10 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>Note that dist(v0,v1) is unknown in the balded matrix (denoted by a bunch of question marks). That doesn't matter because dist(v0,v1) merges into dist(M,M), which must always be 0 (the distance from anything to itself is always 0).</p>
 <p><a href="ch7_code/src/phylogeny/ExposeNeighbourParent.py">ch7_code/src/phylogeny/ExposeNeighbourParent.py</a> (lines 23 to 50):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">expose_neighbour_parent</span>(<span class="hljs-params">
-        dm: DistanceMatrix,
+        dm: DistanceMatrix[N],
         l1: N,
         l2: N,
-        gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+        gen_node_id: <span class="hljs-type">Callable</span>[[], N]
 </span>) -&gt; N:
     <span class="hljs-comment"># bald</span>
     l1_len_views = {}
@@ -14208,10 +14208,10 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </table>
 <p><a href="ch7_code/src/phylogeny/ExposeNeighbourParent_Optimized.py">ch7_code/src/phylogeny/ExposeNeighbourParent_Optimized.py</a> (lines 22 to 35):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">expose_neighbour_parent</span>(<span class="hljs-params">
-        dm: DistanceMatrix,
+        dm: DistanceMatrix[N],
         l1: N,
         l2: N,
-        gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+        gen_node_id: <span class="hljs-type">Callable</span>[[], N]
 </span>) -&gt; N:
     m_id = gen_node_id()
     m_dists = {x: (dm[l1, x] + dm[l2, x] - dm[l1, l2]) / <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> dm.leaf_ids_it()}
@@ -14496,8 +14496,8 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
   }{
     |C_1| \cdot |C_2|
   }
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mpunct mtight">,</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.511818em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.575818em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.825818em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.39981em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><p><a href="ch7_code/src/phylogeny/UPGMA.py">ch7_code/src/phylogeny/UPGMA.py</a> (lines 58 to 64):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cluster_dist</span>(<span class="hljs-params">dm_orig: DistanceMatrix, c_set: ClusterSet, c1: <span class="hljs-built_in">str</span>, c2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">float</span>:
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mpunct mtight">,</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.511818em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.575818em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.825818em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.39981em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.17862099999999992em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.43581800000000004em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><p><a href="ch7_code/src/phylogeny/UPGMA.py">ch7_code/src/phylogeny/UPGMA.py</a> (lines 64 to 70):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cluster_dist</span>(<span class="hljs-params">dm_orig: DistanceMatrix[N], c_set: ClusterSet, c1: <span class="hljs-built_in">str</span>, c2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">float</span>:
     c1_set = c_set[c1]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
     c2_set = c_set[c2]  <span class="hljs-comment"># this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix</span>
     numerator = <span class="hljs-built_in">sum</span>(dm_orig[i, j] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> product(c1_set, c2_set))  <span class="hljs-comment"># sum it all up</span>
@@ -14592,8 +14592,8 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>dist(a,d)=5 in the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 </ul>
 <p>Part of this may have to do with the assumption that the closest two nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> are neighbors in the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a>.</p>
-<p><a href="ch7_code/src/phylogeny/UPGMA.py">ch7_code/src/phylogeny/UPGMA.py</a> (lines 68 to 137):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_clusters_with_min_dist</span>(<span class="hljs-params">dm: DistanceMatrix, c_set: ClusterSet</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]:
+<p><a href="ch7_code/src/phylogeny/UPGMA.py">ch7_code/src/phylogeny/UPGMA.py</a> (lines 74 to 143):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_clusters_with_min_dist</span>(<span class="hljs-params">dm: DistanceMatrix[N], c_set: ClusterSet</span>) -&gt; <span class="hljs-built_in">tuple</span>[N, N, <span class="hljs-built_in">float</span>]:
     <span class="hljs-keyword">assert</span> c_set.active_count() &gt; <span class="hljs-number">1</span>
     min_n1_id = <span class="hljs-literal">None</span>
     min_n2_id = <span class="hljs-literal">None</span>
@@ -14611,12 +14611,12 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">cluster_merge</span>(<span class="hljs-params">
-        dm: DistanceMatrix,
-        dm_orig: DistanceMatrix,
+        dm: DistanceMatrix[N],
+        dm_orig: DistanceMatrix[N],
         c_set: ClusterSet,
-        old_id1: <span class="hljs-built_in">str</span>,
-        old_id2: <span class="hljs-built_in">str</span>,
-        new_id: <span class="hljs-built_in">str</span>
+        old_id1: N,
+        old_id2: N,
+        new_id: N
 </span>) -&gt; <span class="hljs-literal">None</span>:
     c_set.merge(new_id, old_id1, old_id2)  <span class="hljs-comment"># create new cluster w/ elements from old - old_ids deactived+new_id actived</span>
     new_dists = {}
@@ -14628,7 +14628,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
     dm.merge(new_id, old_id1, old_id2, new_dists)  <span class="hljs-comment"># remove old ids and replace with new_id that has new distances</span>
 
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">upgma</span>(<span class="hljs-params">dm: DistanceMatrix</span>) -&gt; <span class="hljs-built_in">tuple</span>[Graph, <span class="hljs-built_in">str</span>]:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">upgma</span>(<span class="hljs-params">dm: DistanceMatrix[N]</span>) -&gt; <span class="hljs-built_in">tuple</span>[Graph, N]:
     g = Graph()
     c_set = ClusterSet(dm)  <span class="hljs-comment"># primed with leaf nodes (all active)</span>
     <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> dm.leaf_ids_it():
@@ -14734,7 +14734,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_53ee2bb431b388cfbe57b1026f312b89.svg" alt="Dot diagram"></p>
+<p><img src="dot_3b53087c2f7f641b8c65d1af3be0d276.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14775,11 +14775,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p><img src="svgbob_64427b0b4402aafe7a3102b5777d5a031cf020b7.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/phylogeny/AdditivePhylogeny.py">ch7_code/src/phylogeny/AdditivePhylogeny.py</a> (lines 31 to 46):</p>
+<p><a href="ch7_code/src/phylogeny/AdditivePhylogeny.py">ch7_code/src/phylogeny/AdditivePhylogeny.py</a> (lines 34 to 49):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_obvious_graph</span>(<span class="hljs-params">
-        dm: DistanceMatrix,
-        gen_edge_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
-</span>) -&gt; Graph:
+        dm: DistanceMatrix[N],
+        gen_edge_id: <span class="hljs-type">Callable</span>[[], E]
+</span>) -&gt; Graph[N, ND, E, <span class="hljs-built_in">float</span>]:
     <span class="hljs-keyword">if</span> dm.n != <span class="hljs-number">2</span>:
         <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Distance matrix must only contain 2 leaf nodes'</span>)
     l1, l2 = dm.leaf_ids()
@@ -14800,11 +14800,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> not containing trimmed leaf node L.</li>
 </ul>
 <p>That's enough information to know where on the returned <a href="#BM_(tree)%2Fi">tree</a> L's <a href="#BM_(limb)%2Fi">limb</a> should be added and what L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> should be (un-trimming the <a href="#BM_(tree)%2Fi">tree</a>). At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p><a href="ch7_code/src/phylogeny/AdditivePhylogeny.py">ch7_code/src/phylogeny/AdditivePhylogeny.py</a> (lines 52 to 65):</p>
+<p><a href="ch7_code/src/phylogeny/AdditivePhylogeny.py">ch7_code/src/phylogeny/AdditivePhylogeny.py</a> (lines 55 to 68):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">additive_phylogeny</span>(<span class="hljs-params">
-        dm: DistanceMatrix,
-        gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>],
-        gen_edge_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+        dm: DistanceMatrix[N],
+        gen_node_id: <span class="hljs-type">Callable</span>[[], N],
+        gen_edge_id: <span class="hljs-type">Callable</span>[[], E]
 </span>) -&gt; Graph:
     <span class="hljs-keyword">if</span> dm.n == <span class="hljs-number">2</span>:
         <span class="hljs-keyword">return</span> to_obvious_graph(dm, gen_edge_id)
@@ -14819,24 +14819,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v0 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v2 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v3</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td></tr><tr><td>v3</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v5 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>7.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v0 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v1</th><th>v4</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_4f8dc850c7f959a370ab4abe8f94d986.svg" alt="Dot diagram"></p>
-<p>Attached v2 to produce tree...</p>
-<p><img src="dot_ec363a9485449b1c170708c11a27c5ce.svg" alt="Dot diagram"></p>
-<p>Attached v5 to produce tree...</p>
-<p><img src="dot_790d3624a4bb923b11455387a9f1b53c.svg" alt="Dot diagram"></p>
-<p>Attached v4 to produce tree...</p>
-<p><img src="dot_c1f29f659e82a467e4aabf2a5388915c.svg" alt="Dot diagram"></p>
+<p><img src="dot_3a695aabfa60322a7febfc29dd4c7f80.svg" alt="Dot diagram"></p>
 <p>Attached v0 to produce tree...</p>
-<p><img src="dot_219952a43be4b44764b6f59facbd996c.svg" alt="Dot diagram"></p>
+<p><img src="dot_13cac433d11b26ead54f3983ab2024c2.svg" alt="Dot diagram"></p>
+<p>Attached v3 to produce tree...</p>
+<p><img src="dot_1e5d49418836c495c0eee866b55472d3.svg" alt="Dot diagram"></p>
+<p>Attached v5 to produce tree...</p>
+<p><img src="dot_f72b1e93bafa0724d78b4926b1a3356b.svg" alt="Dot diagram"></p>
+<p>Attached v2 to produce tree...</p>
+<p><img src="dot_5326b5bb2709d5709f4e0a5003557be4.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -14887,10 +14887,10 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p><img src="svgbob_64427b0b4402aafe7a3102b5777d5a031cf020b7.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py">ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py</a> (lines 43 to 58):</p>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py">ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py</a> (lines 48 to 63):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_obvious_graph</span>(<span class="hljs-params">
-        dm: DistanceMatrix,
-        gen_edge_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+        dm: DistanceMatrix[N],
+        gen_edge_id: <span class="hljs-type">Callable</span>[[], E]
 </span>) -&gt; Graph:
     <span class="hljs-keyword">if</span> dm.n != <span class="hljs-number">2</span>:
         <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Distance matrix must only contain 2 leaf nodes'</span>)
@@ -14913,11 +14913,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> missing L and N, but containing their shared parent P.</li>
 </ul>
 <p>That's enough information to know where L and N should be added on to the <a href="#BM_(tree)%2Fi">tree</a> (node P) and what their <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s are. At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
-<p><a href="ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py">ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py</a> (lines 64 to 81):</p>
+<p><a href="ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py">ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py</a> (lines 69 to 86):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">neighbour_joining_phylogeny</span>(<span class="hljs-params">
         dm: DistanceMatrix,
-        gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>],
-        gen_edge_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
+        gen_node_id: <span class="hljs-type">Callable</span>[[], N],
+        gen_edge_id: <span class="hljs-type">Callable</span>[[], E]
 </span>) -&gt; Graph:
     <span class="hljs-keyword">if</span> dm.n == <span class="hljs-number">2</span>:
         <span class="hljs-keyword">return</span> to_obvious_graph(dm, gen_edge_id)
@@ -15002,11 +15002,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>Replaced neighbours ('v4', 'v3') with their parent N1 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v3', 'v4') with their parent N1 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
+<p>Replaced neighbours ('N1', 'v5') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
+<p>Replaced neighbours ('N2', 'v0') with their parent N3 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v2', 'v1') with their parent N4 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N3</th><th>N4</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>0.375</td></tr><tr><td>N4</td><td>0.375</td><td>0.0</td></tr></tbody></table>
@@ -15014,12 +15014,12 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p><img src="dot_be14fd16e403f27a505730a47fb24818.svg" alt="Dot diagram"></p>
 <p>Attached ('v2', 'v1') to N4 to produce tree...</p>
 <p><img src="dot_8a4dc62b97c1ad0f8a86c8a1d9f2d579.svg" alt="Dot diagram"></p>
-<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
-<p><img src="dot_f75042da7da7474d9e3c003f7680caa8.svg" alt="Dot diagram"></p>
-<p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_328dccd542dac1f271235540d64b689b.svg" alt="Dot diagram"></p>
-<p>Attached ('v4', 'v3') to N1 to produce tree...</p>
-<p><img src="dot_d035dd16e764c659a2600365d7ad9e24.svg" alt="Dot diagram"></p>
+<p>Attached ('N2', 'v0') to N3 to produce tree...</p>
+<p><img src="dot_c6de90ef3e878d31e9680d792feb487b.svg" alt="Dot diagram"></p>
+<p>Attached ('N1', 'v5') to N2 to produce tree...</p>
+<p><img src="dot_f34a4a50e6c96bbbf22070d7435e4166.svg" alt="Dot diagram"></p>
+<p>Attached ('v3', 'v4') to N1 to produce tree...</p>
+<p><img src="dot_1ef4f74dbf22a011473bfecf7b32cf32.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">

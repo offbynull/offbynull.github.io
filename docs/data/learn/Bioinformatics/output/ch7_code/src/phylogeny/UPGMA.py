@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from itertools import product
 from sys import stdin
+from typing import TypeVar
 
 from distance_matrix.DistanceMatrix import DistanceMatrix
 from graph.UndirectedGraph import Graph
@@ -9,7 +10,12 @@ from helpers.InputUtils import str_to_list
 from phylogeny.UntrimTree import create_distance_matrix
 
 
-def to_dot(g: Graph) -> str:
+N = TypeVar('N')
+ND = TypeVar('ND')
+E = TypeVar('E')
+
+
+def to_dot(g: Graph[N, ND, E, float]) -> str:
     ret = 'graph G {\n'
     ret += ' graph[rankdir=BT]\n'
     ret += ' node[shape=egg, fontname="Courier-Bold", fontsize=10]\n'
@@ -26,14 +32,14 @@ def to_dot(g: Graph) -> str:
 
 
 class ClusterSet:
-    def __init__(self, dist_mat: DistanceMatrix):
+    def __init__(self, dist_mat: DistanceMatrix[N]):
         self._clusters: dict[str, set[str]] = {}
         self._active: set[str] = set()
         for n in dist_mat.leaf_ids_it():
             self._clusters[n] = {n}
             self._active.add(n)
 
-    def merge(self, c_new: str, c1: str, c2: str) -> None:
+    def merge(self, c_new: N, c1: N, c2: N) -> None:
         if c1 not in self._clusters or c2 not in self._clusters:
             raise ValueError('???')
         self._clusters[c_new] = self._clusters[c1] | self._clusters[c2]
@@ -41,13 +47,13 @@ class ClusterSet:
         self._active.remove(c2)
         self._active.add(c_new)
 
-    def active(self) -> set[str]:
+    def active(self) -> set[N]:
         return self._active.copy()
 
     def active_count(self) -> int:
         return len(self._active)
 
-    def __getitem__(self, c: str) -> set[str]:
+    def __getitem__(self, c: N) -> set[N]:
         return self._clusters[c].copy()
 
     def __str__(self):
@@ -55,7 +61,7 @@ class ClusterSet:
 
 
 # MARKDOWN_DIST
-def cluster_dist(dm_orig: DistanceMatrix, c_set: ClusterSet, c1: str, c2: str) -> float:
+def cluster_dist(dm_orig: DistanceMatrix[N], c_set: ClusterSet, c1: str, c2: str) -> float:
     c1_set = c_set[c1]  # this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix
     c2_set = c_set[c2]  # this should be a set of leaf nodes from the ORIGINAL unmodified distance matrix
     numerator = sum(dm_orig[i, j] for i, j in product(c1_set, c2_set))  # sum it all up
@@ -65,7 +71,7 @@ def cluster_dist(dm_orig: DistanceMatrix, c_set: ClusterSet, c1: str, c2: str) -
 
 
 # MARKDOWN
-def find_clusters_with_min_dist(dm: DistanceMatrix, c_set: ClusterSet) -> tuple[str, str, float]:
+def find_clusters_with_min_dist(dm: DistanceMatrix[N], c_set: ClusterSet) -> tuple[N, N, float]:
     assert c_set.active_count() > 1
     min_n1_id = None
     min_n2_id = None
@@ -83,12 +89,12 @@ def find_clusters_with_min_dist(dm: DistanceMatrix, c_set: ClusterSet) -> tuple[
 
 
 def cluster_merge(
-        dm: DistanceMatrix,
-        dm_orig: DistanceMatrix,
+        dm: DistanceMatrix[N],
+        dm_orig: DistanceMatrix[N],
         c_set: ClusterSet,
-        old_id1: str,
-        old_id2: str,
-        new_id: str
+        old_id1: N,
+        old_id2: N,
+        new_id: N
 ) -> None:
     c_set.merge(new_id, old_id1, old_id2)  # create new cluster w/ elements from old - old_ids deactived+new_id actived
     new_dists = {}
@@ -100,7 +106,7 @@ def cluster_merge(
     dm.merge(new_id, old_id1, old_id2, new_dists)  # remove old ids and replace with new_id that has new distances
 
 
-def upgma(dm: DistanceMatrix) -> tuple[Graph, str]:
+def upgma(dm: DistanceMatrix[N]) -> tuple[Graph, N]:
     g = Graph()
     c_set = ClusterSet(dm)  # primed with leaf nodes (all active)
     for node in dm.leaf_ids_it():

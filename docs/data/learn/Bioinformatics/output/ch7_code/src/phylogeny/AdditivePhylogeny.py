@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from itertools import product
 from sys import stdin
-from typing import Callable
+from typing import Callable, TypeVar
 
 from distance_matrix.DistanceMatrix import DistanceMatrix
 from graph.UndirectedGraph import Graph
@@ -10,6 +9,10 @@ from helpers.InputUtils import str_to_list
 from phylogeny.FourPointCondition import is_additive
 from phylogeny.Trimmer import trim_distance_matrix
 from phylogeny.UntrimTree import create_distance_matrix, untrim_tree
+
+N = TypeVar('N')
+ND = TypeVar('ND')
+E = TypeVar('E')
 
 
 def to_dot(g: Graph) -> str:
@@ -29,9 +32,9 @@ def to_dot(g: Graph) -> str:
 
 # MARKDOWN_OBVIOUS_TREE
 def to_obvious_graph(
-        dm: DistanceMatrix,
-        gen_edge_id: Callable[[], str]
-) -> Graph:
+        dm: DistanceMatrix[N],
+        gen_edge_id: Callable[[], E]
+) -> Graph[N, ND, E, float]:
     if dm.n != 2:
         raise ValueError('Distance matrix must only contain 2 leaf nodes')
     l1, l2 = dm.leaf_ids()
@@ -50,9 +53,9 @@ def to_obvious_graph(
 
 # MARKDOWN
 def additive_phylogeny(
-        dm: DistanceMatrix,
-        gen_node_id: Callable[[], str],
-        gen_edge_id: Callable[[], str]
+        dm: DistanceMatrix[N],
+        gen_node_id: Callable[[], N],
+        gen_edge_id: Callable[[], E]
 ) -> Graph:
     if dm.n == 2:
         return to_obvious_graph(dm, gen_edge_id)

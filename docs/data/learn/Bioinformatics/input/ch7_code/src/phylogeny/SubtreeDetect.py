@@ -10,8 +10,17 @@ from phylogeny.FindLimbLength import find_limb_length
 N = TypeVar('N')
 
 
+def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
+    d = {}
+    for i in range(len(m)):
+        for j in range(len(m)):
+            i1, i2 = sorted([i, j])
+            d[(f'v{i1}', f'v{i2}')] = float(m[i1][i2])
+    return DistanceMatrix(d)
+
+
 # MARKDOWN
-def is_same_subtree(dm: DistanceMatrix, l: N, a: N, b: N) -> bool:
+def is_same_subtree(dm: DistanceMatrix[N], l: N, a: N, b: N) -> bool:
     l_weight = find_limb_length(dm, l)
     test_res = (dm[l, a] + dm[l, b] - dm[a, b]) / 2
     if test_res == l_weight:
@@ -28,12 +37,12 @@ def main():
     print("`{bm-disable-all}`", end="\n\n")
     try:
         mat = []
-        split_leaf_id = int(stdin.readline().strip())
-        test_leaf_id1, test_leaf_id2 = [int(v) for v in stdin.readline().strip().split()]
+        split_leaf_id = stdin.readline().strip()
+        test_leaf_id1, test_leaf_id2 = [v for v in stdin.readline().strip().split()]
         for line in stdin:
             row = [float(e) for e in str_to_list(line.strip(), 0)[0]]
             mat.append(row)
-        dist_mat = DistanceMatrix.create_from_matrix(mat)
+        dist_mat = create_distance_matrix(mat)
         assert is_additive(dist_mat), 'Not a additive distance matrix'
         print('Given the additive distance matrix...')
         print()

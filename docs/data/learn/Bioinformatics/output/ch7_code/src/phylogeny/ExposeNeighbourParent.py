@@ -21,10 +21,10 @@ def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
 
 # MARKDOWN
 def expose_neighbour_parent(
-        dm: DistanceMatrix,
+        dm: DistanceMatrix[N],
         l1: N,
         l2: N,
-        gen_node_id: Callable[[], str]
+        gen_node_id: Callable[[], N]
 ) -> N:
     # bald
     l1_len_views = {}

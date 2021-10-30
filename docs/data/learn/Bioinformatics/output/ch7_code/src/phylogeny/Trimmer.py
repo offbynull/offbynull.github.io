@@ -13,8 +13,17 @@ ND = TypeVar('ND')
 E = TypeVar('E')
 
 
+def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
+    d = {}
+    for i in range(len(m)):
+        for j in range(len(m)):
+            i1, i2 = sorted([i, j])
+            d[(f'v{i1}', f'v{i2}')] = float(m[i1][i2])
+    return DistanceMatrix(d)
+
+
 # MARKDOWN
-def trim_distance_matrix(dm: DistanceMatrix, leaf: N) -> None:
+def trim_distance_matrix(dm: DistanceMatrix[N], leaf: N) -> None:
     dm.delete(leaf)  # remove row+col for leaf
 
 
@@ -33,11 +42,11 @@ def main():
     print("`{bm-disable-all}`", end="\n\n")
     try:
         mat = []
-        leaf_id = int(stdin.readline().strip())
+        leaf_id = stdin.readline().strip()
         for line in stdin:
             row = [float(e) for e in str_to_list(line.strip(), 0)[0]]
             mat.append(row)
-        dist_mat = DistanceMatrix.create_from_matrix(mat)
+        dist_mat = create_distance_matrix(mat)
         assert is_additive(dist_mat), 'Not a additive distance matrix'
         print('Given the additive distance matrix...')
         print()

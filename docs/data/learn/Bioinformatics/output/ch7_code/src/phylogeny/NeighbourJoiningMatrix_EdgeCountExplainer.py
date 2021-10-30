@@ -9,7 +9,6 @@ from helpers.Utils import slide_window
 N = TypeVar('N')
 ND = TypeVar('ND')
 E = TypeVar('E')
-ED = TypeVar('ED')
 
 
 def create_tree(edges: list[list[str, str]]) -> Graph:
@@ -37,7 +36,7 @@ def find_nodes_between_leaves(g: Graph, n: N, end_n: N, n_walk: list[N]):
 
 
 class EdgeCounter:
-    def __init__(self, tree: Graph[N, ND, E, ED]):
+    def __init__(self, tree: Graph[N, ND, E, float]):
         self.tree = tree
         self.leaf_nodes = [n for n in tree.get_nodes() if len(tuple(tree.get_outputs(n))) == 1]
         self.leaf_count = len(self.leaf_nodes)

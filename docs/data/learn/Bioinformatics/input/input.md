@@ -7541,7 +7541,7 @@ python
 
 ```{ch7}
 phylogeny.FindLimbLength
-2
+v2
 [0 , 13, 19, 20, 29, 40, 36]
 [13, 0 , 10, 11, 20, 31, 27]
 [19, 10, 0 , 11, 20, 31, 27]
@@ -7835,8 +7835,8 @@ python
 
 ```{ch7}
 phylogeny.SubtreeDetect
-2
-1 5
+v2
+v1 v5
 [0 , 13, 19, 20, 29, 40, 36]
 [13, 0 , 10, 11, 20, 31, 27]
 [19, 10, 0 , 11, 20, 31, 27]
@@ -7927,7 +7927,7 @@ python
 
 ```{ch7}
 phylogeny.Trimmer
-2
+v2
 [0 , 13, 21, 22]
 [13, 0 , 12, 13]
 [21, 12, 0 , 13]
@@ -8041,7 +8041,7 @@ python
 
 ```{ch7}
 phylogeny.Balder
-5
+v5
 [0,  13, 21, 21, 22, 22]
 [13, 0,  12, 12, 13, 13]
 [21, 12, 0,  20, 21, 21]
@@ -9054,7 +9054,7 @@ graph G {
  node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
  edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
  ranksep=0.25
- subgraph cluster_4 {
+ subgraph cluster_5 {
   fontname="Courier-Bold"
   fontsize=10
   label="combine_edge_count_and_normalize(v1,v3)"
@@ -9641,8 +9641,8 @@ python
 
 ```{ch7}
 phylogeny.FindNeighbourLimbLengths
-1
-2
+v1
+v2
 [0,  13, 21, 21, 22, 22]
 [13, 0,  12, 12, 13, 13]
 [21, 12, 0,  20, 21, 21]
@@ -9834,8 +9834,8 @@ python
 
 ```{ch7}
 phylogeny.FindNeighbourLimbLengths_Optimized
-1
-2
+v1
+v2
 [0,  13, 21, 21, 22, 22]
 [13, 0,  12, 12, 13, 13]
 [21, 12, 0,  20, 21, 21]

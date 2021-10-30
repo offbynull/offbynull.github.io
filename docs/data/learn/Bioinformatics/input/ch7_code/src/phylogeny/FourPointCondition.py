@@ -8,8 +8,17 @@ from helpers.InputUtils import str_to_list
 N = TypeVar('N')
 
 
+def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
+    d = {}
+    for i in range(len(m)):
+        for j in range(len(m)):
+            i1, i2 = sorted([i, j])
+            d[(f'v{i1}', f'v{i2}')] = float(m[i1][i2])
+    return DistanceMatrix(d)
+
+
 # MARKDOWN_QUARTET_TEST
-def four_point_test(dm: DistanceMatrix, l0: N, l1: N, l2: N, l3: N) -> bool:
+def four_point_test(dm: DistanceMatrix[N], l0: N, l1: N, l2: N, l3: N) -> bool:
     # Pairs of leaf node pairs
     pair_combos = (
         ((l0, l1), (l2, l3)),
@@ -40,7 +49,7 @@ def four_point_test(dm: DistanceMatrix, l0: N, l1: N, l2: N, l3: N) -> bool:
 
 
 # MARKDOWN
-def is_additive(dm: DistanceMatrix) -> bool:
+def is_additive(dm: DistanceMatrix[N]) -> bool:
     # Recall that an additive distance matrix of size <= 3 is guaranteed to be an additive distance
     # matrix (try it and see -- any distances you use will always end up fitting a tree). Thats why
     # you need at least 4 leaf nodes to test.
@@ -63,7 +72,7 @@ def main():
         for line in stdin:
             row = [float(e) for e in str_to_list(line.strip(), 0)[0]]
             mat.append(row)
-        dist_mat = DistanceMatrix.create_from_matrix(mat)
+        dist_mat = create_distance_matrix(mat)
         print('The distance matrix...')
         print()
         print('<table>')

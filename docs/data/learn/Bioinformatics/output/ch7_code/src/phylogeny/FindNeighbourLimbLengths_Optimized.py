@@ -8,8 +8,17 @@ from helpers.InputUtils import str_to_list
 N = TypeVar('N')
 
 
+def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
+    d = {}
+    for i in range(len(m)):
+        for j in range(len(m)):
+            i1, i2 = sorted([i, j])
+            d[(f'v{i1}', f'v{i2}')] = float(m[i1][i2])
+    return DistanceMatrix(d)
+
+
 # MARKDOWN
-def find_neighbouring_limb_lengths(dm: DistanceMatrix, l1: N, l2: N) -> tuple[float, float]:
+def find_neighbouring_limb_lengths(dm: DistanceMatrix[N], l1: N, l2: N) -> tuple[float, float]:
     l1_dist_sum = sum(dm[l1, k] for k in dm.leaf_ids())
     l2_dist_sum = sum(dm[l2, k] for k in dm.leaf_ids())
     res = (l1_dist_sum - l2_dist_sum) / (dm.n - 2)
@@ -24,12 +33,12 @@ def main():
     print("`{bm-disable-all}`", end="\n\n")
     try:
         mat = []
-        leaf1_id = int(stdin.readline().strip())
-        leaf2_id = int(stdin.readline().strip())
+        leaf1_id = stdin.readline().strip()
+        leaf2_id = stdin.readline().strip()
         for line in stdin:
             row = [float(e) for e in str_to_list(line.strip(), 0)[0]]
             mat.append(row)
-        dist_mat = DistanceMatrix.create_from_matrix(mat)
+        dist_mat = create_distance_matrix(mat)
         print('Given distance matrix...')
         print()
         print('<table>')
