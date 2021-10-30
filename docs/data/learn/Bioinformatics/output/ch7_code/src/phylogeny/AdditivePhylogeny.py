@@ -59,7 +59,7 @@ def additive_phylogeny(
     n = next(dm.leaf_ids_it())
     dm_untrimmed = dm.copy()
     trim_distance_matrix(dm, n)
-    g = additive_phylogeny(dm, gen_node_id, gen_node_id)
+    g = additive_phylogeny(dm, gen_node_id, gen_edge_id)
     untrim_tree(dm_untrimmed, g, gen_node_id, gen_edge_id)
     return g
 # MARKDOWN

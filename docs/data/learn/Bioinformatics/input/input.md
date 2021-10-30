@@ -8386,7 +8386,7 @@ Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
 Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
-**WHAT**: Given an distance matrix, if the distance matrix is ...
+**WHAT**: Given a distance matrix, if the distance matrix is ...
 
  * an additive distance matrix, this algorithm finds a pair of leaf nodes guaranteed to be neighbours in its corresponding unique simple tree.
  * a non-additive distance matrix (but close to be being additive), this algorithm approximates a pair of leaf nodes that are likely to be neighbours.
@@ -9530,7 +9530,10 @@ phylogeny.NeighbourJoiningMatrix
 Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
 ```
 
-**WHAT**: Given a non-additive distance matrix (but close to be being additive) and two leaf nodes that are suspected to be neighbours, this algorithm approximates the limb lengths of those neighbours.
+**WHAT**: Given a distance matrix and a pair of leaf nodes identified as being neighbours, if the distance matrix is ...
+
+ * an additive distance matrix, this algorithm finds the limb lengths of those neighbours.
+ * a non-additive distance matrix (but close to be being additive), this algorithm approximates the limb lengths of those neighbours.
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
@@ -9841,16 +9844,16 @@ phylogeny.FindNeighbourLimbLengths_Optimized
 [22, 13, 21, 13, 14, 0 ]
 ```
 
-### Bald and Merge Neighbours
+### Expose Neighbour Parent
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Bald and Merge Neighbours)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Expose Neighbour Parent)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Bald_TOPIC
 Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
 ```
 
-**WHAT**: Given a non-additive distance matrix (but close to be being additive) and two leaf nodes that are suspected to be neighbours, this algorithm merges them together. That is, the row/column for each neighbour is removed from the distance matrix and a new row/column is inserted that represents them as merged.
+**WHAT**: Given a distance matrix and a pair of leaf nodes identified as being neighbours, this algorithm removes those neighbours from the distance matrix and brings their parent to the forefront (as a leaf node in the distance matrix). If the distance matrix is a non-additive distance matrix (but close to be being additive), this algorithm approximates the shared parent.
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
@@ -9993,14 +9996,16 @@ graph G {
 Notice how when both v0 and v1 are balded, their distances to other leaf nodes are exactly the same. So, why average it instead of just taking the distinct value? Because averaging helps with understanding the revised form of the algorithm explained in another section.
 ```
 
+This algorithm is essentially removing two neighbouring leaf nodes and bringing their shared parent to the forefront (into the distance matrix as a leaf node). In the example above, the new leaf node M represents internal node i0 because the distance between M and i0 is 0.
+
 ```{output}
-ch7_code/src/phylogeny/MergeNeighbours_AdditiveExplainer.py
+ch7_code/src/phylogeny/ExposeNeighbourParent_AdditiveExplainer.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.MergeNeighbours_AdditiveExplainer
+phylogeny.ExposeNeighbourParent_AdditiveExplainer
 v0
 v1
 [0,  13, 21, 21, 22, 22]
@@ -10071,18 +10076,14 @@ Merging together v0 and v1 happens just as it did before, by averaging together 
 
 Note that dist(v0,v1) is unknown in the balded matrix (denoted by a bunch of question marks). That doesn't matter because dist(v0,v1) merges into dist(M,M), which must always be 0 (the distance from anything to itself is always 0).
 
-```{note}
-This algorithm approximates for non-additive distance matrices, but also produces the correct value for additive distance matrices.
-```
-
 ```{output}
-ch7_code/src/phylogeny/MergeNeighbours.py
+ch7_code/src/phylogeny/ExposeNeighbourParent.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.MergeNeighbours
+phylogeny.ExposeNeighbourParent
 v0
 v1
 [0 , 14, 22, 20, 23, 22]
@@ -10232,7 +10233,7 @@ graph G {
 }
 ```
 
-By slightly tweaking the terms in the expression above, it's possible to instead find the distance between the neighbouring pair's parent (i1) and v3 ...
+By slightly tweaking the terms in the expression above, it's possible to instead find the distance between the neighbouring pair's parent (i0) and v3 ...
 
  * inverse_len(v3) = (dist(v0,v3) + dist(v1,v3) - dist(v0,v1)) / 2
  * inverse_len(v3) = (21 + 12 - 13) / 2
@@ -10455,13 +10456,13 @@ Assuming v0 and v1 are still neighbours, the merged distance for ...
 | v5 | `{h}red (22+14-14)/2=11`   |                      20  |                      12  |                      15    |                      0   |
 
 ```{output}
-ch7_code/src/phylogeny/MergeNeighbours_Optimized.py
+ch7_code/src/phylogeny/ExposeNeighbourParent_Optimized.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
 ```
 
 ```{ch7}
-phylogeny.MergeNeighbours_Optimized
+phylogeny.ExposeNeighbourParent_Optimized
 v0
 v1
 [0 , 14, 22, 20, 23, 22]
@@ -10471,67 +10472,6 @@ v1
 [23, 12, 22, 8 , 0 , 15]
 [22, 14, 20, 12, 15, 0 ]
 ```
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
-TODO: SEE IF YOU CAN GET TABLE SIZE DOWN IN WIDTH + SIMPLIFY LATEX DOWN IN WIDTH + GO OVER THIS SECTION AGAIN AND MAKE SURE ITS OKAY + FINISH UP NEIGHBOUR JOINING PHYLOGENY SECTION
-
 
 ### Distance Matrix to Tree
 
@@ -10874,37 +10814,77 @@ phylogeny.AdditivePhylogeny
 The book is inconsistent about whether simple trees can have internal edges of weight 0. Early in the book it says that it can and later on it says that it goes back on that and says internal edges of weight 0 aren't actually allowed. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).
 ```
 
-#### Neighbour Joining Algorithm
+#### Neighbour Joining Phylogeny Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Neighbour Joining Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Neighbour Joining Phylogeny Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Distance Phylogeny/Find Neighbours_TOPIC
 Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths_TOPIC
-Algorithms/Distance Phylogeny/Bald and Merge Neighbours_TOPIC
+Algorithms/Distance Phylogeny/Expose Neighbour Parent_TOPIC
 ```
 
 **ALGORITHM**:
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+Neighbour joining phylogeny is a recursive algorithm that either...
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+ * finds the unique simple tree for some additive distance matrix.
+ * approximates a simple tree for some non-additive distance matrix (close to being additive).
+ 
+At each recursive step, the algorithm finds a pair of neighbouring leaf nodes in the distance matrix and exposes their shared parent (neighbours replaced with parent in the distance matrix), stopping once the distance matrix consists of only two leaf nodes. The simple tree for any 2x2 distance matrix is obvious as ...
+   
+ * it only consists of 2 nodes
+ * it only consists of a single edge (nodes of degree_GRAPH 2 not allowed in simple trees, meaning train of non-branching edges not allowed)
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+For example, the following 2x2 distance matrix has the following simple tree...
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+|    | v0 | v1 |
+|----|----|----|
+| v0 | 0  | 14 |
+| v1 | 14 | 0  |
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+```{svgbob}
+v0
+  \
+   \ 14
+    \
+     v1 
+```
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+```{output}
+ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py
+python
+# MARKDOWN_OBVIOUS_TREE\s*\n([\s\S]+)\n\s*# MARKDOWN_OBVIOUS_TREE
+```
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+As the algorithm returns from each recursive step, it has 3 pieces of information:
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+ * there exists two neighbouring leaf nodes L and N.
+ * a distance matrix containing L and N.
+ * a simple tree missing L and N, but containing their shared parent P.
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+That's enough information to know where L and N should be added on to the tree (node P) and what their limb lengths are. At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix.
 
-TODO: LIMB LENGTH AVERAGING ALGORITHM NEEDS TO BE EXPLAINED HERE
+```{output}
+ch7_code/src/phylogeny/NeighbourJoiningPhylogeny.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+phylogeny.NeighbourJoiningPhylogeny
+[0 , 14, 22, 20, 23, 22]
+[14, 0 , 12, 10, 12, 14]
+[22, 12, 0 , 20, 22, 20]
+[20, 10, 20, 0 , 8 , 12]
+[23, 12, 22, 8 , 0 , 15]
+[22, 14, 20, 12, 15, 0 ]
+```
+
+```{note}
+The book is inconsistent about whether simple trees can have internal edges of weight 0. Early in the book it says that it can and later on it says that it goes back on that and says internal edges of weight 0 aren't actually allowed. I'd already implied as much given that they'd be the same organism at both ends, but I'm unsure if this algorithm will allow it if fed in a non-additive distance matrix. It should never happend with an additive distance matrix.
+```
+
 
 #### Evolutionary Algorithm
 
@@ -14774,50 +14754,25 @@ graph_show
    See Algorithms/Distance Phylogeny/Find Neighbours_TOPIC for a full explanation of how this algorithm works.
    ```
 
- * `{bm} neighbour joining phylogeny` - An algorithm that finds the unique simple tree for some  OR approximates a simple tree for a non-additive distance matrix.
-
-   Similar to additive phylogeny, this algorithm recursively widdles down the distance matrix until the size is 2x2. The simple tree for any 2x2 distance matrix is obvious as ...
+ * `{bm} neighbour joining phylogeny` - A recursive algorithm that can either...
+ 
+   * find the unique simple tree for an additive distance matrix.
+   * approximate a simple tree for a non-additive distance matrix.
    
-   * it only consists of 2 nodes
-   * it only consists of a single edge (nodes of degree_GRAPH 2 not allowed in simple trees, meaning train of non-branching edges not allowed)
+   At each recursive step, the algorithm replaces a pair of neighbouring leaf nodes in the distance matrix with their shared parent (parent is promoted to a leaf node). It does this until only two nodes are left. The simple tree for any two leaf nodes is a those two nodes connected by a single edge.
 
-   |    | v0 | v1 |
-   |----|----|----|
-   | v0 | 0  | 14 |
-   | v1 | 14 | 0  |
+   As the algorithm returns from each recursive step, it has 2 pieces of information:
 
-   ```{dot}
-   graph G {
-    graph[rankdir=LR]
-    node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
-    edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
-    ranksep=0.25
-    subgraph cluster_x {
-     v0_x -- v1_x [label=14]
-     v0_x [label=v0]
-     v1_x [label=v1]
-    }
-   }
+   * there exists two neighbouring leaf nodes L1 and L2.
+   * a distance matrix containing L1 and L2.
+   * a simple tree missing L1 and L2 but containing their shared parent P.
+
+   That's enough information to know where on the returned tree L1 and L2 should be attached (at P) and what their limb lengths should be. At the end, the algorithm will have constructed a simple tree for the distance matrix.
+
+   ```{note}
+   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
    ```
 
-   However, unlike additive phylogeny, this algorithm trims the distance matrix by finding pairs of neighbouring leaf nodes using the neighbour leaf detection algorithm. The algorithm recursively removes neighbouring pairs until the distance matrix is 2x2, then finds the limb lengths for those pairs and attaches them to the tree as it backs out of the recursion.
-
-   Because this algorithm is intended to approximate non-additive distance matrices, the original limb length algorithm won't work. Instead, a new limb length algorithm approximates the limb length for neighbouring nodes by averaging total distances.
-
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
-   TODO: EXPLAIN THE LIMB LENGTH ALGORITHM HERE -- SECTION 7.17.
 
  * `{bm} paleontology/(paleontology|palaeontology|palæontology)/i` - The scientific study of ancient organisms: dinosaurs, prehistoric plants, prehistoric insects, prehistoric fungi, etc...
    

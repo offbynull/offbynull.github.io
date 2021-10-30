@@ -28,13 +28,17 @@ const blockMode = (() => {
 })();
 const tex = fse.readFileSync('/input/input.data', { encoding: 'utf8' });
 
-const html = kt.renderToString(
+let html = kt.renderToString(
     tex,
     {
         displayMode: blockMode,
         throwOnError: false
     }
 );
+if (blockMode) {
+    // This is required for when the output is super long in block mode. If it's in inline mode, katex automatically adds linebreaks to stuff.
+    html = "<div style=\"overflow: auto\">" + html + "</div>"
+}
 
 fse.writeFileSync('/output/output.md', html, { encoding: 'utf8' });
 

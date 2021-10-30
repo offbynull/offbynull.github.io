@@ -7,9 +7,21 @@ from typing import Callable
 from distance_matrix.DistanceMatrix import DistanceMatrix
 from graph.UndirectedGraph import Graph
 from helpers.InputUtils import str_to_list
+from phylogeny.ExposeNeighbourParent_Optimized import expose_neighbour_parent
+from phylogeny.FindNeighbourLimbLengths_Optimized import find_neighbouring_limb_lengths
 from phylogeny.FourPointCondition import is_additive
+from phylogeny.NeighbourJoiningMatrix import find_neighbours
 from phylogeny.Trimmer import trim_distance_matrix
 from phylogeny.UntrimTree import create_distance_matrix, untrim_tree
+
+
+def create_distance_matrix(m: list[list[float]]) -> DistanceMatrix:
+    d = {}
+    for i in range(len(m)):
+        for j in range(len(m)):
+            i1, i2 = sorted([i, j])
+            d[(f'v{i1}', f'v{i2}')] = float(m[i1][i2])
+    return DistanceMatrix(d)
 
 
 def to_dot(g: Graph) -> str:
@@ -49,18 +61,22 @@ def to_obvious_graph(
 
 
 # MARKDOWN
-def additive_phylogeny(
+def neighbour_joining_phylogeny(
         dm: DistanceMatrix,
         gen_node_id: Callable[[], str],
         gen_edge_id: Callable[[], str]
 ) -> Graph:
     if dm.n == 2:
         return to_obvious_graph(dm, gen_edge_id)
-    n = next(dm.leaf_ids_it())
-    dm_untrimmed = dm.copy()
-    trim_distance_matrix(dm, n)
-    g = additive_phylogeny(dm, gen_node_id, gen_edge_id)
-    untrim_tree(dm_untrimmed, g, gen_node_id, gen_edge_id)
+    l1, l2 = find_neighbours(dm)
+    l1_len, l2_len = find_neighbouring_limb_lengths(dm, l1, l2)
+    dm_trimmed = dm.copy()
+    p = expose_neighbour_parent(dm_trimmed, l1, l2, gen_node_id)  # p added to dm_trimmed while l1, l2 removed
+    g = neighbour_joining_phylogeny(dm_trimmed, gen_node_id, gen_edge_id)
+    g.insert_node(l1)
+    g.insert_node(l2)
+    g.insert_edge(gen_edge_id(), p, l1, l1_len)
+    g.insert_edge(gen_edge_id(), p, l2, l2_len)
     return g
 # MARKDOWN
 
@@ -75,8 +91,7 @@ def main():
             row = [float(e) for e in str_to_list(line.strip(), 0)[0]]
             mat.append(row)
         dist_mat = create_distance_matrix(mat)
-        assert is_additive(dist_mat)
-        print('Given the distance matrix ...')
+        print(f'Given {"" if is_additive(dist_mat) else "NON-"} additive distance matrix...')
         print()
         print('<table>')
         print('<thead><tr>')
@@ -106,7 +121,7 @@ def main():
             nonlocal _next_node_id
             _next_node_id += 1
             return f'N{_next_node_id}'
-        tree = additive_phylogeny(dist_mat, gen_node_id, gen_edge_id)
+        tree = neighbour_joining_phylogeny(dist_mat, gen_node_id, gen_edge_id)
         print()
         print('```{dot}')
         print(f'{to_dot(tree)}')
