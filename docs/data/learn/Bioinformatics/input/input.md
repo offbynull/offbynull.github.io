@@ -14919,7 +14919,26 @@ graph_show
 
 
  * `{bm} paleontology/(paleontology|palaeontology|palæontology)/i` - The scientific study of ancient organisms: dinosaurs, prehistoric plants, prehistoric insects, prehistoric fungi, etc...
+
+ * `{bm} anatomy/(anatomy|anatomical)/i` - The study of the identification and description of structures in organisms.
+
+ * `{bm} physiology/(physiology|physiological)/i` - The study of organism function.
+
+ * `{bm} character table` - A matrix where the columns represent biological entities and the rows represent characteristics of those entities, where those characteristics are typically anatomically or physiologically.
+
+   |           | wings | sucks blood | number of legs |
+   |-----------|-------|-------------|----------------|
+   | house fly |   2   |     no      |       6        |
+   | mosquito  |   2   |     yes     |       6        |
+   | snail     |   0   |     no      |       0        |
+
+   Character tables were commonly used for phylogeny before discovering that DNA can be used to compare the relatedness of organisms.
+
+ * `{bm} character vector` - A row in a character table.
+
+ * `{bm} mitochondrial DNA/(mitochondrial DNA|mtDNA)/i` - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitocondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.
    
+   Mitochondrial DNA is inherited fully from the mother. It isn't a mix of parental DNA as the cell DNA is.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
