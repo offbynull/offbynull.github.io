@@ -9860,7 +9860,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
+<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -11674,7 +11674,7 @@ different subtrees.</p>
 <p>... and simple tree trim(T, v5)...</p>
 <p><img src="dot_947428a9fad00efc08c05fcfe2286cfb.svg" alt="Dot diagram"></p>
 <p>... , v5 is injected at the appropriate location to become simple tree T (un-trimmed) ...</p>
-<p><img src="dot_161663c05ac037dd80d3463d127da1e3.svg" alt="Dot diagram"></p>
+<p><img src="dot_732ee38514b240e67ad8b3b760b395eb.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
@@ -12279,7 +12279,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_337a965e8c0580065d51f621eb459bd4.svg" alt="Dot diagram"></p>
+<p><img src="dot_046e8c2651e1bc1c6bf347f22f2ef007.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12578,7 +12578,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_45a53b8952b706a4b74fea939a4cd73e.svg" alt="Dot diagram"></p>
+<p><img src="dot_cbe89360b551cbdebbf9cce268468bc6.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14734,7 +14734,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_3a6a2d499b3ea7e336fe5361d4c65fa7.svg" alt="Dot diagram"></p>
+<p><img src="dot_76a7637593a80d0d8ad16fd257528bce.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14819,24 +14819,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v0 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v4</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v1 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>22.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v5 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v2</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_0d54c02931b7fa645db6e3936d22d225.svg" alt="Dot diagram"></p>
-<p>Attached v4 to produce tree...</p>
-<p><img src="dot_790b7803bd4eb2a0983bb37c8f9a4e77.svg" alt="Dot diagram"></p>
+<p><img src="dot_063051a6fee7e427406704703806d6d6.svg" alt="Dot diagram"></p>
 <p>Attached v5 to produce tree...</p>
-<p><img src="dot_5866cee63a22ce1b2ba2c3b54e202834.svg" alt="Dot diagram"></p>
+<p><img src="dot_ca6192454a4a386d80832676deb84809.svg" alt="Dot diagram"></p>
+<p>Attached v1 to produce tree...</p>
+<p><img src="dot_08e0758f0a858581b8852379abb1fa97.svg" alt="Dot diagram"></p>
 <p>Attached v3 to produce tree...</p>
-<p><img src="dot_6e4925dbb97e1cf7b7c43a9427f45212.svg" alt="Dot diagram"></p>
-<p>Attached v0 to produce tree...</p>
-<p><img src="dot_4b33356a853a5fb9a60a9167f6dc38ac.svg" alt="Dot diagram"></p>
+<p><img src="dot_f2f3f1e9d0f77d67e517acbdf8d12e7c.svg" alt="Dot diagram"></p>
+<p>Attached v4 to produce tree...</p>
+<p><img src="dot_687ea8ae31fa62ce09d759d96368bc1e.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15006,20 +15006,20 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('N3', 'v2') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N4</th><th>v1</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>2.0</td></tr><tr><td>v1</td><td>2.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v2', 'v1') with their parent N3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('N2', 'N3') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N4</th><th>v0</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>11.625</td></tr><tr><td>v0</td><td>11.625</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_b5bb4fbe4bef442ca6bda6939113322f.svg" alt="Dot diagram"></p>
-<p>Attached ('N3', 'v2') to N4 to produce tree...</p>
-<p><img src="dot_4666cfb28b18b8ebaebf1b1adf691e76.svg" alt="Dot diagram"></p>
-<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
-<p><img src="dot_361a3346075d95ac1ddf927c1c0b955f.svg" alt="Dot diagram"></p>
+<p><img src="dot_1279e3994a36c97f925af56dfdc65753.svg" alt="Dot diagram"></p>
+<p>Attached ('N2', 'N3') to N4 to produce tree...</p>
+<p><img src="dot_e1b6e1692929d3065d2688cc43c2f290.svg" alt="Dot diagram"></p>
+<p>Attached ('v2', 'v1') to N3 to produce tree...</p>
+<p><img src="dot_7f8fe55ad994742f8ff78c95b4c340fe.svg" alt="Dot diagram"></p>
 <p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_1633c7684e7c1e663553621df61f36d3.svg" alt="Dot diagram"></p>
+<p><img src="dot_48eb510b6508ba76f68ad6c9c4142eac.svg" alt="Dot diagram"></p>
 <p>Attached ('v4', 'v3') to N1 to produce tree...</p>
-<p><img src="dot_446f7ee4fb94a3074cf88960640a9b53.svg" alt="Dot diagram"></p>
+<p><img src="dot_5bba1fbcd68ffd7c02bd0da1bc0f7b2b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">

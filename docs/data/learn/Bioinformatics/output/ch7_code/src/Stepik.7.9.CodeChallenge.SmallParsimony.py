@@ -19,6 +19,8 @@ class NodeData:
         return self.alphabet_scores[alphabet_elem]
 
     def resolve_element(self, p_element: str):
+        # you can technically pick any minimum, but if you want to match the sample output you need to make it so that
+        # it tries to tiebreak by looking at the parent's element (submitted here as p_element)
         min_score = min(self.alphabet_scores.values())
         possibilities = {k for k, v in self.alphabet_scores.items() if v == min_score}
         if p_element in possibilities:

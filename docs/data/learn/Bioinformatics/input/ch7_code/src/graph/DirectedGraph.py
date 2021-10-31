@@ -83,6 +83,7 @@ class Graph(Generic[N, ND, E, ED]):
                 and len(self._node_outbound[to_node]) == 0:
             self.delete_node(to_node)
             removed_to = True
+        del self._edges[edge]
 
     # updates the data for the FIRST edge b
     def update_edge_data(
