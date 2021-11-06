@@ -13,6 +13,11 @@
 # The above is repeated 15 times with different orderings of A B C D and E
 
 
+
+
+# MY ANSWER IS BELOW. I ORIGINALL THOUGHT IT WAS 5 JUST BY LOOKING AT THE PROBLEM, BUT IT LOOKS LIKE THE ANSWER IS 7
+# SWAPS ARE REQUIRED
+
 from itertools import permutations, product
 
 from graph import UndirectedGraph
@@ -48,35 +53,41 @@ for option in options:
     tree_list.append(t)
 
 
-for p in options:
-    print(f'{p}')
+# for p in options:
+#     print(f'{p}')
 
 
-def nearest_neighbours(t: UndirectedGraph.Graph, edge_id):
-    n1, n2, _ = t.get_edge(edge_id)
-    n1_edge_ids = [e for e in t.get_outputs(n1) if e != edge_id]
-    n2_edge_ids = [e for e in t.get_outputs(n2) if e != edge_id]
-    n1_1, n1_2 = [_n for e in n1_edge_ids for _n in t.get_edge_ends(e) if _n != n1]
-    n2_1, n2_2 = [_n for e in n2_edge_ids for _n in t.get_edge_ends(e) if _n != n2]
-    t1 = t.copy()
-    t1.delete_edge(n1_edge_ids[0])
-    t1.delete_edge(n1_edge_ids[1])
-    t1.delete_edge(n2_edge_ids[0])
-    t1.delete_edge(n2_edge_ids[1])
-    t1.insert_edge(n1_edge_ids[0], n1, n1_1)
-    t1.insert_edge(n1_edge_ids[1], n1, n2_1)
-    t1.insert_edge(n2_edge_ids[0], n2, n1_2)
-    t1.insert_edge(n2_edge_ids[1], n2, n2_2)
-    t2 = t.copy()
-    t2.delete_edge(n1_edge_ids[0])
-    t2.delete_edge(n1_edge_ids[1])
-    t2.delete_edge(n2_edge_ids[0])
-    t2.delete_edge(n2_edge_ids[1])
-    t2.insert_edge(n1_edge_ids[0], n1, n1_1)
-    t2.insert_edge(n1_edge_ids[1], n1, n2_2)
-    t2.insert_edge(n2_edge_ids[0], n2, n1_2)
-    t2.insert_edge(n2_edge_ids[1], n2, n2_1)
-    return t1, t2
+def nearest_neighbours(t: UndirectedGraph.Graph):
+    leaf_ids = {_n for _n in t.get_nodes() if t.get_degree(_n) == 1}
+    internal_node_ids = {_n for _n in t.get_nodes() if _n not in leaf_ids}
+    internal_edge_ids = {_e for _e in t.get_edges() if t.get_edge_ends(_e)[0] in internal_node_ids and t.get_edge_ends(_e)[1] in internal_node_ids}
+    ret = []
+    for edge_id in internal_edge_ids:
+        n1, n2, _ = t.get_edge(edge_id)
+        n1_edge_ids = [e for e in t.get_outputs(n1) if e != edge_id]
+        n2_edge_ids = [e for e in t.get_outputs(n2) if e != edge_id]
+        n1_1, n1_2 = [_n for e in n1_edge_ids for _n in t.get_edge_ends(e) if _n != n1]
+        n2_1, n2_2 = [_n for e in n2_edge_ids for _n in t.get_edge_ends(e) if _n != n2]
+        t1 = t.copy()
+        t1.delete_edge(n1_edge_ids[0])
+        t1.delete_edge(n1_edge_ids[1])
+        t1.delete_edge(n2_edge_ids[0])
+        t1.delete_edge(n2_edge_ids[1])
+        t1.insert_edge(n1_edge_ids[0], n1, n1_1)
+        t1.insert_edge(n1_edge_ids[1], n1, n2_1)
+        t1.insert_edge(n2_edge_ids[0], n2, n1_2)
+        t1.insert_edge(n2_edge_ids[1], n2, n2_2)
+        t2 = t.copy()
+        t2.delete_edge(n1_edge_ids[0])
+        t2.delete_edge(n1_edge_ids[1])
+        t2.delete_edge(n2_edge_ids[0])
+        t2.delete_edge(n2_edge_ids[1])
+        t2.insert_edge(n1_edge_ids[0], n1, n1_1)
+        t2.insert_edge(n1_edge_ids[1], n1, n2_2)
+        t2.insert_edge(n2_edge_ids[0], n2, n1_2)
+        t2.insert_edge(n2_edge_ids[1], n2, n2_1)
+        ret += (t1, t2)
+    return ret
 
 
 def is_equal(t1: UndirectedGraph.Graph, t2: UndirectedGraph.Graph):
@@ -91,49 +102,61 @@ def is_equal(t1: UndirectedGraph.Graph, t2: UndirectedGraph.Graph):
 
 def find_steps(t1: UndirectedGraph.Graph, t2: UndirectedGraph.Graph):
     walked = []
-    pending = [(0, t1)]
+    pending = [([t1], t1)]
     while pending:
-        cnt, t = pending.pop()
-        if is_equal(t, t2):
-            return cnt
-        t_options = []
-        t_options += nearest_neighbours(t, 'AB')
-        t_options += nearest_neighbours(t, 'BC')
-        t_options_walked_removed = []
-        for t_new in t_options:
-            if all(not is_equal(t_new, t_walked) for _, t_walked in walked):
-                t_options_walked_removed.append(t_new)
-        for t_new in t_options_walked_removed:
-            if all(not is_equal(t_new, t_pending) for _, t_pending in pending):
-                pending.append((cnt+1, t_new))
+        t_steps, t = pending.pop()
         walked.append(t)
+        if is_equal(t, t2):
+            return t_steps
+        t_options = nearest_neighbours(t)
+        # remove if already walked
+        t_options_not_already_walked = []
+        for t_option in t_options:
+            if all(not is_equal(t_option, t_walked) for t_walked in walked):
+                t_options_not_already_walked.append(t_option)
+        # remove if already pending
+        t_options_not_already_walked_or_pending = []
+        for t_option in t_options_not_already_walked:
+            if all(not is_equal(t_option, t_pending) for _, t_pending in pending):
+                t_options_not_already_walked_or_pending.append(t_option)
+        # put remaining in pending
+        for t_option in t_options_not_already_walked_or_pending:
+            pending.append((t_steps + [t_option], t_option))
 
 
-max_steps = 0
-for t1, t2 in product(tree_list, repeat=2):
-    steps = find_steps(t1, t2)
-    if steps > max_steps:
-        steps = max_steps
+def main():
+    max_steps = []
+    for t1, t2 in product(tree_list, repeat=2):
+        steps = find_steps(t1, t2)
+        if len(steps) > len(max_steps):
+            max_steps = steps
+    print(f'{to_dot(max_steps)}')
 
 
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
-THIS CODE IS BUGGED FIX IT
+def to_dot(g_list: list[UndirectedGraph.Graph]) -> str:
+    ret = 'graph G {\n'
+    ret += ' graph[rankdir=LR]\n'
+    ret += ' node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]\n'
+    ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
+    ret += ' layout=dot\n'
+    for i, g in enumerate(g_list):
+        ret += f' subgraph cluster_{i} {{\n'
+        if i == 0:
+            ret += f'   label=start\n'
+        elif i == len(g_list) - 1:
+            ret += f'   label="swap{i} (end)"\n'
+        else:
+            ret += f'   label=swap{i}\n'
+        nodes = sorted(g.get_nodes())
+        for n in nodes:
+            ret += f'  {n}_{i} [label={n}]\n'
+        for e in sorted(g.get_edges()):
+            n1, n2, weight = g.get_edge(e)
+            ret += f'  {n1}_{i} -- {n2}_{i}\n'
+        ret += ' }\n'
+    ret += '}'
+    return ret
 
-print(f'{max_steps}')
+
+if __name__ == '__main__':
+    main()
