@@ -166,6 +166,12 @@
 <li><a href="#H_Evolutionary%20Algorithm">Evolutionary Algorithm</a></li>
 </ul>
 </ul>
+<li><a href="#H_Sequence%20Phylogeny">Sequence Phylogeny</a></li>
+<ul>
+<li><a href="#H_Score%20Parsimony">Score Parsimony</a></li>
+<li><a href="#H_Small%20Parsimony">Small Parsimony</a></li>
+<li><a href="#H_Large%20Parsimony">Large Parsimony</a></li>
+</ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
 <ul>
@@ -5803,6 +5809,10 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The Pevzner book mentions a non-biology related problem to help illustrate <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s: the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan Tourist problem</a>. Look it up if you're confused.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book, in a later chapter (ch7 -- <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>), spends an entire section talking about <a href="#BM_(character%20table)%2Fi">character table</a>s and how they can be thought of as <a href="#BM_(sequence)%2Fi">sequence</a>s (<a href="#BM_(character%20vector)%2Fi">character vector</a>s). There's no good place to put this information. It seems non-critical so the only place it exists is in the terminology section.</p>
 </div>
 <a name="H_Find%20Maximum%20Path"></a><h3>Find Maximum Path</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F"></a><strong></strong></p>
@@ -11674,7 +11684,7 @@ different subtrees.</p>
 <p>... and simple tree trim(T, v5)...</p>
 <p><img src="dot_947428a9fad00efc08c05fcfe2286cfb.svg" alt="Dot diagram"></p>
 <p>... , v5 is injected at the appropriate location to become simple tree T (un-trimmed) ...</p>
-<p><img src="dot_161663c05ac037dd80d3463d127da1e3.svg" alt="Dot diagram"></p>
+<p><img src="dot_732ee38514b240e67ad8b3b760b395eb.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
@@ -12279,7 +12289,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_87a5568ac9ec40e1adef639bda712fe5.svg" alt="Dot diagram"></p>
+<p><img src="dot_ef3e06f66c20de3f86a01f1d26c793f5.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12578,7 +12588,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_09a887d73b9b7ccf57d49365545b514e.svg" alt="Dot diagram"></p>
+<p><img src="dot_6c718b00d6c909545f5ea48fda501829.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14819,24 +14829,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v0 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>20.0</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>22.0</td><td>21.0</td><td>7.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v2 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v3</td><td>21.0</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>22.0</td><td>7.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v3</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v1 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v2</th><th>v3</th></tr></thead><tbody><tr><td>v2</td><td>0.0</td><td>20.0</td></tr><tr><td>v3</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_71a73359e3f51d421500c5d30ee4a032.svg" alt="Dot diagram"></p>
-<p>Attached v4 to produce tree...</p>
-<p><img src="dot_4e38ba5aecb16245d179df9e7127874d.svg" alt="Dot diagram"></p>
-<p>Attached v2 to produce tree...</p>
-<p><img src="dot_5f54ee8598261d923f79657d8223e2d5.svg" alt="Dot diagram"></p>
+<p><img src="dot_09b45a0e4373bd1e271791c3260e793a.svg" alt="Dot diagram"></p>
 <p>Attached v1 to produce tree...</p>
-<p><img src="dot_cb494e31a0bb7bdd8d849de205c003e5.svg" alt="Dot diagram"></p>
+<p><img src="dot_34af08568b2f49be8434446a7cca8adc.svg" alt="Dot diagram"></p>
+<p>Attached v4 to produce tree...</p>
+<p><img src="dot_e704a3ff416952e3ffec5915d1d4855b.svg" alt="Dot diagram"></p>
 <p>Attached v5 to produce tree...</p>
-<p><img src="dot_22215df84a6d132972690755016c0361.svg" alt="Dot diagram"></p>
+<p><img src="dot_590ae0daee391858361846f3a5e7cf93.svg" alt="Dot diagram"></p>
+<p>Attached v0 to produce tree...</p>
+<p><img src="dot_3cd6b92ef636872f9428886c3c7b1f2c.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15002,24 +15012,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>Replaced neighbours ('v4', 'v3') with their parent N1 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v3', 'v4') with their parent N1 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('N1', 'v5') with their parent N2 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v1', 'v2') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N3</th><th>N4</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>0.375</td></tr><tr><td>N4</td><td>0.375</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v1', 'v2') with their parent N3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('N3', 'N2') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N4</th><th>v0</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>11.625</td></tr><tr><td>v0</td><td>11.625</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_be14fd16e403f27a505730a47fb24818.svg" alt="Dot diagram"></p>
-<p>Attached ('v1', 'v2') to N4 to produce tree...</p>
-<p><img src="dot_45a3df8590715f6b19a5ac4569fc19f2.svg" alt="Dot diagram"></p>
-<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
-<p><img src="dot_f5f3ef03d72466e19511b1e64c2873ff.svg" alt="Dot diagram"></p>
-<p>Attached ('N1', 'v5') to N2 to produce tree...</p>
-<p><img src="dot_29f51ccefa93b5da6109d281ff6c4c77.svg" alt="Dot diagram"></p>
-<p>Attached ('v4', 'v3') to N1 to produce tree...</p>
-<p><img src="dot_491a25c69853ba906ddcdc6b5fb8eaca.svg" alt="Dot diagram"></p>
+<p><img src="dot_1279e3994a36c97f925af56dfdc65753.svg" alt="Dot diagram"></p>
+<p>Attached ('N3', 'N2') to N4 to produce tree...</p>
+<p><img src="dot_c58722faeceae8a418d494b51ecfb364.svg" alt="Dot diagram"></p>
+<p>Attached ('v1', 'v2') to N3 to produce tree...</p>
+<p><img src="dot_8b23f0b93cd8206793b72258f2a6a76e.svg" alt="Dot diagram"></p>
+<p>Attached ('v5', 'N1') to N2 to produce tree...</p>
+<p><img src="dot_a6363a1967a3cac9da56fc327b32d7fe.svg" alt="Dot diagram"></p>
+<p>Attached ('v3', 'v4') to N1 to produce tree...</p>
+<p><img src="dot_d5a234ddce26fdde3302bd6ab76e40b4.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15110,6 +15120,88 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>The path A1-A2-Bear has been collapsed into A1-Bear, where the weight of the newly collapsed edge is represented by a (formerly y+z). Using the same <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above gets solved to <code>w = 2, x = 1, a = 2</code>.</p>
 </div>
 <p>If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> isn't additive, something like <a href="#BM_(sum%20of%20squared%20errors%7Csum%20of%20square%20error%7Csum%20of%20errors%20squared)%2Fi">sum of errors squared</a> may be used to converge on an approximate set of weights that work. Similarly, evolutionary algorithms may be used in addition to approximating weights to find a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that's close enough to the</p>
+<a name="H_Sequence%20Phylogeny"></a><h2>Sequence Phylogeny</h2>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Phylogeny)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny)_TOPIC%2F">Algorithms/Distance Phylogeny</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment</a></li>
+</ul>
+</div>
+<p>In addition to inferring shared ancestry between biological entities, <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> can be extended further to infer <a href="#BM_(sequence)%2Fi">sequence</a>s for those shared ancestors. Specifically, each node may have a <a href="#BM_(sequence)%2Fi">sequence</a> assigned to it, where each ...</p>
+<ul>
+<li>leaf node is assigned the <a href="#BM_(sequence)%2Fi">sequence</a> of the known entity it's for.</li>
+<li>internal node is assigned an inferred <a href="#BM_(sequence)%2Fi">sequence</a> based on its parent and/or children.</li>
+</ul>
+<p><img src="svgbob_fab0e3e719365ddd7a071bc539f7b3d7aa117f9d.svg" alt="Kroki diagram output"></p>
+<p>To infer <a href="#BM_(sequence)%2Fi">sequence</a>s of ancestors in a <a href="#BM_(tree)%2Fi">tree</a>, most algorithms begin by performing a multiple <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> with the known entity <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p><img src="svgbob_2ae353b0989bd4820ac434fd69980dc1c28e2ea1.svg" alt="Kroki diagram output"></p>
+<p>Common practice is to then remove <a href="#BM_(indel)%2Fi">indel</a>s from the alignment before assigning each aligned <a href="#BM_(sequence)%2Fi">sequence</a> (<a href="#BM_(indel)%2Fi">indel</a>s removed) to the leaf node the entity is for. Algorithms described in the subsections below then infer the <a href="#BM_(sequence)%2Fi">sequence</a>s of internal nodes.</p>
+<p><img src="svgbob_1d2a7ce9fc6936397bce5ffefe5a8fb448e742ef.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_861be61b9de0eaf2620d1e2ff68371d9380630e6.svg" alt="Kroki diagram output"></p>
+<a name="H_Score%20Parsimony"></a><h3>Score Parsimony</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Phylogeny%2FScore%20Parsimony)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FK-mer%2FHamming%20Distance)_TOPIC%2F">Algorithms/K-mer/Hamming Distance</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> with <a href="#BM_(sequence)%2Fi">sequence</a>s, assign each edge weight to the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the <a href="#BM_(sequence)%2Fi">sequence</a>s at its ends. The <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of the <a href="#BM_(tree)%2Fi">tree</a> is the sum of edge weights.</p>
+<p><img src="svgbob_4020255bbb672c80b80c7cb59a40a1a08c2ccd83.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: The <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> can be thought of as a "similarity" score, meaning each edge weight defines how similar the <a href="#BM_(sequence)%2Fi">sequence</a>s are at its ends. The sum of all edge weights quantifies the quality of the inferred <a href="#BM_(sequence)%2Fi">sequence</a>s, referred to as a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. The lower the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is, the better the inferred <a href="#BM_(sequence)%2Fi">sequence</a>s fit into the <a href="#BM_(tree)%2Fi">tree</a> (more <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p><a href="ch7_code/src/sequence_phylogeny/ParsimonyScore.py">ch7_code/src/sequence_phylogeny/ParsimonyScore.py</a> (lines 47 to 71):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_edge_similarity</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        get_sequence: <span class="hljs-type">Callable</span>[[ND], <span class="hljs-built_in">str</span>],
+        set_weight: <span class="hljs-type">Callable</span>[[ED, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>]
+</span>) -&gt; <span class="hljs-literal">None</span>:
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
+        n1, n2, e_data = g.get_edge(e)
+        n1_data = g.get_node_data(n1)
+        n2_data = g.get_node_data(n2)
+        n1_seq = get_sequence(n1_data)
+        n2_seq = get_sequence(n2_data)
+        weight = hamming_distance(n1_seq, n2_seq)
+        set_weight(e_data, weight)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">parsimony_score</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        get_weight: <span class="hljs-type">Callable</span>[[ED], <span class="hljs-built_in">float</span>]
+</span>) -&gt; <span class="hljs-built_in">float</span>:
+    ret = <span class="hljs-number">0.0</span>
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
+        e_data = g.get_edge_data(e)
+        ret += get_weight(e_data)
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_73836a09c0b24813dd39eb5630f622bb.svg" alt="Dot diagram"></p>
+<p>... has a parsimony score of ...</p>
+<p>4.0</p>
+<p><img src="dot_ae0ee91552f0b79a136d5cf42f4efc2f.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<a name="H_Small%20Parsimony"></a><h3>Small Parsimony</h3>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> already exists and the <a href="#BM_(sequence)%2Fi">sequence</a>s for its leaf nodes (known entities), infer <a href="#BM_(sequence)%2Fi">sequence</a>s for its internal nodes (ancestors).</p>
+<p><strong>WHY</strong>: Recall that the point of this section is inferring ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s. This is one of the algorithms that lets you do that.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<a name="H_Large%20Parsimony"></a><h3>Large Parsimony</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -19056,11 +19148,21 @@ dist(S3, S4) is 5 = x + u + z
 <p><a href="#BM_(character%20table)%2Fi">Character table</a>s were commonly used for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> before discovering that DNA can be used to compare the relatedness of organisms.</p>
 </li>
 <li>
-<p><a name="BM_(character%20vector)%2Fi"></a><strong>character vector</strong> - A row in a <a href="#BM_(character%20table)%2Fi">character table</a>.</p>
+<p><a name="BM_(character%20vector)%2Fi"></a><strong>character vector</strong> - A row in a <a href="#BM_(character%20table)%2Fi">character table</a>. Prior to the advent of <a href="#BM_(sequencer)%2Fi">sequencer</a>s, scientists would treat <a href="#BM_(character%20vector)%2Fi">character vector</a>s as <a href="#BM_(sequence)%2Fi">sequence</a>s for generating <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s or doing comparisons between organisms.</p>
 </li>
 <li>
 <p><a name="BM_(mitochondrial%20DNA%7CmtDNA)%2Fi"></a><strong>mitochondrial DNA</strong> - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitocondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.</p>
 <p><a href="#BM_(mitochondrial%20DNA%7CmtDNA)%2Fi">Mitochondrial DNA</a> is inherited fully from the mother. It isn't a mix of parental DNA as the cell DNA is.</p>
+</li>
+<li>
+<p><a name="BM_(parsimony%20score)%2Fi"></a><strong>parsimony score</strong> - Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> where each ...</p>
+<ul>
+<li>node has a <a href="#BM_(sequence)%2Fi">sequence</a> assigned to it, where leaf nodes are typically known <a href="#BM_(sequence)%2Fi">sequence</a>s from known entities and internal nodes are inferred <a href="#BM_(sequence)%2Fi">sequence</a>s for their inferred ancestors.</li>
+<li>edge has a weight equal to the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between the <a href="#BM_(sequence)%2Fi">sequence</a>s at each end.</li>
+</ul>
+<p>The <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the <a href="#BM_(tree)%2Fi">tree</a> is the sum of edge weights.</p>
+<p><img src="svgbob_bb22d4de3ae55f86ac7e2775b8dc5a509ccf3ab4.svg" alt="Kroki diagram output"></p>
+<p>The lower a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is, the better.</p>
 </li>
 </ul>
 <p>

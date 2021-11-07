@@ -3074,6 +3074,10 @@ The example above is just one of many sequence alignment types. There are differ
 The Pevzner book mentions a non-biology related problem to help illustrate alignment graphs: the Manhattan Tourist problem. Look it up if you're confused.
 ```
 
+```{note}
+The Pevzner book, in a later chapter (ch7 -- phylogeny), spends an entire section talking about character tables and how they can be thought of as sequences (character vectors). There's no good place to put this information. It seems non-critical so the only place it exists is in the terminology section.
+```
+
 ### Find Maximum Path
 
 `{bm} /(Algorithms\/Sequence Alignment\/Find Maximum Path)_TOPIC/`
@@ -10990,6 +10994,167 @@ The path A1-A2-Bear has been collapsed into A1-Bear, where the weight of the new
 
 If the distance matrix isn't additive, something like sum of errors squared may be used to converge on an approximate set of weights that work. Similarly, evolutionary algorithms may be used in addition to approximating weights to find a simple tree that's close enough to the  
 
+## Sequence Phylogeny
+
+`{bm} /(Algorithms\/Sequence Phylogeny)_TOPIC/`
+
+```{prereq}
+Algorithms/Distance Phylogeny_TOPIC
+Algorithms/Sequence Alignment_TOPIC
+```
+
+In addition to inferring shared ancestry between biological entities, phylogeny can be extended further to infer sequences for those shared ancestors. Specifically, each node may have a sequence assigned to it, where each ...
+
+ * leaf node is assigned the sequence of the known entity it's for.
+ * internal node is assigned an inferred sequence based on its parent and/or children.
+
+```{svgbob}
+         .-----------.
+         | AncestorA |
+         |  ATTGCC   |
+         '-----+-----'
+              / \
+             /   \
+            /     \
+     .-----+-----. \
+     | AncestorB |  \
+     |  ACTGCT   |   \
+     '-----+-----'    \
+          / \          \
+         /   \          \
+        /     \          \
+.------+-. .---+----. .---+----.
+|   Cat  | |  Lion  | |  Bear  |
+| ACTGGT | | ACTGCT | | ATTCCC |
+'--------' '--------' '--------'
+```
+
+To infer sequences of ancestors in a tree, most algorithms begin by performing a multiple sequence alignment with the known entity sequences.
+
+```{svgbob}
+A C T T G - G T
+A C T T G G C T
+A T - T C G C C
+```
+
+Common practice is to then remove indels from the alignment before assigning each aligned sequence (indels removed) to the leaf node the entity is for. Algorithms described in the subsections below then infer the sequences of internal nodes.
+
+```{svgbob}
+A C T T G - G T
+A C T T G G C T
+A T - T C G C C
+✓ ✓ ✗ ✓ ✓ ✗ ✓ ✓
+| |   | |   | |
+| |   + +   + +
+| |  / /   / / 
+| | + +   / /
+| | | |  / /
+| | | | + +
+| | | | | | 
+A C T G G T 
+A C T G C T 
+A T T C C C 
+```
+
+```{svgbob}
+         .-----------.
+         | AncestorA |
+         |  ??????   |
+         '-----+-----'
+              / \
+             /   \
+            /     \
+     .-----+-----. \
+     | AncestorB |  \
+     |  ??????   |   \
+     '-----+-----'    \
+          / \          \
+         /   \          \
+        /     \          \
+.------+-. .---+----. .---+----.
+|   Cat  | |  Lion  | |  Bear  |
+| ACTGGT | | ACTGCT | | ATTCCC |
+'--------' '--------' '--------'
+```
+
+### Score Parsimony
+
+`{bm} /(Algorithms\/Sequence Phylogeny\/Score Parsimony)_TOPIC/`
+
+```{prereq}
+Algorithms/K-mer/Hamming Distance_TOPIC
+```
+
+**WHAT**: Given a phylogenetic tree with sequences, assign each edge weight to the hamming distance of the sequences at its ends. The parsimony score of the tree is the sum of edge weights.
+
+```{svgbob}
+* "Parsimony score = 4"
+
+         .-----------.
+         | AncestorA |
+         |  ATTGCC   |
+         '-----+-----'
+              / \
+           2 /   \
+            /     \
+     .-----+-----. \
+     | AncestorB |  \ 1
+     |  ACTGCT   |   \
+     '-----+-----'    \
+          / \          \
+       1 /   \ 0        \
+        /     \          \
+.------+-. .---+----. .---+----.
+|   Cat  | |  Lion  | |  Bear  |
+| ACTGGT | | ACTGCT | | ATTCCC |
+'--------' '--------' '--------'
+```
+
+**WHY**: The hamming distance can be thought of as a "similarity" score, meaning each edge weight defines how similar the sequences are at its ends. The sum of all edge weights quantifies the quality of the inferred sequences, referred to as a parsimony score. The lower the parsimony score is, the better the inferred sequences fit into the tree (more parsimonious).
+
+**ALGORITHM**:
+
+```{output}
+ch7_code/src/sequence_phylogeny/ParsimonyScore.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch7}
+sequence_phylogeny.ParsimonyScore
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0,ACTGCT], [n,i1,ATTGCC], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+```
+
+### Small Parsimony
+
+**WHAT**: Given a phylogenetic tree already exists and the sequences for its leaf nodes (known entities), infer sequences for its internal nodes (ancestors).
+
+**WHY**: Recall that the point of this section is inferring ancestral sequences. This is one of the algorithms that lets you do that.
+
+**ALGORITHM**: 
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+
+### Large Parsimony
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -14934,11 +15099,43 @@ graph_show
 
    Character tables were commonly used for phylogeny before discovering that DNA can be used to compare the relatedness of organisms.
 
- * `{bm} character vector` - A row in a character table.
+ * `{bm} character vector` - A row in a character table. Prior to the advent of sequencers, scientists would treat character vectors as sequences for generating phylogenetic trees or doing comparisons between organisms.
 
  * `{bm} mitochondrial DNA/(mitochondrial DNA|mtDNA)/i` - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitocondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.
    
    Mitochondrial DNA is inherited fully from the mother. It isn't a mix of parental DNA as the cell DNA is.
+
+* `{bm} parsimony score` - Given a phylogenetic tree where each ...
+
+   * node has a sequence assigned to it, where leaf nodes are typically known sequences from known entities and internal nodes are inferred sequences for their inferred ancestors.
+   * edge has a weight equal to the hamming distance between the sequences at each end.
+
+  The parsimony score for the tree is the sum of edge weights.
+
+   ```{svgbob}
+   "Parsimony score = 5"
+
+            .-----------.
+            | AncestorA |
+            |  ATTGCC   |
+            '-----+-----'
+                 / \
+              3 /   \
+               /     \
+        .-----+-----. \
+        | AncestorB |  \ 1
+        |  ACTGCT   |   \
+        '-----+-----'    \
+             / \          \
+          1 /   \ 0        \
+           /     \          \
+   .------+-. .---+----. .---+----.
+   |   Cat  | |  Lion  | |  Bear  |
+   | ACTGGT | | ACTGCT | | ATTCCC |
+   '--------' '--------' '--------'
+   ```
+
+   The lower a parsimony score is, the better.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
