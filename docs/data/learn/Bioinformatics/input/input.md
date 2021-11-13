@@ -11003,7 +11003,7 @@ Algorithms/Distance Phylogeny_TOPIC
 Algorithms/Sequence Alignment_TOPIC
 ```
 
-In addition to inferring shared ancestry between biological entities, phylogeny can be extended further to infer sequences for those shared ancestors. Specifically, each node may have a sequence assigned to it, where each ...
+In addition to inferring shared ancestry between biological entities, phylogeny can be extended further to infer sequences for those shared ancestors. Specifically, each node in a phylogenetic tree may have a sequence assigned to it, where a ...
 
  * leaf node is assigned the sequence of the known entity it's for.
  * internal node is assigned an inferred sequence based on its parent and/or children.
@@ -11019,54 +11019,6 @@ In addition to inferring shared ancestry between biological entities, phylogeny 
      .-----+-----. \
      | AncestorB |  \
      |  ACTGCT   |   \
-     '-----+-----'    \
-          / \          \
-         /   \          \
-        /     \          \
-.------+-. .---+----. .---+----.
-|   Cat  | |  Lion  | |  Bear  |
-| ACTGGT | | ACTGCT | | ATTCCC |
-'--------' '--------' '--------'
-```
-
-To infer sequences of ancestors in a tree, most algorithms begin by performing a multiple sequence alignment with the known entity sequences.
-
-```{svgbob}
-A C T T G - G T
-A C T T G G C T
-A T - T C G C C
-```
-
-Common practice is to then remove indels from the alignment before assigning each aligned sequence (indels removed) to the leaf node the entity is for. Algorithms described in the subsections below then infer the sequences of internal nodes.
-
-```{svgbob}
-A C T T G - G T
-A C T T G G C T
-A T - T C G C C
-✓ ✓ ✗ ✓ ✓ ✗ ✓ ✓
-| |   | |   | |
-| |   + +   + +
-| |  / /   / / 
-| | + +   / /
-| | | |  / /
-| | | | + +
-| | | | | | 
-A C T G G T 
-A C T G C T 
-A T T C C C 
-```
-
-```{svgbob}
-         .-----------.
-         | AncestorA |
-         |  ??????   |
-         '-----+-----'
-              / \
-             /   \
-            /     \
-     .-----+-----. \
-     | AncestorB |  \
-     |  ??????   |   \
      '-----+-----'    \
           / \          \
          /   \          \
@@ -11127,31 +11079,176 @@ sequence_phylogeny.ParsimonyScore
 
 ### Small Parsimony
 
-**WHAT**: Given a phylogenetic tree already exists and the sequences for its leaf nodes (known entities), infer sequences for its internal nodes (ancestors).
+**WHAT**: Given a phylogenetic tree already exists and the sequences for its leaf nodes (known entities) are known, infer sequences for its internal nodes (ancestors).
 
 **WHY**: Recall that the point of this section is inferring ancestral sequences. This is one of the algorithms that lets you do that.
 
 **ALGORITHM**: 
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+This algorithm works on sequences of matching length. If the sequences for known entities aren't the same length, common practice is to align them (e.g. multiple alignment) and remove any indels before continuing. Once indels are removed, the sequences will all become the same length.
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+```{svgbob}
+"Step 1: Align and remove indels"
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+A C T T G - G T
+A C T T G G C T
+A T - T C G C C
+✓ ✓ ✗ ✓ ✓ ✗ ✓ ✓
+| |   | |   | |
+| |   + +   + +
+| |  / /   / / 
+| | + +   / /
+| | | |  / /
+| | | | + +
+| | | | | | 
+A C T G G T 
+A C T G C T 
+A T T C C C 
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+"Step 2: Place new sequences into tree"
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+         .-----------.
+         | AncestorA |
+         |  ??????   |
+         '-----+-----'
+              / \
+             /   \
+            /     \
+     .-----+-----. \
+     | AncestorB |  \
+     |  ??????   |   \
+     '-----+-----'    \
+          / \          \
+         /   \          \
+        /     \          \
+.------+-. .---+----. .---+----.
+|   Cat  | |  Lion  | |  Bear  |
+| ACTGGT | | ACTGCT | | ATTCCC |
+'--------' '--------' '--------'
+```
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+The algorithm works by building a distance map for each index of each node's sequence. Each map defines how likely it is for that specific index to contain that specific element. For example, ...
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+| Index |  A  |  C  |  T  |  G  |
+|-------|-----|-----|-----|-----|
+|     0 | 0.0 | 0.0 | 4.0 | 3.0 |
+|     1 | 1.0 | 2.0 | 1.0 | 3.0 |
+|     2 | 0.0 | 0.0 | 0.0 | 1.0 |
+|     3 | 2.0 | 3.0 | 1.0 | 0.0 |
+|     4 | 1.0 | 1.0 | 2.0 | 1.0 |
+|     5 | 1.0 | 0.0 | 1.0 | 2.0 |
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+These maps are built from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the tree. Since the sequences at leaf nodes are known (leaf nodes represent known entities), building their maps is fairly straight forward: 0 for the element at that index and ∞ for all other elements. For example, Lion in the example tree above would have the the following likelihood mappings at each index ...
 
-TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE
+| Index |  A  |  C  |  T  |  G  |
+|-------|-----|-----|-----|-----|
+|     0 | 0.0 |  ∞  |  ∞  |  ∞  |
+|     1 |  ∞  | 0.0 |  ∞  |  ∞  |
+|     2 |  ∞  |  ∞  | 0.0 |  ∞  |
+|     3 |  ∞  |  ∞  |  ∞  | 0.0 |
+|     4 |  ∞  | 0.0 |  ∞  |  ∞  |
+|     5 |  ∞  |  ∞  | 0.0 |  ∞  |
+
+```{output}
+ch7_code/src/sequence_phylogeny/ParsimonyScore.py
+python
+# MARKDOWN_LEAF_DIST_SET\s*\n([\s\S]+)\n\s*# MARKDOWN_LEAF_DIST_SET
+```
+
+Once all the downstream neighbours of an internal node have mappings, its mappings can be built. At each index, a new distance map is generated by mixing the maps of its downstream neighbours in addition to a distance metric. The distance metric defines how expensive it is to swap from one element type to another. For example, using hamming distance as the distance metric ...
+
+|   | A | C | T | G |
+|---|---|---|---|---|
+| A | 0 | 1 | 1 | 1 |
+| C | 1 | 0 | 1 | 1 |
+| T | 1 | 1 | 0 | 1 |
+| G | 1 | 1 | 1 | 0 |
+
+Mixing just scans over each element of a downstream neighbour's mapping and picks the one that's most viable (lowest distances) once the distance metric added in. For example, imagine that you're building the mapping for nucleotide A and you have the three following downstream mappings ...
+
+|  A  |  C  |  T  |  G  |
+|-----|-----|-----|-----|
+| 2.0 | 2.0 | 0.0 | 1.0 |
+
+|  A  |  C  |  T  |  G  |
+|-----|-----|-----|-----|
+| 1.0 | 2.0 | 4.0 | 3.0 |
+
+|  A  |  C  |  T  |  G  |
+|-----|-----|-----|-----|
+| 3.0 | 2.0 | 4.0 | 3.0 |
+
+For each mapping above, add in the distance and choose the minimum resulting value. The sum of all 3 values produced for A becomes the mapping for A...
+
+```python
+mapping['A'] =
+    sum(
+        min(
+            downstream_mapping1['A'] + dist_metric('A', 'A'),
+            downstream_mapping1['C'] + dist_metric('A', 'C'),
+            downstream_mapping1['T'] + dist_metric('A', 'T'),
+            downstream_mapping1['G'] + dist_metric('A', 'G')
+        ),
+        min(
+            downstream_mapping2['A'] + dist_metric('A', 'A'),
+            downstream_mapping2['C'] + dist_metric('A', 'C'),
+            downstream_mapping2['T'] + dist_metric('A', 'T'),
+            downstream_mapping2['G'] + dist_metric('A', 'G')
+        ),
+        min(
+            downstream_mapping3['A'] + dist_metric('A', 'A'),
+            downstream_mapping3['C'] + dist_metric('A', 'C'),
+            downstream_mapping3['T'] + dist_metric('A', 'T'),
+            downstream_mapping3['G'] + dist_metric('A', 'G')
+        )
+    )
+return min(
+
+)
+```
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+TODO: FIX ABOVE AND CONTINUE
+
+
+```python
+chosen_dists = []
+for child_dist_set in child_dist_sets:
+    possible_dists = []
+    for elem_type_src in elem_types:
+        possible_dist = child_dist_set[elem_type_src] + dist_metric(elem_type_src, 'A')
+        possible_dists.append(possible_dist)
+    chosen_dist = min(possible_dists)
+    chosen_dists.append(chosen_dist)
+return sum(chosen_dists)
+```
+
+```{output}
+ch7_code/src/sequence_phylogeny/ParsimonyScore.py
+python
+# MARKDOWN_INTERNAL_DIST_SET\s*\n([\s\S]+)\n\s*# MARKDOWN_INTERNAL_DIST_SET
+```
+
 
 ### Large Parsimony
 
@@ -11992,6 +12089,7 @@ graph_show
  * GPU optimized C++ global alignment - Simple global alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well. (divide and conquer might be a good idea because it'll work on super fat sequences)
  * GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.
  * Deep-learning Regulatory Motif Detection - Try training a deep learning model to "find" regulatory motifs for new transcription factors based on past training data.
+ * Global alignment that takes genome rearrangements into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, fissions, fusions, copies, etc..
 
 # Terminology
 
