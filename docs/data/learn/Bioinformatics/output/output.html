@@ -9870,7 +9870,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
+<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -12289,7 +12289,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_bea6dbd3d7731b46d539ca7804b03109.svg" alt="Dot diagram"></p>
+<p><img src="dot_a8f03326c6db7eae4cf38d794b41b866.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12519,7 +12519,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12588,7 +12588,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_222331795e192eaa722516ce183bc238.svg" alt="Dot diagram"></p>
+<p><img src="dot_af41c1c8e932d5b91c56bca3bd31f5c8.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14744,7 +14744,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_7b9f26f1c09215186e226ce9ac4f4460.svg" alt="Dot diagram"></p>
+<p><img src="dot_9e3029cf50a87b796dcfb3e3c721950f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14831,22 +14831,22 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>22.0</td></tr><tr><td>v4</td><td>22.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v3</td><td>21.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v0 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v5 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_8a909f66ba15eb884fefad7d7bf9e496.svg" alt="Dot diagram"></p>
-<p>Attached v1 to produce tree...</p>
-<p><img src="dot_7e7b362035e92106c3292a8c3812999a.svg" alt="Dot diagram"></p>
+<p><img src="dot_0835ab245548d28aea09607b85363b50.svg" alt="Dot diagram"></p>
 <p>Attached v5 to produce tree...</p>
-<p><img src="dot_623e11030f65dd1284c84388308d5b5d.svg" alt="Dot diagram"></p>
-<p>Attached v3 to produce tree...</p>
-<p><img src="dot_118f934c54a873fceef452222ef9af50.svg" alt="Dot diagram"></p>
+<p><img src="dot_afbf7ca5496a89d24c8202621113a8ed.svg" alt="Dot diagram"></p>
+<p>Attached v0 to produce tree...</p>
+<p><img src="dot_0b4b2d4cd476793f345f0492f47d5e76.svg" alt="Dot diagram"></p>
+<p>Attached v1 to produce tree...</p>
+<p><img src="dot_08be10332efb770d81fb404438ac6322.svg" alt="Dot diagram"></p>
 <p>Attached v2 to produce tree...</p>
-<p><img src="dot_15c1a81492ffe8fb8c8c817b99343233.svg" alt="Dot diagram"></p>
+<p><img src="dot_5ddb3da76a11dc963695b2ac7c1524d2.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15016,20 +15016,20 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('N3', 'v1') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N4</th><th>v2</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>10.0</td></tr><tr><td>v2</td><td>10.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v1', 'v2') with their parent N3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v0', 'N3') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N2</th><th>N4</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.375</td></tr><tr><td>N4</td><td>3.375</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_1d9b5fae826dcfef649ccb5d3adcaf55.svg" alt="Dot diagram"></p>
-<p>Attached ('N3', 'v1') to N4 to produce tree...</p>
-<p><img src="dot_457ef2a958debf40c29f2e16f83fde07.svg" alt="Dot diagram"></p>
-<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
-<p><img src="dot_5dcaa6c55b60b060760a25eb35b6603e.svg" alt="Dot diagram"></p>
+<p><img src="dot_be2e0a5ea35a5c15c0f673e6bfbdabdb.svg" alt="Dot diagram"></p>
+<p>Attached ('v0', 'N3') to N4 to produce tree...</p>
+<p><img src="dot_f8b7db6204b837edc8bb375715d2c6d6.svg" alt="Dot diagram"></p>
+<p>Attached ('v1', 'v2') to N3 to produce tree...</p>
+<p><img src="dot_2bca8ae42e2e81ee66df66a6c38bde8c.svg" alt="Dot diagram"></p>
 <p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_8cca9d0ec4f58063a5d3d713d3381bfb.svg" alt="Dot diagram"></p>
+<p><img src="dot_163eb38befdd2059237137432c917de3.svg" alt="Dot diagram"></p>
 <p>Attached ('v4', 'v3') to N1 to produce tree...</p>
-<p><img src="dot_88a41db0cb2ac101ddf83f05bf75feba.svg" alt="Dot diagram"></p>
+<p><img src="dot_21fd6810da6e87b76631d8a6f09469ea.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15305,7 +15305,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 187 to 197):</p>
+<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 188 to 198):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_for_leaf_element_types</span>(<span class="hljs-params">
         elem_type_dst: <span class="hljs-built_in">str</span>,
         elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>
@@ -15346,7 +15346,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <pre class="hljs"><code>N1[<span class="hljs-number">3</span>][<span class="hljs-string">'A'</span>] = n2_val + n3_val + n4_val
 </code></pre>
 <p>This same process is repeated for the remaining elements in the mapping (C, T, and G) to generate the full mapping for index 3.</p>
-<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 149 to 182):</p>
+<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 150 to 183):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_for_internal_element_types</span>(<span class="hljs-params">
         downstream_dist_sets: Iterable[<span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]],
         dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>],
@@ -15382,10 +15382,22 @@ n4_val = <span class="hljs-built_in">min</span>(
         min_dists.append(min_dist)
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(min_dists)
 </code></pre>
-<p>The algorithm builds these maps from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the <a href="#BM_(tree)%2Fi">tree</a>. For each index in a node, the element with the lowest distance is the one selected to represent that index.</p>
-<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 53 to 145):</p>
+<p>The algorithm builds these maps from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the <a href="#BM_(tree)%2Fi">tree</a>. Since <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s are typically <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s, a node needs to be selected as the root such that the algorithm can work upward to that root. The inferred <a href="#BM_(sequence)%2Fi">sequence</a>s for internal nodes will very likely be different depending on which node is selected as root.</p>
+<p><img src="svgbob_69d53a1f9394aef6a3e6deac1675d302e17f4aad.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the <a href="#BM_(sequence)%2Fi">sequence</a>s have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.</p>
+<p>So which node should be selected as root? The <a href="#BM_(tree)%2Fi">tree</a> structure being used for this algorithm very likely came from a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> built using distances (e.g. <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>, etc..). Here are a couple of ideas I just thought up:</p>
+<ul>
+<li>For each leaf node, count the number of nodes in the path to reach that internal node. Sum up the counts and pick the internal node with the largest sum as the root.</li>
+<li>For each leaf node, calculate the distance to reach that internal node. Sum up the distances and pick the internal node with the largest sum as the root.</li>
+</ul>
+<p>I think the second one might not work because all sums will be the same? Maybe instead average the distances to leaf nodes and pick the one with the largest average?</p>
+</div>
+<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 54 to 146):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_distance_sets</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, ED],
+        root: N,
         seq_length: <span class="hljs-built_in">int</span>,
         get_sequence: <span class="hljs-type">Callable</span>[[N], <span class="hljs-built_in">str</span>],
         set_sequence: <span class="hljs-type">Callable</span>[[N, <span class="hljs-built_in">str</span>], <span class="hljs-literal">None</span>],
@@ -15405,7 +15417,6 @@ n4_val = <span class="hljs-built_in">min</span>(
             <span class="hljs-literal">None</span>
         ],
         dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>],
-        root: <span class="hljs-type">Optional</span>[N] = <span class="hljs-literal">None</span>,
         elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>
 </span>) -&gt; <span class="hljs-literal">None</span>:
     neighbours_unprocessed = Counter()
@@ -15414,10 +15425,8 @@ n4_val = <span class="hljs-built_in">min</span>(
     leaf_nodes = {n <span class="hljs-keyword">for</span> n, c <span class="hljs-keyword">in</span> neighbours_unprocessed.items() <span class="hljs-keyword">if</span> c == <span class="hljs-number">1</span>}
     internal_nodes = {n <span class="hljs-keyword">for</span> n, c <span class="hljs-keyword">in</span> neighbours_unprocessed.items() <span class="hljs-keyword">if</span> c &gt; <span class="hljs-number">1</span>}
 
-    <span class="hljs-comment"># Pick an internal node an treat it as a "root" by faking it having an</span>
-    <span class="hljs-comment"># input. This will make it so that it gets processed last.</span>
-    <span class="hljs-keyword">if</span> root <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
-        root = <span class="hljs-built_in">next</span>(<span class="hljs-built_in">iter</span>(internal_nodes))
+    <span class="hljs-comment"># Add +1 to the unprocessed count of the node deemed to be root. This</span>
+    <span class="hljs-comment"># will make it so that it gets processed last.</span>
     <span class="hljs-keyword">assert</span> root <span class="hljs-keyword">in</span> neighbours_unprocessed
     neighbours_unprocessed[root] += <span class="hljs-number">1</span>
 
@@ -15448,8 +15457,10 @@ n4_val = <span class="hljs-built_in">min</span>(
             downstream_dist_sets = []
             <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> tree.get_outputs(n):
                 n_downstream = tree.get_edge_end(edge, n)
-                <span class="hljs-keyword">if</span> n_downstream <span class="hljs-keyword">in</span> neighbours_unprocessed:
-                    <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># Skip -- this is actually upstream rather than downstream</span>
+                <span class="hljs-comment"># If it's root, treat all edges as pointing to downstream nodes</span>
+                <span class="hljs-comment"># If it's not root, only nodes already processed are downstream nodes</span>
+                <span class="hljs-keyword">if</span> n != root <span class="hljs-keyword">and</span> n_downstream <span class="hljs-keyword">in</span> neighbours_unprocessed:
+                    <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># Skip -- not root + not processed = actually upstream node</span>
                 dist_set = get_dist_set(n_downstream, i)
                 downstream_dist_sets.append(dist_set)
             dist_set = distance_for_internal_element_types(
@@ -15480,24 +15491,73 @@ n4_val = <span class="hljs-built_in">min</span>(
 <div style="border:1px solid black;">
 <p></p>
 <p>The tree...</p>
-<p><img src="dot_c55d7856b343ceede5c8e6525ad62cde.svg" alt="Dot diagram"></p>
-<p>... has the inferred sequences ...</p>
-<p><img src="dot_8d442b43f45a0a1bf8b99ff987c5d33e.svg" alt="Dot diagram"></p>
+<p><img src="dot_a68c13de3d0e4bcf34af631d2256b12f.svg" alt="Dot diagram"></p>
+<p>... with i0 set as its root ...</p>
+<p>... and the distances ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>A</th>
+<th>C</th>
+<th>T</th>
+<th>G</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>T</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>G</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... has the following inferred ancestor sequences ...</p>
+<p><img src="dot_3b2597d68f417ffbcd12f9ea9eb45c69.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
-<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The distances used in the example execution above is <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>. If you're working with proteins, a more appropriate matrix might be a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrix (e.g. <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.</p>
+</div>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
+<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
 <a name="H_Large%20Parsimony"></a><h3>Large Parsimony</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>

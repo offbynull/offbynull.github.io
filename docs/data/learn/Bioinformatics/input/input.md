@@ -11247,7 +11247,36 @@ python
 # MARKDOWN_INTERNAL_DIST_SET\s*\n([\s\S]+)\n\s*# MARKDOWN_INTERNAL_DIST_SET
 ```
 
-The algorithm builds these maps from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the tree. For each index in a node, the element with the lowest distance is the one selected to represent that index.
+The algorithm builds these maps from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the tree. Since phylogenetic trees are typically unrooted trees, a node needs to be selected as the root such that the algorithm can work upward to that root. The inferred sequences for internal nodes will very likely be different depending on which node is selected as root.
+
+```{svgbob}
+         .-----------.                            .-----------.          
+         | AncestorA |                            | AncestorB |          
+         '-----+-----'                            '-----+-----'          
+              / \                                      /|\               
+             /   \                                    / | \              
+            /     \                                  /  |  \             
+     .-----+-----. \                                /   |   \            
+     | AncestorB |  \                              /    | .--+--------.  
+     '-----+-----'   \                            /     | | AncestorA |  
+          / \         \                          /      | '-----+-----'  
+         /   \         \                        /       |        \        
+        /     \         \                      /        |         \       
+.------+-. .---+----. .--+-----.         .----+---. .---+----. .---+----.
+|   Cat  | |  Lion  | |  Bear  |         |   Cat  | |  Lion  | |  Bear  |
+'--------' '--------' '--------'         '--------' '--------' '--------'
+```
+
+````{note}
+The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the sequences have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.
+
+So which node should be selected as root? The tree structure being used for this algorithm very likely came from a phylogenetic tree built using distances (e.g. additive phylogeny, neighbour joining phylogeny, UPGMA, etc..). Here are a couple of ideas I just thought up: 
+
+ * For each leaf node, count the number of nodes in the path to reach that internal node. Sum up the counts and pick the internal node with the largest sum as the root.
+ * For each leaf node, calculate the distance to reach that internal node. Sum up the distances and pick the internal node with the largest sum as the root.
+
+I think the second one might not work because all sums will be the same? Maybe instead average the distances to leaf nodes and pick the one with the largest average?
+````
 
 ```{output}
 ch7_code/src/sequence_phylogeny/SmallParsimony.py
@@ -11257,35 +11286,52 @@ python
 
 ```{ch7}
 sequence_phylogeny.SmallParsimony
-ACTG
 [[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0], [n,i1], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+i0
+[ , A, C, T, G]
+[A, 0, 1, 1, 1]
+[C, 1, 0, 1, 1]
+[T, 1, 1, 0, 1]
+[G, 1, 1, 1, 0]
 ```
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+```{note}
+The distances used in the example execution above is hamming distance. If you're working with proteins, a more appropriate matrix might be a BLOSUM matrix (e.g. BLOSUM62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.
+```
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
-TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A DISTANCE MATRIX
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+
+TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
 
 ### Large Parsimony
 

@@ -29,6 +29,7 @@ def to_dot(g: Graph) -> str:
     ret += ' graph[rankdir=BT]\n'
     ret += ' node[shape=box, fontname="Courier-Bold", fontsize=10]\n'
     ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
+    ret += ' layout=fdp\n'
     nodes = sorted(g.get_nodes())
     for n in nodes:
         nd = g.get_node_data(n)
@@ -52,6 +53,7 @@ def hamming_distance(e1: str, e2: str):
 # MARKDOWN_POPULATE
 def populate_distance_sets(
         tree: Graph[N, ND, E, ED],
+        root: N,
         seq_length: int,
         get_sequence: Callable[[N], str],
         set_sequence: Callable[[N, str], None],
@@ -71,7 +73,6 @@ def populate_distance_sets(
             None
         ],
         dist_metric: Callable[[str, str], float],
-        root: Optional[N] = None,
         elem_types: str = 'ACTG'
 ) -> None:
     neighbours_unprocessed = Counter()
@@ -80,10 +81,8 @@ def populate_distance_sets(
     leaf_nodes = {n for n, c in neighbours_unprocessed.items() if c == 1}
     internal_nodes = {n for n, c in neighbours_unprocessed.items() if c > 1}
 
-    # Pick an internal node an treat it as a "root" by faking it having an
-    # input. This will make it so that it gets processed last.
-    if root is None:
-        root = next(iter(internal_nodes))
+    # Add +1 to the unprocessed count of the node deemed to be root. This
+    # will make it so that it gets processed last.
     assert root in neighbours_unprocessed
     neighbours_unprocessed[root] += 1
 
@@ -114,8 +113,10 @@ def populate_distance_sets(
             downstream_dist_sets = []
             for edge in tree.get_outputs(n):
                 n_downstream = tree.get_edge_end(edge, n)
-                if n_downstream in neighbours_unprocessed:
-                    continue  # Skip -- this is actually upstream rather than downstream
+                # If it's root, treat all edges as pointing to downstream nodes
+                # If it's not root, only nodes already processed are downstream nodes
+                if n != root and n_downstream in neighbours_unprocessed:
+                    continue  # Skip -- not root + not processed = actually upstream node
                 dist_set = get_dist_set(n_downstream, i)
                 downstream_dist_sets.append(dist_set)
             dist_set = distance_for_internal_element_types(
@@ -202,8 +203,19 @@ def main():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
     try:
-        elem_types = input().strip()
         g_as_list, _ = str_to_list(input().strip(), 0)
+        root = input().strip()
+        dist_mat = {}
+        table_header, _ = str_to_list(input().strip(), 0)
+        table_rows = []
+        for _ in table_header[1:]:
+            row, _ = str_to_list(input().strip(), 0)
+            table_rows.append(row)
+        for row in table_rows:
+            e1 = row[0]
+            for i, e2 in enumerate(table_header[1:]):
+                dist_mat[e1, e2] = float(row[i + 1])
+        elem_types = table_header[1:]
         g = create_graph(g_as_list)
         leaf_nodes = {n for n in g.get_nodes() if g.get_degree(n) == 1}
         leaf_node = next(iter(leaf_nodes))
@@ -214,16 +226,36 @@ def main():
         print(f'{to_dot(g)}')
         print('```')
         print()
-        print('... has the inferred sequences ...')
+        print(f'... with {root} set as its root ...')
+        print()
+        print(f'... and the distances ...')
+        print()
+        print('<table>')
+        print('<thead><tr>')
+        print('<th></th>')
+        for l in elem_types:
+            print(f'<th>{l}</th>')
+        print('</tr></thead>')
+        print('<tbody>')
+        for l1 in elem_types:
+            print('<tr>')
+            print(f'<td>{l1}</td>')
+            for l2 in elem_types:
+                print(f'<td>{dist_mat[l1, l2]}</td>')
+            print('</tr>')
+        print('</tbody>')
+        print('</table>')
+        print()
+        print(f'... has the following inferred ancestor sequences ...')
         populate_distance_sets(
             g,
+            root,
             seq_length,
             lambda n: g.get_node_data(n)['seq'],
             lambda n, seq: g.get_node_data(n).update({'seq': seq}),
             lambda n, idx: g.get_node_data(n).get(f'dist_set_{idx}', {}),
             lambda n, idx, ds: g.get_node_data(n).update({f'dist_set_{idx}': ds}),
-            hamming_distance,
-            None,
+            lambda e1, e2: dist_mat[e1, e2],
             elem_types
         )
         print()
