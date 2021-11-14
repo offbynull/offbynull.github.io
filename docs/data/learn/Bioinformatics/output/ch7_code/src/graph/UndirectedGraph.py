@@ -94,6 +94,14 @@ class Graph(Generic[N, ND, E, ED]):
         e = self._edges[edge]
         return e[0], e[1]
 
+    def get_edge_end(self: Graph, edge: E, skip_node: N) -> N:
+        e = self._edges[edge]
+        if skip_node == e[0]:
+            return e[1]
+        elif skip_node == e[1]:
+            return e[0]
+        raise ValueError(f'{skip_node} not at either end of {edge}')
+
     def get_edge(self: Graph, edge: E) -> (N, N, ED):
         return self._edges[edge]
 

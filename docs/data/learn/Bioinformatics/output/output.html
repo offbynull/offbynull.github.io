@@ -12220,7 +12220,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12289,7 +12289,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_ef3e06f66c20de3f86a01f1d26c793f5.svg" alt="Dot diagram"></p>
+<p><img src="dot_bea6dbd3d7731b46d539ca7804b03109.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12588,7 +12588,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_6c718b00d6c909545f5ea48fda501829.svg" alt="Dot diagram"></p>
+<p><img src="dot_222331795e192eaa722516ce183bc238.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14744,7 +14744,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_742eaee537c4c04d3b6984cc2e3a2c43.svg" alt="Dot diagram"></p>
+<p><img src="dot_7b9f26f1c09215186e226ce9ac4f4460.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14829,24 +14829,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v0 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v2 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v2</th><th>v3</th></tr></thead><tbody><tr><td>v2</td><td>0.0</td><td>20.0</td></tr><tr><td>v3</td><td>20.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v4</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>22.0</td></tr><tr><td>v4</td><td>22.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_09b45a0e4373bd1e271791c3260e793a.svg" alt="Dot diagram"></p>
+<p><img src="dot_8a909f66ba15eb884fefad7d7bf9e496.svg" alt="Dot diagram"></p>
 <p>Attached v1 to produce tree...</p>
-<p><img src="dot_34af08568b2f49be8434446a7cca8adc.svg" alt="Dot diagram"></p>
-<p>Attached v4 to produce tree...</p>
-<p><img src="dot_e704a3ff416952e3ffec5915d1d4855b.svg" alt="Dot diagram"></p>
+<p><img src="dot_7e7b362035e92106c3292a8c3812999a.svg" alt="Dot diagram"></p>
 <p>Attached v5 to produce tree...</p>
-<p><img src="dot_590ae0daee391858361846f3a5e7cf93.svg" alt="Dot diagram"></p>
-<p>Attached v0 to produce tree...</p>
-<p><img src="dot_3cd6b92ef636872f9428886c3c7b1f2c.svg" alt="Dot diagram"></p>
+<p><img src="dot_623e11030f65dd1284c84388308d5b5d.svg" alt="Dot diagram"></p>
+<p>Attached v3 to produce tree...</p>
+<p><img src="dot_118f934c54a873fceef452222ef9af50.svg" alt="Dot diagram"></p>
+<p>Attached v2 to produce tree...</p>
+<p><img src="dot_15c1a81492ffe8fb8c8c817b99343233.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15012,24 +15012,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>Replaced neighbours ('v3', 'v4') with their parent N1 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v4', 'v3') with their parent N1 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v1', 'v2') with their parent N3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('N3', 'N2') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N4</th><th>v0</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>11.625</td></tr><tr><td>v0</td><td>11.625</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('N3', 'v1') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N4</th><th>v2</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>10.0</td></tr><tr><td>v2</td><td>10.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_1279e3994a36c97f925af56dfdc65753.svg" alt="Dot diagram"></p>
-<p>Attached ('N3', 'N2') to N4 to produce tree...</p>
-<p><img src="dot_c58722faeceae8a418d494b51ecfb364.svg" alt="Dot diagram"></p>
-<p>Attached ('v1', 'v2') to N3 to produce tree...</p>
-<p><img src="dot_8b23f0b93cd8206793b72258f2a6a76e.svg" alt="Dot diagram"></p>
+<p><img src="dot_1d9b5fae826dcfef649ccb5d3adcaf55.svg" alt="Dot diagram"></p>
+<p>Attached ('N3', 'v1') to N4 to produce tree...</p>
+<p><img src="dot_457ef2a958debf40c29f2e16f83fde07.svg" alt="Dot diagram"></p>
+<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
+<p><img src="dot_5dcaa6c55b60b060760a25eb35b6603e.svg" alt="Dot diagram"></p>
 <p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_a6363a1967a3cac9da56fc327b32d7fe.svg" alt="Dot diagram"></p>
-<p>Attached ('v3', 'v4') to N1 to produce tree...</p>
-<p><img src="dot_d5a234ddce26fdde3302bd6ab76e40b4.svg" alt="Dot diagram"></p>
+<p><img src="dot_8cca9d0ec4f58063a5d3d713d3381bfb.svg" alt="Dot diagram"></p>
+<p>Attached ('v4', 'v3') to N1 to produce tree...</p>
+<p><img src="dot_88a41db0cb2ac101ddf83f05bf75feba.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15129,17 +15129,12 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment</a></li>
 </ul>
 </div>
-<p>In addition to inferring shared ancestry between biological entities, <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> can be extended further to infer <a href="#BM_(sequence)%2Fi">sequence</a>s for those shared ancestors. Specifically, each node may have a <a href="#BM_(sequence)%2Fi">sequence</a> assigned to it, where each ...</p>
+<p>In addition to inferring shared ancestry between biological entities, <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> can be extended further to infer <a href="#BM_(sequence)%2Fi">sequence</a>s for those shared ancestors. Specifically, each node in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> may have a <a href="#BM_(sequence)%2Fi">sequence</a> assigned to it, where a ...</p>
 <ul>
 <li>leaf node is assigned the <a href="#BM_(sequence)%2Fi">sequence</a> of the known entity it's for.</li>
 <li>internal node is assigned an inferred <a href="#BM_(sequence)%2Fi">sequence</a> based on its parent and/or children.</li>
 </ul>
 <p><img src="svgbob_fab0e3e719365ddd7a071bc539f7b3d7aa117f9d.svg" alt="Kroki diagram output"></p>
-<p>To infer <a href="#BM_(sequence)%2Fi">sequence</a>s of ancestors in a <a href="#BM_(tree)%2Fi">tree</a>, most algorithms begin by performing a multiple <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> with the known entity <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
-<p><img src="svgbob_2ae353b0989bd4820ac434fd69980dc1c28e2ea1.svg" alt="Kroki diagram output"></p>
-<p>Common practice is to then remove <a href="#BM_(indel)%2Fi">indel</a>s from the alignment before assigning each aligned <a href="#BM_(sequence)%2Fi">sequence</a> (<a href="#BM_(indel)%2Fi">indel</a>s removed) to the leaf node the entity is for. Algorithms described in the subsections below then infer the <a href="#BM_(sequence)%2Fi">sequence</a>s of internal nodes.</p>
-<p><img src="svgbob_1d2a7ce9fc6936397bce5ffefe5a8fb448e742ef.svg" alt="Kroki diagram output"></p>
-<p><img src="svgbob_861be61b9de0eaf2620d1e2ff68371d9380630e6.svg" alt="Kroki diagram output"></p>
 <a name="H_Score%20Parsimony"></a><h3>Score Parsimony</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Phylogeny%2FScore%20Parsimony)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15188,19 +15183,321 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </div>
 <p></p>
 <a name="H_Small%20Parsimony"></a><h3>Small Parsimony</h3>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> already exists and the <a href="#BM_(sequence)%2Fi">sequence</a>s for its leaf nodes (known entities), infer <a href="#BM_(sequence)%2Fi">sequence</a>s for its internal nodes (ancestors).</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> already exists and the <a href="#BM_(sequence)%2Fi">sequence</a>s for its leaf nodes are known (this should always be the case because leaf nodes are known entities), infer <a href="#BM_(sequence)%2Fi">sequence</a>s for its internal nodes (unknown ancestor entities).</p>
 <p><strong>WHY</strong>: Recall that the point of this section is inferring ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s. This is one of the algorithms that lets you do that.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
-<p>TODO: CONTINUE TO WRITE CODE, THEN DESCRIBE ALGORITHM HERE</p>
+<p>This algorithm works on <a href="#BM_(sequence)%2Fi">sequence</a>s of matching length.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book says that if the <a href="#BM_(sequence)%2Fi">sequence</a>s for known entities aren't the same length, common practice is to align them (e.g. multiple alignment) and remove any <a href="#BM_(indel)%2Fi">indel</a>s before continuing. Once <a href="#BM_(indel)%2Fi">indel</a>s are removed, the <a href="#BM_(sequence)%2Fi">sequence</a>s will all become the same length.</p>
+<p><img src="svgbob_b265b2e8fe1ea65e1b7d208b4895c873721367c3.svg" alt="Kroki diagram output"></p>
+<p>I'm not sure why <a href="#BM_(indel)%2Fi">indel</a>s can't just be included as an option (e.g. A, C, T, G, and -)? There's probably a reason. Maybe because <a href="#BM_(indel)%2Fi">indel</a>s that happen in bursts are likely from <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> mutations instead of <a href="#BM_(point%20mutation)%2Fi">point mutation</a>s and including them muddies the waters? I don't know.</p>
+</div>
+<p>The algorithm works by building a distance map for each index of each node's <a href="#BM_(sequence)%2Fi">sequence</a>. Each map defines the distance if that specific index were to contain that specific element. The shorter the distance, the more likely it is for that index to contain that specific element. For example, ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>C</th>
+<th>T</th>
+<th>G</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1.0</td>
+<td><strong>0.0</strong></td>
+<td>4.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2.0</td>
+<td>2.0</td>
+<td><strong>1.0</strong></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1.0</td>
+<td>1.0</td>
+<td><strong>0.0</strong></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td><strong>0.0</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>1.0</td>
+<td>1.0</td>
+<td><strong>0.0</strong></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1.0</td>
+<td><strong>0.0</strong></td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+</tbody>
+</table>
+<p>These maps are built from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the <a href="#BM_(tree)%2Fi">tree</a>. Since the <a href="#BM_(sequence)%2Fi">sequence</a>s at leaf nodes are known (leaf nodes represent known entities), building their maps is fairly straight forward: 0.0 distance for the element at that index and ∞ distance for all other elements. For example, the <a href="#BM_(sequence)%2Fi">sequence</a> ACTGCT would generate the following mappings at each index ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>C</th>
+<th>T</th>
+<th>G</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>∞</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>1</td>
+<td>∞</td>
+<td>0.0</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>2</td>
+<td>∞</td>
+<td>∞</td>
+<td>0.0</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>3</td>
+<td>∞</td>
+<td>∞</td>
+<td>∞</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>∞</td>
+<td>0.0</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>5</td>
+<td>∞</td>
+<td>∞</td>
+<td>0.0</td>
+<td>∞</td>
+</tr>
+</tbody>
+</table>
+<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 187 to 197):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_for_leaf_element_types</span>(<span class="hljs-params">
+        elem_type_dst: <span class="hljs-built_in">str</span>,
+        elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]:
+    dist_set = {}
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> elem_types:
+        <span class="hljs-keyword">if</span> e == elem_type_dst:
+            dist_set[e] = <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">else</span>:
+            dist_set[e] = math.inf
+    <span class="hljs-keyword">return</span> dist_set
+</code></pre>
+<p>Once all the downstream <a href="#BM_(neighbour)%2Fi">neighbour</a>s of an internal node have mappings, its mappings can be built by determining the minimized distance to reach each element. For example, imagine an internal node with 3 downstream <a href="#BM_(neighbour)%2Fi">neighbour</a>s...</p>
+<p><img src="svgbob_12f104bbc0334c9194e786ece20223413b90d0cf.svg" alt="Kroki diagram output"></p>
+<p>To determine A's value for the mapping at index 3, pull in index 3 from all downstream nodes...</p>
+<p><img src="svgbob_2238c6763afef29be8f39f22341b36a0c6bea1fb.svg" alt="Kroki diagram output"></p>
+<p>For each downstream index 3 mapping, walk over each element and add in the distance from A to that element, then select the minimum value ...</p>
+<pre class="hljs"><code>n2_val = <span class="hljs-built_in">min</span>(
+    N2[<span class="hljs-number">3</span>][<span class="hljs-string">'A'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'A'</span>),  <span class="hljs-comment"># N2[3]['A']=2</span>
+    N2[<span class="hljs-number">3</span>][<span class="hljs-string">'C'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'C'</span>),  <span class="hljs-comment"># N2[3]['C']=4</span>
+    N2[<span class="hljs-number">3</span>][<span class="hljs-string">'T'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'T'</span>),  <span class="hljs-comment"># N2[3]['T']=1</span>
+    N2[<span class="hljs-number">3</span>][<span class="hljs-string">'G'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'G'</span>)   <span class="hljs-comment"># N2[3]['G']=4</span>
+)
+n3_val = <span class="hljs-built_in">min</span>(
+    N3[<span class="hljs-number">3</span>][<span class="hljs-string">'A'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'A'</span>),  <span class="hljs-comment"># N3[3]['A']=2</span>
+    N3[<span class="hljs-number">3</span>][<span class="hljs-string">'C'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'C'</span>),  <span class="hljs-comment"># N3[3]['C']=3</span>
+    N3[<span class="hljs-number">3</span>][<span class="hljs-string">'T'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'T'</span>),  <span class="hljs-comment"># N3[3]['T']=1</span>
+    N3[<span class="hljs-number">3</span>][<span class="hljs-string">'G'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'G'</span>)   <span class="hljs-comment"># N3[3]['G']=0</span>
+)
+n4_val = <span class="hljs-built_in">min</span>(
+    N4[<span class="hljs-number">3</span>][<span class="hljs-string">'A'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'A'</span>),  <span class="hljs-comment"># N4[3]['A']=1</span>
+    N4[<span class="hljs-number">3</span>][<span class="hljs-string">'C'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'C'</span>),  <span class="hljs-comment"># N4[3]['C']=3</span>
+    N4[<span class="hljs-number">3</span>][<span class="hljs-string">'T'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'T'</span>),  <span class="hljs-comment"># N4[3]['T']=1</span>
+    N4[<span class="hljs-number">3</span>][<span class="hljs-string">'G'</span>] + dist_metric(<span class="hljs-string">'A'</span>, <span class="hljs-string">'G'</span>)   <span class="hljs-comment"># N4[3]['G']=0</span>
+)
+</code></pre>
+<p>The sum of all values generated above produces the distance for A in the mapping. You can think of this distance as the minimum cost of transitioning to / from A ...</p>
+<pre class="hljs"><code>N1[<span class="hljs-number">3</span>][<span class="hljs-string">'A'</span>] = n2_val + n3_val + n4_val
+</code></pre>
+<p>This same process is repeated for the remaining elements in the mapping (C, T, and G) to generate the full mapping for index 3.</p>
+<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 149 to 182):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_for_internal_element_types</span>(<span class="hljs-params">
+        downstream_dist_sets: Iterable[<span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]],
+        dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>],
+        elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]:
+    dist_set = {}
+    <span class="hljs-keyword">for</span> elem_type <span class="hljs-keyword">in</span> elem_types:
+        dist = distance_for_internal_element_type(
+            downstream_dist_sets,
+            dist_metric,
+            elem_type,
+            elem_types
+        )
+        dist_set[elem_type] = dist
+    <span class="hljs-keyword">return</span> dist_set
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_for_internal_element_type</span>(<span class="hljs-params">
+        downstream_dist_sets: Iterable[<span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]],
+        dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>],
+        elem_type_dst: <span class="hljs-built_in">str</span>,
+        elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>
+</span>) -&gt; <span class="hljs-built_in">float</span>:
+    min_dists = []
+    <span class="hljs-keyword">for</span> downstream_dist_set <span class="hljs-keyword">in</span> downstream_dist_sets:
+        possible_dists = []
+        <span class="hljs-keyword">for</span> elem_type_src <span class="hljs-keyword">in</span> elem_types:
+            downstream_dist = downstream_dist_set[elem_type_src]
+            transition_cost = dist_metric(elem_type_src, elem_type_dst)
+            dist = downstream_dist + transition_cost
+            possible_dists.append(dist)
+        min_dist = <span class="hljs-built_in">min</span>(possible_dists)
+        min_dists.append(min_dist)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(min_dists)
+</code></pre>
+<p>The algorithm builds these maps from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the <a href="#BM_(tree)%2Fi">tree</a>. For each index in a node, the element with the lowest distance is the one selected to represent that index.</p>
+<p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 53 to 145):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_distance_sets</span>(<span class="hljs-params">
+        tree: Graph[N, ND, E, ED],
+        seq_length: <span class="hljs-built_in">int</span>,
+        get_sequence: <span class="hljs-type">Callable</span>[[N], <span class="hljs-built_in">str</span>],
+        set_sequence: <span class="hljs-type">Callable</span>[[N, <span class="hljs-built_in">str</span>], <span class="hljs-literal">None</span>],
+        get_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,   <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>  <span class="hljs-comment"># index within N's sequence</span>
+            ],
+            <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+        ],
+        set_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,    <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>,  <span class="hljs-comment"># index within N's sequence</span>
+                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+            ],
+            <span class="hljs-literal">None</span>
+        ],
+        dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>],
+        root: <span class="hljs-type">Optional</span>[N] = <span class="hljs-literal">None</span>,
+        elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>
+</span>) -&gt; <span class="hljs-literal">None</span>:
+    neighbours_unprocessed = Counter()
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> tree.get_nodes():
+        neighbours_unprocessed[n] = tree.get_degree(n)
+    leaf_nodes = {n <span class="hljs-keyword">for</span> n, c <span class="hljs-keyword">in</span> neighbours_unprocessed.items() <span class="hljs-keyword">if</span> c == <span class="hljs-number">1</span>}
+    internal_nodes = {n <span class="hljs-keyword">for</span> n, c <span class="hljs-keyword">in</span> neighbours_unprocessed.items() <span class="hljs-keyword">if</span> c &gt; <span class="hljs-number">1</span>}
+
+    <span class="hljs-comment"># Pick an internal node an treat it as a "root" by faking it having an</span>
+    <span class="hljs-comment"># input. This will make it so that it gets processed last.</span>
+    <span class="hljs-keyword">if</span> root <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        root = <span class="hljs-built_in">next</span>(<span class="hljs-built_in">iter</span>(internal_nodes))
+    <span class="hljs-keyword">assert</span> root <span class="hljs-keyword">in</span> neighbours_unprocessed
+    neighbours_unprocessed[root] += <span class="hljs-number">1</span>
+
+    <span class="hljs-comment"># Build dist sets for leaf nodes</span>
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> leaf_nodes:
+        <span class="hljs-comment"># Build and set dist set for each element</span>
+        seq = get_sequence(n)
+        <span class="hljs-keyword">for</span> idx, elem <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(seq):
+            dist_set = distance_for_leaf_element_types(elem, elem_types)
+            set_dist_set(n, idx, dist_set)
+        <span class="hljs-comment"># Decrement waiting count for upstream neighbour</span>
+        <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> tree.get_outputs(n):
+            n_upstream = tree.get_edge_end(edge, n)
+            neighbours_unprocessed[n_upstream] -= <span class="hljs-number">1</span>
+        <span class="hljs-comment"># Remove from pending nodes</span>
+        neighbours_unprocessed.pop(n)
+
+    <span class="hljs-comment"># Build dist sets for internal nodes (walking up from leaf nodes)</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-comment"># Get next node ready to be processed</span>
+        ready = {n <span class="hljs-keyword">for</span> n, c <span class="hljs-keyword">in</span> neighbours_unprocessed.items() <span class="hljs-keyword">if</span> c == <span class="hljs-number">1</span>}
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ready:
+            <span class="hljs-keyword">break</span>
+        n = ready.pop()
+        <span class="hljs-comment"># For each index, pull distance sets for outputs of n (that have them) and</span>
+        <span class="hljs-comment"># use them to build a distance set for n.</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(seq_length):
+            downstream_dist_sets = []
+            <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> tree.get_outputs(n):
+                n_downstream = tree.get_edge_end(edge, n)
+                <span class="hljs-keyword">if</span> n_downstream <span class="hljs-keyword">in</span> neighbours_unprocessed:
+                    <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># Skip -- this is actually upstream rather than downstream</span>
+                dist_set = get_dist_set(n_downstream, i)
+                downstream_dist_sets.append(dist_set)
+            dist_set = distance_for_internal_element_types(
+                downstream_dist_sets,
+                dist_metric,
+                elem_types
+            )
+            set_dist_set(n, i, dist_set)
+        <span class="hljs-comment"># Mark neighbours as processed</span>
+        <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> tree.get_outputs(n):
+            n_upstream = tree.get_edge_end(edge, n)
+            <span class="hljs-keyword">if</span> n_upstream <span class="hljs-keyword">in</span> neighbours_unprocessed:
+                neighbours_unprocessed[n_upstream] -= <span class="hljs-number">1</span>
+        <span class="hljs-comment"># Remove from pending nodes</span>
+        neighbours_unprocessed.pop(n)
+
+    <span class="hljs-comment"># Set sequences for internal nodes based on dist sets</span>
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> internal_nodes:
+        seq = <span class="hljs-string">''</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(seq_length):
+            elem, _ = <span class="hljs-built_in">min</span>(
+                ((elem, dist) <span class="hljs-keyword">for</span> elem, dist <span class="hljs-keyword">in</span> get_dist_set(n, i).items()),
+                key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>]  <span class="hljs-comment"># sort on dist</span>
+            )
+            seq += elem
+        set_sequence(n, seq)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_c55d7856b343ceede5c8e6525ad62cde.svg" alt="Dot diagram"></p>
+<p>... has the inferred sequences ...</p>
+<p><img src="dot_8d442b43f45a0a1bf8b99ff987c5d33e.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
+<p>TODO: THIS IS WRONG, YOU NEED TO INJECT A ROOT NODE RATHER THAN SELECTING A ROOT NODE. LOOK AT THE OUTPUT OF i1 IN THE ABOVE EXAMPLE, IT'S NOT FACTORING IN ANYTHING OTHER THAN BEAR. ALSO UPDATE THE CODE TO ACCEPT A <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">DISTANCE MATRIX</a></p>
 <a name="H_Large%20Parsimony"></a><h3>Large Parsimony</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
@@ -15770,6 +16067,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>GPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well. (divide and conquer might be a good idea because it'll work on super fat <a href="#BM_(sequence)%2Fi">sequence</a>s)</li>
 <li>GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</li>
 <li>Deep-learning <a href="#BM_(regulatory%20motif)%2Fi">Regulatory Motif</a> Detection - Try training a deep learning model to "find" <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>s for new <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s based on past training data.</li>
+<li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">Global alignment</a> that takes <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, <a href="#BM_(fission)%2Fi">fission</a>s, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s, copies, etc..</li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
