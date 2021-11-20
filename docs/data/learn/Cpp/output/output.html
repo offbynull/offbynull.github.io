@@ -1,0 +1,349 @@
+<!DOCTYPE html><html><head>
+            <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+            <meta content="utf-8" http-equiv="encoding">
+          <title>C++</title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
+          <body class="markdown-body"><p></p>
+<div class="toc">
+<ul>
+<li><a href="#H_Integer%20Types">Integer Types</a></li>
+<li><a href="#H_Floating-point%20Types">Floating-point Types</a></li>
+<li><a href="#H_String%20Types">String Types</a></li>
+<li><a href="#H_Terminology">Terminology</a></li>
+</ul>
+</div>
+<a name="H_Integer%20Types"></a><h1>Integer Types</h1>
+<p>Integer types with standardized bit lengths are defined in cstdlib of the standard C++ library.</p>
+<table>
+<thead>
+<tr>
+<th>signed</th>
+<th>unsigned</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>intmax_t</code></td>
+<td><code>uintmax_t</code></td>
+<td>widest possible bit length</td>
+</tr>
+<tr>
+<td><code>int8_t</code></td>
+<td><code>uint8_t</code></td>
+<td>exactly 8 bits</td>
+</tr>
+<tr>
+<td><code>int16_t</code></td>
+<td><code>uint16_t</code></td>
+<td>exactly 16 bits</td>
+</tr>
+<tr>
+<td><code>int32_t</code></td>
+<td><code>uint32_t</code></td>
+<td>exactly 32 bits</td>
+</tr>
+<tr>
+<td><code>int64_t</code></td>
+<td><code>uint64_t</code></td>
+<td>exactly 64 bits</td>
+</tr>
+<tr>
+<td><code>int_least8_t</code></td>
+<td><code>uint_least8_t</code></td>
+<td>8 bits  or greater</td>
+</tr>
+<tr>
+<td><code>int_least16_t</code></td>
+<td><code>uint_least16_t</code></td>
+<td>16 bits or greater</td>
+</tr>
+<tr>
+<td><code>int_least32_t</code></td>
+<td><code>uint_least32_t</code></td>
+<td>32 bits or greater</td>
+</tr>
+<tr>
+<td><code>int_least64_t</code></td>
+<td><code>uint_least64_t</code></td>
+<td>64 bits or greater</td>
+</tr>
+<tr>
+<td><code>int_fast8_t</code></td>
+<td><code>uint_fast8_t</code></td>
+<td>8 bits  or greater</td>
+</tr>
+<tr>
+<td><code>int_fast16_t</code></td>
+<td><code>uint_fast16_t</code></td>
+<td>16 bits or greater</td>
+</tr>
+<tr>
+<td><code>int_fast32_t</code></td>
+<td><code>uint_fast32_t</code></td>
+<td>32 bits or greater</td>
+</tr>
+<tr>
+<td><code>int_fast64_t</code></td>
+<td><code>uint_fast64_t</code></td>
+<td>64 bits or greater</td>
+</tr>
+<tr>
+<td><code>intptr_t</code></td>
+<td><code>uintptr_t</code></td>
+<td>wide enough to hold a void *</td>
+</tr>
+<tr>
+<td></td>
+<td><code>size_t</code></td>
+<td>wide enough to hold the maximum number of bytes of something in memory</td>
+</tr>
+</tbody>
+</table>
+<p>The minimum and maximum extents of each type are defined in <code>{TYPE}_MIN</code> and <code>{TYPE}_MAX</code>, where <code>{TYPE}</code> doesn't include the <code>_t</code> suffix. For example the maximum value an <code>uint64_t</code> can be is <code>UINT64_MAX</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Not all types guaranteed to be present (e.g. 64-bit types may be missing if platform can't support it). Unsigned types don't have a minimum extent defined because a minimum of any unsigned integer type is always 0 (e.g. <a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">uint64_t</a> can't go any lower than 0).</p>
+</div>
+<p>To expand any integer <strong>literal</strong> to a ...</p>
+<ul>
+<li><code>intmax_t</code>, use the macro <code>INTMAX_C(...)</code>.</li>
+<li><code>uintmax_t</code>, use the macro <code>UINTMAX_C(...)</code>.</li>
+<li><code>int{N}_t</code>, use the macro <code>INT{N}_C(...)</code> (where <code>{N}</code> is the bit length).</li>
+<li><code>uint{N}_t</code>, use the macro <code>UINT{N}_C(...)</code> (where <code>{N}</code> is the bit length).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What's the point of the above? You don't know what internal integer type each standardized type maps to. For example, <code>uint64_t</code> may map to <code>unsigned long long</code>, which means when you want to assign a literal to a variable of that type you need to add a <code>LLU</code> suffix...</p>
+<p><code>uint64_t test = 9999999999999999999LLU</code></p>
+<p>The macros above make it so that you don't need to know the underlying mapping...</p>
+<p><code>uint64_t test = UINT64_C(9999999999999999999)</code></p>
+</div>
+<p>By default, literals are represented using base10. Literals may be presented in different bases via the prefix.</p>
+<table>
+<thead>
+<tr>
+<th>base</th>
+<th>literal prefix</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 (<a href="#BM_(linker%7Cbinary%7Cexecutable)%2Fi">binary</a>)</td>
+<td>0b</td>
+<td><code>0b1111</code></td>
+</tr>
+<tr>
+<td>8 (octal)</td>
+<td>0</td>
+<td><code>015</code></td>
+</tr>
+<tr>
+<td>16 (hex)</td>
+<td>0x</td>
+<td><code>0xF</code></td>
+</tr>
+</tbody>
+</table>
+<a name="H_Floating-point%20Types"></a><h1>Floating-point Types</h1>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>description</th>
+<th>literal suffix</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>float</code></td>
+<td>single precision</td>
+<td><code>f</code></td>
+<td><code>123.0f</code></td>
+</tr>
+<tr>
+<td><code>double</code></td>
+<td>double precision</td>
+<td></td>
+<td><code>123.0</code></td>
+</tr>
+<tr>
+<td><code>long double</code></td>
+<td>extended precision</td>
+<td><code>L</code></td>
+<td><code>123.0L</code></td>
+</tr>
+</tbody>
+</table>
+<p>Floating point characteristics are found in cfloat of the standard C++ library.</p>
+<p>TODO: fill me in, it doesn't sound like any of the types are standardized to anything</p>
+<a name="H_String%20Types"></a><h1>String Types</h1>
+<p>Core C++ strings are represented as an array of characters, where that array ends with a null character to signify its end. This is in contrast to other major platforms that typically structure strings a size integer along with the array (no null terminator).</p>
+<p>Individual characters all map to integer types, where literals are defined by wrapping the character in single quotes. Even though they're integers, the signed-ness of each of the types below isn't guaranteed.</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>literal prefix</th>
+<th>example</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>char</code></td>
+<td></td>
+<td><code>'T'</code></td>
+<td>1-byte wide character (e.g. UTF-8 or ASCII)</td>
+</tr>
+<tr>
+<td><code>char16_t</code></td>
+<td><code>L</code></td>
+<td><code>L'T'</code></td>
+<td>2-byte wide character (e.g. UTF-16)</td>
+</tr>
+<tr>
+<td><code>char32_t</code></td>
+<td><code>u</code></td>
+<td><code>u'T'</code></td>
+<td>4-byte wide character (e.g. UTF-32)</td>
+</tr>
+<tr>
+<td><code>wchar_t</code></td>
+<td><code>U</code></td>
+<td><code>U'T'</code></td>
+<td>wide enough to hold the largest character type</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The <code>char</code> type can specifically be made to signed / unsigned by prefixing it as such: <code>signed char</code> / <code>unsigned char</code>.</p>
+</div>
+<p>Strings literals are wrapped in double quotes instead of single quotes, where they get transformed into an array terminated by a null character.</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>literal prefix</th>
+<th>example</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>char *</code></td>
+<td></td>
+<td><code>"hello"</code></td>
+<td>unknown encoding (platform specific?)</td>
+</tr>
+<tr>
+<td><code>wchar_t *</code></td>
+<td><code>L</code></td>
+<td><code>L"hello"</code></td>
+<td>unknown encoding (platform specific?)</td>
+</tr>
+<tr>
+<td><code>char16_t *</code></td>
+<td><code>u</code></td>
+<td><code>u"hello"</code></td>
+<td>encoded as UTF-16</td>
+</tr>
+<tr>
+<td><code>char32_t *</code></td>
+<td><code>U</code></td>
+<td><code>U"hello"</code></td>
+<td>encoded as UTF-32</td>
+</tr>
+<tr>
+<td><code>char8_t *</code></td>
+<td><code>u8</code></td>
+<td><code>u8"hello"</code></td>
+<td>encoded as UTF-8</td>
+</tr>
+</tbody>
+</table>
+<p>Typically escaping rules apply to string literals. Unescaped string literals are allowed by adding an <code>R</code> at the end of the literal prefix, which make it so that the ...</p>
+<ol>
+<li>starting quote requires a custom delimiter immediately after it.</li>
+<li>finishing quote requires a custom delimited immediately before it.</li>
+</ol>
+<p>These delimiter characters are characters that aren't encountered in the contents of the string itself. For example, in <code>u8R"|hello|"</code>, the delimiter is <code>|</code> and isn't included in the resulting UTF-8 string.</p>
+<a name="H_Terminology"></a><h1>Terminology</h1>
+<ul>
+<li>
+<p><a name="BM_(preprocessor%7Ctranslation%20unit)%2Fi"></a><strong>processor</strong> - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>.</p>
+<p><img src="svgbob_80c99337d0ee9d0afb6fdd8cc113d933be8d1ce9.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi"></a><strong>compiler</strong> - A tool that takes in a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> to produce an intermediary format called an <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">object file</a>.</p>
+<p><img src="svgbob_80c99337d0ee9d0afb6fdd8cc113d933be8d1ce9.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(linker%7Cbinary%7Cexecutable)%2Fi"></a><strong>linker</strong> - A tool that takes multiple <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">object file</a>s to produce an <a href="#BM_(linker%7Cbinary%7Cexecutable)%2Fi">executable</a>. <a href="#BM_(linker%7Cbinary%7Cexecutable)%2Fi">Linker</a>s are are also responsible for finding libraries used by the program and integrating them into the <a href="#BM_(linker%7Cbinary%7Cexecutable)%2Fi">executable</a>.</p>
+<p><img src="svgbob_80c99337d0ee9d0afb6fdd8cc113d933be8d1ce9.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F"></a><strong>cstdin</strong> - A standard C++ library that has integer types with bit length guarantees.</p>
+<table>
+<thead>
+<tr>
+<th>signed</th>
+<th>unsigned</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">int8_t</a></td>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">uint8_t</a></td>
+<td>exactly 8 bits</td>
+</tr>
+<tr>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">int16_t</a></td>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">uint16_t</a></td>
+<td>exactly 16 bits</td>
+</tr>
+<tr>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">int32_t</a></td>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">uint32_t</a></td>
+<td>exactly 32 bits</td>
+</tr>
+<tr>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">int64_t</a></td>
+<td><a href="#BM_(cstdin%7C%5Cbu%3Fint%5Cd%2B_t%5Cb)%2F">uint64_t</a></td>
+<td>exactly 64 bits</td>
+</tr>
+<tr>
+<td>int_least8_t</td>
+<td>uint_least8_t</td>
+<td>8 bits  or greater</td>
+</tr>
+<tr>
+<td>int_least16_t</td>
+<td>uint_least16_t</td>
+<td>16 bits or greater</td>
+</tr>
+<tr>
+<td>int_least32_t</td>
+<td>uint_least32_t</td>
+<td>32 bits or greater</td>
+</tr>
+<tr>
+<td>int_least64_t</td>
+<td>uint_least64_t</td>
+<td>64 bits or greater</td>
+</tr>
+<tr>
+<td>intptr_t</td>
+<td>uintptr_t</td>
+<td>wide enough to hold a void *</td>
+</tr>
+</tbody>
+</table>
+<p>In addition, the library holds literals</p>
+</li>
+</ul>
+
+        </body></html>
