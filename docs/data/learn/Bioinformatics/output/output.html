@@ -136,7 +136,7 @@
 <li><a href="#H_Breakpoint%20Graph%20Algorithm">Breakpoint Graph Algorithm</a></li>
 </ul>
 </ul>
-<li><a href="#H_Distance%20Phylogeny">Distance Phylogeny</a></li>
+<li><a href="#H_Phylogeny">Phylogeny</a></li>
 <ul>
 <li><a href="#H_Tree%20to%20Additive%20Distance%20Matrix">Tree to Additive Distance Matrix</a></li>
 <li><a href="#H_Tree%20to%20Simple%20Tree">Tree to Simple Tree</a></li>
@@ -165,12 +165,11 @@
 <li><a href="#H_Neighbour%20Joining%20Phylogeny%20Algorithm">Neighbour Joining Phylogeny Algorithm</a></li>
 <li><a href="#H_Evolutionary%20Algorithm">Evolutionary Algorithm</a></li>
 </ul>
-</ul>
-<li><a href="#H_Sequence%20Phylogeny">Sequence Phylogeny</a></li>
+<li><a href="#H_Sequence%20Inference">Sequence Inference</a></li>
 <ul>
-<li><a href="#H_Score%20Parsimony">Score Parsimony</a></li>
-<li><a href="#H_Small%20Parsimony">Small Parsimony</a></li>
-<li><a href="#H_Large%20Parsimony">Large Parsimony</a></li>
+<li><a href="#H_Small%20Parsimony%20Algorithm">Small Parsimony Algorithm</a></li>
+<li><a href="#H_Nearest%20Neighbour%20Interchange%20Algorithm">Nearest Neighbour Interchange Algorithm</a></li>
+</ul>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -9436,8 +9435,8 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <p>To calculate the real number of reversals need for linear <a href="#BM_(breakpoint%20graph)_GR%2Fi">breakpoint graph</a>s (not estimate), there's a <a href="https://dl.acm.org/doi/10.1145/300515.300516">paper on ACM DL</a> that goes over the algorithm. I glanced through it but I don't have the time / wherewithal to go through it. Maybe do it in the future.</p>
 <p>UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> when computing a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> across a set of species (a <a href="#BM_(tree)%2Fi">tree</a> that shows how closely a set of species are related / how they branched out). See <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> definition.</p>
 </div>
-<a name="H_Distance%20Phylogeny"></a><h2>Distance Phylogeny</h2>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Phylogeny"></a><h2>Phylogeny</h2>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -9518,14 +9517,14 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The best way to move forward with this, assuming that you're brand new to it, is to first understand the following four sub-sections...</p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
-<p>Then jump to the algorithm you want to learn (subsection) within <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree</a> and work from the prerequisites to the algorithm. Otherwise all the sections in between comes off as disjointed because it's building the intermediate knowledge required for the final algorithms.</p>
+<p>Then jump to the algorithm you want to learn (subsection) within <a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a> and work from the prerequisites to the algorithm. Otherwise all the sections in between comes off as disjointed because it's building the intermediate knowledge required for the final algorithms.</p>
 </div>
 <a name="H_Tree%20to%20Additive%20Distance%20Matrix"></a><h3>Tree to Additive Distance Matrix</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(tree)%2Fi">tree</a>, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> generated from that <a href="#BM_(tree)%2Fi">tree</a> is said to be an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>WHY</strong>: The term <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is derived from the fact that edge weights within the <a href="#BM_(tree)%2Fi">tree</a> are being <em>added</em> together to generate the distances in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. For example, in the following <a href="#BM_(tree)%2Fi">tree</a> ...</p>
 <p><img src="svgbob_82d2f505bd1ac27f99e4162364a2faefde177c9e.svg" alt="Kroki diagram output"></p>
@@ -9754,11 +9753,11 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </div>
 <p></p>
 <a name="H_Tree%20to%20Simple%20Tree"></a><h3>Tree to Simple Tree</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Convert a <a href="#BM_(tree)%2Fi">tree</a> into a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. A <a href="#BM_(simple%20tree)%2Fi">simple tree</a> is an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> where ...</p>
@@ -9870,7 +9869,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
+<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -9932,12 +9931,12 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </div>
 <p></p>
 <a name="H_Additive%20Distance%20Matrix%20Cardinality"></a><h3>Additive Distance Matrix Cardinality</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
 </ul>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -10075,13 +10074,13 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </div>
 <p></p>
 <a name="H_Test%20Additive%20Distance%20Matrix"></a><h3>Test Additive Distance Matrix</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FTest%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Determine if a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
@@ -10207,13 +10206,13 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>Could the differences found by this algorithm help determine how "close" a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is to being an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>?</p>
 </div>
 <a name="H_Find%20Limb%20Length"></a><h3>Find Limb Length</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FFind%20Limb%20Length)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, there exists a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that fits that matrix. Compute the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of any leaf node in that <a href="#BM_(simple%20tree)%2Fi">simple tree</a> just from the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
@@ -10478,11 +10477,11 @@ B = <span class="hljs-built_in">min</span>(leafs, key=<span class="hljs-keyword"
 </div>
 <p></p>
 <a name="H_Test%20Same%20Subtree"></a><h3>Test Same Subtree</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Same%20Subtree)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FTest%20Same%20Subtree)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Phylogeny/Find Limb Length</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Splitting a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> on the parent of one of its leaf nodes breaks it up into several <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s. For example, the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> has been split on v2's parent, resulting in 4 different <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>s ...</p>
@@ -10719,13 +10718,13 @@ different subtrees.</p>
 </div>
 <p></p>
 <a name="H_Trim"></a><h3>Trim</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FTrim)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Remove a <a href="#BM_(limb)%2Fi">limb</a> from an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, just as it would get removed from its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
@@ -10899,11 +10898,11 @@ different subtrees.</p>
 </div>
 <p></p>
 <a name="H_Bald"></a><h3>Bald</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FBald)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Phylogeny/Find Limb Length</a></li>
 </ul>
 </div>
 <p> <!-- Needs to be disabled because v3's is conflicting with 3' -->
@@ -11287,14 +11286,14 @@ different subtrees.</p>
 <p> <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
  <!-- Re-enabling. Needed to be disabled because v5's is conflicting with 5' --></p>
 <a name="H_Un-trim%20Tree"></a><h3>Un-trim Tree</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FUn-trim%20Tree)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FUn-trim%20Tree)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Same%20Subtree)_TOPIC%2F">Algorithms/Distance Phylogeny/Test Same Subtree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim)_TOPIC%2F">Algorithms/Distance Phylogeny/Trim</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTest%20Same%20Subtree)_TOPIC%2F">Algorithms/Phylogeny/Test Same Subtree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTrim)_TOPIC%2F">Algorithms/Phylogeny/Trim</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FBald)_TOPIC%2F">Algorithms/Phylogeny/Bald</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given an ...</p>
@@ -11689,13 +11688,13 @@ different subtrees.</p>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
 <a name="H_Find%20Neighbours"></a><h3>Find Neighbours</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbours)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is ...</p>
@@ -12220,7 +12219,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12289,7 +12288,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_a8f03326c6db7eae4cf38d794b41b866.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa3cef92115eebf265dad812f9f5ebed.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12588,7 +12587,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_af41c1c8e932d5b91c56bca3bd31f5c8.svg" alt="Dot diagram"></p>
+<p><img src="dot_6d5a9af8e186325f93625864a4a32f69.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -12789,11 +12788,11 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </div>
 <p></p>
 <a name="H_Find%20Neighbour%20Limb%20Lengths"></a><h3>Find Neighbour Limb Lengths</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Limb Length</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Limb%20Length)_TOPIC%2F">Algorithms/Phylogeny/Find Limb Length</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and a pair of leaf nodes identified as being <a href="#BM_(neighbour)%2Fi">neighbour</a>s, if the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is ...</p>
@@ -12804,7 +12803,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p>Recall that the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm determines the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a> have inconsistent distances -- non-additive means no <a href="#BM_(tree)%2Fi">tree</a> exists that fits its distances.</p>
 <a name="H_Average%20Algorithm"></a><h4>Average Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm is an extension of the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm, essentially running the same computation multiple times and averaging out the results. For example, v1 and v2 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
@@ -12928,11 +12927,11 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </div>
 <p></p>
 <a name="H_Optimized%20Average%20Algorithm"></a><h4>Optimized Average Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FOptimized%20Average%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FOptimized%20Average%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a></li>
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
@@ -13140,18 +13139,18 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </div>
 <p></p>
 <a name="H_Expose%20Neighbour%20Parent"></a><h3>Expose Neighbour Parent</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FExpose%20Neighbour%20Parent)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FExpose%20Neighbour%20Parent)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FBald)_TOPIC%2F">Algorithms/Distance Phylogeny/Bald</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FBald)_TOPIC%2F">Algorithms/Phylogeny/Bald</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and a pair of leaf nodes identified as being <a href="#BM_(neighbour)%2Fi">neighbour</a>s, this algorithm removes those <a href="#BM_(neighbour)%2Fi">neighbour</a>s from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and brings their parent to the forefront (as a leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>). If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive), this algorithm approximates the shared parent.</p>
 <p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <a name="H1_Average%20Algorithm"></a><h4>Average Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FMerge%20Neighbours%2FAverage%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FMerge%20Neighbours%2FAverage%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>At a high-level, this algorithm essentially boils down to balding each of the <a href="#BM_(neighbour)%2Fi">neighbour</a>s and combining them together. For example, v0 and v1 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
@@ -13589,7 +13588,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>Note how the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s above are very close to the corresponding <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s in the original un-tweaked <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>: 12 for v0, 2 for v1.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Confused where the above computations are coming from? See "view" of a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is described in <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a>.</p>
+<p>Confused where the above computations are coming from? See "view" of a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is described in <a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a>.</p>
 </div>
 <p>To bald a <a href="#BM_(limb)%2Fi">limb</a> in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, each leaf node needs its view of the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> subtracted from its distance. Balding v0 and v1 results in ...</p>
 <table>
@@ -13872,11 +13871,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </div>
 <p></p>
 <a name="H_Inverse%20Algorithm"></a><h4>Inverse Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FMerge%20Neighbours%2FInverse%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FMerge%20Neighbours%2FInverse%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FMerge%20Neighbours%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Merge Neighbours/Average Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FMerge%20Neighbours%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Merge Neighbours/Average Algorithm</a></li>
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
@@ -14357,13 +14356,13 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </div>
 <p></p>
 <a name="H_Distance%20Matrix%20to%20Tree"></a><h3>Distance Matrix to Tree</h3>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Tree to Simple Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, convert that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> into a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a>. Different algorithms are presented that either ...</p>
@@ -14374,7 +14373,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </ul>
 <p><strong>WHY</strong>: Recall that converting a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is the end goal of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Given the distances between set of known / present-day entities, these algorithms will infer their evolutionary relationships.</p>
 <a name="H_UPGMA%20Algorithm"></a><h4>UPGMA Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">Unweighted pair group method with arithmetic mean</a> (<a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>) is a heuristic algorithm used to estimate a binary <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for some <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -14491,7 +14490,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>It may be a good idea to use <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbours</a> to short circuit this restriction, possibly producing a better heuristic. But, the original algorithm doesn't call for it.</p>
+<p>It may be a good idea to use <a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbours</a> to short circuit this restriction, possibly producing a better heuristic. But, the original algorithm doesn't call for it.</p>
 </div>
 <p>This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:</p>
 <ul>
@@ -14744,16 +14743,16 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_9e3029cf50a87b796dcfb3e3c721950f.svg" alt="Dot diagram"></p>
+<p><img src="dot_a7db226e0309fe74cf1483f2a29a86e5.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FAdditive%20Phylogeny%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FAdditive%20Phylogeny%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTrim)_TOPIC%2F">Algorithms/Distance Phylogeny/Trim</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FUn-trim%20Tree)_TOPIC%2F">Algorithms/Distance Phylogeny/Un-trim Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTrim)_TOPIC%2F">Algorithms/Phylogeny/Trim</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FUn-trim%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Un-trim Tree</a></li>
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
@@ -14829,24 +14828,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v2 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v3</td><td>21.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v0 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>22.0</td></tr><tr><td>v5</td><td>22.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_0835ab245548d28aea09607b85363b50.svg" alt="Dot diagram"></p>
-<p>Attached v5 to produce tree...</p>
-<p><img src="dot_afbf7ca5496a89d24c8202621113a8ed.svg" alt="Dot diagram"></p>
-<p>Attached v0 to produce tree...</p>
-<p><img src="dot_0b4b2d4cd476793f345f0492f47d5e76.svg" alt="Dot diagram"></p>
+<p><img src="dot_d8aa7b0385477dc75367dc1ca7469068.svg" alt="Dot diagram"></p>
 <p>Attached v1 to produce tree...</p>
-<p><img src="dot_08be10332efb770d81fb404438ac6322.svg" alt="Dot diagram"></p>
+<p><img src="dot_a74c6363aee5c6245ad03d42d7019fd6.svg" alt="Dot diagram"></p>
 <p>Attached v2 to produce tree...</p>
-<p><img src="dot_5ddb3da76a11dc963695b2ac7c1524d2.svg" alt="Dot diagram"></p>
+<p><img src="dot_4f065a32b05275160396bcd45f04b963.svg" alt="Dot diagram"></p>
+<p>Attached v4 to produce tree...</p>
+<p><img src="dot_ef428abe4de0495393666e1991fb0387.svg" alt="Dot diagram"></p>
+<p>Attached v3 to produce tree...</p>
+<p><img src="dot_10b48c1ae60e12fc66a0a1a9c7913ca5.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -14854,13 +14853,13 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>The book is inconsistent about whether <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can have internal edges of weight 0. Early in the book it says that it can and later on it says that it goes back on that and says internal edges of weight 0 aren't actually allowed. I'd already implied as much given that they'd be the same organism at both ends, and this algorithm explicitly won't allow it in that if it walks up to a node, it'll branch off that node (an additional edge weight of 0 won't extend past that node).</p>
 </div>
 <a name="H_Neighbour%20Joining%20Phylogeny%20Algorithm"></a><h4>Neighbour Joining Phylogeny Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Phylogeny%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Phylogeny%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbours</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbour%20Limb%20Lengths)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths</a></li>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FExpose%20Neighbour%20Parent)_TOPIC%2F">Algorithms/Distance Phylogeny/Expose Neighbour Parent</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbours</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbour Limb Lengths</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FExpose%20Neighbour%20Parent)_TOPIC%2F">Algorithms/Phylogeny/Expose Neighbour Parent</a></li>
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
@@ -15012,24 +15011,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>Replaced neighbours ('v4', 'v3') with their parent N1 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v3', 'v4') with their parent N1 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v1', 'v2') with their parent N3 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v0', 'N3') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N2</th><th>N4</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.375</td></tr><tr><td>N4</td><td>3.375</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('N3', 'N2') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N4</th><th>v0</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>11.625</td></tr><tr><td>v0</td><td>11.625</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_be2e0a5ea35a5c15c0f673e6bfbdabdb.svg" alt="Dot diagram"></p>
-<p>Attached ('v0', 'N3') to N4 to produce tree...</p>
-<p><img src="dot_f8b7db6204b837edc8bb375715d2c6d6.svg" alt="Dot diagram"></p>
+<p><img src="dot_1279e3994a36c97f925af56dfdc65753.svg" alt="Dot diagram"></p>
+<p>Attached ('N3', 'N2') to N4 to produce tree...</p>
+<p><img src="dot_c58722faeceae8a418d494b51ecfb364.svg" alt="Dot diagram"></p>
 <p>Attached ('v1', 'v2') to N3 to produce tree...</p>
-<p><img src="dot_2bca8ae42e2e81ee66df66a6c38bde8c.svg" alt="Dot diagram"></p>
+<p><img src="dot_8b23f0b93cd8206793b72258f2a6a76e.svg" alt="Dot diagram"></p>
 <p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_163eb38befdd2059237137432c917de3.svg" alt="Dot diagram"></p>
-<p>Attached ('v4', 'v3') to N1 to produce tree...</p>
-<p><img src="dot_21fd6810da6e87b76631d8a6f09469ea.svg" alt="Dot diagram"></p>
+<p><img src="dot_a6363a1967a3cac9da56fc327b32d7fe.svg" alt="Dot diagram"></p>
+<p>Attached ('v3', 'v4') to N1 to produce tree...</p>
+<p><img src="dot_d5a234ddce26fdde3302bd6ab76e40b4.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15037,7 +15036,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>The book is inconsistent about whether <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s can have internal edges of weight 0. Early in the book it says that it can and later on it says that it goes back on that and says internal edges of weight 0 aren't actually allowed. I'd already implied as much given that they'd be the same organism at both ends, but I'm unsure if this algorithm will allow it if fed in a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. It should never happend with an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 </div>
 <a name="H_Evolutionary%20Algorithm"></a><h4>Evolutionary Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FEvolutionary%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FEvolutionary%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -15120,73 +15119,29 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p>The path A1-A2-Bear has been collapsed into A1-Bear, where the weight of the newly collapsed edge is represented by a (formerly y+z). Using the same <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> above gets solved to <code>w = 2, x = 1, a = 2</code>.</p>
 </div>
 <p>If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> isn't additive, something like <a href="#BM_(sum%20of%20squared%20errors%7Csum%20of%20square%20error%7Csum%20of%20errors%20squared)%2Fi">sum of errors squared</a> may be used to converge on an approximate set of weights that work. Similarly, evolutionary algorithms may be used in addition to approximating weights to find a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that's close enough to the</p>
-<a name="H_Sequence%20Phylogeny"></a><h2>Sequence Phylogeny</h2>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Phylogeny)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Sequence%20Inference"></a><h3>Sequence Inference</h3>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny)_TOPIC%2F">Algorithms/Distance Phylogeny</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a></li>
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment</a></li>
 </ul>
 </div>
-<p>In addition to inferring shared ancestry between biological entities, <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> can be extended further to infer <a href="#BM_(sequence)%2Fi">sequence</a>s for those shared ancestors. Specifically, each node in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> may have a <a href="#BM_(sequence)%2Fi">sequence</a> assigned to it, where a ...</p>
+<p><strong>WHAT</strong>: It's possible to infer the <a href="#BM_(sequence)%2Fi">sequence</a>s for shared ancestors in a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>. Specifically, given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, each node in may have a <a href="#BM_(sequence)%2Fi">sequence</a> assigned to it, where a ...</p>
 <ul>
 <li>leaf node is assigned the <a href="#BM_(sequence)%2Fi">sequence</a> of the known entity it's for.</li>
-<li>internal node is assigned an inferred <a href="#BM_(sequence)%2Fi">sequence</a> based on its parent and/or children.</li>
+<li>internal node is assigned an inferred <a href="#BM_(sequence)%2Fi">sequence</a> based on <a href="#BM_(neighbour)%2Fi">neighbour</a>ing nodes.</li>
 </ul>
 <p><img src="svgbob_fab0e3e719365ddd7a071bc539f7b3d7aa117f9d.svg" alt="Kroki diagram output"></p>
-<a name="H_Score%20Parsimony"></a><h3>Score Parsimony</h3>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Phylogeny%2FScore%20Parsimony)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>WHY</strong>: Inferring ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s may help provide additional insight / clues as to the evolution that took place.</p>
+<a name="H_Small%20Parsimony%20Algorithm"></a><h4>Small Parsimony Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference%2FSmall%20Parsimony%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p>Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> and the <a href="#BM_(sequence)%2Fi">sequence</a>s for its leaf nodes (known entities), this algorithm infers <a href="#BM_(sequence)%2Fi">sequence</a>s for its internal nodes (ancestor entities) based on how likely it is for <a href="#BM_(sequence)%2Fi">sequence</a> elements to change from one type to another. The algorithm only works on <a href="#BM_(sequence)%2Fi">sequence</a>s of matching length.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FK-mer%2FHamming%20Distance)_TOPIC%2F">Algorithms/K-mer/Hamming Distance</a></li>
-</ul>
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're interested to see why it's called small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>, see the next section which describes small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> vs large <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> with <a href="#BM_(sequence)%2Fi">sequence</a>s, assign each edge weight to the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the <a href="#BM_(sequence)%2Fi">sequence</a>s at its ends. The <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of the <a href="#BM_(tree)%2Fi">tree</a> is the sum of edge weights.</p>
-<p><img src="svgbob_4020255bbb672c80b80c7cb59a40a1a08c2ccd83.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>: The <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> can be thought of as a "similarity" score, meaning each edge weight defines how similar the <a href="#BM_(sequence)%2Fi">sequence</a>s are at its ends. The sum of all edge weights quantifies the quality of the inferred <a href="#BM_(sequence)%2Fi">sequence</a>s, referred to as a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. The lower the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is, the better the inferred <a href="#BM_(sequence)%2Fi">sequence</a>s fit into the <a href="#BM_(tree)%2Fi">tree</a> (more <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</p>
-<p><strong>ALGORITHM</strong>:</p>
-<p><a href="ch7_code/src/sequence_phylogeny/ParsimonyScore.py">ch7_code/src/sequence_phylogeny/ParsimonyScore.py</a> (lines 47 to 71):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_edge_similarity</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        get_sequence: <span class="hljs-type">Callable</span>[[ND], <span class="hljs-built_in">str</span>],
-        set_weight: <span class="hljs-type">Callable</span>[[ED, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>]
-</span>) -&gt; <span class="hljs-literal">None</span>:
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
-        n1, n2, e_data = g.get_edge(e)
-        n1_data = g.get_node_data(n1)
-        n2_data = g.get_node_data(n2)
-        n1_seq = get_sequence(n1_data)
-        n2_seq = get_sequence(n2_data)
-        weight = hamming_distance(n1_seq, n2_seq)
-        set_weight(e_data, weight)
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">parsimony_score</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        get_weight: <span class="hljs-type">Callable</span>[[ED], <span class="hljs-built_in">float</span>]
-</span>) -&gt; <span class="hljs-built_in">float</span>:
-    ret = <span class="hljs-number">0.0</span>
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
-        e_data = g.get_edge_data(e)
-        ret += get_weight(e_data)
-    <span class="hljs-keyword">return</span> ret
-</code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>The tree...</p>
-<p><img src="dot_73836a09c0b24813dd39eb5630f622bb.svg" alt="Dot diagram"></p>
-<p>... has a parsimony score of ...</p>
-<p>4.0</p>
-<p><img src="dot_ae0ee91552f0b79a136d5cf42f4efc2f.svg" alt="Dot diagram"></p>
-</div>
-<p></p>
-<a name="H_Small%20Parsimony"></a><h3>Small Parsimony</h3>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> already exists and the <a href="#BM_(sequence)%2Fi">sequence</a>s for its leaf nodes are known (this should always be the case because leaf nodes are known entities), infer <a href="#BM_(sequence)%2Fi">sequence</a>s for its internal nodes (unknown ancestor entities).</p>
-<p><strong>WHY</strong>: Recall that the point of this section is inferring ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s. This is one of the algorithms that lets you do that.</p>
-<p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm works on <a href="#BM_(sequence)%2Fi">sequence</a>s of matching length.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The Pevzner book says that if the <a href="#BM_(sequence)%2Fi">sequence</a>s for known entities aren't the same length, common practice is to align them (e.g. multiple alignment) and remove any <a href="#BM_(indel)%2Fi">indel</a>s before continuing. Once <a href="#BM_(indel)%2Fi">indel</a>s are removed, the <a href="#BM_(sequence)%2Fi">sequence</a>s will all become the same length.</p>
@@ -15386,6 +15341,10 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><img src="svgbob_69d53a1f9394aef6a3e6deac1675d302e17f4aad.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book claims this is <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>. This is somewhat similar to how the backtracking <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">sequence alignment path</a> finding algorithm works (they're both graphs).</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the <a href="#BM_(sequence)%2Fi">sequence</a>s have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.</p>
 <p>So which node should be selected as root? The <a href="#BM_(tree)%2Fi">tree</a> structure being used for this algorithm very likely came from a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> built using distances (e.g. <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>, etc..). Here are a couple of ideas I just thought up:</p>
 <ul>
@@ -15541,24 +15500,147 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The distances used in the example execution above is <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>. If you're working with proteins, a more appropriate matrix might be a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrix (e.g. <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.</p>
 </div>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<p>TODO: Move <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats <a href="#BM_(sequence)%2Fi">sequence</a>s as a whole and forces <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>). MAKE SURE TO UPDATE <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a></p>
-<a name="H_Large%20Parsimony"></a><h3>Large Parsimony</h3>
+<a name="H_Nearest%20Neighbour%20Interchange%20Algorithm"></a><h4>Nearest Neighbour Interchange Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference%2FNearest%20Neighbour%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference%2FSmall%20Parsimony%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Sequence Inference/Small Parsimony Algorithm</a></li>
+</ul>
+</div>
+<p>The problem with small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> is that <a href="#BM_(sequence)%2Fi">sequence</a>s inferred vary greatly based on both the given <a href="#BM_(tree)%2Fi">tree</a> structure and the element <a href="#BM_(distance%20metric)%2Fi">distance metric</a> used. Specifically, there are many ways in which...</p>
+<ol>
+<li>a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> structure can be generated (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>, <a href="#BM_(neighbour)%2Fi">neighbour</a> joining algorithm, etc..).</li>
+<li>a distance can be generated between two elements of a <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250, <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62, <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>, etc...).</li>
+</ol>
+<p>Often times the two aren't entirely complementary, meaning that while the inferred <a href="#BM_(sequence)%2Fi">sequence</a>s may be reasonable, they likely aren't optimal.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>That's why it's called small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>: When the algorithm requires a <a href="#BM_(tree)%2Fi">tree</a> structure before it infers <a href="#BM_(sequence)%2Fi">sequence</a>s, it's called small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>. If the algorithm both generates both the <a href="#BM_(tree)%2Fi">tree</a> structure and infers internal node <a href="#BM_(sequence)%2Fi">sequence</a>s, such that the <a href="#BM_(tree)%2Fi">tree</a> + inferred <a href="#BM_(sequence)%2Fi">sequence</a>s generates the minimum possible distance out of all possible <a href="#BM_(tree)%2Fi">tree</a> + inferred <a href="#BM_(sequence)%2Fi">sequence</a>s, it's called large <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
+<p>Trying to do large <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.</p>
+</div>
+<p>Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> where small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> has been applied, its possible to infer its "quality" by calculating a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. For each edge, compute a weight by taking the two <a href="#BM_(sequence)%2Fi">sequence</a>s at its ends and summing the distances between the element pairs at each index. For example, ...</p>
+<p><img src="svgbob_16d74c50ad8227599d75c5e09d62af6f5a25930f.svg" alt="Kroki diagram output"></p>
+<p>The sum of edge weights is the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of the <a href="#BM_(tree)%2Fi">tree</a> (lower sum is better). For example, the following <a href="#BM_(tree)%2Fi">tree</a> has a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of 4...</p>
+<p><img src="svgbob_f901ad93961054da4bd1b48a748231e62eaecec6.svg" alt="Kroki diagram output"></p>
+<p><a href="ch7_code/src/sequence_phylogeny/ParsimonyScore.py">ch7_code/src/sequence_phylogeny/ParsimonyScore.py</a> (lines 47 to 71):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_edge_similarity</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        get_sequence: <span class="hljs-type">Callable</span>[[ND], <span class="hljs-built_in">str</span>],
+        set_weight: <span class="hljs-type">Callable</span>[[ED, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>]
+</span>) -&gt; <span class="hljs-literal">None</span>:
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
+        n1, n2, e_data = g.get_edge(e)
+        n1_data = g.get_node_data(n1)
+        n2_data = g.get_node_data(n2)
+        n1_seq = get_sequence(n1_data)
+        n2_seq = get_sequence(n2_data)
+        weight = hamming_distance(n1_seq, n2_seq)
+        set_weight(e_data, weight)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">parsimony_score</span>(<span class="hljs-params">
+        g: Graph[N, ND, E, ED],
+        get_weight: <span class="hljs-type">Callable</span>[[ED], <span class="hljs-built_in">float</span>]
+</span>) -&gt; <span class="hljs-built_in">float</span>:
+    ret = <span class="hljs-number">0.0</span>
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
+        e_data = g.get_edge_data(e)
+        ret += get_weight(e_data)
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_73836a09c0b24813dd39eb5630f622bb.svg" alt="Dot diagram"></p>
+<p>... has a parsimony score of ...</p>
+<p>4.0</p>
+<p><img src="dot_ae0ee91552f0b79a136d5cf42f4efc2f.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>The nearest <a href="#BM_(neighbour)%2Fi">neighbour</a> interchange algorithm is a greedy heuristic which attempts to perturb the <a href="#BM_(tree)%2Fi">tree</a> to produce a lower <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. The core operation of this algorithm is to pick an internal edge within the <a href="#BM_(tree)%2Fi">tree</a> and swaps <a href="#BM_(neighbour)%2Fi">neighbour</a>s between the nodes at each end ...</p>
+<p><img src="svgbob_a209a19385ac0e0a95667e64b6fa185c896caa9f.svg" alt="Kroki diagram output"></p>
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 49 to 79):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nearest_neighbour_interchange_options</span>(<span class="hljs-params">
+        tree: Graph[N, ND, E, ED],
+        edge: E
+</span>) -&gt; <span class="hljs-built_in">set</span>[
+    <span class="hljs-built_in">tuple</span>[
+        <span class="hljs-built_in">frozenset</span>[E],  <span class="hljs-comment"># side1 edges</span>
+        <span class="hljs-built_in">frozenset</span>[E]   <span class="hljs-comment"># side2 edges</span>
+    ]
+]:
+    n1, n2 = tree.get_edge_ends(edge)
+    n1_edges = <span class="hljs-built_in">set</span>(tree.get_outputs(n1))
+    n2_edges = <span class="hljs-built_in">set</span>(tree.get_outputs(n2))
+    n1_edges.remove(edge)
+    n2_edges.remove(edge)
+    n1_edges = <span class="hljs-built_in">frozenset</span>(n1_edges)
+    n2_edges = <span class="hljs-built_in">frozenset</span>(n2_edges)
+    n1_edge_cnt = <span class="hljs-built_in">len</span>(n1_edges)
+    n2_edge_cnt = <span class="hljs-built_in">len</span>(n2_edges)
+    both_edges = n1_edges | n2_edges
+    ret = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> n1_edges_perturbed <span class="hljs-keyword">in</span> combinations(both_edges, n1_edge_cnt):
+        n1_edges_perturbed = <span class="hljs-built_in">frozenset</span>(n1_edges_perturbed)
+        n2_edges_perturbed = <span class="hljs-built_in">frozenset</span>(both_edges.difference(n1_edges_perturbed))
+        <span class="hljs-keyword">if</span> (n1_edges_perturbed, n2_edges_perturbed) <span class="hljs-keyword">in</span> ret:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> (n2_edges_perturbed, n1_edges_perturbed) <span class="hljs-keyword">in</span> ret:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> {n1_edges_perturbed, n2_edges_perturbed} == {n1_edges, n2_edges}:
+            <span class="hljs-keyword">continue</span>
+        ret.add((n1_edges_perturbed, n2_edges_perturbed))
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<p>These swaps aren't just the nodes themselves, but the entire <a href="#BM_(subtree%7Csub-tree)%2Fi">sub-tree</a>s under those nodes ...</p>
+<p><img src="svgbob_fe6083fd7d618afc9ceb6fe15b29f2a5be041b23.svg" alt="Kroki diagram output"></p>
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 84 to 112):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">interchange_neighbours</span>(<span class="hljs-params">
+    tree: Graph[N, ND, E, ED],
+    edge: E,
+    side1: <span class="hljs-built_in">frozenset</span>[E],
+    side2: <span class="hljs-built_in">frozenset</span>[E]
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[
+    <span class="hljs-built_in">frozenset</span>[E],  <span class="hljs-comment"># orig edges for side A</span>
+    <span class="hljs-built_in">frozenset</span>[E]   <span class="hljs-comment"># orig edges for side B</span>
+]:
+    n1, n2 = tree.get_edge_ends(edge)
+    n1_edges = <span class="hljs-built_in">set</span>(tree.get_outputs(n1))
+    n2_edges = <span class="hljs-built_in">set</span>(tree.get_outputs(n2))
+    n1_edges.remove(edge)
+    n2_edges.remove(edge)
+    <span class="hljs-keyword">assert</span> n1_edges | n2_edges == side1 | side2
+    edge_details = {}
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> side1 | side2:
+        end1, end2, data = tree.get_edge(e)
+        end = {end1, end2}.difference({n1, n2}).pop()
+        edge_details[e] = (end, data)
+        tree.delete_edge(e)
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> side1:
+        end, data = edge_details[e]
+        tree.insert_edge(e, n1, end, data)
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> side2:
+        end, data = edge_details[e]
+        tree.insert_edge(e, n2, end, data)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">frozenset</span>(n1_edges), <span class="hljs-built_in">frozenset</span>(n2_edges)  <span class="hljs-comment"># return original edges</span>
+</code></pre>
+<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, the algorithm goes over each internal edge and tries all possibly <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -18709,7 +18791,7 @@ dist(S3, S4) is 5 = x + u + z
 <p>If all possible leaf node quartets pass the above test, the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (was derived from a <a href="#BM_(tree)%2Fi">tree</a> / fits a <a href="#BM_(tree)%2Fi">tree</a>).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FTest%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Distance Phylogeny/Test Additive Distance Matrix</a> for a full explanation of how this algorithm works.</p>
+<p>See <a href="#BM_(Algorithms%5C%2FPhylogeny%2FTest%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Test Additive Distance Matrix</a> for a full explanation of how this algorithm works.</p>
 </div>
 </li>
 <li>
@@ -19065,7 +19147,7 @@ dist(S3, S4) is 5 = x + u + z
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FAdditive%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm</a> for a full explanation of how this algorithm works.</p>
+<p>See <a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FAdditive%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm</a> for a full explanation of how this algorithm works.</p>
 </div>
 </li>
 <li>
@@ -19173,7 +19255,7 @@ dist(S3, S4) is 5 = x + u + z
 <p><img src="svgbob_9c45e3a8fedf42d570c570b7c417173e7ed57970.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA Algorithm</a> for a full explanation of how this algorithm works.</p>
+<p>See <a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree/UPGMA Algorithm</a> for a full explanation of how this algorithm works.</p>
 </div>
 </li>
 <li>
@@ -19327,7 +19409,7 @@ dist(S3, S4) is 5 = x + u + z
 <p>The maximum element is for (v3, v4), meaning that v3 and v4 are <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Distance Phylogeny/Find Neighbours</a> for a full explanation of how this algorithm works.</p>
+<p>See <a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbours)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbours</a> for a full explanation of how this algorithm works.</p>
 </div>
 </li>
 <li>
@@ -19459,7 +19541,7 @@ dist(S3, S4) is 5 = x + u + z
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="#BM_(Algorithms%5C%2FDistance%20Phylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Distance Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm</a> for a full explanation of how this algorithm works.</p>
+<p>See <a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm</a> for a full explanation of how this algorithm works.</p>
 </div>
 </li>
 <li>

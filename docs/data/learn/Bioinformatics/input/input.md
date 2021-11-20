@@ -6331,9 +6331,9 @@ To calculate the real number of reversals need for linear breakpoint graph_GRs (
 UPDATE: Calculating the number of reversals quickly is important because the number of reversals can be used as a distance metric when computing a phylogenetic tree across a set of species (a tree that shows how closely a set of species are related / how they branched out). See distance matrix definition.
 ```
 
-## Distance Phylogeny
+## Phylogeny
 
-`{bm} /(Algorithms\/Distance Phylogeny)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny)_TOPIC/`
 
 ```{prereq}
 Algorithms/K-mer_TOPIC
@@ -6436,16 +6436,16 @@ Just to make it explicit: The ultimate point of this section is to work backward
 ```{note}
 The best way to move forward with this, assuming that you're brand new to it, is to first understand the following four sub-sections...
 
-* Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
-* Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-* Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+* Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
+* Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
+* Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 
-Then jump to the algorithm you want to learn (subsection) within Algorithms/Distance Phylogeny/Distance Matrix to Tree_TOPIC and work from the prerequisites to the algorithm. Otherwise all the sections in between comes off as disjointed because it's building the intermediate knowledge required for the final algorithms.
+Then jump to the algorithm you want to learn (subsection) within Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC and work from the prerequisites to the algorithm. Otherwise all the sections in between comes off as disjointed because it's building the intermediate knowledge required for the final algorithms.
 ```
 
 ### Tree to Additive Distance Matrix
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Tree to Additive Distance Matrix)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Tree to Additive Distance Matrix)_TOPIC/`
 
 **WHAT**: Given a tree, the distance matrix generated from that tree is said to be an additive distance matrix.
 
@@ -6519,10 +6519,10 @@ phylogeny.TreeToAdditiveDistanceMatrix
 
 ### Tree to Simple Tree
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Tree to Simple Tree)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Tree to Simple Tree)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
 ```
 
 **WHAT**: Convert a tree into a simple tree. A simple tree is an unrooted tree where ...
@@ -6771,11 +6771,11 @@ test
 
 ### Additive Distance Matrix Cardinality
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Additive Distance Matrix Cardinality)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Additive Distance Matrix Cardinality)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
 ```
 
 ```{note}
@@ -6849,12 +6849,12 @@ phylogeny.CardinalityTest
 
 ### Test Additive Distance Matrix
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Test Additive Distance Matrix)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Test Additive Distance Matrix)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
 **WHAT**: Determine if a distance matrix is an additive distance matrix.
@@ -7033,12 +7033,12 @@ Could the differences found by this algorithm help determine how "close" a dista
 
 ### Find Limb Length
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Find Limb Length)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Find Limb Length)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
 **WHAT**: Given an additive distance matrix, there exists a unique simple tree that fits that matrix. Compute the limb length of any leaf node in that simple tree just from the additive distance matrix.
@@ -7557,10 +7557,10 @@ v2
 
 ### Test Same Subtree
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Test Same Subtree)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Test Same Subtree)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+Algorithms/Phylogeny/Find Limb Length_TOPIC
 ```
 
 **WHAT**: Splitting a simple tree on the parent of one of its leaf nodes breaks it up into several subtrees. For example, the following simple tree has been split on v2's parent, resulting in 4 different subtrees ...
@@ -7852,12 +7852,12 @@ v1 v5
 
 ### Trim
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Trim)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Trim)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
 **WHAT**: Remove a limb from an additive distance matrix, just as it would get removed from its corresponding unique simple tree.
@@ -7940,10 +7940,10 @@ v2
 
 ### Bald
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Bald)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Bald)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+Algorithms/Phylogeny/Find Limb Length_TOPIC
 ```
 
 `{bm-disable} 5'` <!-- Needs to be disabled because v3's is conflicting with 3' -->
@@ -8059,13 +8059,13 @@ v5
 
 ### Un-trim Tree
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Un-trim Tree)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Un-trim Tree)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
-Algorithms/Distance Phylogeny/Test Same Subtree_TOPIC
-Algorithms/Distance Phylogeny/Trim_TOPIC
-Algorithms/Distance Phylogeny/Bald_TOPIC
+Algorithms/Phylogeny/Find Limb Length_TOPIC
+Algorithms/Phylogeny/Test Same Subtree_TOPIC
+Algorithms/Phylogeny/Trim_TOPIC
+Algorithms/Phylogeny/Bald_TOPIC
 ```
 
 **WHAT**: Given an ...
@@ -8382,12 +8382,12 @@ phylogeny.UntrimTree
 
 ### Find Neighbours
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbours)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Find Neighbours)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
 **WHAT**: Given a distance matrix, if the distance matrix is ...
@@ -9528,10 +9528,10 @@ phylogeny.NeighbourJoiningMatrix
 
 ### Find Neighbour Limb Lengths
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbour Limb Lengths)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Find Neighbour Limb Lengths)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Limb Length_TOPIC
+Algorithms/Phylogeny/Find Limb Length_TOPIC
 ```
 
 **WHAT**: Given a distance matrix and a pair of leaf nodes identified as being neighbours, if the distance matrix is ...
@@ -9545,7 +9545,7 @@ Recall that the standard limb length finding algorithm determines the limb lengt
 
 #### Average Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbour Limb Lengths\/Average Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Find Neighbour Limb Lengths\/Average Algorithm)_TOPIC/`
 
 **ALGORITHM**: 
 
@@ -9657,10 +9657,10 @@ v2
 
 #### Optimized Average Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Find Neighbour Limb Lengths\/Optimized Average Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Find Neighbour Limb Lengths\/Optimized Average Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
+Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
 ```
 
 **ALGORITHM**: 
@@ -9850,11 +9850,11 @@ v2
 
 ### Expose Neighbour Parent
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Expose Neighbour Parent)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Expose Neighbour Parent)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Bald_TOPIC
-Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
+Algorithms/Phylogeny/Bald_TOPIC
+Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
 ```
 
 **WHAT**: Given a distance matrix and a pair of leaf nodes identified as being neighbours, this algorithm removes those neighbours from the distance matrix and brings their parent to the forefront (as a leaf node in the distance matrix). If the distance matrix is a non-additive distance matrix (but close to be being additive), this algorithm approximates the shared parent.
@@ -9863,7 +9863,7 @@ Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPI
 
 #### Average Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours\/Average Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Merge Neighbours\/Average Algorithm)_TOPIC/`
 
 **ALGORITHM**: 
 
@@ -10054,7 +10054,7 @@ Similarly, assuming v0 and v1 are still neighbours, the limb length for v1 based
 Note how the limb lengths above are very close to the corresponding limb lengths in the original un-tweaked additive distance matrix: 12 for v0, 2 for v1.
 
 ```{note}
-Confused where the above computations are coming from? See "view" of a limb length is described in Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC.
+Confused where the above computations are coming from? See "view" of a limb length is described in Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC.
 ```
 
 To bald a limb in the distance matrix, each leaf node needs its view of the limb length subtracted from its distance. Balding v0 and v1 results in ...
@@ -10100,10 +10100,10 @@ v1
 
 #### Inverse Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Merge Neighbours\/Inverse Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Merge Neighbours\/Inverse Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Merge Neighbours/Average Algorithm_TOPIC
+Algorithms/Phylogeny/Merge Neighbours/Average Algorithm_TOPIC
 ```
 
 **ALGORITHM**: 
@@ -10479,12 +10479,12 @@ v1
 
 ### Distance Matrix to Tree
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Distance Matrix to Tree)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Tree to Additive Distance Matrix_TOPIC
-Algorithms/Distance Phylogeny/Tree to Simple Tree_TOPIC
-Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
+Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
+Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
+Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
 **WHAT**: Given a distance matrix, convert that distance matrix into a evolutionary tree. Different algorithms are presented that either ...
@@ -10497,7 +10497,7 @@ Algorithms/Distance Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 
 #### UPGMA Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/UPGMA Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Distance Matrix to Tree\/UPGMA Algorithm)_TOPIC/`
 
 **ALGORITHM**:
 
@@ -10625,7 +10625,7 @@ Note what's happening here. The assumption being made that the leaf nodes for th
 | c | 3  | 92  | 0  | 91  |
 | d | 92 | 181 | 91 | 0   |
 
-It may be a good idea to use Algorithms/Distance Phylogeny/Find Neighbours_TOPIC to short circuit this restriction, possibly producing a better heuristic. But, the original algorithm doesn't call for it.
+It may be a good idea to use Algorithms/Phylogeny/Find Neighbours_TOPIC to short circuit this restriction, possibly producing a better heuristic. But, the original algorithm doesn't call for it.
 ````
    
 This new internal node represents a shared ancestor. The distance of 2 represents the total amount of mutation that any species in Cc must undergo to become a species in Cd (and vice-versa). Since the assumption is that the rate of mutation is steady, it's assumed that the species in Cc and species in Cd all have an equal amount of mutation from their shared ancestor:
@@ -10756,11 +10756,11 @@ phylogeny.UPGMA
 
 #### Additive Phylogeny Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Additive Phylogeny Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Distance Matrix to Tree\/Additive Phylogeny Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Trim_TOPIC
-Algorithms/Distance Phylogeny/Un-trim Tree_TOPIC
+Algorithms/Phylogeny/Trim_TOPIC
+Algorithms/Phylogeny/Un-trim Tree_TOPIC
 ```
 
 **ALGORITHM**:
@@ -10820,12 +10820,12 @@ The book is inconsistent about whether simple trees can have internal edges of w
 
 #### Neighbour Joining Phylogeny Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Neighbour Joining Phylogeny Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Distance Matrix to Tree\/Neighbour Joining Phylogeny Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny/Find Neighbours_TOPIC
-Algorithms/Distance Phylogeny/Find Neighbour Limb Lengths_TOPIC
-Algorithms/Distance Phylogeny/Expose Neighbour Parent_TOPIC
+Algorithms/Phylogeny/Find Neighbours_TOPIC
+Algorithms/Phylogeny/Find Neighbour Limb Lengths_TOPIC
+Algorithms/Phylogeny/Expose Neighbour Parent_TOPIC
 ```
 
 **ALGORITHM**:
@@ -10892,7 +10892,7 @@ The book is inconsistent about whether simple trees can have internal edges of w
 
 #### Evolutionary Algorithm
 
-`{bm} /(Algorithms\/Distance Phylogeny\/Distance Matrix to Tree\/Evolutionary Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Distance Matrix to Tree\/Evolutionary Algorithm)_TOPIC/`
 
 **ALGORITHM**:
 
@@ -10994,19 +10994,19 @@ The path A1-A2-Bear has been collapsed into A1-Bear, where the weight of the new
 
 If the distance matrix isn't additive, something like sum of errors squared may be used to converge on an approximate set of weights that work. Similarly, evolutionary algorithms may be used in addition to approximating weights to find a simple tree that's close enough to the  
 
-## Sequence Phylogeny
+### Sequence Inference
 
-`{bm} /(Algorithms\/Sequence Phylogeny)_TOPIC/`
+`{bm} /(Algorithms\/Phylogeny\/Sequence Inference)_TOPIC/`
 
 ```{prereq}
-Algorithms/Distance Phylogeny_TOPIC
+Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC
 Algorithms/Sequence Alignment_TOPIC
 ```
 
-In addition to inferring shared ancestry between biological entities, phylogeny can be extended further to infer sequences for those shared ancestors. Specifically, each node in a phylogenetic tree may have a sequence assigned to it, where a ...
+**WHAT**: It's possible to infer the sequences for shared ancestors in a phylogenetic tree. Specifically, given a phylogenetic tree, each node in may have a sequence assigned to it, where a ...
 
  * leaf node is assigned the sequence of the known entity it's for.
- * internal node is assigned an inferred sequence based on its parent and/or children.
+ * internal node is assigned an inferred sequence based on neighbouring nodes.
 
 ```{svgbob}
          .-----------.
@@ -11029,63 +11029,17 @@ In addition to inferring shared ancestry between biological entities, phylogeny 
 '--------' '--------' '--------'
 ```
 
-### Score Parsimony
+**WHY**: Inferring ancestral sequences may help provide additional insight / clues as to the evolution that took place.
 
-`{bm} /(Algorithms\/Sequence Phylogeny\/Score Parsimony)_TOPIC/`
+#### Small Parsimony Algorithm
 
-```{prereq}
-Algorithms/K-mer/Hamming Distance_TOPIC
+`{bm} /(Algorithms\/Phylogeny\/Sequence Inference\/Small Parsimony Algorithm)_TOPIC/`
+
+Given a phylogenetic tree and the sequences for its leaf nodes (known entities), this algorithm infers sequences for its internal nodes (ancestor entities) based on how likely it is for sequence elements to change from one type to another. The algorithm only works on sequences of matching length.
+
+```{note}
+If you're interested to see why it's called small parsimony, see the next section which describes small parsimony vs large parsimony.
 ```
-
-**WHAT**: Given a phylogenetic tree with sequences, assign each edge weight to the hamming distance of the sequences at its ends. The parsimony score of the tree is the sum of edge weights.
-
-```{svgbob}
-* "Parsimony score = 4"
-
-         .-----------.
-         | AncestorA |
-         |  ATTGCC   |
-         '-----+-----'
-              / \
-           2 /   \
-            /     \
-     .-----+-----. \
-     | AncestorB |  \ 1
-     |  ACTGCT   |   \
-     '-----+-----'    \
-          / \          \
-       1 /   \ 0        \
-        /     \          \
-.------+-. .---+----. .---+----.
-|   Cat  | |  Lion  | |  Bear  |
-| ACTGGT | | ACTGCT | | ATTCCC |
-'--------' '--------' '--------'
-```
-
-**WHY**: The hamming distance can be thought of as a "similarity" score, meaning each edge weight defines how similar the sequences are at its ends. The sum of all edge weights quantifies the quality of the inferred sequences, referred to as a parsimony score. The lower the parsimony score is, the better the inferred sequences fit into the tree (more parsimonious).
-
-**ALGORITHM**:
-
-```{output}
-ch7_code/src/sequence_phylogeny/ParsimonyScore.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
-```
-
-```{ch7}
-sequence_phylogeny.ParsimonyScore
-[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0,ACTGCT], [n,i1,ATTGCC], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
-```
-
-### Small Parsimony
-
-**WHAT**: Given a phylogenetic tree already exists and the sequences for its leaf nodes are known (this should always be the case because leaf nodes are known entities), infer sequences for its internal nodes (unknown ancestor entities).
-
-**WHY**: Recall that the point of this section is inferring ancestral sequences. This is one of the algorithms that lets you do that.
-
-**ALGORITHM**: 
-
-This algorithm works on sequences of matching length.
 
 ````{note}
 The Pevzner book says that if the sequences for known entities aren't the same length, common practice is to align them (e.g. multiple alignment) and remove any indels before continuing. Once indels are removed, the sequences will all become the same length.
@@ -11267,6 +11221,10 @@ The algorithm builds these maps from the ground up, starting at leaf nodes and w
 '--------' '--------' '--------'         '--------' '--------' '--------'
 ```
 
+```{note}
+The Pevzner book claims this is dynamic programming. This is somewhat similar to how the backtracking sequence alignment path finding algorithm works (they're both graphs).
+```
+
 ````{note}
 The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the sequences have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.
 
@@ -11299,41 +11257,166 @@ i0
 The distances used in the example execution above is hamming distance. If you're working with proteins, a more appropriate matrix might be a BLOSUM matrix (e.g. BLOSUM62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.
 ```
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+#### Nearest Neighbour Interchange Algorithm
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+`{bm} /(Algorithms\/Phylogeny\/Sequence Inference\/Nearest Neighbour Algorithm)_TOPIC/`
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+```{prereq}
+Algorithms/Phylogeny/Sequence Inference/Small Parsimony Algorithm_TOPIC
+```
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+The problem with small parsimony is that sequences inferred vary greatly based on both the given tree structure and the element distance metric used. Specifically, there are many ways in which...
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+ 1. a phylogenetic tree structure can be generated (e.g. UPGMA, neighbour joining algorithm, etc..).
+ 2. a distance can be generated between two elements of a sequence (e.g. PAM250, BLOSUM62, hamming distance, etc...).
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+Often times the two aren't entirely complementary, meaning that while the inferred sequences may be reasonable, they likely aren't optimal.
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+```{note}
+That's why it's called small parsimony: When the algorithm requires a tree structure before it infers sequences, it's called small parsimony. If the algorithm both generates both the tree structure and infers internal node sequences, such that the tree + inferred sequences generates the minimum possible distance out of all possible tree + inferred sequences, it's called large parsimony.
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+Trying to do large parsimony explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.
+```
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+Given a phylogenetic tree where small parsimony has been applied, its possible to infer its "quality" by calculating a parsimony score. For each edge, compute a weight by taking the two sequences at its ends and summing the distances between the element pairs at each index. For example, ...
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+```{svgbob}
+.-----------.
+|   Node1   |
+|  ATTGCC   |
+'-----+-----'        dist(A,A)=0
+      |              dist(T,C)=1
+    2 |              dist(T,T)=0
+      |              dist(G,G)=0
+.-----+-----.        dist(C,C)=0
+|   Node2   |        dist(C,T)=1
+|  ACTGCT   |
+'-----------'
+```
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+The sum of edge weights is the parsimony score of the tree (lower sum is better). For example, the following tree has a parsimony score of 4...
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+```{svgbob}
+         .-----------.
+         | AncestorA |
+         |  ATTGCC   |
+         '-----+-----'
+              / \
+           2 /   \
+            /     \
+     .-----+-----. \
+     | AncestorB |  \ 1
+     |  ACTGCT   |   \
+     '-----+-----'    \
+          / \          \
+       1 /   \ 0        \
+        /     \          \
+.------+-. .---+----. .---+----.
+|   Cat  | |  Lion  | |  Bear  |
+| ACTGGT | | ACTGCT | | ATTCCC |
+'--------' '--------' '--------'
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+"Parsimony score = 2+1+1+0 = 4"
+```
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+```{output}
+ch7_code/src/sequence_phylogeny/ParsimonyScore.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+```{ch7}
+sequence_phylogeny.ParsimonyScore
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0,ACTGCT], [n,i1,ATTGCC], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+```
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+The nearest neighbour interchange algorithm is a greedy heuristic which attempts to perturb the tree to produce a lower parsimony score. The core operation of this algorithm is to pick an internal edge within the tree and swaps neighbours between the nodes at each end ...
 
-TODO: Move parsimony score section below this section, make it so that it requires this section as a prereq, modify it so that it discusses things ELEMENT BY ELEMENT using a custom matrix (currently it treats sequences as a whole and forces hamming distance). MAKE SURE TO UPDATE PARSIMONY SCORE TERMINOLOGY ONCE COMPLETE. THEN MOVE ON TO LARGE PARSIMONY
+```{svgbob}
+                                   original
+                                    1   2
+                                    *   *
+                                     \ / 
+                                      *  
+                                      |  
+                                      *  
+                                     /|\ 
+                                    * * *
+                                    7 8 9
 
-### Large Parsimony
+                            "possible interchanges"
+9   2    8   2    7   2    1   9    1   8    1   7    8   9    7   8    7   9
+*   *    *   *    *   *    *   *    *   *    *   *    *   *    *   *    *   * 
+ \ /      \ /      \ /      \ /      \ /      \ /      \ /      \ /      \ / 
+  *        *        *        *        *        *        *        *        *  
+  |        |        |        |        |        |        |        |        |  
+  *        *        *        *        *        *        *        *        *  
+ /|\      /|\      /|\      /|\      /|\      /|\      /|\      /|\      /|\ 
+* * *    * * *    * * *    * * *    * * *    * * *    * * *    * * *    * * *
+7 8 1    7 1 9    1 8 9    7 8 2    7 2 9    2 8 9    7 1 2    1 2 9    1 8 2
+```
+
+```{output}
+ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
+python
+# MARKDOWN_ENUMERATE_OPTIONS\s*\n([\s\S]+)\n\s*# MARKDOWN_ENUMERATE_OPTIONS
+```
+
+These swaps aren't just the nodes themselves, but the entire sub-trees under those nodes ...
+
+```{svgbob}
+   original                            "interchange on edge(G,H), swap top"
+                                       "branch of G with bottom branch of H"
+A   B      C                                              C     
+*   *      *                                              *     
+ \ /       |                                     J K      |     
+  * D    E *--* F                                * *    E *--* F
+   \      /                                       \|     /      
+  G *----* H                                     G *----* H     
+   /     |\                                       /      \      
+  *      * *                                     *      D *     
+  I      J K                                     I       / \
+                                                        *   *
+                                                        A   B     
+```
+
+```{output}
+ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
+python
+# MARKDOWN_PERFORM\s*\n([\s\S]+)\n\s*# MARKDOWN_PERFORM
+```
+
+Given a tree, the algorithm goes over each internal edge and tries all possibly neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
 # Stories
 
@@ -14763,7 +14846,7 @@ graph_show
    If all possible leaf node quartets pass the above test, the distance matrix is an additive distance matrix (was derived from a tree / fits a tree).
 
    ```{note}
-   See Algorithms/Distance Phylogeny/Test Additive Distance Matrix_TOPIC for a full explanation of how this algorithm works.
+   See Algorithms/Phylogeny/Test Additive Distance Matrix_TOPIC for a full explanation of how this algorithm works.
    ```
 
  * `{bm} trimmed distance matrix/(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i` - A distance matrix where a leaf node's row and column have been removed. This is equivalent to removing the leaf node's limb in the corresponding simple tree and merging together any edges connected by nodes of degree_GRAPH 2.
@@ -14977,7 +15060,7 @@ graph_show
      ```
 
    ```{note}
-   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
+   See Algorithms/Phylogeny/Distance Matrix to Tree/Additive Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
    ```
 
  * `{bm} sum of squared errors/(sum of squared errors|sum of square error|sum of errors squared)/i` - Sum of errors squared is an algorithm used to quantify how far off some estimation / prediction is.
@@ -15133,7 +15216,7 @@ graph_show
    ```
 
    ```{note}
-   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/UPGMA Algorithm_TOPIC for a full explanation of how this algorithm works.
+   See Algorithms/Phylogeny/Distance Matrix to Tree/UPGMA Algorithm_TOPIC for a full explanation of how this algorithm works.
    ```
 
  * `{bm} neighbour joining matrix` - A matrix produced by transforming a distance matrix such that each element is calculated as total_dist(a) + total_dist(b) - (n - 2) * dist(a, b), where...
@@ -15168,7 +15251,7 @@ graph_show
    The maximum element is for (v3, v4), meaning that v3 and v4 are neighbouring leaf nodes.
 
    ```{note}
-   See Algorithms/Distance Phylogeny/Find Neighbours_TOPIC for a full explanation of how this algorithm works.
+   See Algorithms/Phylogeny/Find Neighbours_TOPIC for a full explanation of how this algorithm works.
    ```
 
  * `{bm} neighbour joining phylogeny` - A recursive algorithm that can either...
@@ -15260,7 +15343,7 @@ graph_show
      ```
 
    ```{note}
-   See Algorithms/Distance Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
+   See Algorithms/Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm_TOPIC for a full explanation of how this algorithm works.
    ```
 
 

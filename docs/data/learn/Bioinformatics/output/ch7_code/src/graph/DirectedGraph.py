@@ -103,7 +103,7 @@ class Graph(Generic[N, ND, E, ED]):
     def get_edge_to(self: Graph, edge: E) -> N:
         return self._edges[edge][1]
 
-    def get_edge(self: Graph, edge: E) -> Tuple[N, N, ED]:
+    def get_edge(self: Graph, edge: E) -> tuple[N, N, ED]:
         return self._edges[edge]
 
     def get_nodes(self: Graph) -> Iterator[N]:
@@ -142,7 +142,7 @@ class Graph(Generic[N, ND, E, ED]):
         assert node in self._node_inbound  # if it's in inbound, it'll be in outbound as well
         return len(self._node_inbound[node])
 
-    def copy(self: Graph) -> Graph[N]:
+    def copy(self: Graph) -> Graph[N, ND, E, ED]:
         copy_outbound = dict()
         for k, v in self._node_outbound.items():
             copy_outbound[k] = v.copy()
