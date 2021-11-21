@@ -4272,7 +4272,7 @@ ch5_code/src/PAM250.txt
 ```
 
 ```{note}
-The above matrix was supplied by the Pevzner book. You can find it online [here](https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml), but the indel scores on that website are set to -8 where as in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if PAM250 defines a constant for indels.
+The above matrix was supplied by the Pevzner book. You can find it online [here](https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml), but the indel scores on that website are set to -8 Whereas in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if PAM250 defines a constant for indels.
 ```
 
 #### BLOSUM Scoring Matrix
@@ -4295,7 +4295,7 @@ ch5_code/src/BLOSUM62.txt
 ```
 
 ```{note}
-The above matrix was supplied by the Pevzner book. You can find it online [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt), but the indel scores on that website are set to -4 where as in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if BLOSUM62 defines a constant for indels.
+The above matrix was supplied by the Pevzner book. You can find it online [here](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt), but the indel scores on that website are set to -4 whereas in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if BLOSUM62 defines a constant for indels.
 ```
 
 ### Extended Gap Scoring
@@ -6376,7 +6376,7 @@ dist(cat, lion) + dist(lion, dog) >= dist(cat, dog)
                 7                 >=       6
 ```
 
-The Pevzner book refers to the this as the triangle inequality.
+The Pevzner book refers to this as the triangle inequality.
 
 ```{svgbob}
       2
@@ -6434,13 +6434,13 @@ Just to make it explicit: The ultimate point of this section is to work backward
 ```
 
 ```{note}
-The best way to move forward with this, assuming that you're brand new to it, is to first understand the following four sub-sections...
+The best way to move forward with this, assuming that you're brand new to it, is to first understand the following four subsections...
 
 * Algorithms/Phylogeny/Tree to Additive Distance Matrix_TOPIC
 * Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
 * Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 
-Then jump to the algorithm you want to learn (subsection) within Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC and work from the prerequisites to the algorithm. Otherwise all the sections in between comes off as disjointed because it's building the intermediate knowledge required for the final algorithms.
+Then jump to the algorithm you want to learn (subsection) within Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC and work from the prerequisites to the algorithm. Otherwise all the sections in between come off as disjointed because it's building the intermediate knowledge required for the final algorithms.
 ```
 
 ### Tree to Additive Distance Matrix
@@ -6642,7 +6642,7 @@ UNROOTED            "c AS ROOT"            "d AS ROOT"            "f AS ROOT"
 * "Either c, d, or f could be the root."
 ```
 
-The third property is that weights must be > 0, which is because of the restriction on distance metrics specified in the parent section: The distance between any to entities must be > 0. That is, it doesn't make sense for the distance between two entities to be ...
+The third property is that weights must be > 0, which is because of the restriction on distance metrics specified in the parent section: The distance between any two entities must be > 0. That is, it doesn't make sense for the distance between two entities to be ...
 
  * < 0 because distance represents how diverged the entities are from each other. Having a negative amount of divergence doesn't make sense.
  * = 0 because then the two nodes between the edge would represent the same entity. Having more than one representation of the same entity in the tree doesn't make sense.
@@ -6724,7 +6724,7 @@ In the first two examples, one present-day entity branched off from another pres
 
 In the fifth example, parent1 split off to the present-day entities entity1 and entity3, then entity2 branched off entity1. All three entities are present-day entities (neither entity1, entity2, nor entity3 is extinct).
 
-In the third and last two examples, the top-level parent doesn't show up because adding it would break the requirement that internal nodes must be splitting (degree_GRAPH > 2). For example, adding parent1 in to the simple tree of the last example above causes parent1 to have a degree_GRAPH = 2...
+In the third and last two examples, the top-level parent doesn't show up because adding it would break the requirement that internal nodes must be splitting (degree_GRAPH > 2). For example, adding parent1 into the simple tree of the last example above causes parent1 to have a degree_GRAPH = 2...
 
 ```{svgbob}
 entity1    entity2
@@ -6825,16 +6825,16 @@ All of the trees above, both the non-simple trees and the simple tree, will gene
 | Lion |  2  |  0   |  3   |
 | Bear |  4  |  3   |  0   |
 
-Similarly, this additive distance matrix will only ever map to the simple tree shown above or one of its many non-simple tree derivatives (3 of which are shown above). There is no other simple tree that this additive distance matrix can map to / no other simple tree that will generate this distance matrix. In otherwords, it isn't possible for...
+Similarly, this additive distance matrix will only ever map to the simple tree shown above or one of its many non-simple tree derivatives (3 of which are shown above). There is no other simple tree that this additive distance matrix can map to / no other simple tree that will generate this distance matrix. In other words, it isn't possible for...
 
  * two different simple trees to map to the same distance matrix.
  * two different distance matrices to map to the same simple tree.
  
-Working backwards from a distance matrix to a tree is less complex when limiting the tree to a simple tree, because there's only simple tree possible (vs many non-simple trees).
+Working backwards from a distance matrix to a tree is less complex when limiting the tree to a simple tree, because there's only one simple tree possible (vs many non-simple trees).
 
 **ALGORITHM**:
 
-This section is more of a concept that an algorithm. The following just generates an additive distance matrix from a tree and says if that tree is unique to that additive distance matrix (it should be if it's a simple tree). There is no code to show for it because it's just calling things from previous sections (generating a additive distance matrix and checking if a simple tree).
+This section is more of a concept than an algorithm. The following just generates an additive distance matrix from a tree and says if that tree is unique to that additive distance matrix (it should be if it's a simple tree). There is no code to show for it because it's just calling things from previous sections (generating an additive distance matrix and checking if a simple tree).
 
 ```{output}
 ch7_code/src/phylogeny/CardinalityTest.py
@@ -7133,7 +7133,7 @@ graph G {
 }
 ```
 
-Notice how the edges highlighted between `{h}pink path(v1,v5)` and `{h}orange path(v1,v2)` + `{h}blue path(v2,v5)` would be the same had it not been for the two highlights on v2's limb. Adding `{h}red 2 * path(v2,i0)` to `{h}pink path(v1,v5)` makes it so that so that each edge is highlighted an equal number of times ...
+Notice how the edges highlighted between `{h}pink path(v1,v5)` and `{h}orange path(v1,v2)` + `{h}blue path(v2,v5)` would be the same had it not been for the two highlights on v2's limb. Adding `{h}red 2 * path(v2,i0)` to `{h}pink path(v1,v5)` makes it so that each edge is highlighted an equal number of times ...
 
 ```{dot}
 graph G {
@@ -7286,7 +7286,7 @@ The reason distances work has to do with the fact that simple trees require edge
 ```{note}
 The Pevzner book has the 2nd formula above as >= instead of >.
 
-I'm assuming they did this because they're letting edge weights be >= 0 instead of > 0, which doesn't make sense because an edge with a weight of 0 means the same entity exists on both ends of edge. If an edge weight is 0, it'll contribute nothing to the distance, meaning that more edges being highlighted doesn't necessarily mean a larger distance.
+I'm assuming they did this because they're letting edge weights be >= 0 instead of > 0, which doesn't make sense because an edge with a weight of 0 means the same entity exists on both ends of the edge. If an edge weight is 0, it'll contribute nothing to the distance, meaning that more edges being highlighted doesn't necessarily mean a larger distance.
 ```
 
 In the above formulas, L's limb length is represented as dist(L,Lp). Except for dist(L,Lp), all distances in the formulas are between leaf nodes and as such are found in the distance matrix. Therefore, the formulas need to be isolated to dist(L,Lp) in order to derive what L's limb length is ...
@@ -7491,7 +7491,7 @@ In the above formulas, L's limb length is represented as dist(L,Lp). Except for 
 
 Notice the left-hand side of both solved formulas are the same: (dist(L,A) + dist(L,B) - dist(A,B)) / 2
 
-The algorithm for finding limb length is essentially an exhaustive test. Of all leaf node pairs (L not included), the one producing the smallest left-hand side result is guaranteed to the be L's limb length. Anything larger will include weights from more edges than just L's limb.
+The algorithm for finding limb length is essentially an exhaustive test. Of all leaf node pairs (L not included), the one producing the smallest left-hand side result is guaranteed to be L's limb length. Anything larger will include weights from more edges than just L's limb.
 
 ````{note}
 From the book:
@@ -7500,7 +7500,7 @@ From the book:
 
 The answer to this is obvious now that I've gone through and reasoned about things above.
 
-For the limb length formula to work, you need to find leaf nodes (A, B) whose path travels through leaf node L's parent (Lp). Originally, the book had you try all combination of leafs (L excluded) and take the minimum. That works, but you don't need to try all possible pairs. Instead, you can just pick any leaf (that isn't L) for A and test against every other node (that isn't L) to find B -- as with the original method, you pick the B that produces the minimum value.
+For the limb length formula to work, you need to find leaf nodes (A, B) whose path travels through leaf node L's parent (Lp). Originally, the book had you try all combinations of leaf nodes (L excluded) and take the minimum. That works, but you don't need to try all possible pairs. Instead, you can just pick any leaf (that isn't L) for A and test against every other node (that isn't L) to find B -- as with the original method, you pick the B that produces the minimum value.
    
 Because a phylogenetic tree is a connected graph (a path exists between each node and all other nodes), at least 1 path will exist starting from A that travels through Lp.
 
@@ -7701,7 +7701,7 @@ graph G {
 
 If the two leaf nodes chosen are ...
 
- * within the same subtree, the path will _never_ travel through v2's parent (i1), meaning that the second formula evaluate to true. For example, since `{h}cyan v4` and `{h}cyan v5` are within the same subset, `{h}purple path(v4,v5)` doesn't travel through v2's parent ...
+ * within the same subtree, the path will _never_ travel through v2's parent (i1), meaning that the second formula evaluates to true. For example, since `{h}cyan v4` and `{h}cyan v5` are within the same subset, `{h}purple path(v4,v5)` doesn't travel through v2's parent ...
 
    ```{dot}
    graph G {
@@ -8033,7 +8033,7 @@ Notice how of the two distance matrices, all distances are the same except for v
 | v4 |     22      |     13      |     21      |     7       |     0       | 14 - 7 = 7  |
 | v5 | 22 - 7 = 15 | 13 - 7 = 6  | 21 - 7 = 14 | 13 - 7 = 6  | 14 - 7 = 7  | 0           |
 
-Where as v5 was originally contributing 7 to distances, after balding it contributes 0.
+Whereas v5 was originally contributing 7 to distances, after balding it contributes 0.
 
 As such, subtracting some leaf node's limb length from its distances in an additive distance matrix is equivalent to balding that leaf node's limb in its corresponding simple tree.
 
@@ -8393,7 +8393,7 @@ Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 **WHAT**: Given a distance matrix, if the distance matrix is ...
 
  * an additive distance matrix, this algorithm finds a pair of leaf nodes guaranteed to be neighbours in its corresponding unique simple tree.
- * a non-additive distance matrix (but close to be being additive), this algorithm approximates a pair of leaf nodes that are likely to be neighbours.
+ * a non-additive distance matrix (but close to being additive), this algorithm approximates a pair of leaf nodes that are likely to be neighbours.
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
@@ -8586,7 +8586,7 @@ graph G {
 |                | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
 |                |    6    |    4    |    2    |    6    |    6    |    2    |    2    |    2    |
 
-The key to this algorithm is to normalize limb counts returned by `combine_counts()` such that the each chosen limb's count equals to each non-chosen limb's count. That is, each chosen limb count needs to be reduced from `leaf_count` to 2.
+The key to this algorithm is to normalize limb counts returned by `combine_counts()` such that each chosen limb's count equals to each non-chosen limb's count. That is, each chosen limb count needs to be reduced from `leaf_count` to 2.
 
 To do this, each edge in the path between the chosen pair must be subtracted `leaf_count - 2` times from `combine_edge_count()`'s result.
 
@@ -9143,9 +9143,9 @@ phylogeny.NeighbourJoiningMatrix_EdgeCountExplainer
 [[v0,i0], [v1,i0], [v2,i0], [i0,i1], [i1,i2], [i2,v3], [i2,v4], [i1,v5]]
 ```
 
-This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.
+This same reasoning is applied to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.
 
-In the edge count version on this algorithm, `edge_count()` gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is encountered. In the edge weight multiplicity version, instead of counting how many times each edge gets encountered, each time an edge gets encountered it increases the multiplicity of its weight ...
+In the edge count version of this algorithm, `edge_count()` gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is encountered. In the edge weight multiplicity version, instead of counting how many times each edge gets encountered, each time an edge gets encountered it increases the multiplicity of its weight ...
 
 ```{output}
 ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py
@@ -9304,7 +9304,7 @@ graph G {
 | combine_edge_count(v1)    | 6       | 4       | 2        | 6       | 6        | 2       | 2       | 2       |
 | combine_edge_multiple(v1) | 6\*4=24 | 4\*3=12 | 2\*11=22 | 6\*2=20 | 6\*10=60 | 2\*3=6  | 2\*4=8  | 2\*7=14 |
 
-Similarly, where in the edge count version `combine_edge_count_and_normalize()` reduces all limbs and possibly some internals edges from `combine_edge_count()` to a count of 2, the edge multiplicity version reduces weights for those same limbs and edges to a multiple of 2...
+Similarly, where in the edge count version `combine_edge_count_and_normalize()` reduces all limbs and possibly some internal edges from `combine_edge_count()` to a count of 2, the edge multiplicity version reduces weights for those same limbs and edges to a multiple of 2...
 
 ```{output}
 ch7_code/src/phylogeny/NeighbourJoiningMatrix_EdgeMultiplicityExplainer.py
@@ -9460,7 +9460,7 @@ graph G {
  * limb B's weight multiplicity reduces to 2.
  * other limbs keep their weight multiplicities at 2.
  * if the pair are neighbours, each internal edge multiplicity remains at > 2.
- * it the pair aren't neighbours, at least one internal edge multiplicity reduces to 2 while others remain at > 2.
+ * if the pair aren't neighbours, at least one internal edge multiplicity reduces to 2 while others remain at > 2.
 
 |                        | limb multiplicity | internal edge multiplicity   |
 |------------------------|-------------------|------------------------------|
@@ -9487,7 +9487,7 @@ phylogeny.NeighbourJoiningMatrix_EdgeMultiplicityExplainer
 [[v0,i0,11], [v1,i0,2], [v2,i0,10], [i0,i1,4], [i1,i2,3], [i2,v3,3], [i2,v4,4], [i1,v5,7]]
 ```
 
-The matrix produced in the example above is called a neighbour joining matrix. The summation of `combine_edge_multiple_and_normalize()` performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that `combine_edge_multiple_and_normalize(v1,v2)` in the example graph breaks down to `edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)`. The sum of ...
+The matrix produced in the example above is called a neighbour joining matrix. The summation of `combine_edge_multiple_and_normalize()` performed in each matrix slot is rewritable as a set of addition and subtraction operations between leaf node distances. For example, recall that `combine_edge_multiple_and_normalize(v1,v2)` in the example graph breaks down to `edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)`. The sum of ...
   
 * `edge_multiple(v1)` breaks down to...
 
@@ -9537,7 +9537,7 @@ Algorithms/Phylogeny/Find Limb Length_TOPIC
 **WHAT**: Given a distance matrix and a pair of leaf nodes identified as being neighbours, if the distance matrix is ...
 
  * an additive distance matrix, this algorithm finds the limb lengths of those neighbours.
- * a non-additive distance matrix (but close to be being additive), this algorithm approximates the limb lengths of those neighbours.
+ * a non-additive distance matrix (but close to being additive), this algorithm approximates the limb lengths of those neighbours.
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
@@ -9584,10 +9584,10 @@ graph G {
 }
 ```
 
-Since they're neighbours, they share the same parent node, meaning that the ...
+Since they're neighbours, they share the same parent node, meaning that the path from...
 
- * path from v1 to any other leaf node travels over v2's parent.
- * path from v2 to any other leaf node travels over v1's parent.
+ * v1 to any other leaf node travels over v2's parent.
+ * v2 to any other leaf node travels over v1's parent.
 
 ```{dot}
 graph G {
@@ -9665,7 +9665,7 @@ Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
 
 **ALGORITHM**: 
 
-The unoptimized algorithm performs the computation once for each leaf node in the pair. This in inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate work.
+The unoptimized algorithm performs the computation once for each leaf node in the pair. This is inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate work.
 
 The unoptimized algorithm maps to the formula ...
 
@@ -9787,7 +9787,7 @@ Consider what happens when you re-organize the formula for l2 as follows...
     len(l2) = \frac{1}{2} \cdot (D_{l1,l2} - \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
     ```
 
-After this re-organization, the two match up almost exactly. The only difference is that an addition has been swapped to a subtraction...
+After this reorganization, the two match up almost exactly. The only difference is that an addition has been swapped to a subtraction...
 
 ```{kt}
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
@@ -9795,7 +9795,7 @@ len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} \frac{1}{n-2} \cdo
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l2,l1\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l2,l1\}}{D_{l2,k}}}))
 ```
 
-The point of this optimization is that the summation calculation only need to be performed once. The result can be used to calculate the limb length for both of the neighbouring leaf nodes...
+The point of this optimization is that the summation calculation only needs to be performed once. The result can be used to calculate the limb length for both of the neighbouring leaf nodes...
 
 ```{kt}
 res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}})
@@ -9857,7 +9857,7 @@ Algorithms/Phylogeny/Bald_TOPIC
 Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm_TOPIC
 ```
 
-**WHAT**: Given a distance matrix and a pair of leaf nodes identified as being neighbours, this algorithm removes those neighbours from the distance matrix and brings their parent to the forefront (as a leaf node in the distance matrix). If the distance matrix is a non-additive distance matrix (but close to be being additive), this algorithm approximates the shared parent.
+**WHAT**: Given a distance matrix and a pair of leaf nodes identified as being neighbours, this algorithm removes those neighbours from the distance matrix and brings their parent to the forefront (as a leaf node in the distance matrix). If the distance matrix is a non-additive distance matrix (but close to being additive), this algorithm approximates the shared parent.
 
 **WHY**: This operation is required for _approximating_ a simple tree for a non-additive distance matrix.
 
@@ -10329,7 +10329,7 @@ The inverse_len function above in abstracted form is 0.5 * (dist(L,X) + dist(N,X
  * L and N are neighbours.
  * X is a leaf node that isn't L or N.
 
-Note that the distance calculate by inverse_len example above is exactly the same distance you'd get for v3 when balding and merging v0 and v1 using the averaging algorithm. That is, instead of using the averaging algorithm to bald and merge the neighbouring pair, you can just inject inverse_len's result for each leaf node into the distance matrix and remove the neighbouring pair.
+Note that the distance calculated by the inverse_len example above is exactly the same distance you'd get for v3 when balding and merging v0 and v1 using the averaging algorithm. That is, instead of using the averaging algorithm to bald and merge the neighbouring pair, you can just inject inverse_len's result for each leaf node into the distance matrix and remove the neighbouring pair.
 
 The inverse_len for leaf node ...
 
@@ -10487,13 +10487,13 @@ Algorithms/Phylogeny/Tree to Simple Tree_TOPIC
 Algorithms/Phylogeny/Additive Distance Matrix Cardinality_TOPIC
 ```
 
-**WHAT**: Given a distance matrix, convert that distance matrix into a evolutionary tree. Different algorithms are presented that either ...
+**WHAT**: Given a distance matrix, convert that distance matrix into an evolutionary tree. Different algorithms are presented that either ...
 
 * find the unique simple tree for an additive distance matrix,
 * approximate a simple tree for a non-additive distance matrix,
 * approximate a tree for a distance matrix regardless of if it's additive or not.
 
-**WHY**: Recall that converting a distance matrix to a tree is the end goal of phylogeny. Given the distances between set of known / present-day entities, these algorithms will infer their evolutionary relationships.
+**WHY**: Recall that converting a distance matrix to a tree is the end goal of phylogeny. Given the distances between a set of known / present-day entities, these algorithms will infer their evolutionary relationships.
 
 #### UPGMA Algorithm
 
@@ -10532,7 +10532,7 @@ The algorithm assumes that the rate of mutation is consistent (molecular clock).
 * "a, b, c, and d share ancestor g:   dist(a,g) = dist(b,g) = dist(c,g) = dist(d,g) = 4"
 ```
    
-For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.
+For example, assume the present year is 2000. Four present day species share a common ancestor from the year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.
    
 Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation. Assume the number of genome rearrangement reversals is being used as the measure of mutation. If the rate of reversals expected per 100 years is 2, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.
 
@@ -10899,7 +10899,7 @@ The book is inconsistent about whether simple trees can have internal edges of w
 ```{note}
 This is essentially a hammer, ignoring much of the logic and techniques derived in prior sections. There is no code for this section because writing it involves doing things like writing a generic linear systems solver, evolutionary algorithms framework, etc... There are Python packages you can use if you really want to do this, but this section is more describing the overarching idea.
 
-The logic and techniques in prior section typically work much better and much faster than doing something like this, but this doesn't require as much reasoning / thinking. This idea was first hinted at in the Pevzner book when first describing how to assign weights for non-additive distance matrices.
+The logic and techniques in prior sections typically work much better and much faster than doing something like this, but this doesn't require as much reasoning / thinking. This idea was first hinted at in the Pevzner book when first describing how to assign weights for non-additive distance matrices.
 ```
 
 Given an additive distance matrix, if you already know the structure of the tree, with edge weights that satisfy that tree are derivable from that distance matrix. For example, given the following distance matrix and tree structure...
@@ -11035,7 +11035,9 @@ Algorithms/Sequence Alignment_TOPIC
 
 `{bm} /(Algorithms\/Phylogeny\/Sequence Inference\/Small Parsimony Algorithm)_TOPIC/`
 
-Given a phylogenetic tree and the sequences for its leaf nodes (known entities), this algorithm infers sequences for its internal nodes (ancestor entities) based on how likely it is for sequence elements to change from one type to another. The algorithm only works on sequences of matching length.
+Given a phylogenetic tree and the sequences for its leaf nodes (known entities), this algorithm infers sequences for its internal nodes (ancestor entities) based on how likely it is for sequence elements to change from one type to another. The sequence / sequence element most likely to be there is said to be the most parsimonious.
+
+The algorithm only works on sequences of matching length.
 
 ```{note}
 If you're interested to see why it's called small parsimony, see the next section which describes small parsimony vs large parsimony.
@@ -11099,7 +11101,7 @@ The algorithm works by building a distance map for each index of each node's seq
 | 4 |   1.0   |   1.0   | **0.0** |   1.0   |
 | 5 |   1.0   | **0.0** |   1.0   |   2.0   |
 
-These maps are built from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the tree. Since the sequences at leaf nodes are known (leaf nodes represent known entities), building their maps is fairly straight forward: 0.0 distance for the element at that index and ∞ distance for all other elements. For example, the sequence ACTGCT would generate the following mappings at each index ...
+These maps are built from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the tree. Since the sequences at leaf nodes are known (leaf nodes represent known entities), building their maps is fairly straightforward: 0.0 distance for the element at that index and ∞ distance for all other elements. For example, the sequence ACTGCT would generate the following mappings at each index ...
 
 |   |  A  |  C  |  T  |  G  |
 |---|-----|-----|-----|-----|
@@ -11226,7 +11228,9 @@ The Pevzner book claims this is dynamic programming. This is somewhat similar to
 ```
 
 ````{note}
-The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the sequences have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.
+If the tree is unrooted, the Pevzner book says to pick an edge and inject a fake root into it, then remove it once the sequences have been inferred. It says that if the tree is a binary tree and hamming distance is used as the metric, the same element type will win at every index of every node (lowest distance) regardless of which edge the fake root was injected into. At least I think that's what it says -- maybe it means the parsimony score will be the same (parsimony score discussed in next section).
+
+If the tree isn't binary and/or something other than hamming distance is chosen as the metric, will this still be the case? If it isn't, I can't see how doing that is any better than just picking some internal node to be the root.
 
 So which node should be selected as root? The tree structure being used for this algorithm very likely came from a phylogenetic tree built using distances (e.g. additive phylogeny, neighbour joining phylogeny, UPGMA, etc..). Here are a couple of ideas I just thought up: 
 
@@ -11235,6 +11239,16 @@ So which node should be selected as root? The tree structure being used for this
 
 I think the second one might not work because all sums will be the same? Maybe instead average the distances to leaf nodes and pick the one with the largest average?
 ````
+
+```{note}
+In addition to small parsimony, there's large parsimony.
+
+Small parsimony: When a tree structure and its leaf node sequences are given, derive the internal node sequences with the lowest possible distance (most parsimonious).
+
+Large parsimony: When only the leaf node sequences are given, derive the combination of tree structure and internal node sequences with the lowest possible distance (most parsimonious).
+
+Trying to do large parsimony explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.
+```
 
 ```{output}
 ch7_code/src/sequence_phylogeny/SmallParsimony.py
@@ -11254,7 +11268,7 @@ i0
 ```
 
 ```{note}
-The distances used in the example execution above is hamming distance. If you're working with proteins, a more appropriate matrix might be a BLOSUM matrix (e.g. BLOSUM62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.
+The distance metric used in the example execution above is hamming distance. If you're working with proteins, a more appropriate matrix might be a BLOSUM matrix (e.g. BLOSUM62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.
 ```
 
 #### Nearest Neighbour Interchange Algorithm
@@ -11265,20 +11279,14 @@ The distances used in the example execution above is hamming distance. If you're
 Algorithms/Phylogeny/Sequence Inference/Small Parsimony Algorithm_TOPIC
 ```
 
-The problem with small parsimony is that sequences inferred vary greatly based on both the given tree structure and the element distance metric used. Specifically, there are many ways in which...
+The problem with small parsimony is that inferred sequences vary greatly based on both the given tree structure and the element distance metric used. Specifically, there are many ways in which...
 
- 1. a phylogenetic tree structure can be generated (e.g. UPGMA, neighbour joining algorithm, etc..).
+ 1. a phylogenetic tree structure can be generated (e.g. UPGMA, neighbour joining phylogeny, etc..).
  2. a distance can be generated between two elements of a sequence (e.g. PAM250, BLOSUM62, hamming distance, etc...).
 
-Often times the two aren't entirely complementary, meaning that while the inferred sequences may be reasonable, they likely aren't optimal.
+Oftentimes the combination of tree structure and internal node sequences may be reasonable, but they likely aren't optimal (see large parsimony).
 
-```{note}
-That's why it's called small parsimony: When the algorithm requires a tree structure before it infers sequences, it's called small parsimony. If the algorithm both generates both the tree structure and infers internal node sequences, such that the tree + inferred sequences generates the minimum possible distance out of all possible tree + inferred sequences, it's called large parsimony.
-
-Trying to do large parsimony explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.
-```
-
-Given a phylogenetic tree where small parsimony has been applied, its possible to infer its "quality" by calculating a parsimony score. For each edge, compute a weight by taking the two sequences at its ends and summing the distances between the element pairs at each index. For example, ...
+Given a phylogenetic tree where small parsimony has been applied, it's possible to derive a parsimony score: a measure of how likely the scenario is based on parsimony. For each edge, compute a weight by taking the two sequences at its ends and summing the distances between the element pairs at each index. For example, ...
 
 ```{svgbob}
 .-----------.
@@ -11320,17 +11328,23 @@ The sum of edge weights is the parsimony score of the tree (lower sum is better)
 ```
 
 ```{output}
-ch7_code/src/sequence_phylogeny/ParsimonyScore.py
+ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
 python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+# MARKDOWN_SCORE\s*\n([\s\S]+)\n\s*# MARKDOWN_SCORE
 ```
 
 ```{ch7}
-sequence_phylogeny.ParsimonyScore
-[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0,ACTGCT], [n,i1,ATTGCC], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+sequence_phylogeny.NearestNeighbourInterchange main_parsimony_score
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0], [n,i1], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+i0
+[ , A, C, T, G]
+[A, 0, 1, 1, 1]
+[C, 1, 0, 1, 1]
+[T, 1, 1, 0, 1]
+[G, 1, 1, 1, 0]
 ```
 
-The nearest neighbour interchange algorithm is a greedy heuristic which attempts to perturb the tree to produce a lower parsimony score. The core operation of this algorithm is to pick an internal edge within the tree and swaps neighbours between the nodes at each end ...
+The nearest neighbour interchange algorithm is a greedy heuristic which attempts to perturb the tree to produce a lower parsimony score. The core operation of this algorithm is to pick an internal edge within the tree and swap neighbours between the nodes at each end ...
 
 ```{svgbob}
                                    original
@@ -11356,25 +11370,19 @@ The nearest neighbour interchange algorithm is a greedy heuristic which attempts
 7 8 1    7 1 9    1 8 9    7 8 2    7 2 9    2 8 9    7 1 2    1 2 9    1 8 2
 ```
 
-```{output}
-ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
-python
-# MARKDOWN_ENUMERATE_OPTIONS\s*\n([\s\S]+)\n\s*# MARKDOWN_ENUMERATE_OPTIONS
-```
-
-These swaps aren't just the nodes themselves, but the entire sub-trees under those nodes ...
+These swaps aren't just the nodes themselves, but the entire sub-trees under those nodes. For example, ...
 
 ```{svgbob}
-   original                            "interchange on edge(G,H), swap top"
-                                       "branch of G with bottom branch of H"
+   original                            "interchange on edge(G,H), swap D"
+                                       "branch with K branch"
 A   B      C                                              C     
 *   *      *                                              *     
- \ /       |                                     J K      |     
-  * D    E *--* F                                * *    E *--* F
-   \      /                                       \|     /      
+ \ /       |                                     K        |     
+  * D    E *--* F                                *      E *--* F
+   \      /                                       \      /      
   G *----* H                                     G *----* H     
-   /     |\                                       /      \      
-  *      * *                                     *      D *     
+   /     |\                                       /     |\      
+  *      * *                                     *    J * * D   
   I      J K                                     I       / \
                                                         *   *
                                                         A   B     
@@ -11383,40 +11391,33 @@ A   B      C                                              C
 ```{output}
 ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
 python
-# MARKDOWN_PERFORM\s*\n([\s\S]+)\n\s*# MARKDOWN_PERFORM
+# MARKDOWN_SWAP\s*\n([\s\S]+)\n\s*# MARKDOWN_SWAP
 ```
 
-Given a tree, the algorithm goes over each internal edge and tries all possibly neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
+```{ch7}
+sequence_phylogeny.NearestNeighbourInterchange main_nn_swap
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,Kangaroo,ATTCCT], [n,Elephant,TTTCCC], [n,i0], [n,i1], [n,i2], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1], [e,Kangaroo,i2], [e,Elephant,i2], [e,i0,i2]]
+i0-i1
+```
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+Given a tree, this algorithm goes over each internal edge and tries all possible neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+```{output}
+ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+```{ch7}
+sequence_phylogeny.NearestNeighbourInterchange
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,Kangaroo,ATTCCT], [n,Elephant,TTTCCC], [n,i0], [n,i1], [n,i2], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1], [e,Kangaroo,i2], [e,Elephant,i2], [e,i0,i2]]
+i0
+[ , A, C, T, G]
+[A, 0, 1, 1, 1]
+[C, 1, 0, 1, 1]
+[T, 1, 1, 0, 1]
+[G, 1, 1, 1, 0]
+```
 
 # Stories
 
@@ -12248,6 +12249,48 @@ graph_show
 [merge, 12800, 90]
 [cull, 10000]
 ```
+
+## COVID-19 Phylogeny
+
+TODO: Describe what phylogeny is and COVID-19's spike protein
+
+TODO: Describe what phylogeny is and COVID-19's spike protein
+
+TODO: Describe what phylogeny is and COVID-19's spike protein
+
+TODO: Describe what phylogeny is and COVID-19's spike protein
+
+TODO: Describe what phylogeny is and COVID-19's spike protein
+
+TODO: Describe what phylogeny is and COVID-19's spike protein
+
+TODO: Describe what phylogeny is and COVID-19's spike protein
+
+### Find Lineage
+
+TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+
+TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+
+TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+
+TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+
+TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+
+### Find Ancestral Sequences
+
+TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+
+TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+
+TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+
+TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+
+TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+
+TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
 
 # Ideas
 
@@ -13751,7 +13794,7 @@ graph_show
 
    The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, `min_coins(3)` is independently computed 5 times. With dynamic programming, it would only be computed once and the result would be re-used each subsequent time `min_coins(3)` gets encountered.
 
- * `{bm} manhattan tourist problem` - The Manhattan tourist problem is an allegory to help explain sequence alignment graphs. Where as in sequence alignments you're finding a path through the graph from source to sink that has the maximum weight, in the Manhattan tourist problem you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as global alignment: 
+ * `{bm} manhattan tourist problem` - The Manhattan tourist problem is an allegory to help explain sequence alignment graphs. Whereas in sequence alignments you're finding a path through the graph from source to sink that has the maximum weight, in the Manhattan tourist problem you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as global alignment: 
  
    * The graph is the street layout of Manhattan.
    * The only options at each intersection are to move right or down.
@@ -14422,7 +14465,7 @@ graph_show
 
  * `{bm} severe acute respiratory syndrome` `{bm} /(SARS)/` - A deadly coronavirus that emerged from China around early 2003.
 
- * `{bm} coronavirus` `{bm} /(COVID|CoV)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of sun's atmosphere protruding out).
+ * `{bm} coronavirus` `{bm} /(COVID|CoV)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).
  
    The common cold, SARS, and COVID-19 are examples of coronaviruses.
 
@@ -14583,7 +14626,7 @@ graph_show
      "else flows downward"
    ```
 
- * `{bm} subtree/(subtree|sub-tree)/i` - Given a node in a tree, that node and all of its descendants comprise a subtree. For example, the following tree is has the subtree ...
+ * `{bm} subtree/(subtree|sub-tree)/i` - Given a node in a tree, that node and all of its descendants comprise a subtree. For example, the following tree has the subtree ...
  
    ```{svgbob}
         TREE                 "SUBTREE AT H"
@@ -14605,7 +14648,7 @@ graph_show
 
  * `{bm} degree/(degree)_GRAPH/i` - The number of edges leading into / out of a node of an undirected graph.
 
-    The node below has an degree_GRAPH of 3.
+    The node below has a degree_GRAPH of 3.
 
     ```{svgbob}
            /
@@ -14775,7 +14818,7 @@ graph_show
    
     * etc..
 
- * `{bm} neighbour` - Given two leaf nodes in a tree, those leaf nodes are said to be neighbours if they share they connect to the same internal node. For example, leaf nodes A and B are neighbours in the following tree because they both conect to internal node D ...
+ * `{bm} neighbour` - Given two leaf nodes in a tree, those leaf nodes are said to be neighbours if they share they connect to the same internal node. For example, leaf nodes A and B are neighbours in the following tree because they both connect to internal node D ...
 
    ```{svgbob}
    A   B
@@ -14815,7 +14858,7 @@ graph_show
    A leaf node will only ever have 1 parent, by definition of a tree.
    ```
 
- * `{bm} limb length/(limb length|limb weight)/i` - Given a leaf node in a tree, the leaf node's limb length is the weight assigned ot its limb. For example, node A has a limb length of 2 in the following tree...
+ * `{bm} limb length/(limb length|limb weight)/i` - Given a leaf node in a tree, the leaf node's limb length is the weight assigned to its limb. For example, node A has a limb length of 2 in the following tree...
 
    ```{svgbob}
                     * F
@@ -14979,7 +15022,7 @@ graph_show
    
    `{bm-enable} 5'` <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' -->
 
- * `{bm} additive phylogeny` - A recursive algorithm that finds the unique simple tree for some additive distance matrix. The algorithm `{bm-target} trim/trimmed distance matrix`s a single leaf node at each recursive step until the distance matrix has a size of two. The simple tree for any two leaf nodes is a those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the tree and attaching it on.
+ * `{bm} additive phylogeny` - A recursive algorithm that finds the unique simple tree for some additive distance matrix. The algorithm `{bm-target} trim/trimmed distance matrix`s a single leaf node at each recursive step until the distance matrix has a size of two. The simple tree for any two leaf nodes is those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the tree and attaching it on.
  
    At the end, the algorithm will have constructed the entire simple tree for the additive distance matrix. For example, ...
    
@@ -15065,7 +15108,7 @@ graph_show
 
  * `{bm} sum of squared errors/(sum of squared errors|sum of square error|sum of errors squared)/i` - Sum of errors squared is an algorithm used to quantify how far off some estimation / prediction is.
  
-   Given a a set of real values and a set of predicted values, the error is the difference between the real and predicated values at each data point. For example...
+   Given a set of real values and a set of predicted values, the error is the difference between the real and predicted values at each data point. For example...
 
    |           |   |    |   |   |   |   |
    |-----------|---|----|---|---|---|---|
@@ -15224,8 +15267,8 @@ graph_show
    * n is the number of leaf nodes in the distance matrix.
    * a and b are the leaf nodes being referenced in the distance matrix.
    * dist(a, b) returns the distance between leaf nodes a and b in the distance matrix.
-   * total dist(a) returns the sum all of distances to / from leaf node a.
-   * total dist(b) returns the sum all of distances to / from leaf node b.
+   * total dist(a) returns the sum of all distances to / from leaf node a.
+   * total dist(b) returns the sum of all distances to / from leaf node b.
 
    The maximum element in the neighbour joining matrix is guaranteed to be for two neighbouring leaf nodes. For example, the following distance matrix produces the following neighbour joining matrix...
 
@@ -15259,7 +15302,7 @@ graph_show
    * find the unique simple tree for an additive distance matrix.
    * approximate a simple tree for a non-additive distance matrix.
 
-   The algorithm finds and `{bm-target} replace/trimmed distance matrix`s a pair of neighbouring leaf nodes in the distance matrix with their shared parent at each recursive step (parent is promoted to a leaf node) until the distance matrix has a size of two. The simple tree for any two leaf nodes is a those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by attaching the neighbours removed from the distance at that step to their parent in the tree.
+   The algorithm finds and `{bm-target} replace/trimmed distance matrix`s a pair of neighbouring leaf nodes in the distance matrix with their shared parent at each recursive step (parent is promoted to a leaf node) until the distance matrix has a size of two. The simple tree for any two leaf nodes is those two nodes connected by a single edge. Using that tree as its base, the algorithm recurses out of each step by attaching the neighbours removed from the distance at that step to their parent in the tree.
 
    ```{note}
    The term neighbouring means having a shared parent in the tree, not next to each other in the distance matrix.
@@ -15353,7 +15396,7 @@ graph_show
 
  * `{bm} physiology/(physiology|physiological)/i` - The study of organism function.
 
- * `{bm} character table` - A matrix where the columns represent biological entities and the rows represent characteristics of those entities, where those characteristics are typically anatomically or physiologically.
+ * `{bm} character table/(character table|character vector)/i` - A matrix where the columns represent biological entities and the rows represent characteristics of those entities, where those characteristics are typically anatomically or physiologically.
 
    |           | wings | sucks blood | number of legs |
    |-----------|-------|-------------|----------------|
@@ -15363,21 +15406,50 @@ graph_show
 
    Character tables were commonly used for phylogeny before discovering that DNA can be used to compare the relatedness of organisms.
 
- * `{bm} character vector` - A row in a character table. Prior to the advent of sequencers, scientists would treat character vectors as sequences for generating phylogenetic trees or doing comparisons between organisms.
+   A row in a character table. Prior to the advent of sequencers, scientists would treat character vectors as sequences for generating phylogenetic trees or doing comparisons between organisms.
 
- * `{bm} mitochondrial DNA/(mitochondrial DNA|mtDNA)/i` - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitocondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.
+ * `{bm} mitochondrial DNA/(mitochondrial DNA|mtDNA)/i` - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitochondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.
    
    Mitochondrial DNA is inherited fully from the mother. It isn't a mix of parental DNA as the cell DNA is.
 
-* `{bm} parsimony score` - Given a phylogenetic tree where each ...
-
-   * node has a sequence assigned to it, where leaf nodes are typically known sequences from known entities and internal nodes are inferred sequences for their inferred ancestors.
-   * edge has a weight equal to the hamming distance between the sequences at each end.
-
-  The parsimony score for the tree is the sum of edge weights.
+ * `{bm} small parsimony/(small parsimony|large parsimony)/i` - In the context of phylogenetic trees, ...
+ 
+   * small parsimony: When a tree structure and its leaf node sequences are given, derive the internal node sequences with the lowest possible distance (most parsimonious).
+   * large parsimony: When only the leaf node sequences are given, derive the combination of tree structure and internal node sequences with the lowest possible distance (most parsimonious).
 
    ```{svgbob}
-   "Parsimony score = 5"
+   "Phylogenetic tree with ancestral sequences inferred"
+            .-----------.
+            | AncestorA |
+            |  ATTGCC   |
+            '-----+-----'
+                 / \
+                /   \
+               /     \
+        .-----+-----. \
+        | AncestorB |  \  
+        |  ACTGCT   |   \
+        '-----+-----'    \
+             / \          \
+            /   \          \
+           /     \          \
+   .------+-. .---+----. .---+----.
+   |   Cat  | |  Lion  | |  Bear  |
+   | ACTGGT | | ACTGCT | | ATTCCC |
+   '--------' '--------' '--------'
+   ```
+
+   Large parsimony isn't a process that's normally done because the search space explodes in size (e.g. NP-complete). Instead, small parsimony is used on a tree generated using an algorithm like UPGMA or neighbour joining phylogeny.
+
+   ```{note}
+   The parsimony score algorithm is what's typically used to evaluate how well a combination of tree structure + ancestral sequences do.
+   ```
+
+ * `{bm} parsimony score` - Given a phylogenetic tree with sequences for both leaf nodes (known entities) and internal nodes (inferred ancestral entities), the parsimony score is a measure of how far off a parent's sequence is from its children (and vice versa). The idea is that the most parsimonious evolutionary path is the one that's most likely to have occurred. As such, the less far off sequences are, the more likely it is that the actual ancestral lineage and ancestral sequences match what's depicted in the tree.
+
+   ```{svgbob}
+   "Using hamming distance as the metric, the following"
+   "tree has a parsimony score of 1 + 3 + 1 = 5"
 
             .-----------.
             | AncestorA |
@@ -15398,8 +15470,6 @@ graph_show
    | ACTGGT | | ACTGCT | | ATTCCC |
    '--------' '--------' '--------'
    ```
-
-   The lower a parsimony score is, the better.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

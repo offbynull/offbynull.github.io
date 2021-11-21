@@ -192,6 +192,11 @@
 <li><a href="#H_Find%20Synteny%20Blocks">Find Synteny Blocks</a></li>
 <li><a href="#H_Find%20Reversal%20Path">Find Reversal Path</a></li>
 </ul>
+<li><a href="#H_COVID-19%20Phylogeny">COVID-19 Phylogeny</a></li>
+<ul>
+<li><a href="#H_Find%20Lineage">Find Lineage</a></li>
+<li><a href="#H_Find%20Ancestral%20Sequences">Find Ancestral Sequences</a></li>
+</ul>
 </ul>
 <li><a href="#H_Ideas">Ideas</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
@@ -5811,7 +5816,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The Pevzner book, in a later chapter (ch7 -- <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>), spends an entire section talking about <a href="#BM_(character%20table)%2Fi">character table</a>s and how they can be thought of as <a href="#BM_(sequence)%2Fi">sequence</a>s (<a href="#BM_(character%20vector)%2Fi">character vector</a>s). There's no good place to put this information. It seems non-critical so the only place it exists is in the terminology section.</p>
+<p>The Pevzner book, in a later chapter (ch7 -- <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>), spends an entire section talking about <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character table</a>s and how they can be thought of as <a href="#BM_(sequence)%2Fi">sequence</a>s (<a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character vector</a>s). There's no good place to put this information. It seems non-critical so the only place it exists is in the terminology section.</p>
 </div>
 <a name="H_Find%20Maximum%20Path"></a><h3>Find Maximum Path</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path)_TOPIC%2F"></a><strong></strong></p>
@@ -7555,7 +7560,7 @@ Y -3  0 -4 -4  7 -5  0 -1 -4 -1 -2 -2 -5 -4 -4 -3 -3 -2  0 10
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -8 where as in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
+<p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -8 Whereas in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
 </div>
 <a name="H_BLOSUM%20Scoring%20Matrix"></a><h4>BLOSUM Scoring Matrix</h4>
 <p><a href="#BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi">Blocks amino acid substitution matrix</a> (<a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>) is a scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>s without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
@@ -7591,7 +7596,7 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -4 where as in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
+<p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://www.ncbi.nlm.nih.gov/Class/FieldGuide/BLOSUM62.txt">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -4 whereas in the Pevzner book I've seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
 </div>
 <a name="H_Extended%20Gap%20Scoring"></a><h3>Extended Gap Scoring</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FExtended%20Gap%20Scoring)_TOPIC%2F"></a><strong></strong></p>
@@ -9464,7 +9469,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
         2       +        5        &gt;=       6
                 7                 &gt;=       6
 </code></pre>
-<p>The Pevzner book refers to the this as the triangle inequality.</p>
+<p>The Pevzner book refers to this as the triangle inequality.</p>
 <p><img src="svgbob_a535ea37908c1e912c089d9ea621240bae63f541.svg" alt="Kroki diagram output"></p>
 <p>Later on non-conforming <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> are discussed called non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>. I don't know if non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a> are required to have this specific property, but they should have all others.</p>
 </div>
@@ -9515,13 +9520,13 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The best way to move forward with this, assuming that you're brand new to it, is to first understand the following four sub-sections...</p>
+<p>The best way to move forward with this, assuming that you're brand new to it, is to first understand the following four subsections...</p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F">Algorithms/Phylogeny/Tree to Additive Distance Matrix</a></li>
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Simple%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Tree to Simple Tree</a></li>
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
-<p>Then jump to the algorithm you want to learn (subsection) within <a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a> and work from the prerequisites to the algorithm. Otherwise all the sections in between comes off as disjointed because it's building the intermediate knowledge required for the final algorithms.</p>
+<p>Then jump to the algorithm you want to learn (subsection) within <a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a> and work from the prerequisites to the algorithm. Otherwise all the sections in between come off as disjointed because it's building the intermediate knowledge required for the final algorithms.</p>
 </div>
 <a name="H_Tree%20to%20Additive%20Distance%20Matrix"></a><h3>Tree to Additive Distance Matrix</h3>
 <p><a name="BM_(Algorithms%5C%2FPhylogeny%2FTree%20to%20Additive%20Distance%20Matrix)_TOPIC%2F"></a><strong></strong></p>
@@ -9831,7 +9836,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </div>
 <p>The second property is that the direction of evolution isn't maintained in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>: It's an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> with undirected edges. This is a useful property because, while a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> may provide enough information to infer common ancestry, it doesn't provide enough information to know the true parent-child relationships between those ancestors. For example, any of the internal nodes in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a> may be the top-level entity that all other entities are descendants of ...</p>
 <p><img src="svgbob_f62876489da68170731df6b6d472bcccbba0af31.svg" alt="Kroki diagram output"></p>
-<p>The third property is that weights must be &gt; 0, which is because of the restriction on <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s specified in the parent section: The distance between any to entities must be &gt; 0. That is, it doesn't make sense for the distance between two entities to be ...</p>
+<p>The third property is that weights must be &gt; 0, which is because of the restriction on <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s specified in the parent section: The distance between any two entities must be &gt; 0. That is, it doesn't make sense for the distance between two entities to be ...</p>
 <ul>
 <li>&lt; 0 because distance represents how diverged the entities are from each other. Having a negative amount of divergence doesn't make sense.</li>
 <li>= 0 because then the two nodes between the edge would represent the same entity. Having more than one representation of the same entity in the <a href="#BM_(tree)%2Fi">tree</a> doesn't make sense.</li>
@@ -9842,7 +9847,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><img src="svgbob_86f08fc5c51796312a431fa11fa8a143a7525756.svg" alt="Kroki diagram output"></p>
 <p>In the first two examples, one present-day entity branched off from another present-day entity. Both entities are still present-day entities (the entity branched off from isn't extinct).</p>
 <p>In the fifth example, parent1 split off to the present-day entities entity1 and entity3, then entity2 branched off entity1. All three entities are present-day entities (neither entity1, entity2, nor entity3 is extinct).</p>
-<p>In the third and last two examples, the top-level parent doesn't show up because adding it would break the requirement that internal nodes must be splitting (<a href="#BM_(degree)_GRAPH%2Fi">degree</a> &gt; 2). For example, adding parent1 in to the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> of the last example above causes parent1 to have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> = 2...</p>
+<p>In the third and last two examples, the top-level parent doesn't show up because adding it would break the requirement that internal nodes must be splitting (<a href="#BM_(degree)_GRAPH%2Fi">degree</a> &gt; 2). For example, adding parent1 into the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> of the last example above causes parent1 to have a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> = 2...</p>
 <p><img src="svgbob_895c08d3866dea4e938d43c7c62da5224abdeb82.svg" alt="Kroki diagram output"></p>
 <p>The following algorithm removes nodes of <a href="#BM_(degree)_GRAPH%2Fi">degree</a> = 2, merging its two edges together. This makes it so every internal edge has a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of &gt; 2...</p>
 <p><a href="ch7_code/src/phylogeny/TreeToSimpleTree.py">ch7_code/src/phylogeny/TreeToSimpleTree.py</a> (lines 88 to 105):</p>
@@ -9983,14 +9988,14 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 </tr>
 </tbody>
 </table>
-<p>Similarly, this <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will only ever map to the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> shown above or one of its many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> derivatives (3 of which are shown above). There is no other <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that this <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> can map to / no other <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that will generate this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In otherwords, it isn't possible for...</p>
+<p>Similarly, this <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> will only ever map to the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> shown above or one of its many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a> derivatives (3 of which are shown above). There is no other <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that this <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> can map to / no other <a href="#BM_(simple%20tree)%2Fi">simple tree</a> that will generate this <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. In other words, it isn't possible for...</p>
 <ul>
 <li>two different <a href="#BM_(simple%20tree)%2Fi">simple tree</a>s to map to the same <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 <li>two different <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> to map to the same <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</li>
 </ul>
-<p>Working backwards from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is less complex when limiting the <a href="#BM_(tree)%2Fi">tree</a> to a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, because there's only <a href="#BM_(simple%20tree)%2Fi">simple tree</a> possible (vs many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s).</p>
+<p>Working backwards from a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is less complex when limiting the <a href="#BM_(tree)%2Fi">tree</a> to a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>, because there's only one <a href="#BM_(simple%20tree)%2Fi">simple tree</a> possible (vs many non-<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s).</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This section is more of a concept that an algorithm. The following just generates an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> from a <a href="#BM_(tree)%2Fi">tree</a> and says if that <a href="#BM_(tree)%2Fi">tree</a> is unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (it should be if it's a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>). There is no code to show for it because it's just calling things from previous sections (generating a <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and checking if a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
+<p>This section is more of a concept than an algorithm. The following just generates an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> from a <a href="#BM_(tree)%2Fi">tree</a> and says if that <a href="#BM_(tree)%2Fi">tree</a> is unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (it should be if it's a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>). There is no code to show for it because it's just calling things from previous sections (generating an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> and checking if a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
 <p><a href="ch7_code/src/phylogeny/CardinalityTest.py">ch7_code/src/phylogeny/CardinalityTest.py</a> (lines 15 to 19):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cardinality_test</span>(<span class="hljs-params">g: Graph[N, ND, E, <span class="hljs-built_in">float</span>]</span>) -&gt; <span class="hljs-built_in">tuple</span>[DistanceMatrix[N], <span class="hljs-built_in">bool</span>]:
     <span class="hljs-keyword">return</span> (
@@ -10310,7 +10315,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p><img src="dot_276f3df9c3fc7d23f14a0984964d0686.svg" alt="Dot diagram"></p>
 <p>Now, consider the paths between each of the two nodes in the path above (v1 and v5) and v2: <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> ...</p>
 <p><img src="dot_188fe43ede6da8ad09ce44fa84eabf77.svg" alt="Dot diagram"></p>
-<p>Notice how the edges highlighted between <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> and <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> would be the same had it not been for the two highlights on v2's <a href="#BM_(limb)%2Fi">limb</a>. Adding <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i0)</span> to <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> makes it so that so that each edge is highlighted an equal number of times ...</p>
+<p>Notice how the edges highlighted between <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> and <span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> would be the same had it not been for the two highlights on v2's <a href="#BM_(limb)%2Fi">limb</a>. Adding <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i0)</span> to <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> makes it so that each edge is highlighted an equal number of times ...</p>
 <p><img src="dot_be3424051e002c75fa44c9de8ac7357c.svg" alt="Dot diagram"></p>
 <p><span style="background-color: orange; color: black; padding: 3px">path(v1,v2)</span> + <span style="background-color: blue; color: white; padding: 3px">path(v2,v5)</span> = <span style="background-color: pink; color: black; padding: 3px">path(v1,v5)</span> + <span style="background-color: red; color: white; padding: 3px">2 * path(v2,i1)</span></p>
 <p>Contrast the above to what happens when the pair of leaf nodes selected DOESN'T travel through v2's parent. For example, <span style="background-color: purple; color: white; padding: 3px">path(v4,v5)</span> doesn't travel through v2's parent ...</p>
@@ -10336,7 +10341,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The Pevzner book has the 2nd formula above as &gt;= instead of &gt;.</p>
-<p>I'm assuming they did this because they're letting edge weights be &gt;= 0 instead of &gt; 0, which doesn't make sense because an edge with a weight of 0 means the same entity exists on both ends of edge. If an edge weight is 0, it'll contribute nothing to the distance, meaning that more edges being highlighted doesn't necessarily mean a larger distance.</p>
+<p>I'm assuming they did this because they're letting edge weights be &gt;= 0 instead of &gt; 0, which doesn't make sense because an edge with a weight of 0 means the same entity exists on both ends of the edge. If an edge weight is 0, it'll contribute nothing to the distance, meaning that more edges being highlighted doesn't necessarily mean a larger distance.</p>
 </div>
 <p>In the above formulas, L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is represented as dist(L,Lp). Except for dist(L,Lp), all distances in the formulas are between leaf nodes and as such are found in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. Therefore, the formulas need to be isolated to dist(L,Lp) in order to derive what L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is ...</p>
 <ul>
@@ -10360,7 +10365,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 </li>
 </ul>
 <p>Notice the left-hand side of both solved formulas are the same: (dist(L,A) + dist(L,B) - dist(A,B)) / 2</p>
-<p>The algorithm for finding <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is essentially an exhaustive test. Of all leaf node pairs (L not included), the one producing the smallest left-hand side result is guaranteed to the be L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. Anything larger will include weights from more edges than just L's <a href="#BM_(limb)%2Fi">limb</a>.</p>
+<p>The algorithm for finding <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is essentially an exhaustive test. Of all leaf node pairs (L not included), the one producing the smallest left-hand side result is guaranteed to be L's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>. Anything larger will include weights from more edges than just L's <a href="#BM_(limb)%2Fi">limb</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>From the book:</p>
@@ -10368,7 +10373,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <p>Exercise Break: The algorithm proposed on the previous step computes <a href="#BM_(limb)%2Fi">Limb</a>Length(j) in O(n2) time (for an n x n <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>). Design an algorithm that computes <a href="#BM_(limb)%2Fi">Limb</a>Length(j) in O(n) time.</p>
 </blockquote>
 <p>The answer to this is obvious now that I've gone through and reasoned about things above.</p>
-<p>For the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> formula to work, you need to find leaf nodes (A, B) whose path travels through leaf node L's parent (Lp). Originally, the book had you try all combination of leafs (L excluded) and take the minimum. That works, but you don't need to try all possible pairs. Instead, you can just pick any leaf (that isn't L) for A and test against every other node (that isn't L) to find B -- as with the original method, you pick the B that produces the minimum value.</p>
+<p>For the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> formula to work, you need to find leaf nodes (A, B) whose path travels through leaf node L's parent (Lp). Originally, the book had you try all combinations of leaf nodes (L excluded) and take the minimum. That works, but you don't need to try all possible pairs. Instead, you can just pick any leaf (that isn't L) for A and test against every other node (that isn't L) to find B -- as with the original method, you pick the B that produces the minimum value.</p>
 <p>Because a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is a <a href="#BM_(connected)%2Fi">connected</a> graph (a path exists between each node and all other nodes), at least 1 path will exist starting from A that travels through Lp.</p>
 <pre class="hljs"><code>leaf_nodes.remove(L)  <span class="hljs-comment"># remove L from the set</span>
 A = leaf_nodes.pop()  <span class="hljs-comment"># removes and returns an arbitrary leaf node</span>
@@ -10605,7 +10610,7 @@ dist(L,A) + dist(L,B) - dist(A,B) &gt; 2 * dist(L,Lp)
 <p>If the two leaf nodes chosen are ...</p>
 <ul>
 <li>
-<p>within the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>, the path will <em>never</em> travel through v2's parent (i1), meaning that the second formula evaluate to true. For example, since <span style="background-color: cyan; color: black; padding: 3px">v4</span> and <span style="background-color: cyan; color: black; padding: 3px">v5</span> are within the same subset, <span style="background-color: purple; color: white; padding: 3px">path(v4,v5)</span> doesn't travel through v2's parent ...</p>
+<p>within the same <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>, the path will <em>never</em> travel through v2's parent (i1), meaning that the second formula evaluates to true. For example, since <span style="background-color: cyan; color: black; padding: 3px">v4</span> and <span style="background-color: cyan; color: black; padding: 3px">v5</span> are within the same subset, <span style="background-color: purple; color: white; padding: 3px">path(v4,v5)</span> doesn't travel through v2's parent ...</p>
 <p><img src="dot_e6f808aaac07dac8adda771710b9569c.svg" alt="Dot diagram"></p>
 <p><span style="background-color: blue; color: white; padding: 3px">dist(v2,v4)</span> + <span style="background-color: orange; color: black; padding: 3px">dist(v2,v5)</span> &gt; <span style="background-color: purple; color: white; padding: 3px">dist(v4,v5)</span> + <span style="background-color: red; color: white; padding: 3px">2 * dist(v2,i1)</span></p>
 </li>
@@ -11126,7 +11131,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>Where as v5 was originally contributing 7 to distances, after balding it contributes 0.</p>
+<p>Whereas v5 was originally contributing 7 to distances, after balding it contributes 0.</p>
 <p>As such, subtracting some leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> from its distances in an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> is equivalent to balding that leaf node's <a href="#BM_(limb)%2Fi">limb</a> in its corresponding <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</p>
 <p><a href="ch7_code/src/phylogeny/Balder.py">ch7_code/src/phylogeny/Balder.py</a> (lines 25 to 38):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">bald_distance_matrix</span>(<span class="hljs-params">dm: DistanceMatrix[N], leaf: N</span>) -&gt; <span class="hljs-literal">None</span>:
@@ -11700,7 +11705,7 @@ different subtrees.</p>
 <p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, if the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is ...</p>
 <ul>
 <li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, this algorithm finds a pair of leaf nodes guaranteed to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s in its corresponding unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a>.</li>
-<li>a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive), this algorithm approximates a pair of leaf nodes that are likely to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
+<li>a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to being additive), this algorithm approximates a pair of leaf nodes that are likely to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
 </ul>
 <p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -11829,7 +11834,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>The key to this algorithm is to normalize <a href="#BM_(limb)%2Fi">limb</a> counts returned by <code>combine_counts()</code> such that the each chosen <a href="#BM_(limb)%2Fi">limb</a>'s count equals to each non-chosen <a href="#BM_(limb)%2Fi">limb</a>'s count. That is, each chosen <a href="#BM_(limb)%2Fi">limb</a> count needs to be reduced from <code>leaf_count</code> to 2.</p>
+<p>The key to this algorithm is to normalize <a href="#BM_(limb)%2Fi">limb</a> counts returned by <code>combine_counts()</code> such that each chosen <a href="#BM_(limb)%2Fi">limb</a>'s count equals to each non-chosen <a href="#BM_(limb)%2Fi">limb</a>'s count. That is, each chosen <a href="#BM_(limb)%2Fi">limb</a> count needs to be reduced from <code>leaf_count</code> to 2.</p>
 <p>To do this, each edge in the path between the chosen pair must be subtracted <code>leaf_count - 2</code> times from <code>combine_edge_count()</code>'s result.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">combine_edge_count_and_normalize</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:
     edge_counts = self.combine_edge_count(l1, l2)
@@ -12219,7 +12224,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12288,11 +12293,11 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_aa3cef92115eebf265dad812f9f5ebed.svg" alt="Dot diagram"></p>
+<p><img src="dot_1c25b29f89ace048dcfba49feb7fa951.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
-<p>In the edge count version on this algorithm, <code>edge_count()</code> gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is encountered. In the edge weight multiplicity version, instead of counting how many times each edge gets encountered, each time an edge gets encountered it increases the multiplicity of its weight ...</p>
+<p>This same reasoning is applied to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
+<p>In the edge count version of this algorithm, <code>edge_count()</code> gets the paths from a leaf node to all other leaf nodes and counts up the number of times each edge is encountered. In the edge weight multiplicity version, instead of counting how many times each edge gets encountered, each time an edge gets encountered it increases the multiplicity of its weight ...</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">edge_multiple</span>(<span class="hljs-params">self, l1: N</span>) -&gt; Counter[E]:
     <span class="hljs-comment"># Collect paths from l1 to all other leaf nodes</span>
     path_collection = []
@@ -12395,7 +12400,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p>Similarly, where in the edge count version <code>combine_edge_count_and_normalize()</code> reduces all <a href="#BM_(limb)%2Fi">limb</a>s and possibly some internals edges from <code>combine_edge_count()</code> to a count of 2, the edge multiplicity version reduces weights for those same <a href="#BM_(limb)%2Fi">limb</a>s and edges to a multiple of 2...</p>
+<p>Similarly, where in the edge count version <code>combine_edge_count_and_normalize()</code> reduces all <a href="#BM_(limb)%2Fi">limb</a>s and possibly some internal edges from <code>combine_edge_count()</code> to a count of 2, the edge multiplicity version reduces weights for those same <a href="#BM_(limb)%2Fi">limb</a>s and edges to a multiple of 2...</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">combine_edge_multiple_and_normalize</span>(<span class="hljs-params">self, l1: N, l2: N</span>) -&gt; Counter[E]:
     edge_multiples = self.combine_edge_multiple(l1, l2)
     path_edges = self.path(l1, l2)
@@ -12472,7 +12477,7 @@ different subtrees.</p>
 <li><a href="#BM_(limb)%2Fi">limb</a> B's weight multiplicity reduces to 2.</li>
 <li>other <a href="#BM_(limb)%2Fi">limb</a>s keep their weight multiplicities at 2.</li>
 <li>if the pair are <a href="#BM_(neighbour)%2Fi">neighbour</a>s, each internal edge multiplicity remains at &gt; 2.</li>
-<li>it the pair aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, at least one internal edge multiplicity reduces to 2 while others remain at &gt; 2.</li>
+<li>if the pair aren't <a href="#BM_(neighbour)%2Fi">neighbour</a>s, at least one internal edge multiplicity reduces to 2 while others remain at &gt; 2.</li>
 </ul>
 <table>
 <thead>
@@ -12518,7 +12523,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12587,10 +12592,10 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_6d5a9af8e186325f93625864a4a32f69.svg" alt="Dot diagram"></p>
+<p><img src="dot_4a7e324c1c652900964b3b0e55d4af20.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
+<p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is rewritable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
 <ul>
 <li>
 <p><code>edge_multiple(v1)</code> breaks down to...</p>
@@ -12798,7 +12803,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and a pair of leaf nodes identified as being <a href="#BM_(neighbour)%2Fi">neighbour</a>s, if the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is ...</p>
 <ul>
 <li>an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, this algorithm finds the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s of those <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
-<li>a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive), this algorithm approximates the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s of those <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
+<li>a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to being additive), this algorithm approximates the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a>s of those <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
 </ul>
 <p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <p>Recall that the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm determines the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of L by testing distances between leaf nodes to deduce a pair whose path crosses over L's parent. That won't work here because non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a> have inconsistent distances -- non-additive means no <a href="#BM_(tree)%2Fi">tree</a> exists that fits its distances.</p>
@@ -12807,10 +12812,10 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm is an extension of the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> finding algorithm, essentially running the same computation multiple times and averaging out the results. For example, v1 and v2 are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
 <p><img src="dot_fa269cbcc76261c503f77dc3a6e5b8b6.svg" alt="Dot diagram"></p>
-<p>Since they're <a href="#BM_(neighbour)%2Fi">neighbour</a>s, they share the same parent node, meaning that the ...</p>
+<p>Since they're <a href="#BM_(neighbour)%2Fi">neighbour</a>s, they share the same parent node, meaning that the path from...</p>
 <ul>
-<li>path from v1 to any other leaf node travels over v2's parent.</li>
-<li>path from v2 to any other leaf node travels over v1's parent.</li>
+<li>v1 to any other leaf node travels over v2's parent.</li>
+<li>v2 to any other leaf node travels over v1's parent.</li>
 </ul>
 <p><img src="dot_733281bf7d0b32a752b24ae8e837ae49.svg" alt="Dot diagram"></p>
 <p>Recall that to find the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for L, the standard <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> algorithm had to perform a minimum test to find a pair of leaf nodes whose path travelled over the L's parent. Since this algorithm takes in two <em><a href="#BM_(neighbour)%2Fi">neighbour</a>ing</em> leaf nodes, that test isn't required here. The path from L's <a href="#BM_(neighbour)%2Fi">neighbour</a> to every other node always travels over L's parent.</p>
@@ -12935,7 +12940,7 @@ dist(v1,v2) - dist(v1,v2) - dist(v1,v2) - dist(v1,v2)
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The unoptimized algorithm performs the computation once for each leaf node in the pair. This in inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate work.</p>
+<p>The unoptimized algorithm performs the computation once for each leaf node in the pair. This is inefficient in that it's repeating a lot of the same operations twice. This algorithm removes a lot of that duplicate work.</p>
 <p>The unoptimized algorithm maps to the formula ...</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><mfrac><mrow><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub><mo>−</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{n-2} \cdot \sum_{k \isin S-\{l1,l2\}}{\frac{D_{l1,l2} + D_{l1,k} - D_{l2,k}}{2}}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.876335em;vertical-align:-1.516005em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span><span class="mrel mtight">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span><span class="mbin mtight">−</span><span class="mopen mtight">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span><span class="mclose mtight">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></span></div><p>... where ...</p>
@@ -13025,11 +13030,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} + \frac{1}{n-2} \cdot (\textcolor{#007f7f
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mo>−</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><mstyle mathcolor="#7f7f00"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo>−</mo><mstyle mathcolor="#007f7f"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">len(l2) = \frac{1}{2} \cdot (D_{l1,l2} - \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span><span class="mbin mtight" style="color:#7f7f00;">−</span><span class="mopen mtight" style="color:#7f7f00;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">2</span><span class="mclose mtight" style="color:#7f7f00;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span><span class="mbin mtight" style="color:#007f7f;">−</span><span class="mopen mtight" style="color:#007f7f;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">1</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mclose mtight" style="color:#007f7f;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div></li>
 </ol>
-<p>After this re-organization, the two match up almost exactly. The only difference is that an addition has been swapped to a subtraction...</p>
+<p>After this reorganization, the two match up almost exactly. The only difference is that an addition has been swapped to a subtraction...</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>+</mo></mstyle><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><mstyle mathcolor="#7f7f00"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo>−</mo><mstyle mathcolor="#007f7f"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mspace linebreak="newline" height="0.5em"></mspace><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>−</mo></mstyle><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><mstyle mathcolor="#7f7f00"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>l</mi><mn>1</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo>−</mo><mstyle mathcolor="#007f7f"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>l</mi><mn>1</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}}))
 \\[0.5em]
 len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l2,l1\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l2,l1\}}{D_{l2,k}}}))
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span><span class="mbin mtight" style="color:#7f7f00;">−</span><span class="mopen mtight" style="color:#7f7f00;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">2</span><span class="mclose mtight" style="color:#7f7f00;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span><span class="mbin mtight" style="color:#007f7f;">−</span><span class="mopen mtight" style="color:#007f7f;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">1</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mclose mtight" style="color:#007f7f;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span><span class="mbin mtight" style="color:#7f7f00;">−</span><span class="mopen mtight" style="color:#7f7f00;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">2</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mclose mtight" style="color:#7f7f00;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span><span class="mbin mtight" style="color:#007f7f;">−</span><span class="mopen mtight" style="color:#007f7f;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">1</span><span class="mclose mtight" style="color:#007f7f;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div><p>The point of this optimization is that the summation calculation only need to be performed once. The result can be used to calculate the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for both of the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes...</p>
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span><span class="mbin mtight" style="color:#7f7f00;">−</span><span class="mopen mtight" style="color:#7f7f00;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">2</span><span class="mclose mtight" style="color:#7f7f00;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span><span class="mbin mtight" style="color:#007f7f;">−</span><span class="mopen mtight" style="color:#007f7f;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">1</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mclose mtight" style="color:#007f7f;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span><span class="mspace newline" style="margin-top:0.5em;"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin" style="color:#ff0000;">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mopen">(</span><span class="mop op-limits" style="color:#7f7f00;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span><span class="mrel mtight" style="color:#7f7f00;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#7f7f00;">S</span><span class="mbin mtight" style="color:#7f7f00;">−</span><span class="mopen mtight" style="color:#7f7f00;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">2</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mclose mtight" style="color:#7f7f00;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#7f7f00;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#7f7f00;"><span class="mord" style="color:#7f7f00;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#7f7f00;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#7f7f00;"><span class="mord mtight" style="color:#7f7f00;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#7f7f00;">l</span><span class="mord mtight" style="color:#7f7f00;">1</span><span class="mpunct mtight" style="color:#7f7f00;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#7f7f00;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits" style="color:#007f7f;"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span><span class="mrel mtight" style="color:#007f7f;">∈</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;color:#007f7f;">S</span><span class="mbin mtight" style="color:#007f7f;">−</span><span class="mopen mtight" style="color:#007f7f;">{</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">1</span><span class="mclose mtight" style="color:#007f7f;">}</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op" style="color:#007f7f;">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord" style="color:#007f7f;"><span class="mord" style="color:#007f7f;"><span class="mord mathnormal" style="margin-right:0.02778em;color:#007f7f;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight" style="color:#007f7f;"><span class="mord mtight" style="color:#007f7f;"><span class="mord mathnormal mtight" style="margin-right:0.01968em;color:#007f7f;">l</span><span class="mord mtight" style="color:#007f7f;">2</span><span class="mpunct mtight" style="color:#007f7f;">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;color:#007f7f;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div><p>The point of this optimization is that the summation calculation only needs to be performed once. The result can be used to calculate the <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> for both of the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes...</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>r</mi><mi>e</mi><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><mstyle mathcolor="#7f7f00"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo>−</mo><mstyle mathcolor="#007f7f"><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>S</mi><mo>−</mo><mo stretchy="false">{</mo><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn><mo stretchy="false">}</mo></mrow></munder><msub><mi>D</mi><mrow><mi>l</mi><mn>2</mn><mo separator="true">,</mo><mi>k</mi></mrow></msub></mstyle><mo stretchy="false">)</mo><mspace linebreak="newline" height="0.5em"></mspace><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>+</mo></mstyle><mi>r</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo><mspace linebreak="newline" height="0.5em"></mspace><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>D</mi><mrow><mi>l</mi><mn>1</mn><mo separator="true">,</mo><mi>l</mi><mn>2</mn></mrow></msub><mstyle mathcolor="#ff0000"><mo>−</mo></mstyle><mi>r</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">res = \frac{1}{n-2} \cdot (\textcolor{#7f7f00}{\sum_{k \isin S-\{l1,l2\}}{D_{l1,k}}} - \textcolor{#007f7f}{\sum_{k \isin S-\{l1,l2\}}{D_{l2,k}}})
 \\[0.5em]
 len(l1) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{+} res)
@@ -13147,7 +13152,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FFind%20Neighbour%20Limb%20Lengths%2FAverage%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Find Neighbour Limb Lengths/Average Algorithm</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and a pair of leaf nodes identified as being <a href="#BM_(neighbour)%2Fi">neighbour</a>s, this algorithm removes those <a href="#BM_(neighbour)%2Fi">neighbour</a>s from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and brings their parent to the forefront (as a leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>). If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to be being additive), this algorithm approximates the shared parent.</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and a pair of leaf nodes identified as being <a href="#BM_(neighbour)%2Fi">neighbour</a>s, this algorithm removes those <a href="#BM_(neighbour)%2Fi">neighbour</a>s from the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and brings their parent to the forefront (as a leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>). If the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (but close to being additive), this algorithm approximates the shared parent.</p>
 <p><strong>WHY</strong>: This operation is required for <em>approximating</em> a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</p>
 <a name="H1_Average%20Algorithm"></a><h4>Average Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FPhylogeny%2FMerge%20Neighbours%2FAverage%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -13974,7 +13979,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>L and N are <a href="#BM_(neighbour)%2Fi">neighbour</a>s.</li>
 <li>X is a leaf node that isn't L or N.</li>
 </ul>
-<p>Note that the distance calculate by inverse_len example above is exactly the same distance you'd get for v3 when balding and merging v0 and v1 using the averaging algorithm. That is, instead of using the averaging algorithm to bald and merge the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair, you can just inject inverse_len's result for each leaf node into the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and remove the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair.</p>
+<p>Note that the distance calculated by the inverse_len example above is exactly the same distance you'd get for v3 when balding and merging v0 and v1 using the averaging algorithm. That is, instead of using the averaging algorithm to bald and merge the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair, you can just inject inverse_len's result for each leaf node into the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and remove the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing pair.</p>
 <p>The inverse_len for leaf node ...</p>
 <ul>
 <li>v2: 0.5 * (dist(v0,v2) + dist(v1,v2) - dist(v0,v1)) = 0.5 * (21 + 12 - 13) = 10</li>
@@ -14365,13 +14370,13 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FAdditive%20Distance%20Matrix%20Cardinality)_TOPIC%2F">Algorithms/Phylogeny/Additive Distance Matrix Cardinality</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, convert that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> into a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a>. Different algorithms are presented that either ...</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, convert that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> into an <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a>. Different algorithms are presented that either ...</p>
 <ul>
 <li>find the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>,</li>
 <li>approximate a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>,</li>
 <li>approximate a <a href="#BM_(tree)%2Fi">tree</a> for a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> regardless of if it's additive or not.</li>
 </ul>
-<p><strong>WHY</strong>: Recall that converting a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is the end goal of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Given the distances between set of known / present-day entities, these algorithms will infer their evolutionary relationships.</p>
+<p><strong>WHY</strong>: Recall that converting a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> to a <a href="#BM_(tree)%2Fi">tree</a> is the end goal of <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Given the distances between a set of known / present-day entities, these algorithms will infer their evolutionary relationships.</p>
 <a name="H_UPGMA%20Algorithm"></a><h4>UPGMA Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -14388,7 +14393,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </ul>
 <p>This assumption is what makes the <a href="#BM_(tree)%2Fi">tree</a> <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric</a>. A set of present day species (leaf nodes) are assumed to all have the same amount of mutation (distance) from their shared ancestor (shared internal node).</p>
 <p><img src="svgbob_9c45e3a8fedf42d570c570b7c417173e7ed57970.svg" alt="Kroki diagram output"></p>
-<p>For example, assume the present year is 2000. Four present day species share a common ancestor from year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.</p>
+<p>For example, assume the present year is 2000. Four present day species share a common ancestor from the year 1800. The age difference between each of these four species and their shared ancestor is the same: 2000 - 1800 = 200 years.</p>
 <p>Since the rate of mutation is assumed to be consistent, all four present day species should have roughly the same amount of mutation when compared against their shared ancestor: 200 years worth of mutation. Assume the number of <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a> reversals is being used as the measure of mutation. If the rate of reversals expected per 100 years is 2, the distance between each of the four present day species and their shared ancestor would be 4: 2 reversals per century * 2 centuries = 4 reversals.</p>
 <p><img src="svgbob_55b2b7d647c259a686085e583dce32da8851a4b6.svg" alt="Kroki diagram output"></p>
 <p>In the example above, ...</p>
@@ -14743,7 +14748,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_a7db226e0309fe74cf1483f2a29a86e5.svg" alt="Dot diagram"></p>
+<p><img src="dot_76a7637593a80d0d8ad16fd257528bce.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14828,24 +14833,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v2 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>22.0</td></tr><tr><td>v5</td><td>22.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v2 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v3</td><td>21.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v0 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v5 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_d8aa7b0385477dc75367dc1ca7469068.svg" alt="Dot diagram"></p>
-<p>Attached v1 to produce tree...</p>
-<p><img src="dot_a74c6363aee5c6245ad03d42d7019fd6.svg" alt="Dot diagram"></p>
+<p><img src="dot_0835ab245548d28aea09607b85363b50.svg" alt="Dot diagram"></p>
+<p>Attached v5 to produce tree...</p>
+<p><img src="dot_afbf7ca5496a89d24c8202621113a8ed.svg" alt="Dot diagram"></p>
+<p>Attached v0 to produce tree...</p>
+<p><img src="dot_764588d8e6d9cc89d001d52d4cd4e4de.svg" alt="Dot diagram"></p>
 <p>Attached v2 to produce tree...</p>
-<p><img src="dot_4f065a32b05275160396bcd45f04b963.svg" alt="Dot diagram"></p>
-<p>Attached v4 to produce tree...</p>
-<p><img src="dot_ef428abe4de0495393666e1991fb0387.svg" alt="Dot diagram"></p>
-<p>Attached v3 to produce tree...</p>
-<p><img src="dot_10b48c1ae60e12fc66a0a1a9c7913ca5.svg" alt="Dot diagram"></p>
+<p><img src="dot_5d245f2de440b1221f2131f5a14f670b.svg" alt="Dot diagram"></p>
+<p>Attached v1 to produce tree...</p>
+<p><img src="dot_2e65fc079f376ec8460662b0c877f911.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15015,20 +15020,20 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v1', 'v2') with their parent N3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('N3', 'N2') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N4</th><th>v0</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>11.625</td></tr><tr><td>v0</td><td>11.625</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v1', 'v2') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N3</th><th>N4</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>0.375</td></tr><tr><td>N4</td><td>0.375</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_1279e3994a36c97f925af56dfdc65753.svg" alt="Dot diagram"></p>
-<p>Attached ('N3', 'N2') to N4 to produce tree...</p>
-<p><img src="dot_c58722faeceae8a418d494b51ecfb364.svg" alt="Dot diagram"></p>
-<p>Attached ('v1', 'v2') to N3 to produce tree...</p>
-<p><img src="dot_8b23f0b93cd8206793b72258f2a6a76e.svg" alt="Dot diagram"></p>
+<p><img src="dot_be14fd16e403f27a505730a47fb24818.svg" alt="Dot diagram"></p>
+<p>Attached ('v1', 'v2') to N4 to produce tree...</p>
+<p><img src="dot_45a3df8590715f6b19a5ac4569fc19f2.svg" alt="Dot diagram"></p>
+<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
+<p><img src="dot_f5f3ef03d72466e19511b1e64c2873ff.svg" alt="Dot diagram"></p>
 <p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_a6363a1967a3cac9da56fc327b32d7fe.svg" alt="Dot diagram"></p>
+<p><img src="dot_9c901a2e6a64f235d15abdc4d4ca2727.svg" alt="Dot diagram"></p>
 <p>Attached ('v3', 'v4') to N1 to produce tree...</p>
-<p><img src="dot_d5a234ddce26fdde3302bd6ab76e40b4.svg" alt="Dot diagram"></p>
+<p><img src="dot_147517b1f8067e3367e6c5312f07c15c.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15041,7 +15046,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This is essentially a hammer, ignoring much of the logic and techniques derived in prior sections. There is no code for this section because writing it involves doing things like writing a generic linear systems solver, evolutionary algorithms framework, etc... There are Python packages you can use if you really want to do this, but this section is more describing the overarching idea.</p>
-<p>The logic and techniques in prior section typically work much better and much faster than doing something like this, but this doesn't require as much reasoning / thinking. This idea was first hinted at in the Pevzner book when first describing how to assign weights for non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>.</p>
+<p>The logic and techniques in prior sections typically work much better and much faster than doing something like this, but this doesn't require as much reasoning / thinking. This idea was first hinted at in the Pevzner book when first describing how to assign weights for non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrices</a>.</p>
 </div>
 <p>Given an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, if you already know the structure of the <a href="#BM_(tree)%2Fi">tree</a>, with edge weights that satisfy that <a href="#BM_(tree)%2Fi">tree</a> are derivable from that <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. For example, given the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and <a href="#BM_(tree)%2Fi">tree</a> structure...</p>
 <table>
@@ -15137,10 +15142,11 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p><strong>WHY</strong>: Inferring ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s may help provide additional insight / clues as to the evolution that took place.</p>
 <a name="H_Small%20Parsimony%20Algorithm"></a><h4>Small Parsimony Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference%2FSmall%20Parsimony%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<p>Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> and the <a href="#BM_(sequence)%2Fi">sequence</a>s for its leaf nodes (known entities), this algorithm infers <a href="#BM_(sequence)%2Fi">sequence</a>s for its internal nodes (ancestor entities) based on how likely it is for <a href="#BM_(sequence)%2Fi">sequence</a> elements to change from one type to another. The algorithm only works on <a href="#BM_(sequence)%2Fi">sequence</a>s of matching length.</p>
+<p>Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> and the <a href="#BM_(sequence)%2Fi">sequence</a>s for its leaf nodes (known entities), this algorithm infers <a href="#BM_(sequence)%2Fi">sequence</a>s for its internal nodes (ancestor entities) based on how likely it is for <a href="#BM_(sequence)%2Fi">sequence</a> elements to change from one type to another. The <a href="#BM_(sequence)%2Fi">sequence</a> / <a href="#BM_(sequence)%2Fi">sequence</a> element most likely to be there is said to be the most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>.</p>
+<p>The algorithm only works on <a href="#BM_(sequence)%2Fi">sequence</a>s of matching length.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>If you're interested to see why it's called small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>, see the next section which describes small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> vs large <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
+<p>If you're interested to see why it's called <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a>, see the next section which describes <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> vs <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">large parsimony</a>.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -15204,7 +15210,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>These maps are built from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the <a href="#BM_(tree)%2Fi">tree</a>. Since the <a href="#BM_(sequence)%2Fi">sequence</a>s at leaf nodes are known (leaf nodes represent known entities), building their maps is fairly straight forward: 0.0 distance for the element at that index and ∞ distance for all other elements. For example, the <a href="#BM_(sequence)%2Fi">sequence</a> ACTGCT would generate the following mappings at each index ...</p>
+<p>These maps are built from the ground up, starting at leaf nodes and working their way "upward" through the internal nodes of the <a href="#BM_(tree)%2Fi">tree</a>. Since the <a href="#BM_(sequence)%2Fi">sequence</a>s at leaf nodes are known (leaf nodes represent known entities), building their maps is fairly straightforward: 0.0 distance for the element at that index and ∞ distance for all other elements. For example, the <a href="#BM_(sequence)%2Fi">sequence</a> ACTGCT would generate the following mappings at each index ...</p>
 <table>
 <thead>
 <tr>
@@ -15345,13 +15351,21 @@ n4_val = <span class="hljs-built_in">min</span>(
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the <a href="#BM_(sequence)%2Fi">sequence</a>s have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.</p>
+<p>If the <a href="#BM_(tree)%2Fi">tree</a> is unrooted, the Pevzner book says to pick an edge and inject a fake root into it, then remove it once the <a href="#BM_(sequence)%2Fi">sequence</a>s have been inferred. It says that if the <a href="#BM_(tree)%2Fi">tree</a> is a binary <a href="#BM_(tree)%2Fi">tree</a> and <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is used as the metric, the same element type will win at every index of every node (lowest distance) regardless of which edge the fake root was injected into. At least I think that's what it says -- maybe it means the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> will be the same (<a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> discussed in next section).</p>
+<p>If the <a href="#BM_(tree)%2Fi">tree</a> isn't binary and/or something other than <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is chosen as the metric, will this still be the case? If it isn't, I can't see how doing that is any better than just picking some internal node to be the root.</p>
 <p>So which node should be selected as root? The <a href="#BM_(tree)%2Fi">tree</a> structure being used for this algorithm very likely came from a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> built using distances (e.g. <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>, etc..). Here are a couple of ideas I just thought up:</p>
 <ul>
 <li>For each leaf node, count the number of nodes in the path to reach that internal node. Sum up the counts and pick the internal node with the largest sum as the root.</li>
 <li>For each leaf node, calculate the distance to reach that internal node. Sum up the distances and pick the internal node with the largest sum as the root.</li>
 </ul>
 <p>I think the second one might not work because all sums will be the same? Maybe instead average the distances to leaf nodes and pick the one with the largest average?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>In addition to <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a>, there's <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">large parsimony</a>.</p>
+<p><a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">Small parsimony</a>: When a <a href="#BM_(tree)%2Fi">tree</a> structure and its leaf node <a href="#BM_(sequence)%2Fi">sequence</a>s are given, derive the internal node <a href="#BM_(sequence)%2Fi">sequence</a>s with the lowest possible distance (most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</p>
+<p><a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">Large parsimony</a>: When only the leaf node <a href="#BM_(sequence)%2Fi">sequence</a>s are given, derive the combination of <a href="#BM_(tree)%2Fi">tree</a> structure and internal node <a href="#BM_(sequence)%2Fi">sequence</a>s with the lowest possible distance (most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</p>
+<p>Trying to do <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">large parsimony</a> explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.</p>
 </div>
 <p><a href="ch7_code/src/sequence_phylogeny/SmallParsimony.py">ch7_code/src/sequence_phylogeny/SmallParsimony.py</a> (lines 54 to 146):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_distance_sets</span>(<span class="hljs-params">
@@ -15451,8 +15465,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p></p>
 <p>The tree...</p>
 <p><img src="dot_a68c13de3d0e4bcf34af631d2256b12f.svg" alt="Dot diagram"></p>
-<p>... with i0 set as its root ...</p>
-<p>... and the distances ...</p>
+<p>... with i0 set as its root and the distances ...</p>
 <table>
 <thead><tr>
 <th></th>
@@ -15498,7 +15511,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The distances used in the example execution above is <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>. If you're working with proteins, a more appropriate matrix might be a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrix (e.g. <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.</p>
+<p>The <a href="#BM_(distance%20metric)%2Fi">distance metric</a> used in the example execution above is <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>. If you're working with proteins, a more appropriate matrix might be a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrix (e.g. <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62). Whatever you use, just make sure to negate the values if appropriate -- it should be such that the lower the distance the stronger the affinity.</p>
 </div>
 <a name="H_Nearest%20Neighbour%20Interchange%20Algorithm"></a><h4>Nearest Neighbour Interchange Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference%2FNearest%20Neighbour%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -15508,60 +15521,59 @@ n4_val = <span class="hljs-built_in">min</span>(
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference%2FSmall%20Parsimony%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Sequence Inference/Small Parsimony Algorithm</a></li>
 </ul>
 </div>
-<p>The problem with small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> is that <a href="#BM_(sequence)%2Fi">sequence</a>s inferred vary greatly based on both the given <a href="#BM_(tree)%2Fi">tree</a> structure and the element <a href="#BM_(distance%20metric)%2Fi">distance metric</a> used. Specifically, there are many ways in which...</p>
+<p>The problem with <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> is that inferred <a href="#BM_(sequence)%2Fi">sequence</a>s vary greatly based on both the given <a href="#BM_(tree)%2Fi">tree</a> structure and the element <a href="#BM_(distance%20metric)%2Fi">distance metric</a> used. Specifically, there are many ways in which...</p>
 <ol>
-<li>a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> structure can be generated (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>, <a href="#BM_(neighbour)%2Fi">neighbour</a> joining algorithm, etc..).</li>
+<li>a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> structure can be generated (e.g. <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>, <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, etc..).</li>
 <li>a distance can be generated between two elements of a <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250, <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62, <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a>, etc...).</li>
 </ol>
-<p>Often times the two aren't entirely complementary, meaning that while the inferred <a href="#BM_(sequence)%2Fi">sequence</a>s may be reasonable, they likely aren't optimal.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>That's why it's called small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>: When the algorithm requires a <a href="#BM_(tree)%2Fi">tree</a> structure before it infers <a href="#BM_(sequence)%2Fi">sequence</a>s, it's called small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>. If the algorithm both generates both the <a href="#BM_(tree)%2Fi">tree</a> structure and infers internal node <a href="#BM_(sequence)%2Fi">sequence</a>s, such that the <a href="#BM_(tree)%2Fi">tree</a> + inferred <a href="#BM_(sequence)%2Fi">sequence</a>s generates the minimum possible distance out of all possible <a href="#BM_(tree)%2Fi">tree</a> + inferred <a href="#BM_(sequence)%2Fi">sequence</a>s, it's called large <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>.</p>
-<p>Trying to do large <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.</p>
-</div>
-<p>Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> where small <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a> has been applied, its possible to infer its "quality" by calculating a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. For each edge, compute a weight by taking the two <a href="#BM_(sequence)%2Fi">sequence</a>s at its ends and summing the distances between the element pairs at each index. For example, ...</p>
+<p>Oftentimes the combination of <a href="#BM_(tree)%2Fi">tree</a> structure and internal node <a href="#BM_(sequence)%2Fi">sequence</a>s may be reasonable, but they likely aren't optimal (see <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">large parsimony</a>).</p>
+<p>Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> where <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> has been applied, it's possible to derive a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>: a measure of how likely the scenario is based on <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimony</a>. For each edge, compute a weight by taking the two <a href="#BM_(sequence)%2Fi">sequence</a>s at its ends and summing the distances between the element pairs at each index. For example, ...</p>
 <p><img src="svgbob_16d74c50ad8227599d75c5e09d62af6f5a25930f.svg" alt="Kroki diagram output"></p>
 <p>The sum of edge weights is the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of the <a href="#BM_(tree)%2Fi">tree</a> (lower sum is better). For example, the following <a href="#BM_(tree)%2Fi">tree</a> has a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of 4...</p>
 <p><img src="svgbob_f901ad93961054da4bd1b48a748231e62eaecec6.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/sequence_phylogeny/ParsimonyScore.py">ch7_code/src/sequence_phylogeny/ParsimonyScore.py</a> (lines 47 to 71):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_edge_similarity</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        get_sequence: <span class="hljs-type">Callable</span>[[ND], <span class="hljs-built_in">str</span>],
-        set_weight: <span class="hljs-type">Callable</span>[[ED, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>]
-</span>) -&gt; <span class="hljs-literal">None</span>:
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
-        n1, n2, e_data = g.get_edge(e)
-        n1_data = g.get_node_data(n1)
-        n2_data = g.get_node_data(n2)
-        n1_seq = get_sequence(n1_data)
-        n2_seq = get_sequence(n2_data)
-        weight = hamming_distance(n1_seq, n2_seq)
-        set_weight(e_data, weight)
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">parsimony_score</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        get_weight: <span class="hljs-type">Callable</span>[[ED], <span class="hljs-built_in">float</span>]
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 114 to 141):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">parsimony_score</span>(<span class="hljs-params">
+        tree: Graph[N, ND, E, ED],
+        seq_length: <span class="hljs-built_in">int</span>,
+        get_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,  <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>  <span class="hljs-comment"># index within N's sequence</span>
+            ],
+            <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+        ],
+        set_edge_score: <span class="hljs-type">Callable</span>[[E, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>],
+        dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>]
 </span>) -&gt; <span class="hljs-built_in">float</span>:
-    ret = <span class="hljs-number">0.0</span>
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
-        e_data = g.get_edge_data(e)
-        ret += get_weight(e_data)
-    <span class="hljs-keyword">return</span> ret
+    total_score = <span class="hljs-number">0.0</span>
+    edges = <span class="hljs-built_in">set</span>(tree.get_edges())  <span class="hljs-comment"># iterator to set -- avoids concurrent modification bug</span>
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        n1, n2 = tree.get_edge_ends(e)
+        e_score = <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(seq_length):
+            n1_ds = get_dist_set(n1, idx)
+            n2_ds = get_dist_set(n2, idx)
+            n1_elem = <span class="hljs-built_in">min</span>(n1_ds, key=<span class="hljs-keyword">lambda</span> k: n1_ds[k])
+            n2_elem = <span class="hljs-built_in">min</span>(n2_ds, key=<span class="hljs-keyword">lambda</span> k: n2_ds[k])
+            e_score += dist_metric(n1_elem, n2_elem)
+        set_edge_score(e, e_score)
+        total_score += e_score
+    <span class="hljs-keyword">return</span> total_score
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>The tree...</p>
-<p><img src="dot_73836a09c0b24813dd39eb5630f622bb.svg" alt="Dot diagram"></p>
-<p>... has a parsimony score of ...</p>
-<p>4.0</p>
-<p><img src="dot_ae0ee91552f0b79a136d5cf42f4efc2f.svg" alt="Dot diagram"></p>
+<p><img src="dot_a68c13de3d0e4bcf34af631d2256b12f.svg" alt="Dot diagram"></p>
+<p>... has a parsimony score of 4.0...</p>
+<p><img src="dot_9c5b11c92142545ea08ba670225b5958.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>The nearest <a href="#BM_(neighbour)%2Fi">neighbour</a> interchange algorithm is a greedy heuristic which attempts to perturb the <a href="#BM_(tree)%2Fi">tree</a> to produce a lower <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. The core operation of this algorithm is to pick an internal edge within the <a href="#BM_(tree)%2Fi">tree</a> and swaps <a href="#BM_(neighbour)%2Fi">neighbour</a>s between the nodes at each end ...</p>
+<p>The nearest <a href="#BM_(neighbour)%2Fi">neighbour</a> interchange algorithm is a greedy heuristic which attempts to perturb the <a href="#BM_(tree)%2Fi">tree</a> to produce a lower <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. The core operation of this algorithm is to pick an internal edge within the <a href="#BM_(tree)%2Fi">tree</a> and swap <a href="#BM_(neighbour)%2Fi">neighbour</a>s between the nodes at each end ...</p>
 <p><img src="svgbob_a209a19385ac0e0a95667e64b6fa185c896caa9f.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 49 to 79):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nearest_neighbour_interchange_options</span>(<span class="hljs-params">
+<p>These swaps aren't just the nodes themselves, but the entire <a href="#BM_(subtree%7Csub-tree)%2Fi">sub-tree</a>s under those nodes. For example, ...</p>
+<p><img src="svgbob_d02488346a63826fb1e96ed8e19ecc587aee966c.svg" alt="Kroki diagram output"></p>
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 49 to 110):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">list_nn_swap_options</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, ED],
         edge: E
 </span>) -&gt; <span class="hljs-built_in">set</span>[
@@ -15592,11 +15604,9 @@ n4_val = <span class="hljs-built_in">min</span>(
             <span class="hljs-keyword">continue</span>
         ret.add((n1_edges_perturbed, n2_edges_perturbed))
     <span class="hljs-keyword">return</span> ret
-</code></pre>
-<p>These swaps aren't just the nodes themselves, but the entire <a href="#BM_(subtree%7Csub-tree)%2Fi">sub-tree</a>s under those nodes ...</p>
-<p><img src="svgbob_fe6083fd7d618afc9ceb6fe15b29f2a5be041b23.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 84 to 112):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">interchange_neighbours</span>(<span class="hljs-params">
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">nn_swap</span>(<span class="hljs-params">
     tree: Graph[N, ND, E, ED],
     edge: E,
     side1: <span class="hljs-built_in">frozenset</span>[E],
@@ -15625,22 +15635,176 @@ n4_val = <span class="hljs-built_in">min</span>(
         tree.insert_edge(e, n2, end, data)
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">frozenset</span>(n1_edges), <span class="hljs-built_in">frozenset</span>(n2_edges)  <span class="hljs-comment"># return original edges</span>
 </code></pre>
-<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, the algorithm goes over each internal edge and tries all possibly <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_9b81e948066b89df103053f4b105da53.svg" alt="Dot diagram"></p>
+<p>... can have any of the following nearest neighbour swaps on edge i0-i1...</p>
+<p><img src="dot_224a72c24122685519c71ad915c844c9.svg" alt="Dot diagram"></p>
+<p><img src="dot_29f7434a3cdd6cb6ef24af57339c6681.svg" alt="Dot diagram"></p>
+<p><img src="dot_618f5a59247efef5120ce07be88aa291.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and tries all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 145 to 250):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nn_interchange</span>(<span class="hljs-params">
+        tree: Graph[N, ND, E, ED],
+        root: N,
+        seq_length: <span class="hljs-built_in">int</span>,
+        get_sequence: <span class="hljs-type">Callable</span>[[N], <span class="hljs-built_in">str</span>],
+        set_sequence: <span class="hljs-type">Callable</span>[[N, <span class="hljs-built_in">str</span>], <span class="hljs-literal">None</span>],
+        get_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,  <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>  <span class="hljs-comment"># index within N's sequence</span>
+            ],
+            <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+        ],
+        set_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,  <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>,  <span class="hljs-comment"># index within N's sequence</span>
+                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+            ],
+            <span class="hljs-literal">None</span>
+        ],
+        dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>],
+        set_edge_score: <span class="hljs-type">Callable</span>[[E, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>],
+        elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>,
+        update_callback: <span class="hljs-type">Optional</span>[<span class="hljs-type">Callable</span>[[Graph, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>]] = <span class="hljs-literal">None</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
+    input_score = <span class="hljs-literal">None</span>
+    output_score = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        populate_distance_sets(
+            tree,
+            root,
+            seq_length,
+            get_sequence,
+            set_sequence,
+            get_dist_set,
+            set_dist_set,
+            dist_metric,
+            elem_types
+        )
+        orig_score = parsimony_score(
+            tree,
+            seq_length,
+            get_dist_set,
+            set_edge_score,
+            dist_metric
+        )
+        <span class="hljs-keyword">if</span> input_score <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            input_score = orig_score
+        output_score = orig_score
+        <span class="hljs-keyword">if</span> update_callback <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            update_callback(tree, output_score)  <span class="hljs-comment"># notify caller that the graph updated</span>
+        swap_scores = []
+        edges = <span class="hljs-built_in">set</span>(tree.get_edges())  <span class="hljs-comment"># bug -- avoids concurrent modification problems</span>
+        <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-comment"># is it a limb? if so, skip it -- we want internal edges only</span>
+            n1, n2 = tree.get_edge_ends(edge)
+            <span class="hljs-keyword">if</span> tree.get_degree(n1) == <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> tree.get_degree(n2) == <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-comment"># get all possible nn swaps for this internal edge</span>
+            options = list_nn_swap_options(tree, edge)
+            <span class="hljs-comment"># for each possible swap...</span>
+            <span class="hljs-keyword">for</span> swapped_side1, swapped_side2 <span class="hljs-keyword">in</span> options:
+                <span class="hljs-comment"># swap</span>
+                orig_side1, orig_side2 = nn_swap(
+                    tree,
+                    edge,
+                    swapped_side1,
+                    swapped_side2
+                )
+                <span class="hljs-comment"># small parsimony</span>
+                populate_distance_sets(
+                    tree,
+                    root,
+                    seq_length,
+                    get_sequence,
+                    set_sequence,
+                    get_dist_set,
+                    set_dist_set,
+                    dist_metric,
+                    elem_types
+                )
+                <span class="hljs-comment"># score and store</span>
+                score = parsimony_score(
+                    tree,
+                    seq_length,
+                    get_dist_set,
+                    set_edge_score,
+                    dist_metric
+                )
+                swap_scores.append((score, edge, swapped_side1, swapped_side2))
+                <span class="hljs-comment"># unswap (back to original tree)</span>
+                nn_swap(
+                    tree,
+                    edge,
+                    orig_side1,
+                    orig_side2
+                )
+        <span class="hljs-comment"># if swap producing the lowest parsimony score is lower than original, apply that</span>
+        <span class="hljs-comment"># swap and try again, otherwise we're finished</span>
+        score, edge, side1, side2 = <span class="hljs-built_in">min</span>(swap_scores, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
+        <span class="hljs-keyword">if</span> score &gt;= orig_score:
+            <span class="hljs-keyword">return</span> input_score, output_score
+        <span class="hljs-keyword">else</span>:
+            nn_swap(tree, edge, side1, side2)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_9b81e948066b89df103053f4b105da53.svg" alt="Dot diagram"></p>
+<p>... with i0 set as its root and the distances ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>A</th>
+<th>C</th>
+<th>T</th>
+<th>G</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>T</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>G</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... has the following inferred ancestor sequences after using nearest neighbour interchange ...</p>
+<p>graph score: 9.0</p>
+<p><img src="dot_5c63144e975c84bc65b983dbf3f880c1.svg" alt="Dot diagram"></p>
+<p>graph score: 6.0</p>
+<p><img src="dot_3f9341b976cb67b4017272f50f38126d.svg" alt="Dot diagram"></p>
+<p>After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score of 6.0 vs the original score of 9.0</p>
+</div>
+<p></p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -16203,6 +16367,27 @@ n4_val = <span class="hljs-built_in">min</span>(
 </ul>
 </div>
 <p></p>
+<a name="H_COVID-19%20Phylogeny"></a><h2>COVID-19 Phylogeny</h2>
+<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
+<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
+<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
+<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
+<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
+<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
+<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
+<a name="H_Find%20Lineage"></a><h3>Find Lineage</h3>
+<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
+<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
+<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
+<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
+<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
+<a name="H_Find%20Ancestral%20Sequences"></a><h3>Find Ancestral Sequences</h3>
+<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
+<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
+<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
+<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
+<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
+<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
 <a name="H_Ideas"></a><h1>Ideas</h1>
 <ul>
 <li>CPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</li>
@@ -18122,7 +18307,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>The recursive graph above shows how $0.17 can be produced from a minimum of 5 coins: 1 x 13 cent denomination and 4 x 1 cent denomination. However, it recomputes identical parts of the graph multiple times. For example, <code>min_coins(3)</code> is independently computed 5 times. With <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming</a>, it would only be computed once and the result would be re-used each subsequent time <code>min_coins(3)</code> gets encountered.</p>
 </li>
 <li>
-<p><a name="BM_(manhattan%20tourist%20problem)%2Fi"></a><strong>manhattan tourist problem</strong> - The <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> is an allegory to help explain <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">sequence alignment graph</a>s. Where as in <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s you're finding a path through the graph from source to sink that has the maximum weight, in the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>:</p>
+<p><a name="BM_(manhattan%20tourist%20problem)%2Fi"></a><strong>manhattan tourist problem</strong> - The <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> is an allegory to help explain <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">sequence alignment graph</a>s. Whereas in <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s you're finding a path through the graph from source to sink that has the maximum weight, in the <a href="#BM_(manhattan%20tourist%20problem)%2Fi">Manhattan tourist problem</a> you're finding a path from 59th St and 8th Ave to 42nd St and 3rd Ave with the most tourist sights to see. It's essentially the same problem as <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a>:</p>
 <ul>
 <li>The graph is the s<a href="#BM_(tree)%2Fi">tree</a>t layout of Manhattan.</li>
 <li>The only options at each intersection are to move right or down.</li>
@@ -18494,7 +18679,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><a name="BM_(severe%20acute%20respiratory%20syndrome)%2Fi"></a><strong>severe acute respiratory syndrome</strong> <a name="BM_(SARS)%2F"></a><strong></strong> - A deadly <a href="#BM_(coronavirus)%2Fi">coronavirus</a> that emerged from China around early 2003.</p>
 </li>
 <li>
-<p><a name="BM_(coronavirus)%2Fi"></a><strong>coronavirus</strong> <a name="BM_(COVID%7CCoV)%2F"></a><strong></strong> - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of sun's atmosphere protruding out).</p>
+<p><a name="BM_(coronavirus)%2Fi"></a><strong>coronavirus</strong> <a name="BM_(COVID%7CCoV)%2F"></a><strong></strong> - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).</p>
 <p>The common cold, <a href="#BM_(SARS)%2F">SARS</a>, and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19 are examples of <a href="#BM_(coronavirus)%2Fi">coronavirus</a>es.</p>
 </li>
 <li>
@@ -18612,12 +18797,12 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><img src="svgbob_4a12a5e83db150bd3a7d62bc553c9ece9b5d54b2.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(subtree%7Csub-tree)%2Fi"></a><strong>subtree</strong> - Given a node in a <a href="#BM_(tree)%2Fi">tree</a>, that node and all of its descendants comprise a <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>. For example, the following <a href="#BM_(tree)%2Fi">tree</a> is has the <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> ...</p>
+<p><a name="BM_(subtree%7Csub-tree)%2Fi"></a><strong>subtree</strong> - Given a node in a <a href="#BM_(tree)%2Fi">tree</a>, that node and all of its descendants comprise a <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a>. For example, the following <a href="#BM_(tree)%2Fi">tree</a> has the <a href="#BM_(subtree%7Csub-tree)%2Fi">subtree</a> ...</p>
 <p><img src="svgbob_045b94a42c0e447555bf437dbf0da870b4ab806c.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(degree)_GRAPH%2Fi"></a><strong>degree</strong> - The number of edges leading into / out of a node of an undirected graph.</p>
-<p>The node below has an <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 3.</p>
+<p>The node below has a <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 3.</p>
 <p><img src="svgbob_60f0bcaccb25a424cce90b06db0fd197ae921dda.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -18754,7 +18939,7 @@ dist(S3, S4) is 5 = x + u + z
 </ul>
 </li>
 <li>
-<p><a name="BM_(neighbour)%2Fi"></a><strong>neighbour</strong> - Given two leaf nodes in a <a href="#BM_(tree)%2Fi">tree</a>, those leaf nodes are said to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s if they share they connect to the same internal node. For example, leaf nodes A and B are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(tree)%2Fi">tree</a> because they both conect to internal node D ...</p>
+<p><a name="BM_(neighbour)%2Fi"></a><strong>neighbour</strong> - Given two leaf nodes in a <a href="#BM_(tree)%2Fi">tree</a>, those leaf nodes are said to be <a href="#BM_(neighbour)%2Fi">neighbour</a>s if they share they connect to the same internal node. For example, leaf nodes A and B are <a href="#BM_(neighbour)%2Fi">neighbour</a>s in the following <a href="#BM_(tree)%2Fi">tree</a> because they both connect to internal node D ...</p>
 <p><img src="svgbob_80372a14f2a248e2ffdfdbfef223b5b15c39f7b1.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -18775,7 +18960,7 @@ dist(S3, S4) is 5 = x + u + z
 </div>
 </li>
 <li>
-<p><a name="BM_(limb%20length%7Climb%20weight)%2Fi"></a><strong>limb length</strong> - Given a leaf node in a <a href="#BM_(tree)%2Fi">tree</a>, the leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is the weight assigned ot its <a href="#BM_(limb)%2Fi">limb</a>. For example, node A has a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 2 in the following <a href="#BM_(tree)%2Fi">tree</a>...</p>
+<p><a name="BM_(limb%20length%7Climb%20weight)%2Fi"></a><strong>limb length</strong> - Given a leaf node in a <a href="#BM_(tree)%2Fi">tree</a>, the leaf node's <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> is the weight assigned to its <a href="#BM_(limb)%2Fi">limb</a>. For example, node A has a <a href="#BM_(limb%20length%7Climb%20weight)%2Fi">limb length</a> of 2 in the following <a href="#BM_(tree)%2Fi">tree</a>...</p>
 <p><img src="svgbob_54ab99476bd3bb4646b1899b68122441df1dc495.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
@@ -19028,7 +19213,7 @@ dist(S3, S4) is 5 = x + u + z
 <p> <!-- Re-enabling. Needed to be disabled because v3's is conflicting with 3' --></p>
 </li>
 <li>
-<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - A recursive algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The algorithm <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">trim</a>s a single leaf node at each recursive step until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has a size of two. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is a those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge. Using that <a href="#BM_(tree)%2Fi">tree</a> as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the <a href="#BM_(tree)%2Fi">tree</a> and attaching it on.</p>
+<p><a name="BM_(additive%20phylogeny)%2Fi"></a><strong>additive phylogeny</strong> - A recursive algorithm that finds the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for some <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. The algorithm <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">trim</a>s a single leaf node at each recursive step until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has a size of two. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge. Using that <a href="#BM_(tree)%2Fi">tree</a> as its base, the algorithm recurses out of each step by finding where that step's trimmed node exists on the <a href="#BM_(tree)%2Fi">tree</a> and attaching it on.</p>
 <p>At the end, the algorithm will have constructed the entire <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for the <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>. For example, ...</p>
 <ul>
 <li>
@@ -19152,7 +19337,7 @@ dist(S3, S4) is 5 = x + u + z
 </li>
 <li>
 <p><a name="BM_(sum%20of%20squared%20errors%7Csum%20of%20square%20error%7Csum%20of%20errors%20squared)%2Fi"></a><strong>sum of squared errors</strong> - <a href="#BM_(sum%20of%20squared%20errors%7Csum%20of%20square%20error%7Csum%20of%20errors%20squared)%2Fi">Sum of errors squared</a> is an algorithm used to quantify how far off some estimation / prediction is.</p>
-<p>Given a a set of real values and a set of predicted values, the error is the difference between the real and predicated values at each data point. For example...</p>
+<p>Given a set of real values and a set of predicted values, the error is the difference between the real and predicted values at each data point. For example...</p>
 <table>
 <thead>
 <tr>
@@ -19264,8 +19449,8 @@ dist(S3, S4) is 5 = x + u + z
 <li>n is the number of leaf nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 <li>a and b are the leaf nodes being referenced in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
 <li>dist(a, b) returns the distance between leaf nodes a and b in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</li>
-<li>total dist(a) returns the sum all of distances to / from leaf node a.</li>
-<li>total dist(b) returns the sum all of distances to / from leaf node b.</li>
+<li>total dist(a) returns the sum of all distances to / from leaf node a.</li>
+<li>total dist(b) returns the sum of all distances to / from leaf node b.</li>
 </ul>
 <p>The maximum element in the <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a> is guaranteed to be for two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes. For example, the following <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> produces the following <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>...</p>
 <table>
@@ -19418,7 +19603,7 @@ dist(S3, S4) is 5 = x + u + z
 <li>find the unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</li>
 <li>approximate a <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for a non-<a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>.</li>
 </ul>
-<p>The algorithm finds and <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">replace</a>s a pair of <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> with their shared parent at each recursive step (parent is promoted to a leaf node) until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has a size of two. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is a those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge. Using that <a href="#BM_(tree)%2Fi">tree</a> as its base, the algorithm recurses out of each step by attaching the <a href="#BM_(neighbour)%2Fi">neighbour</a>s removed from the distance at that step to their parent in the <a href="#BM_(tree)%2Fi">tree</a>.</p>
+<p>The algorithm finds and <a href="#BM_(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i">replace</a>s a pair of <a href="#BM_(neighbour)%2Fi">neighbour</a>ing leaf nodes in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> with their shared parent at each recursive step (parent is promoted to a leaf node) until the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> has a size of two. The <a href="#BM_(simple%20tree)%2Fi">simple tree</a> for any two leaf nodes is those two nodes <a href="#BM_(connected)%2Fi">connected</a> by a single edge. Using that <a href="#BM_(tree)%2Fi">tree</a> as its base, the algorithm recurses out of each step by attaching the <a href="#BM_(neighbour)%2Fi">neighbour</a>s removed from the distance at that step to their parent in the <a href="#BM_(tree)%2Fi">tree</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The term <a href="#BM_(neighbour)%2Fi">neighbour</a>ing means having a shared parent in the <a href="#BM_(tree)%2Fi">tree</a>, not next to each other in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
@@ -19554,7 +19739,7 @@ dist(S3, S4) is 5 = x + u + z
 <p><a name="BM_(physiology%7Cphysiological)%2Fi"></a><strong>physiology</strong> - The study of organism function.</p>
 </li>
 <li>
-<p><a name="BM_(character%20table)%2Fi"></a><strong>character table</strong> - A matrix where the columns represent biological entities and the rows represent characteristics of those entities, where those characteristics are typically <a href="#BM_(anatomy%7Canatomical)%2Fi">anatomical</a>ly or <a href="#BM_(physiology%7Cphysiological)%2Fi">physiological</a>ly.</p>
+<p><a name="BM_(character%20table%7Ccharacter%20vector)%2Fi"></a><strong>character table</strong> - A matrix where the columns represent biological entities and the rows represent characteristics of those entities, where those characteristics are typically <a href="#BM_(anatomy%7Canatomical)%2Fi">anatomical</a>ly or <a href="#BM_(physiology%7Cphysiological)%2Fi">physiological</a>ly.</p>
 <table>
 <thead>
 <tr>
@@ -19585,24 +19770,29 @@ dist(S3, S4) is 5 = x + u + z
 </tr>
 </tbody>
 </table>
-<p><a href="#BM_(character%20table)%2Fi">Character table</a>s were commonly used for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> before discovering that DNA can be used to compare the relatedness of organisms.</p>
+<p><a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">Character table</a>s were commonly used for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> before discovering that DNA can be used to compare the relatedness of organisms.</p>
+<p>A row in a <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character table</a>. Prior to the advent of <a href="#BM_(sequencer)%2Fi">sequencer</a>s, scientists would treat <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character vector</a>s as <a href="#BM_(sequence)%2Fi">sequence</a>s for generating <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s or doing comparisons between organisms.</p>
 </li>
 <li>
-<p><a name="BM_(character%20vector)%2Fi"></a><strong>character vector</strong> - A row in a <a href="#BM_(character%20table)%2Fi">character table</a>. Prior to the advent of <a href="#BM_(sequencer)%2Fi">sequencer</a>s, scientists would treat <a href="#BM_(character%20vector)%2Fi">character vector</a>s as <a href="#BM_(sequence)%2Fi">sequence</a>s for generating <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s or doing comparisons between organisms.</p>
-</li>
-<li>
-<p><a name="BM_(mitochondrial%20DNA%7CmtDNA)%2Fi"></a><strong>mitochondrial DNA</strong> - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitocondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.</p>
+<p><a name="BM_(mitochondrial%20DNA%7CmtDNA)%2Fi"></a><strong>mitochondrial DNA</strong> - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitochondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.</p>
 <p><a href="#BM_(mitochondrial%20DNA%7CmtDNA)%2Fi">Mitochondrial DNA</a> is inherited fully from the mother. It isn't a mix of parental DNA as the cell DNA is.</p>
 </li>
 <li>
-<p><a name="BM_(parsimony%20score)%2Fi"></a><strong>parsimony score</strong> - Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> where each ...</p>
+<p><a name="BM_(small%20parsimony%7Clarge%20parsimony)%2Fi"></a><strong>small parsimony</strong> - In the context of <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s, ...</p>
 <ul>
-<li>node has a <a href="#BM_(sequence)%2Fi">sequence</a> assigned to it, where leaf nodes are typically known <a href="#BM_(sequence)%2Fi">sequence</a>s from known entities and internal nodes are inferred <a href="#BM_(sequence)%2Fi">sequence</a>s for their inferred ancestors.</li>
-<li>edge has a weight equal to the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between the <a href="#BM_(sequence)%2Fi">sequence</a>s at each end.</li>
+<li><a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a>: When a <a href="#BM_(tree)%2Fi">tree</a> structure and its leaf node <a href="#BM_(sequence)%2Fi">sequence</a>s are given, derive the internal node <a href="#BM_(sequence)%2Fi">sequence</a>s with the lowest possible distance (most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</li>
+<li><a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">large parsimony</a>: When only the leaf node <a href="#BM_(sequence)%2Fi">sequence</a>s are given, derive the combination of <a href="#BM_(tree)%2Fi">tree</a> structure and internal node <a href="#BM_(sequence)%2Fi">sequence</a>s with the lowest possible distance (most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</li>
 </ul>
-<p>The <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the <a href="#BM_(tree)%2Fi">tree</a> is the sum of edge weights.</p>
-<p><img src="svgbob_bb22d4de3ae55f86ac7e2775b8dc5a509ccf3ab4.svg" alt="Kroki diagram output"></p>
-<p>The lower a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is, the better.</p>
+<p><img src="svgbob_4869b4c66c4290aef524561ee17190d9cff0640c.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">Large parsimony</a> isn't a process that's normally done because the search space explodes in size (e.g. NP-complete). Instead, <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> is used on a <a href="#BM_(tree)%2Fi">tree</a> generated using an algorithm like <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> or <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> algorithm is what's typically used to evaluate how well a combination of <a href="#BM_(tree)%2Fi">tree</a> structure + ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s do.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(parsimony%20score)%2Fi"></a><strong>parsimony score</strong> - Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> with <a href="#BM_(sequence)%2Fi">sequence</a>s for both leaf nodes (known entities) and internal nodes (inferred ancestral entities), the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is a measure of how far off a parent's <a href="#BM_(sequence)%2Fi">sequence</a> is from its children (and vice versa). The idea is that the most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> evolutionary path is the one that's most likely to have occurred. As such, the less far off <a href="#BM_(sequence)%2Fi">sequence</a>s are, the more likely it is that the actual ancestral lineage and ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s match what's depicted in the <a href="#BM_(tree)%2Fi">tree</a>.</p>
+<p><img src="svgbob_68590e7d4bd005a4f80364ba3967a7124b6b6527.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 <p>

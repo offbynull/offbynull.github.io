@@ -1,6 +1,6 @@
 import math
 from collections import Counter
-from itertools import permutations, combinations
+from itertools import permutations, combinations, product
 from typing import TypeVar, Callable, Any, Optional, Iterable
 
 from graph.UndirectedGraph import Graph
@@ -45,8 +45,8 @@ def to_dot(g: Graph) -> str:
     return ret
 
 
-# MARKDOWN_ENUMERATE_OPTIONS
-def nearest_neighbour_interchange_options(
+# MARKDOWN_SWAP
+def list_nn_swap_options(
         tree: Graph[N, ND, E, ED],
         edge: E
 ) -> set[
@@ -77,11 +77,9 @@ def nearest_neighbour_interchange_options(
             continue
         ret.add((n1_edges_perturbed, n2_edges_perturbed))
     return ret
-# MARKDOWN_ENUMERATE_OPTIONS
 
 
-# MARKDOWN_PERFORM
-def interchange_neighbours(
+def nn_swap(
     tree: Graph[N, ND, E, ED],
     edge: E,
     side1: frozenset[E],
@@ -109,7 +107,7 @@ def interchange_neighbours(
         end, data = edge_details[e]
         tree.insert_edge(e, n2, end, data)
     return frozenset(n1_edges), frozenset(n2_edges)  # return original edges
-# MARKDOWN_PERFORM
+# MARKDOWN_SWAP
 
 
 # MARKDOWN_SCORE
@@ -123,18 +121,23 @@ def parsimony_score(
             ],
             dict[str, float]
         ],
+        set_edge_score: Callable[[E, float], None],
         dist_metric: Callable[[str, str], float]
 ) -> float:
-    ret = 0.0
-    for e in g.get_edges():
+    total_score = 0.0
+    edges = set(tree.get_edges())  # iterator to set -- avoids concurrent modification bug
+    for e in edges:
         n1, n2 = tree.get_edge_ends(e)
+        e_score = 0.0
         for idx in range(seq_length):
             n1_ds = get_dist_set(n1, idx)
             n2_ds = get_dist_set(n2, idx)
-            n1_elem = max(n1_ds, key=lambda k: n1_ds[k])
-            n2_elem = max(n2_ds, key=lambda k: n2_ds[k])
-            ret += dist_metric(n1_elem, n2_elem)
-    return ret
+            n1_elem = min(n1_ds, key=lambda k: n1_ds[k])
+            n2_elem = min(n2_ds, key=lambda k: n2_ds[k])
+            e_score += dist_metric(n1_elem, n2_elem)
+        set_edge_score(e, e_score)
+        total_score += e_score
+    return total_score
 # MARKDOWN_SCORE
 
 
@@ -161,23 +164,49 @@ def nn_interchange(
             None
         ],
         dist_metric: Callable[[str, str], float],
-        elem_types: str = 'ACTG'
-):
+        set_edge_score: Callable[[E, float], None],
+        elem_types: str = 'ACTG',
+        update_callback: Optional[Callable[[Graph, float], None]] = None
+) -> tuple[float, float]:
+    input_score = None
+    output_score = None
     while True:
-        orig_score = parsimony_score(tree, seq_length, get_dist_set, dist_metric)
+        populate_distance_sets(
+            tree,
+            root,
+            seq_length,
+            get_sequence,
+            set_sequence,
+            get_dist_set,
+            set_dist_set,
+            dist_metric,
+            elem_types
+        )
+        orig_score = parsimony_score(
+            tree,
+            seq_length,
+            get_dist_set,
+            set_edge_score,
+            dist_metric
+        )
+        if input_score is None:
+            input_score = orig_score
+        output_score = orig_score
+        if update_callback is not None:
+            update_callback(tree, output_score)  # notify caller that the graph updated
         swap_scores = []
-        edges = set(tree.get_edges())  # as set to avoid concurrent modification problems
+        edges = set(tree.get_edges())  # bug -- avoids concurrent modification problems
         for edge in edges:
             # is it a limb? if so, skip it -- we want internal edges only
             n1, n2 = tree.get_edge_ends(edge)
             if tree.get_degree(n1) == 1 or tree.get_degree(n2) == 1:
                 continue
             # get all possible nn swaps for this internal edge
-            options = nearest_neighbour_interchange_options(tree, edge)
+            options = list_nn_swap_options(tree, edge)
             # for each possible swap...
             for swapped_side1, swapped_side2 in options:
                 # swap
-                orig_side1, orig_side2 = interchange_neighbours(
+                orig_side1, orig_side2 = nn_swap(
                     tree,
                     edge,
                     swapped_side1,
@@ -196,10 +225,16 @@ def nn_interchange(
                     elem_types
                 )
                 # score and store
-                score = parsimony_score(tree, seq_length, get_dist_set, dist_metric)
+                score = parsimony_score(
+                    tree,
+                    seq_length,
+                    get_dist_set,
+                    set_edge_score,
+                    dist_metric
+                )
                 swap_scores.append((score, edge, swapped_side1, swapped_side2))
                 # unswap (back to original tree)
-                interchange_neighbours(
+                nn_swap(
                     tree,
                     edge,
                     orig_side1,
@@ -209,10 +244,102 @@ def nn_interchange(
         # swap and try again, otherwise we're finished
         score, edge, side1, side2 = min(swap_scores, key=lambda x: x[0])
         if score >= orig_score:
-            break
+            return input_score, output_score
         else:
-            interchange_neighbours(tree, edge, side1, side2)
+            nn_swap(tree, edge, side1, side2)
 # MARKDOWN
+
+
+
+
+
+def main_nn_swap():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        g_as_list, _ = str_to_list(input().strip(), 0)
+        edge = input().strip()
+        g = create_graph(g_as_list)
+        print(f'The tree...')
+        print()
+        print('```{dot}')
+        print(f'{to_dot(g)}')
+        print('```')
+        print()
+        print(f'... can have any of the following nearest neighbour swaps on edge {edge}...')
+        print()
+        opts = list_nn_swap_options(g, edge)
+        for side1, side2 in opts:
+            orig1, orig2 = nn_swap(g, edge, side1, side2)
+            print()
+            print('```{dot}')
+            print(f'{to_dot(g)}')
+            print('```')
+            print()
+            nn_swap(g, edge, orig1, orig2)
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+def main_parsimony_score():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        g_as_list, _ = str_to_list(input().strip(), 0)
+        root = input().strip()
+        dist_mat = {}
+        table_header, _ = str_to_list(input().strip(), 0)
+        table_rows = []
+        for _ in table_header[1:]:
+            row, _ = str_to_list(input().strip(), 0)
+            table_rows.append(row)
+        for row in table_rows:
+            e1 = row[0]
+            for i, e2 in enumerate(table_header[1:]):
+                dist_mat[e1, e2] = float(row[i + 1])
+        elem_types = table_header[1:]
+        g = create_graph(g_as_list)
+        leaf_nodes = {n for n in g.get_nodes() if g.get_degree(n) == 1}
+        leaf_node = next(iter(leaf_nodes))
+        seq_length = len(g.get_node_data(leaf_node)['seq'])
+        print('The tree...')
+        print()
+        print('```{dot}')
+        print(f'{to_dot(g)}')
+        print('```')
+        print()
+        populate_distance_sets(
+            g,
+            root,
+            seq_length,
+            lambda n: g.get_node_data(n)['seq'],
+            lambda n, seq: g.get_node_data(n).update({'seq': seq}),
+            lambda n, idx: g.get_node_data(n).get(f'dist_set_{idx}', {}),
+            lambda n, idx, ds: g.get_node_data(n).update({f'dist_set_{idx}': ds}),
+            lambda e1, e2: dist_mat[e1, e2],
+            elem_types
+        )
+        score = parsimony_score(
+            g,
+            seq_length,
+            lambda n, idx: g.get_node_data(n).get(f'dist_set_{idx}', {}),
+            lambda e, score: g.get_edge_data(e).update({'score': score}),
+            lambda e1, e2: dist_mat[e1, e2]
+        )
+        # remove dist_sets so that the output dot graph is uncluttered
+        for n, idx in product(g.get_nodes(), range(seq_length)):
+            g.get_node_data(n).pop(f'dist_set_{idx}')
+        print()
+        print(f'... has a parsimony score of {score}...')
+        print()
+        print('```{dot}')
+        print(f'{to_dot(g)}')
+        print('```')
+        print()
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
 
 
 def main():
@@ -242,9 +369,7 @@ def main():
         print(f'{to_dot(g)}')
         print('```')
         print()
-        print(f'... with {root} set as its root ...')
-        print()
-        print(f'... and the distances ...')
+        print(f'... with {root} set as its root and the distances ...')
         print()
         print('<table>')
         print('<thead><tr>')
@@ -262,8 +387,16 @@ def main():
         print('</tbody>')
         print('</table>')
         print()
-        print(f'... has the following inferred ancestor sequences ...')
-        populate_distance_sets(
+        print(f'... has the following inferred ancestor sequences after using nearest neighbour interchange ...')
+        def output_graph(_g, score):
+            print()
+            print(f'graph score: {score}')
+            print()
+            print(f'```{{dot}}')
+            print(f'{to_dot(_g)}')
+            print(f'```')
+            print()
+        input_score, output_score = nn_interchange(
             g,
             root,
             seq_length,
@@ -272,12 +405,12 @@ def main():
             lambda n, idx: g.get_node_data(n).get(f'dist_set_{idx}', {}),
             lambda n, idx, ds: g.get_node_data(n).update({f'dist_set_{idx}': ds}),
             lambda e1, e2: dist_mat[e1, e2],
-            elem_types
+            lambda e, score: g.get_edge_data(e).update({'score': score}),
+            elem_types,
+            output_graph
         )
-        print()
-        print('```{dot}')
-        print(f'{to_dot(g)}')
-        print('```')
+        print(f'After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score'
+              f' of {output_score} vs the original score of {input_score}')
         print()
     finally:
         print("</div>", end="\n\n")
@@ -285,22 +418,23 @@ def main():
 
 
 if __name__ == '__main__':
-    g = Graph()
-    g.insert_node('1')
-    g.insert_node('2')
-    g.insert_node('7')
-    g.insert_node('8')
-    g.insert_node('9')
-    g.insert_node('A')
-    g.insert_node('B')
-    g.insert_edge('A1', 'A', '1')
-    g.insert_edge('A2', 'A', '2')
-    g.insert_edge('B7', 'B', '7')
-    g.insert_edge('B8', 'B', '8')
-    g.insert_edge('B9', 'B', '9')
-    g.insert_edge('AB', 'A', 'B')
-    swaps = nearest_neighbour_interchange_options(g, 'AB')
-    interchange_neighbours(g, 'AB', *swaps.pop())
-    for n1_side, n2_side in swaps:
-        print(f'{set(n1_side)}  /  {set(n2_side)}')
-    # main()
+    main()
+    # g = Graph()
+    # g.insert_node('1')
+    # g.insert_node('2')
+    # g.insert_node('7')
+    # g.insert_node('8')
+    # g.insert_node('9')
+    # g.insert_node('A')
+    # g.insert_node('B')
+    # g.insert_edge('A1', 'A', '1')
+    # g.insert_edge('A2', 'A', '2')
+    # g.insert_edge('B7', 'B', '7')
+    # g.insert_edge('B8', 'B', '8')
+    # g.insert_edge('B9', 'B', '9')
+    # g.insert_edge('AB', 'A', 'B')
+    # swaps = nearest_neighbour_interchange_options(g, 'AB')
+    # interchange_neighbours(g, 'AB', *swaps.pop())
+    # for n1_side, n2_side in swaps:
+    #     print(f'{set(n1_side)}  /  {set(n2_side)}')
+    # # main()
