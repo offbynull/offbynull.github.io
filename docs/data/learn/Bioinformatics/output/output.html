@@ -9869,7 +9869,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
+<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -12288,7 +12288,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_aa3cef92115eebf265dad812f9f5ebed.svg" alt="Dot diagram"></p>
+<p><img src="dot_418472f0d7f3bb969a126d729a2ba6c2.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applies to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12587,7 +12587,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_6d5a9af8e186325f93625864a4a32f69.svg" alt="Dot diagram"></p>
+<p><img src="dot_6f8088207c800b117ba7f58134074b59.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is re-writable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14743,7 +14743,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_a7db226e0309fe74cf1483f2a29a86e5.svg" alt="Dot diagram"></p>
+<p><img src="dot_d86c525bc6032287a96c608e428b9a2b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14830,22 +14830,22 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v3 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v0 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v2 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>22.0</td></tr><tr><td>v5</td><td>22.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v1</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>13.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_d8aa7b0385477dc75367dc1ca7469068.svg" alt="Dot diagram"></p>
-<p>Attached v1 to produce tree...</p>
-<p><img src="dot_a74c6363aee5c6245ad03d42d7019fd6.svg" alt="Dot diagram"></p>
+<p><img src="dot_0ea9795585e4036cd8d6d558fbb0cfc4.svg" alt="Dot diagram"></p>
 <p>Attached v2 to produce tree...</p>
-<p><img src="dot_4f065a32b05275160396bcd45f04b963.svg" alt="Dot diagram"></p>
+<p><img src="dot_dca39d60bb09d3bee0b0ebb79642724f.svg" alt="Dot diagram"></p>
 <p>Attached v4 to produce tree...</p>
-<p><img src="dot_ef428abe4de0495393666e1991fb0387.svg" alt="Dot diagram"></p>
+<p><img src="dot_21caab3687a0873a36b9ecd0ae11914e.svg" alt="Dot diagram"></p>
+<p>Attached v0 to produce tree...</p>
+<p><img src="dot_8f81ac9445545fe41ef387b0076608f1.svg" alt="Dot diagram"></p>
 <p>Attached v3 to produce tree...</p>
-<p><img src="dot_10b48c1ae60e12fc66a0a1a9c7913ca5.svg" alt="Dot diagram"></p>
+<p><img src="dot_2a9792a2b30c2be26aadab1f65a26c8a.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15013,22 +15013,22 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </table>
 <p>Replaced neighbours ('v3', 'v4') with their parent N1 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
+<p>Replaced neighbours ('N1', 'v5') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v1', 'v2') with their parent N3 to produce distance matrix ...</p>
+<p>Replaced neighbours ('v2', 'v1') with their parent N3 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('N3', 'N2') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N4</th><th>v0</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>11.625</td></tr><tr><td>v0</td><td>11.625</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('N3', 'v0') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N2</th><th>N4</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.375</td></tr><tr><td>N4</td><td>3.375</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_1279e3994a36c97f925af56dfdc65753.svg" alt="Dot diagram"></p>
-<p>Attached ('N3', 'N2') to N4 to produce tree...</p>
-<p><img src="dot_c58722faeceae8a418d494b51ecfb364.svg" alt="Dot diagram"></p>
-<p>Attached ('v1', 'v2') to N3 to produce tree...</p>
-<p><img src="dot_8b23f0b93cd8206793b72258f2a6a76e.svg" alt="Dot diagram"></p>
-<p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_a6363a1967a3cac9da56fc327b32d7fe.svg" alt="Dot diagram"></p>
+<p><img src="dot_be2e0a5ea35a5c15c0f673e6bfbdabdb.svg" alt="Dot diagram"></p>
+<p>Attached ('N3', 'v0') to N4 to produce tree...</p>
+<p><img src="dot_807cf4789b81b35b8498da54a886feb3.svg" alt="Dot diagram"></p>
+<p>Attached ('v2', 'v1') to N3 to produce tree...</p>
+<p><img src="dot_2466ba64285581f64a912faaf8b40d1a.svg" alt="Dot diagram"></p>
+<p>Attached ('N1', 'v5') to N2 to produce tree...</p>
+<p><img src="dot_cd00437ef1077c46b4f1ae7b64b13ebb.svg" alt="Dot diagram"></p>
 <p>Attached ('v3', 'v4') to N1 to produce tree...</p>
-<p><img src="dot_d5a234ddce26fdde3302bd6ab76e40b4.svg" alt="Dot diagram"></p>
+<p><img src="dot_e18293c0e1a9f99612029124b5d37537.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15345,7 +15345,8 @@ n4_val = <span class="hljs-built_in">min</span>(
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the <a href="#BM_(sequence)%2Fi">sequence</a>s have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.</p>
+<p>If the <a href="#BM_(tree)%2Fi">tree</a> is unrooted, the Pevzner book says to pick an edge and inject a fake root into it, then remove it once the <a href="#BM_(sequence)%2Fi">sequence</a>s have been inferred. It says that if the <a href="#BM_(tree)%2Fi">tree</a> is a binary <a href="#BM_(tree)%2Fi">tree</a> and <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is used as the metric, the same element type will win at every index of every node (lowest distance) regardless of which edge the fake root was injected into. At least I think that's what it says -- maybe it means the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> will be the same (<a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> discussed in next section).</p>
+<p>If the <a href="#BM_(tree)%2Fi">tree</a> isn't binary and/or something other than <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is chosen as the metric, will this still be the case? If it isn't, I can't see how doing that is any better than just picking some internal node to be the root.</p>
 <p>So which node should be selected as root? The <a href="#BM_(tree)%2Fi">tree</a> structure being used for this algorithm very likely came from a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> built using distances (e.g. <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>, <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>, <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a>, etc..). Here are a couple of ideas I just thought up:</p>
 <ul>
 <li>For each leaf node, count the number of nodes in the path to reach that internal node. Sum up the counts and pick the internal node with the largest sum as the root.</li>
@@ -15451,8 +15452,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p></p>
 <p>The tree...</p>
 <p><img src="dot_a68c13de3d0e4bcf34af631d2256b12f.svg" alt="Dot diagram"></p>
-<p>... with i0 set as its root ...</p>
-<p>... and the distances ...</p>
+<p>... with i0 set as its root and the distances ...</p>
 <table>
 <thead><tr>
 <th></th>
@@ -15523,45 +15523,49 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><img src="svgbob_16d74c50ad8227599d75c5e09d62af6f5a25930f.svg" alt="Kroki diagram output"></p>
 <p>The sum of edge weights is the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of the <a href="#BM_(tree)%2Fi">tree</a> (lower sum is better). For example, the following <a href="#BM_(tree)%2Fi">tree</a> has a <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> of 4...</p>
 <p><img src="svgbob_f901ad93961054da4bd1b48a748231e62eaecec6.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/sequence_phylogeny/ParsimonyScore.py">ch7_code/src/sequence_phylogeny/ParsimonyScore.py</a> (lines 47 to 71):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_edge_similarity</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        get_sequence: <span class="hljs-type">Callable</span>[[ND], <span class="hljs-built_in">str</span>],
-        set_weight: <span class="hljs-type">Callable</span>[[ED, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>]
-</span>) -&gt; <span class="hljs-literal">None</span>:
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
-        n1, n2, e_data = g.get_edge(e)
-        n1_data = g.get_node_data(n1)
-        n2_data = g.get_node_data(n2)
-        n1_seq = get_sequence(n1_data)
-        n2_seq = get_sequence(n2_data)
-        weight = hamming_distance(n1_seq, n2_seq)
-        set_weight(e_data, weight)
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">parsimony_score</span>(<span class="hljs-params">
-        g: Graph[N, ND, E, ED],
-        get_weight: <span class="hljs-type">Callable</span>[[ED], <span class="hljs-built_in">float</span>]
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 114 to 141):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">parsimony_score</span>(<span class="hljs-params">
+        tree: Graph[N, ND, E, ED],
+        seq_length: <span class="hljs-built_in">int</span>,
+        get_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,  <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>  <span class="hljs-comment"># index within N's sequence</span>
+            ],
+            <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+        ],
+        set_edge_score: <span class="hljs-type">Callable</span>[[E, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>],
+        dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>]
 </span>) -&gt; <span class="hljs-built_in">float</span>:
-    ret = <span class="hljs-number">0.0</span>
-    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.get_edges():
-        e_data = g.get_edge_data(e)
-        ret += get_weight(e_data)
-    <span class="hljs-keyword">return</span> ret
+    total_score = <span class="hljs-number">0.0</span>
+    edges = <span class="hljs-built_in">set</span>(tree.get_edges())  <span class="hljs-comment"># iterator to set -- avoids concurrent modification bug</span>
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+        n1, n2 = tree.get_edge_ends(e)
+        e_score = <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(seq_length):
+            n1_ds = get_dist_set(n1, idx)
+            n2_ds = get_dist_set(n2, idx)
+            n1_elem = <span class="hljs-built_in">min</span>(n1_ds, key=<span class="hljs-keyword">lambda</span> k: n1_ds[k])
+            n2_elem = <span class="hljs-built_in">min</span>(n2_ds, key=<span class="hljs-keyword">lambda</span> k: n2_ds[k])
+            e_score += dist_metric(n1_elem, n2_elem)
+        set_edge_score(e, e_score)
+        total_score += e_score
+    <span class="hljs-keyword">return</span> total_score
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>The tree...</p>
-<p><img src="dot_73836a09c0b24813dd39eb5630f622bb.svg" alt="Dot diagram"></p>
-<p>... has a parsimony score of ...</p>
-<p>4.0</p>
-<p><img src="dot_ae0ee91552f0b79a136d5cf42f4efc2f.svg" alt="Dot diagram"></p>
+<p><img src="dot_a68c13de3d0e4bcf34af631d2256b12f.svg" alt="Dot diagram"></p>
+<p>... has a parsimony score of 4.0...</p>
+<p><img src="dot_9c5b11c92142545ea08ba670225b5958.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The nearest <a href="#BM_(neighbour)%2Fi">neighbour</a> interchange algorithm is a greedy heuristic which attempts to perturb the <a href="#BM_(tree)%2Fi">tree</a> to produce a lower <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. The core operation of this algorithm is to pick an internal edge within the <a href="#BM_(tree)%2Fi">tree</a> and swaps <a href="#BM_(neighbour)%2Fi">neighbour</a>s between the nodes at each end ...</p>
 <p><img src="svgbob_a209a19385ac0e0a95667e64b6fa185c896caa9f.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 49 to 79):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nearest_neighbour_interchange_options</span>(<span class="hljs-params">
+<p>These swaps aren't just the nodes themselves, but the entire <a href="#BM_(subtree%7Csub-tree)%2Fi">sub-tree</a>s under those nodes. For example, ...</p>
+<p><img src="svgbob_d02488346a63826fb1e96ed8e19ecc587aee966c.svg" alt="Kroki diagram output"></p>
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 49 to 110):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">list_nn_swap_options</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, ED],
         edge: E
 </span>) -&gt; <span class="hljs-built_in">set</span>[
@@ -15592,11 +15596,9 @@ n4_val = <span class="hljs-built_in">min</span>(
             <span class="hljs-keyword">continue</span>
         ret.add((n1_edges_perturbed, n2_edges_perturbed))
     <span class="hljs-keyword">return</span> ret
-</code></pre>
-<p>These swaps aren't just the nodes themselves, but the entire <a href="#BM_(subtree%7Csub-tree)%2Fi">sub-tree</a>s under those nodes ...</p>
-<p><img src="svgbob_fe6083fd7d618afc9ceb6fe15b29f2a5be041b23.svg" alt="Kroki diagram output"></p>
-<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 84 to 112):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">interchange_neighbours</span>(<span class="hljs-params">
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">nn_swap</span>(<span class="hljs-params">
     tree: Graph[N, ND, E, ED],
     edge: E,
     side1: <span class="hljs-built_in">frozenset</span>[E],
@@ -15625,22 +15627,172 @@ n4_val = <span class="hljs-built_in">min</span>(
         tree.insert_edge(e, n2, end, data)
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">frozenset</span>(n1_edges), <span class="hljs-built_in">frozenset</span>(n2_edges)  <span class="hljs-comment"># return original edges</span>
 </code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_a68c13de3d0e4bcf34af631d2256b12f.svg" alt="Dot diagram"></p>
+<p>... can have any of the following nearest neighbour swaps on edge i0-i1...</p>
+<p><img src="dot_6909c78cf9ab6dc9693e33dc28f71789.svg" alt="Dot diagram"></p>
+<p><img src="dot_4d9124d666d28705b06b8d1e0042490b.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
 <p>Given a <a href="#BM_(tree)%2Fi">tree</a>, the algorithm goes over each internal edge and tries all possibly <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
-<p>TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a> FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 145 to 235):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nn_interchange</span>(<span class="hljs-params">
+        tree: Graph[N, ND, E, ED],
+        root: N,
+        seq_length: <span class="hljs-built_in">int</span>,
+        get_sequence: <span class="hljs-type">Callable</span>[[N], <span class="hljs-built_in">str</span>],
+        set_sequence: <span class="hljs-type">Callable</span>[[N, <span class="hljs-built_in">str</span>], <span class="hljs-literal">None</span>],
+        get_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,  <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>  <span class="hljs-comment"># index within N's sequence</span>
+            ],
+            <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+        ],
+        set_dist_set: <span class="hljs-type">Callable</span>[
+            [
+                N,  <span class="hljs-comment"># node</span>
+                <span class="hljs-built_in">int</span>,  <span class="hljs-comment"># index within N's sequence</span>
+                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]
+            ],
+            <span class="hljs-literal">None</span>
+        ],
+        dist_metric: <span class="hljs-type">Callable</span>[[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>], <span class="hljs-built_in">float</span>],
+        set_edge_score: <span class="hljs-type">Callable</span>[[E, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>],
+        elem_types: <span class="hljs-built_in">str</span> = <span class="hljs-string">'ACTG'</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]:
+    input_score = <span class="hljs-literal">None</span>
+    output_score = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        populate_distance_sets(
+            tree,
+            root,
+            seq_length,
+            get_sequence,
+            set_sequence,
+            get_dist_set,
+            set_dist_set,
+            dist_metric,
+            elem_types
+        )
+        orig_score = parsimony_score(tree, seq_length, get_dist_set, set_edge_score, dist_metric)
+        <span class="hljs-keyword">if</span> input_score <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            input_score = orig_score
+        output_score = orig_score
+        swap_scores = []
+        edges = <span class="hljs-built_in">set</span>(tree.get_edges())  <span class="hljs-comment"># bug -- avoids concurrent modification problems</span>
+        <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-comment"># is it a limb? if so, skip it -- we want internal edges only</span>
+            n1, n2 = tree.get_edge_ends(edge)
+            <span class="hljs-keyword">if</span> tree.get_degree(n1) == <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> tree.get_degree(n2) == <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-comment"># get all possible nn swaps for this internal edge</span>
+            options = list_nn_swap_options(tree, edge)
+            <span class="hljs-comment"># for each possible swap...</span>
+            <span class="hljs-keyword">for</span> swapped_side1, swapped_side2 <span class="hljs-keyword">in</span> options:
+                <span class="hljs-comment"># swap</span>
+                orig_side1, orig_side2 = nn_swap(
+                    tree,
+                    edge,
+                    swapped_side1,
+                    swapped_side2
+                )
+                <span class="hljs-comment"># small parsimony</span>
+                populate_distance_sets(
+                    tree,
+                    root,
+                    seq_length,
+                    get_sequence,
+                    set_sequence,
+                    get_dist_set,
+                    set_dist_set,
+                    dist_metric,
+                    elem_types
+                )
+                <span class="hljs-comment"># score and store</span>
+                score = parsimony_score(tree, seq_length, get_dist_set, set_edge_score, dist_metric)
+                swap_scores.append((score, edge, swapped_side1, swapped_side2))
+                <span class="hljs-comment"># unswap (back to original tree)</span>
+                nn_swap(
+                    tree,
+                    edge,
+                    orig_side1,
+                    orig_side2
+                )
+        <span class="hljs-comment"># if swap producing the lowest parsimony score is lower than original, apply that</span>
+        <span class="hljs-comment"># swap and try again, otherwise we're finished</span>
+        score, edge, side1, side2 = <span class="hljs-built_in">min</span>(swap_scores, key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
+        <span class="hljs-keyword">if</span> score &gt;= orig_score:
+            <span class="hljs-keyword">return</span> input_score, output_score
+        <span class="hljs-keyword">else</span>:
+            nn_swap(tree, edge, side1, side2)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>The tree...</p>
+<p><img src="dot_9b81e948066b89df103053f4b105da53.svg" alt="Dot diagram"></p>
+<p>... with i0 set as its root and the distances ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>A</th>
+<th>C</th>
+<th>T</th>
+<th>G</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>T</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>G</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<p>... has the following inferred ancestor sequences after using nearest neighbour interchange ...</p>
+<p><img src="dot_8eb010e6cfe31219c4a6eae1bb61804d.svg" alt="Dot diagram"></p>
+<p>After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score of 6.0 vs the original score of 9.0</p>
+</div>
+<p></p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
+<p>TODO: ADD TERMINOLOGY FOR SMALL <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a> / LARGE <a href="#BM_(parsimony%7Cparsimonious)%2Fi">PARSIMONY</a>. FIX TERMINOLOGY FOR <a href="#BM_(parsimony%20score)%2Fi">PARSIMONY SCORE</a>.</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>

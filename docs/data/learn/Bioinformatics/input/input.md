@@ -11226,7 +11226,9 @@ The Pevzner book claims this is dynamic programming. This is somewhat similar to
 ```
 
 ````{note}
-The Pevzner book says to pick an edge and inject a fake root into it, then remove it once the sequences have been inferred. I can't see how doing that is any better than just picking some internal node to be the root.
+If the tree is unrooted, the Pevzner book says to pick an edge and inject a fake root into it, then remove it once the sequences have been inferred. It says that if the tree is a binary tree and hamming distance is used as the metric, the same element type will win at every index of every node (lowest distance) regardless of which edge the fake root was injected into. At least I think that's what it says -- maybe it means the parsimony score will be the same (parsimony score discussed in next section).
+
+If the tree isn't binary and/or something other than hamming distance is chosen as the metric, will this still be the case? If it isn't, I can't see how doing that is any better than just picking some internal node to be the root.
 
 So which node should be selected as root? The tree structure being used for this algorithm very likely came from a phylogenetic tree built using distances (e.g. additive phylogeny, neighbour joining phylogeny, UPGMA, etc..). Here are a couple of ideas I just thought up: 
 
@@ -11320,14 +11322,20 @@ The sum of edge weights is the parsimony score of the tree (lower sum is better)
 ```
 
 ```{output}
-ch7_code/src/sequence_phylogeny/ParsimonyScore.py
+ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
 python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+# MARKDOWN_SCORE\s*\n([\s\S]+)\n\s*# MARKDOWN_SCORE
 ```
 
 ```{ch7}
-sequence_phylogeny.ParsimonyScore
-[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0,ACTGCT], [n,i1,ATTGCC], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+sequence_phylogeny.NearestNeighbourInterchange main_parsimony_score
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0], [n,i1], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+i0
+[ , A, C, T, G]
+[A, 0, 1, 1, 1]
+[C, 1, 0, 1, 1]
+[T, 1, 1, 0, 1]
+[G, 1, 1, 1, 0]
 ```
 
 The nearest neighbour interchange algorithm is a greedy heuristic which attempts to perturb the tree to produce a lower parsimony score. The core operation of this algorithm is to pick an internal edge within the tree and swaps neighbours between the nodes at each end ...
@@ -11356,25 +11364,19 @@ The nearest neighbour interchange algorithm is a greedy heuristic which attempts
 7 8 1    7 1 9    1 8 9    7 8 2    7 2 9    2 8 9    7 1 2    1 2 9    1 8 2
 ```
 
-```{output}
-ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
-python
-# MARKDOWN_ENUMERATE_OPTIONS\s*\n([\s\S]+)\n\s*# MARKDOWN_ENUMERATE_OPTIONS
-```
-
-These swaps aren't just the nodes themselves, but the entire sub-trees under those nodes ...
+These swaps aren't just the nodes themselves, but the entire sub-trees under those nodes. For example, ...
 
 ```{svgbob}
-   original                            "interchange on edge(G,H), swap top"
-                                       "branch of G with bottom branch of H"
+   original                            "interchange on edge(G,H), swap D"
+                                       "branch with K branch"
 A   B      C                                              C     
 *   *      *                                              *     
- \ /       |                                     J K      |     
-  * D    E *--* F                                * *    E *--* F
-   \      /                                       \|     /      
+ \ /       |                                     K        |     
+  * D    E *--* F                                *      E *--* F
+   \      /                                       \      /      
   G *----* H                                     G *----* H     
-   /     |\                                       /      \      
-  *      * *                                     *      D *     
+   /     |\                                       /     |\      
+  *      * *                                     *    J * * D   
   I      J K                                     I       / \
                                                         *   *
                                                         A   B     
@@ -11383,40 +11385,63 @@ A   B      C                                              C
 ```{output}
 ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
 python
-# MARKDOWN_PERFORM\s*\n([\s\S]+)\n\s*# MARKDOWN_PERFORM
+# MARKDOWN_SWAP\s*\n([\s\S]+)\n\s*# MARKDOWN_SWAP
+```
+
+```{ch7}
+sequence_phylogeny.NearestNeighbourInterchange main_nn_swap
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0], [n,i1], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+i0-i1
 ```
 
 Given a tree, the algorithm goes over each internal edge and tries all possibly neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+```{output}
+ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+```{ch7}
+sequence_phylogeny.NearestNeighbourInterchange
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,Kangaroo,ATTCCT], [n,Elephant,TTTCCC], [n,i0], [n,i1], [n,i2], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1], [e,Kangaroo,i2], [e,Elephant,i2], [e,i0,i2]]
+i0
+[ , A, C, T, G]
+[A, 0, 1, 1, 1]
+[C, 1, 0, 1, 1]
+[T, 1, 1, 0, 1]
+[G, 1, 1, 1, 0]
+```
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
-TODO: ADD CODE HERE, THEN GO BACK UP AND USE NEW ROUTER TO CALL INTO PARSIMONY SCORE FUNCTION AND NN SWAP FUNCTION. ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
+
+TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
 # Stories
 
