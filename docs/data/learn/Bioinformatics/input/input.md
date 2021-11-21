@@ -11035,7 +11035,9 @@ Algorithms/Sequence Alignment_TOPIC
 
 `{bm} /(Algorithms\/Phylogeny\/Sequence Inference\/Small Parsimony Algorithm)_TOPIC/`
 
-Given a phylogenetic tree and the sequences for its leaf nodes (known entities), this algorithm infers sequences for its internal nodes (ancestor entities) based on how likely it is for sequence elements to change from one type to another. The algorithm only works on sequences of matching length.
+Given a phylogenetic tree and the sequences for its leaf nodes (known entities), this algorithm infers sequences for its internal nodes (ancestor entities) based on how likely it is for sequence elements to change from one type to another. The sequence / sequence element most likely to be there is said to be the most parsimonious.
+
+The algorithm only works on sequences of matching length.
 
 ```{note}
 If you're interested to see why it's called small parsimony, see the next section which describes small parsimony vs large parsimony.
@@ -11238,6 +11240,16 @@ So which node should be selected as root? The tree structure being used for this
 I think the second one might not work because all sums will be the same? Maybe instead average the distances to leaf nodes and pick the one with the largest average?
 ````
 
+```{note}
+In addition to small parsimony, there's large parsimony.
+
+Small parsimony: When a tree structure and its leaf node sequences are given, derive the internal node sequences with the lowest possible distance (most parsimonious).
+
+Large parsimony: When only the leaf node sequences are given, derive the combination of tree structure and internal node sequences with the lowest possible distance (most parsimonious).
+
+Trying to do large parsimony explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.
+```
+
 ```{output}
 ch7_code/src/sequence_phylogeny/SmallParsimony.py
 python
@@ -11267,20 +11279,14 @@ The distances used in the example execution above is hamming distance. If you're
 Algorithms/Phylogeny/Sequence Inference/Small Parsimony Algorithm_TOPIC
 ```
 
-The problem with small parsimony is that sequences inferred vary greatly based on both the given tree structure and the element distance metric used. Specifically, there are many ways in which...
+The problem with small parsimony is that inferred sequences vary greatly based on both the given tree structure and the element distance metric used. Specifically, there are many ways in which...
 
- 1. a phylogenetic tree structure can be generated (e.g. UPGMA, neighbour joining algorithm, etc..).
+ 1. a phylogenetic tree structure can be generated (e.g. UPGMA, neighbour joining phylogeny, etc..).
  2. a distance can be generated between two elements of a sequence (e.g. PAM250, BLOSUM62, hamming distance, etc...).
 
-Often times the two aren't entirely complementary, meaning that while the inferred sequences may be reasonable, they likely aren't optimal.
+Often times the combination of tree structure and internal node sequences may be reasonable, but they likely aren't optimal (see large parsimony).
 
-```{note}
-That's why it's called small parsimony: When the algorithm requires a tree structure before it infers sequences, it's called small parsimony. If the algorithm both generates both the tree structure and infers internal node sequences, such that the tree + inferred sequences generates the minimum possible distance out of all possible tree + inferred sequences, it's called large parsimony.
-
-Trying to do large parsimony explodes the search space (e.g. NP-complete), meaning it isn't realistic to attempt.
-```
-
-Given a phylogenetic tree where small parsimony has been applied, its possible to infer its "quality" by calculating a parsimony score. For each edge, compute a weight by taking the two sequences at its ends and summing the distances between the element pairs at each index. For example, ...
+Given a phylogenetic tree where small parsimony has been applied, its possible to derive a parsimony score: a measure of how likely the scenario is based on parsimony. For each edge, compute a weight by taking the two sequences at its ends and summing the distances between the element pairs at each index. For example, ...
 
 ```{svgbob}
 .-----------.
@@ -11390,11 +11396,11 @@ python
 
 ```{ch7}
 sequence_phylogeny.NearestNeighbourInterchange main_nn_swap
-[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,i0], [n,i1], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1]]
+[[n,Cat,ACTGGT], [n,Lion,ACTGCT], [n,Bear,ATTCCC], [n,Kangaroo,ATTCCT], [n,Elephant,TTTCCC], [n,i0], [n,i1], [n,i2], [e,Cat,i0], [e,Lion,i0], [e,i0,i1], [e,Bear,i1], [e,Kangaroo,i2], [e,Elephant,i2], [e,i0,i2]]
 i0-i1
 ```
 
-Given a tree, the algorithm goes over each internal edge and tries all possibly neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
+Given a tree, this algorithm goes over each internal edge and tries all possibly neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
 
 ```{output}
 ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
@@ -11412,36 +11418,6 @@ i0
 [T, 1, 1, 0, 1]
 [G, 1, 1, 1, 0]
 ```
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
-
-TODO: ADD TERMINOLOGY FOR SMALL PARSIMONY / LARGE PARSIMONY. FIX TERMINOLOGY FOR PARSIMONY SCORE.
 
 # Stories
 
@@ -15378,7 +15354,7 @@ graph_show
 
  * `{bm} physiology/(physiology|physiological)/i` - The study of organism function.
 
- * `{bm} character table` - A matrix where the columns represent biological entities and the rows represent characteristics of those entities, where those characteristics are typically anatomically or physiologically.
+ * `{bm} character table/(character table|character vector)/i` - A matrix where the columns represent biological entities and the rows represent characteristics of those entities, where those characteristics are typically anatomically or physiologically.
 
    |           | wings | sucks blood | number of legs |
    |-----------|-------|-------------|----------------|
@@ -15388,21 +15364,50 @@ graph_show
 
    Character tables were commonly used for phylogeny before discovering that DNA can be used to compare the relatedness of organisms.
 
- * `{bm} character vector` - A row in a character table. Prior to the advent of sequencers, scientists would treat character vectors as sequences for generating phylogenetic trees or doing comparisons between organisms.
+   A row in a character table. Prior to the advent of sequencers, scientists would treat character vectors as sequences for generating phylogenetic trees or doing comparisons between organisms.
 
  * `{bm} mitochondrial DNA/(mitochondrial DNA|mtDNA)/i` - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitocondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.
    
    Mitochondrial DNA is inherited fully from the mother. It isn't a mix of parental DNA as the cell DNA is.
 
-* `{bm} parsimony score` - Given a phylogenetic tree where each ...
-
-   * node has a sequence assigned to it, where leaf nodes are typically known sequences from known entities and internal nodes are inferred sequences for their inferred ancestors.
-   * edge has a weight equal to the hamming distance between the sequences at each end.
-
-  The parsimony score for the tree is the sum of edge weights.
+ * `{bm} small parsimony/(small parsimony|large parsimony)/i` - In the context of phylogenetic trees, ...
+ 
+   * small parsimony: When a tree structure and its leaf node sequences are given, derive the internal node sequences with the lowest possible distance (most parsimonious).
+   * large parsimony: When only the leaf node sequences are given, derive the combination of tree structure and internal node sequences with the lowest possible distance (most parsimonious).
 
    ```{svgbob}
-   "Parsimony score = 5"
+   "Phylogenetic tree with ancestral sequences inferred"
+            .-----------.
+            | AncestorA |
+            |  ATTGCC   |
+            '-----+-----'
+                 / \
+                /   \
+               /     \
+        .-----+-----. \
+        | AncestorB |  \  
+        |  ACTGCT   |   \
+        '-----+-----'    \
+             / \          \
+            /   \          \
+           /     \          \
+   .------+-. .---+----. .---+----.
+   |   Cat  | |  Lion  | |  Bear  |
+   | ACTGGT | | ACTGCT | | ATTCCC |
+   '--------' '--------' '--------'
+   ```
+
+   Large parsimony isn't a process that's normally done because the search space explodes in size (e.g. NP-complete). Instead, small parsimony is used on a tree generated using an algorithm like UPGMA or neighbour joining phylogeny.
+
+   ```{note}
+   The parsimony score algorithm is what's typically used to evaluate how well a combination of tree structure + ancestral sequences do.
+   ```
+
+ * `{bm} parsimony score` - Given a phylogenetic tree with sequences for both leaf nodes (known entities) and internal nodes (inferred ancestral entities), the parsimony score is a measure of how far off a parent's sequence is from its children (and vice versa). The idea is that the the most parsimonious evolutionary path is the one that's most likely to have occurred. As such, the less far off sequences are, the more likely it is that the actual ancestral lineage and ancestral sequences match what's depicted in the tree.
+
+   ```{svgbob}
+   "Using hamming distance as the metric, the following"
+   "tree has a parsimony score of 1 + 3 + 1 = 5"
 
             .-----------.
             | AncestorA |
@@ -15423,8 +15428,6 @@ graph_show
    | ACTGGT | | ACTGCT | | ATTCCC |
    '--------' '--------' '--------'
    ```
-
-   The lower a parsimony score is, the better.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

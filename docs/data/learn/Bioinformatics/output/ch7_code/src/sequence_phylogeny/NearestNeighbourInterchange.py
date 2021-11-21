@@ -165,7 +165,8 @@ def nn_interchange(
         ],
         dist_metric: Callable[[str, str], float],
         set_edge_score: Callable[[E, float], None],
-        elem_types: str = 'ACTG'
+        elem_types: str = 'ACTG',
+        update_callback: Optional[Callable[[Graph, float], None]] = None
 ) -> tuple[float, float]:
     input_score = None
     output_score = None
@@ -181,10 +182,18 @@ def nn_interchange(
             dist_metric,
             elem_types
         )
-        orig_score = parsimony_score(tree, seq_length, get_dist_set, set_edge_score, dist_metric)
+        orig_score = parsimony_score(
+            tree,
+            seq_length,
+            get_dist_set,
+            set_edge_score,
+            dist_metric
+        )
         if input_score is None:
             input_score = orig_score
         output_score = orig_score
+        if update_callback is not None:
+            update_callback(tree, output_score)  # notify caller that the graph updated
         swap_scores = []
         edges = set(tree.get_edges())  # bug -- avoids concurrent modification problems
         for edge in edges:
@@ -216,7 +225,13 @@ def nn_interchange(
                     elem_types
                 )
                 # score and store
-                score = parsimony_score(tree, seq_length, get_dist_set, set_edge_score, dist_metric)
+                score = parsimony_score(
+                    tree,
+                    seq_length,
+                    get_dist_set,
+                    set_edge_score,
+                    dist_metric
+                )
                 swap_scores.append((score, edge, swapped_side1, swapped_side2))
                 # unswap (back to original tree)
                 nn_swap(
@@ -373,6 +388,14 @@ def main():
         print('</table>')
         print()
         print(f'... has the following inferred ancestor sequences after using nearest neighbour interchange ...')
+        def output_graph(_g, score):
+            print()
+            print(f'graph score: {score}')
+            print()
+            print(f'```{{dot}}')
+            print(f'{to_dot(_g)}')
+            print(f'```')
+            print()
         input_score, output_score = nn_interchange(
             g,
             root,
@@ -383,13 +406,9 @@ def main():
             lambda n, idx, ds: g.get_node_data(n).update({f'dist_set_{idx}': ds}),
             lambda e1, e2: dist_mat[e1, e2],
             lambda e, score: g.get_edge_data(e).update({'score': score}),
-            elem_types
+            elem_types,
+            output_graph
         )
-        print()
-        print('```{dot}')
-        print(f'{to_dot(g)}')
-        print('```')
-        print()
         print(f'After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score'
               f' of {output_score} vs the original score of {input_score}')
         print()
