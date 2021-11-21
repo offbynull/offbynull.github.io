@@ -76,7 +76,7 @@ graph G {
  * limb B's weight multiplicity reduces to 2.
  * other limbs keep their weight multiplicities at 2.
  * if the pair are neighbours, each internal edge multiplicity remains at > 2.
- * it the pair aren't neighbours, at least one internal edge multiplicity reduces to 2 while others remain at > 2.
+ * if the pair aren't neighbours, at least one internal edge multiplicity reduces to 2 while others remain at > 2.
 
 |                        | limb multiplicity | internal edge multiplicity   |
 |------------------------|-------------------|------------------------------|

@@ -14,7 +14,7 @@ dist(cat, lion) + dist(lion, dog) >= dist(cat, dog)
                 7                 >=       6
 ```
 
-The Pevzner book refers to the this as the triangle inequality.
+The Pevzner book refers to this as the triangle inequality.
 
 ```{svgbob}
       2
