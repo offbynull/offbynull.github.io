@@ -184,6 +184,18 @@ The rounding behaviour of all floating point types is queryable via `FLT_ROUNDS`
  * 2 means toward positive infinity.
  * 3 means toward negative infinity.
 
+The floating point evaluation behaviour is queryable via `FLT_EVAL_METHOD`, where a ...
+
+ * -1 means undetermined.
+ * 0 means evaluate just to the range and precision of the type.
+ * 1 means evaluate float and double as double, and long double as long double.
+ * 2 means evaluate all as long double
+ * negative value other than -1 means platform-specific behavior.
+
+```{note}
+Unsure about the last point. How's the last point any different than -1?
+```
+
 ```{note}
 I see online that `FLT_DIG`, `DBL_DIG`, `LDBL_DIG`, and `DECIMAL_DIG` define the number of "decimal digits" that can be converted to floating point and back without a loss in precision. I'm assuming that just means the max number of digits that can be represented in a float where exp is 1?
 ```
@@ -192,7 +204,7 @@ I see online that `FLT_DIG`, `DBL_DIG`, `LDBL_DIG`, and `DECIMAL_DIG` define the
 See also `std::numeric_limits` in limits of the C++ standard library. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
 
-# String Types
+# Character Types
 
 Core C++ strings are represented as an array of characters, where that array ends with a null character to signify its end. This is in contrast to other major platforms that typically structure strings a size integer along with the array (no null terminator).
 
@@ -201,9 +213,9 @@ Individual characters all map to integer types, where literals are defined by wr
 | type       | bits | literal prefix | example | description                                                 |
 |------------|------|----------------|---------|-------------------------------------------------------------|
 | `char`     | >= 8 |                | `'T'`   | >= 8-bit wide character (smallest unit of memory -- 1 byte) |
-| `char16_t` | 16   | `L`            | `L'T'`  | 16-bit wide character (e.g. UTF-16)                         |
-| `char32_t` | 32   | `u`            | `u'T'`  | 32-bit wide character (e.g. UTF-32)                         |
-| `wchar_t`  |      | `U`            | `U'T'`  | at least as wide as `char`                                  |
+| `char16_t` | 16   | `u`            | `u'T'`  | 16-bit wide character (e.g. UTF-16)                         |
+| `char32_t` | 32   | `U`            | `U'T'`  | 32-bit wide character (e.g. UTF-32)                         |
+| `wchar_t`  |      | `L`            | `L'T'`  | at least as wide as `char`                                  |
 
 Note that `char` and `wchar_t` don't have predefined bit lengths. They are platform-dependent. The bit length for...
 
@@ -231,7 +243,207 @@ Typically escaping rules apply to string literals. Unescaped string literals are
  
 These delimiter characters are characters that aren't encountered in the contents of the string itself. For example, in `u8R"|hello|"`, the delimiter is `|` and isn't included in the resulting UTF-8 string.
 
-# sizeof
+# Array Types
+
+C++ allows for the creation of arrays of constant length (size of the array must be known at compile-time). Elements of an array are guaranteed to be a contiguous in memory (speculation).
+
+* `int x[100]` - Creates an array of 100 ints where those 100 ints aren't initialized to any value. That is, any data that was previously taken up by that array is re-used without first clearing it.
+* `int x[] = { 5, 5, 5 }` - Creates an array of 3 ints where each of those ints have been initialized to 5.
+* `int x[n]` - Disallowed by C++ if n isn't a constant. These types of arrays are allowed in C (called variable length arrays / VLA), but not in C++ because C++ has collection classes that allow for sizes not known at compile-time.
+
+Accessing arrays is done similarly to how it is in most other languages, by subscripting (e.g. `x[0] = 5`). The only difference is that array access isn't bounds-checked and array length information isn't automatically maintained at run-time. For example, if an array has 100 elements, C++ won't stop you from trying to access element 250 -- out-of-bounds array access is undefined behaviour.
+
+One way to think of an arrays is as pointer to a contiguous block of elements of the array type. In fact, if an array type gets used where it isn't expected, that array type automatically decays to a pointer type.
+
+```c++
+void test(int *x) {
+   return x[0] + x[1];
+}
+
+int main() {
+   int x[3] = { 1, 2, 3 };
+   int y = test(x);
+}
+```
+
+Be careful when using the `sizeof` operator on an array. If the type is the original array type, `sizeof` will return the number of bytes taken up by the elements of that array (known at compile-time). However, if the type has decayed to a pointer type, `sizeof` will return the number of bytes to hold on to a pointer.
+
+```c++
+int x[3];
+int *y = x;  // equiv to setting to &(x[0]);
+cout << sizeof x;  // should be the size of 3 ints
+cout << sizeof y;  // should be the size of a pointer
+```
+
+Similarly, range-based for loops won't work if the type has decayed to a pointer type because the array size of that pointer isn't known at compile-time.
+
+```c++
+int x[3] = {1,2,3};
+int *y = x;
+for (int i = 0; i < 3; i++) { // OK
+   cout << y[i] << endl;
+}
+for (int v : x) { // OK
+   cout << v << endl;
+}
+for (int v : y) { // ERROR
+   cout << v << endl;
+}
+```
+
+You may be tempted to use `sizeof(array) / sizeof(type)` to determine the number of elements within an array. It's a better idea to use `std::size(array)` instead (found in iterator of the C++ standard library) because it should have logic to workaround and platform-specific behaviours that might cause inconsistent results / unexpected behaviour (speculation).
+
+# Enumeration Types
+
+C++ enumerations are be declared using `enum class`.
+
+```c++
+enum class MyEnum {
+   OptionA,
+   OptionB,
+   OptionC
+}
+
+MyEnum x = MyEnum::OptionC
+```
+
+Under the hood, an enum is represented as an integer data type where each of its options is a particular integer constant (speculation -- is it guaranteed to be an int or is it something that's platform-specific?).
+
+Enumerations may be used with `switch` statements as well.
+
+```c++
+switch (x) {
+   case MyEnum::OptionA:
+      ...
+      break;
+   case MyEnum::OptionB:
+      ...
+      break;
+   case MyEnum::OptionC:
+      ...
+      break;
+   default:
+      break;
+}
+```
+
+# Class Types
+
+C++ classes are declared using either the `struct` keyword or `class` keyword. When ...
+
+ * `struct` is used, the default visibility of class members is public.
+ * `class` is used, the default visibility of class members is private.
+
+```c++
+struct MyStruct {
+   int count;
+   char name[256];
+   bool flag;
+
+   void add() {
+      count += 1;
+   }
+}
+```
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
+
+C++ classes that contain only data are called plain-old-data classes.
+
+```c++
+struct MyStruct {
+   int count;
+   char name[256];
+   bool flag;
+}
+
+MyStruct a;                      // uninitialized -- members point to junk data
+MyStruct b = {5, "steve", true}; // initialized
+```
+
+```{note}
+C++ guarantees that a class's data members will be sequentially stored in member, but they may be padded / aligned based on the platform.
+```
+
+# Union Types
+
+C++ unions are a set of variables that point to the same underlying memory. Each union takes up only as much memory as its largest member.
+
+```c++
+union MyUnion {
+   char raw[100];
+   short num_int;
+   double num_dbl;
+}
+
+MyUnion x;
+// set all bytes of raw to 0
+for (int i = 0; i < sizeof(x.raw); i++) {
+   x.raw[i] = 0;
+}
+// since all members of the union start at the same memory location, these
+// will by likely both be 0 (unless short or double has a byte size of over
+// 100).
+cout << x.num_int << endl;
+cout << x.num_dbl << endl;
+```
+
+```
+Consider using std::variant instead of unions.
+```
+
+# void Type
+
+`void` is a type that represents an empty set of values. Since it can't hold a value, C++ won't allow you to declare an object of type void. However, you can use it to declare that a function ...
+
+* returns no value (void return).
+* accepts no arguments (void parameter list).
+
+# sizeof Operator
 
 `sizeof` is a _unary operator_ that returns the size of its operand in bytes as a `size_t` type. If the operand is a ...
 
@@ -250,6 +462,8 @@ These delimiter characters are characters that aren't encountered in the content
  * `x = int[n]; sizeof x` is invalid C++ (variable length arrays allocated on stack are not allowed in C++).
 
 In other words, `sizeof` returns the size of things known at compile-time. If a variable is passed in, it outputs the size of the data type. For example, if the data type is a struct of type MyStruct, it'll return the number of bytes used to store a MyStruct. However, if the data type is a pointer to MyStruct, it'll return the number of bytes to hold that pointer. That is, you can't use it to get the size of something like a dynamically allocated array of integers.
+
+In certain cases, the compiler may add padding to objects (e.g. byte boundary alignments or performance reasons), meaning that the size returned by `sizeof` for an object shouldn't be used to make inferences about the characteristics of that object. For example, a `long double` may get reported as being 16 bytes, but that doesn't necessarily mean that a `long double` is a 128-bit quad floating point. It could be that only 12 of those bytes are used to represent the floating point number while the remainder is just padding for alignment reasons. 
 
 ```{note}
 As shown in the examples above, the `sizeof` a C++ reference is equivalent to the raw size. For example, `sizeof char == sizeof (char &)`.
@@ -324,3 +538,15 @@ Remember that `sizeof` is a _unary operator_, similar to how the negative sign i
                                                                             +--+ "executable" |
                                                                                '--------------'
    ```
+
+ * `{bm} enumeration/(enumeration|enum)/i` - A user-defined type that can be set to one of a set of possibilities.
+
+ * `{bm} class/(class|struct)/i` - A user-defined type that pairs together data and the functions that operate on that data.
+
+ * `{bm} union` - A user-defined type where all members share the same memory location (different representations of the same data).
+
+ * `{bm} plain-old-data class/(plain-old-data class|plain-old data class|plain old data class|plain-old-data structure|plain-old data structure|plain old data structure|plain-old-data struct|plain-old data struct|plain old data struct)/i` `{bm} /(POD)/` - A class that contains only data, not functions.
+
+ * `{bm} member/\b(member)/i` - Data or function belonging to a class.
+
+ * `{bm} method` - Function belonging to a class.
