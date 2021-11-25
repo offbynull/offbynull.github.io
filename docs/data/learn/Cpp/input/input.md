@@ -3,7 +3,10 @@
 ```{toc}
 ```
 
-# Core Integer Types
+
+# Types
+
+## Core Integer Types
 
 C++'s core integer types are as follows...
 
@@ -49,7 +52,7 @@ All other specifics are platform-dependent. Specifically, ...
  * encoding scheme is undefined (e.g. one's complement, two's complement, etc..).
  * overflow behaviour of _signed_ types is undefined (e.g. crash, stay at boundary, wrap back around, etc..).
 
-Integer ranges, although platform-specific, are queryable in climits of the C++ standard library.
+Integer ranges, although platform-specific, are queryable in the climits header.
 
 | type                 | min           | max          |
 |----------------------|---------------|--------------|
@@ -89,12 +92,12 @@ Notice that `int`, `short`, and `unsigned short` don't have explicit suffixes. I
 ```
 
 ```{note}
-See also `std::numeric_limits` in limits of the C++ standard library. This seems to also provide platform-specific definitions that are queryable via functions..
+See also `std::numeric_limits` in the limits header. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
 
-# Sized Integer Types
+## Sized Integer Types
 
-Integer types with standardized bit lengths are defined in cstdlib of the C++ standard library.
+Integer types with standardized bit lengths are defined in the cstdlib header.
 
 | signed          | unsigned         | description                                                            |
 |-----------------|------------------|------------------------------------------------------------------------|
@@ -138,10 +141,10 @@ The macros above make it so that you don't need to know the underlying mapping..
 ```
 
 ```{note}
-See also `std::numeric_limits` in limits of the C++ standard library. This seems to also provide platform-specific definitions that are queryable via functions..
+See also `std::numeric_limits` in the limits. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
 
-# Floating Point Types
+## Floating Point Types
 
 C++'s core floating point types are as follows...
 
@@ -158,7 +161,7 @@ The specifics of each type are platform-dependent. The only guarantee is that ea
 * mantissa bit length is undefined.
 * subnormal number support is undefined.
 
-Floating point characteristics, although platform-specific, are queryable in cfloat of the C++ standard library.
+Floating point characteristics, although platform-specific, are queryable in the cfloat header.
 
 | type          | min        | max        | min exponent   | max exponent   | mantissa digits | radix        | epsilon        |
 |---------------|------------|------------|----------------|----------------|-----------------|--------------|----------------|
@@ -201,10 +204,10 @@ I see online that `FLT_DIG`, `DBL_DIG`, `LDBL_DIG`, and `DECIMAL_DIG` define the
 ```
 
 ```{note}
-See also `std::numeric_limits` in limits of the C++ standard library. This seems to also provide platform-specific definitions that are queryable via functions..
+See also `std::numeric_limits` in the limits header. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
 
-# Character Types
+## Character Types
 
 Core C++ strings are represented as an array of characters, where that array ends with a null character to signify its end. This is in contrast to other major platforms that typically structure strings a size integer along with the array (no null terminator).
 
@@ -243,12 +246,73 @@ Typically escaping rules apply to string literals. Unescaped string literals are
  
 These delimiter characters are characters that aren't encountered in the contents of the string itself. For example, in `u8R"|hello|"`, the delimiter is `|` and isn't included in the resulting UTF-8 string.
 
-# Array Types
+## Void Type
+
+`void` is a type that represents an empty set of values. Since it can't hold a value, C++ won't allow you to declare an object of type void. However, you can use it to declare that a function ...
+
+* returns no value (`void` return).
+* accepts no arguments (`void` parameter list).
+
+## Enumeration Types
+
+C++ enumerations are be declared using `enum class`.
+
+```c++
+enum class MyEnum {
+   OptionA,
+   OptionB,
+   OptionC
+};
+
+MyEnum x = MyEnum::OptionC;
+```
+
+Under the hood, an enum is represented as an integer data type where each of its options is a particular integer constant (speculation -- is it guaranteed to be an int or is it something that's platform-specific?).
+
+Enumerations may be used with `switch` statements as well.
+
+```c++
+switch (x) {
+    case MyEnum::OptionA:
+        ...
+        break;
+    case MyEnum::OptionB:
+        ...
+        break;
+    case MyEnum::OptionC:
+        ...
+        break;
+    default:
+        break;
+}
+```
+
+````{note}
+It's possible to remove the `class` from `enum class`, which heavily loosens type-safety and scope. By removing `class`, the options within have their values implicitly converted to integers and you don't need the resolution scope operator (their options are accessible at the same level as an enum).
+
+```c++
+enum MyEnum { // no class keywrod
+   OptionA,
+   OptionB,
+   OptionC
+};
+
+MyEnum x = OptionC; // this is okay -- don't have to use MyEnum::OptionC
+int y = OptionC;    // this is okay -- options are integers
+```
+
+You should prefer `enum class`.
+````
+
+## Array Types
 
 C++ allows for the creation of arrays of constant length (size of the array must be known at compile-time). Elements of an array are guaranteed to be a contiguous in memory (speculation).
 
-* `int x[100]` - Creates an array of 100 ints where those 100 ints aren't initialized to any value. That is, any data that was previously taken up by that array is re-used without first clearing it.
-* `int x[] = { 5, 5, 5 }` - Creates an array of 3 ints where each of those ints have been initialized to 5.
+* `int x[100]` - Creates an array of 100 ints where those 100 ints are junk values (data previously at that memory location is not zero'd out).
+* `int x[] { 5, 5, 5 }` - Creates an array of 3 ints where each of those ints have been initialized to 5 (braced initialization).
+* `int x[] = { 5, 5, 5 }` - Equivalent to above (assignment does not do any extra work).
+* `int x[3] {}` - Creates an array of 3 ints where each of those ints are 0 (memory zero'd out -- braced initialization).
+* `int x[3] = {}` - Equivalent to above (assignment does not do any extra work).
 * `int x[n]` - Disallowed by C++ if n isn't a constant. These types of arrays are allowed in C (called variable length arrays / VLA), but not in C++ because C++ has collection classes that allow for sizes not known at compile-time.
 
 Accessing arrays is done similarly to how it is in most other languages, by subscripting (e.g. `x[0] = 5`). The only difference is that array access isn't bounds-checked and array length information isn't automatically maintained at run-time. For example, if an array has 100 elements, C++ won't stop you from trying to access element 250 -- out-of-bounds array access is undefined behaviour.
@@ -256,15 +320,33 @@ Accessing arrays is done similarly to how it is in most other languages, by subs
 One way to think of an arrays is as pointer to a contiguous block of elements of the array type. In fact, if an array type gets used where it isn't expected, that array type automatically decays to a pointer type.
 
 ```c++
-void test(int *x) {
+int test(int *x) {
    return x[0] + x[1];
 }
 
-int main() {
+void run() {
    int x[3] = { 1, 2, 3 };
    int y = test(x);
 }
 ```
+
+````{note}
+My understanding is that arrays are typically passed to functions as pointers + array length. This is because the array length information is only available at compile-time, meaning that if you have a function that takes in an array, how would it know the size of the array it's working with (it isn't the one who declared it). It looks like you can for the function to an array type of fixed size, but apparently that doesn't mean anything? The compiler doesn't enforce that a caller use an array of that fixed size, and using sizeof on the array will produce a warning saying that it's decaying into a pointer.
+
+```c++
+size_t test(int x[10]) {
+   return sizeof(x); // compiler warning that this is returning sizeof(int *)
+}
+
+int main() {
+   int x[3] = { 1, 2, 3 };
+   size_t y = test(x); // compiler doesn't complain that test() expects int[10] but this is int[3]
+   cout << y;
+   return 0;
+}
+```
+````
+
 
 Be careful when using the `sizeof` operator on an array. If the type is the original array type, `sizeof` will return the number of bytes taken up by the elements of that array (known at compile-time). However, if the type has decayed to a pointer type, `sizeof` will return the number of bytes to hold on to a pointer.
 
@@ -291,125 +373,154 @@ for (int v : y) { // ERROR
 }
 ```
 
-You may be tempted to use `sizeof(array) / sizeof(type)` to determine the number of elements within an array. It's a better idea to use `std::size(array)` instead (found in iterator of the C++ standard library) because it should have logic to workaround and platform-specific behaviours that might cause inconsistent results / unexpected behaviour (speculation).
+You may be tempted to use `sizeof(array) / sizeof(type)` to determine the number of elements within an array. It's a better idea to use `std::size(array)` instead (found in the iterator header) because it should have logic to workaround and platform-specific behaviours that might cause inconsistent results / unexpected behaviour (speculation).
 
-# Enumeration Types
+## Pointer Types
 
-C++ enumerations are be declared using `enum class`.
+C++ provides types that reference a memory address, called pointers. Variables of these types can point to different memory addresses / objects.
+
+Adding an asterisk (\*) to the end of any type makes it a pointer type (e.g. `int *` is a type that can contain a pointer to an `int`). A pointer to any object can be retrieved using the address-of unary operator (&). Similarly, the value in any pointer can be retrieved using the deference unary operator (\*).
 
 ```c++
-enum class MyEnum {
-   OptionA,
-   OptionB,
-   OptionC
-}
+int w {5};
+int *x { &w }; // x points to w
+int *y { &w }; // y points to w
+int z = *x;    // z is a copy of whatever x points to, which is w, which means it gets set to 5
+*x = 7;        // w is set to 5 through x
 
-MyEnum x = MyEnum::OptionC
+int **a { &x }; // a points to x, which points to w (a pointer to a pointer to an int)
 ```
 
-Under the hood, an enum is represented as an integer data type where each of its options is a particular integer constant (speculation -- is it guaranteed to be an int or is it something that's platform-specific?).
-
-Enumerations may be used with `switch` statements as well.
+As shown in the example above, it's perfectly valid to use the deference operator on the left-side of the equals. It defines where the result of the right side should go.
 
 ```c++
-switch (x) {
-   case MyEnum::OptionA:
-      ...
-      break;
-   case MyEnum::OptionB:
-      ...
-      break;
-   case MyEnum::OptionC:
-      ...
-      break;
-   default:
-      break;
-}
+int w {5};
+int *x { &w };  // x points to w
+int **y { &x }; // y point to x, which points to w
+
+**y = 7;        // y dereferenced twice and set to 7 -- w should now be 7 
 ```
 
-# Class Types
+The notation is confusing because asterisk (*) has different meanings. In the context of a ...
 
-C++ classes are declared using either the `struct` keyword or `class` keyword. When ...
+ * type declaration, an asterisk means that the type is a "pointer to" some other type.
+ * unary operator in an expression, an asterisk means the object being pointed to should be accessed.
+ * binary operator in an expression, an asterisk means multiplication.
 
- * `struct` is used, the default visibility of class members is public.
- * `class` is used, the default visibility of class members is private.
-
-```c++
-struct MyStruct {
-   int count;
-   char name[256];
-   bool flag;
-
-   void add() {
-      count += 1;
-   }
-}
+```{note}
+See also: member-of-pointer operator.
 ```
 
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-TODO: add comment about class access (e.g. public / private / etc..) -- continue from ch2 access controls section
-
-C++ classes that contain only data are called plain-old-data classes.
+In addition, a pointer can optionally be set to nothing via the `nullptr` literal. `nullptr` is actually of type `std::nullptr_t`, but the compiler will implicit conversion to/from other pointer types when required.
 
 ```c++
-struct MyStruct {
-   int count;
-   char name[256];
-   bool flag;
+int *y = nullptr; // implicit conversion
+if (y == nullptr) {
+    // report error
 }
-
-MyStruct a;                      // uninitialized -- members point to junk data
-MyStruct b = {5, "steve", true}; // initialized
 ```
 
 ```{note}
-C++ guarantees that a class's data members will be sequentially stored in member, but they may be padded / aligned based on the platform.
+It seems like there's some implicit conversions to boolean that are possible with pointers. If whatever the pointer is going to expects a boolean, its implicitly converted to `ptr != nullptr`? So in if / while/ for conditions, you can just use the pointer as is without explicitly writing out a condition?
 ```
 
-# Union Types
+```{note}
+How is this different than the NULL macro? I guess because it's a distance type, you can have a function overload that takes in param of type `std::nullptr_t`? But why would you ever want to do that?
+```
+
+### Pointer Arithmetic
+
+Certain arithmetic operators are allowed on pointers, called pointer arithmetic. Adding or subtracting integer types on a pointer will move that pointer by the number of bytes that makes up its underlying type.
+
+```c++
+int []x = {1, 5, 7};
+int *ptrA = &(x[1]);  // points to idx 1 of x (5)
+int *ptrB = ptrA + 1; // points to idx 2 of x (7)
+```
+
+This is similar to array access via the subscript operator. In fact, both arrays and pointers can be accessed in the same way using the subscript operator and pointer arithmetic.
+
+```c++
+int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+int *y = x;
+*(y+1) = 99;  // equivalent to x[1] = 99
+x[2] = 101;   // equivalent to *(y+2) = 101;
+```
+
+```{note}
+An array guarantees that its elements appear contiguously and in order within memory (I think?), so if the pointer is from a decay'd array, using pointer arithmetic to access its elements is perfectly fine.
+```
+
+### Void Pointer
+
+A pointer to the void type means that the type being pointed to is unknown. Since the type is unknown, dereferencing a void pointer isn't possible. In otherwords, it isn't possible to read or write to the data pointed to by a void * because the underlying type is void / unknown.
+
+```c++
+int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+void *y = x;
+*y = 2; // fails
+```
+
+Since the underlying type of the pointer is unknown, pointer arithmetic isn't allowed either.
+
+```c++
+int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+void *y = x;
+y = y + 2; // fails
+```
+
+```{note}
+If you have a `void *` and you want to do raw memory manipulation at that address, use a `std::byte *` instead. Why not just use `char *` instead? Is a `char` guaranteed to be 1 byte (I think it is)? According to [this](https://stackoverflow.com/a/46151026), it's because certain assumptions about `char`s may not hold with bytes? I don't know. Just remember `std::byte *` if you're working with raw data.
+``` 
+
+## Reference Types
+
+C++ provides a more sanitized version of pointers called references. A reference type is declared by adding an ampersand (&) after the type rather than an asterisk (*), and it implicitly takes the address of whatever is passed into it when its created.
+
+```c++
+int w {5};
+
+int *x { &w }; // x points to w
+int &y { w };  // y references to w (note address-of operator not used here)
+```
+
+The main difference is between pointer types and reference types is that a reference type doesn't need to explicitly dereference to access the object pointed to. The object pointed to by the reference type is accessed as if it were the object itself.
+
+```c++
+*x = 10;       // x explicitly dereferenced to w and set to 10
+y = 15;        // y implicitly dereferenced to w and set to 15
+```
+
+As shown in the example above, assignment to a reference type is assignment on the underlying object being referenced. As such, having the reference type point a different object isn't possible (reseating).
+
+```{note}
+One way to think of this is that it's implicitly `const` -- the compiler won't let explicitly set a reference to be `const`.
+```
+
+Similarly, it's not possible to have a reference to a reference.
+
+```c++
+int &&z { y }; // this isn't a thing -- fail
+```
+
+## Rvalue Reference Type
+
+An rvalue reference is similar to a reference except that it tells the compiler that it's working with is an rvalue. Rvalue references are declared by adding two ampersands (&&) after the type rather than just one. It's initialized using the `std::move()` function within the utility header, which casts its input into an rvalue reference.
+
+Rvalue references are typically used for moving objects (not copying, but actually moving the guts of one object into another). This is typically done through something called a move constructor, which will be explained further on.
+
+```c++
+MyObject a {};
+MyObject &&b = std::move(a);  // get rvalue reference
+MyObject c {b};               // move a into c (gut it into c) via the move constructor
+// b is in an invalid state
+```
+
+```{note}
+Once an object is moved, it's in an invalid state. The only two reliable operations you can perform on it is to either destroy or re-assign it to something else (assignments are discussed elsewhere).
+```
+
+## Union Types
 
 C++ unions are a set of variables that point to the same underlying memory. Each union takes up only as much memory as its largest member.
 
@@ -436,14 +547,732 @@ cout << x.num_dbl << endl;
 Consider using std::variant instead of unions.
 ```
 
-# void Type
+## Class Types
 
-`void` is a type that represents an empty set of values. Since it can't hold a value, C++ won't allow you to declare an object of type void. However, you can use it to declare that a function ...
+C++ classes are declared using either the `struct` keyword or `class` keyword. When ...
 
-* returns no value (void return).
-* accepts no arguments (void parameter list).
+ * `struct` is used, the default visibility of class members is public.
+ * `class` is used, the default visibility of class members is private.
 
-# sizeof Operator
+Public and private visibility are the same as in most other languages: private members aren't accessible outside the class while public members are.
+
+```c++
+class MyStruct {
+    private:
+    int count;
+    bool flag;
+
+    public:
+    char name[256];
+    void add() {
+        count += 1;
+        flag = false;
+    }
+};
+```
+
+C++ classes that contain only data are called plain-old-data classes (POD), and they're typically created using the `struct` keyword so as their members are all accessible by default.
+
+```c++
+struct MyStruct {
+   int count;
+   char name[256];
+   bool flag;
+};
+```
+
+```{note}
+C++ guarantees that a class's fields will be sequentially stored in memory, but they may be padded / aligned based on the platform. Be aware when using the sizeof operator.
+```
+
+### This Pointer
+
+Non-static methods of a class have access to an implicit pointer called `this`, which allows for accessing that instance's members. As long as the class member doesn't conflict with a parameter name of the method invoked, the usage of that name will implicitly reference the `this` pointer.
+
+The member-of-pointer operator (->) allows for dereferencing a pointer and accessing a member on the result in a more concise form.
+
+```c++
+class MyStruct {
+    private:
+    int count;
+    bool flag;
+
+    public:
+    f1(int count) {
+        this->count = count;  // equivalent to (*this).count = count
+        flag = false;
+    }
+
+    f2(int count, bool flag) {
+        this->count = count;  // equivalent to (*this).count = count
+        this->flag = flag;    // equivalent to (*this).flag = flag
+    }
+}
+```
+
+### Construction
+
+C++ classes are allowed one or more constructors that initialize the object. Similar to Java, each constructor should have the same name as the class itself, no return type, and a unique parameter list.
+
+```c++
+class MyStruct {
+    private:
+    int count;
+    bool flag;
+
+    public:
+    MyStruct() {
+        count = 0;
+        flag = false;
+    }
+
+    MyStruct(int initialCount, bool initialFlag) {
+        this->count = initialCount;
+        this->flag = initialFlag;
+    }
+}
+```
+
+The above constructors are using the member-of-pointer operator (->) to access the `this` pointer. Non-static methods of a class have access to an implicit pointer called `this`, which allows for accessing that instance's members. The member-of-pointer operator allows for dereferencing a pointer and accessing a member on the result in a more concise form.
+
+```c++
+this->count = 0;  // equivalent to (*this).member = 0
+```
+
+If a class offers constructors, the least error-prone way to invoke it is to use braced initialization: `MyStruct x { 5, true }`. The reason is that C++ has so many object initialization foot-guns that, while simpler methods may work (e.g. `MyStruct x(5, true)`), those methods may end up being interpreted by the compiler as something else that's entirely different (e.g. function declaration).
+
+```{note}
+This ambiguity is often referred to as the "most vexing parse" problem.
+```
+
+Classes that don't have any constructors declared get an implicit zero-arg constructor that zeros out the memory of that class (speculation). If the class is a POD, a braced initialization that is ...
+
+ * empty will zero out the memory for all fields, (implicit default constructor).
+ * non-empty will set the individual fields, in the order they're declared in.
+
+```c++
+struct MyStruct {
+   int count;
+   char name[256];
+   bool flag;
+};
+
+MyStruct a;                    // initialized to zero'd out memory (via implicit constructor)
+MyStruct b {};                 // initialized to zero'd out memory (via implicit constructor)
+MyStruct b {5, "steve", true}; // initialized to supplied arguments
+```
+
+```{note}
+See [here](https://stackoverflow.com/a/49802943) for more information. The = operator won't result in a copy or anything like that (meaning performance won't suffer).
+```
+
+If a class does explicitly declare constructors, the implicit zero-arg constructor won't be generated. If desired, a zero-arg constructor may be declared with the default behaviour of the implicit zero arg constructor by adding `= default` instead of a method body.
+
+```c++
+class MyStruct {
+    private:
+    int count;
+    bool flag;
+
+    public:
+    MyStruct() = default;
+    MyStruct(int initialCount, bool initialFlag) {
+        this->count = initialCount;
+        this->flag = initialFlag;
+    }
+}
+```
+
+A field may be initialized to a value either through default member initializations or the member initializer list. For default member initializations, the initialization is done directly in the field's declaration.
+
+```c++
+struct MyStruct {
+   int count {5};
+   char name[256] {"steve"};
+   bool flag {true};
+};
+```
+
+In contrast, a member initializer list is a comma separated list of braced initializations for the fields of a class. It's specified just before a constructor's body.
+
+```c++
+struct MyStruct {
+    int count;
+    bool flag;
+
+    MyStruct(): count{0}, flag{false} {
+    }
+}
+```
+
+Each item in the comma separated list is called a member initializer.
+
+
+```{note}
+How is this better than default member initialization, where initialization is done directly after the field declaration? According to [this](https://stackoverflow.com/a/48098997), it's more-or-less the same?
+```
+
+### Destruction
+
+C++ classes are allowed an explicit cleanup function called a destructor (e.g. closing an open file handle, zeroing out memory for security purposes, etc..). A destructor is declared similarly to a constructor, the only differences being ...
+
+ 1. a tilde must appear just before the class / function name.
+ 2. it doesn't take in any arguments.
+
+```c++
+class MyStruct {
+    private:
+    int count {5};
+    bool flag {true};
+
+    public:
+    ~MyStruct() {
+        // do some cleanup here
+    }
+};
+```
+
+Destructors must never be called directly by the user, nor should an exception ever be thrown in a destructor.
+
+If a destructor isn't declared, an empty one is implicitly generated.
+
+### Copying
+
+There are two built-in mechanisms for copying in C++: the copy constructor and copy assignment.
+
+A copy constructor is a constructor that has a single parameter, a reference to a `const` object of the same type. By default, classes are implicitly provided with a default copy constructor if one hasn't been explicitly declared by the user. The copy semantics of this default copy constructor is to copy each field individually, called a member-wise copy.
+
+Member-wise copying may not be the correct way to copy in certain cases, in which case a copy constructor should be explicitly provided with the correct copy semantics.
+
+```c++
+class MyStruct {
+    ...
+
+    MyStruct(const MyStruct &orig) {
+        this->db = DatabaseConnection {orig.db.host, orig.db.port}; // make a new db connection instead of using orig's
+        this->max = orig.max;
+    }
+}
+
+
+MyStruct x {host, port};
+MyStruct y {x}; // both x and y are independent and equal, but y has its own DatabaseConnection
+```
+
+Similarly, copy assignment is a method invoked when the assignment operator is used, called an operator overload. Unlike copy constructors, copy assignment is required to clean up any resources in the destination object prior to copying. By default, classes are implicitly provided with a copy assignment method if one hasn't been explicitly declared by the user. The copy semantics of this default method is to assign each field individually, called a member-wise copy.
+
+```c++
+class MyStruct {
+    ...
+
+    MyStruct& operator=(const MyStruct &orig) {
+        if (this != &other) { // only do if assigning to self
+            this->db.close(); // close existing db connection
+            this->db = DatabaseConnection {orig.db.host, orig.db.port}; // make a new db connection
+            this->max = orig.max;
+        }
+        return *this; // return self -- this should always be the case??
+    }
+}
+```
+
+To suppress the compiler from allowing copying or assignment of an object, add ` = delete` after both signatures instead of specifying a body. This is important if the object holds on to an un-copyable resource such as a lock.
+
+```c++
+class MyStruct {
+    ...
+
+    MyStruct(const MyStruct &orig) = delete;
+    MyStruct& operator=(const MyStruct &orig) = delete;
+}
+```
+
+````{note}
+If using the defaults, the book recommends explicitly declaring the methods but adding ` = default` after both signatures instead of specifying a body. The reason is that the default is almost always wrong, so if you tack this on it makes it explicit to other that you intended this.
+
+```c++
+class MyStruct {
+    ...
+
+    MyStruct(const MyStruct &orig) = default;
+    MyStruct& operator=(const MyStruct &orig) = default;
+}
+```
+
+ALSO, there's ambiguity around when the compiler generates default move/copy/destructor methods. It might be compiler specific. The book recommends that if you're using the defaults, always set them to `= default` (or do `= delete` to disallow them).
+
+class MyStruct {
+    ...
+
+    // copy
+    MyStruct(MyStruct &&orig) = default;
+    MyStruct& operator=(MyStruct &&orig) = default;
+    // move
+    MyStruct(MyStruct &&orig) = default;
+    MyStruct& operator=(MyStruct &&orig) = default;
+    // destructor
+    ~MyStruct() = default;
+}
+```
+````
+
+### Moving
+
+There are two built-in mechanisms for moving in C++: the move constructor and move assignment. Moving is different from copying in that moving actually guts the insides (data) of one object and transfers it into another, leaving that object in an invalid state. If the scenario allows for it, moving is often times more efficient than copying.
+
+A move constructor is a constructor that has a single parameter, an rvalue reference to an object of the same type. By default, classes are implicitly provided with a default move constructor if one hasn't been explicitly declared by the user. The move semantics of this default move constructor is to _copy_ each field rather than actually move anything, called a member-wise copy.
+
+```c++
+class MyStruct {
+    ...
+
+    MyStruct(MyStruct &&orig) noexcept {
+        this->str_ptr = orig.str_ptr;
+        this->max = orig.max;
+        orig.str_ptr = nullptr; // mark orig object as invalid
+        orig.max = -1; // mark orig object as invalid
+    }
+}
+
+MyStruct a {};
+MyStruct &&b = std::move(a);  // get rvalue reference for a
+MyStruct c {b};               // move a into c (gut it into c) via the move constructor
+// b is in an invalid state
+```
+
+In the example above, the move constructor has `noexcept` set to indicate that it will never throws an exception. Move constructors that can throw exceptions are problematic for the compiler to use. If a move constructor throws an exception, the source object will likely enter into an inconsistent state, meaning the program will likely be in an inconsistent state. As such, if the compiler sees that the move constructor can throw an exception, it'll prefer to copy it instead.
+
+Similarly to the move constructor, move assignment is a method invoked when the assignment operator is used, called an operator overload. It has the same parameter list and it shouldn't throw exceptions either (`noexcept`), the only difference is that it return a reference to itself at the end.
+
+```c++
+class MyStruct {
+    ...
+
+    MyStruct& operator=(MyStruct &&orig) {
+        if (this != &other) { // only do if assigning to self
+            this->str_ptr = orig.str_ptr;
+            this->max = orig.max;
+            orig.str_ptr = nullptr; // mark orig object as invalid
+            orig.max = -1; // mark orig object as invalid
+        }
+        return *this; // return self -- this should always be the case??
+    }
+}
+```
+
+````{note}
+There's ambiguity around when the compiler generates default move/copy/destructor methods. It might be compiler specific. The book recommends that if you're using the defaults, always set them to `= default` (or do `= delete` to disallow them).
+
+class MyStruct {
+    ...
+
+    // copy
+    MyStruct(MyStruct &&orig) = default;
+    MyStruct& operator=(MyStruct &&orig) = default;
+    // move
+    MyStruct(MyStruct &&orig) = default;
+    MyStruct& operator=(MyStruct &&orig) = default;
+    // destructor
+    ~MyStruct() = default;
+}
+```
+````
+
+### Inheritance
+
+In C++, a class inherits another class by, just after its name, appending a colon (:) followed by the name of the parent class.
+
+```c++
+class MyChild : MyParent {
+};
+```
+
+Like in most other object oriented languages, a child class...
+
+ * can access the non-private members of any of the classes it inherits.
+ * is assignable to the type of any of the classes it inherits.
+
+```c++
+MyChild c {};
+MyParent p {x}; // MyChild inherits from MyParent, meaning that it's assignable to MyParent
+```
+
+Unlike most other object oriented languages, methods aren't overridable by default. To be able to override a method in a child class, the base class declaring it needs to prepend `virtual` to the declaration, making it a virtual method. Similarly, any method that overrides a virtual method should append `override` before the body.
+
+```{note}
+Appending `override` isn't strictly required, but it's a hint that the compiler can use to prevent you from making a mistake (e.g. it sees `override` but what's being overridden isn't `virtual`). It's similar to Java's `@Override` annotation.
+```
+
+```c++
+struct MyParent {
+    virtual int virt_method() { ... }
+    int non_virt_method() { ... }
+};
+
+struct MyChild : MyParent {
+    virtual int virt_method() override { ... }
+};
+```
+
+If the base class and child class have the exact same non-virtual method, which method gets called depends the type of the variable.
+
+```c++
+struct MyParent {
+    virtual int virt_method() { ... }
+    int non_virt_method(int a) { ... }
+};
+
+struct MyChild : MyParent {
+    virtual int virt_method() override { ... }
+    int non_virt_method(int a) { ... }
+};
+
+
+MyChild c {};
+MyChild  &cref {x};
+MyParent &pref {x};
+cref.non_virt_method(0);  // calls MyChild::non_virt_method()
+pref.non_virt_method(0);  // calls MyParent::non_virt_method() even though object is a MyChild
+```
+
+C++ chains constructor and destructor invocations appropriately as expected. The one caveat is that destructor, if not a virtual method, will use the method resolution mechanism described above: If the type of the variable doesn't match the object (variable type is the base class but object is not), the wrong destructor gets invoked, resulting in object potentially not cleaning up resources (e.g. closing file handles).
+
+```c++
+struct MyParent {
+    virtual int v1() { ... };
+    ~MyParent() { ... };
+};
+
+struct MyChild : MyParent {
+    virtual int v1() { ... };
+    ~MyChild() { ... };
+};
+
+
+MyParent *c = new MyChild{};
+delete c;  // calls MyParent's destructor instead of MyChild's destructor
+```
+
+When inheritance is involved, it's almost always a good idea to enforce a virtual destructor. Since not having a virtual destructor sometimes makes sense (e.g. user determined that it's safe to omit it and as such omitted it to improve performance), the compiler won't produce a warning if it isn't virtual.
+
+```c++
+struct MyParent {
+    virtual int v1() { ... };
+    virtual ~MyParent() { ... };
+};
+```
+
+### Interfaces
+
+Interfaces and abstract classes are supported in C++, but not in the same way as other high-level languages. The C++ approach to interfaces is to explicitly mark certain methods as requiring an implementation. This is done by appending `= 0` to the method declaration.
+
+```c++
+struct MyParent {
+    virtual int virt_method() = 0;
+    int non_virt_method() = 0;
+};
+```
+
+A method that is both a virtual method and requires an implementation is called a pure virtual method. A class that contains all pure virtual methods is called a pure virtual class.
+
+```c++
+struct MyParent {
+    virtual int v1() = 0;
+    virtual int v2() = 0;
+    virtual ~MyParent() {};  // also okay to do   "virtual ~MyParent() = default"
+};
+```
+
+As shown in the example above, a pure virtual class should have a virtual destructor. While not required, failing to do so means that the wrong destructor may get invoked if the type of the variable doesn't match the object (variable type is the base class but object is not), resulting in class resources being left open (e.g. file handles).
+
+```{note}
+See inheritance section for a more thorough explanation.
+```
+
+### Templates
+
+Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types are unknown, called template parameters. When the user makes use of a template, a set of real types are substituted for those template parameters.
+
+Templates are created using the `template` keyword, where the template parameters are a comma separated list sandwiched within angle brackets.
+
+```c++
+template <typename X, typename Y, typename Z>
+struct MyClass {
+    X perform(Y &var1, Z &var2) {
+        return var1 + var2;
+    }
+};
+```
+
+As shown above, each template parameter is in the declaration is prefixed with the keyword `typename`. The keyword `class` may be used instead of `typename`. The meaning is exactly the same (`typename` should be preferred).
+
+Substituting real types for a template is called template instantiation. To instantiate a class template, use the class as if it were a normal class but immediately after the class name add in a common separated list of real types sandwiched within angle brackets. These real types are the types to substitute in for the template parameters (same order).
+
+```c++
+MyClass<float, int, int> obj {}; // X = float, Y = int, Z = int
+float x = obj.perform(5, 3);
+```
+
+Declaring templated functions is done in the same manner as templated classes, and using templated functions is done similarly to templated classes: use the class as if it were a normal function but immediately after the function name add in a common separated list of real types sandwiched within angle brackets.
+
+```c++
+// declare
+template <typename X, typename Y, typename Z>
+X perform(Y &var1, Z &var2) {
+    return var1 + var2;
+}
+
+// use (this is a separate file)
+float x = perform<float, int, int>(5, 3);
+```
+
+In most cases, directly specifying types during usage can be skipped. The compiler will deduce the types from the argument you pass in and and substitute them automatically.
+
+```c++
+float x = perform(5, 3);  // template arguments omitted, inferred by compiler
+```
+
+Templates work differently from Java generics in that the C++ compiler generates a new template instantiation for each unique set of types it sees used. Doing so produces more code than if there was only one copy, but also ensures that any performance optimizations unique to that specific set of types remain around.
+
+# Constants
+
+The keyword `const` tells the compiler the thing it's applied to either shouldn't be modified or shouldn't be making modifications.
+
+For types, any part of that type can be made unmodifiable by adding a `const` immediately after it.
+
+```c++
+int a = 5;                // a is changeable   -- set to 5
+int const x {a};          // x is unchangeable -- set to 5 (value in a)
+int * const y {&a};       // y is an unchangeable pointer to a changeable int -- set to a (points to a)
+int const * const z {&x}; // z is an unchangeable pointer to a unchangeable int -- set to x (points to x)
+```
+
+One caveat to this is that a type beginning with `const` is equivalent to the first part of that type having `const` applied on it.
+
+```c++
+const int x = 5;  // equivalent to int const x = 5
+```
+
+For methods of a class, a `const` after the declaration indicates that the class's fields won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire object graph is considered when checking for modification.
+
+```c++
+struct Inner {
+    int x = 5;
+    int y = 6;
+    void change(int n) {
+        x = n;
+    }
+};
+
+struct X {
+    int a = 0;
+    Inner inner;
+    void test1() const {
+        a = 5;  // NOT okay -- no mutation allowed
+    }
+    void test2() const {
+        inner.x = 15; // NOT okay -- no mutation allowed, even though this is deeper down
+    }
+    void test3() const {
+        inner.change(15); // NOT okay -- method being invoked must be const (otherwise mutation might happen)
+    }
+};
+```
+
+# Named Conversions
+
+Named conversion functions are a set of (seemingly templated) functions to convert an object's types.
+
+ * `const_cast` removes the `const` modifier from an object's type.
+   
+   ```c++
+   void func(const MyType &t) {
+       T &moddable_t = const_cast<MyType &>(t);
+   }
+   ```
+
+   Performing this type of conversion should only be done in extreme situations since it breaks contracts.
+
+ * `static_cast` forces the reverse of an implicit conversion.
+
+   ```c++
+   int a[] {1,2,3,4};
+   int *b = a;  // ok, implicit conversion (decay to pointer)
+   void *c = b; // ok, implicit conversion
+   int *d = c;  // error, can't go in reverse
+   int *e = static_cast<int *>(c); // ok
+   ```
+
+   In the above example, a `uint32_t *` implicitly converts to `void *`, but not the reverse. A `static_cast` makes going in reverse possible. However, that doesn't mean it's always safe to do. For example, `uint32_t` reads may need to be aligned to 4 byte boundaries on certain platforms. If the `void *` was arbitrary data (e.g. coming in over a network), it might cause a crash to just treat it as a `uint32_t *` and start reading.
+
+   ```{note}
+   Why does a `uint32_t*` implicitly convert to a `void *`? Recall that `void *` just means "pointer to something unknown", which is something the language is okay automatically / implicitly converting.
+   ```
+
+ * `reinterpret_cast` forces a reinterpretation of an object into an entirely different type.
+
+   ```c++
+   int a[] {1,2,3,4};
+   int *b = a;   // ok, implicit conversion (decay to pointer)
+   short *c = b; // error, you can't convert from an int* to a short* (not even with a static_cast because it's not an implicit conversion)
+   short *d = reinterpret_cast<int *>;  // ok
+   ```
+
+ * `narrow_cast` is similar to `static_cast` for numerics, except it ensures that no information loss occurred.
+
+   ```c++
+   uint32_t a = 70000;                     // ok
+   uint16_t b = static_cast<uint16_t>(a);  // ok, but since uint16_t has a max of65535, this object is mangled
+   uint16_t c = narrow_cast<uint16_t>(a);  // runtime exception, narrow_cast sees that the object will be mangled
+   ```
+
+   ```{note}
+   Is this part of the standard? The book seems to give the code for `narrow_cast` and looking online it looks like people have their own implementations?
+   ```
+
+# Auto Keyword
+
+The keyword `auto` may be used during a variable declaration to deduce the resulting type of that variable from whatever it's being initialized with.
+
+```c++
+auto a { 1 };  // int
+auto b { 1L }; // long
+auto c { &a }; // int *
+auto d { *c }; // int
+auto &e { a }; // int &  <-- THIS IS A SPECIAL CASE. YOU ALWAYS NEED TO USE auto& FOR REFERENCES
+```
+
+Note that the last variable in the example above explicitly the ampersand (&) to declare e as a reference type. This is required because reference initialization works the same way as normal initialization (`auto` can't disambiguate).
+
+# Object Lifecycle
+
+In C++, an object is a region of memory that has a type and a value (e.g. a class instance, an integer, a pointer to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ objects aren't exclusive to classes (e.g. an boolean is an object).
+
+An object's life cycle passes through the following stages:
+
+1. memory allocated
+2. constructor invoked
+3. destructor invoked
+4. memory deallocated
+
+The storage duration of an object starts from when its memory is allocated and ends when that memory is deallocated. An object's lifetime, on the other hand, starts when its constructor _completes_ (meaning the constructor finishes) and ends when its destructor is _invoked_ (meaning when the destructor starts).
+
+```{svgbob}
+.------------------------------------------------.
+|           "OBJECT STORAGE DURATION"            |
+|                                                |
+| "1. allocation"                                |
+|                                                |
+| "2. constructor invocation started"            |
+|                                                |
+|  .----------------------------------------.    |
+|  |           "OBJECT LIFETIME"            |    |
+|  |                                        |    |
+|  | "3. constructor invocation finished"   |    |
+|  |                                        |    |
+|  | "4. destructor invocation started"     |    |
+|  |                                        |    |
+|  | "5. destructor invocation finished"    |    |
+|  '----------------------------------------'    |
+|                                                |
+| "6. deallocation"                              |
+|                                                |
+'------------------------------------------------'
+```
+
+Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how object lifetimes. The user is responsible for knowing when objects should be destroyed and ensuring that objects are only accessed within their lifetime.
+
+The typical storage durations supported by C++ are...
+
+ * automatic storage duration - scoped to duration of some function within the program.
+ * static storage duration - scoped to the entire duration of the program.
+ * thread storage duration - scoped to the entire duration of a thread in the program.
+ * dynamic storage duration - allocated and deallocated on request of the user.
+
+# Static Objects
+
+By default, an object declared within a function is said to be an automatic object. Automatic objects have automatic storage durations: start at the beginning of the block and finish at the end of the block. When the keyword `static` (or `extern` in some cases) is added to the declaration, the storage duration of the function changes.
+
+At global scope, if an object is declared as `static` or `extern`, storage duration of the object spans the entire duration of the program. The difference between the two is essentially just visibility:
+
+ * `static` makes it so it's accessible to only the translation unit it's declared in.
+ * `extern` makes it so it's accessible to other translation units as well as the translation unit it's declared in.
+
+```c++
+static int a = 0; // static variable
+extern int b = 1; // static variable (accessible outside translation unit)
+```
+
+At function scope, the storage duration of objects declared as `static` starts at the first invocation of that function and ends when the program exits.
+
+```c++
+int f1() {
+    static int z = 0; // static variable
+    z += 1;
+    return z;
+}
+```
+
+At class level, the storage duration of a member (field or method) declared as `static` is essentially the same as if it were declared at global scope (they aren't bound to an individual instance of the class the same way a normal field or method is). The only differences are that the static member is accessed on the class itself using the scoped resolution operator (::) and that static members that are fields must be initialized at global scope.
+
+```c++
+struct X {
+    static int m;         // static member (field initialized at end)
+    static int f1() {     // static member (method)
+        m += 1;
+        return m;
+    }
+};
+
+X::m = 0;                // initialize static member
+```
+
+If the `thread_local` modifier is added before `static` (or `extern`), each thread gets its own copy of the object. That is, the storage duration essentially gets changed to when the thread starts and ends.
+
+`thread_local static` can be shortened to just `thread_local` (it's assumed to be static).
+
+```c++
+static int a = 0;
+thread_local static int b = 1;
+thread_local extern int c = 2;
+```
+
+# Dynamic Objects
+
+An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The keyword ...
+
+ * `new` allocates a new object and calling its the constructor.
+ * `delete` calls the destructor of some object and deallocates it.
+
+Both keywords work with pointers: `new` returns a pointer while `delete` requires a pointer. To create a new object, use `new` followed by the type.
+
+```c++
+int * ptr = new int;
+*ptr = 0;
+delete ptr;
+```
+
+Objects may be initialized directly within the `new` invocation just as if it were an automatic object initialization. The only caveat is that equals initialization and brace-plus-equals initialization won't work because the equal sign is already being used during `new` (speculation -- it doesn't work but I don't know the exact reason). As such, braced initialization is the best way to initialize a dynamic object.
+
+```c++
+int * ptr = new int {0}; // initialize to 0
+```
+
+The same process can be used to create an array of objects. Unlike automatic object arrays dynamic arrays don't have a constant size array lengths restriction, but the return value of `new` will decay from an array type to a pointer type.
+
+```c++
+int * ptr = new int[len];  // len is some non-constant positive integer
+```
+
+Braced initialization may be used when declaring dynamic arrays so long as the size of the array is at least the size of the initialization list.
+
+```c++
+int * ptr1 = new int[10] {1,2,3};  // initialize the first 3 elems of a 10 elem array
+int * ptr2 = new int[2] {1,2,3};   // throws exception  (size too small for initializer list)
+int * ptr3 = new int[n] {1,2,3};   // okay -- so long as n >= 3
+```
+
+# Object Size
 
 `sizeof` is a _unary operator_ that returns the size of its operand in bytes as a `size_t` type. If the operand is a ...
 
@@ -461,7 +1290,7 @@ Consider using std::variant instead of unions.
  * `sizeof (int[3])` is platform dependent, typically either 12 or 24.
  * `x = int[n]; sizeof x` is invalid C++ (variable length arrays allocated on stack are not allowed in C++).
 
-In other words, `sizeof` returns the size of things known at compile-time. If a variable is passed in, it outputs the size of the data type. For example, if the data type is a struct of type MyStruct, it'll return the number of bytes used to store a MyStruct. However, if the data type is a pointer to MyStruct, it'll return the number of bytes to hold that pointer. That is, you can't use it to get the size of something like a dynamically allocated array of integers.
+In other words, `sizeof` returns the size of things known at compile-time. If a variable is passed in, it outputs the size of the data type. For example, if the data type is a struct of type `MyStruct`, it'll return the number of bytes used to store a `MyStruct`. However, if the data type is a pointer to `MyStruct`, it'll return the number of bytes to hold that pointer. That is, you can't use it to get the size of something like a dynamically allocated array of integers.
 
 In certain cases, the compiler may add padding to objects (e.g. byte boundary alignments or performance reasons), meaning that the size returned by `sizeof` for an object shouldn't be used to make inferences about the characteristics of that object. For example, a `long double` may get reported as being 16 bytes, but that doesn't necessarily mean that a `long double` is a 128-bit quad floating point. It could be that only 12 of those bytes are used to represent the floating point number while the remainder is just padding for alignment reasons. 
 
@@ -476,6 +1305,235 @@ In C, where VLAs are allowed, doing a `sizeof` on a VLA is undefined.
 ```
 
 Remember that `sizeof` is a _unary operator_, similar to how the negative sign is a unary operator that negates whatever is to the right of it. People usually structure its usage in code as if it were a function (e.g. `sizeof(x)` vs `sizeof x`). This sometimes causes confusion for people coming from other languages.
+
+# Exceptions
+
+C++ exceptions work similarly to exceptions in other languages, except that there is no `finally` block. The idea behind this is that resources should be bound to an object's lifetime (destructor). As the call stack unwinds and the automatic objects that each function owns are destroyed, the destructors of those objects should be cleaning up any resources that would have been cleaned up by the `finally` block. This concept is referred to as resource acquisition is initialization (RAII).
+
+```{note}
+What does accordingly mean? For example, wrap the dynamically allocated object in a class where allocation happens in the constructor / deallocation happens in the destructor. An automatic object of that class type will cleanup properly when the function exits.
+```
+
+To throw an exception, use the `throw` keyword followed by the object to throw. Most object types are throwable, but thrown objects are typically limited to types either in or derived from those in the stdexcept header.
+
+```c++
+void no_negatives_check(int x) {
+    if (x < 0) {
+        throw std::runtime_error { "no negatives" };
+    }
+}
+```
+
+Similar to Java and Python, C++ provides a standard set of exceptions in stdexcept complete with a hierarchy.
+
+```{svgbob}
+"std:exception"
+     |
+     +-- "std:bad_alloc"
+     |
+     +-- "std:bad_cast"
+     |
+     +-- "std:bad_typeid"
+     |
+     +-- "std:bad_exception"
+     |
+     +-- "std:logic_failure"
+     |        |
+     |        +------------------------------+-- "std:domain_error"
+     |                                       |
+     +-- "std:runtime_error"                 +-- "std:invalid_argument"
+              |                              |
+              +-- "std:overflow_error"       +-- "std:length_error"
+              |                              |
+              +-- "std:range_error"          +-- "std:out_of_range"
+              |
+              +-- "std:underflow_error"
+```
+
+To catch a exception potentially being thrown, wrap code in a try-catch block. Typical inheritance rules apply when catching an exception. For example, catching a `std:runtime_error` type will also catch anything that extends from it as well (e.g. `std:overflow_error`).
+
+```c++
+try {
+    no_negatives_check(55);
+    no_negatives_check(0);
+    no_negatives_check(-1); // will throw an exception
+} catch (const std::runtime_error &e) {
+    // do something
+}
+```
+
+To catch any exception regardless of type, use `...`.
+
+```c++
+try {
+    no_negatives_check(-1); // will throw an exception
+} catch (...) {
+    // do something, note the exception object is not accessible here
+}
+```
+
+Multiple catches may exist in the same try-catch block.
+
+```c++
+try {
+    no_negatives_check(-1); // will throw an exception
+} catch (const std::range_error &e) {
+    // do something
+} catch (const std::runtime_error &e) {
+    // do something -- this block will get chosen
+} catch (const std::exception &e) {
+    // do something
+} catch (...) {
+    // do something, note the exception object is not accessible here
+}
+```
+
+In certain cases, it'll be impossible for a function to throw an exception. Either the function (and the functions it calls into) never throws an exception or the conditions imposed by the function make it impossible for any exception to be thrown. In such cases, a function may be marked with the `noexcept` keyword. This keyword allows the compiler to perform certain optimizations that it otherwise wouldn't have been able to, but it doesn't necessarily mean that the compiler will check to ensure an exception can't be thrown.
+
+```c++
+int add(int a, int b) noexcept {
+    return a + b;
+}
+```
+
+```{note}
+The book mentions this is documented in "Item 16 of Effective Modern C++ by Scott Meyers". It goes on to say that, unless specified otherwise, the compiler assumes move constructors / move-assignment operators can thrown an exception if they try to allocate memory but the system doesn't have any. This prevents it from making certain optimizations.
+```
+
+Treat any destructor as if it were marked with `noexcept`. That is, an exception should never be thrown in a destructor. When an exception gets thrown, the call stack unwinds. As each function exits, the destructors for automatic variables of that function get invoked. Another exception getting thrown while one is already in flight means two exceptions would be in flight, which isn't supported.
+
+# Unpacking
+
+Structured binding declaration is a C++ language feature similar to Python's unpacking of lists and tuples. Given an array or a class, the values contained within are unpackable to individual variables.
+
+```c++
+// array example
+int x[] = {1,2};
+auto [a, b] = x;  // a is a copy of x[0], b is a copy of x[1]
+auto &[c, d] = x; // c is a REFERENCE to a[0], d is a REFERENCE to a[1]
+
+// class example
+struct MyStruct {
+    int count;
+    bool flag;
+};
+MyStruct y {5,true};
+auto [i, j] = y;  // i is a copy of y.count, b is a copy of y.flag
+auto &[k, l] = y; // k is a REFERENCE to y.count, l is a REFERENCE to y.flag
+```
+
+# Expression Categories
+
+Value categories are a classification of expressions in C++. At their core, these categories are used for determining when objects get _moved_ vs copied, where a move means that the guts of the object and scooped out and transferred to another object.
+
+```{svgbob}
+          lvalue
+        /
+glvalue 
+        \
+          xvalue
+        /
+ rvalue
+        \
+          prvalue
+
+" * glvalue is either an lvalue or an xvalue"
+" * rvalue is either a prvalue or an xvalue"
+```
+
+This is explicitly categorizing expressions, not objects, variables or types. Each expression is categorized as either an lvalue, xvalue, or prvalue.
+
+A prvalue is an expression that generates some transient result, where that result is typically either used for assignment or passed into a function invocation by _moving_ it.
+
+```c++
+int a = 0; // move -- 0 is being generated and MOVED into a (the expression 0 is a prvalue)
+//      ^
+//      |
+//   rvalue
+
+int b = a; // copy -- a already exists and its being COPIED into b (the expression a is NOT a prvalue)
+```
+
+In essence, the way to think of a prvalue is that its an expression that meets the following 3 conditions ...
+
+1. can't have the address-of operator used on it.
+
+   ```c++
+   MyStruct* a = &MyStruct(true); // error -- right-hand expression is transient, not a var that you can get the address of   
+   int* b = &(5)                  // error -- right-hand expression is a literal, not a var that you can get the address of
+   int* c = &get_int()            // error -- right-hand expression is the return val of function, not a var that you can get the address of
+   ```   
+
+2. can have its guts be scooped out and moved into something else.
+
+   ```c++
+   x = 55 + y;  // expression 55 + y is evaluated and the result is MOVED into x (its guts are scooped out and moved into x)
+   ```
+
+3. doesn't persist once the expression has been executed.
+
+   ```c++
+   x = 55 + y;  // expression 55 + y is a prvalue -- doesn't persist after this line (its not something you can access)
+   x = c;       // expression c is NOT a prvalue -- DOES persist after this line (it IS something you can keep accessing)
+   ```
+
+```{note}
+The name prvalue is short for pure right value. It's called that because prvalue expressions are usually found on the right side of an assignment.
+```
+
+An lvalue is an expression is the opposite of a prvalue. An lvalue expression CAN use the address-of operator (opposite of point 1 above), it CANNOT have guts scooped out and moved into something else (opposite of point 2 above), and it DOES persist (opposite of point 3 above). The typical example of an lvalue is an expression that's solely a variable name or function name.
+
+```c++
+x = y;  // both x and y are lvalue
+x = 0;  // x is an lvalue while 0 is a prvalue
+```
+
+The key takeaway with lvalues is that you might be able to _copy_ over its contents to something else, but you can't scoop out its guts and _move_ it over to something different. Doing so would make whatever that lvalue points to no longer usable.
+
+```{note}
+The name xvalue is short for left value. It's called that because lvalue expressions are usually found on the left side of an assignment.
+```
+
+An xvalue is an expression which can have the address-of operator used on it but also _can be moved_. The general idea with an xvalue expression is that the object it represents is nearing the end of its lifetime and as such moving its guts is fine. There are a very limited number of cases where this happens or is required.
+
+```c++
+MyObject a {};
+MyObject &&b = std::move(a);  // get rvalue reference
+MyObject c {b};               // move a into c (gut it into c) via the move constructor
+// b is in an invalid state
+```
+
+```{note}
+The example above is using features that haven't been introduced yet (std::move, rvalue references, move constructor). Just ignore it if you don't know those pieces yet. They're explained in other sections.
+```
+
+This is in contrast to lvalue expressions, which the address-of operator is usable on but _CANNOT be moved_. If the address-of operator works on it, regardless of if it's moveable (xvalue) or not (lvalue), it's called a glvalue.
+
+```{svgbob}
+          lvalue "(addressable but CAN'T be gutted)"
+         /
+        /
+glvalue "(addressable)" 
+        \
+         \
+          xvalue "(addressable and can be gutted)"
+```
+
+Similarly, if it's an expression that can be _moved_ (gutted), its called an rvalue regardless of if the address-of operator can be used on it or not.
+
+```{svgbob}
+          xvalue   "(can be gutted and addressable)"
+        /
+       /
+ rvalue "(can be gutted)"
+       \
+        \
+          prvalue  "(can be gutted but NOT addressable)"
+```
+
+```{note}
+See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used to clarify what's going on here.
+```
 
 # Terminology
 
@@ -549,4 +1607,183 @@ Remember that `sizeof` is a _unary operator_, similar to how the negative sign i
 
  * `{bm} member/\b(member)/i` - Data or function belonging to a class.
 
- * `{bm} method` - Function belonging to a class.
+ * `{bm} method` - Function belonging to a class (class member that is a function).
+
+ * `{bm} field` - Data belonging to a class (class member that is a variable).
+
+ * `{bm} class invariant` - When using some class, a class invariant is a feature of that class that is always true (never varies). For example, if a class is used to hold on to an IP and port combination, and it ensures that the port can never be 0, that's a class invariant.
+
+ * `{bm} fundamental type/(fundamental type|built-in type)/i` - C++ type that's built into the compiler itself rather than being declared through code. Examples include `void`, `bool`, `int`, `char`, etc..
+
+ * `{bm} object initialization` - The process by which a C++ program initializes an object (e.g. an `int`, array of `int`s, object of a class type, etc..).
+
+ * `{bm} braced initialization/(brace initialization|braced initialization|uniform initialization)/i` - A form of object initialization where braces are used to set values (e.g. `MyStruct x = { 1, true }`, `MyStruct x{ 1, true }`, etc..). Braced initialization is often the least error-prone form of object initialization, where other forms may introduce ambiguity.
+
+   ```c++
+   MyStruct x{int(a), int(b)};  // call the constructor taking in two ints
+   MyStruct x(int(a), int(b));  // possibly interpreted as function declaration -- equiv to MyStruct(int a, int b)
+
+   float a{1}, b{2};
+   int b (a/b); // no compiler warning generated about narrowing (why? -- book doesn't say)
+   int b {a/b}; // compiler warning generated about narrowing
+   ```
+
+   ```{note}
+   This is also called uniform initialization.
+   ```
+
+ * `{bm} equals initialization/(equals? initialization)/i` - A form of object initialization where the equals sign is used (e.g. `int x { 5 }`).
+
+ * `{bm} braces-plus-equals initialization/(brace[sd]?[\-\s]plus[\-\s]equals? initialization)/i` - A form of object initialization where both the equals sign and braces are used for initialization (e.g. `MyStruct x = { 1, true }`). This is mostly equivalent to braced initialization.
+
+   ```{note}
+   See [here](https://stackoverflow.com/a/20733537). No copying/moving is done by the assignment.
+   ```
+
+ * `{bm} constructor` - A function used for initializing an object.
+
+ * `{bm} destructor` - A function used for cleanup when an object is destroyed.
+
+ * `{bm} pointer` - A data type used to point to a different piece of memory (e.g. `int yPtr { &y }`).
+
+ * `{bm} reference` - A data type used to point to a different piece of memory, but in a more sanitized / less confusing manner (e.g. `int &yRef { y };`).
+
+ * `{bm} sizeof` - An operator that returns the size of a type or object (known at compile-time).
+
+ * `{bm} address-of (&)/(address[\-\s]of)/i` - A unary operator used to obtain the memory address of an object (pointer) (e.g. `int *ptr {&x}`).
+
+ * `{bm} dereference (*)/(dereference|dereferencing)/i` - A unary operator used to obtain the object at some memory address (e.g. `int x {*ptr}`).
+
+ * `{bm} member-of-pointer (->)/(member[\-\s]of[\-\s]pointer)/i` - An operator that dereferences a pointer and access a member of the object pointed to (e.g. `ptr->x`).
+
+ * `{bm} pointer arithmetic` - Adding or subtracting integer types to a pointer will move that pointer by the number of bytes that makes up its underlying type (e.g. `uint32_t *ptrB = ptrA + 1` will set `ptrB` to 4 bytes ahead of ptrA).
+
+ * `{bm} reseating/(reseat)/i` - The concept of a variable that points to something updating to point to something else. Pointers can be reseated, but references cannot.
+
+ * `{bm} member initializer list/(member initializer list|member initialization list|member initializer)/i` - A comma separated list of object initializations for the fields of a class appearing just before a constructor's body.
+
+ * `{bm} default member initialization/(default member initializer|default member initialization)/i` - The object initialization of a field directly where that field is declared.
+
+ * `{bm} object/(object|instance)/i` - A region of memory that has a type and a value (e.g. class, an integer, a pointer to an integer, etc..).
+
+ * `{bm} allocation/(allocation|allocate)/i` - The act of reserving memory for an object.
+
+ * `{bm} deallocation/(deallocation|deallocate)/i` - The act of releasing the memory used by an object.
+
+ * `{bm} storage duration` - The duration between an object's allocation and deallocation.
+
+ * `{bm} lifetime` - The duration between when an object's constructor _completes_ (meaning the constructor finishes) and when its destructor is _invoked_ (meaning when the destructor starts).
+
+ * `{bm} automatic object/(automatic object|automatic variable|automatic storage duration)/i` - An object that's declared within an enclosing code block. The storage duration of these objects start at the beginning of the block and finish at the end of the block.
+
+ * `{bm} static object/(static object|static variable|static storage duration)/i` - An object that's declared using `static` or `extern`. The storage duration of these objects start at the beginning of the program and finish at the end of the program.
+
+ * `{bm} local static object/(local static object|local static variable|local static storage duration)/i` - A static object but declared at function scope. The storage duration of these objects start at the first invocation of the function and finish at the end of the program.
+
+ * `{bm} static member/(static field|static member)/i` - An object that's a member of a class but bound globally rather than on an instance of the class. A static field is essentially a static object that's accessible through the class itself (not an instance of the class). Similarly, a static method is essentially a global function that's accessed through the class (not an instance of the class).
+
+ * `{bm} thread local object/(thread[\-\s]local object|thread[\-\s]local variable|thread[\-\s]local storage duration|thread storage duration)/i` - An object where each thread has access to its own copy. The storage duration of these objects start at the beginning of the thread and finish when the thread ends.
+
+ * `{bm} dynamically allocated object/(dynamic object|dynamic array|dynamically allocated object|dynamically allocated array|dynamic storage duration)/i` - An object that's allocated and deallocated at the user's behest, meaning that it's storage duration is also controlled by the user.
+
+ * `{bm} internal linkage` - A variable only visible to the translation unit it's in.
+
+ * `{bm} external linkage` - A variable visible to the translation units that it's in as well as other translation units.
+
+ * `{bm} scope resolution (::)/(scope resolution)/i` - A operator that's used to access static members (e.g. `MyStruct::static_func()`).
+
+ * `{bm} extend/(extend|subclass)/i` - Another way of expressing class inheritance (e.g. B extends A is equivalent to saying B is a child of A).
+
+ * `{bm} exception/(exception|try[\-\s]catch)/i` - An exception operation accepts an object and unwinds the call stack until reaching a special region specifically intended to stop the unwinding for objects of that type, called a try-catch block. Exceptions are a way for code to signal that something unexpected / exceptional happened.
+
+ * `{bm} structured binding` - A language feature that allows for unpacking an object's members / array's elements into a set of variables (e.g. `auto [x, y] = two_elem_array`).
+
+ * `{bm} copy semantics` - The rules used for making copies of objects of some type. A copy, once made, should be equivalent to its source. A modification on the copy shouldn't modify the source as well.
+
+ * `{bm} member-wise copy/(member[\-\s]wise copy)/i` - The default copy semantics for classes. Each individual field is copied.
+
+ * `{bm} copy constructor` - A constructor with a single parameter that takes in a reference to an object of the same type (e.g. `T(const T &) { ... }`). A copy constructor is used to specify the copy semantics for that class.
+
+ * `{bm} copy assignment` - An assignment operator overload that copies one object into another (e.g. `x = y`). Copy assignment requires that resources in the destination object be cleaned up prior to performing the copy.
+
+ * `{bm} RAII/(RAII|CADRe)/` - Short for resource acquisition is initialization, the concept that the life cycle of some resource (e.g. open file, database object, etc..) is bound to an object's lifetime via it's constructor and destructor.
+
+   Sometimes also referred to constructor acquires destructor releases (CADRe).
+
+ * `{bm} moved-from object/(moved[\-\s]from object|moved[\-\s]from state)/i` - When an object is moved to another object, that object enters a special state where the only possible operation allowed on it is either destruction or re-assignment.
+
+ * `{bm} move constructor` - A constructor with a single parameter that takes in an rvalue reference to an object of the same type (e.g. `T(T &&) { ... }`). A move constructor is used to specify the move semantics for that class.
+
+ * `{bm} move assignment` - An assignment operator overload that moves one object into another (e.g. `x = y`).
+
+ * `{bm} value categories/(value categories|value category|prvalue|lvalue|xvalue|rvalue|glvalue)/i` - A classification hierarchy for C++ expressions. Any C++ expression falls into one of the following categories: lvalue, xvalue, or prvalue.
+
+   The intent of this hierarchy is to enable the _moving_ of objects. In this case, moving doesn't mean copying. It means gutting out the contents of one object and moving it into another object.
+
+   ```{svgbob}
+             lvalue "(YES addressable + NO movable)"
+            /
+           /
+   glvalue  "(YES addressable)" 
+           \
+            \
+             xvalue "(YES addressable + YES movable)"
+            /
+           /
+    rvalue  "(YES movable)"
+           \
+            \
+             prvalue "(NO addressable + YES movable)"
+   ```
+
+   * prvalue - An expression that, once evaluated, is a transient / temporary object.
+
+     ```c++
+     (x + 51) / n    // this is a prvalue      (the result is temporary, needing to go somewhere)
+     x               // this is NOT a prvalue  (the result of x is just x -- it's an exist object)
+     ```
+
+   * lvalue - An expression that, once evaluated, is an addressable object (NOT transient / NOT temporary / the address-of operator is usable on it).
+
+      ```c++
+      (x + 51) / n    // this is NOT an lvalue (the result is temporary, needing to go somewhere)
+      x               // this is a lvalue      (the result of x is just x -- it's an exist object)
+      ```
+    
+   * xvalue - An expression that, similar to lvalue, is an addressable object. But, unlike lvalue, the object is marked as being near the end of its lifetime.
+
+   ```{note}
+   See the expression categories for more information.
+   ```
+
+ * `{bm} variable length array` `{bm} /(VLA)/` - A feature of C99 that allows for declaring an automatic storage duration array whose length is determined at runtime (non-constant length). This feature is not available in C++ because C++ provides higher-level abstractions for collections of objects in its STL (speculation).
+
+   ```c++
+   void test(int n) {
+       int x[] = int[n];  // okay in C99, but not in C++
+   }
+   ```
+
+ * `{bm} rvalue reference` - A data type that's more-or-less the same as a reference but conveys to the compiler that the data its pointing to is an rvalue (e.g. `MyType &&rref { y }`).
+
+ * `{bm} virtual method` - A method in a base class that is overridable by any class that inherits from that base class.
+
+ * `{bm} pure virtual method/(pure[\-\s]virtual method)/i` - A virtual method that requires an implementation (no implementation has been provided by the base class that declares it). For a class to be instantiable, it cannot have any pure virtual methods (similar to an abstract class in Java).
+
+ * `{bm} pure virtual class/(pure[\-\s]virtual class)/i` - A class that only contains pure virtual methods.
+
+ * `{bm} virtual destructor` - A destructor that's a virtual method.
+
+ * `{bm} vtable` - A table of pointers to virtual functions, generated by the compiler. When a virtual function gets invoked (runtime) vtables are used to determining which method implementation to use.
+
+ * `{bm} template` - A class or function where some of the types used are unknown, called template parameters. When template parameters are substituted with real types, that template becomes a real class / function. A template may be used to produce multiple real classes / functions, where each one has substituted in a different set of types.
+
+ * `{bm} template parameter` - An unknown type in a template, intended for substitution.
+
+ * `{bm} template instantiation` - The process of substituting in real types for the template parameters in a template, resulting in a real class or function.
+
+ * `{bm} named conversion/(named conversion function|named conversion|const[_\s]cast|static[_\s]cast|reinterpret[_\s]cast|narrow[_\s]cast)/i` - A set of language features / functions used for converting types (casting): `const_cast`, `static_cast`, `reinterpret_cast`, and `narrow_cast`.
+
+
+`{bm-ignore} (classification)/i`
+`{bm-ignore} (structure)/i`
