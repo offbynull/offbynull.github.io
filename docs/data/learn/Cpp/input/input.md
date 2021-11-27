@@ -4,6 +4,163 @@
 ```
 
 
+# TODOs
+
+Set prereqs
+
+https://github.com/AnthonyCalandra/modern-cpp-features
+
+https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiring-twos-complement
+
+# Operators
+
+**Bitwise Logical Operators**
+
+| Name                       | Example            | Note                                             |
+|----------------------------|--------------------|--------------------------------------------------|
+| Bitwise AND         (`&`)  | `0b1011 & 0b0110`  |                                                  |
+| Bitwise OR          (`\|`) | `0b1011 \| 0b0110` |                                                  |
+| Bitwise XOR         (`^`)  | `0b1011 ^ 0b0110`  |                                                  |
+| Bitwise NOT         (`~`)  | `~0b1011`          |                                                  |
+| Bitwise left-shift  (`<<`) | `0b1011 << 2`      |                                                  |
+| Bitwise right-shift (`>>`) | `0b1011 >> 2`      | Result on signed may be different than unsigned. |
+
+**Boolean Logical Operators**
+
+| Name                 | Example           | Note |
+|----------------------|-------------------|------|
+| Logical AND (`&&`)   | `true && true`    |      |
+| Logical OR  (`\|\|`) | `true \|\| false` |      |
+| Logical NOT (`!`)    | `!true`           |      |
+
+**Arithmetic Operators**
+
+| Name                   | Example | Note |
+|------------------------|---------|------|
+| Unary Plus      (`+`)  | `+10`   |      |
+| Unary Minus     (`-`)  | `-10`   |      |
+| Addition        (`+`)  | `1 + 2` |      |
+| Subtraction     (`-`)  | `2 - 1` |      |
+| Multiplication  (`*`)  | `2 * 3` |      |
+| Division        (`/`)  | `6 / 2` |      |
+| Modulo          (`%`)  | `6 % 4` |      |
+
+There are implicit rules for how fundamental types get promoted. The general rule of thumb is that the result of the operator is promoted to the operand with the "greater" type. For example, if an `int` is added to a `float`, the result will be a `float`.
+
+These rules are similar to those in other languages (e.g. Java and Python).
+
+```{note}
+If confused, use type deduction via the `auto` keyword: `auto x = 5 + y`, then check to see what the type of `y` is in the IDE or using `typeid`.
+```
+
+**Assignment Operators**
+
+| Name                                   | Example        | Note                                                                                                                             |
+|----------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------|
+| Assignment                     (`=`)   | `x = 5`        |                                                                                                                                  |
+| Assignment Bitwise AND         (`&=`)  | `x &= 0b0110`  |                                                                                                                                  |
+| Assignment Bitwise OR          (`\|=`) | `x \|= 0b0110` |                                                                                                                                  |
+| Assignment Bitwise XOR         (`^=`)  | `x ^= 0b0110`  |                                                                                                                                  |
+| Assignment Bitwise left-shift  (`<<=`) | `x <<= 2`      |                                                                                                                                  |
+| Assignment Bitwise right-shift (`>>=`) | `x >>= 2`      | Result on signed may be different than unsigned.                                                                                 |
+| Assignment Addition            (`+=`)  | `x += 2`       |                                                                                                                                  |
+| Assignment Subtraction         (`-=`)  | `x -= 1`       |                                                                                                                                  |
+| Assignment Multiplication      (`*=`)  | `x *= 3`       |                                                                                                                                  |
+| Assignment Division            (`/=`)  | `x /= 2`       |                                                                                                                                  |
+| Assignment Modulo              (`%=`)  | `x %= 4`       |                                                                                                                                  |
+| Increment                      (`++`)  | `x++`          | Applicable BEFORE or AFTER the operand: `++x` returns the value AFTER modification, `x++` returns the value BEFORE modification. |
+| Decrement                      (`--`)  | `x--`          | Applicable BEFORE or AFTER the operand: `--x` returns the value AFTER modification, `x--` returns the value BEFORE modification. |
+
+All assignment operators work similar to those in Java except for the increment and decrement operators. Due to the confusion it causes, Java disallows the increment / decrement from returning a value, meaning that it can't be used in an expression. Not so in C++. In addition to modifying the variable passed as the operand, in C++ these operators also return a result, meaning that it's okay to an increment / decrement operator within some larger expression. 
+
+```c++
+int x = 3;
+int y = (x++) + 2;
+// at this point, x is 4, y is 5
+int a = 3;
+int b = (++a) + 2;
+// at this point, a is 4, b is 6
+```
+
+**Comparison Operator**
+
+| Name                            | Example  | Note |
+|---------------------------------|----------|------|
+| Equal To                 (`==`) | `5 == 7` |      |
+| Not Equal To             (`!=`) | `5 != 7` |      |
+| Less Than                (`<`)  | `5 < 7`  |      |
+| Less Than Or Equal To    (`<=`) | `5 <= 7` |      |
+| Greater Than             (`>`)  | `5 > 7`  |      |
+| Greater Than Or Equal To (`>=`) | `5 >= 7` |      |
+
+**Ternary Conditional Operator**
+
+The ternary conditional operator is a pseudo operator that takes in 3 operands similar to those found in other high-level languages: `CONDITION ? EXPRESSION_IF_TRUE : EXPRESSION_IF_FALSE`. It's essentially a shorthand if-else block. 
+
+```c++
+int x = n % 7 == 1 ? 1000 : -1000;
+// equiv to...
+if (n % 7 == 1) {
+    x = 1000;
+} else {
+    x = -1000;
+}
+```
+
+**Member Access Operators**
+
+| Name                     | Example     | Note                                                                                       |
+|--------------------------|-------------|--------------------------------------------------------------------------------------------|
+| Subscript         (`[]`) | `x[0]`      |                                                                                            |
+| Indirection       (`*`)  | `*x`        | Doesn't conflict with arithmetic multiplication operator because this is a unary operator. |
+| Address Of        (`&`)  | `&x`        |                                                                                            |
+| Member Of Object  (`.`)  | `x.member`  |                                                                                            |
+| Member Of Pointer (`->`) | `x->member` |                                                                                            |
+
+There operators are used in scenarios that deal with accessing the members of an object (e.g. element in an array, field of a class) or dealing with memory addresses / pointers. The subscript and and member of object operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.
+
+**Allocation Operators**
+
+TODO: LIST OUT new/delete OPERATORS
+
+TODO: LIST OUT new/delete OPERATORS
+
+TODO: LIST OUT new/delete OPERATORS
+
+TODO: LIST OUT new/delete OPERATORS
+
+TODO: LIST OUT new/delete OPERATORS
+
+**Size Operator**
+
+TODO: LIST SIZEOF OPERATOR
+
+TODO: LIST SIZEOF OPERATOR
+
+TODO: LIST SIZEOF OPERATOR
+
+TODO: LIST SIZEOF OPERATOR
+
+TODO: LIST SIZEOF OPERATOR
+
+**Other Operators**
+
+C++ provides a set of other operators such as the ...
+
+ * comma operator (`,`).
+ * function call operator (`()`).
+ * conversion operator (e.g. casting).
+
+While it isn't worth going into them in detail here, the reason the language explicitly lists them as operators is because they're overload-able (e.g. operator overloading). Overloading these operators is heavily discouraged since doing so causes confusion.
+
+````{note}
+The book mentions the comma operator specifically. It doesn't look this is used for much and the book recommends against using it for anything (e.g. operator overloading) due to the confusion it causes. This gives off similar vibes to Python's tuple syntax, where you can pass an unenclosed tuple as a subscript to something. When I was learning Python, that also came off as very confusing.
+
+```python
+x = obj['column name', 100]
+```
+````
+
 # Types
 
 ## Core Integer Types
@@ -989,9 +1146,13 @@ As shown in the example above, a pure virtual class should have a virtual destru
 See inheritance section for a more thorough explanation.
 ```
 
-### Templates
+# Templates
 
 Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types are unknown, called template parameters. When the user makes use of a template, a set of real types are substituted for those template parameters.
+
+```{note}
+There are notes online that templates are applicable to both variables as well as parts of classes (e.g. a method within a class can be templated). This section only discusses templates for functions and classes.
+```
 
 Templates are created using the `template` keyword, where the template parameters are a comma separated list sandwiched within angle brackets.
 
@@ -1029,10 +1190,216 @@ float x = perform<float, int, int>(5, 3);
 In most cases, directly specifying types during usage can be skipped. The compiler will deduce the types from the argument you pass in and and substitute them automatically.
 
 ```c++
-float x = perform(5, 3);  // template arguments omitted, inferred by compiler
+float x = perform(5, 3);  // template arguments omitted, deduced by compiler
 ```
 
-Templates work differently from Java generics in that the C++ compiler generates a new template instantiation for each unique set of types it sees used. Doing so produces more code than if there was only one copy, but also ensures that any performance optimizations unique to that specific set of types remain around.
+In most cases, it possible to supply a default type for the type parameter by appending it with `=` followed by the type, called default template argument. Once a default is supplied, all other type parameters after it need a default as well (speculation).
+
+```c++
+template <typename X, typename Y = long, typename Z = int>
+X perform(Y &var1, Z &var2) {
+    return var1 + var2;
+}
+```
+
+Templates work differently from Java generics in that the C++ compiler generates a new template instantiation for each unique set of types it sees used. Doing so produces more code than if there was only one copy, but also ensures any performance optimizations unique to that specific set of types.
+
+```{note}
+From the book:
+
+> Each time a template is instantiated, the compiler must be able to generate all the code necessary to use the template. This means all the information about how to instantiate a custom class or function must be available within the same translation unit as the template instantiation. By far, the most popular way to achieve this is to implement templates entirely within header files.
+```
+
+## Concepts
+
+In certain cases, the set of types substituted in for a template won't produce working code. In the example above, `X perform(Y &var1, Z &var2) { ... }` needs `Y` and `Z` to be types that support the plus operator (+). Setting them to types that don't support the plus operator typically causes cryptic compilation error, especially if the user is only making use of the template and isn't familiar with its innards.
+
+To mitigate this problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that return a boolean.
+
+```c++
+template <typename T1, typename T2, typename TR>
+concept MyConcept = std::is_default_constructible<T1>::value
+        && std::is_default_constructible<T2>::value
+        && requires(T1 a, T2 b) {
+            { a + b } -> std::same_as<TR>;
+            { a * b } -> std::same_as<TR>;
+            { std::hash<T1>{}(a) } -> std::convertible_to<std::size_t>;
+            { std::hash<T2>{}(a) } -> std::convertible_to<std::size_t>;
+        };
+```
+
+The concept_TEMPLATE above checks a combination of three types: `T1`, `T2`, and `TR`. The first two checks are done through functionality provided by the type_traits header. In the example above, `std::is_default_constructible` provides a compile-time check to ensure the types `T1` and `T2` both have a default initializer (e.g. default constructor). Examples of other checks baked provided by the type_traits header (and concept_NORMs header):
+
+ * `std::is_signed` - ensures a type is signed.
+ * `std::is_unsigned` - ensures a type is unsigned.
+ * `std::is_integral` - ensures a type is an integer (e.g. `short int`, `int`, `unsigned long long int`, etc..)
+ * `std::is_pod` - ensures a type is a POD.
+ * `std::is_fundamental` - ensures a type is a fundamental type.
+ * `std::is_abstract` - ensures a type is an abstract class (has at least one pure virtual function).
+ * `std::is_copy_constructible` - ensures type has a copy constructor.
+ * `std::is_copy_assignable` - ensures type has copy assignment.
+ * `std::is_move_constructible` - ensures type has a move constructor.
+ * `std::is_nothrow_move_constructible` - ensures type has a move constructor that never throws an exception (`noexcept`).
+ * `std::is_move_assignable` - ensures type has move assignment.
+
+The remaining checks are done through a `requires` clause, which lists out the required set of expressions the substituted types must support and the resulting type of each of those expressions. The example above lists that types `T1` and `T2` are ...
+
+ 1. addable, returning an object of type `TR`.
+ 1. multiply-able, returning an object of type `TR`.
+ 1. hashable (when passed into `std::hash()`, returns an object that's convertible to `size_t`).
+
+Each item in the list has the syntax `{ EXPRESSION } -> RESULT`, where the result is wrapped with functionality from the concept_NORMs header. This functionality describes how the result of the expression should behave. In the example above, ...
+
+ * `std::same_as<TR>` means that the expression should return the exact type as specified by `TR`.
+ * `std::convertible_to<std::size_t>` means that the expression should return a type can implicitly convert to `std::size_t` (e.g. a `short` can implicitly convert to an `int` without requiring any kind of casting).
+
+```{note}
+The book says that these are / are related to "type functions". I can't find much information on this or how to create new "type functions".
+```
+
+Use the `requires` keyword immediately after the template to target a set of type parameters to a concept_TEMPLATE.
+
+```c++
+template <typename T1, typename T2>
+    requires MyConcept<T1, T2, T1>  // refers to the concept defined in the example above
+T1 add_and_multiply(T1 &var1, T2 &var2) {
+    return (var1 + var2) * var2;
+}
+```
+
+Concept_TEMPLATE may also be directly embedded into the template itself. 
+
+```c++
+template <typename T1, typename T2>
+    requires std::is_default_constructible<T1>::value   // same as above, but "MyConcept<T1, T2, T1>" has been embedded
+            && std::is_default_constructible<T2>::value
+            && requires(T1 a, T2 b) {
+                { a + b } -> std::same_as<T1>;
+                { a * b } -> std::same_as<T!>;
+                { std::hash<T1>{}(a) } -> std::convertible_to<std::size_t>;
+                { std::hash<T2>{}(a) } -> std::convertible_to<std::size_t>;
+            };
+T1 add_and_multiply(T1 &var1, T2 &var2) {
+    return (var1 + var2) * var2;
+}
+```
+
+If a concept_TEMPLATE only checks a single type, it's possible to use it just by substituting its name in place of the `typename` / `class` for the type parameter that requires it (as opposed to using `requires` shown above).
+
+```c++
+// concept
+template <typename T>
+concept SingleTypeConcept = requires(T a, T b) {
+            { a + b } -> std::same_as<T>;
+            { a * b } -> std::same_as<T>;
+        };
+
+// usage of concept
+template <SingleTypeConcept X>  // this line is updated -- "typename T" replaced with "SingleTypeConcept T"
+X add_and_multiply(X &var1, X &var2) {
+    return (var1 + var2) * var2;
+}
+```
+
+## Variadic
+
+A variadic function is one that takes in a variable number of arguments, sometimes called varargs in other languages. A template can be made variadic by placing a final template parameter with `...` preceding the name, where this template parameter is referred to as parameter pack.
+
+One common use-case for parameter packs is invoking functions where the parameter list isn't known beforehand.
+
+```c++
+template <typename X, typename... R>
+X create(R... args) {
+    return X {args...};
+}
+```
+
+Another less common use-case is specifying the base classes to inherit from (multiple inheritance).
+
+```c++
+template <typename X, typename... R>
+struct X : R... {
+    X(const R&... args) : R(args)... { // member initializer list calls constructors of base class
+    }
+}
+```
+
+Another less common use-case is to apply an repeatedly apply some operator or function.
+
+```c++
+template<typename T>
+T sum(T t) {
+    return t;
+}
+
+template<typename T, typename... R>
+T sum(const T& first, R... rest) {
+    return sum(first) + sum(rest...);
+}
+```
+
+Parameter packs are used internally within C++'s implementation of analogues to Python's tuples and zip: `std::pair`, `std::tuple`, and `std::zip`.
+
+```{note}
+Examples adapted from [here](https://crascit.com/2015/03/21/practical-uses-for-variadic-templates/).
+```
+
+## Specialization
+
+Given a specific set of types for the type parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code. The classic example is a template that holds on to an array. Most C++ implementations represent a `bool` as a single byte, however it's more compact to store an array of `bool`s as a set of bits.
+
+Declare a template specialization as a template but with no type parameters, where the ...
+
+ 1. code has all type parameters filled in with the types for the specialization.
+ 2. name of the templated entity is followed by the types for the specialization.
+
+```c++
+// template
+template<typename T>
+T sum(T a, T b) {
+    return a + b;
+}
+
+// template specialization for bool: bit-wise or
+template<>
+bool sum<bool>(bool a, bool b) {
+    return a | b;
+}
+```
+
+Template specialization doesn't have to substitute type parameters with real types. When a template specialization only substitutes some of the type parameters with real types, leaving other type parameters as-is or partially refined, it's called a partial template specialization.
+
+```c++
+// template
+template<typename R, typename T>
+struct MyClass {
+    R sum(T a, T b) {
+        return a + b;
+    }
+};
+
+// template specialization for pointers of unknown type: already return false
+template<typename X>
+struct MyClass<bool, X*> {
+    bool sum(X * a, X* b) {
+        return false;
+    }
+};
+```
+
+```{note}
+Partial template specializations for functions isn't supported (yet?). See [here](https://stackoverflow.com/a/8061522).
+```
+
+In certain cases, the compiler may be able to deduce the types for the specialization from their usage, meaning that specifying the name after the templated entity isn't required. The first example is one of these cases while the second one isn't.
+
+```c++
+// template specialization for bool: bit-wise or
+template<>
+bool sum(bool a, bool b) {  // type removed after name: "sum<bool>" to just "sum"
+    return a | b;
+}
+```
 
 # Constants
 
@@ -1130,7 +1497,7 @@ Named conversion functions are a set of (seemingly templated) functions to conve
    Is this part of the standard? The book seems to give the code for `narrow_cast` and looking online it looks like people have their own implementations?
    ```
 
-# Auto Keyword
+# Type Deduction
 
 The keyword `auto` may be used during a variable declaration to deduce the resulting type of that variable from whatever it's being initialized with.
 
@@ -1308,7 +1675,7 @@ Remember that `sizeof` is a _unary operator_, similar to how the negative sign i
 
 # Exceptions
 
-C++ exceptions work similarly to exceptions in other languages, except that there is no `finally` block. The idea behind this is that resources should be bound to an object's lifetime (destructor). As the call stack unwinds and the automatic objects that each function owns are destroyed, the destructors of those objects should be cleaning up any resources that would have been cleaned up by the `finally` block. This concept is referred to as resource acquisition is initialization (RAII).
+C++ exceptions work similarly to exceptions in other languages, except that there is no `finally` block. The idea behind this is that resources should be bound to an object's lifetime (destructor). As the call stack unwinds and the automatic objects that each function owns are destroyed, the destructors of those objects should be cleaning up any resources that would have been cleaned up by the `finally` block. This concept_NORM is referred to as resource acquisition is initialization (RAII).
 
 ```{note}
 What does accordingly mean? For example, wrap the dynamically allocated object in a class where allocation happens in the constructor / deallocation happens in the destructor. An automatic object of that class type will cleanup properly when the function exits.
@@ -1577,7 +1944,7 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
                                                                                '--------------'
    ```
 
- * `{bm} linker/(linker|binary|executable)/i` - A tool that takes multiple object files to produce an executable. Linkers are are also responsible for finding libraries used by the program and integrating them into the executable.
+ * `{bm} linker/(linker|executable)/i` - A tool that takes multiple object files to produce an executable. Linkers are are also responsible for finding libraries used by the program and integrating them into the executable.
 
    ```{svgbob}
    .--------------------.
@@ -1656,9 +2023,11 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 
  * `{bm} member-of-pointer (->)/(member[\-\s]of[\-\s]pointer)/i` - An operator that dereferences a pointer and access a member of the object pointed to (e.g. `ptr->x`).
 
+ * `{bm} member-of-object (.)/(member[\-\s]of[\-\s]object)/i` - An operator that accesses a member of an object to (e.g. `obj.x`).
+
  * `{bm} pointer arithmetic` - Adding or subtracting integer types to a pointer will move that pointer by the number of bytes that makes up its underlying type (e.g. `uint32_t *ptrB = ptrA + 1` will set `ptrB` to 4 bytes ahead of ptrA).
 
- * `{bm} reseating/(reseat)/i` - The concept of a variable that points to something updating to point to something else. Pointers can be reseated, but references cannot.
+ * `{bm} reseating/(reseat)/i` - The concept_NORM of a variable that points to something updating to point to something else. Pointers can be reseated, but references cannot.
 
  * `{bm} member initializer list/(member initializer list|member initialization list|member initializer)/i` - A comma separated list of object initializations for the fields of a class appearing just before a constructor's body.
 
@@ -1706,7 +2075,7 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 
  * `{bm} copy assignment` - An assignment operator overload that copies one object into another (e.g. `x = y`). Copy assignment requires that resources in the destination object be cleaned up prior to performing the copy.
 
- * `{bm} RAII/(RAII|CADRe)/` - Short for resource acquisition is initialization, the concept that the life cycle of some resource (e.g. open file, database object, etc..) is bound to an object's lifetime via it's constructor and destructor.
+ * `{bm} RAII/(RAII|CADRe)/` - Short for resource acquisition is initialization, the concept_NORM that the life cycle of some resource (e.g. open file, database object, etc..) is bound to an object's lifetime via it's constructor and destructor.
 
    Sometimes also referred to constructor acquires destructor releases (CADRe).
 
@@ -1766,9 +2135,9 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 
  * `{bm} rvalue reference` - A data type that's more-or-less the same as a reference but conveys to the compiler that the data its pointing to is an rvalue (e.g. `MyType &&rref { y }`).
 
- * `{bm} virtual method` - A method in a base class that is overridable by any class that inherits from that base class.
+ * `{bm} virtual method/(virtual method|virtual function)/i` - A method in a base class that is overridable by any class that inherits from that base class.
 
- * `{bm} pure virtual method/(pure[\-\s]virtual method)/i` - A virtual method that requires an implementation (no implementation has been provided by the base class that declares it). For a class to be instantiable, it cannot have any pure virtual methods (similar to an abstract class in Java).
+ * `{bm} pure virtual method/(pure[\-\s]virtual method|pure[\-\s]virtual function)/i` - A virtual method that requires an implementation (no implementation has been provided by the base class that declares it). For a class to be instantiable, it cannot have any pure virtual methods (similar to an abstract class in Java).
 
  * `{bm} pure virtual class/(pure[\-\s]virtual class)/i` - A class that only contains pure virtual methods.
 
@@ -1784,6 +2153,27 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 
  * `{bm} named conversion/(named conversion function|named conversion|const[_\s]cast|static[_\s]cast|reinterpret[_\s]cast|narrow[_\s]cast)/i` - A set of language features / functions used for converting types (casting): `const_cast`, `static_cast`, `reinterpret_cast`, and `narrow_cast`.
 
+ * `{bm} concept/(concept)_TEMPLATE/i` - A compile-time check to ensure that the types substituted for a set of template parameters match the requirements of that template (e.g. the type support certain operators).
+
+ * `{bm} compile-time` - Used in reference to something that happens during the compilation process.
+
+ * `{bm} runtime` - Used in reference to something that happens when the compiled program is running.
+
+ * `{bm} zero-arg/\b(zero-arg|no-arg)\b/i` - Short for zero argument. A function with zero parameters.
+
+ * `{bm} parameter pack` - In the context of templates, a parameter pack is a single template parameter declaration that can take in zero or more types (variadic).
+
+ * `{bm} variadic/(variadic|vararg)/i` - A function that takes in a variable number of arguments, sometimes also called varargs.
+
+ * `{bm} template specialization` - Given a specific set of types for the type parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code.
+
+ * `{bm} partial template specialization/(partial template specialization | template partial specialization)/i` - A template specialization where not all of the type parameters have been removed.
+
+ * `{bm} default template argument` - The default type to substitute in use for a type parameter.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
+`{bm-error} Did you mean variadic?/(vardic)/i`
+
+`{bm-error} Add the suffix _NORM or _TEMPLATE/(concept)/i`
+`{bm-ignore} (concept)_NORM/i`
