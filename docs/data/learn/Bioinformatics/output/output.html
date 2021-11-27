@@ -192,9 +192,9 @@
 <li><a href="#H_Find%20Synteny%20Blocks">Find Synteny Blocks</a></li>
 <li><a href="#H_Find%20Reversal%20Path">Find Reversal Path</a></li>
 </ul>
-<li><a href="#H_COVID-19%20Phylogeny">COVID-19 Phylogeny</a></li>
+<li><a href="#H_Ancestral%20Lineage">Ancestral Lineage</a></li>
 <ul>
-<li><a href="#H_Find%20Lineage">Find Lineage</a></li>
+<li><a href="#H_Find%20Evolutionary%20Tree">Find Evolutionary Tree</a></li>
 <li><a href="#H_Find%20Ancestral%20Sequences">Find Ancestral Sequences</a></li>
 </ul>
 </ul>
@@ -11688,7 +11688,7 @@ different subtrees.</p>
 <p>... and simple tree trim(T, v5)...</p>
 <p><img src="dot_947428a9fad00efc08c05fcfe2286cfb.svg" alt="Dot diagram"></p>
 <p>... , v5 is injected at the appropriate location to become simple tree T (un-trimmed) ...</p>
-<p><img src="dot_732ee38514b240e67ad8b3b760b395eb.svg" alt="Dot diagram"></p>
+<p><img src="dot_161663c05ac037dd80d3463d127da1e3.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
@@ -12224,7 +12224,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_23ac97214b740d5a897adafcbfec4be2.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v3 and v4 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v4 and v3 have the highest total edge count of 26 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12293,7 +12293,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_1c25b29f89ace048dcfba49feb7fa951.svg" alt="Dot diagram"></p>
+<p><img src="dot_763a6df78a69e9abb1af0bcda2396225.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applied to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12523,7 +12523,7 @@ different subtrees.</p>
 <p></p>
 <p>Given the tree...</p>
 <p><img src="dot_7ed965464ba60a747b81f636f4046bfa.svg" alt="Dot diagram"></p>
-<p>neighbour_detect reported that v4 and v3 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
+<p>neighbour_detect reported that v3 and v4 have the highest total edge sum of 122 and as such are guaranteed to be neighbours.</p>
 <p>For each leaf pair in the tree, <code>combine_count_and_normalize()</code> totals are ...</p>
 <table>
 <thead><tr>
@@ -12592,7 +12592,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_4a7e324c1c652900964b3b0e55d4af20.svg" alt="Dot diagram"></p>
+<p><img src="dot_da24f932f5f5779b3b20000f3bdce90f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is rewritable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14748,7 +14748,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_76a7637593a80d0d8ad16fd257528bce.svg" alt="Dot diagram"></p>
+<p><img src="dot_0caf7979868a91099e0ba7b73740fe4d.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14833,24 +14833,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v2 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v3</td><td>21.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v0 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v3</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>20.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>21.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>22.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v3</th><th>v4</th></tr></thead><tbody><tr><td>v3</td><td>0.0</td><td>7.0</td></tr><tr><td>v4</td><td>7.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v0</th><th>v2</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_0835ab245548d28aea09607b85363b50.svg" alt="Dot diagram"></p>
+<p><img src="dot_063051a6fee7e427406704703806d6d6.svg" alt="Dot diagram"></p>
 <p>Attached v5 to produce tree...</p>
-<p><img src="dot_afbf7ca5496a89d24c8202621113a8ed.svg" alt="Dot diagram"></p>
-<p>Attached v0 to produce tree...</p>
-<p><img src="dot_764588d8e6d9cc89d001d52d4cd4e4de.svg" alt="Dot diagram"></p>
-<p>Attached v2 to produce tree...</p>
-<p><img src="dot_5d245f2de440b1221f2131f5a14f670b.svg" alt="Dot diagram"></p>
+<p><img src="dot_ca6192454a4a386d80832676deb84809.svg" alt="Dot diagram"></p>
+<p>Attached v3 to produce tree...</p>
+<p><img src="dot_17a0579397074b57e95a08e48adf6868.svg" alt="Dot diagram"></p>
 <p>Attached v1 to produce tree...</p>
-<p><img src="dot_2e65fc079f376ec8460662b0c877f911.svg" alt="Dot diagram"></p>
+<p><img src="dot_47d6f094feb65819c0925706cebaef43.svg" alt="Dot diagram"></p>
+<p>Attached v4 to produce tree...</p>
+<p><img src="dot_b3c1b4f313724236643b0b9d73a072b5.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15018,22 +15018,22 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </table>
 <p>Replaced neighbours ('v3', 'v4') with their parent N1 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v5', 'N1') with their parent N2 to produce distance matrix ...</p>
+<p>Replaced neighbours ('N1', 'v5') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v1', 'v2') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N3</th><th>N4</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>0.375</td></tr><tr><td>N4</td><td>0.375</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v1', 'N3') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N4</th><th>v2</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>10.0</td></tr><tr><td>v2</td><td>10.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_be14fd16e403f27a505730a47fb24818.svg" alt="Dot diagram"></p>
-<p>Attached ('v1', 'v2') to N4 to produce tree...</p>
-<p><img src="dot_45a3df8590715f6b19a5ac4569fc19f2.svg" alt="Dot diagram"></p>
+<p><img src="dot_1d9b5fae826dcfef649ccb5d3adcaf55.svg" alt="Dot diagram"></p>
+<p>Attached ('v1', 'N3') to N4 to produce tree...</p>
+<p><img src="dot_4815d53968ed0dfe5988e14a28904772.svg" alt="Dot diagram"></p>
 <p>Attached ('v0', 'N2') to N3 to produce tree...</p>
-<p><img src="dot_f5f3ef03d72466e19511b1e64c2873ff.svg" alt="Dot diagram"></p>
-<p>Attached ('v5', 'N1') to N2 to produce tree...</p>
-<p><img src="dot_9c901a2e6a64f235d15abdc4d4ca2727.svg" alt="Dot diagram"></p>
+<p><img src="dot_d31266bbc787db334234d99914ebe7cf.svg" alt="Dot diagram"></p>
+<p>Attached ('N1', 'v5') to N2 to produce tree...</p>
+<p><img src="dot_5480070c0cfc9162eb62c3528092f0df.svg" alt="Dot diagram"></p>
 <p>Attached ('v3', 'v4') to N1 to produce tree...</p>
-<p><img src="dot_147517b1f8067e3367e6c5312f07c15c.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa3ccee08842f1024e43570c67e24c3b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15640,9 +15640,9 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>The tree...</p>
 <p><img src="dot_9b81e948066b89df103053f4b105da53.svg" alt="Dot diagram"></p>
 <p>... can have any of the following nearest neighbour swaps on edge i0-i1...</p>
-<p><img src="dot_224a72c24122685519c71ad915c844c9.svg" alt="Dot diagram"></p>
+<p><img src="dot_15c99fcdc8f9498a3f51120ec66b4348.svg" alt="Dot diagram"></p>
 <p><img src="dot_29f7434a3cdd6cb6ef24af57339c6681.svg" alt="Dot diagram"></p>
-<p><img src="dot_618f5a59247efef5120ce07be88aa291.svg" alt="Dot diagram"></p>
+<p><img src="dot_ae6d6b1fae39253a339225487e49eb7f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and tries all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
@@ -15801,7 +15801,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>graph score: 9.0</p>
 <p><img src="dot_5c63144e975c84bc65b983dbf3f880c1.svg" alt="Dot diagram"></p>
 <p>graph score: 6.0</p>
-<p><img src="dot_3f9341b976cb67b4017272f50f38126d.svg" alt="Dot diagram"></p>
+<p><img src="dot_187c973aa306302fd4503101746b8307.svg" alt="Dot diagram"></p>
 <p>After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score of 6.0 vs the original score of 9.0</p>
 </div>
 <p></p>
@@ -16367,21 +16367,100 @@ n4_val = <span class="hljs-built_in">min</span>(
 </ul>
 </div>
 <p></p>
-<a name="H_COVID-19%20Phylogeny"></a><h2>COVID-19 Phylogeny</h2>
-<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
-<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
-<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
-<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
-<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
-<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
-<p>TODO: Describe what <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19's spike protein</p>
-<a name="H_Find%20Lineage"></a><h3>Find Lineage</h3>
-<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
-<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
-<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
-<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
-<p>TODO: Describe and write code to generate <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">evolutionary tree</a> (pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> for distance + <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a>).</p>
+<a name="H_Ancestral%20Lineage"></a><h2>Ancestral Lineage</h2>
+<p><a name="BM_(Stories%5C%2FAncestral%20Lineage)_TOPIC%2F"></a><strong></strong></p>
+<p>The process of inferring the evolutionary history of a set of present-day biological entities (e.g. organisms, viruses, etc..) is called <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Evolutionary history</p>
+<p><img src="svgbob_9ad92bcc26081dc1ee059aa771d26eb82d6e4ad4.svg" alt="Kroki diagram output"></p>
+<p>Evolutionary history is often displayed as a <a href="#BM_(tree)%2Fi">tree</a> called a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The example above shows a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.</p>
+<p>phenotypic inspection is the measurement of some related property that mutates along with the entity as it evolves. Historically, <a href="#BM_(anatomy%7Canatomical)%2Fi">anatomical</a> or <a href="#BM_(physiology%7Cphysiological)%2Fi">physiological</a> features (e.g. how many legs an insect has, how many eyes, if it has wings, etc..) were the properties measured. However, modern day <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> relies on biological <a href="#BM_(sequence)%2Fi">sequence</a>s (e.g. DNA or protein).</p>
+<p>The typical process for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is to first measure how related a set of entities are to each other, where each measure is referred to as a distance, then work backwards to find a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> that fits / maps to those distances.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cat</th>
+<th>Lion</th>
+<th>Bear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cat</td>
+<td>0</td>
+<td>2</td>
+<td>23</td>
+</tr>
+<tr>
+<td>Lion</td>
+<td>2</td>
+<td>0</td>
+<td>23</td>
+</tr>
+<tr>
+<td>Bear</td>
+<td>23</td>
+<td>23</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>What's being measured, the metric used for measurement, and the quality of the measurement all have an impact on how accurate the inferred ancestry is.</p>
+<p>A biological entity doesn't have to be an organism. It could be anything so long as it goes through mutation / evolution, including ...</p>
+<ul>
+<li>an organism</li>
+<li>an organelle (e.g. mitochondria has its own DNA)</li>
+<li>a virus</li>
+<li>a protein</li>
+</ul>
+<p><img src="svgbob_a4884cea1f03dad70aa6cd67fa7232f3a6772e94.svg" alt="Kroki diagram output"></p>
+<a name="H_Find%20Evolutionary%20Tree"></a><h3>Find Evolutionary Tree</h3>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a></li>
+</ul>
+</div>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given a random sample of 15 sequences from 1000_unique_sarscov2_spike_seqs.json.xz and the following alignment weights...</p>
+<pre><code>   A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  J  Z  X  *
+A  5 -2 -2 -2 -1 -1 -1  0 -2 -2 -2 -1 -1 -3 -1  1  0 -3 -2  0 -2 -2 -1 -1 -6
+R -2  6 -1 -2 -4  1 -1 -3  0 -3 -3  2 -2 -4 -2 -1 -1 -4 -3 -3 -1 -3  0 -1 -6
+N -2 -1  6  1 -3  0 -1 -1  0 -4 -4  0 -3 -4 -3  0  0 -4 -3 -4  5 -4  0 -1 -6
+D -2 -2  1  6 -4 -1  1 -2 -2 -4 -5 -1 -4 -4 -2 -1 -1 -6 -4 -4  5 -5  1 -1 -6
+C -1 -4 -3 -4  9 -4 -5 -4 -4 -2 -2 -4 -2 -3 -4 -2 -1 -3 -3 -1 -4 -2 -4 -1 -6
+Q -1  1  0 -1 -4  6  2 -2  1 -3 -3  1  0 -4 -2  0 -1 -3 -2 -3  0 -3  4 -1 -6
+E -1 -1 -1  1 -5  2  6 -3  0 -4 -4  1 -2 -4 -2  0 -1 -4 -3 -3  1 -4  5 -1 -6
+G  0 -3 -1 -2 -4 -2 -3  6 -3 -5 -4 -2 -4 -4 -3 -1 -2 -4 -4 -4 -1 -5 -3 -1 -6
+H -2  0  0 -2 -4  1  0 -3  8 -4 -3 -1 -2 -2 -3 -1 -2 -3  2 -4 -1 -4  0 -1 -6
+I -2 -3 -4 -4 -2 -3 -4 -5 -4  5  1 -3  1 -1 -4 -3 -1 -3 -2  3 -4  3 -4 -1 -6
+L -2 -3 -4 -5 -2 -3 -4 -4 -3  1  4 -3  2  0 -3 -3 -2 -2 -2  1 -4  3 -3 -1 -6
+K -1  2  0 -1 -4  1  1 -2 -1 -3 -3  5 -2 -4 -1 -1 -1 -4 -3 -3 -1 -3  1 -1 -6
+M -1 -2 -3 -4 -2  0 -2 -4 -2  1  2 -2  6  0 -3 -2 -1 -2 -2  1 -3  2 -1 -1 -6
+F -3 -4 -4 -4 -3 -4 -4 -4 -2 -1  0 -4  0  6 -4 -3 -2  0  3 -1 -4  0 -4 -1 -6
+P -1 -2 -3 -2 -4 -2 -2 -3 -3 -4 -3 -1 -3 -4  8 -1 -2 -5 -4 -3 -2 -4 -2 -1 -6
+S  1 -1  0 -1 -2  0  0 -1 -1 -3 -3 -1 -2 -3 -1  5  1 -4 -2 -2  0 -3  0 -1 -6
+T  0 -1  0 -1 -1 -1 -1 -2 -2 -1 -2 -1 -1 -2 -2  1  5 -4 -2  0 -1 -1 -1 -1 -6
+W -3 -4 -4 -6 -3 -3 -4 -4 -3 -3 -2 -4 -2  0 -5 -4 -4 11  2 -3 -5 -3 -3 -1 -6
+Y -2 -3 -3 -4 -3 -2 -3 -4  2 -2 -2 -3 -2  3 -4 -2 -2  2  7 -2 -3 -2 -3 -1 -6
+V  0 -3 -4 -4 -1 -3 -3 -4 -4  3  1 -3  1 -1 -3 -2  0 -3 -2  4 -4  2 -3 -1 -6
+B -2 -1  5  5 -4  0  1 -1 -1 -4 -4 -1 -3 -4 -2  0 -1 -5 -3 -4  5 -4  0 -1 -6
+J -2 -3 -4 -5 -2 -3 -4 -5 -4  3  3 -3  2  0 -4 -3 -1 -3 -2  2 -4  3 -3 -1 -6
+Z -1  0  0  1 -4  4  5 -3  0 -4 -3  1 -1 -4 -2  0 -1 -3 -3 -3  0 -3  5 -1 -6
+X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
+* -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6  1
+</code></pre>
+<p>... the tree generated by neighbour joining phylogeny is (distances measured using global alignment, edge lengths scaled to 0.1) ...</p>
+<p><img src="dot_56a874f556970e8ab31ce22651b23643.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
 <a name="H_Find%20Ancestral%20Sequences"></a><h3>Find Ancestral Sequences</h3>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference)_TOPIC%2F">Algorithms/Phylogeny/Sequence Inference</a></li>
+</ul>
+</div>
 <p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
 <p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
 <p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>

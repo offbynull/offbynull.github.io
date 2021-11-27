@@ -12250,35 +12250,108 @@ graph_show
 [cull, 10000]
 ```
 
-## COVID-19 Phylogeny
+## Ancestral Lineage
 
-TODO: Describe what phylogeny is and COVID-19's spike protein
+`{bm} /(Stories\/Ancestral Lineage)_TOPIC/`
 
-TODO: Describe what phylogeny is and COVID-19's spike protein
+The process of inferring the evolutionary history of a set of present-day biological entities (e.g. organisms, viruses, etc..) is called phylogeny. Evolutionary history  
 
-TODO: Describe what phylogeny is and COVID-19's spike protein
+```{svgbob}
+                      * "Ancestor Animal"
+                     / \
+                    /   \
+                   /     \
+"Ancestor Feline" *       \
+                 / \       \
+                /   \       \
+               /     \       \
+              *       *       *
+             Cat     Lion    Bear
+```
 
-TODO: Describe what phylogeny is and COVID-19's spike protein
+Evolutionary history is often displayed as a tree called a phylogenetic tree, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The example above shows a phylogenetic tree for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.
 
-TODO: Describe what phylogeny is and COVID-19's spike protein
+phenotypic inspection is the measurement of some related property that mutates along with the entity as it evolves. Historically, anatomical or physiological features (e.g. how many legs an insect has, how many eyes, if it has wings, etc..) were the properties measured. However, modern day phylogeny relies on biological sequences (e.g. DNA or protein).
 
-TODO: Describe what phylogeny is and COVID-19's spike protein
+The typical process for phylogeny is to first measure how related a set of entities are to each other, where each measure is referred to as a distance, then work backwards to find a phylogenetic tree that fits / maps to those distances.
 
-TODO: Describe what phylogeny is and COVID-19's spike protein
+|      | Cat | Lion | Bear |
+|------|-----|------|------|
+| Cat  | 0   | 2    | 23   |
+| Lion | 2   | 0    | 23   |
+| Bear | 23  | 23   | 0    |
 
-### Find Lineage
 
-TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
 
-TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+What's being measured, the metric used for measurement, and the quality of the measurement all have an impact on how accurate the inferred ancestry is.
 
-TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+A biological entity doesn't have to be an organism. It could be anything so long as it goes through mutation / evolution, including ...
 
-TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+ * an organism
+ * an organelle (e.g. mitochondria has its own DNA)
+ * a virus
+ * a protein
 
-TODO: Describe and write code to generate evolutionary tree (pair-wise sequence alignment for distance + neighbour joining phylogeny).
+```{svgbob}
+                      * "Ancestor Animal"
+                     / \
+                 6  /   \
+                   /     \
+"Ancestor Feline" *       \ 16
+                 / \       \
+              1 /   \ 1     \
+               /     \       \
+              *       *       *
+             Cat     Lion    Bear
+
+* "The same tree as shown above, but with distances"
+  "assigned to edge weights"
+```
+
+### Find Evolutionary Tree
+
+```{prereq}
+Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC
+```
+
+```{ch7}
+PracticalSARSCoV2Phylogeny
+1000_unique_sarscov2_spike_seqs.json.xz
+15
+0.1
+   A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  J  Z  X  *
+A  5 -2 -2 -2 -1 -1 -1  0 -2 -2 -2 -1 -1 -3 -1  1  0 -3 -2  0 -2 -2 -1 -1 -6
+R -2  6 -1 -2 -4  1 -1 -3  0 -3 -3  2 -2 -4 -2 -1 -1 -4 -3 -3 -1 -3  0 -1 -6
+N -2 -1  6  1 -3  0 -1 -1  0 -4 -4  0 -3 -4 -3  0  0 -4 -3 -4  5 -4  0 -1 -6
+D -2 -2  1  6 -4 -1  1 -2 -2 -4 -5 -1 -4 -4 -2 -1 -1 -6 -4 -4  5 -5  1 -1 -6
+C -1 -4 -3 -4  9 -4 -5 -4 -4 -2 -2 -4 -2 -3 -4 -2 -1 -3 -3 -1 -4 -2 -4 -1 -6
+Q -1  1  0 -1 -4  6  2 -2  1 -3 -3  1  0 -4 -2  0 -1 -3 -2 -3  0 -3  4 -1 -6
+E -1 -1 -1  1 -5  2  6 -3  0 -4 -4  1 -2 -4 -2  0 -1 -4 -3 -3  1 -4  5 -1 -6
+G  0 -3 -1 -2 -4 -2 -3  6 -3 -5 -4 -2 -4 -4 -3 -1 -2 -4 -4 -4 -1 -5 -3 -1 -6
+H -2  0  0 -2 -4  1  0 -3  8 -4 -3 -1 -2 -2 -3 -1 -2 -3  2 -4 -1 -4  0 -1 -6
+I -2 -3 -4 -4 -2 -3 -4 -5 -4  5  1 -3  1 -1 -4 -3 -1 -3 -2  3 -4  3 -4 -1 -6
+L -2 -3 -4 -5 -2 -3 -4 -4 -3  1  4 -3  2  0 -3 -3 -2 -2 -2  1 -4  3 -3 -1 -6
+K -1  2  0 -1 -4  1  1 -2 -1 -3 -3  5 -2 -4 -1 -1 -1 -4 -3 -3 -1 -3  1 -1 -6
+M -1 -2 -3 -4 -2  0 -2 -4 -2  1  2 -2  6  0 -3 -2 -1 -2 -2  1 -3  2 -1 -1 -6
+F -3 -4 -4 -4 -3 -4 -4 -4 -2 -1  0 -4  0  6 -4 -3 -2  0  3 -1 -4  0 -4 -1 -6
+P -1 -2 -3 -2 -4 -2 -2 -3 -3 -4 -3 -1 -3 -4  8 -1 -2 -5 -4 -3 -2 -4 -2 -1 -6
+S  1 -1  0 -1 -2  0  0 -1 -1 -3 -3 -1 -2 -3 -1  5  1 -4 -2 -2  0 -3  0 -1 -6
+T  0 -1  0 -1 -1 -1 -1 -2 -2 -1 -2 -1 -1 -2 -2  1  5 -4 -2  0 -1 -1 -1 -1 -6
+W -3 -4 -4 -6 -3 -3 -4 -4 -3 -3 -2 -4 -2  0 -5 -4 -4 11  2 -3 -5 -3 -3 -1 -6
+Y -2 -3 -3 -4 -3 -2 -3 -4  2 -2 -2 -3 -2  3 -4 -2 -2  2  7 -2 -3 -2 -3 -1 -6
+V  0 -3 -4 -4 -1 -3 -3 -4 -4  3  1 -3  1 -1 -3 -2  0 -3 -2  4 -4  2 -3 -1 -6
+B -2 -1  5  5 -4  0  1 -1 -1 -4 -4 -1 -3 -4 -2  0 -1 -5 -3 -4  5 -4  0 -1 -6
+J -2 -3 -4 -5 -2 -3 -4 -5 -4  3  3 -3  2  0 -4 -3 -1 -3 -2  2 -4  3 -3 -1 -6
+Z -1  0  0  1 -4  4  5 -3  0 -4 -3  1 -1 -4 -2  0 -1 -3 -3 -3  0 -3  5 -1 -6
+X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
+* -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6  1
+```
 
 ### Find Ancestral Sequences
+
+```{prereq}
+Algorithms/Phylogeny/Sequence Inference_TOPIC
+```
 
 TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
 
