@@ -12349,15 +12349,15 @@ SARS-CoV-2 is the virus that causes COVID-19. The example below measures SARS-Co
 ```{note}
 BLOSUM80 was chosen because SARS-CoV-2 is a relatively new virus (~2 years). I don't know if it was a good choice because I've been told viruses mutate more rapidly, so maybe BLOSUM62 would have been a better choice.
 
-The original NCBI dataset has 30k to 40k unique spike sequences. I couldn't justify sticking all of that into the git repo (too large) so I whittled it down to a random sample of 1000.
+The original NCBI dataset had 30k to 40k unique spike sequences. I couldn't justify sticking all of that into the git repo (too large) so I whittled it down to a random sample of 1000.
 
-From that 1000, only a sample of 15 are selected to run the code. The problem is that sequence alignments are computationally expensive and Python is slow. Doing a sequence alignment between two spike protein sequences on my VM takes a long time (~4 seconds per alignment), so for the full 1000 sequences the total running time would end up being ~4 years (if I calculated it correctly - single core).
+From that 1000, only a small sample are selected to run the code. The problem is that sequence alignments are computationally expensive and Python is slow. Doing a sequence alignment between two spike protein sequences on my VM takes a long time (~4 seconds per alignment), so for the full 1000 sequences the total running time would end up being ~4 years (if I calculated it correctly - single core).
 ```
 
 ```{ch7}
-PracticalSARSCoV2Phylogeny
+PracticalSARSCoV2PhylogenyTree
 1000_unique_sarscov2_spike_seqs.json.xz
-15
+6
 0.1
    A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  J  Z  X  *
 A  5 -2 -2 -2 -1 -1 -1  0 -2 -2 -2 -1 -1 -3 -1  1  0 -3 -2  0 -2 -2 -1 -1 -6
@@ -12392,26 +12392,104 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
 `{bm} /(Stories\/Evolutionary History\/Find Ancestral Features)_TOPIC/`
 
 ```{prereq}
-Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC
-Algorithms/Sequence Alignment/Global Alignment_TOPIC
-Algorithms/Sequence Alignment/Protein Scoring/BLOSUM Scoring Matrix_TOPIC
-```
-
-```{prereq}
+Stories/Evolutionary History/Find Evolutionary Tree_TOPIC
+Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
 Algorithms/Phylogeny/Sequence Inference_TOPIC
 ```
 
-TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+An unknown ancestor's features are probabilistically inferrable via the features of entities that descend from it.
 
-TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+```{svgbob}
+   .-------------------------------------------------------------.
+   |                          "Ancestor"                         |
+   | "100% 4 legs"                                               |
+   | "100% furry"                                                |
+   | "100% sharp teeth"                                          |
+   | "50% striped coat pattern"  vs   "50% spotted coat pattern" |
+   | "50% >= 143 lbs"            vs   "50% <= 70 lbs"            |
+   '------------------------------+------------------------------'
+                                 / \
+                .---------------'   '-----------------.
+                |                                     |
+.---------------+-------------.        .--------------+--------------.
+|           "Leopard"         |        |            "Tiger"          |
+| "100% 4 legs"               |        | "100% 4 legs"               |
+| "100% furry"                |        | "100% furry"                |
+| "100% sharp teeth"          |        | "100% sharp teeth"          |
+| "100% spotted coat pattern" |        | "100% striped coat pattern" |
+| "100% 50-70 lbs"            |        | "100% 143-660 lbs"          |
+'-----------------------------'        '-----------------------------'
+```
 
-TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+The example above infers phenotypic features for the common ancestor of leopard and tiger. If a feature is present and the same in both, it's safe to assume that it was present in their common ancestor as well (e.g. 4 legs). Otherwise, there's still some smaller chance that the feature was present, possibly with some variability in how it manifested (e.g. type of coat pattern).
 
-TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+With the advent of sequencing technology, the practice of using phenotypic features for phylogeny was superseded by sequencing data. When sequences are used, the features are the sequences themselves, meaning that the sequence of the common ancestor is what gets inferred.
 
-TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+```{svgbob}
+   .-------------------------------------------------------------.
+   |                          "Ancestor"                         |
+   | "idx0: 100% A"                                              |
+   | "idx1: 100% A"                                              |
+   | "idx2: 50% C"  vs  "50% T"                                  |
+   | "idx3: 50% C"  vs  "50% T"                                  |
+   | "idx4: 100% T"                                              |
+   '------------------------------+------------------------------'
+                                 / \
+                .---------------'   '-----------------.
+                |                                     |
+.---------------+-------------.        .--------------+--------------.
+|           "Leopard"         |        |            "Tiger"          |
+| "idx0: 100% A"              |        | "idx0: 100% A"              |
+| "idx1: 100% A"              |        | "idx1: 100% A"              |
+| "idx2: 100% C"              |        | "idx2: 100% T"              |
+| "idx3: 100% C"              |        | "idx3: 100% T"              |
+| "idx4: 100% T"              |        | "idx4: 100% T"              |
+'-----------------------------'        '-----------------------------'
 
-TODO: Describe how ancestral sequences are derive (multiple alignment + cut out gaps + small parsimony on tree generated in previous section).
+* "An example using a small region of DNA that codes"
+  "for the same thing in both leopard and tiger"
+```
+
+The example below infers the spike protein sequences for the ancestors of SARS-CoV-2 variants. First, a phylogenetic tree is generated using BLOSUM80 as the distance metric. Then, the sequences are all aligned together using BLOSUM80 (multiple alignment, not pairwise alignment as was used for the distance metric). The sequences of ancestors are inferred using those aligned sequences.
+
+```{note}
+This is badly cobbled together code. It's taking the code from the previous section's example and embedding/duct-taping even more pieces from the sequence alignment module just to get a running example. In a perfect world I would just import the sequence alignment module, but that module lives in a separate container. This is the best I can do.
+
+Running this is even slower than the previous section's example, so the sample size has been reduced even further.
+```
+
+```{ch7}
+PracticalSARSCoV2PhylogenyTreeWithSequenceInference
+1000_unique_sarscov2_spike_seqs.json.xz
+3
+0.1
+-6
+   A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  J  Z  X
+A  5 -2 -2 -2 -1 -1 -1  0 -2 -2 -2 -1 -1 -3 -1  1  0 -3 -2  0 -2 -2 -1 -1
+R -2  6 -1 -2 -4  1 -1 -3  0 -3 -3  2 -2 -4 -2 -1 -1 -4 -3 -3 -1 -3  0 -1
+N -2 -1  6  1 -3  0 -1 -1  0 -4 -4  0 -3 -4 -3  0  0 -4 -3 -4  5 -4  0 -1
+D -2 -2  1  6 -4 -1  1 -2 -2 -4 -5 -1 -4 -4 -2 -1 -1 -6 -4 -4  5 -5  1 -1
+C -1 -4 -3 -4  9 -4 -5 -4 -4 -2 -2 -4 -2 -3 -4 -2 -1 -3 -3 -1 -4 -2 -4 -1
+Q -1  1  0 -1 -4  6  2 -2  1 -3 -3  1  0 -4 -2  0 -1 -3 -2 -3  0 -3  4 -1
+E -1 -1 -1  1 -5  2  6 -3  0 -4 -4  1 -2 -4 -2  0 -1 -4 -3 -3  1 -4  5 -1
+G  0 -3 -1 -2 -4 -2 -3  6 -3 -5 -4 -2 -4 -4 -3 -1 -2 -4 -4 -4 -1 -5 -3 -1
+H -2  0  0 -2 -4  1  0 -3  8 -4 -3 -1 -2 -2 -3 -1 -2 -3  2 -4 -1 -4  0 -1
+I -2 -3 -4 -4 -2 -3 -4 -5 -4  5  1 -3  1 -1 -4 -3 -1 -3 -2  3 -4  3 -4 -1
+L -2 -3 -4 -5 -2 -3 -4 -4 -3  1  4 -3  2  0 -3 -3 -2 -2 -2  1 -4  3 -3 -1
+K -1  2  0 -1 -4  1  1 -2 -1 -3 -3  5 -2 -4 -1 -1 -1 -4 -3 -3 -1 -3  1 -1
+M -1 -2 -3 -4 -2  0 -2 -4 -2  1  2 -2  6  0 -3 -2 -1 -2 -2  1 -3  2 -1 -1
+F -3 -4 -4 -4 -3 -4 -4 -4 -2 -1  0 -4  0  6 -4 -3 -2  0  3 -1 -4  0 -4 -1
+P -1 -2 -3 -2 -4 -2 -2 -3 -3 -4 -3 -1 -3 -4  8 -1 -2 -5 -4 -3 -2 -4 -2 -1
+S  1 -1  0 -1 -2  0  0 -1 -1 -3 -3 -1 -2 -3 -1  5  1 -4 -2 -2  0 -3  0 -1
+T  0 -1  0 -1 -1 -1 -1 -2 -2 -1 -2 -1 -1 -2 -2  1  5 -4 -2  0 -1 -1 -1 -1
+W -3 -4 -4 -6 -3 -3 -4 -4 -3 -3 -2 -4 -2  0 -5 -4 -4 11  2 -3 -5 -3 -3 -1
+Y -2 -3 -3 -4 -3 -2 -3 -4  2 -2 -2 -3 -2  3 -4 -2 -2  2  7 -2 -3 -2 -3 -1
+V  0 -3 -4 -4 -1 -3 -3 -4 -4  3  1 -3  1 -1 -3 -2  0 -3 -2  4 -4  2 -3 -1
+B -2 -1  5  5 -4  0  1 -1 -1 -4 -4 -1 -3 -4 -2  0 -1 -5 -3 -4  5 -4  0 -1
+J -2 -3 -4 -5 -2 -3 -4 -5 -4  3  3 -3  2  0 -4 -3 -1 -3 -2  2 -4  3 -3 -1
+Z -1  0  0  1 -4  4  5 -3  0 -4 -3  1 -1 -4 -2  0 -1 -3 -3 -3  0 -3  5 -1
+X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+```
 
 # Ideas
 
@@ -15527,7 +15605,7 @@ TODO: Describe how ancestral sequences are derive (multiple alignment + cut out 
 
    Character tables were commonly used for phylogeny before discovering that DNA can be used to compare the relatedness of organisms.
 
-   A row in a character table. Prior to the advent of sequencers, scientists would treat character vectors as sequences for generating phylogenetic trees or doing comparisons between organisms.
+   A row in a character table is referred to as a character vector. Prior to the advent of sequencers, scientists would treat character vectors as sequences for generating phylogenetic trees or doing comparisons between organisms.
 
  * `{bm} mitochondrial DNA/(mitochondrial DNA|mtDNA)/i` - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitochondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.
    

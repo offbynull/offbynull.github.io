@@ -9876,7 +9876,7 @@ dist(cat, lion) + dist(lion, dog) &gt;= dist(cat, dog)
 <p>The tree...</p>
 <p><img src="dot_a6073dfa575690e209a573018def1057.svg" alt="Dot diagram"></p>
 <p>... simplifies to ...</p>
-<p><img src="dot_72a6167f5aaf962d643a8d8fb22cc139.svg" alt="Dot diagram"></p>
+<p><img src="dot_811bfab4e79c84353ff668254695e540.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The following algorithm tests a <a href="#BM_(tree)%2Fi">tree</a> to see if it meets the requirements of being a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>...</p>
@@ -11690,7 +11690,7 @@ different subtrees.</p>
 <p>... and simple tree trim(T, v5)...</p>
 <p><img src="dot_947428a9fad00efc08c05fcfe2286cfb.svg" alt="Dot diagram"></p>
 <p>... , v5 is injected at the appropriate location to become simple tree T (un-trimmed) ...</p>
-<p><img src="dot_161663c05ac037dd80d3463d127da1e3.svg" alt="Dot diagram"></p>
+<p><img src="dot_732ee38514b240e67ad8b3b760b395eb.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p> <!-- Re-enable 5' now that section is finished --></p>
@@ -12295,7 +12295,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_763a6df78a69e9abb1af0bcda2396225.svg" alt="Dot diagram"></p>
+<p><img src="dot_a8144dba9b116da1f435fa70958c182b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>This same reasoning is applied to edge weights. That is, instead of just counting edges, the reasoning works the same if you were to multiply edge weights by those counts.</p>
@@ -12594,7 +12594,7 @@ different subtrees.</p>
 </tr>
 </tbody>
 </table>
-<p><img src="dot_da24f932f5f5779b3b20000f3bdce90f.svg" alt="Dot diagram"></p>
+<p><img src="dot_5bd0f8447524227f21b79b84cb7cf16d.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>The matrix produced in the example above is called a <a href="#BM_(neighbour%20joining%20matrix)%2Fi">neighbour joining matrix</a>. The summation of <code>combine_edge_multiple_and_normalize()</code> performed in each matrix slot is rewritable as a set of addition and subtraction operations between leaf node distances. For example, recall that <code>combine_edge_multiple_and_normalize(v1,v2)</code> in the example graph breaks down to <code>edge_multiple(v1) + edge_multiple(v2) - (leaf_count - 2) * path(v1,v2)</code>. The sum of ...</p>
@@ -14750,7 +14750,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tbody>
 </table>
 <p>... the UPGMA generated tree is ...</p>
-<p><img src="dot_0caf7979868a91099e0ba7b73740fe4d.svg" alt="Dot diagram"></p>
+<p><img src="dot_246c4b1c76ce4a0e7566cdecd1db58ad.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Additive%20Phylogeny%20Algorithm"></a><h4>Additive Phylogeny Algorithm</h4>
@@ -14835,24 +14835,24 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <p></p>
 <p>Given the distance matrix ...</p>
 <table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>22.0</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>13.0</td><td>21.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v1</td><td>13.0</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td></tr><tr><td>v2</td><td>21.0</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>12.0</td><td>20.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>13.0</td><td>21.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v0 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v1</td><td>0.0</td><td>12.0</td><td>12.0</td><td>13.0</td><td>13.0</td></tr><tr><td>v2</td><td>12.0</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>12.0</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>13.0</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>13.0</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v1 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v3</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>20.0</td><td>21.0</td></tr><tr><td>v3</td><td>21.0</td><td>20.0</td><td>0.0</td><td>13.0</td></tr><tr><td>v5</td><td>22.0</td><td>21.0</td><td>13.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v2</th><th>v3</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v2</td><td>0.0</td><td>20.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v3</td><td>20.0</td><td>0.0</td><td>7.0</td><td>13.0</td></tr><tr><td>v4</td><td>21.0</td><td>7.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>21.0</td><td>13.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Trimmed v3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td><td>22.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td><td>21.0</td></tr><tr><td>v5</td><td>22.0</td><td>21.0</td><td>0.0</td></tr></tbody></table>
-<p>Trimmed v5 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>v0</th><th>v2</th></tr></thead><tbody><tr><td>v0</td><td>0.0</td><td>21.0</td></tr><tr><td>v2</td><td>21.0</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>v2</th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v2</td><td>0.0</td><td>21.0</td><td>21.0</td></tr><tr><td>v4</td><td>21.0</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>21.0</td><td>14.0</td><td>0.0</td></tr></tbody></table>
+<p>Trimmed v2 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>v4</th><th>v5</th></tr></thead><tbody><tr><td>v4</td><td>0.0</td><td>14.0</td></tr><tr><td>v5</td><td>14.0</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_063051a6fee7e427406704703806d6d6.svg" alt="Dot diagram"></p>
-<p>Attached v5 to produce tree...</p>
-<p><img src="dot_ca6192454a4a386d80832676deb84809.svg" alt="Dot diagram"></p>
+<p><img src="dot_a1744096a16de60264a14880f84d70be.svg" alt="Dot diagram"></p>
+<p>Attached v2 to produce tree...</p>
+<p><img src="dot_c055a665c75a3139921a8a461681bb6c.svg" alt="Dot diagram"></p>
 <p>Attached v3 to produce tree...</p>
-<p><img src="dot_17a0579397074b57e95a08e48adf6868.svg" alt="Dot diagram"></p>
+<p><img src="dot_d245ba2437e23017778f31eb1645d0b3.svg" alt="Dot diagram"></p>
 <p>Attached v1 to produce tree...</p>
-<p><img src="dot_47d6f094feb65819c0925706cebaef43.svg" alt="Dot diagram"></p>
-<p>Attached v4 to produce tree...</p>
-<p><img src="dot_b3c1b4f313724236643b0b9d73a072b5.svg" alt="Dot diagram"></p>
+<p><img src="dot_fc28272d8de4992c3f02e4e24c2d38ac.svg" alt="Dot diagram"></p>
+<p>Attached v0 to produce tree...</p>
+<p><img src="dot_640af463f84c93a65fd967cd10901ebf.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15022,20 +15022,20 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <table><thead><tr><th></th><th>N1</th><th>v0</th><th>v1</th><th>v2</th><th>v5</th></tr></thead><tbody><tr><td>N1</td><td>0.0</td><td>17.5</td><td>7.0</td><td>17.0</td><td>9.5</td></tr><tr><td>v0</td><td>17.5</td><td>0.0</td><td>14.0</td><td>22.0</td><td>22.0</td></tr><tr><td>v1</td><td>7.0</td><td>14.0</td><td>0.0</td><td>12.0</td><td>14.0</td></tr><tr><td>v2</td><td>17.0</td><td>22.0</td><td>12.0</td><td>0.0</td><td>20.0</td></tr><tr><td>v5</td><td>9.5</td><td>22.0</td><td>14.0</td><td>20.0</td><td>0.0</td></tr></tbody></table>
 <p>Replaced neighbours ('N1', 'v5') with their parent N2 to produce distance matrix ...</p>
 <table><thead><tr><th></th><th>N2</th><th>v0</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>15.0</td><td>5.75</td><td>13.75</td></tr><tr><td>v0</td><td>15.0</td><td>0.0</td><td>14.0</td><td>22.0</td></tr><tr><td>v1</td><td>5.75</td><td>14.0</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>13.75</td><td>22.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v0', 'N2') with their parent N3 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N3</th><th>v1</th><th>v2</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>2.375</td><td>10.375</td></tr><tr><td>v1</td><td>2.375</td><td>0.0</td><td>12.0</td></tr><tr><td>v2</td><td>10.375</td><td>12.0</td><td>0.0</td></tr></tbody></table>
-<p>Replaced neighbours ('v1', 'N3') with their parent N4 to produce distance matrix ...</p>
-<table><thead><tr><th></th><th>N4</th><th>v2</th></tr></thead><tbody><tr><td>N4</td><td>0.0</td><td>10.0</td></tr><tr><td>v2</td><td>10.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v1', 'v2') with their parent N3 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N2</th><th>N3</th><th>v0</th></tr></thead><tbody><tr><td>N2</td><td>0.0</td><td>3.75</td><td>15.0</td></tr><tr><td>N3</td><td>3.75</td><td>0.0</td><td>12.0</td></tr><tr><td>v0</td><td>15.0</td><td>12.0</td><td>0.0</td></tr></tbody></table>
+<p>Replaced neighbours ('v0', 'N2') with their parent N4 to produce distance matrix ...</p>
+<table><thead><tr><th></th><th>N3</th><th>N4</th></tr></thead><tbody><tr><td>N3</td><td>0.0</td><td>0.375</td></tr><tr><td>N4</td><td>0.375</td><td>0.0</td></tr></tbody></table>
 <p>Obvious simple tree...</p>
-<p><img src="dot_1d9b5fae826dcfef649ccb5d3adcaf55.svg" alt="Dot diagram"></p>
-<p>Attached ('v1', 'N3') to N4 to produce tree...</p>
-<p><img src="dot_4815d53968ed0dfe5988e14a28904772.svg" alt="Dot diagram"></p>
-<p>Attached ('v0', 'N2') to N3 to produce tree...</p>
-<p><img src="dot_d31266bbc787db334234d99914ebe7cf.svg" alt="Dot diagram"></p>
+<p><img src="dot_be14fd16e403f27a505730a47fb24818.svg" alt="Dot diagram"></p>
+<p>Attached ('v0', 'N2') to N4 to produce tree...</p>
+<p><img src="dot_cd1212ec72d7435abefd6c91f344c9dd.svg" alt="Dot diagram"></p>
+<p>Attached ('v1', 'v2') to N3 to produce tree...</p>
+<p><img src="dot_b3390ad411b2114cc14ad8ab972c789e.svg" alt="Dot diagram"></p>
 <p>Attached ('N1', 'v5') to N2 to produce tree...</p>
-<p><img src="dot_5480070c0cfc9162eb62c3528092f0df.svg" alt="Dot diagram"></p>
+<p><img src="dot_ccb89c35883c4cecfdbd8e7aeceeeb80.svg" alt="Dot diagram"></p>
 <p>Attached ('v3', 'v4') to N1 to produce tree...</p>
-<p><img src="dot_aa3ccee08842f1024e43570c67e24c3b.svg" alt="Dot diagram"></p>
+<p><img src="dot_d82377b2f7aa851fa37e18b80217a112.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -15642,9 +15642,9 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>The tree...</p>
 <p><img src="dot_9b81e948066b89df103053f4b105da53.svg" alt="Dot diagram"></p>
 <p>... can have any of the following nearest neighbour swaps on edge i0-i1...</p>
-<p><img src="dot_15c99fcdc8f9498a3f51120ec66b4348.svg" alt="Dot diagram"></p>
-<p><img src="dot_29f7434a3cdd6cb6ef24af57339c6681.svg" alt="Dot diagram"></p>
-<p><img src="dot_ae6d6b1fae39253a339225487e49eb7f.svg" alt="Dot diagram"></p>
+<p><img src="dot_91f37c7fea12ac74f5870ade915e7a0f.svg" alt="Dot diagram"></p>
+<p><img src="dot_9e3e0c70bd5bc42ee008c4c120a23165.svg" alt="Dot diagram"></p>
+<p><img src="dot_618f5a59247efef5120ce07be88aa291.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and tries all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
@@ -15803,7 +15803,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>graph score: 9.0</p>
 <p><img src="dot_5c63144e975c84bc65b983dbf3f880c1.svg" alt="Dot diagram"></p>
 <p>graph score: 6.0</p>
-<p><img src="dot_187c973aa306302fd4503101746b8307.svg" alt="Dot diagram"></p>
+<p><img src="dot_dd926b5ceec12ba73951730b6d4c315f.svg" alt="Dot diagram"></p>
 <p>After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score of 6.0 vs the original score of 9.0</p>
 </div>
 <p></p>
@@ -16409,12 +16409,12 @@ n4_val = <span class="hljs-built_in">min</span>(
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 was chosen because <a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 is a relatively new virus (~2 years). I don't know if it was a good choice because I've been told viruses mutate more rapidly, so maybe <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 would have been a better choice.</p>
-<p>The original NCBI dataset has 30k to 40k unique spike <a href="#BM_(sequence)%2Fi">sequence</a>s. I couldn't justify sticking all of that into the git repo (too large) so I whittled it down to a random sample of 1000.</p>
-<p>From that 1000, only a sample of 15 are selected to run the code. The problem is that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are computationally expensive and Python is slow. Doing a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> between two spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s on my VM takes a long time (~4 seconds per alignment), so for the full 1000 <a href="#BM_(sequence)%2Fi">sequence</a>s the total running time would end up being ~4 years (if I calculated it correctly - single core).</p>
+<p>The original NCBI dataset had 30k to 40k unique spike <a href="#BM_(sequence)%2Fi">sequence</a>s. I couldn't justify sticking all of that into the git repo (too large) so I whittled it down to a random sample of 1000.</p>
+<p>From that 1000, only a small sample are selected to run the code. The problem is that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are computationally expensive and Python is slow. Doing a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> between two spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s on my VM takes a long time (~4 seconds per alignment), so for the full 1000 <a href="#BM_(sequence)%2Fi">sequence</a>s the total running time would end up being ~4 years (if I calculated it correctly - single core).</p>
 </div>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given a random sample of 15 sequences from 1000_unique_sarscov2_spike_seqs.json.xz and the following alignment weights...</p>
+<p>Given a random sample of 6 sequences from 1000_unique_sarscov2_spike_seqs.json.xz and the following alignment weights...</p>
 <pre><code>   A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  J  Z  X  *
 A  5 -2 -2 -2 -1 -1 -1  0 -2 -2 -2 -1 -1 -3 -1  1  0 -3 -2  0 -2 -2 -1 -1 -6
 R -2  6 -1 -2 -4  1 -1 -3  0 -3 -3  2 -2 -4 -2 -1 -1 -4 -3 -3 -1 -3  0 -1 -6
@@ -16442,8 +16442,8 @@ Z -1  0  0  1 -4  4  5 -3  0 -4 -3  1 -1 -4 -2  0 -1 -3 -3 -3  0 -3  5 -1 -6
 X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
 * -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6  1
 </code></pre>
-<p>... the tree generated by neighbour joining phylogeny is (distances measured using global alignment, edge lengths scaled to 0.1) ...</p>
-<p><img src="dot_56a874f556970e8ab31ce22651b23643.svg" alt="Dot diagram"></p>
+<p>The tree generated by neighbour joining phylogeny is (distances measured using global alignment, edge lengths scaled to 0.1) ...</p>
+<p><img src="dot_0232d175f5f7d43bab86f93f5c44847a.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Find%20Ancestral%20Features"></a><h3>Find Ancestral Features</h3>
@@ -16451,23 +16451,56 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a></li>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring%2FBLOSUM%20Scoring%20Matrix)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring/BLOSUM Scoring Matrix</a></li>
-</ul>
-</div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
+<li><a href="#BM_(Stories%5C%2FEvolutionary%20History%2FFind%20Evolutionary%20Tree)_TOPIC%2F">Stories/Evolutionary History/Find Evolutionary Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FMultiple%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Multiple Alignment</a></li>
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FSequence%20Inference)_TOPIC%2F">Algorithms/Phylogeny/Sequence Inference</a></li>
 </ul>
 </div>
-<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
-<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
-<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
-<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
-<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
-<p>TODO: Describe how ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s are derive (multiple alignment + cut out gaps + <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a> on <a href="#BM_(tree)%2Fi">tree</a> generated in previous section).</p>
+<p>An unknown ancestor's features are probabilistically inferrable via the features of entities that descend from it.</p>
+<p><img src="svgbob_301dc5669f5493f72306ed61f5f34720826895f1.svg" alt="Kroki diagram output"></p>
+<p>The example above infers phenotypic features for the common ancestor of leopard and tiger. If a feature is present and the same in both, it's safe to assume that it was present in their common ancestor as well (e.g. 4 legs). Otherwise, there's still some smaller chance that the feature was present, possibly with some variability in how it manifested (e.g. type of coat pattern).</p>
+<p>With the advent of <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> technology, the practice of using phenotypic features for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> was superseded by <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> data. When <a href="#BM_(sequence)%2Fi">sequence</a>s are used, the features are the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves, meaning that the <a href="#BM_(sequence)%2Fi">sequence</a> of the common ancestor is what gets inferred.</p>
+<p><img src="svgbob_250f42ea364b8fe4b11cb8bd97fb264f2049daf9.svg" alt="Kroki diagram output"></p>
+<p>The example below infers the spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s for the ancestors of <a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 variants. First, a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is generated using <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 as the <a href="#BM_(distance%20metric)%2Fi">distance metric</a>. Then, the <a href="#BM_(sequence)%2Fi">sequence</a>s are all aligned together using <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 (multiple alignment, not pairwise alignment as was used for the <a href="#BM_(distance%20metric)%2Fi">distance metric</a>). The <a href="#BM_(sequence)%2Fi">sequence</a>s of ancestors are inferred using those aligned <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is badly cobbled together code. It's taking the code from the previous section's example and embedding/duct-taping even more pieces from the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> module just to get a running example. In a perfect world I would just import the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> module, but that module lives in a separate container. This is the best I can do.</p>
+<p>Running this is even slower than the previous section's example, so the sample size has been reduced even further.</p>
+</div>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given a random sample of 3 sequences from 1000_unique_sarscov2_spike_seqs.json.xz and the following alignment weights...</p>
+<pre><code>   A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  J  Z  X
+A  5 -2 -2 -2 -1 -1 -1  0 -2 -2 -2 -1 -1 -3 -1  1  0 -3 -2  0 -2 -2 -1 -1
+R -2  6 -1 -2 -4  1 -1 -3  0 -3 -3  2 -2 -4 -2 -1 -1 -4 -3 -3 -1 -3  0 -1
+N -2 -1  6  1 -3  0 -1 -1  0 -4 -4  0 -3 -4 -3  0  0 -4 -3 -4  5 -4  0 -1
+D -2 -2  1  6 -4 -1  1 -2 -2 -4 -5 -1 -4 -4 -2 -1 -1 -6 -4 -4  5 -5  1 -1
+C -1 -4 -3 -4  9 -4 -5 -4 -4 -2 -2 -4 -2 -3 -4 -2 -1 -3 -3 -1 -4 -2 -4 -1
+Q -1  1  0 -1 -4  6  2 -2  1 -3 -3  1  0 -4 -2  0 -1 -3 -2 -3  0 -3  4 -1
+E -1 -1 -1  1 -5  2  6 -3  0 -4 -4  1 -2 -4 -2  0 -1 -4 -3 -3  1 -4  5 -1
+G  0 -3 -1 -2 -4 -2 -3  6 -3 -5 -4 -2 -4 -4 -3 -1 -2 -4 -4 -4 -1 -5 -3 -1
+H -2  0  0 -2 -4  1  0 -3  8 -4 -3 -1 -2 -2 -3 -1 -2 -3  2 -4 -1 -4  0 -1
+I -2 -3 -4 -4 -2 -3 -4 -5 -4  5  1 -3  1 -1 -4 -3 -1 -3 -2  3 -4  3 -4 -1
+L -2 -3 -4 -5 -2 -3 -4 -4 -3  1  4 -3  2  0 -3 -3 -2 -2 -2  1 -4  3 -3 -1
+K -1  2  0 -1 -4  1  1 -2 -1 -3 -3  5 -2 -4 -1 -1 -1 -4 -3 -3 -1 -3  1 -1
+M -1 -2 -3 -4 -2  0 -2 -4 -2  1  2 -2  6  0 -3 -2 -1 -2 -2  1 -3  2 -1 -1
+F -3 -4 -4 -4 -3 -4 -4 -4 -2 -1  0 -4  0  6 -4 -3 -2  0  3 -1 -4  0 -4 -1
+P -1 -2 -3 -2 -4 -2 -2 -3 -3 -4 -3 -1 -3 -4  8 -1 -2 -5 -4 -3 -2 -4 -2 -1
+S  1 -1  0 -1 -2  0  0 -1 -1 -3 -3 -1 -2 -3 -1  5  1 -4 -2 -2  0 -3  0 -1
+T  0 -1  0 -1 -1 -1 -1 -2 -2 -1 -2 -1 -1 -2 -2  1  5 -4 -2  0 -1 -1 -1 -1
+W -3 -4 -4 -6 -3 -3 -4 -4 -3 -3 -2 -4 -2  0 -5 -4 -4 11  2 -3 -5 -3 -3 -1
+Y -2 -3 -3 -4 -3 -2 -3 -4  2 -2 -2 -3 -2  3 -4 -2 -2  2  7 -2 -3 -2 -3 -1
+V  0 -3 -4 -4 -1 -3 -3 -4 -4  3  1 -3  1 -1 -3 -2  0 -3 -2  4 -4  2 -3 -1
+B -2 -1  5  5 -4  0  1 -1 -1 -4 -4 -1 -3 -4 -2  0 -1 -5 -3 -4  5 -4  0 -1
+J -2 -3 -4 -5 -2 -3 -4 -5 -4  3  3 -3  2  0 -4 -3 -1 -3 -2  2 -4  3 -3 -1
+Z -1  0  0  1 -4  4  5 -3  0 -4 -3  1 -1 -4 -2  0 -1 -3 -3 -3  0 -3  5 -1
+X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+</code></pre>
+<p>INDEL=-6.0</p>
+<p>The tree generated by neighbour joining phylogeny ALONG WITH INFERRED ANCESTRAL SEQUENCES is (distances measured using global alignment, edge lengths scaled to 0.1) ...</p>
+<p><img src="dot_efed26f7f13639f895adeed724a5c3a9.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
 <a name="H_Ideas"></a><h1>Ideas</h1>
 <ul>
 <li>CPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</li>
@@ -19851,7 +19884,7 @@ dist(S3, S4) is 5 = x + u + z
 </tbody>
 </table>
 <p><a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">Character table</a>s were commonly used for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> before discovering that DNA can be used to compare the relatedness of organisms.</p>
-<p>A row in a <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character table</a>. Prior to the advent of <a href="#BM_(sequencer)%2Fi">sequencer</a>s, scientists would treat <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character vector</a>s as <a href="#BM_(sequence)%2Fi">sequence</a>s for generating <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s or doing comparisons between organisms.</p>
+<p>A row in a <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character table</a> is referred to as a <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character vector</a>. Prior to the advent of <a href="#BM_(sequencer)%2Fi">sequencer</a>s, scientists would treat <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character vector</a>s as <a href="#BM_(sequence)%2Fi">sequence</a>s for generating <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>s or doing comparisons between organisms.</p>
 </li>
 <li>
 <p><a name="BM_(mitochondrial%20DNA%7CmtDNA)%2Fi"></a><strong>mitochondrial DNA</strong> - DNA unique to the mitochondria. This DNA is unique to the mitochondria, different from the DNA of the cell that the mitochondria lives in. The mitochondria is suspected of being bacteria that made it into the cell and survived, forming a symbiotic relationship.</p>
