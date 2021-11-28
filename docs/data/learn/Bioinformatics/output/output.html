@@ -192,10 +192,10 @@
 <li><a href="#H_Find%20Synteny%20Blocks">Find Synteny Blocks</a></li>
 <li><a href="#H_Find%20Reversal%20Path">Find Reversal Path</a></li>
 </ul>
-<li><a href="#H_Ancestral%20Lineage">Ancestral Lineage</a></li>
+<li><a href="#H_Evolutionary%20History">Evolutionary History</a></li>
 <ul>
 <li><a href="#H_Find%20Evolutionary%20Tree">Find Evolutionary Tree</a></li>
-<li><a href="#H_Find%20Ancestral%20Sequences">Find Ancestral Sequences</a></li>
+<li><a href="#H_Find%20Ancestral%20Features">Find Ancestral Features</a></li>
 </ul>
 </ul>
 <li><a href="#H_Ideas">Ideas</a></li>
@@ -7512,6 +7512,7 @@ GAA
 <p><strong>WHY</strong>: Before performing a pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, there needs to be some baseline for how elements within those <a href="#BM_(sequence)%2Fi">sequence</a>s measure up against each other. In the simplest case, elements are compared using equality: matching elements score 1, while mismatches or <a href="#BM_(indel)%2Fi">indel</a>s score 0. However, there are many other cases where element equality isn't a good measure.</p>
 <p>Protein <a href="#BM_(sequence)%2Fi">sequence</a>s are one such case. Biological <a href="#BM_(sequence)%2Fi">sequence</a>s such as proteins and DNA undergo mutation. Two proteins may be very closely related (e.g. evolved from same parent protein, perform the same function, etc..) but their <a href="#BM_(sequence)%2Fi">sequence</a>s may have mutated to a point where they appear as being wildly different. To appropriately align protein <a href="#BM_(sequence)%2Fi">sequence</a>s, <a href="#BM_(amino%20acid)%2Fi">amino acid</a> mutation probabilities need to be derived and factored into scoring. For example, there may be good odds that some random protein would still continue to function as-is if some of its Y <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s were swapped with F.</p>
 <a name="H_PAM%20Scoring%20Matrix"></a><h4>PAM Scoring Matrix</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring%2FPAM%20Scoring%20Matrix)_TOPIC%2F"></a><strong></strong></p>
 <p><a href="#BM_(point%20accepted%20mutation%7Cpercent%20accepted%20mutation)%2Fi">Point accepted mutation</a> (<a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>) is a scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA <a href="#BM_(sequence)%2Fi">sequence</a> that <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a> some protein may change the resulting <a href="#BM_(amino%20acid)%2Fi">amino acid</a> <a href="#BM_(sequence)%2Fi">sequence</a> for that protein. Those mutations that...</p>
 <ul>
 <li>impair the ability of the protein to function aren't likely to survive, and as such are given a low score.</li>
@@ -7563,6 +7564,7 @@ Y -3  0 -4 -4  7 -5  0 -1 -4 -1 -2 -2 -5 -4 -4 -3 -3 -2  0 10
 <p>The above matrix was supplied by the Pevzner book. You can find it online <a href="https://swift.cmbi.umcn.nl/teach/aainfo/pam250.shtml">here</a>, but the <a href="#BM_(indel)%2Fi">indel</a> scores on that website are set to -8 Whereas in the Pevzner book I've also seen them set to -5. I don't know which is correct. I don't know if <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a>250 defines a constant for <a href="#BM_(indel)%2Fi">indel</a>s.</p>
 </div>
 <a name="H_BLOSUM%20Scoring%20Matrix"></a><h4>BLOSUM Scoring Matrix</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring%2FBLOSUM%20Scoring%20Matrix)_TOPIC%2F"></a><strong></strong></p>
 <p><a href="#BM_(blocks%20substitution%20matrix%7Cblocks%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrices%7Cblocks%20amino%20acid%20substitution%20matrix)%2Fi">Blocks amino acid substitution matrix</a> (<a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>) is a scoring matrix used for <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on <a href="#BM_(local%20alignment%7Clocal%20sequence%20alignment)%2Fi">local alignment</a>s without support for <a href="#BM_(indel)%2Fi">indel</a>s (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.</p>
 <p>Several sets of <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> matrices exist, each identified by a different number. This number defines the similarity of the <a href="#BM_(sequence)%2Fi">sequence</a>s used to create the matrix: The protein database <a href="#BM_(sequence)%2Fi">sequence</a>s used to derive the matrix are filtered such that only those with &gt;= n% similarity are used, where n is the number. For example, ...</p>
 <ul>
@@ -16367,58 +16369,48 @@ n4_val = <span class="hljs-built_in">min</span>(
 </ul>
 </div>
 <p></p>
-<a name="H_Ancestral%20Lineage"></a><h2>Ancestral Lineage</h2>
-<p><a name="BM_(Stories%5C%2FAncestral%20Lineage)_TOPIC%2F"></a><strong></strong></p>
-<p>The process of inferring the evolutionary history of a set of present-day biological entities (e.g. organisms, viruses, etc..) is called <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. Evolutionary history</p>
-<p><img src="svgbob_9ad92bcc26081dc1ee059aa771d26eb82d6e4ad4.svg" alt="Kroki diagram output"></p>
-<p>Evolutionary history is often displayed as a <a href="#BM_(tree)%2Fi">tree</a> called a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The example above shows a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.</p>
-<p>phenotypic inspection is the measurement of some related property that mutates along with the entity as it evolves. Historically, <a href="#BM_(anatomy%7Canatomical)%2Fi">anatomical</a> or <a href="#BM_(physiology%7Cphysiological)%2Fi">physiological</a> features (e.g. how many legs an insect has, how many eyes, if it has wings, etc..) were the properties measured. However, modern day <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> relies on biological <a href="#BM_(sequence)%2Fi">sequence</a>s (e.g. DNA or protein).</p>
-<p>The typical process for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> is to first measure how related a set of entities are to each other, where each measure is referred to as a distance, then work backwards to find a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> that fits / maps to those distances.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Cat</th>
-<th>Lion</th>
-<th>Bear</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Cat</td>
-<td>0</td>
-<td>2</td>
-<td>23</td>
-</tr>
-<tr>
-<td>Lion</td>
-<td>2</td>
-<td>0</td>
-<td>23</td>
-</tr>
-<tr>
-<td>Bear</td>
-<td>23</td>
-<td>23</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>What's being measured, the metric used for measurement, and the quality of the measurement all have an impact on how accurate the inferred ancestry is.</p>
-<p>A biological entity doesn't have to be an organism. It could be anything so long as it goes through mutation / evolution, including ...</p>
+<a name="H_Evolutionary%20History"></a><h2>Evolutionary History</h2>
+<p><a name="BM_(Stories%5C%2FEvolutionary%20History)_TOPIC%2F"></a><strong></strong></p>
+<p>When scientists work with biological entities, those entities are either present day entities or relics of extinct entities (<a href="#BM_(paleontology%7Cpalaeontology%7Cpal%C3%A6ontology)%2Fi">paleontology</a>). In certain cases, it's reasonable to assume the shared ancestry of a set of present day entities by comparing their features to those of extinct relics. For example, ...</p>
 <ul>
-<li>an organism</li>
-<li>an organelle (e.g. mitochondria has its own DNA)</li>
-<li>a virus</li>
-<li>a protein</li>
+<li>modern day big cats (e.g. leopards and tigers) probably derived from saber-toothed tigers.</li>
+<li>modern day elephants (e.g. african elephants and indian elephants) probably derived from mammoths.</li>
 </ul>
-<p><img src="svgbob_a4884cea1f03dad70aa6cd67fa7232f3a6772e94.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_939dacd2d3d9f2ce35d2b21b8f8c6557c90034f2.svg" alt="Kroki diagram output"></p>
+<p>In most cases however, there are no relics. For example, extinct viruses or bacteria typically don't leave much evidence around in the same way that ...</p>
+<ul>
+<li>extinct dinosaur species have their bones found underground.</li>
+<li>extinct insect species are found encased in amber.</li>
+<li>extinct arctic species are found encased in ice.</li>
+</ul>
+<p>In such cases, it's still possible to infer the evolutionary history of a set of present day species by comparing their features to see how diverged they are. Those features could be phenotypic features (e.g. behavioural or physical features) or molecular features (e.g. DNA <a href="#BM_(sequence)%2Fi">sequence</a>s, protein <a href="#BM_(sequence)%2Fi">sequence</a>s, organelles and other cell features).</p>
+<p>The process of inferring evolutionary history by comparing features for divergence is called <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">Phylogeny</a> algorithms provide insight into ...</p>
+<ul>
+<li>the shared ancestry of a set of present day entities.</li>
+<li>how similar each present day entity is to its ancestor.</li>
+<li>what the features of the ancestor likely were.</li>
+</ul>
+<p><img src="svgbob_d1db0bb621930ac2127d7c814dbb9c537324c8f1.svg" alt="Kroki diagram output"></p>
+<p>Oftentimes, <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> produces much more accurate results than simply eye-balling it (as was done in the initial example), but ultimately the quality of the result is dependent on what features are being measured and the metric used for measurement. Prior to <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> technology, most <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> was done by comparing phenotypic features (e.g. <a href="#BM_(character%20table%7Ccharacter%20vector)%2Fi">character table</a>s). Common practice now is to use molecular features (e.g. DNA <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>) since those have more information that's definitive and less biased (e.g. phenotypic features are subject to human interpretation).</p>
 <a name="H_Find%20Evolutionary%20Tree"></a><h3>Find Evolutionary Tree</h3>
+<p><a name="BM_(Stories%5C%2FEvolutionary%20History%2FFind%20Evolutionary%20Tree)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring%2FBLOSUM%20Scoring%20Matrix)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring/BLOSUM Scoring Matrix</a></li>
 </ul>
+</div>
+<p>Evolutionary history is often displayed as a <a href="#BM_(tree)%2Fi">tree</a> called a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. Depending on the <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> algorithm used, the <a href="#BM_(tree)%2Fi">tree</a> may be either a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> or an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>. The difference is that a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> infers parent-child relationships of ancestors while an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> does not.</p>
+<p><img src="svgbob_afb68d67568f9c3c2ef2342f2ef9f6b05b17fc74.svg" alt="Kroki diagram output"></p>
+<p>In the example above, the <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> (left diagram) shows ancestors B and C as branching off (evolving) from their common ancestor A. The <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> (right diagram) shows ancestors B and C but doesn't provide infer which branched off the other. It could be that ancestor B ultimately descended from C or vice versa.</p>
+<p><a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 is the virus that causes <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19. The example below measures <a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s collected from different patients to produce its evolutionary history. The metric used to measure how diverged two <a href="#BM_(sequence)%2Fi">sequence</a>s are from each other is <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> using a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 scoring matrix. Once divergences (distances) are calculated, the <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> algorithm is used to generate a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 was chosen because <a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 is a relatively new virus (~2 years). I don't know if it was a good choice because I've been told viruses mutate more rapidly, so maybe <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 would have been a better choice.</p>
+<p>The original NCBI dataset has 30k to 40k unique spike <a href="#BM_(sequence)%2Fi">sequence</a>s. I couldn't justify sticking all of that into the git repo (too large) so I whittled it down to a random sample of 1000.</p>
+<p>From that 1000, only a sample of 15 are selected to run the code. The problem is that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are computationally expensive and Python is slow. Doing a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> between two spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s on my VM takes a long time (~4 seconds per alignment), so for the full 1000 <a href="#BM_(sequence)%2Fi">sequence</a>s the total running time would end up being ~4 years (if I calculated it correctly - single core).</p>
 </div>
 <div style="border:1px solid black;">
 <p></p>
@@ -16454,7 +16446,16 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
 <p><img src="dot_56a874f556970e8ab31ce22651b23643.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<a name="H_Find%20Ancestral%20Sequences"></a><h3>Find Ancestral Sequences</h3>
+<a name="H_Find%20Ancestral%20Features"></a><h3>Find Ancestral Features</h3>
+<p><a name="BM_(Stories%5C%2FEvolutionary%20History%2FFind%20Ancestral%20Features)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FGlobal%20Alignment)_TOPIC%2F">Algorithms/Sequence Alignment/Global Alignment</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FProtein%20Scoring%2FBLOSUM%20Scoring%20Matrix)_TOPIC%2F">Algorithms/Sequence Alignment/Protein Scoring/BLOSUM Scoring Matrix</a></li>
+</ul>
+</div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>

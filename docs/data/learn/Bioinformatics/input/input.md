@@ -4241,6 +4241,8 @@ Protein sequences are one such case. Biological sequences such as proteins and D
 
 #### PAM Scoring Matrix
 
+`{bm} /(Algorithms\/Sequence Alignment\/Protein Scoring\/PAM Scoring Matrix)_TOPIC/`
+
 Point accepted mutation (PAM) is a scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by inspecting / extrapolating mutations as homologous proteins evolve. Specifically, mutations in the DNA sequence that encode some protein may change the resulting amino acid sequence for that protein. Those mutations that...
 
  * impair the ability of the protein to function aren't likely to survive, and as such are given a low score. 
@@ -4276,6 +4278,8 @@ The above matrix was supplied by the Pevzner book. You can find it online [here]
 ```
 
 #### BLOSUM Scoring Matrix
+
+`{bm} /(Algorithms\/Sequence Alignment\/Protein Scoring\/BLOSUM Scoring Matrix)_TOPIC/`
 
 Blocks amino acid substitution matrix (BLOSUM) is a scoring matrix used for sequence alignments of proteins. The scoring matrix is calculated by scanning a protein database for highly conserved regions between similar proteins, where the mutations between those highly conserved regions define the scores. Specifically, those highly conserved regions are identified based on local alignments without support for indels (gaps not allowed). Non-matching positions in that alignment define potentially acceptable mutations.
 
@@ -12250,68 +12254,104 @@ graph_show
 [cull, 10000]
 ```
 
-## Ancestral Lineage
+## Evolutionary History
 
-`{bm} /(Stories\/Ancestral Lineage)_TOPIC/`
+`{bm} /(Stories\/Evolutionary History)_TOPIC/`
 
-The process of inferring the evolutionary history of a set of present-day biological entities (e.g. organisms, viruses, etc..) is called phylogeny. Evolutionary history  
+When scientists work with biological entities, those entities are either present day entities or relics of extinct entities (paleontology). In certain cases, it's reasonable to assume the shared ancestry of a set of present day entities by comparing their features to those of extinct relics. For example, ...
 
-```{svgbob}
-                      * "Ancestor Animal"
-                     / \
-                    /   \
-                   /     \
-"Ancestor Feline" *       \
-                 / \       \
-                /   \       \
-               /     \       \
-              *       *       *
-             Cat     Lion    Bear
-```
-
-Evolutionary history is often displayed as a tree called a phylogenetic tree, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. The example above shows a phylogenetic tree for the species cat, lion, and bear based on phenotypic inspection. Cats and lions are inferred as descending from the same ancestor because both have deeply shared physical and behavioural characteristics (felines). Similarly, that feline ancestor and bears are inferred as descending from the same ancestor because all descendants walk on 4 legs.
-
-phenotypic inspection is the measurement of some related property that mutates along with the entity as it evolves. Historically, anatomical or physiological features (e.g. how many legs an insect has, how many eyes, if it has wings, etc..) were the properties measured. However, modern day phylogeny relies on biological sequences (e.g. DNA or protein).
-
-The typical process for phylogeny is to first measure how related a set of entities are to each other, where each measure is referred to as a distance, then work backwards to find a phylogenetic tree that fits / maps to those distances.
-
-|      | Cat | Lion | Bear |
-|------|-----|------|------|
-| Cat  | 0   | 2    | 23   |
-| Lion | 2   | 0    | 23   |
-| Bear | 23  | 23   | 0    |
-
-
-
-What's being measured, the metric used for measurement, and the quality of the measurement all have an impact on how accurate the inferred ancestry is.
-
-A biological entity doesn't have to be an organism. It could be anything so long as it goes through mutation / evolution, including ...
-
- * an organism
- * an organelle (e.g. mitochondria has its own DNA)
- * a virus
- * a protein
+ * modern day big cats (e.g. leopards and tigers) probably derived from saber-toothed tigers.
+ * modern day elephants (e.g. african elephants and indian elephants) probably derived from mammoths.
 
 ```{svgbob}
-                      * "Ancestor Animal"
-                     / \
-                 6  /   \
-                   /     \
-"Ancestor Feline" *       \ 16
-                 / \       \
-              1 /   \ 1     \
-               /     \       \
-              *       *       *
-             Cat     Lion    Bear
-
-* "The same tree as shown above, but with distances"
-  "assigned to edge weights"
+                         * "Unknown Ancestor"
+                        / \
+               .-------'   '-------.       
+               |                   |
+Saber-toothed  *                   *  Mammoth  
+Tiger         / \                 / \    
+          .--'   '--.         .--'   '--.
+          |         |         |         | 
+          *         *         *         *
+       Leopard    Tiger   African     Indian
+                          Elephant    Elephant
 ```
+
+In most cases however, there are no relics. For example, extinct viruses or bacteria typically don't leave much evidence around in the same way that ...
+
+ * extinct dinosaur species have their bones found underground.
+ * extinct insect species are found encased in amber.
+ * extinct arctic species are found encased in ice.
+
+In such cases, it's still possible to infer the evolutionary history of a set of present day species by comparing their features to see how diverged they are. Those features could be phenotypic features (e.g. behavioural or physical features) or molecular features (e.g. DNA sequences, protein sequences, organelles and other cell features).
+
+The process of inferring evolutionary history by comparing features for divergence is called phylogeny. Phylogeny algorithms provide insight into ...
+
+ * the shared ancestry of a set of present day entities.
+ * how similar each present day entity is to its ancestor.
+ * what the features of the ancestor likely were.
+
+```{svgbob}
+                         * "Ancestor A" "(4 legs, teeth)"
+                        / \ 
+               .-------'   '-------.       
+               |                   |
+               |                   *  "Ancestor C"
+               |                  / \ "(trunk, tusks, flat teeth, 4 legs)"
+ "Ancestor B"  *              .--'   '--.
+ "(4 legs,"   / \             |         | 
+ "furry," .--'   '--.         |         |
+ "sharp"  |         |         *         *
+ "teeth)" |         *     African     Indian
+          |       Tiger   Elephant    Elephant
+          |               
+          *               
+       Leopard
+
+"* vertical edge length denotes similarity to ancestor (closer = more similar)"
+"* ancestor features in brackets"
+"* ancestors not assumed to be a particular species (e.g. saber-toothed tiger)"
+```
+
+Oftentimes, phylogeny produces much more accurate results than simply eye-balling it (as was done in the initial example), but ultimately the quality of the result is dependent on what features are being measured and the metric used for measurement. Prior to sequencing technology, most phylogeny was done by comparing phenotypic features (e.g. character tables). Common practice now is to use molecular features (e.g. DNA sequencing) since those have more information that's definitive and less biased (e.g. phenotypic features are subject to human interpretation).
 
 ### Find Evolutionary Tree
 
+`{bm} /(Stories\/Evolutionary History\/Find Evolutionary Tree)_TOPIC/`
+
 ```{prereq}
 Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+Algorithms/Sequence Alignment/Protein Scoring/BLOSUM Scoring Matrix_TOPIC
+```
+
+Evolutionary history is often displayed as a tree called a phylogenetic tree, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. Depending on the phylogeny algorithm used, the tree may be either a rooted tree or an unrooted tree. The difference is that a rooted tree infers parent-child relationships of ancestors while an unrooted tree does not.
+
+```{svgbob}
+                      ROOTED                                                   UNROOTED
+
+                         * "Ancestor A"           
+                        / \                                          Entity1               Entity3
+               .-------'   '-------.                                    *---.           .----*
+               |                   |                                         \         /
+ "Ancestor B"  *                   *  "Ancestor C"               "Ancestor B" *-------* "Ancestor C"
+              / \                 / \                                        /         \
+          .--'   '--.         .--'   '--.                               *---'           '----*
+          |         |         |         |                            Entity2               Entity4
+          *         *         *         *         
+       Entity1   Entity2   Entity3   Entity4      
+```
+
+In the example above, the rooted tree (left diagram) shows ancestors B and C as branching off (evolving) from their common ancestor A. The unrooted tree (right diagram) shows ancestors B and C but doesn't provide infer which branched off the other. It could be that ancestor B ultimately descended from C or vice versa.
+
+SARS-CoV-2 is the virus that causes COVID-19. The example below measures SARS-CoV-2 spike protein sequences collected from different patients to produce its evolutionary history. The metric used to measure how diverged two sequences are from each other is global alignment using a BLOSUM80 scoring matrix. Once divergences (distances) are calculated, the neighbour joining phylogeny algorithm is used to generate a phylogenetic tree.
+
+```{note}
+BLOSUM80 was chosen because SARS-CoV-2 is a relatively new virus (~2 years). I don't know if it was a good choice because I've been told viruses mutate more rapidly, so maybe BLOSUM62 would have been a better choice.
+
+The original NCBI dataset has 30k to 40k unique spike sequences. I couldn't justify sticking all of that into the git repo (too large) so I whittled it down to a random sample of 1000.
+
+From that 1000, only a sample of 15 are selected to run the code. The problem is that sequence alignments are computationally expensive and Python is slow. Doing a sequence alignment between two spike protein sequences on my VM takes a long time (~4 seconds per alignment), so for the full 1000 sequences the total running time would end up being ~4 years (if I calculated it correctly - single core).
 ```
 
 ```{ch7}
@@ -12347,7 +12387,15 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
 * -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6 -6  1
 ```
 
-### Find Ancestral Sequences
+### Find Ancestral Features
+
+`{bm} /(Stories\/Evolutionary History\/Find Ancestral Features)_TOPIC/`
+
+```{prereq}
+Algorithms/Phylogeny/Distance Matrix to Tree_TOPIC
+Algorithms/Sequence Alignment/Global Alignment_TOPIC
+Algorithms/Sequence Alignment/Protein Scoring/BLOSUM Scoring Matrix_TOPIC
+```
 
 ```{prereq}
 Algorithms/Phylogeny/Sequence Inference_TOPIC
