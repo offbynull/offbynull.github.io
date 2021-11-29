@@ -12,6 +12,10 @@ https://github.com/AnthonyCalandra/modern-cpp-features
 
 https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiring-twos-complement
 
+section on behaviour that isn't set in stone: https://www.reddit.com/r/cpp/comments/r3pmw2/writing_portable_c_code_and_undefined_unspecified/
+
+literals in templates: https://www.reddit.com/r/cpp/comments/r3d13e/literals_as_template_parameters/
+
 # Operators
 
 **Bitwise Logical Operators**
