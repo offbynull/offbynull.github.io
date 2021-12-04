@@ -6,15 +6,61 @@
 
 # TODOs
 
-Set prereqs
+TODO: Set prereqs
 
-https://github.com/AnthonyCalandra/modern-cpp-features
 
-https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiring-twos-complement
 
-section on behaviour that isn't set in stone: https://www.reddit.com/r/cpp/comments/r3pmw2/writing_portable_c_code_and_undefined_unspecified/
+TODO: https://github.com/AnthonyCalandra/modern-cpp-features
 
-literals in templates: https://www.reddit.com/r/cpp/comments/r3d13e/literals_as_template_parameters/
+
+
+TODO:  https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiring-twos-complement
+
+
+
+TODO:  https://www.reddit.com/r/cpp/comments/r3pmw2/writing_portable_c_code_and_undefined_unspecified/  + evaluation order of isn't defined (**SEE CH7 -- EXECUTION ORDER SECTION**)
+
+`{bm-disable-all}`
+> Evaluation order determines the execution sequence of operators in an expression. A common misconception is that precedence and evaluation order are equivalent: they are not. Precedence is a compile time concept that drives how operators bind to operands. Evaluation order is a runtime concept that drives the scheduling of operator execution.
+> 
+> In general, C++ has no clearly specified execution order for operands. Although operators bind to operands in the well-defined way explained in the preceding sections, those operands evaluate in an undefined order. The compiler can order operand evaluation however it likes.
+
+the last few paragraphs list out exceptions
+
+SEE https://stackoverflow.com/a/5473530
+`{bm-enable-all}`
+
+worth putting in associtivity and operator precedence in operator section????
+implementaiton-specific behaviour with implict casts (see implicit casts section -- AVOIDABLE USING BRACED INITIALIZATION)
+
+UNDEFINED OVERFLOW/UNDERFLOW: talk about how this can be used.
+```c++
+#include <limits>
+try {
+    auto c = a + std::numeric_limits<unsigned int>::max(); ➌
+} catch(const std::overflow_error& e) {
+    printf("(a + max) Exception: %s\n", e.what());
+}
+```
+
+
+
+TODO: `static_assert`
+
+
+
+TODO: what is the spaceship operator?
+
+
+
+
+TODO: put in a section for user-defined literals? it's used by the chrono header a lot.
+
+
+TODO: organize constant sections under a common "Constant" section and volatile sections under a common "Volatile" section.
+
+
+TODO: continue from ch 8
 
 # Operators
 
@@ -123,29 +169,26 @@ if (n % 7 == 1) {
 
 There operators are used in scenarios that deal with accessing the members of an object (e.g. element in an array, field of a class) or dealing with memory addresses / pointers. The subscript and and member of object operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.
 
-**Allocation Operators**
+**Dynamic Object Operators**
 
-TODO: LIST OUT new/delete OPERATORS
+| Name                                | Example       | Note |
+|-------------------------------------|---------------|------|
+| Create Dynamic Object       (`new`) | `new int`     |      |
+| Create Dynamic Array      (`new[]`) | `new int[50]` |      |
+| Destroy Dynamic Object   (`delete`) | `delete x`    |      |
+| Destroy Dynamic Array  (`delete[]`) | `delete[] x`  |      |
 
-TODO: LIST OUT new/delete OPERATORS
-
-TODO: LIST OUT new/delete OPERATORS
-
-TODO: LIST OUT new/delete OPERATORS
-
-TODO: LIST OUT new/delete OPERATORS
+```{note}
+If you already know about dynamic objects and arrays and constructors/destructors, make sure you delete an array using `delete[]`. It makes sure to call the destructor for each element of the array.
+```
 
 **Size Operator**
 
-TODO: LIST SIZEOF OPERATOR
+| Name            | Example     | Note |
+|-----------------|-------------|------|
+| Size (`sizeof`) | `sizeof x]` |      |
 
-TODO: LIST SIZEOF OPERATOR
-
-TODO: LIST SIZEOF OPERATOR
-
-TODO: LIST SIZEOF OPERATOR
-
-TODO: LIST SIZEOF OPERATOR
+This operator gets the size of an object in bytes. Note that an object's byte size may not be indicative of the da may include padding required by the platform (e.g. an object requiring 5 bytes may get expanded to 8 bytes because the platform requires 8 byte boundary alignments).
 
 **Other Operators**
 
@@ -743,7 +786,7 @@ struct MyStruct {
 ```
 
 ```{note}
-C++ guarantees that a class's fields will be sequentially stored in memory, but they may be padded / aligned based on the platform. Be aware when using the sizeof operator.
+C++ guarantees that a class's fields will be sequentially stored in memory, but they may be padded / aligned based on the platform. Be aware when using the sizeof operator. 
 ```
 
 ### This Pointer
@@ -1150,35 +1193,137 @@ As shown in the example above, a pure virtual class should have a virtual destru
 See inheritance section for a more thorough explanation.
 ```
 
-# Templates
+### Operator Overloading
 
-Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types are unknown, called template parameters. When the user makes use of a template, a set of real types are substituted for those template parameters.
+C++ classes support operator overloading.
 
-```{note}
-There are notes online that templates are applicable to both variables as well as parts of classes (e.g. a method within a class can be templated). This section only discusses templates for functions and classes.
-```
-
-Templates are created using the `template` keyword, where the template parameters are a comma separated list sandwiched within angle brackets.
+Operators are overload-able in two ways. To overload an operator the first way, introduce a method but instead of naming it, add the `operator` keyword followed by the operator being overloaded. The parameters and return type of the method need to match whatever types the operator is intended to deal with.
 
 ```c++
-template <typename X, typename Y, typename Z>
 struct MyClass {
-    X perform(Y &var1, Z &var2) {
-        return var1 + var2;
+    ...
+
+    // MyClass + int -- notice whitespace between 'operator' keyword and operator -- this is okay.
+    MyClass operator +(int rhs) const {
+        MyClass ret { this->value + x };
+        return ret;
+    };
+
+    // MyClass + MyClass
+    MyClass operator+(const MyClass &rhs) const {
+        MyClass ret { this->value + rhs.value };
+        return ret;
+    }
+
+    // MyClass += MyClass
+    MyClass& operator+=(const MyClass &rhs) {
+        this->value += x->value;
+        return *this;
     }
 };
 ```
 
-As shown above, each template parameter is in the declaration is prefixed with the keyword `typename`. The keyword `class` may be used instead of `typename`. The meaning is exactly the same (`typename` should be preferred).
-
-Substituting real types for a template is called template instantiation. To instantiate a class template, use the class as if it were a normal class but immediately after the class name add in a common separated list of real types sandwiched within angle brackets. These real types are the types to substitute in for the template parameters (same order).
+To overload an operator the second way, introduce a function (not a method) using the `operator` keyword followed by the operator being overloaded. In the examples above, the left-hand side was the `this` pointer. When using this second way, a left-hand side needs to be explicitly provided as the first parameter while the right-hand side is the second argument.
 
 ```c++
-MyClass<float, int, int> obj {}; // X = float, Y = int, Z = int
+// MyClass + int
+MyClass operator+(const MyClass &lhs, int rhs) const {
+    MyClass ret { lhs.value + x };
+    return ret;
+};
+
+// MyClass + MyClass
+MyClass operator+(const MyClass &lhs, const MyClass &rhs) const {
+    MyClass ret { lhs.value + rhs.value };
+    return ret;
+}
+
+// MyClass += MyClass
+MyClass & operator+=(MyClass &rhs, const MyClass &rhs) {
+    lhs.value += rhs.value;
+    return lhs;
+}
+```
+
+```{note}
+Evidently the two ways described above aren't equivalent. The second way has some added benefits. See [here](https://stackoverflow.com/a/10958716).
+```
+
+Note how the `const` keyword is added to the method in cases where the operator shouldn't modify itself. Similarly, when the argument for a parameter shouldn't be changed, `const` is used on that parameter. `const`-ness depends on the scenario. For example, the second `operator+` requires two references to `const` types.
+
+```c++
+MyClass operator+(const MyClass &lhs, const MyClass &rhs) const {
+    MyClass ret { lhs.value + rhs.value };
+    return ret;
+}
+```
+
+Those `const`s ensures that the operands aren't changed in the method. Imagine that you're performing `x = y + z`. It doesn't make sense for `y` or `z` to get modified.
+
+The signature could have just as well been modified to be the types themselves rather than `const` references, in which case both the left-hand side and right-hand side would get copied on invocation of the method (modifications to copies don't matter).
+
+```c++
+MyClass operator+(MyClass lhs, MyClass rhs) const {
+    MyClass ret { lhs.value + rhs.value };
+    return ret;
+}
+```
+
+```{note}
+See [here](https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393) for a list of operators and their signatures (still incomplete).
+
+There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.
+```
+
+# Templates
+
+Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types and code are unknown, called template parameters. Each template parameter in a template either maps to a ...
+
+ * a type (e.g. `int`).
+ * an integral value available at compile-time (e.g. `5`).
+ * floating point value available at compile-time (e.g. `5.5f`).
+ * an enumeration value available at compile-time (e.g. `MyEnum::Value`).
+ * object pointer type value available at compile-time (e.g. `&MyClass::MyStaticField`).
+ * function pointer type value available at compile-time (e.g. `&MyClass::MyStaticMember`).
+ * `std::nullptr_t` value available at compile-time (e.g. `nullptr`).
+
+Templates are created using the `template` keyword, where the template parameters are a comma separated list sandwiched within angle brackets. When the user makes use of a template, its template parameters get substituted with what the user specified.
+
+```c++
+template <typename X, typename Y, typename Z, int N>
+struct MyClass {
+    X perform(Y &var1, Z &var2) {
+        return (var1 + var2) * N;
+    }
+};
+```
+
+As shown above, each template parameter for a ...
+
+* type substitution is prefixed with the keyword `typename`. The keyword `class` may be used instead of `typename`. The meaning is exactly the same (`typename` should be preferred).
+* value substitution is prefixed with the type name.
+
+To use a template, use it just as you would a non-template but provide substitutions (template instantiation). To instantiate a class template, use the class as if it were a normal class but immediately after the class name add in a comma separated list of template parameter substitutions sandwiched within angle brackets. These substitutions should be in the same order as the template parameters.
+
+```c++
+MyClass<float, int, int, 2> obj {}; // X = float, Y = int, Z = int, N = 2
 float x = obj.perform(5, 3);
 ```
 
-Declaring templated functions is done in the same manner as templated classes, and using templated functions is done similarly to templated classes: use the class as if it were a normal function but immediately after the function name add in a common separated list of real types sandwiched within angle brackets.
+Declaring templated functions is done in the same manner as templated classes, and using templated functions is done similarly to templated classes: Use the function as if it were a normal function but immediately after the function name add in a common separated list of substitutions sandwiched within angle brackets.
+
+```c++
+// declare
+template <typename X, typename Y, typename Z, int N>
+X perform(Y &var1, Z &var2) {
+    return (var1 + var2) * N;
+}
+
+// use
+float x = perform<float, int, int, 2>(5, 3);
+```
+
+When the template parameters are for types only (not values), it's possible to leave out substitutions during usage. The compiler will deduce the types from the argument you pass in and substitute them automatically.
 
 ```c++
 // declare
@@ -1187,38 +1332,42 @@ X perform(Y &var1, Z &var2) {
     return var1 + var2;
 }
 
-// use (this is a separate file)
-float x = perform<float, int, int>(5, 3);
-```
-
-In most cases, directly specifying types during usage can be skipped. The compiler will deduce the types from the argument you pass in and and substitute them automatically.
-
-```c++
+// use
 float x = perform(5, 3);  // template arguments omitted, deduced by compiler
 ```
 
-In most cases, it possible to supply a default type for the type parameter by appending it with `=` followed by the type, called default template argument. Once a default is supplied, all other type parameters after it need a default as well (speculation).
+It's possible to supply a default substitution for a template parameter by appending it with `=` followed by the substitution, called default template argument.
 
 ```c++
-template <typename X, typename Y = long, typename Z = int>
+template <typename X, typename Y = long, typename Z = long>
 X perform(Y &var1, Z &var2) {
     return var1 + var2;
 }
 ```
 
-Templates work differently from Java generics in that the C++ compiler generates a new template instantiation for each unique set of types it sees used. Doing so produces more code than if there was only one copy, but also ensures any performance optimizations unique to that specific set of types.
-
 ```{note}
-From the book:
-
-> Each time a template is instantiated, the compiler must be able to generate all the code necessary to use the template. This means all the information about how to instantiate a custom class or function must be available within the same translation unit as the template instantiation. By far, the most popular way to achieve this is to implement templates entirely within header files.
+You would think that once a default is supplied, all other template parameters after it need a default as well. For whatever reason the compiler isn't erroring out when I do this.
 ```
+
+Normally, C++ code is split into two files: a header file that contains declarations (e.g. function signatures) and a C++ file that contains definitions (e.g. function signatures with their bodies). When accessing C++ code that isn't local, typically only the declarations of that non-local code need to be included. The linker binds those non-local declarations to their definitions when it comes time to build the executable.
+
+Templates work differently from Java generics in that the C++ compiler generates a new code for each unique set of substitutions it sees used (template instantiation). Doing so produces more code than if there was only one copy, but also ensures any performance optimizations unique to that specific set of substitutions. Also, because each usage of a template may result in newly generated code, that usage typically needs access to both the declaration and definition. The simplest way to handle this is to put the entirety of the template (both definition and declaration) into a header, which gets included into the same file as the usage.
 
 ## Concepts
 
-In certain cases, the set of types substituted in for a template won't produce working code. In the example above, `X perform(Y &var1, Z &var2) { ... }` needs `Y` and `Z` to be types that support the plus operator (+). Setting them to types that don't support the plus operator typically causes cryptic compilation error, especially if the user is only making use of the template and isn't familiar with its innards.
+In certain cases, a set of types substituted in for a template won't produce working code.
 
-To mitigate this problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that return a boolean.
+```c++
+// declare
+template <typename X, typename Y, typename Z>
+X perform(Y &var1, Z &var2) {
+    return var1 + var2;
+}
+```
+
+In the example above, `X perform(Y &var1, Z &var2) { ... }` needs `Y` and `Z` to be types that support the plus operator (+) on each other (e.g. `int` and `short`). Setting them to types that don't support the plus operator typically causes cryptic compilation error, especially if the user is only making use of the template and isn't familiar with its innards.
+
+To mitigate this problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that return a `bool`.
 
 ```c++
 template <typename T1, typename T2, typename TR>
@@ -1261,7 +1410,7 @@ Each item in the list has the syntax `{ EXPRESSION } -> RESULT`, where the resul
 The book says that these are / are related to "type functions". I can't find much information on this or how to create new "type functions".
 ```
 
-Use the `requires` keyword immediately after the template to target a set of type parameters to a concept_TEMPLATE.
+Use the `requires` keyword immediately after the template to target a set of template parameters to a concept_TEMPLATE.
 
 ```c++
 template <typename T1, typename T2>
@@ -1288,7 +1437,7 @@ T1 add_and_multiply(T1 &var1, T2 &var2) {
 }
 ```
 
-If a concept_TEMPLATE only checks a single type, it's possible to use it just by substituting its name in place of the `typename` / `class` for the type parameter that requires it (as opposed to using `requires` shown above).
+If a concept_TEMPLATE only checks a single type, it's possible to use it just by substituting its name in place of the `typename` / `class` for the template parameter that requires it (as opposed to using `requires` shown above).
 
 ```c++
 // concept
@@ -1350,12 +1499,9 @@ Examples adapted from [here](https://crascit.com/2015/03/21/practical-uses-for-v
 
 ## Specialization
 
-Given a specific set of types for the type parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code. The classic example is a template that holds on to an array. Most C++ implementations represent a `bool` as a single byte, however it's more compact to store an array of `bool`s as a set of bits.
+Given a specific set of substitutions for the template parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code. The classic example is a template that holds on to an array. Most C++ implementations represent a `bool` as a single byte, however it's more compact to store an array of `bool`s as a set of bits.
 
-Declare a template specialization as a template but with no type parameters, where the ...
-
- 1. code has all type parameters filled in with the types for the specialization.
- 2. name of the templated entity is followed by the types for the specialization.
+Declare a template specialization with the `template` keyword but without any template parameters (empty angle brackets). The class or function that follows should list out substitutions after its name and the code within it should be real (non-templated).
 
 ```c++
 // template
@@ -1371,7 +1517,7 @@ bool sum<bool>(bool a, bool b) {
 }
 ```
 
-Template specialization doesn't have to substitute type parameters with real types. When a template specialization only substitutes some of the type parameters with real types, leaving other type parameters as-is or partially refined, it's called a partial template specialization.
+Template specialization doesn't have to substitute all template parameters. When a template specialization only provides substitutes some of its template parameters, leaving other template parameters as-is or partially refined, it's called a partial template specialization.
 
 ```c++
 // template
@@ -1395,36 +1541,101 @@ struct MyClass<bool, X*> {
 Partial template specializations for functions isn't supported (yet?). See [here](https://stackoverflow.com/a/8061522).
 ```
 
-In certain cases, the compiler may be able to deduce the types for the specialization from their usage, meaning that specifying the name after the templated entity isn't required. The first example is one of these cases while the second one isn't.
+In certain cases, the compiler is able to deduce the types for a specialization from its usage, meaning explicitly listing substitutions after the name may not be required.
 
 ```c++
-// template specialization for bool: bit-wise or
+// first example without explicitly listing out substitutions
 template<>
 bool sum(bool a, bool b) {  // type removed after name: "sum<bool>" to just "sum"
     return a | b;
 }
 ```
 
-# Constants
-
-The keyword `const` tells the compiler the thing it's applied to either shouldn't be modified or shouldn't be making modifications.
+# Constant Types
 
 For types, any part of that type can be made unmodifiable by adding a `const` immediately after it.
 
 ```c++
-int a = 5;                // a is changeable   -- set to 5
+int a {5};                // a is changeable   -- set to 5
 int const x {a};          // x is unchangeable -- set to 5 (value in a)
 int * const y {&a};       // y is an unchangeable pointer to a changeable int -- set to a (points to a)
 int const * const z {&x}; // z is an unchangeable pointer to a unchangeable int -- set to x (points to x)
 ```
 
-One caveat to this is that a type beginning with `const` is equivalent to the first part of that type having `const` applied on it.
+The simplest way to interpret `const`-ness of a type is to read it from right-to-left.
 
-```c++
-const int x = 5;  // equivalent to int const x = 5
+```{svgbob}
+ "int const"   "*"   "* const"
+'-----+-----' '-+-' '----+----'
+      |         |        |
+      |         |        '-- "an unmodifiable pointer to"
+      |         '----------- "a pointer to"
+      '--------------------- "an unmodifiable int"
+                  
+"int const * * const = An unmodifiable pointer to a pointer to an unmodifiable int" 
 ```
 
-For methods of a class, a `const` after the declaration indicates that the class's fields won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire object graph is considered when checking for modification.
+One caveat to the above is that a type beginning with `const` is equivalent to the first part of that type having `const` applied on it.
+
+```c++
+const int x {5};  // equivalent to int const x {5}
+```
+
+All of the examples above were for fundamental types. Appending a `const` on a class type works exactly the same way: None of its fields are modifiable ever, even by its own methods.
+
+```c++
+struct MyStruct {
+    int x {5}
+};
+
+MyStruct const inst {};
+inst.x = 5;  // compiler error
+```
+
+# Constant Expressions
+
+A constant expression is an expression that gets evaluated at compile-time, such that any invocation of it gets swapped out for the result computed at compile-time. It comes in two forms: variable and function.
+
+A constant expression variable requires using `constexpr` instead of `const`. The difference between a `const` variable and `constexpr` variable is that the former only guarantees the variable is unmodifiable. It doesn't actually guarantee that the expression within is evaluated at compile-time.
+
+```c++
+const int x {5 + 5};      // COULD BE evaluated at run-time or compule-time, but guaranteed to be unmodifiable
+constexpr int y {5 + 5};  // MUST BE evaluated at compile-time and guaranteed to be unmodifiable
+```
+
+Similarly, a constant expression function requires prefixing `constexpr` to a function.
+
+```c++
+constexpr unsigned int fibonacci(unsigned int n) {
+    if (n == 0) {
+        return 0;
+    } else if (n == 1 || n == 2) {
+        return 1;
+    } else {
+        return fibonacci(n-1) + fibonacci(n-2);
+    }
+}
+
+int x {fibonacci(7)}; // at compile-time, fibonacci(7) is executed and its return value substituted into the initializer
+```
+
+The restrictions on constant expressions are vast. At a high-level, a constant expression is only allowed inputs and outputs that are literal types:
+
+ * **Scalar**: Floating point types, integral types, pointer types, enumeration types, `std::nullptr_t`, etc..
+ * **Reference**
+ * **Array**: Every element must be a literal.
+ * **Class**: Constructor must be a constant expression. Non-static fields initializers using braced initialization, equals initialization, or brace-plus-equals initialization must use constant expressions. The destructor must be a trivial destructor (non-virtual, does nothing, and all base class destructors do nothing).
+ * **Union**: Must have at least one non-static member that is a literal type.
+
+```{note}
+The rules here are vast and complicated. The above might not be entirely correct, may be missing some conditions, or may not cover certain aspects. In the type_traits header, there's a function called `std::is_literal_type` that can be used to test if a type is a literal type.
+```
+
+Constant expressions help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A constant expression uses the computation to get to that obtuse magic number rather than the number itself, meaning its easier to understand and requires less effort to tweak (via the parameters of the constant expression).
+
+# Constant Methods
+
+For methods of a class, a `const` after the declaration indicates that the class's fields won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.
 
 ```c++
 struct Inner {
@@ -1450,9 +1661,126 @@ struct X {
 };
 ```
 
-# Named Conversions
+# Volatile Types
 
-Named conversion functions are a set of (seemingly templated) functions to convert an object's types.
+```{note}
+Unlike in Java, The `volatile` keyword in C++ is _not_ used for thread-safety.
+```
+
+Adding the keyword `volatile` before a type makes it immune to compiler optimizations such as operation re-ordering and removal. Mutations and accesses, no matter how irrelevant they may seem, are kept in-place and in-order by the compiler.
+
+```c++
+int f(int a) {
+    int x {a};
+    x = 6;
+    int y {x};
+    int x {y};
+    return x; // at this point, x is always 6
+}
+```
+
+A compiler might be able to deduce that the function above always returns 6, and as such may replace the operations it performs with simply just returning 6. Adding `volatile` to the type of the variable prevents this from happening.
+
+```c++
+int f(int a) {
+    volatile int x {a};  // marked as volatile
+    x = 6;
+    int y {x};
+    int x {y};
+    return x;
+}
+```
+
+Using `volatile` is important when working with embedded devices, where platform-specific memory locations often need to be accessed in a specific order / at specific intervals in seemingly useless ways (e.g. kicking a watchdog by writing 0 to a memory location but never reading that memory location).
+
+# Volatile Methods
+
+For methods of a class, a `volatile` after the declaration indicates that all fields should be treated as `volatile` (access won't be optimized away or re-ordered). This is a deep check rather than a shallow check, meaning that the entire call graph requires `volatile`.
+
+```c++
+struct Inner {
+    int x {5};
+    int y {6};
+    void change(int n) volatile {
+        x = n;
+        x = n;
+        x = n;
+    }
+};
+
+struct X {
+    int a {0};
+    int b {0};
+    void test() volatile {
+        a = b;
+        b = a;
+        inner.change(15); 
+    }
+};
+```
+
+# Type Conversions
+
+Similar to most other languages (e.g. Java and Python), C++ offers ways of type casting: implicit and explicit.
+
+ * An implicit type conversion is when an object of a certain type is converted (cast) to another type automatically based on its usage.
+
+   ```c++
+   int x {5};
+   long y {x};  // int to long
+   ```
+
+ * An explicit type conversion is when an object of a certain type is converted (cast) to another type explicitly in code.
+
+   ```c++
+   long x {5L};
+   int y {static_cast<int>(x)};   // long to int
+   ```
+
+Unlike those other languages, ...
+
+ * implicit type conversions are more involved and error-prone.
+ * explicit type conversions are done through multiple mechanisms.
+
+The following subsections detail the type conversions.
+
+## Implicit Type Conversions
+
+An implicit type conversion is when an object of a certain type is converted (cast) automatically, without code explicitly changing the object to a different type. For example, `long x {1}` implicitly converts the `int` literal in the initializer to a `long`.
+
+The most common types of implicit conversions are ...
+
+ * when a pointer of a certain type gets implicitly converted to a void pointer (e.g. `int *` to `void *`).
+ * when a numeric type gets converted to another numeric type via promotion rules (e.g. `int` to `float`).
+ * when a numeric type gets converted to a bool type (e.g. `0` to `false`)
+
+Depending on the operation performed or how an object is initialized, the results of an implicit conversion may do something specific to that platform and/or compiler implementation.
+
+| Source Type    | Destination Type | Behaviour                                                                                                                                         |
+|----------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| Integer        | Floating Point   | Implementation-specific behaviour if can't fit in destination (speculation).                                                                      |
+| Floating Point | Integer          | Rounded to integer (speculation - how?), implementation-specific behaviour if can't fit in destination (speculation).                             |
+| Integer        | Integer          | Signed destination and value can't fit, implementation-specific behaviour. Unsigned destination and value can't fit, truncates higher-order bits. |
+| Floating Point | Floating Point   | Implementation-specific behaviour if value can't fit in destination.                                                                              |
+| Any Numeric    | Boolean          | 0 converts to `false`, otherwise `true`.                                                                                                          |
+| Any Pointer    | Boolean          | `nullptr` converts to `false`, otherwise `true`.                                                                                                  |
+
+```{note}
+The book recommends to always use braced initialization because when you do, the compiler produces warnings about types not fitting. However, those warnings don't seem to cover everything, at least that's the impression I get from what I've tried.
+```
+
+## Explicit Type Conversions
+
+An explicit type conversion is the opposite of an implicit type conversion. It's when an object of a certain type is explicitly converted (cast) to another type in code. Explicit type conversions come in two forms:
+
+ * Named conversions are the official way to cast in C++.
+ * C-style casts are the legacy way to cast in C++.
+
+Named conversions should be preferred over C-style casts. Any C-style cast can be performed through a named conversion.
+
+### Named Conversions
+
+Named conversion functions are a set of (seemingly templated) functions to convert an object's types. These functions provides safety mechanisms that aren't available in other older ways of casting.
 
  * `const_cast` removes the `const` modifier from an object's type.
    
@@ -1500,6 +1828,52 @@ Named conversion functions are a set of (seemingly templated) functions to conve
    ```{note}
    Is this part of the standard? The book seems to give the code for `narrow_cast` and looking online it looks like people have their own implementations?
    ```
+
+### C-style Casts
+
+C-style casts are similar to casts seen in Java. The type is bracketed before whatever is being evaluated.
+
+```c++
+int x = (int) 9999999999L;
+```
+
+The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
+
+## Custom Type Conversions
+
+C++ classes support both implicit type conversions and explicit type conversions via operator overloading. Implicit type conversions are represented as operator overload methods where the name of the operator being overloaded is the destination type and the return type is omitted.
+
+```c++
+struct MyClass {
+    ...
+    operator int() const {
+        return this-> value / 42;
+    }
+};
+...
+MyClass cls {};
+int x = cls; // triggers operator overload method
+```
+
+Explicit type conversions are enabled the same way as implicit type conversions, except the overload method is preceded by the `explicit` keyword. The `explicit` keyword makes it so that conversion to that type requires a `static_cast`
+
+```c++
+struct MyClass {
+    ...
+    explicit operator int() const {
+        return this-> value / 42;
+    }
+};
+...
+MyClass cls {};
+int x = static_cast<int>(cls);  // static_cast required to trigger operator overload method
+```
+
+```{note}
+The book recommends not preferring explicit over implicit because implicit is a source for confusion.
+
+Do these still qualify as operator overloads? Return types should be there.
+```
 
 # Type Deduction
 
@@ -1610,7 +1984,7 @@ thread_local extern int c = 2;
 
 # Dynamic Objects
 
-An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The keyword ...
+An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The operator ...
 
  * `new` allocates a new object and calling its the constructor.
  * `delete` calls the destructor of some object and deallocates it.
@@ -1627,12 +2001,16 @@ Objects may be initialized directly within the `new` invocation just as if it we
 
 ```c++
 int * ptr = new int {0}; // initialize to 0
+delete ptr;
 ```
 
-The same process can be used to create an array of objects. Unlike automatic object arrays dynamic arrays don't have a constant size array lengths restriction, but the return value of `new` will decay from an array type to a pointer type.
+The same process can be used to create an array of objects. Unlike automatic object arrays, dynamic arrays don't have a constant size array lengths restriction.. However, the return value `new` will decay from an array type to a pointer type.
+
+When deleting a dynamic object array, square brackets need to be appended to `delete` operator: `delete[]`. Doing so ensures that the destructor for each object in the array gets invoked before deallocation.
 
 ```c++
-int * ptr = new int[len];  // len is some non-constant positive integer
+int * ptr = new int[len];  // len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.
+delete[] ptr;
 ```
 
 Braced initialization may be used when declaring dynamic arrays so long as the size of the array is at least the size of the initialization list.
@@ -1641,6 +2019,17 @@ Braced initialization may be used when declaring dynamic arrays so long as the s
 int * ptr1 = new int[10] {1,2,3};  // initialize the first 3 elems of a 10 elem array
 int * ptr2 = new int[2] {1,2,3};   // throws exception  (size too small for initializer list)
 int * ptr3 = new int[n] {1,2,3};   // okay -- so long as n >= 3
+delete[] ptr1;
+delete[] ptr2;
+delete[] ptr3;
+```
+
+By default, dynamic objects are stored on a block of memory called the heap, also sometimes referred to as the free store.
+
+```{note}
+See operator overloading section to see how the `new` and `delete` operators may be overridden to customize where and how a specific type gets stored.
+
+The `new` and `delete` operators may also be overridden globally rather than per-type. See the new header.
 ```
 
 # Object Size
@@ -2149,15 +2538,17 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 
  * `{bm} vtable` - A table of pointers to virtual functions, generated by the compiler. When a virtual function gets invoked (runtime) vtables are used to determining which method implementation to use.
 
- * `{bm} template` - A class or function where some of the types used are unknown, called template parameters. When template parameters are substituted with real types, that template becomes a real class / function. A template may be used to produce multiple real classes / functions, where each one has substituted in a different set of types.
+ * `{bm} template` - A class or function where parts of the code are intended for substitution (by other code). At compile-time, a user supplies a set of substitutions for each usage of a template, customizing it for the specific use-case that user is dealing with.
 
- * `{bm} template parameter` - An unknown type in a template, intended for substitution.
+ * `{bm} template parameter` - An identifier within the template. At compile time, any time a template is used its template parameters are substituted with code that the usage supplies.
+ 
+   A template parameter may be used multiple times throughout the template. At compile-time, each usage is substituted with the same piece of code.
 
- * `{bm} template instantiation` - The process of substituting in real types for the template parameters in a template, resulting in a real class or function.
+ * `{bm} template instantiation` - The process of substituting the template parameters in a template with real code.
 
  * `{bm} named conversion/(named conversion function|named conversion|const[_\s]cast|static[_\s]cast|reinterpret[_\s]cast|narrow[_\s]cast)/i` - A set of language features / functions used for converting types (casting): `const_cast`, `static_cast`, `reinterpret_cast`, and `narrow_cast`.
 
- * `{bm} concept/(concept)_TEMPLATE/i` - A compile-time check to ensure that the types substituted for a set of template parameters match the requirements of that template (e.g. the type support certain operators).
+ * `{bm} concept/(concept)_TEMPLATE/i` - A compile-time check to ensure that the type substituted for a template parameter matches a set of requirements (e.g. the type support certain operators).
 
  * `{bm} compile-time` - Used in reference to something that happens during the compilation process.
 
@@ -2165,19 +2556,38 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 
  * `{bm} zero-arg/\b(zero-arg|no-arg)\b/i` - Short for zero argument. A function with zero parameters.
 
- * `{bm} parameter pack` - In the context of templates, a parameter pack is a single template parameter declaration that can take in zero or more types (variadic).
+ * `{bm} parameter pack` - In the context of templates, a parameter pack is a single template parameter declaration that can take in zero or more substitutions (variadic).
 
  * `{bm} variadic/(variadic|vararg)/i` - A function that takes in a variable number of arguments, sometimes also called varargs.
 
- * `{bm} template specialization` - Given a specific set of types for the type parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code.
+ * `{bm} template specialization` - Given a specific substitutions set substitutions for the template parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code.
 
- * `{bm} partial template specialization/(partial template specialization | template partial specialization)/i` - A template specialization where not all of the type parameters have been removed.
+ * `{bm} partial template specialization/(partial template specialization | template partial specialization)/i` - A template specialization where not all of the template parameters have been removed.
 
- * `{bm} default template argument` - The default type to substitute in use for a type parameter.
+ * `{bm} default template argument` - The default substitute in use for a template parameter.
+
+ * `{bm} heap/(heap|free store)/i` - An implementation-specific block of memory used for dynamic objects. Also called the free store.
+
+ * `{bm} implicit type conversion` - When an object of a certain type is converted automatically, without code explicitly changing the object to a different type (e.g. `long x {1}` implicitly converts the `int` literal in the initializer to the `long` type).
+
+ * `{bm} explicit type conversion` - When an object of a certain type is explicitly converted to another type: casting and named conversions.
+
+ * `{bm} promotion rule` - An implicit type conversion that may occur when an operator's operands are of differing integral and floating point types. For example, adding an integral type with a smaller integral type will cause the result to be of the same type as the larger type.
+
+ * `{bm} narrowing conversion` - When an object of a certain type is truncated to a lesser type (e.g. `int` to `short`). 
+
+   Narrowing conversions may be implicit during object initialization. To erroneous cases of narrowing, use braced initialization to force the compiler to generate a warning.
+
+ * `{bm} constant expression` - A function that gets evaluated at compile-time, such that at run-time any invocation of it simply returns the result computed at compile-time. Constant expressions are represented as functions prefixed with the `constexpr` keyword.
+
+ * `{bm} literal type` - A type that's usable in a constant expression (for parameters and return), meaning that objects of this type can have a value that's knowable at compile-time.
+
+ * `{bm} volatile` - A volatile variable's usage in code is immune to compiler optimizations such as operation re-ordering and removal. Mutations and accesses, no matter how irrelevant they may seem, are kept in-place and in-order by the compiler.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
 `{bm-error} Did you mean variadic?/(vardic)/i`
+`{bm-error} Did you mean template parameter?/(type parameter)/i`
 
 `{bm-error} Add the suffix _NORM or _TEMPLATE/(concept)/i`
 `{bm-ignore} (concept)_NORM/i`
