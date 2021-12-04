@@ -11245,6 +11245,10 @@ I think the second one might not work because all sums will be the same? Maybe i
 ````
 
 ```{note}
+The algorithm doesn't factor in distances (edge weights). For example, if an internal node has 3 children, and one has a much shorter distance than the others, shouldn't the shorter one's sequence elements be given more of a preference over the highers (e.g. higher probability of showing up)?
+```
+
+```{note}
 In addition to small parsimony, there's large parsimony.
 
 Small parsimony: When a tree structure and its leaf node sequences are given, derive the internal node sequences with the lowest possible distance (most parsimonious).
@@ -12773,7 +12777,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    A gene's upstream region is the 600 to 1000 nucleotides preceding the start of the gene.
    ```
 
- * `{bm} cDNA/(cDNA)/` - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.
+ * `{bm} complementary DNA (cDNA)/(complementary DNA)/i` `{bm} /(cDNA)/` - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.
 
    ```{svgbob}
    3' . . . U <- U <- U <- G <- C <- U <- U <- U <- U <- G <- . . . 5'   mRNA  
@@ -12787,7 +12791,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    5' . . . A -> A -> A -> C -> G -> G -> A -> A -> A -> C -> . . . 3'   cDNA  
    ```
 
- * `{bm} DNA microarray` / `{bm} DNA array` - A device used to compare gene expression. This works by measuring 2 mRNA samples against each other: a control sample and an experimental sample. The samples could be from...
+ * `{bm} DNA microarray` - A device used to compare gene expression. This works by measuring 2 mRNA samples against each other: a control sample and an experimental sample. The samples could be from...
  
    * the same organism but at different times.
    * diseased and healthy versions of the same organism.
@@ -15670,6 +15674,35 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    '--------' '--------' '--------'
    ```
 
+ * `{bm} Saccharomyces` - A genus of yeast used for producing alcohol and bread.
+
+ * `{bm} diauxic shift` - A change in the metabolism of Saccharomyces cerevisiae. When glucose is present, Saccharomyces cerevisiae consumes that glucose for energy and produces ethanol as a byproduct. Once all available glucose in the environment has been depleted, it inverts its metabolism to instead consume the ethanol byproduct it produced earlier.
+
+   The consumption of ethanol only happens in the presence of oxygen. Without oxygen, Saccharomyces cerevisiae enters hibernation until either glucose or oxygen become available. This property is what allows for the making of wine: Wine production typically involves sealed barrels that prevent oxygen from entering.
+
+ * `{bm} whole genome duplication` `{bm} /\b(WGD)s?\b//true/true` - A rare evolutionary event in which the entire genome of an organism is duplicated.
+ 
+   After duplication, much of the functionality provided by the genome becomes redundant. The organism evolves much more rapidly because a mutation in one copy of a gene won't necessarily make the organism less fit (duplicate copy still exists). It's typical for a whole genome duplication to be quickly followed up by massive amounts of gene mutations, gene loss, and genome rearrangements.
+
+ * `{bm} gene expression matrix/(gene expression matrix|expression matrix|gene expression data|expression data|gene expression vector|expression vector)/i` - A matrix where each column represents a point in time, each row represents a gene, and each cell is a number representing the amount of gene expression taking place for that gene (row) at that time (column).
+
+   |        | 5 AM | 6 AM | 7 AM |
+   |--------|------|------|------|
+   | Gene 1 | 1.0  | 1.0  | 1.0  |
+   | Gene 2 | 1.0  | 0.7  | 0.5  |
+   | Gene 3 | 1.0  | 1.1  | 1.4  |
+
+   Each row in a gene expression matrix is called a gene expression vector.
+
+ * `{bm} co-regulate` - A set of genes whose gene expression is regulated by the same transcription factor.
+
+ * `{bm} RNA transcript/(RNA transcript|transcript)/i` - RNA output of transcription.
+
+ * `{bm} transcriptome` - All RNA transcripts within a cell at a specific point in time.
+
+ * `{bm} good clustering principle` - The idea that every pair of points within the same cluster should be closer to each other than any points each from different clusters.
+
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
@@ -15702,9 +15735,11 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 `{bm-ignore} (degree)_NORM/i`
 `{bm-error} Apply suffix _NORM or _GRAPH/(degree)/i`
 
-`{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of molecular microbiology)/i`
+`{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of microbiology)/i`
 
 `{bm-error} Did you mean neighbour joining matrix?/(neighbouring join matrix|neighbouring joining matrix|neighbouring-join matrix|neighbouring-joining matrix)/i`
+
+`{bm-error} Did you mean co-regulate? (needs a dash)/(coregulate)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`

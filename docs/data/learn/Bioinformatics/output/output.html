@@ -15364,6 +15364,10 @@ n4_val = <span class="hljs-built_in">min</span>(
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The algorithm doesn't factor in distances (edge weights). For example, if an internal node has 3 children, and one has a much shorter distance than the others, shouldn't the shorter one's <a href="#BM_(sequence)%2Fi">sequence</a> elements be given more of a preference over the highers (e.g. higher probability of showing up)?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>In addition to <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">small parsimony</a>, there's <a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">large parsimony</a>.</p>
 <p><a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">Small parsimony</a>: When a <a href="#BM_(tree)%2Fi">tree</a> structure and its leaf node <a href="#BM_(sequence)%2Fi">sequence</a>s are given, derive the internal node <a href="#BM_(sequence)%2Fi">sequence</a>s with the lowest possible distance (most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</p>
 <p><a href="#BM_(small%20parsimony%7Clarge%20parsimony)%2Fi">Large parsimony</a>: When only the leaf node <a href="#BM_(sequence)%2Fi">sequence</a>s are given, derive the combination of <a href="#BM_(tree)%2Fi">tree</a> structure and internal node <a href="#BM_(sequence)%2Fi">sequence</a>s with the lowest possible distance (most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a>).</p>
@@ -15996,7 +16000,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>Comparing these snapshots identifies which <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have noticeably differing rates of <a href="#BM_(gene%20expression)%2Fi">gene expression</a>. If these <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> (or a subset of these <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>) were influenced by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>, their <a href="#BM_(upstream%20region)%2Fi">upstream region</a>s would contain <a href="#BM_%5Cb(member)_MOTIF%2Fi">member</a>s of that <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>'s <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>.</p>
 <p>Since neither the <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a> nor its <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a> are known, there is no specific <a href="#BM_(motif)%2Fi">motif</a> to search for in the <a href="#BM_(upstream%20region)%2Fi">upstream region</a>s. But, because <a href="#BM_(motif%20member)%2Fi">motif member</a>s are typically similar to each other, <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> finding algorithms can be used on these <a href="#BM_(upstream%20region)%2Fi">upstream region</a>s to find sets of similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. These similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s may all be <a href="#BM_%5Cb(member)_MOTIF%2Fi">member</a>s of the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>'s <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>.</p>
 <p><img src="svgbob_bc9f1ba4918b4a4995ec308b823f93eb3da45567.svg" alt="Kroki diagram output"></p>
-<p>In the example below, a set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in baker's yeast (Saccharomyces cerevisiae) are suspected of being influenced by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>. These <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are searched for a common <a href="#BM_(motif)%2Fi">motif</a>. Assuming one is found, it could be the <a href="#BM_(motif)%2Fi">motif</a> of the suspected <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>.</p>
+<p>In the example below, a set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in baker's yeast (<a href="#BM_(Saccharomyces)%2Fi">Saccharomyces</a> cerevisiae) are suspected of being influenced by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>. These <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are searched for a common <a href="#BM_(motif)%2Fi">motif</a>. Assuming one is found, it could be the <a href="#BM_(motif)%2Fi">motif</a> of the suspected <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The example below hard codes k to 18, but you typically don't know what k should be set to beforehand. The Pevzner book doesn't discuss how to work around this problem. A strategy for finding k may be to run the <a href="#BM_(motif%20matrix%7Cmotif%20matrices)%2Fi">motif matrix</a> finding algorithm multiple times, but with a different k each time. For each <a href="#BM_%5Cb(member)_MOTIF%2Fi">member</a>, if the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s selected across the runs came from the same general vicinity of the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s <a href="#BM_(upstream%20region)%2Fi">upstream region</a>, those <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s may either be picking ...</p>
@@ -16754,13 +16758,13 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </div>
 </li>
 <li>
-<p><a name="BM_(cDNA)%2F"></a><strong>cDNA</strong> - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.</p>
+<p><a name="BM_(complementary%20DNA)%2Fi"></a><strong>complementary DNA (cDNA)</strong> <a name="BM_(cDNA)%2F"></a><strong></strong> - A single strand of DNA generated from mRNA. The enzyme reverse <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">transcript</a>ase scans over the mRNA and creates the complementing single DNA strand.</p>
 <p><img src="svgbob_97c5d076bf0a1cd98b75bbb88b72fc29c3b1b93d.svg" alt="Kroki diagram output"></p>
 <p>The mRNA portion breaks off, leaving the <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>.</p>
 <p><img src="svgbob_97e71090d31bdaa40278b0e705aef4e3555be8e3.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(DNA%20microarray)%2Fi"></a><strong>DNA microarray</strong> / <a name="BM_(DNA%20array)%2Fi"></a><strong>DNA array</strong> - A device used to compare <a href="#BM_(gene%20expression)%2Fi">gene expression</a>. This works by measuring 2 mRNA samples against each other: a control sample and an experimental sample. The samples could be from...</p>
+<p><a name="BM_(DNA%20microarray)%2Fi"></a><strong>DNA microarray</strong> - A device used to compare <a href="#BM_(gene%20expression)%2Fi">gene expression</a>. This works by measuring 2 mRNA samples against each other: a control sample and an experimental sample. The samples could be from...</p>
 <ul>
 <li>the same organism but at different times.</li>
 <li>diseased and healthy versions of the same organism.</li>
@@ -17126,7 +17130,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <li>
 <p><a name="BM_(transposon%7Ctransposable%20element%7Cjumping%20gene)%2Fi"></a><strong>transposon</strong> - A DNA <a href="#BM_(sequence)%2Fi">sequence</a> that can change its position within a <a href="#BM_(genome)%2Fi">genome</a>, altering the <a href="#BM_(genome)%2Fi">genome</a> size. They come in two flavours:</p>
 <ul>
-<li>Class I (retro<a href="#BM_(transposon%7Ctransposable%20element%7Cjumping%20gene)%2Fi">transposon</a>) - Behaves similarly to copy-and-paste where the <a href="#BM_(sequence)%2Fi">sequence</a> is duplicated. DNA is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to RNA, followed by that RNA being reverse <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> back to DNA by an enzyme called reverse transcriptase.</li>
+<li>Class I (retro<a href="#BM_(transposon%7Ctransposable%20element%7Cjumping%20gene)%2Fi">transposon</a>) - Behaves similarly to copy-and-paste where the <a href="#BM_(sequence)%2Fi">sequence</a> is duplicated. DNA is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to RNA, followed by that RNA being reverse <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> back to DNA by an enzyme called reverse <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">transcript</a>ase.</li>
 <li>Class II (DNA <a href="#BM_(transposon%7Ctransposable%20element%7Cjumping%20gene)%2Fi">transposon</a>) - Behaves similarly to cut-and-paste where the <a href="#BM_(sequence)%2Fi">sequence</a> is moved. DNA is physically cut out by an enzyme called transposases and placed back in at some other location.</li>
 </ul>
 <p>Often times, <a href="#BM_(transposon%7Ctransposable%20element%7Cjumping%20gene)%2Fi">transposon</a>s cause disease. For example, ...</p>
@@ -19907,6 +19911,63 @@ dist(S3, S4) is 5 = x + u + z
 <p><a name="BM_(parsimony%20score)%2Fi"></a><strong>parsimony score</strong> - Given a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> with <a href="#BM_(sequence)%2Fi">sequence</a>s for both leaf nodes (known entities) and internal nodes (inferred ancestral entities), the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is a measure of how far off a parent's <a href="#BM_(sequence)%2Fi">sequence</a> is from its children (and vice versa). The idea is that the most <a href="#BM_(parsimony%7Cparsimonious)%2Fi">parsimonious</a> evolutionary path is the one that's most likely to have occurred. As such, the less far off <a href="#BM_(sequence)%2Fi">sequence</a>s are, the more likely it is that the actual ancestral lineage and ancestral <a href="#BM_(sequence)%2Fi">sequence</a>s match what's depicted in the <a href="#BM_(tree)%2Fi">tree</a>.</p>
 <p><img src="svgbob_68590e7d4bd005a4f80364ba3967a7124b6b6527.svg" alt="Kroki diagram output"></p>
 </li>
+<li>
+<p><a name="BM_(Saccharomyces)%2Fi"></a><strong>Saccharomyces</strong> - A genus of yeast used for producing alcohol and bread.</p>
+</li>
+<li>
+<p><a name="BM_(diauxic%20shift)%2Fi"></a><strong>diauxic shift</strong> - A change in the metabolism of <a href="#BM_(Saccharomyces)%2Fi">Saccharomyces</a> cerevisiae. When glucose is present, <a href="#BM_(Saccharomyces)%2Fi">Saccharomyces</a> cerevisiae consumes that glucose for energy and produces ethanol as a byproduct. Once all available glucose in the environment has been depleted, it inverts its metabolism to instead consume the ethanol byproduct it produced earlier.</p>
+<p>The consumption of ethanol only happens in the presence of oxygen. Without oxygen, <a href="#BM_(Saccharomyces)%2Fi">Saccharomyces</a> cerevisiae enters hibernation until either glucose or oxygen become available. This property is what allows for the making of wine: Wine production typically involves sealed barrels that prevent oxygen from entering.</p>
+</li>
+<li>
+<p><a name="BM_(whole%20genome%20duplication)%2Fi"></a><strong>whole genome duplication</strong> <a name="BM_%5Cb(WGD)s%3F%5Cb%2F"></a><strong></strong> - A rare evolutionary event in which the entire <a href="#BM_(genome)%2Fi">genome</a> of an organism is duplicated.</p>
+<p>After duplication, much of the functionality provided by the <a href="#BM_(genome)%2Fi">genome</a> becomes redundant. The organism evolves much more rapidly because a mutation in one copy of a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> won't necessarily make the organism less fit (duplicate copy still exists). It's typical for a <a href="#BM_(whole%20genome%20duplication)%2Fi">whole genome duplication</a> to be quickly followed up by massive amounts of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> mutations, <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> loss, and <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi"></a><strong>gene expression matrix</strong> - A matrix where each column represents a point in time, each row represents a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>, and each cell is a number representing the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> taking place for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (row) at that time (column).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>5 AM</th>
+<th>6 AM</th>
+<th>7 AM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 1</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 2</td>
+<td>1.0</td>
+<td>0.7</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 3</td>
+<td>1.0</td>
+<td>1.1</td>
+<td>1.4</td>
+</tr>
+</tbody>
+</table>
+<p>Each row in a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a> is called a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>.</p>
+</li>
+<li>
+<p><a name="BM_(co-regulate)%2Fi"></a><strong>co-regulate</strong> - A set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> whose <a href="#BM_(gene%20expression)%2Fi">gene expression</a> is regulated by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>.</p>
+</li>
+<li>
+<p><a name="BM_(RNA%20transcript%7Ctranscript)%2Fi"></a><strong>RNA transcript</strong> - RNA output of <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcription</a>.</p>
+</li>
+<li>
+<p><a name="BM_(transcriptome)%2Fi"></a><strong>transcriptome</strong> - All <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a>s within a cell at a specific point in time.</p>
+</li>
+<li>
+<p><a name="BM_(good%20clustering%20principle)%2Fi"></a><strong>good clustering principle</strong> - The idea that every pair of points within the same cluster should be closer to each other than any points each from different clusters.</p>
+</li>
 </ul>
 <p>
 </p>
@@ -19930,6 +19991,7 @@ dist(S3, S4) is 5 = x + u + z
 </p>
 <p>
 </p>
+<p></p>
 <p></p>
 <p></p>
 <p>
