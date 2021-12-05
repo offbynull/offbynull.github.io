@@ -15702,6 +15702,14 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} good clustering principle` - The idea that every pair of points within the same cluster should be closer to each other than any points each from different clusters.
 
+ * `{bm} euclidean distance` - The distance between two points.
+
+   In 2 dimensional space, this is calculated as `{kt} \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}`.
+
+   In 3 dimensional space, this is calculated as `{kt} \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}`.
+
+   In n dimensional space, this is calculated as `{kt} \sqrt{\sum_{i=1}^n{(v_i - w_i)^2}}`, where v and w are two n dimensional points.
+
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
