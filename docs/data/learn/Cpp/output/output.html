@@ -7,6 +7,17 @@
 <ul>
 <li><a href="#H_TODOs">TODOs</a></li>
 <li><a href="#H_Operators">Operators</a></li>
+<ul>
+<li><a href="#H_Bitwise%20Logical%20Operators">Bitwise Logical Operators</a></li>
+<li><a href="#H_Boolean%20Logical%20Operators">Boolean Logical Operators</a></li>
+<li><a href="#H_Arithmetic%20Operators">Arithmetic Operators</a></li>
+<li><a href="#H_Assignment%20Operators">Assignment Operators</a></li>
+<li><a href="#H_Comparison%20Operator">Comparison Operator</a></li>
+<li><a href="#H_Member%20Access%20Operators">Member Access Operators</a></li>
+<li><a href="#H_Dynamic%20Object%20Operators">Dynamic Object Operators</a></li>
+<li><a href="#H_Size%20Operator">Size Operator</a></li>
+<li><a href="#H_Other%20Operators">Other Operators</a></li>
+</ul>
 <li><a href="#H_Types">Types</a></li>
 <ul>
 <li><a href="#H_Core%20Integer%20Types">Core Integer Types</a></li>
@@ -36,6 +47,9 @@
 <li><a href="#H_Operator%20Overloading">Operator Overloading</a></li>
 </ul>
 </ul>
+<li><a href="#H_Namespaces">Namespaces</a></li>
+<li><a href="#H_Type%20Aliasing">Type Aliasing</a></li>
+<li><a href="#H_Attributes">Attributes</a></li>
 <li><a href="#H_Templates">Templates</a></li>
 <ul>
 <li><a href="#H_Concepts">Concepts</a></li>
@@ -43,8 +57,8 @@
 <li><a href="#H_Specialization">Specialization</a></li>
 </ul>
 <li><a href="#H_Constant%20Types">Constant Types</a></li>
-<li><a href="#H_Constant%20Expressions">Constant Expressions</a></li>
 <li><a href="#H_Constant%20Methods">Constant Methods</a></li>
+<li><a href="#H_Constant%20Expressions">Constant Expressions</a></li>
 <li><a href="#H_Volatile%20Types">Volatile Types</a></li>
 <li><a href="#H_Volatile%20Methods">Volatile Methods</a></li>
 <li><a href="#H_Type%20Conversions">Type Conversions</a></li>
@@ -59,12 +73,15 @@
 </ul>
 <li><a href="#H_Type%20Deduction">Type Deduction</a></li>
 <li><a href="#H_Object%20Lifecycle">Object Lifecycle</a></li>
+<ul>
 <li><a href="#H_Static%20Objects">Static Objects</a></li>
 <li><a href="#H_Dynamic%20Objects">Dynamic Objects</a></li>
 <li><a href="#H_Object%20Size">Object Size</a></li>
+</ul>
 <li><a href="#H_Exceptions">Exceptions</a></li>
-<li><a href="#H_Unpacking">Unpacking</a></li>
+<li><a href="#H_Structured%20Binding">Structured Binding</a></li>
 <li><a href="#H_Expression%20Categories">Expression Categories</a></li>
+<li><a href="#H_Iterators">Iterators</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
@@ -89,9 +106,12 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <p>TODO: what is the spaceship operator?</p>
 <p>TODO: put in a section for user-defined literals? it's used by the chrono header a lot.</p>
 <p>TODO: organize constant sections under a common "Constant" section and <a href="#BM_(volatile)%2Fi">volatile</a> sections under a common "<a href="#BM_(volatile)%2Fi">Volatile</a>" section.</p>
-<p>TODO: continue from ch 8</p>
+<p>TODO: chapter 8 -- initialization statements within if statements (section called initialization statements and if), similar to for loop initialization</p>
+<p>TODO: chapter 8 -- initialization statements within switch statements (section on switch), similar to for loop initialization</p>
+<p>TODO: chapter 8 -- gotos</p>
+<p>TODO: start from ch 9</p>
 <a name="H_Operators"></a><h1>Operators</h1>
-<p><strong>Bitwise Logical Operators</strong></p>
+<a name="H_Bitwise%20Logical%20Operators"></a><h2>Bitwise Logical Operators</h2>
 <table>
 <thead>
 <tr>
@@ -133,7 +153,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 </tr>
 </tbody>
 </table>
-<p><strong>Boolean Logical Operators</strong></p>
+<a name="H_Boolean%20Logical%20Operators"></a><h2>Boolean Logical Operators</h2>
 <table>
 <thead>
 <tr>
@@ -160,7 +180,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 </tr>
 </tbody>
 </table>
-<p><strong>Arithmetic Operators</strong></p>
+<a name="H_Arithmetic%20Operators"></a><h2>Arithmetic Operators</h2>
 <table>
 <thead>
 <tr>
@@ -213,7 +233,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If confused, use type deduction via the <code>auto</code> keyword: <code>auto x = 5 + y</code>, then check to see what the type of <code>y</code> is in the IDE or using <code>typeid</code>.</p>
 </div>
-<p><strong>Assignment Operators</strong></p>
+<a name="H_Assignment%20Operators"></a><h2>Assignment Operators</h2>
 <table>
 <thead>
 <tr>
@@ -298,7 +318,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <span class="hljs-type">int</span> b = (++a) + <span class="hljs-number">2</span>;
 <span class="hljs-comment">// at this point, a is 4, b is 6</span>
 </code></pre>
-<p><strong>Comparison Operator</strong></p>
+<a name="H_Comparison%20Operator"></a><h2>Comparison Operator</h2>
 <table>
 <thead>
 <tr>
@@ -340,8 +360,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 </tr>
 </tbody>
 </table>
-<p><strong>Ternary Conditional Operator</strong></p>
-<p>The ternary conditional operator is a pseudo operator that takes in 3 operands similar to those found in other high-level languages: <code>CONDITION ? EXPRESSION_IF_TRUE : EXPRESSION_IF_FALSE</code>. It's essentially a shorthand if-else block.</p>
+<p>In addition, the ternary conditional operator is a pseudo operator that takes in 3 operands similar to those found in other high-level languages: <code>CONDITION ? EXPRESSION_IF_TRUE : EXPRESSION_IF_FALSE</code>. It's essentially a shorthand if-else block.</p>
 <pre class="hljs"><code><span class="hljs-type">int</span> x = n % <span class="hljs-number">7</span> == <span class="hljs-number">1</span> ? <span class="hljs-number">1000</span> : <span class="hljs-number">-1000</span>;
 <span class="hljs-comment">// equiv to...</span>
 <span class="hljs-keyword">if</span> (n % <span class="hljs-number">7</span> == <span class="hljs-number">1</span>) {
@@ -350,7 +369,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
     x = <span class="hljs-number">-1000</span>;
 }
 </code></pre>
-<p><strong><a href="#BM_%5Cb(member)%2Fi">Member</a> Access Operators</strong></p>
+<a name="H_Member%20Access%20Operators"></a><h2>Member Access Operators</h2>
 <table>
 <thead>
 <tr>
@@ -388,7 +407,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 </tbody>
 </table>
 <p>There operators are used in scenarios that deal with accessing the <a href="#BM_%5Cb(member)%2Fi">member</a>s of an <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. element in an array, <a href="#BM_(field)%2Fi">field</a> of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>) or dealing with memory addresses / <a href="#BM_(pointer)%2Fi">pointer</a>s. The subscript and and <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dobject)%2Fi">member of object</a> operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.</p>
-<p><strong><a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">Dynamic Object</a> Operators</strong></p>
+<a name="H_Dynamic%20Object%20Operators"></a><h2>Dynamic Object Operators</h2>
 <table>
 <thead>
 <tr>
@@ -424,7 +443,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you already know about <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s and arrays and <a href="#BM_(constructor)%2Fi">constructor</a>s/<a href="#BM_(destructor)%2Fi">destructor</a>s, make sure you delete an array using <code>delete[]</code>. It makes sure to call the <a href="#BM_(destructor)%2Fi">destructor</a> for each element of the array.</p>
 </div>
-<p><strong>Size Operator</strong></p>
+<a name="H_Size%20Operator"></a><h2>Size Operator</h2>
 <table>
 <thead>
 <tr>
@@ -442,7 +461,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 </tbody>
 </table>
 <p>This operator gets the size of an <a href="#BM_(object%7Cinstance)%2Fi">object</a> in bytes. Note that an <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s byte size may not be indicative of the da may include padding required by the platform (e.g. an <a href="#BM_(object%7Cinstance)%2Fi">object</a> requiring 5 bytes may get expanded to 8 bytes because the platform requires 8 byte boundary alignments).</p>
-<p><strong>Other Operators</strong></p>
+<a name="H_Other%20Operators"></a><h2>Other Operators</h2>
 <p>C++ provides a set of other operators such as the ...</p>
 <ul>
 <li>comma operator (<code>,</code>).</li>
@@ -1119,7 +1138,7 @@ cout &lt;&lt; <span class="hljs-keyword">sizeof</span> y;  <span class="hljs-com
    cout &lt;&lt; v &lt;&lt; endl;
 }
 </code></pre>
-<p>You may be tempted to use <code>sizeof(array) / sizeof(type)</code> to determine the number of elements within an array. It's a better idea to use <code>std::size(array)</code> instead (found in the iterator header) because it should have logic to workaround and platform-specific behaviours that might cause inconsistent results / unexpected behaviour (speculation).</p>
+<p>You may be tempted to use <code>sizeof(array) / sizeof(type)</code> to determine the number of elements within an array. It's a better idea to use <code>std::size(array)</code> instead (found in the <a href="#BM_(iterator)%2Fi">iterator</a> header) because it should have logic to workaround and platform-specific behaviours that might cause inconsistent results / unexpected behaviour (speculation).</p>
 <a name="H_Pointer%20Types"></a><h2>Pointer Types</h2>
 <p>C++ provides types that <a href="#BM_(reference)%2Fi">reference</a> a memory address, called <a href="#BM_(pointer)%2Fi">pointer</a>s. Variables of these types can point to different memory addresses / <a href="#BM_(object%7Cinstance)%2Fi">object</a>s.</p>
 <p>Adding an asterisk (*) to the end of any type makes it a <a href="#BM_(pointer)%2Fi">pointer</a> type (e.g. <code>int *</code> is a type that can contain a <a href="#BM_(pointer)%2Fi">pointer</a> to an <code>int</code>). A <a href="#BM_(pointer)%2Fi">pointer</a> to any <a href="#BM_(object%7Cinstance)%2Fi">object</a> can be retrieved using the <a href="#BM_(address%5B%5C-%5Cs%5Dof)%2Fi">address-of</a> unary operator (&amp;). Similarly, the value in any <a href="#BM_(pointer)%2Fi">pointer</a> can be retrieved using the deference unary operator (*).</p>
@@ -1663,6 +1682,98 @@ MyClass &amp; <span class="hljs-keyword">operator</span>+=(MyClass &amp;rhs, <sp
 <p>See <a href="https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393">here</a> for a list of operators and their signatures (still incomplete).</p>
 <p>There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.</p>
 </div>
+<a name="H_Namespaces"></a><h1>Namespaces</h1>
+<p>Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using <code>namespace</code> blocks.</p>
+<pre class="hljs"><code><span class="hljs-keyword">namespace</span> FirstLevel {
+    <span class="hljs-keyword">namespace</span> MiddleLevel {
+        <span class="hljs-keyword">namespace</span> LastLevel {
+            <span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyStruct</span> {
+                <span class="hljs-type">int</span> count;
+                <span class="hljs-type">bool</span> flag;
+            };
+        }
+    }
+}
+</code></pre>
+<p>The nesting in the example above is avoidable via the scope operator (::).</p>
+<pre class="hljs"><code><span class="hljs-keyword">namespace</span> FirstLevel::MiddleLevel::LastLevel {
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyStruct</span> {
+        <span class="hljs-type">int</span> count;
+        <span class="hljs-type">bool</span> flag;
+    };
+}
+</code></pre>
+<p>To use the symbols within a namespace, either include the namespace in symbol or bring all symbols within the namespace to the forefront via the <code>using</code> keyword (similar to Java's <code>import</code> or Python's <code>from</code> / <code>import</code>).</p>
+<pre class="hljs"><code><span class="hljs-comment">// Use namespace directly.</span>
+FirstLevel:MiddleLevel::LastLevel::MyStruct x{};
+
+<span class="hljs-comment">// Bring all symbols within a namespace to the forefront.</span>
+<span class="hljs-keyword">using</span> FirstLevel:MiddleLevel::LastLevel;
+MyStruct y{};
+
+<span class="hljs-comment">// Bring a single symbol within a namespace to the forefront.</span>
+<span class="hljs-keyword">using</span> FirstLevel:MiddleLevel::LastLevel::MyStruct;
+MyStruct z{};
+</code></pre>
+<a name="H_Type%20Aliasing"></a><h1>Type Aliasing</h1>
+<p>The <code>using</code> keyword is used to give synonyms to types. Other than having a new name, a <a href="#BM_(type%20alias)%2Fi">type alias</a> is the exact same as the originating type.</p>
+<pre class="hljs"><code><span class="hljs-keyword">using</span> IntegerButWithNewName = <span class="hljs-type">int</span>;
+<span class="hljs-type">int</span> x {<span class="hljs-number">42</span>};
+IntegerButWithNewName y {<span class="hljs-number">42</span>};    <span class="hljs-comment">// equivalent to:  int y {42};</span>
+IntegerButWithNewName z {x + y}; <span class="hljs-comment">// equivalent to:  int z {x + y};</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-type">float</span> x)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-type">short</span> x)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">func</span><span class="hljs-params">(IntegerButWithNewName x)</span></span>;  <span class="hljs-comment">// NOT ALLOWED -- this overload is equivalent to the overload above</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>To allow for use-cases such as the function overloading case in the example above, the cleanest solution is to wrap the type in a <a href="#BM_(class%7Cstruct)%2Fi">class</a></p>
+</div>
+<p>The benefit of <a href="#BM_(type%20alias)%2Fi">type alias</a>ing is that it helps shorten type names, which can be especially useful when using a <a href="#BM_(template)%2Fi">template</a>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">using</span> BasicGraph = DirectedGraph::Graph&lt;std::string, std::map&lt;std::string, std::string&gt;, std::string, std::map&lt;std::string, std::string&gt;&gt;;
+
+<span class="hljs-function">BasicGraph <span class="hljs-title">removeLimbs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> BasicGraph &amp;g)</span></span>;
+</code></pre>
+<a name="H_Attributes"></a><h1>Attributes</h1>
+<p>C++ <a href="#BM_(attribute)%2Fi">attribute</a>s are similar to annotations in Java, providing information to the user / <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> about the code that it's applied to. Unlike Java, C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s are free to pick and choose which <a href="#BM_(attribute)%2Fi">attribute</a>s they support and how they support them. There is no guarantee what action a <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> will take, if any, when it sees an <a href="#BM_(attribute)%2Fi">attribute</a> (e.g. <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> warnings).</p>
+<p>An <a href="#BM_(attribute)%2Fi">attribute</a> is applied by nesting it in double squared brackets (e.g. <code>[[noreturn]]</code>).</p>
+<pre class="hljs"><code>[[noreturn]] <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fail</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">throw</span> std::runtime_error { <span class="hljs-string">"Failed"</span> };
+}
+</code></pre>
+<p>Common <a href="#BM_(attribute)%2Fi">attribute</a>s:</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(attribute)%2Fi">Attribute</a></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[[deprecated("msg")]]</code></td>
+<td>Indicates that a function is deprecated. Message is optional.</td>
+</tr>
+<tr>
+<td><code>[[noreturn]]</code></td>
+<td>Indicates that a function doesn't return.</td>
+</tr>
+<tr>
+<td><code>[[fallthrough]]</code></td>
+<td>Indicates that a switch case was explicitly designed to fall through to the next case (no <code>break</code> / <code>return</code> / etc.. intended).</td>
+</tr>
+<tr>
+<td><code>[[nodiscard]]</code></td>
+<td>Indicates that a function's result should be used somehow (produce <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> warning).</td>
+</tr>
+<tr>
+<td><code>[[maybe_unused]]</code></td>
+<td>Indicates that a function's result doesn't have to be used (avoid compile warning).</td>
+</tr>
+</tbody>
+</table>
 <a name="H_Templates"></a><h1>Templates</h1>
 <p><a href="#BM_(template)%2Fi">Template</a>s are loosely similar to generics in other high-level languages such as Java. A <a href="#BM_(template)%2Fi">template</a> defines a <a href="#BM_(class%7Cstruct)%2Fi">class</a> or function where some of the types and code are unknown, called <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s. Each <a href="#BM_(template%20parameter)%2Fi">template parameter</a> in a <a href="#BM_(template)%2Fi">template</a> either maps to a ...</p>
 <ul>
@@ -1721,6 +1832,15 @@ X <span class="hljs-built_in">perform</span>(Y &amp;var1, Z &amp;var2) {
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>You would think that once a default is supplied, all other <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s after it need a default as well. For whatever reason the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> isn't erroring out when I do this.</p>
 </div>
+<p>Similarly, it's possible to use <a href="#BM_(template)%2Fi">template</a>s with <a href="#BM_(type%20alias)%2Fi">type alias</a>ing to create shorthand names where only some of the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s need to be set, called <a href="#BM_(partial%20template)%2Fi">partial template</a>s.</p>
+<pre class="hljs"><code><span class="hljs-comment">// declare</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Y, <span class="hljs-keyword">typename</span> Z&gt;
+<span class="hljs-keyword">using</span> MyClassPartialTemplate = MyClass&lt;<span class="hljs-type">float</span>, Y, Z, <span class="hljs-number">42</span>&gt;;
+
+<span class="hljs-comment">// use</span>
+MyClass&lt;<span class="hljs-type">float</span>, <span class="hljs-type">int</span>, <span class="hljs-type">int</span>, <span class="hljs-number">42</span>&gt; x{}; 
+MyClassPartialTemplate&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; y{};  <span class="hljs-comment">// same type as previous line</span>
+</code></pre>
 <p>Normally, C++ code is split into two files: a header file that contains declarations (e.g. function signatures) and a C++ file that contains definitions (e.g. function signatures with their bodies). When accessing C++ code that isn't local, typically only the declarations of that non-local code need to be included. The <a href="#BM_(linker%7Cexecutable)%2Fi">linker</a> binds those non-local declarations to their definitions when it comes time to build the <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>.</p>
 <p><a href="#BM_(template)%2Fi">Template</a>s work differently from Java generics in that the C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> generates a new code for each unique set of substitutions it sees used (<a href="#BM_(template%20instantiation)%2Fi">template instantiation</a>). Doing so produces more code than if there was only one copy, but also ensures any performance optimizations unique to that specific set of substitutions. Also, because each usage of a <a href="#BM_(template)%2Fi">template</a> may result in newly generated code, that usage typically needs access to both the declaration and definition. The simplest way to handle this is to put the entirety of the <a href="#BM_(template)%2Fi">template</a> (both definition and declaration) into a header, which gets included into the same file as the usage.</p>
 <a name="H_Concepts"></a><h2>Concepts</h2>
@@ -1853,7 +1973,7 @@ T <span class="hljs-title">sum</span><span class="hljs-params">(T a, T b)</span>
     <span class="hljs-keyword">return</span> a | b;
 }
 </code></pre>
-<p><a href="#BM_(template%20specialization)%2Fi">Template specialization</a> doesn't have to substitute all <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s. When a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> only provides substitutes some of its <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s, leaving other <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s as-is or partially refined, it's called a partial <a href="#BM_(template%20specialization)%2Fi">template specialization</a>.</p>
+<p><a href="#BM_(template%20specialization)%2Fi">Template specialization</a> doesn't have to substitute all <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s. When a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> only provides substitutes some of its <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s, leaving other <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s as-is or partially refined, it's called a <a href="#BM_(partial%20template)%2Fi">partial template</a> specialization.</p>
 <pre class="hljs"><code><span class="hljs-comment">// template</span>
 <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyClass</span> {
@@ -1872,7 +1992,7 @@ T <span class="hljs-title">sum</span><span class="hljs-params">(T a, T b)</span>
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Partial <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s for functions isn't supported (yet?). See <a href="https://stackoverflow.com/a/8061522">here</a>.</p>
+<p><a href="#BM_(partial%20template)%2Fi">Partial template</a> specializations for functions isn't supported (yet?). See <a href="https://stackoverflow.com/a/8061522">here</a>.</p>
 </div>
 <p>In certain cases, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> is able to deduce the types for a specialization from its usage, meaning explicitly listing substitutions after the name may not be required.</p>
 <pre class="hljs"><code><span class="hljs-comment">// first example without explicitly listing out substitutions</span>
@@ -1901,10 +2021,34 @@ T <span class="hljs-title">sum</span><span class="hljs-params">(T a, T b)</span>
 MyStruct <span class="hljs-keyword">const</span> inst {};
 inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// compiler error</span>
 </code></pre>
+<a name="H_Constant%20Methods"></a><h1>Constant Methods</h1>
+<p>For <a href="#BM_(method)%2Fi">method</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>const</code> after the declaration indicates that the <a href="#BM_(class%7Cstruct)%2Fi">class</a>'s <a href="#BM_(field)%2Fi">field</a>s won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Inner</span> {
+    <span class="hljs-type">int</span> x = <span class="hljs-number">5</span>;
+    <span class="hljs-type">int</span> y = <span class="hljs-number">6</span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">change</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+        x = n;
+    }
+};
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> {
+    <span class="hljs-type">int</span> a = <span class="hljs-number">0</span>;
+    Inner inner;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{
+        a = <span class="hljs-number">5</span>;  <span class="hljs-comment">// NOT okay -- no mutation allowed</span>
+    }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">test2</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{
+        inner.x = <span class="hljs-number">15</span>; <span class="hljs-comment">// NOT okay -- no mutation allowed, even though this is deeper down</span>
+    }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">test3</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{
+        inner.<span class="hljs-built_in">change</span>(<span class="hljs-number">15</span>); <span class="hljs-comment">// NOT okay -- method being invoked must be const (otherwise mutation might happen)</span>
+    }
+};
+</code></pre>
 <a name="H_Constant%20Expressions"></a><h1>Constant Expressions</h1>
 <p>A <a href="#BM_(constant%20expression)%2Fi">constant expression</a> is an expression that gets evaluated at <a href="#BM_(compile-time)%2Fi">compile-time</a>, such that any invocation of it gets swapped out for the result computed at <a href="#BM_(compile-time)%2Fi">compile-time</a>. It comes in two forms: variable and function.</p>
 <p>A <a href="#BM_(constant%20expression)%2Fi">constant expression</a> variable requires using <code>constexpr</code> instead of <code>const</code>. The difference between a <code>const</code> variable and <code>constexpr</code> variable is that the former only guarantees the variable is unmodifiable. It doesn't actually guarantee that the expression within is evaluated at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> <span class="hljs-type">int</span> x {<span class="hljs-number">5</span> + <span class="hljs-number">5</span>};      <span class="hljs-comment">// COULD BE evaluated at run-time or compule-time, but guaranteed to be unmodifiable</span>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> <span class="hljs-type">int</span> x {<span class="hljs-number">5</span> + <span class="hljs-number">5</span>};      <span class="hljs-comment">// COULD BE evaluated at run-time or compile-time, but guaranteed to be unmodifiable</span>
 <span class="hljs-keyword">constexpr</span> <span class="hljs-type">int</span> y {<span class="hljs-number">5</span> + <span class="hljs-number">5</span>};  <span class="hljs-comment">// MUST BE evaluated at compile-time and guaranteed to be unmodifiable</span>
 </code></pre>
 <p>Similarly, a <a href="#BM_(constant%20expression)%2Fi">constant expression</a> function requires prefixing <code>constexpr</code> to a function.</p>
@@ -1932,31 +2076,30 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The rules here are vast and complicated. The above might not be entirely correct, may be missing some conditions, or may not cover certain aspects. In the type_traits header, there's a function called <code>std::is_literal_type</code> that can be used to test if a type is a <a href="#BM_(literal%20type)%2Fi">literal type</a>.</p>
 </div>
-<p><a href="#BM_(constant%20expression)%2Fi">Constant expression</a>s help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A <a href="#BM_(constant%20expression)%2Fi">constant expression</a> uses the computation to get to that obtuse magic number rather than the number itself, meaning its easier to understand and requires less effort to tweak (via the parameters of the <a href="#BM_(constant%20expression)%2Fi">constant expression</a>).</p>
-<a name="H_Constant%20Methods"></a><h1>Constant Methods</h1>
-<p>For <a href="#BM_(method)%2Fi">method</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>const</code> after the declaration indicates that the <a href="#BM_(class%7Cstruct)%2Fi">class</a>'s <a href="#BM_(field)%2Fi">field</a>s won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.</p>
-<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Inner</span> {
-    <span class="hljs-type">int</span> x = <span class="hljs-number">5</span>;
-    <span class="hljs-type">int</span> y = <span class="hljs-number">6</span>;
-    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">change</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
-        x = n;
-    }
-};
-
-<span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> {
-    <span class="hljs-type">int</span> a = <span class="hljs-number">0</span>;
-    Inner inner;
-    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{
-        a = <span class="hljs-number">5</span>;  <span class="hljs-comment">// NOT okay -- no mutation allowed</span>
-    }
-    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">test2</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{
-        inner.x = <span class="hljs-number">15</span>; <span class="hljs-comment">// NOT okay -- no mutation allowed, even though this is deeper down</span>
-    }
-    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">test3</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{
-        inner.<span class="hljs-built_in">change</span>(<span class="hljs-number">15</span>); <span class="hljs-comment">// NOT okay -- method being invoked must be const (otherwise mutation might happen)</span>
-    }
-};
+<p>There are several benefits to <a href="#BM_(constant%20expression)%2Fi">constant expression</a>s. First, <a href="#BM_(constant%20expression)%2Fi">constant expression</a>s help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A <a href="#BM_(constant%20expression)%2Fi">constant expression</a> uses the computation to get to that obtuse magic number rather than the number itself, meaning its easier to understand and requires less effort to tweak (via the parameters of the <a href="#BM_(constant%20expression)%2Fi">constant expression</a>).</p>
+<p>Second, there exists a special type of <a href="#BM_(compile-time)%2Fi">compile-time</a> if-else where the chosen path is the only one in which code is generated for. These <a href="#BM_(compile-time)%2Fi">compile-time</a> if-elses, identified by the <code>constexpr</code> keyword immediately after the <code>if</code>, use <a href="#BM_(constant%20expression)%2Fi">constant expression</a>s in their conditionals when deciding which path to choose. These are use-cases such as ...</p>
+<ul>
+<li>omitting parts of a program from compilation (e.g. demonstration software).</li>
+<li>working around <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>-specific / platform-specific inconsistencies (e.g. only include code if <code>int</code>'s max value is above some threshold).</li>
+<li>performing specific actions based on the types chosen for <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s (e.g. include code path 1 if <a href="#BM_(pointer)%2Fi">pointer</a>, otherwise code path 2).</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">constexpr</span> <span class="hljs-params">(y == <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>))</span> </span>{
+    <span class="hljs-comment">// constant expression y is equivalent to the number of bytes for an int, so compile this block</span>
+    ...
+} <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// constant expression y is NOT equivalent to the number of bytes for an int, so compile this block</span>
+    ...
+}
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Type information is queryable at <a href="#BM_(compile-time)%2Fi">compile-time</a> through the type_traits. Information about numeric types is queryable at <a href="#BM_(compile-time)%2Fi">compile-time</a> using numeric_limits, cstdlib, and cfloat headers.</p>
+<p>Those are what you would commonly use in <code>if constexpr</code> blocks. They help with building portable software.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>All of this seems to replace the need for C <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros <code>#define</code> / <code>#ifdef</code> / etc...</p>
+</div>
 <a name="H_Volatile%20Types"></a><h1>Volatile Types</h1>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -2192,7 +2335,7 @@ MyClass cls {};
 <li><a href="#BM_(thread%5B%5C-%5Cs%5Dlocal%20object%7Cthread%5B%5C-%5Cs%5Dlocal%20variable%7Cthread%5B%5C-%5Cs%5Dlocal%20storage%20duration%7Cthread%20storage%20duration)%2Fi">thread storage duration</a> - scoped to the entire duration of a thread in the program.</li>
 <li><a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic storage duration</a> - <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d and <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d on request of the user.</li>
 </ul>
-<a name="H_Static%20Objects"></a><h1>Static Objects</h1>
+<a name="H_Static%20Objects"></a><h2>Static Objects</h2>
 <p>By default, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> declared within a function is said to be an <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a>. <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">Automatic object</a>s have <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic storage duration</a>s: start at the beginning of the block and finish at the end of the block. When the keyword <code>static</code> (or <code>extern</code> in some cases) is added to the declaration, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of the function changes.</p>
 <p>At global scope, if an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is declared as <code>static</code> or <code>extern</code>, <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of the <a href="#BM_(object%7Cinstance)%2Fi">object</a> spans the entire duration of the program. The difference between the two is essentially just visibility:</p>
 <ul>
@@ -2226,7 +2369,7 @@ X::m = <span class="hljs-number">0</span>;                <span class="hljs-comm
 <span class="hljs-keyword">thread_local</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> b = <span class="hljs-number">1</span>;
 <span class="hljs-keyword">thread_local</span> <span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> c = <span class="hljs-number">2</span>;
 </code></pre>
-<a name="H_Dynamic%20Objects"></a><h1>Dynamic Objects</h1>
+<a name="H_Dynamic%20Objects"></a><h2>Dynamic Objects</h2>
 <p>An <a href="#BM_(object%7Cinstance)%2Fi">object</a> can be created in an ad-hoc manner, such that its <a href="#BM_(storage%20duration)%2Fi">storage duration</a> is entirely controlled by the user. The operator ...</p>
 <ul>
 <li><code>new</code> <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>s a new <a href="#BM_(object%7Cinstance)%2Fi">object</a> and calling its the <a href="#BM_(constructor)%2Fi">constructor</a>.</li>
@@ -2260,7 +2403,7 @@ X::m = <span class="hljs-number">0</span>;                <span class="hljs-comm
 <p>See operator overloading section to see how the <code>new</code> and <code>delete</code> operators may be overridden to customize where and how a specific type gets stored.</p>
 <p>The <code>new</code> and <code>delete</code> operators may also be overridden globally rather than per-type. See the new header.</p>
 </div>
-<a name="H_Object%20Size"></a><h1>Object Size</h1>
+<a name="H_Object%20Size"></a><h2>Object Size</h2>
 <p><code>sizeof</code> is a <em>unary operator</em> that returns the size of its operand in bytes as a <code>size_t</code> type. If the operand is a ...</p>
 <ul>
 <li>
@@ -2354,7 +2497,7 @@ X::m = <span class="hljs-number">0</span>;                <span class="hljs-comm
 <p>The book mentions this is documented in "Item 16 of Effective Modern C++ by Scott Meyers". It goes on to say that, unless specified otherwise, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> assumes <a href="#BM_(move%20constructor)%2Fi">move constructor</a>s / move-assignment operators can thrown an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> if they try to <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a> memory but the system doesn't have any. This prevents it from making certain optimizations.</p>
 </div>
 <p>Treat any <a href="#BM_(destructor)%2Fi">destructor</a> as if it were marked with <code>noexcept</code>. That is, an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> should never be thrown in a <a href="#BM_(destructor)%2Fi">destructor</a>. When an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> gets thrown, the call stack unwinds. As each function exits, the <a href="#BM_(destructor)%2Fi">destructor</a>s for <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic variable</a>s of that function get invoked. Another <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> getting thrown while one is already in flight means two <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s would be in flight, which isn't supported.</p>
-<a name="H_Unpacking"></a><h1>Unpacking</h1>
+<a name="H_Structured%20Binding"></a><h1>Structured Binding</h1>
 <p><a href="#BM_(structured%20binding)%2Fi">Structured binding</a> declaration is a C++ language feature similar to Python's unpacking of lists and tuples. Given an array or a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, the values contained within are unpackable to individual variables.</p>
 <pre class="hljs"><code><span class="hljs-comment">// array example</span>
 <span class="hljs-type">int</span> x[] = {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>};
@@ -2433,6 +2576,180 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See <a href="http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html">here</a> for what I used to clarify what's going on here.</p>
+</div>
+<a name="H_Iterators"></a><h1>Iterators</h1>
+<p><a href="#BM_(iterator)%2Fi">Iterator</a>s in C++ are similar to <a href="#BM_(iterator)%2Fi">iterator</a>s in Java. In Java, <a href="#BM_(object%7Cinstance)%2Fi">object</a>s that...</p>
+<ul>
+<li>produce an <a href="#BM_(iterator)%2Fi">iterator</a> typically implement the <code>Iterable</code> interface (e.g. <code>ArrayList</code>)</li>
+<li>are <a href="#BM_(iterator)%2Fi">iterator</a>s must implement the <code>Iterator</code> interface.</li>
+</ul>
+<p>In C++, there is no requirement to <a href="#BM_(extend%7Csubclass)%2Fi">extend</a> from any base <a href="#BM_(class%7Cstruct)%2Fi">class</a>es or interfaces. Instead, any type can act as an <a href="#BM_(iterator)%2Fi">iterator</a> so long as it supports as set of operators:</p>
+<ul>
+<li><code>!=</code> - test if the position of one <a href="#BM_(iterator)%2Fi">iterator</a> doesn't match the position of another <a href="#BM_(iterator)%2Fi">iterator</a> (e.g. <code>my_iterator != end_iterator</code>).</li>
+<li><code>++</code> - move to the next item (e.g. <code>my_iterator++</code>).</li>
+<li><code>*</code> (<a href="#BM_(dereference%7Cdereferencing)%2Fi">dereference</a>) - access the next item (e.g. <code>int value = *my_iterator</code>).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Notice that the operators are more or less array / <a href="#BM_(pointer)%2Fi">pointer</a> behaviour. Given something like <code>int *</code> pointing to the beginning of an array, ...</p>
+<ul>
+<li>incrementing it by 1 (<code>++</code>) moves it to the next element of the array via <a href="#BM_(pointer%20arithmetic)%2Fi">pointer arithmetic</a>.</li>
+<li><a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> it (<code>*</code>) provides the value at the array element its points to.</li>
+<li>testing it using inequality (<code>!=</code>) is a way to check if it hasn't gone past the last array element.</li>
+</ul>
+<p>An <a href="#BM_(iterator)%2Fi">iterator</a> is basically a set of operators that walk elements in the same way as you would an array. A <a href="#BM_(class%7Cstruct)%2Fi">class</a> can implement the operator overloads and behave the same way.</p>
+</div>
+<p>Similarly, any <a href="#BM_(class%7Cstruct)%2Fi">class</a> can act as an iterable by implementing begin and end <a href="#BM_(method)%2Fi">method</a>s, commonly referred to as a range:</p>
+<ul>
+<li><code>begin()</code> - returns an <a href="#BM_(iterator)%2Fi">iterator</a> pointing to the first item.</li>
+<li><code>end()</code> - returns an <a href="#BM_(iterator)%2Fi">iterator</a> pointing to <em>past-the-end</em> (just after the last element).</li>
+</ul>
+<pre class="hljs"><code>MyIterator it {collection.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">while</span> (it != collection.<span class="hljs-built_in">end</span>()) {
+    MyObject value {*it};
+    <span class="hljs-comment">// do something with value here</span>
+    ++iterator;
+}
+</code></pre>
+<p>C++ iterables and <a href="#BM_(iterator)%2Fi">iterator</a>s can be used together in range-based for loops.</p>
+<pre class="hljs"><code><span class="hljs-keyword">for</span> (MyIterator it : collection) {
+    MyObject value {*it};
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<p>In total, 5 kinds of <a href="#BM_(iterator)%2Fi">iterator</a>s are supported by C++. The kind of <a href="#BM_(iterator)%2Fi">iterator</a> described above is called an <a href="#BM_(input%20iterator)%2Fi">input iterator</a> and it typically requires an equality operator overload (<code>operator ==()</code>) in addition to inequality. <a href="#BM_(input%20iterator)%2Fi">Input iterator</a>s are the closest thing to a standard Java <code>Iterator</code> -- read-only and forward-only. Other kinds of <a href="#BM_(iterator)%2Fi">iterator</a>s require different operator overloads.</p>
+<ul>
+<li><a href="#BM_(input%20iterator)%2Fi">Input iterator</a>, steps forwards one element at a time and gets items of the container.</li>
+<li><a href="#BM_(output%20iterator)%2Fi">Output iterator</a>, steps forwards one element at a time and sets items of the container.</li>
+<li><a href="#BM_(forward%20iterator)%2Fi">Forward iterator</a>, combination of <a href="#BM_(input%20iterator)%2Fi">input iterator</a> and <a href="#BM_(output%20iterator)%2Fi">output iterator</a>.</li>
+<li><a href="#BM_(bidirectional%20iterator)%2Fi">Bidirectional iterator</a>, <a href="#BM_(forward%20iterator)%2Fi">forward iterator</a> with the ability to move back.</li>
+<li><a href="#BM_(random%20access%20iterator)%2Fi">Random access iterator</a>, <a href="#BM_(bidirectional%20iterator)%2Fi">bidirectional iterator</a> with the ability to jump to different positions.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Input</th>
+<th>Output</th>
+<th>Forward</th>
+<th>Bidirectional</th>
+<th>Random access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>++it</code> and <code>it++</code> (move forward)</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>--it</code> and <code>it--</code> (move backward)</td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 == it2</code> and<code>it1 != it2</code> (test if at same position)</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 &lt; it2</code> (test if before)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 &lt;= it2</code> (test if before or at)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 &gt; it2</code> (test if after)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 &gt;= it2</code> (test if after or at)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>x = *it</code> (<a href="#BM_(dereference%7Cdereferencing)%2Fi">dereference</a> and get)</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>*it = x</code> (<a href="#BM_(dereference%7Cdereferencing)%2Fi">dereference</a> and set)</td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 += n</code> and <code>it1 + n</code> (add integer)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 -= n</code> and <code>it1 - n</code> (subtract integer)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it2 - it1</code> (subtract <a href="#BM_(iterator)%2Fi">iterator</a>s to get positional difference)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>it1 + it2</code> (add <a href="#BM_(iterator)%2Fi">iterator</a>s)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Note that the adding of <a href="#BM_(iterator)%2Fi">iterator</a>s is listed above but is not supported by any of the <a href="#BM_(iterator)%2Fi">iterator</a> types. It's there to make it explicit that adding together two <a href="#BM_(iterator)%2Fi">iterator</a>s isn't a thing.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're dealing with the STL, there's also special <a href="#BM_(iterator)%2Fi">iterator</a> implementations that allow insertions rather than setting elements. See <code>insert_iterator</code>, <code>back_insert_iterator</code>, and <code>front_insert_iterator</code>.</p>
 </div>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
@@ -2706,6 +3023,9 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 <p><a name="BM_(partial%20template%20specialization%20%7C%20template%20partial%20specialization)%2Fi"></a><strong>partial template specialization</strong> - A <a href="#BM_(template%20specialization)%2Fi">template specialization</a> where not all of the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s have been removed.</p>
 </li>
 <li>
+<p><a name="BM_(partial%20template)%2Fi"></a><strong>partial template</strong> - A <a href="#BM_(template)%2Fi">template</a> with some of its <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s set (not all).</p>
+</li>
+<li>
 <p><a name="BM_(default%20template%20argument)%2Fi"></a><strong>default template argument</strong> - The default substitute in use for a <a href="#BM_(template%20parameter)%2Fi">template parameter</a>.</p>
 </li>
 <li>
@@ -2732,6 +3052,30 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 </li>
 <li>
 <p><a name="BM_(volatile)%2Fi"></a><strong>volatile</strong> - A <a href="#BM_(volatile)%2Fi">volatile</a> variable's usage in code is immune to <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> optimizations such as operation re-ordering and removal. Mutations and accesses, no matter how irrelevant they may seem, are kept in-place and in-order by the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>.</p>
+</li>
+<li>
+<p><a name="BM_(type%20alias)%2Fi"></a><strong>type alias</strong> - A synonym (different name) for an existing type.</p>
+</li>
+<li>
+<p><a name="BM_(attribute)%2Fi"></a><strong>attribute</strong> - A tag applied to code that provides information to the user / <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> about whatever it is that it's applied to. Similar to Java annotations.</p>
+</li>
+<li>
+<p><a name="BM_(iterator)%2Fi"></a><strong>iterator</strong> - A type used to access elements within some sequence (e.g. array, <a href="#BM_(class%7Cstruct)%2Fi">class</a> representing a list, <a href="#BM_(class%7Cstruct)%2Fi">class</a> representing an infinite stream of <code>int</code>s, etc..). An <a href="#BM_(iterator)%2Fi">iterator</a> requires a specific set of operator overloads.</p>
+</li>
+<li>
+<p><a name="BM_(input%20iterator)%2Fi"></a><strong>input iterator</strong> - An <a href="#BM_(iterator)%2Fi">iterator</a> that can only move forward in the sequence one element at a time and can only get elements of the sequence.</p>
+</li>
+<li>
+<p><a name="BM_(output%20iterator)%2Fi"></a><strong>output iterator</strong> - An <a href="#BM_(iterator)%2Fi">iterator</a> that can only move forward in the sequence one element at a time and can only set elements of the sequence.</p>
+</li>
+<li>
+<p><a name="BM_(forward%20iterator)%2Fi"></a><strong>forward iterator</strong> - An <a href="#BM_(iterator)%2Fi">iterator</a> that combines the functionality of both <a href="#BM_(input%20iterator)%2Fi">input iterator</a> and <a href="#BM_(output%20iterator)%2Fi">output iterator</a>.</p>
+</li>
+<li>
+<p><a name="BM_(bidirectional%20iterator)%2Fi"></a><strong>bidirectional iterator</strong> - An <a href="#BM_(iterator)%2Fi">iterator</a> that has the same functionality as <a href="#BM_(forward%20iterator)%2Fi">forward iterator</a> but also allows for moving backward in the sequence one element at a time, meaning it can move forward as well as backward.</p>
+</li>
+<li>
+<p><a name="BM_(random%20access%20iterator)%2Fi"></a><strong>random access iterator</strong> - An <a href="#BM_(iterator)%2Fi">iterator</a> that has the same functionality as <a href="#BM_(bidirectional%20iterator)%2Fi">bidirectional iterator</a> but also allows randomly jumping to different elements within the sequence.</p>
 </li>
 </ul>
 <p>

@@ -60,11 +60,20 @@ TODO: put in a section for user-defined literals? it's used by the chrono header
 TODO: organize constant sections under a common "Constant" section and volatile sections under a common "Volatile" section.
 
 
-TODO: continue from ch 8
+TODO: chapter 8 -- initialization statements within if statements (section called initialization statements and if), similar to for loop initialization
+
+
+TODO: chapter 8 -- initialization statements within switch statements (section on switch), similar to for loop initialization
+
+
+TODO: chapter 8 -- gotos
+
+
+TODO: start from ch 9
 
 # Operators
 
-**Bitwise Logical Operators**
+## Bitwise Logical Operators
 
 | Name                       | Example            | Note                                             |
 |----------------------------|--------------------|--------------------------------------------------|
@@ -75,7 +84,7 @@ TODO: continue from ch 8
 | Bitwise left-shift  (`<<`) | `0b1011 << 2`      |                                                  |
 | Bitwise right-shift (`>>`) | `0b1011 >> 2`      | Result on signed may be different than unsigned. |
 
-**Boolean Logical Operators**
+## Boolean Logical Operators
 
 | Name                 | Example           | Note |
 |----------------------|-------------------|------|
@@ -83,7 +92,7 @@ TODO: continue from ch 8
 | Logical OR  (`\|\|`) | `true \|\| false` |      |
 | Logical NOT (`!`)    | `!true`           |      |
 
-**Arithmetic Operators**
+## Arithmetic Operators
 
 | Name                   | Example | Note |
 |------------------------|---------|------|
@@ -103,7 +112,7 @@ These rules are similar to those in other languages (e.g. Java and Python).
 If confused, use type deduction via the `auto` keyword: `auto x = 5 + y`, then check to see what the type of `y` is in the IDE or using `typeid`.
 ```
 
-**Assignment Operators**
+## Assignment Operators
 
 | Name                                   | Example        | Note                                                                                                                             |
 |----------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -132,7 +141,7 @@ int b = (++a) + 2;
 // at this point, a is 4, b is 6
 ```
 
-**Comparison Operator**
+## Comparison Operator
 
 | Name                            | Example  | Note |
 |---------------------------------|----------|------|
@@ -143,9 +152,7 @@ int b = (++a) + 2;
 | Greater Than             (`>`)  | `5 > 7`  |      |
 | Greater Than Or Equal To (`>=`) | `5 >= 7` |      |
 
-**Ternary Conditional Operator**
-
-The ternary conditional operator is a pseudo operator that takes in 3 operands similar to those found in other high-level languages: `CONDITION ? EXPRESSION_IF_TRUE : EXPRESSION_IF_FALSE`. It's essentially a shorthand if-else block. 
+In addition, the ternary conditional operator is a pseudo operator that takes in 3 operands similar to those found in other high-level languages: `CONDITION ? EXPRESSION_IF_TRUE : EXPRESSION_IF_FALSE`. It's essentially a shorthand if-else block. 
 
 ```c++
 int x = n % 7 == 1 ? 1000 : -1000;
@@ -157,7 +164,7 @@ if (n % 7 == 1) {
 }
 ```
 
-**Member Access Operators**
+## Member Access Operators
 
 | Name                     | Example     | Note                                                                                       |
 |--------------------------|-------------|--------------------------------------------------------------------------------------------|
@@ -169,7 +176,7 @@ if (n % 7 == 1) {
 
 There operators are used in scenarios that deal with accessing the members of an object (e.g. element in an array, field of a class) or dealing with memory addresses / pointers. The subscript and and member of object operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.
 
-**Dynamic Object Operators**
+## Dynamic Object Operators
 
 | Name                                | Example       | Note |
 |-------------------------------------|---------------|------|
@@ -182,7 +189,7 @@ There operators are used in scenarios that deal with accessing the members of an
 If you already know about dynamic objects and arrays and constructors/destructors, make sure you delete an array using `delete[]`. It makes sure to call the destructor for each element of the array.
 ```
 
-**Size Operator**
+## Size Operator
 
 | Name            | Example     | Note |
 |-----------------|-------------|------|
@@ -190,7 +197,7 @@ If you already know about dynamic objects and arrays and constructors/destructor
 
 This operator gets the size of an object in bytes. Note that an object's byte size may not be indicative of the da may include padding required by the platform (e.g. an object requiring 5 bytes may get expanded to 8 bytes because the platform requires 8 byte boundary alignments).
 
-**Other Operators**
+## Other Operators 
 
 C++ provides a set of other operators such as the ...
 
@@ -1275,6 +1282,100 @@ See [here](https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393) for
 There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.
 ```
 
+# Namespaces
+
+Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using `namespace` blocks.
+
+```c++
+namespace FirstLevel {
+    namespace MiddleLevel {
+        namespace LastLevel {
+            struct MyStruct {
+                int count;
+                bool flag;
+            };
+        }
+    }
+}
+```
+
+The nesting in the example above is avoidable via the scope operator (::).
+
+```c++
+namespace FirstLevel::MiddleLevel::LastLevel {
+    struct MyStruct {
+        int count;
+        bool flag;
+    };
+}
+```
+
+To use the symbols within a namespace, either include the namespace in symbol or bring all symbols within the namespace to the forefront via the `using` keyword (similar to Java's `import` or Python's `from` / `import`).
+
+```c++
+// Use namespace directly.
+FirstLevel:MiddleLevel::LastLevel::MyStruct x{};
+
+// Bring all symbols within a namespace to the forefront.
+using FirstLevel:MiddleLevel::LastLevel;
+MyStruct y{};
+
+// Bring a single symbol within a namespace to the forefront.
+using FirstLevel:MiddleLevel::LastLevel::MyStruct;
+MyStruct z{};
+```
+
+# Type Aliasing
+
+The `using` keyword is used to give synonyms to types. Other than having a new name, a type alias is the exact same as the originating type.
+
+```c++
+using IntegerButWithNewName = int;
+int x {42};
+IntegerButWithNewName y {42};    // equivalent to:  int y {42};
+IntegerButWithNewName z {x + y}; // equivalent to:  int z {x + y};
+
+int func(float x);
+int func(short x);
+int func(int x);
+int func(IntegerButWithNewName x);  // NOT ALLOWED -- this overload is equivalent to the overload above
+```
+
+````{note}
+To allow for use-cases such as the function overloading case in the example above, the cleanest solution is to wrap the type in a class
+
+````
+
+The benefit of type aliasing is that it helps shorten type names, which can be especially useful when using a template.
+
+```c++
+using BasicGraph = DirectedGraph::Graph<std::string, std::map<std::string, std::string>, std::string, std::map<std::string, std::string>>;
+
+BasicGraph removeLimbs(const BasicGraph &g);
+```
+
+# Attributes
+
+C++ attributes are similar to annotations in Java, providing information to the user / compiler about the code that it's applied to. Unlike Java, C++ compilers are free to pick and choose which attributes they support and how they support them. There is no guarantee what action a compiler will take, if any, when it sees an attribute (e.g. compiler warnings).
+
+An attribute is applied by nesting it in double squared brackets (e.g. `[[noreturn]]`).
+
+```c++
+[[noreturn]] void fail() {
+    throw std::runtime_error { "Failed" };
+}
+```
+
+Common attributes:
+
+| Attribute               | Description                                                                                                                     |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `[[deprecated("msg")]]` | Indicates that a function is deprecated. Message is optional.                                                                   |
+| `[[noreturn]]`          | Indicates that a function doesn't return.                                                                                       |
+| `[[fallthrough]]`       | Indicates that a switch case was explicitly designed to fall through to the next case (no `break` / `return` / etc.. intended). |
+| `[[nodiscard]]`         | Indicates that a function's result should be used somehow (produce compiler warning).                                           |
+| `[[maybe_unused]]`      | Indicates that a function's result doesn't have to be used (avoid compile warning).                                             |
+
 # Templates
 
 Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types and code are unknown, called template parameters. Each template parameter in a template either maps to a ...
@@ -1347,6 +1448,18 @@ X perform(Y &var1, Z &var2) {
 
 ```{note}
 You would think that once a default is supplied, all other template parameters after it need a default as well. For whatever reason the compiler isn't erroring out when I do this.
+```
+
+Similarly, it's possible to use templates with type aliasing to create shorthand names where only some of the template parameters need to be set, called partial templates.
+
+```c++
+// declare
+template <typename Y, typename Z>
+using MyClassPartialTemplate = MyClass<float, Y, Z, 42>;
+
+// use
+MyClass<float, int, int, 42> x{}; 
+MyClassPartialTemplate<int, int> y{};  // same type as previous line
 ```
 
 Normally, C++ code is split into two files: a header file that contains declarations (e.g. function signatures) and a C++ file that contains definitions (e.g. function signatures with their bodies). When accessing C++ code that isn't local, typically only the declarations of that non-local code need to be included. The linker binds those non-local declarations to their definitions when it comes time to build the executable.
@@ -1592,6 +1705,34 @@ MyStruct const inst {};
 inst.x = 5;  // compiler error
 ```
 
+# Constant Methods
+
+For methods of a class, a `const` after the declaration indicates that the class's fields won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.
+
+```c++
+struct Inner {
+    int x = 5;
+    int y = 6;
+    void change(int n) {
+        x = n;
+    }
+};
+
+struct X {
+    int a = 0;
+    Inner inner;
+    void test1() const {
+        a = 5;  // NOT okay -- no mutation allowed
+    }
+    void test2() const {
+        inner.x = 15; // NOT okay -- no mutation allowed, even though this is deeper down
+    }
+    void test3() const {
+        inner.change(15); // NOT okay -- method being invoked must be const (otherwise mutation might happen)
+    }
+};
+```
+
 # Constant Expressions
 
 A constant expression is an expression that gets evaluated at compile-time, such that any invocation of it gets swapped out for the result computed at compile-time. It comes in two forms: variable and function.
@@ -1599,7 +1740,7 @@ A constant expression is an expression that gets evaluated at compile-time, such
 A constant expression variable requires using `constexpr` instead of `const`. The difference between a `const` variable and `constexpr` variable is that the former only guarantees the variable is unmodifiable. It doesn't actually guarantee that the expression within is evaluated at compile-time.
 
 ```c++
-const int x {5 + 5};      // COULD BE evaluated at run-time or compule-time, but guaranteed to be unmodifiable
+const int x {5 + 5};      // COULD BE evaluated at run-time or compile-time, but guaranteed to be unmodifiable
 constexpr int y {5 + 5};  // MUST BE evaluated at compile-time and guaranteed to be unmodifiable
 ```
 
@@ -1631,34 +1772,32 @@ The restrictions on constant expressions are vast. At a high-level, a constant e
 The rules here are vast and complicated. The above might not be entirely correct, may be missing some conditions, or may not cover certain aspects. In the type_traits header, there's a function called `std::is_literal_type` that can be used to test if a type is a literal type.
 ```
 
-Constant expressions help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A constant expression uses the computation to get to that obtuse magic number rather than the number itself, meaning its easier to understand and requires less effort to tweak (via the parameters of the constant expression).
+There are several benefits to constant expressions. First, constant expressions help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A constant expression uses the computation to get to that obtuse magic number rather than the number itself, meaning its easier to understand and requires less effort to tweak (via the parameters of the constant expression).
 
-# Constant Methods
+Second, there exists a special type of compile-time if-else where the chosen path is the only one in which code is generated for. These compile-time if-elses, identified by the `constexpr` keyword immediately after the `if`, use constant expressions in their conditionals when deciding which path to choose. These are use-cases such as ...
 
-For methods of a class, a `const` after the declaration indicates that the class's fields won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.
+ * omitting parts of a program from compilation (e.g. demonstration software).
+ * working around compiler-specific / platform-specific inconsistencies (e.g. only include code if `int`'s max value is above some threshold).
+ * performing specific actions based on the types chosen for template parameters (e.g. include code path 1 if pointer, otherwise code path 2).
 
 ```c++
-struct Inner {
-    int x = 5;
-    int y = 6;
-    void change(int n) {
-        x = n;
-    }
-};
+if constexpr (y == sizeof(int)) {
+    // constant expression y is equivalent to the number of bytes for an int, so compile this block
+    ...
+} else {
+    // constant expression y is NOT equivalent to the number of bytes for an int, so compile this block
+    ...
+}
+```
 
-struct X {
-    int a = 0;
-    Inner inner;
-    void test1() const {
-        a = 5;  // NOT okay -- no mutation allowed
-    }
-    void test2() const {
-        inner.x = 15; // NOT okay -- no mutation allowed, even though this is deeper down
-    }
-    void test3() const {
-        inner.change(15); // NOT okay -- method being invoked must be const (otherwise mutation might happen)
-    }
-};
+```{note}
+Type information is queryable at compile-time through the type_traits. Information about numeric types is queryable at compile-time using numeric_limits, cstdlib, and cfloat headers.
+
+Those are what you would commonly use in `if constexpr` blocks. They help with building portable software.
+```
+
+```{note}
+All of this seems to replace the need for C preprocessor macros `#define` / `#ifdef` / etc...
 ```
 
 # Volatile Types
@@ -1934,7 +2073,7 @@ The typical storage durations supported by C++ are...
  * thread storage duration - scoped to the entire duration of a thread in the program.
  * dynamic storage duration - allocated and deallocated on request of the user.
 
-# Static Objects
+## Static Objects
 
 By default, an object declared within a function is said to be an automatic object. Automatic objects have automatic storage durations: start at the beginning of the block and finish at the end of the block. When the keyword `static` (or `extern` in some cases) is added to the declaration, the storage duration of the function changes.
 
@@ -1982,7 +2121,7 @@ thread_local static int b = 1;
 thread_local extern int c = 2;
 ```
 
-# Dynamic Objects
+## Dynamic Objects
 
 An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The operator ...
 
@@ -2032,7 +2171,7 @@ See operator overloading section to see how the `new` and `delete` operators may
 The `new` and `delete` operators may also be overridden globally rather than per-type. See the new header.
 ```
 
-# Object Size
+## Object Size
 
 `sizeof` is a _unary operator_ that returns the size of its operand in bytes as a `size_t` type. If the operand is a ...
 
@@ -2162,7 +2301,7 @@ The book mentions this is documented in "Item 16 of Effective Modern C++ by Scot
 
 Treat any destructor as if it were marked with `noexcept`. That is, an exception should never be thrown in a destructor. When an exception gets thrown, the call stack unwinds. As each function exits, the destructors for automatic variables of that function get invoked. Another exception getting thrown while one is already in flight means two exceptions would be in flight, which isn't supported.
 
-# Unpacking
+# Structured Binding
 
 Structured binding declaration is a C++ language feature similar to Python's unpacking of lists and tuples. Given an array or a class, the values contained within are unpackable to individual variables.
 
@@ -2293,6 +2432,84 @@ Similarly, if it's an expression that can be _moved_ (gutted), its called an rva
 
 ```{note}
 See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used to clarify what's going on here.
+```
+
+# Iterators
+
+Iterators in C++ are similar to iterators in Java. In Java, objects that...
+
+ * produce an iterator typically implement the `Iterable` interface (e.g. `ArrayList`)
+ * are iterators must implement the `Iterator` interface.
+
+In C++, there is no requirement to extend from any base classes or interfaces. Instead, any type can act as an iterator so long as it supports as set of operators:
+
+ * `!=` - test if the position of one iterator doesn't match the position of another iterator (e.g. `my_iterator != end_iterator`).
+ * `++` - move to the next item (e.g. `my_iterator++`).
+ * `*` (dereference) - access the next item (e.g. `int value = *my_iterator`).
+
+```{note}
+Notice that the operators are more or less array / pointer behaviour. Given something like `int *` pointing to the beginning of an array, ...
+
+ * incrementing it by 1 (`++`) moves it to the next element of the array via pointer arithmetic.
+ * dereferencing it (`*`) provides the value at the array element its points to.
+ * testing it using inequality (`!=`) is a way to check if it hasn't gone past the last array element.
+
+An iterator is basically a set of operators that walk elements in the same way as you would an array. A class can implement the operator overloads and behave the same way.
+```
+
+Similarly, any class can act as an iterable by implementing begin and end methods, commonly referred to as a range:
+
+ * `begin()` - returns an iterator pointing to the first item.
+ * `end()` - returns an iterator pointing to _past-the-end_ (just after the last element).
+
+```c++
+MyIterator it {collection.begin()};
+while (it != collection.end()) {
+    MyObject value {*it};
+    // do something with value here
+    ++iterator;
+}
+```
+
+C++ iterables and iterators can be used together in range-based for loops.
+
+```c++
+for (MyIterator it : collection) {
+    MyObject value {*it};
+    // do something with value here
+}
+```
+
+In total, 5 kinds of iterators are supported by C++. The kind of iterator described above is called an input iterator and it typically requires an equality operator overload (`operator ==()`) in addition to inequality. Input iterators are the closest thing to a standard Java `Iterator` -- read-only and forward-only. Other kinds of iterators require different operator overloads.
+
+ * Input iterator, steps forwards one element at a time and gets items of the container.
+ * Output iterator, steps forwards one element at a time and sets items of the container.
+ * Forward iterator, combination of input iterator and output iterator.
+ * Bidirectional iterator, forward iterator with the ability to move back.
+ * Random access iterator, bidirectional iterator with the ability to jump to different positions.
+
+|                                                               | Input | Output | Forward | Bidirectional | Random access |
+|---------------------------------------------------------------|-------|--------|---------|---------------|---------------|
+| `++it` and `it++` (move forward)                              |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
+| `--it` and `it--` (move backward)                             |       |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 == it2` and`it1 != it2` (test if at same position)       |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 < it2` (test if before)                                  |       |        |         |               |       ✓       |
+| `it1 <= it2` (test if before or at)                           |       |        |         |               |       ✓       |
+| `it1 > it2` (test if after)                                   |       |        |         |               |       ✓       |
+| `it1 >= it2` (test if after or at)                            |       |        |         |               |       ✓       |
+| `x = *it` (dereference and get)                               |   ✓   |        |    ✓    |      ✓        |       ✓       |
+| `*it = x` (dereference and set)                               |       |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 += n` and `it1 + n` (add integer)                        |       |        |         |               |       ✓       |
+| `it1 -= n` and `it1 - n` (subtract integer)                   |       |        |         |               |       ✓       |
+| `it2 - it1` (subtract iterators to get positional difference) |       |        |         |               |       ✓       |
+| `it1 + it2` (add iterators)                                   |       |        |         |               |               |
+
+```{note}
+Note that the adding of iterators is listed above but is not supported by any of the iterator types. It's there to make it explicit that adding together two iterators isn't a thing.
+```
+
+```{note}
+If you're dealing with the STL, there's also special iterator implementations that allow insertions rather than setting elements. See `insert_iterator`, `back_insert_iterator`, and `front_insert_iterator`.
 ```
 
 # Terminology
@@ -2564,6 +2781,8 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 
  * `{bm} partial template specialization/(partial template specialization | template partial specialization)/i` - A template specialization where not all of the template parameters have been removed.
 
+ * `{bm} partial template` - A template with some of its template parameters set (not all).
+
  * `{bm} default template argument` - The default substitute in use for a template parameter.
 
  * `{bm} heap/(heap|free store)/i` - An implementation-specific block of memory used for dynamic objects. Also called the free store.
@@ -2583,6 +2802,22 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
  * `{bm} literal type` - A type that's usable in a constant expression (for parameters and return), meaning that objects of this type can have a value that's knowable at compile-time.
 
  * `{bm} volatile` - A volatile variable's usage in code is immune to compiler optimizations such as operation re-ordering and removal. Mutations and accesses, no matter how irrelevant they may seem, are kept in-place and in-order by the compiler.
+
+ * `{bm} type alias` - A synonym (different name) for an existing type.
+
+ * `{bm} attribute` - A tag applied to code that provides information to the user / compiler about whatever it is that it's applied to. Similar to Java annotations.
+
+ * `{bm} iterator` - A type used to access elements within some sequence (e.g. array, class representing a list, class representing an infinite stream of `int`s, etc..). An iterator requires a specific set of operator overloads.
+
+ * `{bm} input iterator` - An iterator that can only move forward in the sequence one element at a time and can only get elements of the sequence.
+ 
+ * `{bm} output iterator` - An iterator that can only move forward in the sequence one element at a time and can only set elements of the sequence.
+ 
+ * `{bm} forward iterator` - An iterator that combines the functionality of both input iterator and output iterator.
+
+ * `{bm} bidirectional iterator` - An iterator that has the same functionality as forward iterator but also allows for moving backward in the sequence one element at a time, meaning it can move forward as well as backward.
+
+ * `{bm} random access iterator` - An iterator that has the same functionality as bidirectional iterator but also allows randomly jumping to different elements within the sequence.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
