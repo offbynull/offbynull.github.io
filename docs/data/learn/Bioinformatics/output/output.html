@@ -16512,6 +16512,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <li>GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</li>
 <li>Deep-learning <a href="#BM_(regulatory%20motif)%2Fi">Regulatory Motif</a> Detection - Try training a deep learning model to "find" <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>s for new <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s based on past training data.</li>
 <li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">Global alignment</a> that takes <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, <a href="#BM_(fission)%2Fi">fission</a>s, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s, copies, etc..</li>
+<li>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
@@ -19527,7 +19528,7 @@ dist(S3, S4) is 5 = x + u + z
 <li><a href="#BM_(unrooted%20binary%20tree)%2Fi">unrooted binary tree</a>s that states internal nodes must have <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of exactly 3.</li>
 <li><a href="#BM_(simple%20tree)%2Fi">simple tree</a>s that states internal nodes must have <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of greater than 2.</li>
 </ul>
-<p><img src="svgbob_9fe6d9301400b1bc3c8689dfb1b50be14722ebbd.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_9d8f5b3c109dc96946bf1d24e21ac3304a29070c.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(ultrametric%20tree%7Cultrametric)%2Fi"></a><strong>ultrametric tree</strong> - A <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> where all leaf nodes are equidistant from the root.</p>
@@ -20003,6 +20004,67 @@ c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
 M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.302709em;"><span></span></span></span></span></span></span></span></span>, where v and w are two n dimensional points.</p>
+</li>
+<li>
+<p><a name="BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.</p>
+<p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
+  center_pt = <span class="hljs-built_in">min</span>(
+    center_pts,
+    key=<span class="hljs-keyword">lambda</span> cp: dist(data_pt, cp)
+  )
+  <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
+</code></pre>
+<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering is to produce cluster centers that minimize the farthest distance.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">farthest_closest_center</span>(<span class="hljs-params">data_pts, center_pts</span>):
+  dists = []
+  <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
+    closest_center_pt, dist_to = find_closest_center(data_pt, center_pts)
+    dists.append(dist_to)
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dists)
+</code></pre>
+<p>In the example below, the left center point is better than the right center point because it has a lower farthest distance: The right center point's distance to A is farther than any distance in the left center point.</p>
+<p><img src="svgbob_e53f2f29f301589040ea2ae613deaf308148ff71.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi"></a><strong>k-means clustering</strong> - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.</p>
+<p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
+  center_pt = <span class="hljs-built_in">min</span>(
+    center_pts,
+    key=<span class="hljs-keyword">lambda</span> cp: dist(data_pt, cp)
+  )
+  <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
+</code></pre>
+<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering is to produce cluster centers that minimize the squared error distortion.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">squared_error_distortion</span>(<span class="hljs-params">data_pts, center_pts</span>):
+  res = []
+  <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
+    closest_center_pt, dist_to = find_closest_center(data_pt, center_pts)
+    res.append(dist_to ** <span class="hljs-number">2</span>)
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(res) / <span class="hljs-built_in">len</span>(res)
+</code></pre>
+<p>Compared against <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering, the metric being minimized in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi">k-means</a> (squared error distortion) factors in all data points while the metric being minimized in <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> (farthest distance to any center) factors in only a single data point. If outliers are present, <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>'s metric causes the cluster center to be wildly offset while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi">k-mean</a>'s metric will only be mildly shift offset.</p>
+<p>In the example below, the minimized cluster center for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is wildly offset by outlier Z while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi">k-means</a> isn't offset as much.</p>
+<p><img src="svgbob_50f9ef0bee677ed328acdaec5260e8530cf4b1be.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(center%20of%20gravity)%2Fi"></a><strong>center of gravity</strong> - In terms of clustering, the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for a set of points is the mean of each individual dimension / coordinates.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
+  dim_means = []
+  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
+    mean = <span class="hljs-number">0.0</span>
+    <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
+      mean += data_pt[i]
+    mean /= <span class="hljs-built_in">len</span>(data_pts)
+    dim_means[i] = mean
+  <span class="hljs-keyword">return</span> dim_means
+</code></pre>
+<p>For example, for the 2D points (0,5), (1,3), and (2,2), the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is (1, 3.3333). The coordinate / dimension for ...</p>
+<ul>
+<li>x is calculated as <code>0+1+2/3 = 1</code>.</li>
+<li>y is calculated as <code>5+3+2/3 = 3.3333</code>.</li>
+</ul>
 </li>
 </ul>
 <p>

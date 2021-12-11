@@ -12502,6 +12502,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
  * GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.
  * Deep-learning Regulatory Motif Detection - Try training a deep learning model to "find" regulatory motifs for new transcription factors based on past training data.
  * Global alignment that takes genome rearrangements into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, fissions, fusions, copies, etc..
+ * Organism lookup by k-mer - Two-tiered database containing k-mers. The first tier is an "inverse index" of k-mers that rarely appear across all organisms (unique or almost unique to the genome) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all k-mers.
 
 # Terminology
 
@@ -15398,7 +15399,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
     /          |     \                                                        5   d
    4           5      6                                                          / \
                                                                                 6   e
-                                                                                   / \ 
+                                                                                   / \
                                                                                   2   3 
 
    * "Letter are internal nodes"
@@ -15710,6 +15711,112 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
    In n dimensional space, this is calculated as `{kt} \sqrt{\sum_{i=1}^n{(v_i - w_i)^2}}`, where v and w are two n dimensional points.
 
+ * `{bm} k-centers clustering/(k-centers?|\d+-centers?)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.
+
+   For each actual data point, the euclidean distance is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.
+
+   ```python
+   def find_closest_center(data_pt, center_pts):
+     center_pt = min(
+       center_pts,
+       key=lambda cp: dist(data_pt, cp)
+     )
+     return center_pt, dist(center_pt, data_pt)
+   ```
+
+   The goal with k-center clustering is to produce cluster centers that minimize the farthest distance.
+
+   ```python
+   def farthest_closest_center(data_pts, center_pts):
+     dists = []
+     for data_pt in data_pts:
+       closest_center_pt, dist_to = find_closest_center(data_pt, center_pts)
+       dists.append(dist_to)
+     return max(dists)
+   ```
+
+   In the example below, the left center point is better than the right center point because it has a lower farthest distance: The right center point's distance to A is farther than any distance in the left center point.
+
+   ```{svgbob}
+     "Good"           "Bad"
+
+       B                B    
+       |                 \    
+   A---*---D        A-----*-D
+       |                 /    
+       C                C    
+   ```
+
+ * `{bm} k-means clustering/(k-means?|\d+-means?)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.
+
+   For each actual data point, the euclidean distance is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.
+
+   ```python
+   def find_closest_center(data_pt, center_pts):
+     center_pt = min(
+       center_pts,
+       key=lambda cp: dist(data_pt, cp)
+     )
+     return center_pt, dist(center_pt, data_pt)
+   ```
+
+   The goal with k-center clustering is to produce cluster centers that minimize the squared error distortion.
+
+   ```python
+   def squared_error_distortion(data_pts, center_pts):
+     res = []
+     for data_pt in data_pts:
+       closest_center_pt, dist_to = find_closest_center(data_pt, center_pts)
+       res.append(dist_to ** 2)
+     return sum(res) / len(res)
+   ```
+
+   Compared against k-center clustering, the metric being minimized in k-means (squared error distortion) factors in all data points while the metric being minimized in k-center (farthest distance to any center) factors in only a single data point. If outliers are present, k-centers's metric causes the cluster center to be wildly offset while k-mean's metric will only be mildly shift offset.
+
+   In the example below, the minimized cluster center for k-centers is wildly offset by outlier Z while k-means isn't offset as much.
+
+   ```{svgbob}
+   .-------------------.       .-------------------.       .-------------------.
+   |    "no outlier"   |       |   "k-means w/ Z"  |       |  "k-centers w/ Z" |
+   |                   |       |                   |       |                   |
+   |        K          |       |         K         |       |          K        |
+   |                   |       |                   |       |                   |
+   |     J  ●  L       |       |      J     L      |       |       J     L     |
+   '-------------------'       |                   |       |                   |
+                               |         ●         |       |                   |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |                   |       |          ●        |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |                   |       |                   |
+                               |         Z         |       |          Z        |
+                               '-------------------'       '-------------------'
+   ```
+
+ * `{bm} center of gravity` - In terms of clustering, the center of gravity for a set of points is the mean of each individual dimension / coordinates.
+
+   ```python
+   def center_of_gravity(data_pts, dim):
+     dim_means = []
+     for i in range(dim):
+       mean = 0.0
+       for data_pt in data_pts:
+         mean += data_pt[i]
+       mean /= len(data_pts)
+       dim_means[i] = mean
+     return dim_means
+   ```
+
+   For example, for the 2D points (0,5), (1,3), and (2,2), the center of gravity is (1, 3.3333). The coordinate / dimension for ...
+   
+   * x is calculated as `0+1+2/3 = 1`.
+   * y is calculated as `5+3+2/3 = 3.3333`.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
