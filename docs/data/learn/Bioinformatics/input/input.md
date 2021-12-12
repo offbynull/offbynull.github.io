@@ -15809,7 +15809,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
        for data_pt in data_pts:
          mean += data_pt[i]
        mean /= len(data_pts)
-       dim_means[i] = mean
+       dim_means.append(mean)
      return dim_means
    ```
 
