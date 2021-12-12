@@ -20027,7 +20027,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_e53f2f29f301589040ea2ae613deaf308148ff71.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi"></a><strong>k-means clustering</strong> - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.</p>
+<p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi"></a><strong>k-means clustering</strong> - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.</p>
 <p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
   center_pt = <span class="hljs-built_in">min</span>(
@@ -20036,7 +20036,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
   )
   <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
 </code></pre>
-<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering is to produce cluster centers that minimize the squared error distortion.</p>
+<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering is to produce cluster centers that minimize the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">squared_error_distortion</span>(<span class="hljs-params">data_pts, center_pts</span>):
   res = []
   <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
@@ -20044,9 +20044,13 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
     res.append(dist_to ** <span class="hljs-number">2</span>)
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(res) / <span class="hljs-built_in">len</span>(res)
 </code></pre>
-<p>Compared against <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering, the metric being minimized in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi">k-means</a> (squared error distortion) factors in all data points while the metric being minimized in <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> (farthest distance to any center) factors in only a single data point. If outliers are present, <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>'s metric causes the cluster center to be wildly offset while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi">k-mean</a>'s metric will only be mildly shift offset.</p>
-<p>In the example below, the minimized cluster center for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is wildly offset by outlier Z while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F)%2Fi">k-means</a> isn't offset as much.</p>
+<p>Compared against <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering, the metric being minimized in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> (<a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>) factors in all data points while the metric being minimized in <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> (farthest distance to any center) factors in only a single data point. If outliers are present, <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>'s metric causes the cluster center to be wildly offset while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-mean</a>'s metric will only be mildly shift offset.</p>
+<p>In the example below, the minimized cluster center for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is wildly offset by outlier Z while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> isn't offset as much.</p>
 <p><img src="svgbob_50f9ef0bee677ed328acdaec5260e8530cf4b1be.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book states that <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> clustering often doesn't produce good results if the clumps have a non-globular shape (e.g. elongated) or have widely different densities.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(center%20of%20gravity)%2Fi"></a><strong>center of gravity</strong> - In terms of clustering, the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for a set of points is the mean of each individual dimension / coordinates.</p>
@@ -20057,7 +20061,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
     <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
       mean += data_pt[i]
     mean /= <span class="hljs-built_in">len</span>(data_pts)
-    dim_means[i] = mean
+    dim_means.append(mean)
   <span class="hljs-keyword">return</span> dim_means
 </code></pre>
 <p>For example, for the 2D points (0,5), (1,3), and (2,2), the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is (1, 3.3333). The coordinate / dimension for ...</p>
@@ -20065,6 +20069,54 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>x is calculated as <code>0+1+2/3 = 1</code>.</li>
 <li>y is calculated as <code>5+3+2/3 = 3.3333</code>.</li>
 </ul>
+</li>
+<li>
+<p><a name="BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi"></a><strong>Lloyd algorithm</strong> - A heuristic for determining centers in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> clustering. The algorithm begins by choosing centers by arbitrarily selecting k points from the points being clustered, then iteratively...</p>
+<ol>
+<li>assigns each point to its nearest center (ties broken arbitrarily),</li>
+<li>calculates a new set of centers by calculating the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for the points in each.</li>
+</ol>
+<p>It repeats this until the newly generated centers are the same as the centers from the previous iteration (stops converging).</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">lloyd</span>(<span class="hljs-params">points, num_centers, dims</span>):
+  old_centers = []
+  centers = random.sample(points, num_centers)
+  <span class="hljs-keyword">while</span> centers != old_centers:
+    mapping = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> points:
+      ct_pt, _ = find_closest_center(pt, centers)
+      mapping[ct_pt].append(pt)
+    old_centers = centers
+    centers = [nan] * num_centers
+    <span class="hljs-keyword">for</span> i, pts <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(mapping.values()):
+      centers[i] = center_of_gravity(pts, dims)
+  <span class="hljs-keyword">return</span> centers
+</code></pre>
+<p>Since this algorithm is a heuristic, it doesn't always converge to a good solution. The algorithm typically runs multiple times, where the run producing centers with the lowest <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> is accepted.</p>
+<p>An enhancement to the algorithm, called <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a>, increases the chances of converging to a good solution by <em>probabilistically</em> selecting initial centers that are far from each other:</p>
+<ol>
+<li>The 1st center is chosen from the list of points at random.</li>
+<li>The 2nd center is chosen by selecting a point that's likely to be much farther away from center 1 than most other points.</li>
+<li>The 3rd center is chosen by selecting a point that's likely to be much farther away from center 1 and 2 than most other points.</li>
+<li>...</li>
+</ol>
+<p>The probability of selecting a point as the next center is proportional to its squared distance to the existing centers.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">k_means_PP_initializer</span>(<span class="hljs-params">data_pts, k</span>):
+  centers = [random.choice(data_pts)]
+  <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(centers) &lt; k:
+    choice_points = []
+    choice_weights = []
+    <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> data_pts:
+      <span class="hljs-keyword">if</span> pt <span class="hljs-keyword">in</span> centers:
+        <span class="hljs-keyword">continue</span>
+      _, d = find_closest_center(pt, centers)
+      choice_weights.append(d)
+      choice_points.append(pt)
+    total = <span class="hljs-built_in">sum</span>(choice_weights)
+    choice_weights = [w / total <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> choice_weights]
+    c_pt = random.choices(choice_points, weights=choice_weights, k=<span class="hljs-number">1</span>).pop(<span class="hljs-number">0</span>)
+    centers.append(c_pt)
+  <span class="hljs-keyword">return</span> centers
+</code></pre>
 </li>
 </ul>
 <p>

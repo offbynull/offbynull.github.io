@@ -15747,7 +15747,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
        C                C    
    ```
 
- * `{bm} k-means clustering/(k-means?|\d+-means?)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.
+ * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.
 
    For each actual data point, the euclidean distance is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.
 
@@ -15799,6 +15799,10 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
                                '-------------------'       '-------------------'
    ```
 
+   ```{note}
+   The book states that k-means clustering often doesn't produce good results if the clumps have a non-globular shape (e.g. elongated) or have widely different densities.
+   ```
+
  * `{bm} center of gravity` - In terms of clustering, the center of gravity for a set of points is the mean of each individual dimension / coordinates.
 
    ```python
@@ -15817,6 +15821,61 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    
    * x is calculated as `0+1+2/3 = 1`.
    * y is calculated as `5+3+2/3 = 3.3333`.
+
+ * `{bm} Lloyd algorithm/(lloyd algorithm|k-means?\+\+ initializer|k-means?\+\+)/i` - A heuristic for determining centers in k-means clustering. The algorithm begins by choosing centers by arbitrarily selecting k points from the points being clustered, then iteratively...
+ 
+   1. assigns each point to its nearest center (ties broken arbitrarily),
+   2. calculates a new set of centers by calculating the center of gravity for the points in each.
+
+   It repeats this until the newly generated centers are the same as the centers from the previous iteration (stops converging).
+
+   ```python
+   def lloyd(points, num_centers, dims):
+     old_centers = []
+     centers = random.sample(points, num_centers)
+     while centers != old_centers:
+       mapping = defaultdict(list)
+       for pt in points:
+         ct_pt, _ = find_closest_center(pt, centers)
+         mapping[ct_pt].append(pt)
+       old_centers = centers
+       centers = [nan] * num_centers
+       for i, pts in enumerate(mapping.values()):
+         centers[i] = center_of_gravity(pts, dims)
+     return centers
+   ```
+
+   Since this algorithm is a heuristic, it doesn't always converge to a good solution. The algorithm typically runs multiple times, where the run producing centers with the lowest squared error distortion is accepted.
+
+   An enhancement to the algorithm, called k-means++ initializer, increases the chances of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other:
+   
+   1. The 1st center is chosen from the list of points at random.
+   2. The 2nd center is chosen by selecting a point that's likely to be much farther away from center 1 than most other points.
+   3. The 3rd center is chosen by selecting a point that's likely to be much farther away from center 1 and 2 than most other points.
+   4. ...
+
+   The probability of selecting a point as the next center is proportional to its squared distance to the existing centers.
+
+   ```python
+   def k_means_PP_initializer(data_pts, k):
+     centers = [random.choice(data_pts)]
+     while len(centers) < k:
+       choice_points = []
+       choice_weights = []
+       for pt in data_pts:
+         if pt in centers:
+           continue
+         _, d = find_closest_center(pt, centers)
+         choice_weights.append(d)
+         choice_points.append(pt)
+       total = sum(choice_weights)
+       choice_weights = [w / total for w in choice_weights]
+       c_pt = random.choices(choice_points, weights=choice_weights, k=1).pop(0)
+       centers.append(c_pt)
+     return centers
+   ```
+
+
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

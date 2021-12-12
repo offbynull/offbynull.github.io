@@ -1,12 +1,11 @@
+import math
 import random
 from collections import defaultdict
 from math import dist, nan
 from statistics import mean
 
-# Exercise Break: Pick your favorite parameter k and run the Lloyd algorithm 1,000 times on the 230-gene diauxic shift
-# dataset, each time initialized with a new set of k randomly chosen centers. Construct a histogram of the squared error
-# distortions of the resulting 1,000 outcomes. How many times did you have to run the Lloyd algorithm before finding the
-# run that scored highest among your 1,000 runs?
+# Exercise Break: Power up your implementation of the Lloyd algorithm using k-Means++Initializer, and apply it to the
+# 230-gene diauxic shift dataset for varying values of k.
 
 # MY ANSWER
 # ---------
@@ -262,9 +261,27 @@ def center_of_gravity(data_pts, dim):
     return dim_means
 
 
+def k_means_PP_initializer(data_pts, k):
+    centers = [random.choice(data_pts)]
+    while len(centers) < k:
+        choice_points = []
+        choice_weights = []
+        for pt in data_pts:
+            if pt in centers:
+                continue
+            _, d = find_closest_center(pt, centers)
+            choice_weights.append(d)
+            choice_points.append(pt)
+        total = sum(choice_weights)
+        choice_weights = [w / total for w in choice_weights]
+        c_pt = random.choices(choice_points, weights=choice_weights, k=1).pop(0)
+        centers.append(c_pt)
+    return centers
+
+
 def lloyd(points, num_centers, dims):
     old_centers = []
-    centers = random.sample(points, num_centers)
+    centers = k_means_PP_initializer(points, num_centers)
     while centers != old_centers:
         mapping = defaultdict(list)
         for pt in points:
