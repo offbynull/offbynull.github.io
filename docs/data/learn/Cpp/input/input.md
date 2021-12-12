@@ -69,7 +69,10 @@ TODO: chapter 8 -- initialization statements within switch statements (section o
 TODO: chapter 8 -- gotos
 
 
-TODO: start from ch 9
+TODO: chapter 9 -- static modifier on a method vs a function
+
+
+TODO: ch 9 at variadic functions section -- PUT UNDER Functions / Variadic HEADER.
 
 # Operators
 
@@ -1108,10 +1111,10 @@ MyChild c {};
 MyParent p {x}; // MyChild inherits from MyParent, meaning that it's assignable to MyParent
 ```
 
-Unlike most other object oriented languages, methods aren't overridable by default. To be able to override a method in a child class, the base class declaring it needs to prepend `virtual` to the declaration, making it a virtual method. Similarly, any method that overrides a virtual method should append `override` before the body.
+To be able to override a method in a child class the same way as its done in other languages (e.g. Java), the base call must have the `virtual` keyword prepended on the method, making it a virtual method. Similarly, any method that overrides a virtual method should have the `override` keyword appended just after the parameter list.
 
 ```{note}
-Appending `override` isn't strictly required, but it's a hint that the compiler can use to prevent you from making a mistake (e.g. it sees `override` but what's being overridden isn't `virtual`). It's similar to Java's `@Override` annotation.
+`override` isn't strictly required, but it's a hint that the compiler can use to prevent you from making a mistake (e.g. it sees `override` but what's being overridden isn't `virtual`). It's similar to Java's `@Override` annotation.
 ```
 
 ```c++
@@ -1144,6 +1147,26 @@ MyChild  &cref {x};
 MyParent &pref {x};
 cref.non_virt_method(0);  // calls MyChild::non_virt_method()
 pref.non_virt_method(0);  // calls MyParent::non_virt_method() even though object is a MyChild
+```
+
+To prevent a method from being overriddable at all, add the `final` keyword just after the parameter list.
+
+```c++
+struct MyParent {
+    virtual int methodA() final { ... }
+};
+
+struct MyChild : MyParent {
+    virtual int methodA() { ... }  // ERROR HERE -- not allowed
+};
+```
+
+Similarly, to prevent the entire class itself from being inheritable, add the `final` keyword just after the name.
+
+```c++
+struct MyParent final {
+    virtual int methodA() { ... }
+};
 ```
 
 C++ chains constructor and destructor invocations appropriately as expected. The one caveat is that destructor, if not a virtual method, will use the method resolution mechanism described above: If the type of the variable doesn't match the object (variable type is the base class but object is not), the wrong destructor gets invoked, resulting in object potentially not cleaning up resources (e.g. closing file handles).
@@ -1282,6 +1305,62 @@ See [here](https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393) for
 There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.
 ```
 
+# Functions
+
+C++ function declarations and definitions have the following form:
+
+```
+prefix-modifiers return-type name(parameters) suffix-modifiers;
+```
+
+ * Return type: The type returned by a function.
+ * Name: The name of a function.
+ * Parameters: The parameter list of a function.
+ * Prefix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (before return type).
+ * Suffix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (after parameter list).
+
+Prefix modifiers include...
+
+ * `static`
+ * `virtual`
+ * `constexpr`
+ * `[[noreturn]]`
+ * `inline`
+
+Suffix modifiers include...
+
+ * `noexcept`
+ * `const`
+ * `final`
+ * `override`
+ * `volatile`
+
+## Variadic
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
 # Namespaces
 
 Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using `namespace` blocks.
@@ -1358,7 +1437,7 @@ BasicGraph removeLimbs(const BasicGraph &g);
 
 C++ attributes are similar to annotations in Java, providing information to the user / compiler about the code that it's applied to. Unlike Java, C++ compilers are free to pick and choose which attributes they support and how they support them. There is no guarantee what action a compiler will take, if any, when it sees an attribute (e.g. compiler warnings).
 
-An attribute is applied by nesting it in double squared brackets (e.g. `[[noreturn]]`).
+An attribute is applied by nesting it in double squared brackets (e.g. `[[noreturn]]`) and placing it as a modifier on the function.
 
 ```c++
 [[noreturn]] void fail() {
@@ -1834,7 +1913,7 @@ Using `volatile` is important when working with embedded devices, where platform
 
 # Volatile Methods
 
-For methods of a class, a `volatile` after the declaration indicates that all fields should be treated as `volatile` (access won't be optimized away or re-ordered). This is a deep check rather than a shallow check, meaning that the entire call graph requires `volatile`.
+For methods of a class, a `volatile` after the parameter list indicates that all fields should be treated as `volatile` (access won't be optimized away or re-ordered). This is a deep check rather than a shallow check, meaning that the entire call graph requires `volatile`.
 
 ```c++
 struct Inner {
@@ -2027,6 +2106,18 @@ auto &e { a }; // int &  <-- THIS IS A SPECIAL CASE. YOU ALWAYS NEED TO USE auto
 ```
 
 Note that the last variable in the example above explicitly the ampersand (&) to declare e as a reference type. This is required because reference initialization works the same way as normal initialization (`auto` can't disambiguate).
+
+The `auto` keyword is also usable as a function return type, where the return type is deduced. Using `auto` on functions is discouraged because function definitions act as documentation. The exception is with templates, where the return type depends in potentially complex ways on template parameters.
+
+```c++
+auto my_function(int x) {
+    return x + 5;
+}
+```
+
+```{note}
+The book is saying that when you use `auto` for return type, you can optionally add a `->` after the parameter list to evaulate a "type expression", saying that it's useful for documentation? Something about `decltype()`. I wasn't able to understand what the point of this was. It said that it's something commonly used with templates.
+```
 
 # Object Lifecycle
 
@@ -2818,6 +2909,10 @@ If you're dealing with the STL, there's also special iterator implementations th
  * `{bm} bidirectional iterator` - An iterator that has the same functionality as forward iterator but also allows for moving backward in the sequence one element at a time, meaning it can move forward as well as backward.
 
  * `{bm} random access iterator` - An iterator that has the same functionality as bidirectional iterator but also allows randomly jumping to different elements within the sequence.
+
+ * `{bm} modifier/(specifier|modifier)/i` - Optional marker that alters a function. With functions, a modifier may be required to go either before the return type (prefix modifier) or after the parameter list (suffix modifier).
+ 
+   Modifiers are also sometimes referred to as specifiers.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
