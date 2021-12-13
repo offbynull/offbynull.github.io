@@ -20,6 +20,8 @@ TODO:  https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiri
 
 TODO:  https://www.reddit.com/r/cpp/comments/r3pmw2/writing_portable_c_code_and_undefined_unspecified/  + evaluation order of isn't defined (**SEE CH7 -- EXECUTION ORDER SECTION**)
 
+
+
 `{bm-disable-all}`
 > Evaluation order determines the execution sequence of operators in an expression. A common misconception is that precedence and evaluation order are equivalent: they are not. Precedence is a compile time concept that drives how operators bind to operands. Evaluation order is a runtime concept that drives the scheduling of operator execution.
 > 
@@ -42,6 +44,10 @@ try {
     printf("(a + max) Exception: %s\n", e.what());
 }
 ```
+
+
+
+TODO: https://www.fluentcpp.com/2021/12/13/the-evolutions-of-lambdas-in-c14-c17-and-c20/
 
 
 
@@ -69,12 +75,10 @@ TODO: chapter 8 -- initialization statements within switch statements (section o
 TODO: chapter 8 -- gotos
 
 
-TODO: chapter 9 -- static modifier on a method vs a function
-
-
 TODO: type deduction section (auto) has something written for functions as well -- move the function portion under Functions / Return Type Deduction HEADER.
 
-TODO: ch 9 at variadic functions section -- PUT UNDER Functions / Variadic HEADER.
+
+TODO: ch 9 at function pointers section -- PUT UNDER Pointers / Function Pointer HEADER.
 
 # Operators
 
@@ -812,34 +816,14 @@ auto my_function(int x) {
 The book is saying that when you use `auto` for return type, you can optionally add a `->` after the parameter list to evaulate a "type expression", saying that it's useful for documentation? Something about `decltype()`. I wasn't able to understand what the point of this was. It said that it's something commonly used with templates.
 ```
 
-## Conversions
-
-Similar to most other languages (e.g. Java and Python), C++ offers ways of type casting: implicit and explicit.
-
- * An implicit type conversion is when an object of a certain type is converted (cast) to another type automatically based on its usage.
-
-   ```c++
-   int x {5};
-   long y {x};  // int to long
-   ```
-
- * An explicit type conversion is when an object of a certain type is converted (cast) to another type explicitly in code.
-
-   ```c++
-   long x {5L};
-   int y {static_cast<int>(x)};   // long to int
-   ```
-
-Unlike those other languages, ...
-
- * implicit type conversions are more involved and error-prone.
- * explicit type conversions are done through multiple mechanisms.
-
-The following subsections detail the type conversions.
-
-### Implicit
+## Implicit Conversion
 
 An implicit type conversion is when an object of a certain type is converted (cast) automatically, without code explicitly changing the object to a different type. For example, `long x {1}` implicitly converts the `int` literal in the initializer to a `long`.
+
+```c++
+int x {5};
+long y {x};  // int to long
+```
 
 The most common types of implicit conversions are ...
 
@@ -862,9 +846,16 @@ Depending on the operation performed or how an object is initialized, the result
 The book recommends to always use braced initialization because when you do, the compiler produces warnings about types not fitting. However, those warnings don't seem to cover everything, at least that's the impression I get from what I've tried.
 ```
 
-### Explicit
+## Explicit Conversion
 
-An explicit type conversion is the opposite of an implicit type conversion. It's when an object of a certain type is explicitly converted (cast) to another type in code. Explicit type conversions come in two forms:
+An explicit type conversion is the opposite of an implicit type conversion. It's when an object of a certain type is explicitly converted (cast) to another type in code.
+
+```c++
+long x {5L};
+int y {static_cast<int>(x)};   // long to int
+```
+
+Explicit type conversions come in two forms:
 
  * Named conversions are the official way to cast in C++.
  * C-style casts are the legacy way to cast in C++.
@@ -932,42 +923,6 @@ int x = (int) 9999999999L;
 
 The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
 
-### Custom Conversions
-
-C++ classes support both implicit type conversions and explicit type conversions via operator overloading. Implicit type conversions are represented as operator overload methods where the name of the operator being overloaded is the destination type and the return type is omitted.
-
-```c++
-struct MyClass {
-    ...
-    operator int() const {
-        return this-> value / 42;
-    }
-};
-...
-MyClass cls {};
-int x = cls; // triggers operator overload method
-```
-
-Explicit type conversions are enabled the same way as implicit type conversions, except the overload method is preceded by the `explicit` keyword. The `explicit` keyword makes it so that conversion to that type requires a `static_cast`
-
-```c++
-struct MyClass {
-    ...
-    explicit operator int() const {
-        return this-> value / 42;
-    }
-};
-...
-MyClass cls {};
-int x = static_cast<int>(cls);  // static_cast required to trigger operator overload method
-```
-
-```{note}
-The book recommends not preferring explicit over implicit because implicit is a source for confusion.
-
-Do these still qualify as operator overloads? Return types should be there.
-```
-
 # Functions
 
 C++ function declarations and definitions have the following form:
@@ -1000,41 +955,72 @@ Suffix modifiers include...
 
 ## Variadic
 
-TODO: ADD VARIADIC FUNCTION NOTES
+A variadic function is one that takes in a variable number of arguments, sometimes called varargs in other languages. A function can be made variadic by placing `...` as the final parameter. The arguments for this final parameter are called the variadic arguments.
 
-TODO: ADD VARIADIC FUNCTION NOTES
+The variadic arguments for a function are accessible through functionality provided by the cstdargs header.
 
-TODO: ADD VARIADIC FUNCTION NOTES
+```c++
+#include <cstdargs>
 
-TODO: ADD VARIADIC FUNCTION NOTES
+float avg(size_t n, ...) {
+    va_list args;
+    va_start(args, n);
+    float sum {0};
+    while (size_t i = 0; i < n; i++) {
+        sum += va_args(args, float);
+    }
+    va_end(args);
+    return sum /= n;
+}
+```
 
-TODO: ADD VARIADIC FUNCTION NOTES
+ * `va_list` - Access point to variadic arguments.
+ * `va_start` - Initializes access to variadic arguments (requires the `va_list` variable and the expected count of variadic arguments).
+ * `va_args` - Gets the next variadic argument (requires the `va_list` variable and the expected type).
+ * `va_end` - Tears down access to the variadic arguments (requires the `va_list` variable).
 
-TODO: ADD VARIADIC FUNCTION NOTES
+In addition, the `va_copy()` can be used to copy one `va_list` to another. The source will need to be initialized before the copy (via `va_start`). Once `va_copy` returns, copy will already be initialized (no need for `va_start`) but will need to be torn down before the function exits (via `va_end`).
 
-TODO: ADD VARIADIC FUNCTION NOTES
+```c++
+#include <cstdargs>
 
-TODO: ADD VARIADIC FUNCTION NOTES
+float add_and_mult(size_t n, ...) {
+    va_list args;
+    va_list args2;
+    va_start(args, n);
+    va_copy(args2, args);  // 1st param is dst, 2nd param is src
+    float res {0};
+    while (size_t i = 0; i < n; i++) {
+        res += va_args(args, float);
+    }
+    va_end(args);
+    while (size_t i = 0; i < n; i++) {
+        res *= va_args(args2, float);
+    }
+    va_end(args2);
+    return res;
+}
+```
 
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
+```{note}
+The book recommends against using variadic functions due to confusing usage and having to explicitly know the count and types of the variadic arguments before hand (can become security problem is screwed up). Instead it recommends using variadic templates for functions instead.
+```
 
 ## Static
 
-TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+A static function is a function that's only visible to other functions in the same translation unit. Static functions have the `static` prefix modifier applied to the function.
 
-TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+```c++
+static int add(int a, int b) {
+    return a + b;
+}
+```
 
-TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+```{note}
+This is only for free functions (not belonging to a class).
 
-TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
-
-TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+The meaning of `static` changes when the function belongs to a class (method). When applied on a method, it means that the method isn't bound to any instance of the class -- it can't access fields belonging to an instance.
+```
 
 # Enumerations
 
@@ -1717,6 +1703,42 @@ See [here](https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393) for
 There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.
 ```
 
+## Conversion Overloading
+
+C++ classes support both implicit type conversions and explicit type conversions via operator overloading. Implicit type conversions are represented as operator overload methods where the name of the operator being overloaded is the destination type and the return type is omitted.
+
+```c++
+struct MyClass {
+    ...
+    operator int() const {
+        return this-> value / 42;
+    }
+};
+...
+MyClass cls {};
+int x = cls; // triggers operator overload method
+```
+
+Explicit type conversions are enabled the same way as implicit type conversions, except the overload method is preceded by the `explicit` keyword. The `explicit` keyword makes it so that conversion to that type requires a `static_cast`
+
+```c++
+struct MyClass {
+    ...
+    explicit operator int() const {
+        return this-> value / 42;
+    }
+};
+...
+MyClass cls {};
+int x = static_cast<int>(cls);  // static_cast required to trigger operator overload method
+```
+
+```{note}
+The book recommends not preferring explicit over implicit because implicit is a source for confusion.
+
+Do these still qualify as operator overloads? Return types should be there.
+```
+
 # Templates
 
 Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types and code are unknown, called template parameters. Each template parameter in a template either maps to a ...
@@ -1942,6 +1964,32 @@ T sum(T t) {
 template<typename T, typename... R>
 T sum(const T& first, R... rest) {
     return sum(first) + sum(rest...);
+}
+```
+
+Alternatively, rather than using recursion to exhaustively apply a binary operator, a fold expression may be applied to the parameter pack. A fold expression applies a binary operator to the contents of a parameter pack and return the final result.
+
+The syntax for fold expressions is `...` and the parameter pack's name sandwiched in between the operator, all encapsulated within a pair of brackets. Which side of the operator the `...` appears at defines if the fold expression will be left associative or right associative.
+
+```c++
+template<typename... R>
+T test(R... args) {
+    R l_ass_res = (... - args);  // ((((a-b)-c)-d)-...)
+    R r_ass_res = (args - ...);  // (...-(w-(x-(y-z))))
+    return l_ass_res + r_ass_res;
+}
+```
+
+```{note}
+Just a heads up that, depending on the operator, associativity matters. For example `((5-4)-3)` is not equal to `(5-(4-3))`.
+```
+
+To get the size of a parameter pack, add `...` after the `sizeof` operator.
+
+```c++
+template <typename X, typename... R>
+size_t calculate_size(R... args) {
+    return sizeof...(args);
 }
 ```
 
@@ -2959,6 +3007,22 @@ If you're dealing with the STL, there's also special iterator implementations th
  * `{bm} modifier/(specifier|modifier)/i` - Optional marker that alters a function. With functions, a modifier may be required to go either before the return type (prefix modifier) or after the parameter list (suffix modifier).
  
    Modifiers are also sometimes referred to as specifiers.
+
+ * `{bm} fold expression` - Exhaustively applies a binary operator to the contents of a parameter pack and return the final result.
+
+ * `{bm} associativity/(associativity|associative)/i` - In the context of binary operators, associativity refers to the order in which an expression with a chain of the same binary operator is evaluated. The term ...
+
+   * left associative means that the chain is evaluated left-to-right (left-most first, right-most last).
+
+     ```c++
+     a ? b ? c ? d = (((a ? b) ? c) ? d)
+     ```
+
+   * right associative means that the chain is evaluated right-to-left (right-most first, left-most last).
+
+     ```c++
+     a ? b ? c ? d = (a ? (b ? (c ? d)))
+     ```
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
