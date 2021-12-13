@@ -72,6 +72,8 @@ TODO: chapter 8 -- gotos
 TODO: chapter 9 -- static modifier on a method vs a function
 
 
+TODO: type deduction section (auto) has something written for functions as well -- move the function portion under Functions / Return Type Deduction HEADER.
+
 TODO: ch 9 at variadic functions section -- PUT UNDER Functions / Variadic HEADER.
 
 # Operators
@@ -220,7 +222,9 @@ x = obj['column name', 100]
 
 # Types
 
-## Core Integer Types
+## Core Types
+
+### Integral
 
 C++'s core integer types are as follows...
 
@@ -263,8 +267,7 @@ All other specifics are platform-dependent. Specifically, ...
  * range is undefined.
  * bit length is undefined (e.g. 8, 16, etc..).
  * endian-ness is undefined (e.g. big-endian vs little-endian).
- * encoding scheme is undefined (e.g. one's complement, two's complement, etc..).
- * overflow behaviour of _signed_ types is undefined (e.g. crash, stay at boundary, wrap back around, etc..).
+ * encoding scheme of _signed_ types is two's complement (as of C++20), but underflow/overflow behaviour of _signed_ types is undefined (e.g. crash, stay at boundary, wrap back around, etc..).
 
 Integer ranges, although platform-specific, are queryable in the climits header.
 
@@ -308,8 +311,6 @@ Notice that `int`, `short`, and `unsigned short` don't have explicit suffixes. I
 ```{note}
 See also `std::numeric_limits` in the limits header. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
-
-## Sized Integer Types
 
 Integer types with standardized bit lengths are defined in the cstdlib header.
 
@@ -358,7 +359,7 @@ The macros above make it so that you don't need to know the underlying mapping..
 See also `std::numeric_limits` in the limits. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
 
-## Floating Point Types
+### Floating Point
 
 C++'s core floating point types are as follows...
 
@@ -421,7 +422,7 @@ I see online that `FLT_DIG`, `DBL_DIG`, `LDBL_DIG`, and `DECIMAL_DIG` define the
 See also `std::numeric_limits` in the limits header. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
 
-## Character Types
+### Character
 
 Core C++ strings are represented as an array of characters, where that array ends with a null character to signify its end. This is in contrast to other major platforms that typically structure strings a size integer along with the array (no null terminator).
 
@@ -460,65 +461,14 @@ Typically escaping rules apply to string literals. Unescaped string literals are
  
 These delimiter characters are characters that aren't encountered in the contents of the string itself. For example, in `u8R"|hello|"`, the delimiter is `|` and isn't included in the resulting UTF-8 string.
 
-## Void Type
+### Void
 
 `void` is a type that represents an empty set of values. Since it can't hold a value, C++ won't allow you to declare an object of type void. However, you can use it to declare that a function ...
 
 * returns no value (`void` return).
 * accepts no arguments (`void` parameter list).
 
-## Enumeration Types
-
-C++ enumerations are be declared using `enum class`.
-
-```c++
-enum class MyEnum {
-   OptionA,
-   OptionB,
-   OptionC
-};
-
-MyEnum x = MyEnum::OptionC;
-```
-
-Under the hood, an enum is represented as an integer data type where each of its options is a particular integer constant (speculation -- is it guaranteed to be an int or is it something that's platform-specific?).
-
-Enumerations may be used with `switch` statements as well.
-
-```c++
-switch (x) {
-    case MyEnum::OptionA:
-        ...
-        break;
-    case MyEnum::OptionB:
-        ...
-        break;
-    case MyEnum::OptionC:
-        ...
-        break;
-    default:
-        break;
-}
-```
-
-````{note}
-It's possible to remove the `class` from `enum class`, which heavily loosens type-safety and scope. By removing `class`, the options within have their values implicitly converted to integers and you don't need the resolution scope operator (their options are accessible at the same level as an enum).
-
-```c++
-enum MyEnum { // no class keywrod
-   OptionA,
-   OptionB,
-   OptionC
-};
-
-MyEnum x = OptionC; // this is okay -- don't have to use MyEnum::OptionC
-int y = OptionC;    // this is okay -- options are integers
-```
-
-You should prefer `enum class`.
-````
-
-## Array Types
+## Arrays
 
 C++ allows for the creation of arrays of constant length (size of the array must be known at compile-time). Elements of an array are guaranteed to be a contiguous in memory (speculation).
 
@@ -589,7 +539,7 @@ for (int v : y) { // ERROR
 
 You may be tempted to use `sizeof(array) / sizeof(type)` to determine the number of elements within an array. It's a better idea to use `std::size(array)` instead (found in the iterator header) because it should have logic to workaround and platform-specific behaviours that might cause inconsistent results / unexpected behaviour (speculation).
 
-## Pointer Types
+## Pointers
 
 C++ provides types that reference a memory address, called pointers. Variables of these types can point to different memory addresses / objects.
 
@@ -687,7 +637,7 @@ y = y + 2; // fails
 If you have a `void *` and you want to do raw memory manipulation at that address, use a `std::byte *` instead. Why not just use `char *` instead? Is a `char` guaranteed to be 1 byte (I think it is)? According to [this](https://stackoverflow.com/a/46151026), it's because certain assumptions about `char`s may not hold with bytes? I don't know. Just remember `std::byte *` if you're working with raw data.
 ``` 
 
-## Reference Types
+## References
 
 C++ provides a more sanitized version of pointers called references. A reference type is declared by adding an ampersand (&) after the type rather than an asterisk (*), and it implicitly takes the address of whatever is passed into it when its created.
 
@@ -717,7 +667,7 @@ Similarly, it's not possible to have a reference to a reference.
 int &&z { y }; // this isn't a thing -- fail
 ```
 
-## Rvalue Reference Type
+## Rvalue References
 
 An rvalue reference is similar to a reference except that it tells the compiler that it's working with is an rvalue. Rvalue references are declared by adding two ampersands (&&) after the type rather than just one. It's initialized using the `std::move()` function within the utility header, which casts its input into an rvalue reference.
 
@@ -734,34 +684,410 @@ MyObject c {b};               // move a into c (gut it into c) via the move cons
 Once an object is moved, it's in an invalid state. The only two reliable operations you can perform on it is to either destroy or re-assign it to something else (assignments are discussed elsewhere).
 ```
 
-## Union Types
+## Aliasing
 
-C++ unions are a set of variables that point to the same underlying memory. Each union takes up only as much memory as its largest member.
+The `using` keyword is used to give synonyms to types. Other than having a new name, a type alias is the exact same as the originating type.
 
 ```c++
-union MyUnion {
-   char raw[100];
-   short num_int;
-   double num_dbl;
+using IntegerButWithNewName = int;
+int x {42};
+IntegerButWithNewName y {42};    // equivalent to:  int y {42};
+IntegerButWithNewName z {x + y}; // equivalent to:  int z {x + y};
+
+int func(float x);
+int func(short x);
+int func(int x);
+int func(IntegerButWithNewName x);  // NOT ALLOWED -- this overload is equivalent to the overload above
+```
+
+````{note}
+To allow for use-cases such as the function overloading case in the example above, the cleanest solution is to wrap the type in a class
+
+````
+
+The benefit of type aliasing is that it helps shorten type names, which can be especially useful when using a template.
+
+```c++
+using BasicGraph = DirectedGraph::Graph<std::string, std::map<std::string, std::string>, std::string, std::map<std::string, std::string>>;
+
+BasicGraph removeLimbs(const BasicGraph &g);
+```
+
+## Constant
+
+For types, any part of that type can be made unmodifiable by adding a `const` immediately after it.
+
+```c++
+int a {5};                // a is changeable   -- set to 5
+int const x {a};          // x is unchangeable -- set to 5 (value in a)
+int * const y {&a};       // y is an unchangeable pointer to a changeable int -- set to a (points to a)
+int const * const z {&x}; // z is an unchangeable pointer to a unchangeable int -- set to x (points to x)
+```
+
+The simplest way to interpret `const`-ness of a type is to read it from right-to-left.
+
+```{svgbob}
+ "int const"   "*"   "* const"
+'-----+-----' '-+-' '----+----'
+      |         |        |
+      |         |        '-- "an unmodifiable pointer to"
+      |         '----------- "a pointer to"
+      '--------------------- "an unmodifiable int"
+                  
+"int const * * const = An unmodifiable pointer to a pointer to an unmodifiable int" 
+```
+
+One caveat to the above is that a type beginning with `const` is equivalent to the first part of that type having `const` applied on it.
+
+```c++
+const int x {5};  // equivalent to int const x {5}
+```
+
+All of the examples above were for fundamental types. Appending a `const` on a class type works exactly the same way: None of its fields are modifiable ever, even by its own methods.
+
+```c++
+struct MyStruct {
+    int x {5}
+};
+
+MyStruct const inst {};
+inst.x = 5;  // compiler error
+```
+
+## Volatile
+
+```{note}
+Unlike in Java, The `volatile` keyword in C++ is _not_ used for thread-safety.
+```
+
+Adding the keyword `volatile` before a type makes it immune to compiler optimizations such as operation re-ordering and removal. Mutations and accesses, no matter how irrelevant they may seem, are kept in-place and in-order by the compiler.
+
+```c++
+int f(int a) {
+    int x {a};
+    x = 6;
+    int y {x};
+    int x {y};
+    return x; // at this point, x is always 6
 }
+```
 
-MyUnion x;
-// set all bytes of raw to 0
-for (int i = 0; i < sizeof(x.raw); i++) {
-   x.raw[i] = 0;
+A compiler might be able to deduce that the function above always returns 6, and as such may replace the operations it performs with simply just returning 6. Adding `volatile` to the type of the variable prevents this from happening.
+
+```c++
+int f(int a) {
+    volatile int x {a};  // marked as volatile
+    x = 6;
+    int y {x};
+    int x {y};
+    return x;
 }
-// since all members of the union start at the same memory location, these
-// will by likely both be 0 (unless short or double has a byte size of over
-// 100).
-cout << x.num_int << endl;
-cout << x.num_dbl << endl;
 ```
 
-```
-Consider using std::variant instead of unions.
+Using `volatile` is important when working with embedded devices, where platform-specific memory locations often need to be accessed in a specific order / at specific intervals in seemingly useless ways (e.g. kicking a watchdog by writing 0 to a memory location but never reading that memory location).
+
+## Deduction
+
+The keyword `auto` may be used during a variable declaration to deduce the resulting type of that variable from whatever it's being initialized with.
+
+```c++
+auto a { 1 };  // int
+auto b { 1L }; // long
+auto c { &a }; // int *
+auto d { *c }; // int
+auto &e { a }; // int &  <-- THIS IS A SPECIAL CASE. YOU ALWAYS NEED TO USE auto& FOR REFERENCES
 ```
 
-## Class Types
+Note that the last variable in the example above explicitly the ampersand (&) to declare e as a reference type. This is required because reference initialization works the same way as normal initialization (`auto` can't disambiguate).
+
+The `auto` keyword is also usable as a function return type, where the return type is deduced. Using `auto` on functions is discouraged because function definitions act as documentation. The exception is with templates, where the return type depends in potentially complex ways on template parameters.
+
+```c++
+auto my_function(int x) {
+    return x + 5;
+}
+```
+
+```{note}
+The book is saying that when you use `auto` for return type, you can optionally add a `->` after the parameter list to evaulate a "type expression", saying that it's useful for documentation? Something about `decltype()`. I wasn't able to understand what the point of this was. It said that it's something commonly used with templates.
+```
+
+## Conversions
+
+Similar to most other languages (e.g. Java and Python), C++ offers ways of type casting: implicit and explicit.
+
+ * An implicit type conversion is when an object of a certain type is converted (cast) to another type automatically based on its usage.
+
+   ```c++
+   int x {5};
+   long y {x};  // int to long
+   ```
+
+ * An explicit type conversion is when an object of a certain type is converted (cast) to another type explicitly in code.
+
+   ```c++
+   long x {5L};
+   int y {static_cast<int>(x)};   // long to int
+   ```
+
+Unlike those other languages, ...
+
+ * implicit type conversions are more involved and error-prone.
+ * explicit type conversions are done through multiple mechanisms.
+
+The following subsections detail the type conversions.
+
+### Implicit
+
+An implicit type conversion is when an object of a certain type is converted (cast) automatically, without code explicitly changing the object to a different type. For example, `long x {1}` implicitly converts the `int` literal in the initializer to a `long`.
+
+The most common types of implicit conversions are ...
+
+ * when a pointer of a certain type gets implicitly converted to a void pointer (e.g. `int *` to `void *`).
+ * when a numeric type gets converted to another numeric type via promotion rules (e.g. `int` to `float`).
+ * when a numeric type gets converted to a bool type (e.g. `0` to `false`)
+
+Depending on the operation performed or how an object is initialized, the results of an implicit conversion may do something specific to that platform and/or compiler implementation.
+
+| Source Type    | Destination Type | Behaviour                                                                                                                                         |
+|----------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| Integer        | Floating Point   | Implementation-specific behaviour if can't fit in destination (speculation).                                                                      |
+| Floating Point | Integer          | Rounded to integer (speculation - how?), implementation-specific behaviour if can't fit in destination (speculation).                             |
+| Integer        | Integer          | Signed destination and value can't fit, implementation-specific behaviour. Unsigned destination and value can't fit, truncates higher-order bits. |
+| Floating Point | Floating Point   | Implementation-specific behaviour if value can't fit in destination.                                                                              |
+| Any Numeric    | Boolean          | 0 converts to `false`, otherwise `true`.                                                                                                          |
+| Any Pointer    | Boolean          | `nullptr` converts to `false`, otherwise `true`.                                                                                                  |
+
+```{note}
+The book recommends to always use braced initialization because when you do, the compiler produces warnings about types not fitting. However, those warnings don't seem to cover everything, at least that's the impression I get from what I've tried.
+```
+
+### Explicit
+
+An explicit type conversion is the opposite of an implicit type conversion. It's when an object of a certain type is explicitly converted (cast) to another type in code. Explicit type conversions come in two forms:
+
+ * Named conversions are the official way to cast in C++.
+ * C-style casts are the legacy way to cast in C++.
+
+Named conversions should be preferred over C-style casts. Any C-style cast can be performed through a named conversion.
+
+#### Named Conversions
+
+Named conversion functions are a set of (seemingly templated) functions to convert an object's types. These functions provides safety mechanisms that aren't available in other older ways of casting.
+
+ * `const_cast` removes the `const` modifier from an object's type.
+   
+   ```c++
+   void func(const MyType &t) {
+       T &moddable_t = const_cast<MyType &>(t);
+   }
+   ```
+
+   Performing this type of conversion should only be done in extreme situations since it breaks contracts.
+
+ * `static_cast` forces the reverse of an implicit conversion.
+
+   ```c++
+   int a[] {1,2,3,4};
+   int *b = a;  // ok, implicit conversion (decay to pointer)
+   void *c = b; // ok, implicit conversion
+   int *d = c;  // error, can't go in reverse
+   int *e = static_cast<int *>(c); // ok
+   ```
+
+   In the above example, a `uint32_t *` implicitly converts to `void *`, but not the reverse. A `static_cast` makes going in reverse possible. However, that doesn't mean it's always safe to do. For example, `uint32_t` reads may need to be aligned to 4 byte boundaries on certain platforms. If the `void *` was arbitrary data (e.g. coming in over a network), it might cause a crash to just treat it as a `uint32_t *` and start reading.
+
+   ```{note}
+   Why does a `uint32_t*` implicitly convert to a `void *`? Recall that `void *` just means "pointer to something unknown", which is something the language is okay automatically / implicitly converting.
+   ```
+
+ * `reinterpret_cast` forces a reinterpretation of an object into an entirely different type.
+
+   ```c++
+   int a[] {1,2,3,4};
+   int *b = a;   // ok, implicit conversion (decay to pointer)
+   short *c = b; // error, you can't convert from an int* to a short* (not even with a static_cast because it's not an implicit conversion)
+   short *d = reinterpret_cast<int *>;  // ok
+   ```
+
+ * `narrow_cast` is similar to `static_cast` for numerics, except it ensures that no information loss occurred.
+
+   ```c++
+   uint32_t a = 70000;                     // ok
+   uint16_t b = static_cast<uint16_t>(a);  // ok, but since uint16_t has a max of65535, this object is mangled
+   uint16_t c = narrow_cast<uint16_t>(a);  // runtime exception, narrow_cast sees that the object will be mangled
+   ```
+
+   ```{note}
+   Is this part of the standard? The book seems to give the code for `narrow_cast` and looking online it looks like people have their own implementations?
+   ```
+
+#### C-style Casts
+
+C-style casts are similar to casts seen in Java. The type is bracketed before whatever is being evaluated.
+
+```c++
+int x = (int) 9999999999L;
+```
+
+The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
+
+### Custom Conversions
+
+C++ classes support both implicit type conversions and explicit type conversions via operator overloading. Implicit type conversions are represented as operator overload methods where the name of the operator being overloaded is the destination type and the return type is omitted.
+
+```c++
+struct MyClass {
+    ...
+    operator int() const {
+        return this-> value / 42;
+    }
+};
+...
+MyClass cls {};
+int x = cls; // triggers operator overload method
+```
+
+Explicit type conversions are enabled the same way as implicit type conversions, except the overload method is preceded by the `explicit` keyword. The `explicit` keyword makes it so that conversion to that type requires a `static_cast`
+
+```c++
+struct MyClass {
+    ...
+    explicit operator int() const {
+        return this-> value / 42;
+    }
+};
+...
+MyClass cls {};
+int x = static_cast<int>(cls);  // static_cast required to trigger operator overload method
+```
+
+```{note}
+The book recommends not preferring explicit over implicit because implicit is a source for confusion.
+
+Do these still qualify as operator overloads? Return types should be there.
+```
+
+# Functions
+
+C++ function declarations and definitions have the following form:
+
+```
+prefix-modifiers return-type name(parameters) suffix-modifiers;
+```
+
+ * Return type: The type returned by a function.
+ * Name: The name of a function.
+ * Parameters: The parameter list of a function.
+ * Prefix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (before return type).
+ * Suffix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (after parameter list).
+
+Prefix modifiers include...
+
+ * `static`
+ * `virtual`
+ * `constexpr`
+ * `[[noreturn]]`
+ * `inline`
+
+Suffix modifiers include...
+
+ * `noexcept`
+ * `const`
+ * `final`
+ * `override`
+ * `volatile`
+
+## Variadic
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+TODO: ADD VARIADIC FUNCTION NOTES
+
+## Static
+
+TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+
+TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+
+TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+
+TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+
+TODO: FILL ME IN -- NOT THE SAME THING AS A STATIC METHOD
+
+# Enumerations
+
+C++ enumerations are declared using `enum class`.
+
+```c++
+enum class MyEnum {
+   OptionA,
+   OptionB,
+   OptionC
+};
+
+MyEnum x = MyEnum::OptionC;
+```
+
+Under the hood, an enum is represented as an integer data type where each of its options is a particular integer constant (speculation -- is it guaranteed to be an int or is it something that's platform-specific?).
+
+Enumerations may be used with `switch` statements as well.
+
+```c++
+switch (x) {
+    case MyEnum::OptionA:
+        ...
+        break;
+    case MyEnum::OptionB:
+        ...
+        break;
+    case MyEnum::OptionC:
+        ...
+        break;
+    default:
+        break;
+}
+```
+
+````{note}
+It's possible to remove the `class` from `enum class`, which heavily loosens type-safety and scope. By removing `class`, the options within have their values implicitly converted to integers and you don't need the resolution scope operator (their options are accessible at the same level as an enum).
+
+```c++
+enum MyEnum { // no class keywrod
+   OptionA,
+   OptionB,
+   OptionC
+};
+
+MyEnum x = OptionC; // this is okay -- don't have to use MyEnum::OptionC
+int y = OptionC;    // this is okay -- options are integers
+```
+
+You should prefer `enum class`.
+````
+
+# Classes
 
 C++ classes are declared using either the `struct` keyword or `class` keyword. When ...
 
@@ -799,7 +1125,7 @@ struct MyStruct {
 C++ guarantees that a class's fields will be sequentially stored in memory, but they may be padded / aligned based on the platform. Be aware when using the sizeof operator. 
 ```
 
-### This Pointer
+## This Pointer
 
 Non-static methods of a class have access to an implicit pointer called `this`, which allows for accessing that instance's members. As long as the class member doesn't conflict with a parameter name of the method invoked, the usage of that name will implicitly reference the `this` pointer.
 
@@ -824,7 +1150,93 @@ class MyStruct {
 }
 ```
 
-### Construction
+## Constant
+
+For fields of a class, a `const` before the type has the same meaning as a `const` type at global scope: It's unmodifiable.
+
+For methods of a class, a `const` after the parameter list indicates that the class's fields won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.
+
+```c++
+struct Inner {
+    int x = 5;
+    int y = 6;
+    void change(int n) {
+        x = n;
+    }
+};
+
+struct X {
+    int a = 0;
+    Inner inner;
+    void test1() const {
+        a = 5;  // NOT okay -- no mutation allowed
+    }
+    void test2() const {
+        inner.x = 15; // NOT okay -- no mutation allowed, even though this is deeper down
+    }
+    void test3() const {
+        inner.change(15); // NOT okay -- method being invoked must be const (otherwise mutation might happen)
+    }
+};
+```
+
+## Volatile
+
+For fields of a class, a `volatile` before the type has the same meaning as a `volatile` type at global scope: The compiler won't optimize its access.
+
+For methods of a class, a `volatile` after the parameter list indicates that all fields should be treated as `volatile` (access won't be optimized away or re-ordered). This is a deep check rather than a shallow check, meaning that the entire call graph requires `volatile`.
+
+```{note}
+Another way to think of this is that the `volatile` on a method makes it treat the instance of the class as if the variable that was declaring it were `volatile` -- meaning all of its members are treated as `volatile` recursively down the object tree.
+```
+
+```c++
+struct Inner {
+    int x {5};
+    int y {6};
+    void change(int n) volatile {
+        x = n;
+        x = n;
+        x = n;
+    }
+};
+
+struct X {
+    int a {0};
+    int b {0};
+    void test() volatile {
+        a = b;
+        b = a;
+        inner.change(15); 
+    }
+};
+```
+
+## Static
+
+For fields of a class, a `static` before the type indicates that the function is independent of any instances of the class type: a static field points the same memory across all instances.
+
+For methods of a class, a `static` before the return type indicates that the function is independent of any instances of the class type, meaning that the only class fields that a `static` method can access are `static` fields.
+
+`static` methods and fields are accessed using the scope resolution (::) operator, where the scope is the class itself.
+
+```c++
+struct X {
+    static int a {1};
+    int b {0};
+    static void double_it() {
+        a *= 2; 
+    }
+};
+
+X::double_it();  // call using scoped resolution
+```
+
+```{note}
+Be careful, `static` has a different meaning for functions than it does for methods.
+```
+
+## Construction
 
 C++ classes are allowed one or more constructors that initialize the object. Similar to Java, each constructor should have the same name as the class itself, no return type, and a unique parameter list.
 
@@ -926,7 +1338,7 @@ Each item in the comma separated list is called a member initializer.
 How is this better than default member initialization, where initialization is done directly after the field declaration? According to [this](https://stackoverflow.com/a/48098997), it's more-or-less the same?
 ```
 
-### Destruction
+## Destruction
 
 C++ classes are allowed an explicit cleanup function called a destructor (e.g. closing an open file handle, zeroing out memory for security purposes, etc..). A destructor is declared similarly to a constructor, the only differences being ...
 
@@ -950,7 +1362,7 @@ Destructors must never be called directly by the user, nor should an exception e
 
 If a destructor isn't declared, an empty one is implicitly generated.
 
-### Copying
+## Copying
 
 There are two built-in mechanisms for copying in C++: the copy constructor and copy assignment.
 
@@ -1030,7 +1442,7 @@ class MyStruct {
 ```
 ````
 
-### Moving
+## Moving
 
 There are two built-in mechanisms for moving in C++: the move constructor and move assignment. Moving is different from copying in that moving actually guts the insides (data) of one object and transfers it into another, leaving that object in an invalid state. If the scenario allows for it, moving is often times more efficient than copying.
 
@@ -1092,7 +1504,7 @@ class MyStruct {
 ```
 ````
 
-### Inheritance
+## Inheritance
 
 In C++, a class inherits another class by, just after its name, appending a colon (:) followed by the name of the parent class.
 
@@ -1196,7 +1608,7 @@ struct MyParent {
 };
 ```
 
-### Interfaces
+## Interfaces
 
 Interfaces and abstract classes are supported in C++, but not in the same way as other high-level languages. The C++ approach to interfaces is to explicitly mark certain methods as requiring an implementation. This is done by appending `= 0` to the method declaration.
 
@@ -1223,7 +1635,7 @@ As shown in the example above, a pure virtual class should have a virtual destru
 See inheritance section for a more thorough explanation.
 ```
 
-### Operator Overloading
+## Operator Overloading
 
 C++ classes support operator overloading.
 
@@ -1304,156 +1716,6 @@ See [here](https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393) for
 
 There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.
 ```
-
-# Functions
-
-C++ function declarations and definitions have the following form:
-
-```
-prefix-modifiers return-type name(parameters) suffix-modifiers;
-```
-
- * Return type: The type returned by a function.
- * Name: The name of a function.
- * Parameters: The parameter list of a function.
- * Prefix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (before return type).
- * Suffix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (after parameter list).
-
-Prefix modifiers include...
-
- * `static`
- * `virtual`
- * `constexpr`
- * `[[noreturn]]`
- * `inline`
-
-Suffix modifiers include...
-
- * `noexcept`
- * `const`
- * `final`
- * `override`
- * `volatile`
-
-## Variadic
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-TODO: ADD VARIADIC FUNCTION NOTES
-
-# Namespaces
-
-Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using `namespace` blocks.
-
-```c++
-namespace FirstLevel {
-    namespace MiddleLevel {
-        namespace LastLevel {
-            struct MyStruct {
-                int count;
-                bool flag;
-            };
-        }
-    }
-}
-```
-
-The nesting in the example above is avoidable via the scope operator (::).
-
-```c++
-namespace FirstLevel::MiddleLevel::LastLevel {
-    struct MyStruct {
-        int count;
-        bool flag;
-    };
-}
-```
-
-To use the symbols within a namespace, either include the namespace in symbol or bring all symbols within the namespace to the forefront via the `using` keyword (similar to Java's `import` or Python's `from` / `import`).
-
-```c++
-// Use namespace directly.
-FirstLevel:MiddleLevel::LastLevel::MyStruct x{};
-
-// Bring all symbols within a namespace to the forefront.
-using FirstLevel:MiddleLevel::LastLevel;
-MyStruct y{};
-
-// Bring a single symbol within a namespace to the forefront.
-using FirstLevel:MiddleLevel::LastLevel::MyStruct;
-MyStruct z{};
-```
-
-# Type Aliasing
-
-The `using` keyword is used to give synonyms to types. Other than having a new name, a type alias is the exact same as the originating type.
-
-```c++
-using IntegerButWithNewName = int;
-int x {42};
-IntegerButWithNewName y {42};    // equivalent to:  int y {42};
-IntegerButWithNewName z {x + y}; // equivalent to:  int z {x + y};
-
-int func(float x);
-int func(short x);
-int func(int x);
-int func(IntegerButWithNewName x);  // NOT ALLOWED -- this overload is equivalent to the overload above
-```
-
-````{note}
-To allow for use-cases such as the function overloading case in the example above, the cleanest solution is to wrap the type in a class
-
-````
-
-The benefit of type aliasing is that it helps shorten type names, which can be especially useful when using a template.
-
-```c++
-using BasicGraph = DirectedGraph::Graph<std::string, std::map<std::string, std::string>, std::string, std::map<std::string, std::string>>;
-
-BasicGraph removeLimbs(const BasicGraph &g);
-```
-
-# Attributes
-
-C++ attributes are similar to annotations in Java, providing information to the user / compiler about the code that it's applied to. Unlike Java, C++ compilers are free to pick and choose which attributes they support and how they support them. There is no guarantee what action a compiler will take, if any, when it sees an attribute (e.g. compiler warnings).
-
-An attribute is applied by nesting it in double squared brackets (e.g. `[[noreturn]]`) and placing it as a modifier on the function.
-
-```c++
-[[noreturn]] void fail() {
-    throw std::runtime_error { "Failed" };
-}
-```
-
-Common attributes:
-
-| Attribute               | Description                                                                                                                     |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| `[[deprecated("msg")]]` | Indicates that a function is deprecated. Message is optional.                                                                   |
-| `[[noreturn]]`          | Indicates that a function doesn't return.                                                                                       |
-| `[[fallthrough]]`       | Indicates that a switch case was explicitly designed to fall through to the next case (no `break` / `return` / etc.. intended). |
-| `[[nodiscard]]`         | Indicates that a function's result should be used somehow (produce compiler warning).                                           |
-| `[[maybe_unused]]`      | Indicates that a function's result doesn't have to be used (avoid compile warning).                                             |
 
 # Templates
 
@@ -1743,74 +2005,98 @@ bool sum(bool a, bool b) {  // type removed after name: "sum<bool>" to just "sum
 }
 ```
 
-# Constant Types
+# Unions
 
-For types, any part of that type can be made unmodifiable by adding a `const` immediately after it.
-
-```c++
-int a {5};                // a is changeable   -- set to 5
-int const x {a};          // x is unchangeable -- set to 5 (value in a)
-int * const y {&a};       // y is an unchangeable pointer to a changeable int -- set to a (points to a)
-int const * const z {&x}; // z is an unchangeable pointer to a unchangeable int -- set to x (points to x)
-```
-
-The simplest way to interpret `const`-ness of a type is to read it from right-to-left.
-
-```{svgbob}
- "int const"   "*"   "* const"
-'-----+-----' '-+-' '----+----'
-      |         |        |
-      |         |        '-- "an unmodifiable pointer to"
-      |         '----------- "a pointer to"
-      '--------------------- "an unmodifiable int"
-                  
-"int const * * const = An unmodifiable pointer to a pointer to an unmodifiable int" 
-```
-
-One caveat to the above is that a type beginning with `const` is equivalent to the first part of that type having `const` applied on it.
+C++ unions are a set of variables that point to the same underlying memory. Each union takes up only as much memory as its largest member.
 
 ```c++
-const int x {5};  // equivalent to int const x {5}
+union MyUnion {
+   char raw[100];
+   short num_int;
+   double num_dbl;
+}
+
+MyUnion x;
+// set all bytes of raw to 0
+for (int i = 0; i < sizeof(x.raw); i++) {
+   x.raw[i] = 0;
+}
+// since all members of the union start at the same memory location, these
+// will by likely both be 0 (unless short or double has a byte size of over
+// 100).
+cout << x.num_int << endl;
+cout << x.num_dbl << endl;
 ```
 
-All of the examples above were for fundamental types. Appending a `const` on a class type works exactly the same way: None of its fields are modifiable ever, even by its own methods.
+```
+Consider using std::variant instead of unions.
+```
+
+# Namespaces
+
+Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using `namespace` blocks.
 
 ```c++
-struct MyStruct {
-    int x {5}
-};
-
-MyStruct const inst {};
-inst.x = 5;  // compiler error
+namespace FirstLevel {
+    namespace MiddleLevel {
+        namespace LastLevel {
+            struct MyStruct {
+                int count;
+                bool flag;
+            };
+        }
+    }
+}
 ```
 
-# Constant Methods
-
-For methods of a class, a `const` after the declaration indicates that the class's fields won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.
+The nesting in the example above is avoidable via the scope operator (::).
 
 ```c++
-struct Inner {
-    int x = 5;
-    int y = 6;
-    void change(int n) {
-        x = n;
-    }
-};
-
-struct X {
-    int a = 0;
-    Inner inner;
-    void test1() const {
-        a = 5;  // NOT okay -- no mutation allowed
-    }
-    void test2() const {
-        inner.x = 15; // NOT okay -- no mutation allowed, even though this is deeper down
-    }
-    void test3() const {
-        inner.change(15); // NOT okay -- method being invoked must be const (otherwise mutation might happen)
-    }
-};
+namespace FirstLevel::MiddleLevel::LastLevel {
+    struct MyStruct {
+        int count;
+        bool flag;
+    };
+}
 ```
+
+To use the symbols within a namespace, either include the namespace in symbol or bring all symbols within the namespace to the forefront via the `using` keyword (similar to Java's `import` or Python's `from` / `import`).
+
+```c++
+// Use namespace directly.
+FirstLevel:MiddleLevel::LastLevel::MyStruct x{};
+
+// Bring all symbols within a namespace to the forefront.
+using FirstLevel:MiddleLevel::LastLevel;
+MyStruct y{};
+
+// Bring a single symbol within a namespace to the forefront.
+using FirstLevel:MiddleLevel::LastLevel::MyStruct;
+MyStruct z{};
+```
+
+# Attributes
+
+C++ attributes are similar to annotations in Java, providing information to the user / compiler about the code that it's applied to. Unlike Java, C++ compilers are free to pick and choose which attributes they support and how they support them. There is no guarantee what action a compiler will take, if any, when it sees an attribute (e.g. compiler warnings).
+
+An attribute is applied by nesting it in double squared brackets (e.g. `[[noreturn]]`) and placing it as a modifier on the function.
+
+```c++
+[[noreturn]] void fail() {
+    throw std::runtime_error { "Failed" };
+}
+```
+
+Common attributes:
+
+| Attribute               | Description                                                                                                                     |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `[[deprecated("msg")]]` | Indicates that a function is deprecated. Message is optional.                                                                   |
+| `[[noreturn]]`          | Indicates that a function doesn't return.                                                                                       |
+| `[[fallthrough]]`       | Indicates that a switch case was explicitly designed to fall through to the next case (no `break` / `return` / etc.. intended). |
+| `[[nodiscard]]`         | Indicates that a function's result should be used somehow (produce compiler warning).                                           |
+| `[[maybe_unused]]`      | Indicates that a function's result doesn't have to be used (avoid compile warning).                                             |
+
 
 # Constant Expressions
 
@@ -1877,246 +2163,6 @@ Those are what you would commonly use in `if constexpr` blocks. They help with b
 
 ```{note}
 All of this seems to replace the need for C preprocessor macros `#define` / `#ifdef` / etc...
-```
-
-# Volatile Types
-
-```{note}
-Unlike in Java, The `volatile` keyword in C++ is _not_ used for thread-safety.
-```
-
-Adding the keyword `volatile` before a type makes it immune to compiler optimizations such as operation re-ordering and removal. Mutations and accesses, no matter how irrelevant they may seem, are kept in-place and in-order by the compiler.
-
-```c++
-int f(int a) {
-    int x {a};
-    x = 6;
-    int y {x};
-    int x {y};
-    return x; // at this point, x is always 6
-}
-```
-
-A compiler might be able to deduce that the function above always returns 6, and as such may replace the operations it performs with simply just returning 6. Adding `volatile` to the type of the variable prevents this from happening.
-
-```c++
-int f(int a) {
-    volatile int x {a};  // marked as volatile
-    x = 6;
-    int y {x};
-    int x {y};
-    return x;
-}
-```
-
-Using `volatile` is important when working with embedded devices, where platform-specific memory locations often need to be accessed in a specific order / at specific intervals in seemingly useless ways (e.g. kicking a watchdog by writing 0 to a memory location but never reading that memory location).
-
-# Volatile Methods
-
-For methods of a class, a `volatile` after the parameter list indicates that all fields should be treated as `volatile` (access won't be optimized away or re-ordered). This is a deep check rather than a shallow check, meaning that the entire call graph requires `volatile`.
-
-```c++
-struct Inner {
-    int x {5};
-    int y {6};
-    void change(int n) volatile {
-        x = n;
-        x = n;
-        x = n;
-    }
-};
-
-struct X {
-    int a {0};
-    int b {0};
-    void test() volatile {
-        a = b;
-        b = a;
-        inner.change(15); 
-    }
-};
-```
-
-# Type Conversions
-
-Similar to most other languages (e.g. Java and Python), C++ offers ways of type casting: implicit and explicit.
-
- * An implicit type conversion is when an object of a certain type is converted (cast) to another type automatically based on its usage.
-
-   ```c++
-   int x {5};
-   long y {x};  // int to long
-   ```
-
- * An explicit type conversion is when an object of a certain type is converted (cast) to another type explicitly in code.
-
-   ```c++
-   long x {5L};
-   int y {static_cast<int>(x)};   // long to int
-   ```
-
-Unlike those other languages, ...
-
- * implicit type conversions are more involved and error-prone.
- * explicit type conversions are done through multiple mechanisms.
-
-The following subsections detail the type conversions.
-
-## Implicit Type Conversions
-
-An implicit type conversion is when an object of a certain type is converted (cast) automatically, without code explicitly changing the object to a different type. For example, `long x {1}` implicitly converts the `int` literal in the initializer to a `long`.
-
-The most common types of implicit conversions are ...
-
- * when a pointer of a certain type gets implicitly converted to a void pointer (e.g. `int *` to `void *`).
- * when a numeric type gets converted to another numeric type via promotion rules (e.g. `int` to `float`).
- * when a numeric type gets converted to a bool type (e.g. `0` to `false`)
-
-Depending on the operation performed or how an object is initialized, the results of an implicit conversion may do something specific to that platform and/or compiler implementation.
-
-| Source Type    | Destination Type | Behaviour                                                                                                                                         |
-|----------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| Integer        | Floating Point   | Implementation-specific behaviour if can't fit in destination (speculation).                                                                      |
-| Floating Point | Integer          | Rounded to integer (speculation - how?), implementation-specific behaviour if can't fit in destination (speculation).                             |
-| Integer        | Integer          | Signed destination and value can't fit, implementation-specific behaviour. Unsigned destination and value can't fit, truncates higher-order bits. |
-| Floating Point | Floating Point   | Implementation-specific behaviour if value can't fit in destination.                                                                              |
-| Any Numeric    | Boolean          | 0 converts to `false`, otherwise `true`.                                                                                                          |
-| Any Pointer    | Boolean          | `nullptr` converts to `false`, otherwise `true`.                                                                                                  |
-
-```{note}
-The book recommends to always use braced initialization because when you do, the compiler produces warnings about types not fitting. However, those warnings don't seem to cover everything, at least that's the impression I get from what I've tried.
-```
-
-## Explicit Type Conversions
-
-An explicit type conversion is the opposite of an implicit type conversion. It's when an object of a certain type is explicitly converted (cast) to another type in code. Explicit type conversions come in two forms:
-
- * Named conversions are the official way to cast in C++.
- * C-style casts are the legacy way to cast in C++.
-
-Named conversions should be preferred over C-style casts. Any C-style cast can be performed through a named conversion.
-
-### Named Conversions
-
-Named conversion functions are a set of (seemingly templated) functions to convert an object's types. These functions provides safety mechanisms that aren't available in other older ways of casting.
-
- * `const_cast` removes the `const` modifier from an object's type.
-   
-   ```c++
-   void func(const MyType &t) {
-       T &moddable_t = const_cast<MyType &>(t);
-   }
-   ```
-
-   Performing this type of conversion should only be done in extreme situations since it breaks contracts.
-
- * `static_cast` forces the reverse of an implicit conversion.
-
-   ```c++
-   int a[] {1,2,3,4};
-   int *b = a;  // ok, implicit conversion (decay to pointer)
-   void *c = b; // ok, implicit conversion
-   int *d = c;  // error, can't go in reverse
-   int *e = static_cast<int *>(c); // ok
-   ```
-
-   In the above example, a `uint32_t *` implicitly converts to `void *`, but not the reverse. A `static_cast` makes going in reverse possible. However, that doesn't mean it's always safe to do. For example, `uint32_t` reads may need to be aligned to 4 byte boundaries on certain platforms. If the `void *` was arbitrary data (e.g. coming in over a network), it might cause a crash to just treat it as a `uint32_t *` and start reading.
-
-   ```{note}
-   Why does a `uint32_t*` implicitly convert to a `void *`? Recall that `void *` just means "pointer to something unknown", which is something the language is okay automatically / implicitly converting.
-   ```
-
- * `reinterpret_cast` forces a reinterpretation of an object into an entirely different type.
-
-   ```c++
-   int a[] {1,2,3,4};
-   int *b = a;   // ok, implicit conversion (decay to pointer)
-   short *c = b; // error, you can't convert from an int* to a short* (not even with a static_cast because it's not an implicit conversion)
-   short *d = reinterpret_cast<int *>;  // ok
-   ```
-
- * `narrow_cast` is similar to `static_cast` for numerics, except it ensures that no information loss occurred.
-
-   ```c++
-   uint32_t a = 70000;                     // ok
-   uint16_t b = static_cast<uint16_t>(a);  // ok, but since uint16_t has a max of65535, this object is mangled
-   uint16_t c = narrow_cast<uint16_t>(a);  // runtime exception, narrow_cast sees that the object will be mangled
-   ```
-
-   ```{note}
-   Is this part of the standard? The book seems to give the code for `narrow_cast` and looking online it looks like people have their own implementations?
-   ```
-
-### C-style Casts
-
-C-style casts are similar to casts seen in Java. The type is bracketed before whatever is being evaluated.
-
-```c++
-int x = (int) 9999999999L;
-```
-
-The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
-
-## Custom Type Conversions
-
-C++ classes support both implicit type conversions and explicit type conversions via operator overloading. Implicit type conversions are represented as operator overload methods where the name of the operator being overloaded is the destination type and the return type is omitted.
-
-```c++
-struct MyClass {
-    ...
-    operator int() const {
-        return this-> value / 42;
-    }
-};
-...
-MyClass cls {};
-int x = cls; // triggers operator overload method
-```
-
-Explicit type conversions are enabled the same way as implicit type conversions, except the overload method is preceded by the `explicit` keyword. The `explicit` keyword makes it so that conversion to that type requires a `static_cast`
-
-```c++
-struct MyClass {
-    ...
-    explicit operator int() const {
-        return this-> value / 42;
-    }
-};
-...
-MyClass cls {};
-int x = static_cast<int>(cls);  // static_cast required to trigger operator overload method
-```
-
-```{note}
-The book recommends not preferring explicit over implicit because implicit is a source for confusion.
-
-Do these still qualify as operator overloads? Return types should be there.
-```
-
-# Type Deduction
-
-The keyword `auto` may be used during a variable declaration to deduce the resulting type of that variable from whatever it's being initialized with.
-
-```c++
-auto a { 1 };  // int
-auto b { 1L }; // long
-auto c { &a }; // int *
-auto d { *c }; // int
-auto &e { a }; // int &  <-- THIS IS A SPECIAL CASE. YOU ALWAYS NEED TO USE auto& FOR REFERENCES
-```
-
-Note that the last variable in the example above explicitly the ampersand (&) to declare e as a reference type. This is required because reference initialization works the same way as normal initialization (`auto` can't disambiguate).
-
-The `auto` keyword is also usable as a function return type, where the return type is deduced. Using `auto` on functions is discouraged because function definitions act as documentation. The exception is with templates, where the return type depends in potentially complex ways on template parameters.
-
-```c++
-auto my_function(int x) {
-    return x + 5;
-}
-```
-
-```{note}
-The book is saying that when you use `auto` for return type, you can optionally add a `->` after the parameter list to evaulate a "type expression", saying that it's useful for documentation? Something about `decltype()`. I wasn't able to understand what the point of this was. It said that it's something commonly used with templates.
 ```
 
 # Object Lifecycle
