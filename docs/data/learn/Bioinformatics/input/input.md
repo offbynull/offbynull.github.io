@@ -15875,6 +15875,53 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
      return centers
    ```
 
+ * `{bm} hard clustering \/ soft clustering/(hard clustering|soft clustering)/i` - In the context of clustering, ...
+ 
+   * soft clustering algorithms assign each data point to a set of probabilities, where each probability is how likely it is for that data point to be assigned to a cluster.
+
+     ```{svgbob}
+          *                                                                      *       
+     "A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
+                                                                                         
+             *                                *                              *       
+        "A=0.9,B=0.1"                    "A=0.5,B=0.5"                  "A=0.1,B=0.9"
+                                                                                         
+          *                                                                      *       
+     "A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
+     ```
+
+   * hard clustering algorithms assign each data point to exactly one cluster.
+
+     ```{svgbob}
+          *                                                                      *       
+       "A=1.0"                                                               "B=1.0"
+                                                                                         
+             *                                *                              *       
+          "A=1.0"                          "B=1.0"                        "B=1.0"
+                                                                                         
+          *                                                                      *       
+       "A=1.0"                                                                "B=1.0"
+     ```
+
+ * `{bm} dot product` - Given two equal sized vectors, the dot product of those vectors is calculated by first multiplying the pair at each index, then summing the result of those multiplications together. For example, the dot product (1, 2, 3) and (4, 5, 6) is 1\*4+2\*5+3\*6.
+
+   The notation for dot product is a central dot in between the two vector: `{kt} a \cdot b`.
+
+   ```{note}
+   Central dot is also common place for standard multiplication.
+
+   In geometry, the dot product of two vectors is used to get the angle between those vector.
+   ```
+
+ * `{bm} conditional probability` - The probability of an event occurring given that another event has already occurred.
+
+   The notation for conditional probability is Pr(B|A), where B is the event occurring and A is the event that's already occurred.
+   
+   If B and A are...
+    * independent events, Pr(B|A) is simply Pr(B).
+    * dependent events, Pr(B|A) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).
+
+
 
 
 `{bm-ignore} \b(read)_NORM/i`
