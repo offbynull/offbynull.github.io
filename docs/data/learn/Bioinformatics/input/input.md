@@ -12503,6 +12503,9 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
  * Deep-learning Regulatory Motif Detection - Try training a deep learning model to "find" regulatory motifs for new transcription factors based on past training data.
  * Global alignment that takes genome rearrangements into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, fissions, fusions, copies, etc..
  * Organism lookup by k-mer - Two-tiered database containing k-mers. The first tier is an "inverse index" of k-mers that rarely appear across all organisms (unique or almost unique to the genome) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all k-mers.
+ * K-mer hierarchial clustering - Hierarchical cluster together similar k-mers using either pearson similarity/pearson distance [between one/zero vector of sub-k-mers] or sequence alignment distance to form its distance matrix / similarity matrix. This is useful for when you're trying to identify which organism a sequence belongs to by searching for its k-mers in a database. The k-mers that make up the database would be clustered, and k-mers that closely cluster together under a branch of the hierarchial cluster tree are those you'd be more cautious with -- the k-mer may have matched but it could have actually been a corrupted form of one of the other k-mers in the cluster (sequencing error).
+
+   This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / distance matrix.
 
 # Terminology
 
@@ -14719,15 +14722,21 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
                +--- "Mycoplasma agalactiae"
    ```
 
- * `{bm} distance metric/(distance metric)/i` - A metric used to measure how related a pair of entities are to each other. Examples include...
+ * `{bm} distance metric/(distance metric)/i` - A metric used to measure how different a pair of entities are to each other. Examples include...
 
    * hamming distance between DNA / protein sequences.
    * global alignment score between DNA / protein sequences.
    * two-break count (reversal distance).
    * number of similar physical or behavioural attributes.
+   * euclidean distance between two vectors.
+   * pearson distance between two vectors.
    * etc..
 
- * `{bm} distance matrix/(distance matrix|distance matrices)/i` - Given a set of n different species, a distance matrix is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...
+   ```{note}
+   See also: similarity metric.
+   ```
+
+ * `{bm} distance matrix/(distance matrix|distance matrices)/i` - Given a set of n different entities, a distance matrix is an n-by-n matrix where each element contains the distance between the entities for that cell. For example, for the species snake, lizard, bird, and crocodile ...
 
    |           | Snake | Lizard | Bird | Crocodile |
    |-----------|-------|--------|------|-----------|
@@ -15921,7 +15930,109 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
     * independent events, Pr(B|A) is simply Pr(B).
     * dependent events, Pr(B|A) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).
 
+ * `{bm} similarity metric` - A metric used to measure how similar a pair of entities are to each other. Where as a distance metric starts at 0 for total similarity and grows based on how different the entities are, a similarity metric starts at 0 for total dissimilarity (orthogonal) and grows based on how similar the entities are. Examples of similarity metrics include ...
 
+   * pearson similarity.
+   * dot product between two vector.
+   * etc..
+
+   ```{note}
+   How does dot product capture similarity? See [here](https://math.stackexchange.com/a/689078).
+   ```
+
+   ```{note}
+   This topic was only briefly discussed, so I have no idea what properties are required other than: 0 = completely dissimilar / orthogonal and anything higher than that is more similar. It didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does `similarity(snake,snake) == similarity(bird,bird)` have to be true or can it be that `similarity(snake,snake) > similarity(bird,bird)`? I saw on Wikipedia that sequence alignment scoring matrices like PAM and BLOSUM are similarity matrices, so that implies that totally similar entities don't have to be the same score. For example, in BLOSUM62 `similarity(A,A) = 4` but `similarity(R,R) =5`.
+
+   There may be other properties involved, such as how the triangle inequality property is a thing for distance matrices / distance metrics.
+   ```
+
+ * `{bm} similarity matrix/(similarity matrix|similarity matrices)/i` - Given a set of n different entities, a similarity matrix is an n-by-n matrix where each element contains the similarity measure between the entities for that cell. For example, for the species snake, lizard, bird, and crocodile ...
+
+   |           | Snake | Lizard | Bird | Crocodile |
+   |-----------|-------|--------|------|-----------|
+   | Snake     |  1.0  |  0.8   | 0.4  |    0.6    |
+   | Lizard    |  0.8  |  1.0   | 0.4  |    0.6    |
+   | Bird      |  0.4  |  0.4   | 1.0  |    0.5    |
+   | Crocodile |  0.6  |  0.6   | 0.5  |    1.0    |
+
+   ```{note}
+   This topic was only briefly discussed, so I have no idea what properties are required other than: 0 = completely dissimilar / orthogonal and anything higher than that is more similar. It didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does `similarity(snake,snake) == similarity(bird,bird)` have to be true or can it be that `similarity(snake,snake) > similarity(bird,bird)`? I saw on Wikipedia that sequence alignment scoring matrices like PAM and BLOSUM are similarity matrices, so that implies that totally similar entities don't have to be the same score. For example, in BLOSUM62 `similarity(A,A) = 4` but `similarity(R,R) =5`.
+
+   There may be other properties involved, such as how the triangle inequality property is a thing for distance matrices / distance metrics.
+   ```
+
+ * `{bm} pearson correlation coefficient/(pearson correlation coefficient|pearson correlation|pearson distance|pearson similarity)/i` - A metric used to quantify how correlated two vectors are.
+
+   ```{kt}
+   \frac{
+     \sum_{i=1}^{m}(x_i-avg(x))\cdot(y_i-avg(y))
+   }{
+     \sqrt{
+       \sum_{i=1}^{m}(x_i-avg(x))^2\cdot\sum_{i=1}^{m}(y_i-avg(y))^2
+     }
+   }
+   ```
+
+   In the above formula, x and y are the two input vectors and avg is the average function. The result of the formula is a number between -1 and 1, where ...
+
+   * -1 represents a total negative correlation.
+   * 0 represents no correlation.
+   * 1 represents a total positive correlation.
+
+   The formula may be modified to become a ...
+
+   * distance metric as follows: `1 - pearson_correlation(x, y)`. Where as the pearson correlation coefficient varies between -1 and 1, the pearson distance varies between 0 (totally similar) and 2 (totally orthogonal).
+   * similarity metric as follows: `1 + pearson_correlation(x, y)`. Where as the pearson correlation coefficient varies between -1 and 1, the pearson similarity varies between 0 (totally orthogonal) and 2 (totally similar).
+
+ * `{bm} similarity graph` - A transformation of a similarity matrix into a graph, where the entities that make up the similarity matrix are represented as nodes and edges between nodes are only made if the similarity exceeds a certain threshold.
+
+   The similarity graph below was generated using the accompanying similarity matrix and threshold of 0.45.
+
+   |           | Snake | Lizard | Bird | Crocodile |
+   |-----------|-------|--------|------|-----------|
+   | Snake     |  1.0  |  0.8   | 0.4  |    0.6    |
+   | Lizard    |  0.8  |  1.0   | 0.4  |    0.6    |
+   | Bird      |  0.4  |  0.4   | 1.0  |    0.5    |
+   | Crocodile |  0.6  |  0.6   | 0.5  |    1.0    |
+
+   ```{svgbob}
+   "Only similarities of > 0.45 have an edge."
+
+           Lizard
+             *
+            / \
+           /   \
+    Snake *-----* Crocodile
+               /
+              /
+             *
+            Bird
+   ```
+
+   Similarity graphs are used for clustering (e.g. gene expression vectors). Assuming clusters exist and the similarity metric captures them, there should be some threshold where the edges produced in the similarity graph form cliques or corrupted cliques (a set of nodes that would form a clique if it weren't for a few extra edges and/or missing edges).
+
+ * `{bm} clique` - A set of nodes in a graph where every possible node pairing has an edge.
+
+   ```{svgbob}
+   *---*
+   |\ /|
+   | X |
+   |/ \|
+   *---*
+   ``` 
+
+ * `{bm} clique graph` - A graph consisting only of cliques.
+
+   ```{svgbob}
+   "Graph with 2 cliques"
+
+     *
+    / \     *---*
+   *---*    |\ /|
+            | X |
+            |/ \|
+            *---*
+   ``` 
 
 
 `{bm-ignore} \b(read)_NORM/i`

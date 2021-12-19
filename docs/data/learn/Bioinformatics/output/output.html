@@ -16507,12 +16507,28 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p></p>
 <a name="H_Ideas"></a><h1>Ideas</h1>
 <ul>
-<li>CPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</li>
-<li>GPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well. (divide and conquer might be a good idea because it'll work on super fat <a href="#BM_(sequence)%2Fi">sequence</a>s)</li>
-<li>GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</li>
-<li>Deep-learning <a href="#BM_(regulatory%20motif)%2Fi">Regulatory Motif</a> Detection - Try training a deep learning model to "find" <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>s for new <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s based on past training data.</li>
-<li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">Global alignment</a> that takes <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, <a href="#BM_(fission)%2Fi">fission</a>s, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s, copies, etc..</li>
-<li>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</li>
+<li>
+<p>CPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.</p>
+</li>
+<li>
+<p>GPU optimized C++ <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> - Simple <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well. (divide and conquer might be a good idea because it'll work on super fat <a href="#BM_(sequence)%2Fi">sequence</a>s)</p>
+</li>
+<li>
+<p>GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.</p>
+</li>
+<li>
+<p>Deep-learning <a href="#BM_(regulatory%20motif)%2Fi">Regulatory Motif</a> Detection - Try training a deep learning model to "find" <a href="#BM_(regulatory%20motif)%2Fi">regulatory motif</a>s for new <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>s based on past training data.</p>
+</li>
+<li>
+<p><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">Global alignment</a> that takes <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, <a href="#BM_(fission)%2Fi">fission</a>s, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s, copies, etc..</p>
+</li>
+<li>
+<p>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</p>
+</li>
+<li>
+<p><a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">K-mer</a> hierarchial clustering - Hierarchical cluster together similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s using either <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>/<a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> [between one/zero vector of sub-<a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s] or <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance to form its <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> / <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a>. This is useful for when you're trying to identify which organism a <a href="#BM_(sequence)%2Fi">sequence</a> belongs to by searching for its <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a database. The <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that make up the database would be clustered, and <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that closely cluster together under a branch of the hierarchial cluster <a href="#BM_(tree)%2Fi">tree</a> are those you'd be more cautious with -- the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may have matched but it could have actually been a corrupted form of one of the other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in the cluster (<a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>).</p>
+<p>This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
+</li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
@@ -18824,17 +18840,23 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p><img src="svgbob_f7b1705852841b00a5ecb758d6e39af634d6898e.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(distance%20metric)%2Fi"></a><strong>distance metric</strong> - A metric used to measure how related a pair of entities are to each other. Examples include...</p>
+<p><a name="BM_(distance%20metric)%2Fi"></a><strong>distance metric</strong> - A metric used to measure how different a pair of entities are to each other. Examples include...</p>
 <ul>
 <li><a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> between DNA / protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
 <li><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> score between DNA / protein <a href="#BM_(sequence)%2Fi">sequence</a>s.</li>
 <li><a href="#BM_%5Cb(2-break%7C2%20break%7Ctwo%20break%7Ctwo-break)s%3F%5Cb%2Fi">two-break</a> count (<a href="#BM_(reversal%20distance)%2Fi">reversal distance</a>).</li>
 <li>number of similar physical or behavioural attributes.</li>
+<li><a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between two vectors.</li>
+<li><a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> between two vectors.</li>
 <li>etc..</li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See also: <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>.</p>
+</div>
 </li>
 <li>
-<p><a name="BM_(distance%20matrix%7Cdistance%20matrices)%2Fi"></a><strong>distance matrix</strong> - Given a set of n different species, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an n-by-n matrix where each element contains the distance between the species for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
+<p><a name="BM_(distance%20matrix%7Cdistance%20matrices)%2Fi"></a><strong>distance matrix</strong> - Given a set of n different entities, a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is an n-by-n matrix where each element contains the distance between the entities for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
 <table>
 <thead>
 <tr>
@@ -20130,6 +20152,176 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_7c8762324eb16b3b6f8431f8bcdafe6bee6b3892.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
+</li>
+<li>
+<p><a name="BM_(dot%20product)%2Fi"></a><strong>dot product</strong> - Given two equal sized vectors, the <a href="#BM_(dot%20product)%2Fi">dot product</a> of those vectors is calculated by first multiplying the pair at each index, then summing the result of those multiplications together. For example, the <a href="#BM_(dot%20product)%2Fi">dot product</a> (1, 2, 3) and (4, 5, 6) is 1*4+2*5+3*6.</p>
+<p>The notation for <a href="#BM_(dot%20product)%2Fi">dot product</a> is a central dot in between the two vector: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>⋅</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \cdot b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44445em;vertical-align:0em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">b</span></span></span></span>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Central dot is also common place for standard multiplication.</p>
+<p>In geometry, the <a href="#BM_(dot%20product)%2Fi">dot product</a> of two vectors is used to get the angle between those vector.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(conditional%20probability)%2Fi"></a><strong>conditional probability</strong> - The probability of an event occurring given that another event has already occurred.</p>
+<p>The notation for <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a> is Pr(B|A), where B is the event occurring and A is the event that's already occurred.</p>
+<p>If B and A are...</p>
+<ul>
+<li>independent events, Pr(B|A) is simply Pr(B).</li>
+<li>dependent events, Pr(B|A) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(similarity%20metric)%2Fi"></a><strong>similarity metric</strong> - A metric used to measure how similar a pair of entities are to each other. Where as a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> starts at 0 for total similarity and grows based on how different the entities are, a <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> starts at 0 for total dissimilarity (orthogonal) and grows based on how similar the entities are. Examples of <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s include ...</p>
+<ul>
+<li><a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>.</li>
+<li><a href="#BM_(dot%20product)%2Fi">dot product</a> between two vector.</li>
+<li>etc..</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>How does <a href="#BM_(dot%20product)%2Fi">dot product</a> capture similarity? See <a href="https://math.stackexchange.com/a/689078">here</a>.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This topic was only briefly discussed, so I have no idea what properties are required other than: 0 = completely dissimilar / orthogonal and anything higher than that is more similar. It didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does <code>similarity(snake,snake) == similarity(bird,bird)</code> have to be true or can it be that <code>similarity(snake,snake) &gt; similarity(bird,bird)</code>? I saw on Wikipedia that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> scoring matrices like <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> and <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> are <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrices</a>, so that implies that totally similar entities don't have to be the same score. For example, in <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 <code>similarity(A,A) = 4</code> but <code>similarity(R,R) =5</code>.</p>
+<p>There may be other properties involved, such as how the triangle inequality property is a thing for <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi"></a><strong>similarity matrix</strong> - Given a set of n different entities, a <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> is an n-by-n matrix where each element contains the similarity measure between the entities for that cell. For example, for the species snake, lizard, bird, and crocodile ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Snake</th>
+<th>Lizard</th>
+<th>Bird</th>
+<th>Crocodile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Snake</td>
+<td>1.0</td>
+<td>0.8</td>
+<td>0.4</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>Lizard</td>
+<td>0.8</td>
+<td>1.0</td>
+<td>0.4</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>Bird</td>
+<td>0.4</td>
+<td>0.4</td>
+<td>1.0</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>Crocodile</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.5</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This topic was only briefly discussed, so I have no idea what properties are required other than: 0 = completely dissimilar / orthogonal and anything higher than that is more similar. It didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does <code>similarity(snake,snake) == similarity(bird,bird)</code> have to be true or can it be that <code>similarity(snake,snake) &gt; similarity(bird,bird)</code>? I saw on Wikipedia that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> scoring matrices like <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> and <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> are <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrices</a>, so that implies that totally similar entities don't have to be the same score. For example, in <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 <code>similarity(A,A) = 4</code> but <code>similarity(R,R) =5</code>.</p>
+<p>There may be other properties involved, such as how the triangle inequality property is a thing for <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi"></a><strong>pearson correlation coefficient</strong> - A metric used to quantify how correlated two vectors are.</p>
+<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>⋅</mo><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>⋅</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">\frac{
+  \sum_{i=1}^{m}(x_i-avg(x))\cdot(y_i-avg(y))
+}{
+  \sqrt{
+    \sum_{i=1}^{m}(x_i-avg(x))^2\cdot\sum_{i=1}^{m}(y_i-avg(y))^2
+  }
+}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.624002em;vertical-align:-1.13em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.494002em;"><span style="top:-2.1727090000000002em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.937291em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-2.897291em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.302709em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897100000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.13em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><p>In the above formula, x and y are the two input vectors and avg is the average function. The result of the formula is a number between -1 and 1, where ...</p>
+<ul>
+<li>-1 represents a total negative correlation.</li>
+<li>0 represents no correlation.</li>
+<li>1 represents a total positive correlation.</li>
+</ul>
+<p>The formula may be modified to become a ...</p>
+<ul>
+<li><a href="#BM_(distance%20metric)%2Fi">distance metric</a> as follows: <code>1 - pearson_correlation(x, y)</code>. Where as the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson correlation coefficient</a> varies between -1 and 1, the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> varies between 0 (totally similar) and 2 (totally orthogonal).</li>
+<li><a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> as follows: <code>1 + pearson_correlation(x, y)</code>. Where as the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson correlation coefficient</a> varies between -1 and 1, the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a> varies between 0 (totally orthogonal) and 2 (totally similar).</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(similarity%20graph)%2Fi"></a><strong>similarity graph</strong> - A transformation of a <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> into a graph, where the entities that make up the <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> are represented as nodes and edges between nodes are only made if the similarity exceeds a certain threshold.</p>
+<p>The <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> below was generated using the accompanying <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> and threshold of 0.45.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Snake</th>
+<th>Lizard</th>
+<th>Bird</th>
+<th>Crocodile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Snake</td>
+<td>1.0</td>
+<td>0.8</td>
+<td>0.4</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>Lizard</td>
+<td>0.8</td>
+<td>1.0</td>
+<td>0.4</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>Bird</td>
+<td>0.4</td>
+<td>0.4</td>
+<td>1.0</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>Crocodile</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.5</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_9d808e8cab6e4c6130daf068aabd299ef244ef53.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(similarity%20graph)%2Fi">Similarity graph</a>s are used for clustering (e.g. <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s). Assuming clusters exist and the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> captures them, there should be some threshold where the edges produced in the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> form <a href="#BM_(clique)%2Fi">clique</a>s or corrupted <a href="#BM_(clique)%2Fi">clique</a>s (a set of nodes that would form a <a href="#BM_(clique)%2Fi">clique</a> if it weren't for a few extra edges and/or missing edges).</p>
+</li>
+<li>
+<p><a name="BM_(clique)%2Fi"></a><strong>clique</strong> - A set of nodes in a graph where every possible node pairing has an edge.</p>
+<p><img src="svgbob_331f1a046e4a700b7f330a8c4875cfa3415603f4.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(clique%20graph)%2Fi"></a><strong>clique graph</strong> - A graph consisting only of <a href="#BM_(clique)%2Fi">clique</a>s.</p>
+<p><img src="svgbob_146037c85efe776db75ed0bb94cf76542654c3df.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 <p>
