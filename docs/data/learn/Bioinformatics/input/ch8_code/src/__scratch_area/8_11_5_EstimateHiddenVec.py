@@ -21,6 +21,6 @@ if __name__ == '__main__':
     head_percs = [0.4, 0.9, 0.8, 0.3, 0.7]
     print(f'{estimate_hidden_vector(0.6, 0.82, head_percs, 10)=}')
 
-    # THIS IS ESTIMATING THE COIN BIASES
+    # THIS IS ESTIMATING THE HIDDEN VECTOR
     # IN:  header percentages + coin biases
     # OUT: estimated hidden vector
