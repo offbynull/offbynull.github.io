@@ -11427,6 +11427,55 @@ i0
 [G, 1, 1, 1, 0]
 ```
 
+## Gene Expression
+
+Gene expression is the biological process by which a gene (segment of DNA) is synthesized into a gene product (e.g. protein). When a gene encodes for ...
+
+ * a protein, the gene is transcribed to mRNA which in turn is translated to that protein.
+ * functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
+
+```{svgbob}
+       .--> mRNA ---> "protein"
+       |              "(gene product)"
+DNA   -+
+(gene) |
+       '--> "functional RNA"
+            "(gene product)"
+```
+
+A snapshot of all mRNA within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. The capture provides both the mRNA sequences and the abundance of each mRNA sequence.
+
+Biologists typically capture multiple snapshots, either of the same organism at different time points or across multiple organisms of the same species but in different states, to help identify which genes are responsible for a change in state. If the abundance of some mRNA sequence is elevated or lowered across the set of snapshots, it may indicate that the gene for that mRNA is responsible for / influenced by the state. For example, some set of genes are transcribed more / less when comparing a ...
+
+ * cancerous blood cell to a non-cancerous blood cell.
+ * bloomed rose flower cell blooming vs a cell from that same rose when its un-bloomed.
+ * bacteria cell when its flagella is moving vs when it's remaining still.
+
+mRNA abundances are typically represented using a gene expression matrix. In a gene expression matrix, each column represents a state (e.g. cancerous / non-cancerous) or point in time (e.g. each hour) while each row represents a gene. Each cell is a number representing the abundance of mRNA transcribed from that specific gene (row) at that time (column).
+
+|          | 5 AM | 6 AM | 7 AM | ... |
+|----------|------|------|------|-----|
+| Gene 1   | 1.0  | 1.0  | 1.0  | ... |
+| Gene 2   | 1.0  | 0.7  | 0.5  | ... |
+| Gene 3   | 1.0  | 1.1  | 1.4  | ... |
+| Gene ... | ...  | ...  | ...  | ... |
+
+
+|          | Patient #1 (YESbreast Cancer) | Patient #2 (YES breast cancer) | Patient #3 (NO breast cancer) | ... |
+|----------|-------------------------------|--------------------------------|-------------------------------|-----|
+| Gene 1   | 1.0                           | 1.0                            | 1.0                           | ... |
+| Gene 2   | 1.0                           | 0.7                            | 0.5                           | ... |
+| Gene 3   | 1.0                           | 1.1                            | 1.4                           | ... |
+| Gene ... | ...                           | ...                            | ...                           | ... |
+
+
+### K-Centers Clustering
+### K-Means Clustering
+### Soft K-Means Clustering
+### Hierarchial Clustering
+### CAST Clustering
+### Similarity Scoring
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -12506,6 +12555,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
  * K-mer hierarchial clustering - Hierarchical cluster together similar k-mers using either pearson similarity/pearson distance [between one/zero vector of sub-k-mers] or sequence alignment distance to form its distance matrix / similarity matrix. This is useful for when you're trying to identify which organism a sequence belongs to by searching for its k-mers in a database. The k-mers that make up the database would be clustered, and k-mers that closely cluster together under a branch of the hierarchial cluster tree are those you'd be more cautious with -- the k-mer may have matched but it could have actually been a corrupted form of one of the other k-mers in the cluster (sequencing error).
 
    This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / distance matrix.
+ * Hierarchial Clustering Explorer - Generate a neighbour joining phylogeny tree based on pearson distance of sequence alignment distance, then visualize the tree and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).
 
 # Terminology
 
@@ -12701,7 +12751,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} gene expression` - The process by which a gene is synthesized into a gene product. When the gene product is...
 
-   * a protein, the gene is transcribed to mRNA and translated to a protein.
+   * a protein, the gene is transcribed to mRNA which in turn is translated to a protein.
    * functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
 
    ```{svgbob}
@@ -16033,6 +16083,8 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
             |/ \|
             *---*
    ``` 
+
+ * `{bm} RNA sequencing` `{bm} /(RNA-Seq)/` - A technique which uses next-generation sequencing to reveal the presence and quantity of RNA in a biological sample at some given moment.
 
 
 `{bm-ignore} \b(read)_NORM/i`

@@ -171,6 +171,15 @@
 <li><a href="#H_Nearest%20Neighbour%20Interchange%20Algorithm">Nearest Neighbour Interchange Algorithm</a></li>
 </ul>
 </ul>
+<li><a href="#H_Gene%20Expression">Gene Expression</a></li>
+<ul>
+<li><a href="#H_K-Centers%20Clustering">K-Centers Clustering</a></li>
+<li><a href="#H_K-Means%20Clustering">K-Means Clustering</a></li>
+<li><a href="#H_Soft%20K-Means%20Clustering">Soft K-Means Clustering</a></li>
+<li><a href="#H_Hierarchial%20Clustering">Hierarchial Clustering</a></li>
+<li><a href="#H_CAST%20Clustering">CAST Clustering</a></li>
+<li><a href="#H_Similarity%20Scoring">Similarity Scoring</a></li>
+</ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
 <ul>
@@ -15811,6 +15820,109 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score of 6.0 vs the original score of 9.0</p>
 </div>
 <p></p>
+<a name="H_Gene%20Expression"></a><h2>Gene Expression</h2>
+<p><a href="#BM_(gene%20expression)%2Fi">Gene expression</a> is the biological process by which a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (segment of DNA) is synthesized into a <a href="#BM_(gene%20product)%2Fi">gene product</a> (e.g. protein). When a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s for ...</p>
+<ul>
+<li>a protein, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA which in turn is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to that protein.</li>
+<li>functional RNA, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to a type of RNA that isn't mRNA (only mRNA is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a protein).</li>
+</ul>
+<p><img src="svgbob_62c38c1d1fd537859600d3068e1c4bffef5e99a8.svg" alt="Kroki diagram output"></p>
+<p>A snapshot of all mRNA within a cell at a given point in time, called a <a href="#BM_(transcriptome)%2Fi">transcriptome</a>, can be captured using <a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> technology. The capture provides both the mRNA <a href="#BM_(sequence)%2Fi">sequence</a>s and the abundance of each mRNA <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p>Biologists typically capture multiple snapshots, either of the same organism at different time points or across multiple organisms of the same species but in different states, to help identify which <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are responsible for a change in state. If the abundance of some mRNA <a href="#BM_(sequence)%2Fi">sequence</a> is elevated or lowered across the set of snapshots, it may indicate that the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> for that mRNA is responsible for / influenced by the state. For example, some set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> more / less when comparing a ...</p>
+<ul>
+<li>cancerous blood cell to a non-cancerous blood cell.</li>
+<li>bloomed rose flower cell blooming vs a cell from that same rose when its un-bloomed.</li>
+<li>bacteria cell when its flagella is moving vs when it's remaining still.</li>
+</ul>
+<p>mRNA abundances are typically represented using a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a>. In a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a>, each column represents a state (e.g. cancerous / non-cancerous) or point in time (e.g. each hour) while each row represents a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>. Each cell is a number representing the abundance of mRNA <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> from that specific <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (row) at that time (column).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>5 AM</th>
+<th>6 AM</th>
+<th>7 AM</th>
+<th>...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 1</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 2</td>
+<td>1.0</td>
+<td>0.7</td>
+<td>0.5</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 3</td>
+<td>1.0</td>
+<td>1.1</td>
+<td>1.4</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> ...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Patient #1 (YESbreast Cancer)</th>
+<th>Patient #2 (YES breast cancer)</th>
+<th>Patient #3 (NO breast cancer)</th>
+<th>...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 1</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 2</td>
+<td>1.0</td>
+<td>0.7</td>
+<td>0.5</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 3</td>
+<td>1.0</td>
+<td>1.1</td>
+<td>1.4</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> ...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<a name="H_K-Centers%20Clustering"></a><h3>K-Centers Clustering</h3>
+<a name="H_K-Means%20Clustering"></a><h3>K-Means Clustering</h3>
+<a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
+<a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
+<a name="H_CAST%20Clustering"></a><h3>CAST Clustering</h3>
+<a name="H_Similarity%20Scoring"></a><h3>Similarity Scoring</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -16529,6 +16641,9 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p><a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">K-mer</a> hierarchial clustering - Hierarchical cluster together similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s using either <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>/<a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> [between one/zero vector of sub-<a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s] or <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance to form its <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> / <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a>. This is useful for when you're trying to identify which organism a <a href="#BM_(sequence)%2Fi">sequence</a> belongs to by searching for its <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a database. The <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that make up the database would be clustered, and <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that closely cluster together under a branch of the hierarchial cluster <a href="#BM_(tree)%2Fi">tree</a> are those you'd be more cautious with -- the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may have matched but it could have actually been a corrupted form of one of the other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in the cluster (<a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>).</p>
 <p>This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
 </li>
+<li>
+<p>Hierarchial Clustering Explorer - Generate a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a> based on <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance, then visualize the <a href="#BM_(tree)%2Fi">tree</a> and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).</p>
+</li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
@@ -16677,7 +16792,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <li>
 <p><a name="BM_(gene%20expression)%2Fi"></a><strong>gene expression</strong> - The process by which a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is synthesized into a <a href="#BM_(gene%20product)%2Fi">gene product</a>. When the <a href="#BM_(gene%20product)%2Fi">gene product</a> is...</p>
 <ul>
-<li>a protein, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA and <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a protein.</li>
+<li>a protein, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA which in turn is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a protein.</li>
 <li>functional RNA, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to a type of RNA that isn't mRNA (only mRNA is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a protein).</li>
 </ul>
 <p><img src="svgbob_78b3833e37ddc45358bf3ebf79daba1a9e2604eb.svg" alt="Kroki diagram output"></p>
@@ -17012,7 +17127,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </table>
 </li>
 <li>
-<p><a name="BM_(sequencer)%2Fi"></a><strong>sequencer</strong> - A machine that performs DNA or RNA <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a>.</p>
+<p><a name="BM_(sequencer)%2Fi"></a><strong>sequencer</strong> - A machine that performs DNA or <a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a>.</p>
 </li>
 <li>
 <p><a name="BM_(sequencing%20error)%2Fi"></a><strong>sequencing error</strong> - An error caused by a <a href="#BM_(sequencer)%2Fi">sequencer</a> returning a <a href="#BM_(fragment)_SEQ%2Fi">fragment</a> where a nucleotide was misinterpreted at one or more positions (e.g. offset 3 was actually a C but it got scanned in as a G).</p>
@@ -20322,6 +20437,9 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p><a name="BM_(clique%20graph)%2Fi"></a><strong>clique graph</strong> - A graph consisting only of <a href="#BM_(clique)%2Fi">clique</a>s.</p>
 <p><img src="svgbob_146037c85efe776db75ed0bb94cf76542654c3df.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(RNA%20sequencing)%2Fi"></a><strong>RNA sequencing</strong> <a name="BM_(RNA-Seq)%2F"></a><strong></strong> - A technique which uses next-generation <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> to reveal the presence and quantity of RNA in a biological sample at some given moment.</p>
 </li>
 </ul>
 <p>

@@ -1,4 +1,4 @@
-# ￼Exercise Break: Implement CAST and use it to cluster the abridged gene expression dataset.
+#￼Exercise Break: Implement CAST and use it to cluster the abridged gene expression dataset.
 #
 # CAST(R, ν)
 #     Graph ← G(R, ν)
@@ -11,37 +11,84 @@
 #     add C to the set Clusters
 #     remove the nodes of C from Graph
 #     return Clusters
+#
+#
+# Define the similarity between gene i and cluster C as the average similarity between i and all genes in C:
+#    Ri,C = sum(R[i,j] for j in C) / len(C)
+#
+# a gene i is v-close to cluster C if Ri,C > v
+# a gene i is v-distant from cluster C otherwise
 
 # MY ANSWER
 # ---------
 from itertools import product
+from math import sqrt
+from statistics import mean
 
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
+from graph import UndirectedGraph
 
+
+def to_similarity_graph(threshold: float, similarity_matrix: dict[tuple[str, str], float]):
+    g = UndirectedGraph.Graph()
+    nodes = {e for k in similarity_matrix for e in k}
+    for n in nodes:
+        g.insert_node(n)
+    for n1, n2 in product(nodes, repeat=2):
+        if n1 == n2:
+            continue
+        e_id = f'E{sorted([n1, n2])}'
+        if g.has_edge(e_id):
+            continue
+        if similarity_matrix[n1, n2] <= threshold:
+            continue
+        g.insert_edge(e_id, n1, n2)
+    return g
+
+
+def avg_similarity(node: str, cluster: set[str], similarity_matrix: dict[tuple[str, str], float]):
+    return sum(similarity_matrix[node, c_node] for c_node in cluster) / len(cluster)
+
+
+def adjust_cluster_with_closest_and_farthest(
+        similarity_matrix: dict[tuple[str, str], float],
+        graph: UndirectedGraph.Graph,
+        cluster: set[str],
+        threshold: float
+):
+    close = max(
+        ((avg_similarity(n, cluster, similarity_matrix), n) for n in graph.get_nodes() if n not in cluster),
+        default=None
+    )
+    far = min(
+        ((avg_similarity(n, cluster, similarity_matrix), n) for n in cluster),
+        default=None
+    )
+    added = False
+    if close is not None and close[0] > threshold:
+        cluster.add(close[1])
+        added = True
+    removed = False
+    if far is not None and far[0] <= threshold:
+        cluster.remove(far[1])
+        removed = True
+    return not added and not removed
+
+
+def CAST(similarity_matrix: dict[tuple[str, str], float], threshold: float):
+    graph = to_similarity_graph(threshold, similarity_matrix)
+    clusters = []
+    while len(graph) > 0:
+        _, start_n = max((graph.get_degree(n), n) for n in graph.get_nodes())  # find highest degree node
+        cluster = {start_n}
+        while True:
+            end = adjust_cluster_with_closest_and_farthest(similarity_matrix, graph, cluster, threshold)
+            if end:
+                break
+        clusters.append(cluster)
+        for n in cluster:
+            if graph.has_node(n):
+                graph.delete_node(n)
+    return clusters
 
 
 
@@ -281,25 +328,76 @@ ORF	Name	R1.Ratio	R2.Ratio	R3.Ratio	R4.Ratio	R5.Ratio	R6.Ratio	R7.Ratio
 '''.strip()
 data_lines = [l.strip() for l in data_text.split('\n')]
 points = [tuple(float(e) for e in l.split('\t')[3:]) for l in data_lines[1:]]
-num_centers = 4
-dims = 7
 
-dm_dict = {}
+
+
+def pearson_correlation_coefficient(m: int, x: tuple[float, ...], y: tuple[float, ...]):
+    x_mean = mean(x)
+    y_mean = mean(y)
+    num = sum((x[i] - x_mean) * (y[i] - y_mean) for i in range(m))
+    denom = sqrt(
+        sum((x[i] - x_mean)**2 for i in range(m))
+        * sum((y[i] - y_mean)**2 for i in range(m))
+    )
+    return num / denom
+
+
+def pearson_similarity(m: int, x: tuple[float, ...], y: tuple[float, ...]):
+    return pearson_correlation_coefficient(m, x, y) + 1
+
+
+print(f'Generating similarity matrix...')
+similarity_dict = {}
 for (i1, v1), (i2, v2) in product(enumerate(points), repeat=2):
-    if (i1, i2) in dm_dict:
+    if (i1, i2) in similarity_dict:
         continue
-    if i1 == i2:
-        dm_dict[f'v{i1}', f'v{i2}'] = 0.0
-    else:
-        dm_dict[f'v{i1}', f'v{i2}'] = dist(v1, v2)
-        dm_dict[f'v{i2}', f'v{i1}'] = dist(v1, v2)
-dist_mat = DistanceMatrix(dm_dict)
+    similarity_dict[f'v{i1}', f'v{i2}'] = pearson_similarity(7, v1, v2)
+    similarity_dict[f'v{i2}', f'v{i1}'] = pearson_similarity(7, v1, v2)
+
+print(f'Generating clusters...')
+clusters = CAST(similarity_dict, 1.98)
+print(clusters)
 
 
-print(f'USING D_MIN...')
-tree, root, clusters = upgma(dist_mat.copy(), cluster_dist_min)
-for c, v in clusters._clusters.items():
-    if not c.startswith('C'):
+import matplotlib.pyplot as plt
+
+plottable_clusters = []
+for cluster in clusters:
+    pc = []
+    if len(cluster) <= 2:
         continue
-    print(' '.join(v))
-print(f'{to_dot(tree)}')
+    for e in cluster:
+        idx = int(e[1:])
+        pt = points[idx]
+        xs = [i for i, _ in enumerate(pt)]
+        ys = list(pt)
+        pc.append((xs, ys))
+    plottable_clusters.append(pc)
+
+n_rows = len(plottable_clusters) // 4 + 1
+n_cols = 4
+fig, axs = plt.subplots(n_rows, n_cols)
+for i, pc in enumerate(plottable_clusters):
+    for xs, ys in pc:
+        axs.flatten()[i].set_ylim([-4, 4])
+        axs.flatten()[i].plot(xs, ys)
+plt.show()
+
+
+# MY COMMENT ON STEPIK:
+#
+#
+# I guess the point of this is that you don't have to specify k? It seems to have a tendency of ditching points into
+# small clusters (e.g. clusters of size 1 or 2) where those points would probably fit better in one of the larger
+# clusters.
+#
+# Maybe the idea here is to run CAST in rounds?
+#
+# 1. Feed the original points to CAST
+# 2. Average the points in each cluster
+# 3. Feed the averaged points to CAST
+# 4. Average the points in each cluster
+# 5. Feed the averaged points to CAST
+# 6. ...
+#
+# Keep going until each cluster has a single point? Something like that maybe?
