@@ -11435,46 +11435,139 @@ Gene expression is the biological process by which a gene (segment of DNA) is sy
  * functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
 
 ```{svgbob}
-       .--> mRNA ---> "protein"
-       |              "(gene product)"
+       .----------------> mRNA --------------> "protein"
+       | "transcribe"           "translate"    "(gene product)"
 DNA   -+
 (gene) |
-       '--> "functional RNA"
-            "(gene product)"
+       '----------------> "functional RNA"
+         "transcribe"     "(gene product)"
 ```
 
-A snapshot of all mRNA within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. The capture provides both the mRNA sequences and the abundance of each mRNA sequence.
+A snapshot of all RNA transcripts within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. Both the RNA transcript sequences and the counts of those sequences (number of instances) are captured.
 
-Biologists typically capture multiple snapshots, either of the same organism at different time points or across multiple organisms of the same species but in different states, to help identify which genes are responsible for a change in state. If the abundance of some mRNA sequence is elevated or lowered across the set of snapshots, it may indicate that the gene for that mRNA is responsible for / influenced by the state. For example, some set of genes are transcribed more / less when comparing a ...
+|         | Count |
+|---------|-------|
+| RNA A   |  100  |
+| RNA B   |   70  |
+| RNA C   |  110  |
+| RNA ... |  ...  |
+
+Given that an RNA transcript is simply a transcribed "copy" of the DNA it came from (it identifies the gene), a snapshot indirectly shows each gene's rate of gene expression for at the time that snapshot was taken.
+
+|          | Count |
+|----------|-------|
+| Gene A   |  100  |
+| Gene B   |   70  |
+| Gene C   |  110  |
+| Gene ... |  ...  |
+
+Biologists typically capture multiple snapshots, either of the same organism at different time points or across multiple organisms of the same species, to help identify which genes are responsible for some change in state. These snapshots are compiled together into a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector.
+
+|          | 1hr before drug given | 0hr before/after drug given | 1hr after drug given | ... |
+|----------|-----------------------|-----------------------------|----------------------|-----|
+| Gene A   | 100                   | 100                         | 100                  | ... |
+| Gene B   | 100                   |  70                         | 50                   | ... |
+| Gene C   | 100                   | 110                         | 140                  | ... |
+| Gene ... | ...                   | ...                         | ...                  | ... |
+
+|          | breast cancer patient1 | breast cancer patient2 | cancer-free patient3 | ... |
+|----------|------------------------|------------------------|----------------------|-----|
+| Gene A   | 100                    | 100                    | 100                  | ... |
+| Gene B   | 100                    |  70                    | 50                   | ... |
+| Gene C   | 100                    | 110                    | 140                  | ... |
+| Gene ... | ...                    | ...                    | ...                  | ... |
+
+If a gene expression vector fluctuates across the set of snapshots, it may indicate that the gene is either responsible for or influenced by the state. For example, there exists some set of genes that are transcribed more / less when comparing a ...
 
  * cancerous blood cell to a non-cancerous blood cell.
- * bloomed rose flower cell blooming vs a cell from that same rose when its un-bloomed.
- * bacteria cell when its flagella is moving vs when it's remaining still.
+ * flower cell during bloom vs a cell from that same flower when un-bloomed.
+ * bacteria cell when its flagella is moving vs when remaining still.
+ * animal cell when its inflamed vs when it isn't.
 
-mRNA abundances are typically represented using a gene expression matrix. In a gene expression matrix, each column represents a state (e.g. cancerous / non-cancerous) or point in time (e.g. each hour) while each row represents a gene. Each cell is a number representing the abundance of mRNA transcribed from that specific gene (row) at that time (column).
+```{svgbob}
+         "GENE X"                              "GENE Y"                             "GENE Z"      
+|                                    |                                    |                       
+|  *----*                            |                 *                  |                       
+|        \                           |                /                   |                        
+|         \                          |               /                    |                       
+|          *---*                     |          *---*                     |  *---*---*---*---*        
+|               \                    |         /                          |                       
+|                \                   |        /                           |                       
+|                 *                  |  *----*                            |                       
+|                                    |                                    |                       
++-----------------------             +-----------------------             +-----------------------
+```
 
-|          | 5 AM | 6 AM | 7 AM | ... |
-|----------|------|------|------|-----|
-| Gene 1   | 1.0  | 1.0  | 1.0  | ... |
-| Gene 2   | 1.0  | 0.7  | 0.5  | ... |
-| Gene 3   | 1.0  | 1.1  | 1.4  | ... |
-| Gene ... | ...  | ...  | ...  | ... |
+Similarly, if two or more gene expression vectors fluctuate in a similar pattern, it could mean that the genes they represent either perform similar functions or are co-regulated (e.g. each gene is influenced by the same transcription factor).
+
+```{svgbob}
+     "GENES W and X"   
+|                       
+|  *----*               
+|  *----*\              
+|        \\             
+|         \*---*       
+|          *---*\      
+|               \\     
+|                \*     
+|                 *     
++-----------------------
+```
+
+Biologists determine which genes _may_ be related to a change in state by grouping together similar gene expression vectors. The goal is for the gene expression vectors in each group to be more similar to each other than to those in other groups. The process of grouping items together in this way is called clustering, and each group formed by the process is called a cluster. For example, the gene expression matrix below clearly forms two clusters if the similarity metric is simply the euclidean distance between points...
+
+|        | 1hr before | 1hr after |
+|--------|------------|-----------|
+| Gene A |     5      |     1     |
+| Gene B |     20     |     1     |
+| Gene C |     24     |     4     |
+| Gene D |     1      |     2     |
+| Gene E |     3      |     4     |
+| Gene F |     22     |     4     |
+
+```{svgbob}
+ cluster1         cluster2
+|
+|   E                F C
+|D  A              B        
++---------------------------
+```
+
+In the above example, cluster 1 reveals genes that weren't impacted while cluster 2 reveals genes that had their expression drastically lowered. Real gene expression matrices are often more complex than what's shown above. Specifically, real gene expression matrices more often than not have ...
+
+ * noisy data, meaning that clustering may be thrown off.
+ * more than two dimensions (more than two columns), meaning that visual inspection of clusters becomes difficult.
+
+To limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones.
+
+```{svgbob}
+   "no log"             "log"
+|                   |              
+|                   |           
+|   *   *           | 
+|  / \ / \          |              
+| *   *   *         | *-*-*-*-*  
++--------------     +--------------
 
 
-|          | Patient #1 (YESbreast Cancer) | Patient #2 (YES breast cancer) | Patient #3 (NO breast cancer) | ... |
-|----------|-------------------------------|--------------------------------|-------------------------------|-----|
-| Gene 1   | 1.0                           | 1.0                            | 1.0                           | ... |
-| Gene 2   | 1.0                           | 0.7                            | 0.5                           | ... |
-| Gene 3   | 1.0                           | 1.1                            | 1.4                           | ... |
-| Gene ... | ...                           | ...                            | ...                           | ... |
+   "no log"             "log"
+|     *             |              
+|     |             |           
+|     +             |   *
+|    /              |  /            
+| *-'               | *            
++--------------     +--------------
+```
 
+### Similarity Scoring
+
+https://www.statology.org/pearson-correlation-coefficient/
 
 ### K-Centers Clustering
 ### K-Means Clustering
 ### Soft K-Means Clustering
 ### Hierarchial Clustering
 ### CAST Clustering
-### Similarity Scoring
 
 # Stories
 
@@ -12555,7 +12648,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
  * K-mer hierarchial clustering - Hierarchical cluster together similar k-mers using either pearson similarity/pearson distance [between one/zero vector of sub-k-mers] or sequence alignment distance to form its distance matrix / similarity matrix. This is useful for when you're trying to identify which organism a sequence belongs to by searching for its k-mers in a database. The k-mers that make up the database would be clustered, and k-mers that closely cluster together under a branch of the hierarchial cluster tree are those you'd be more cautious with -- the k-mer may have matched but it could have actually been a corrupted form of one of the other k-mers in the cluster (sequencing error).
 
    This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / distance matrix.
- * Hierarchial Clustering Explorer - Generate a neighbour joining phylogeny tree based on pearson distance of sequence alignment distance, then visualize the tree and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).
+ * Hierarchial clustering explorer - Generate a neighbour joining phylogeny tree based on pearson distance of sequence alignment distance, then visualize the tree and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).
 
 # Terminology
 
@@ -12755,12 +12848,12 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    * functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
 
    ```{svgbob}
-          +--> mRNA ---> "protein"
-          |              "(gene product)"
+          .----------------> mRNA --------------> "protein"
+          | "transcribe"           "translate"    "(gene product)"
    DNA   -+
    (gene) |
-          +--> "functional RNA"
-               "(gene product)"
+          '----------------> "functional RNA"
+            "transcribe"     "(gene product)"
    ```
 
  * `{bm} regulatory gene` / `{bm} regulatory protein` - The proteins encoded by these genes affect gene expression for certain other genes. That is, a regulatory protein can cause certain other genes to be expressed more (promote gene expression) or less (repress gene expression).
@@ -15770,6 +15863,8 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
    In n dimensional space, this is calculated as `{kt} \sqrt{\sum_{i=1}^n{(v_i - w_i)^2}}`, where v and w are two n dimensional points.
 
+ * `{bm} clustering/(cluster)/i` - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a cluster.
+
  * `{bm} k-centers clustering/(k-centers?|\d+-centers?)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.
 
    For each actual data point, the euclidean distance is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.
@@ -15939,26 +16034,26 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    * soft clustering algorithms assign each data point to a set of probabilities, where each probability is how likely it is for that data point to be assigned to a cluster.
 
      ```{svgbob}
-          *                                                                      *       
+          ●                                                                      ●       
      "A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
                                                                                          
-             *                                *                              *       
+             ●                                ●                              ●       
         "A=0.9,B=0.1"                    "A=0.5,B=0.5"                  "A=0.1,B=0.9"
                                                                                          
-          *                                                                      *       
+          ●                                                                      ●       
      "A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
      ```
 
    * hard clustering algorithms assign each data point to exactly one cluster.
 
      ```{svgbob}
-          *                                                                      *       
+          ●                                                                      ●       
        "A=1.0"                                                               "B=1.0"
                                                                                          
-             *                                *                              *       
+             ●                                ●                              ●       
           "A=1.0"                          "B=1.0"                        "B=1.0"
                                                                                          
-          *                                                                      *       
+          ●                                                                      ●       
        "A=1.0"                                                                "B=1.0"
      ```
 
@@ -16086,6 +16181,27 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} RNA sequencing` `{bm} /(RNA-Seq)/` - A technique which uses next-generation sequencing to reveal the presence and quantity of RNA in a biological sample at some given moment.
 
+ * `{bm} hierarchial cluster` - A form of tiered clustering where clusters are represented as a tree. Each node represents a cluster (leaf nodes being a cluster of size 1), where the clusters represented by a parent node is the combination of the clusters represented by its children.
+
+   ```{svgbob}
+                .-g3
+              .-*   
+     .--------* '-g5
+     |        '---g8
+    -*   .--------g7
+     | .-* .------g1
+     | | '-*        
+     '-*   '------g6
+       |   .------g1
+       | .-* .----g2
+       '-* '-*      
+         |   '----g4
+         '--------g9
+   ```
+
+   ```{note}
+   Hierarchial clustering has its roots in phylogeny. The similarity metric to build clusters is massages into a distance metric, which is then used to form a tree that represents the clusters.
+   ```
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

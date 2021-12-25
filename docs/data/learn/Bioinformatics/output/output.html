@@ -173,12 +173,12 @@
 </ul>
 <li><a href="#H_Gene%20Expression">Gene Expression</a></li>
 <ul>
+<li><a href="#H_Similarity%20Scoring">Similarity Scoring</a></li>
 <li><a href="#H_K-Centers%20Clustering">K-Centers Clustering</a></li>
 <li><a href="#H_K-Means%20Clustering">K-Means Clustering</a></li>
 <li><a href="#H_Soft%20K-Means%20Clustering">Soft K-Means Clustering</a></li>
 <li><a href="#H_Hierarchial%20Clustering">Hierarchial Clustering</a></li>
 <li><a href="#H_CAST%20Clustering">CAST Clustering</a></li>
-<li><a href="#H_Similarity%20Scoring">Similarity Scoring</a></li>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -407,9 +407,9 @@
 <li><a href="#BM_(Algorithms%5C%2FK-mer%2FFind%20Locations)_TOPIC%2F">Algorithms/K-mer/Find Locations</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, find where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> clusters in some larger <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>).</p>
-<p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.</p>
-<p>For example, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> is a special <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern used by enzymes during DNA replication. Since DNA is known to mutate, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> can be found repeating multiple times in the region of DNA known as the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>. Finding the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> clustered in a small region is a good indicator that you've found the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>.</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>, find where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> <a href="#BM_(cluster)%2Fi">cluster</a>s in some larger <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>'s variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>).</p>
+<p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern <a href="#BM_(cluster)%2Fi">cluster</a>ed together -- if one copy mutated to become unusable, the other copies are still around.</p>
+<p>For example, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> is a special <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern used by enzymes during DNA replication. Since DNA is known to mutate, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> can be found repeating multiple times in the region of DNA known as the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>. Finding the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> <a href="#BM_(cluster)%2Fi">cluster</a>ed in a small region is a good indicator that you've found the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="ch1_code/src/FindClumps.py">ch1_code/src/FindClumps.py</a> (lines 10 to 26):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_kmer_clusters</span>(<span class="hljs-params">sequence: <span class="hljs-built_in">str</span>, kmer: <span class="hljs-built_in">str</span>, min_occurrence_in_cluster: <span class="hljs-built_in">int</span>, cluster_window_size: <span class="hljs-built_in">int</span>, options: Options = Options(<span class="hljs-params"></span>)</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]:
@@ -443,8 +443,8 @@
 <li><a href="#BM_(Algorithms%5C%2FK-mer%2FHamming%20Distance%20Neighbourhood)_TOPIC%2F">Algorithms/K-mer/Hamming Distance Neighbourhood</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(sequence)%2Fi">sequence</a>, find clusters of unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s within that <a href="#BM_(sequence)%2Fi">sequence</a>. In other words, for each unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> that exists in the <a href="#BM_(sequence)%2Fi">sequence</a>, see if it clusters in the <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include variants of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s).</p>
-<p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(sequence)%2Fi">sequence</a>, find <a href="#BM_(cluster)%2Fi">cluster</a>s of unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s within that <a href="#BM_(sequence)%2Fi">sequence</a>. In other words, for each unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> that exists in the <a href="#BM_(sequence)%2Fi">sequence</a>, see if it <a href="#BM_(cluster)%2Fi">cluster</a>s in the <a href="#BM_(sequence)%2Fi">sequence</a>. The search may potentially include variants of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s).</p>
+<p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern <a href="#BM_(cluster)%2Fi">cluster</a>ed together -- if one copy mutated to become unusable, the other copies are still around.</p>
 <p>For example, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> is a special <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern used by enzymes during DNA replication. Since DNA is known to mutate, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> can be found repeating multiple times in the region of DNA known as the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>. Given that you don't know the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> but you do know the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>, you can scan through the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> for repeating <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> patterns. If a pattern is found to heavily repeat, it's a good candidate that it's the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="ch1_code/src/FindRepeating.py">ch1_code/src/FindRepeating.py</a> (lines 12 to 41):</p>
@@ -499,13 +499,13 @@
 <li><a href="#BM_(Algorithms%5C%2FK-mer%2FFind%20Repeating)_TOPIC%2F">Algorithms/K-mer/Find Repeating</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a <a href="#BM_(sequence)%2Fi">sequence</a>, find regions within that <a href="#BM_(sequence)%2Fi">sequence</a> that contain clusters of unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. In other words, ...</p>
+<p><strong>WHAT</strong>: Given a <a href="#BM_(sequence)%2Fi">sequence</a>, find regions within that <a href="#BM_(sequence)%2Fi">sequence</a> that contain <a href="#BM_(cluster)%2Fi">cluster</a>s of unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. In other words, ...</p>
 <ul>
-<li>slide a window over the cluster.</li>
-<li>for each unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> that exists in the window, see if it clusters in the <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
+<li>slide a window over the <a href="#BM_(cluster)%2Fi">cluster</a>.</li>
+<li>for each unique <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> that exists in the window, see if it <a href="#BM_(cluster)%2Fi">cluster</a>s in the <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
 </ul>
 <p>The search may potentially include variants of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> variants (e.g. <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s of the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s).</p>
-<p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.</p>
+<p><strong>WHY</strong>: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern to bind to, where that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern <a href="#BM_(cluster)%2Fi">cluster</a>ed together -- if one copy mutated to become unusable, the other copies are still around.</p>
 <p>For example, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> is a special <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern used by enzymes during DNA replication. Since DNA is known to mutate, the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> can be found repeating multiple times in the region of DNA known as the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>. Given that you don't know the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a> but you do know the <a href="#BM_(replication%20origin)%2Fi">replication origin</a>, you can scan through the <a href="#BM_(replication%20origin)%2Fi">replication origin</a> for repeating <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> patterns. If a pattern is found to heavily repeat, it's a good candidate that it's the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> pattern for the <a href="#BM_(DnaA%20box)%2Fi">DnaA box</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p><a href="ch1_code/src/FindRepeatingInWindow.py">ch1_code/src/FindRepeatingInWindow.py</a> (lines 20 to 67):</p>
@@ -8816,16 +8816,16 @@ Y -2 -2 -3 -2  3 -3  2 -1 -2 -1 -1 -2 -3 -1 -2 -2 -2 -1  2  7
 <li><a href="#BM_(Algorithms%5C%2FSynteny%2FGenomic%20Dot%20Plot)_TOPIC%2F">Algorithms/Synteny/Genomic Dot Plot</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, connect dots that are close together and going in the same direction. This process is commonly referred to as clustering. A clustered <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot plot</a> is called a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>.</p>
-<p><strong>WHY</strong>:  Clustering together matches reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p><strong>WHAT</strong>: Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, connect dots that are close together and going in the same direction. This process is commonly referred to as <a href="#BM_(cluster)%2Fi">cluster</a>ing. A <a href="#BM_(cluster)%2Fi">cluster</a>ed <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot plot</a> is called a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>.</p>
+<p><strong>WHY</strong>:  <a href="#BM_(cluster)%2Fi">Cluster</a>ing together matches reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p><img src="svgbob_1727f3faed87310ccd83cb2a23c798dcd921a972.svg" alt="Kroki diagram output"></p>
 <p><img src="svgbob_4670331fbded82ef34c83903754da40e233aa22d.svg" alt="Kroki diagram output"></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The following <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> algorithm relies on three non-trivial components:</p>
 <ol>
 <li>A spatial indexing algorithm bins points that are close together, such that it's fast to look up the set of dots that are within the proximity of some other dot. The spatial indexing algorithm used by this implementation is called a quad <a href="#BM_(tree)%2Fi">tree</a>.</li>
-<li>A clustering algorithm connects dots going in the same direction to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The clustering algorithm used by this implementation is iterative, doing multiple rounds of connecting within a set of constraints (e.g. the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing dot has to be within some limit / in some angle for it to connect).</li>
-<li>A filtering algorithm that trims/merges overlapping <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as well as removes superfluous <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s returned by the clustering algorithm. The filtering algorithm used by this implementation is simple off-the-cuff heuristics.</li>
+<li>A <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithm connects dots going in the same direction to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. The <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithm used by this implementation is iterative, doing multiple rounds of connecting within a set of constraints (e.g. the <a href="#BM_(neighbour)%2Fi">neighbour</a>ing dot has to be within some limit / in some angle for it to connect).</li>
+<li>A filtering algorithm that trims/merges overlapping <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s as well as removes superfluous <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s returned by the <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithm. The filtering algorithm used by this implementation is simple off-the-cuff heuristics.</li>
 </ol>
 <p>These components are complicated and not specific to bioinformatics. As such, this section doesn't discuss them in detail but the source code is available (entrypoint is displayed below)).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -14417,7 +14417,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </ul>
 <p>Given a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>, <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> estimates an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> for that matrix by iteratively picking two available nodes and connecting them with a new internal node, where available node is defined as a node without a parent. The process stops once a single available node remains (that node being the root node).</p>
 <p><img src="svgbob_3d816b9d61032209afd8294044f1caf010c46928.svg" alt="Kroki diagram output"></p>
-<p>Which two nodes are selected per iteration is based on clustering. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own cluster: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
+<p>Which two nodes are selected per iteration is based on <a href="#BM_(cluster)%2Fi">cluster</a>ing. In the beginning, each leaf node in the <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> is its own <a href="#BM_(cluster)%2Fi">cluster</a>: Ca={a}, Cb={b}, Cc={c}, and Cd={d}.</p>
 <table>
 <thead>
 <tr>
@@ -14459,7 +14459,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>The two clusters with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node.</p>
+<p>The two <a href="#BM_(cluster)%2Fi">cluster</a>s with the minimum distance are chosen to connect in the <a href="#BM_(tree)%2Fi">tree</a>. In the example <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> above, the minimum distance is between Cc and Cd (distance of 2), meaning that Cc and Cd should be <a href="#BM_(connected)%2Fi">connected</a> together with a new internal node.</p>
 <p><img src="svgbob_33e1b85dbaff91ad5a6f7d584fbcd812e2c84362.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -14515,7 +14515,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 <li>dist(Ce, Cd) = mut(Ce) - mut(Cd) = 1 - 0 = 1</li>
 </ul>
 <p><img src="svgbob_43abd429f61152576f3c8e328872adaa265aa9d1.svg" alt="Kroki diagram output"></p>
-<p>The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> then gets modified by merging together the recently <a href="#BM_(connected)%2Fi">connected</a> clusters. The new cluster combines the leaf nodes from both clusters: Ce={c,d}, where new <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances for that cluster are computed using the formula...</p>
+<p>The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> then gets modified by merging together the recently <a href="#BM_(connected)%2Fi">connected</a> <a href="#BM_(cluster)%2Fi">cluster</a>s. The new <a href="#BM_(cluster)%2Fi">cluster</a> combines the leaf nodes from both <a href="#BM_(cluster)%2Fi">cluster</a>s: Ce={c,d}, where new <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances for that <a href="#BM_(cluster)%2Fi">cluster</a> are computed using the formula...</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><msub><mi>C</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mn>1</mn></msub></mrow></munder><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mn>2</mn></msub></mrow></munder><msub><mi>D</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">D_{C_1,C_2} = \frac{
   \sum_{i \in C_1} \sum_{j \in C_2} D_{i,j}
   }{
@@ -14559,7 +14559,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>This process repeats at each iteration until a single cluster remains. At the next iteration, Ca and Cb have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 3), meaning that Ca and Cb should be <a href="#BM_(connected)%2Fi">connected</a> with a new internal internal node:</p>
+<p>This process repeats at each iteration until a single <a href="#BM_(cluster)%2Fi">cluster</a> remains. At the next iteration, Ca and Cb have the minimum distance in the previous <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> (distance of 3), meaning that Ca and Cb should be <a href="#BM_(connected)%2Fi">connected</a> with a new internal internal node:</p>
 <ul>
 <li>mut(Cf) = dist(Ca, Cb) / 2 = 3 / 2 = 1.5</li>
 <li>dist(Cf, Ca) = mut(Cf) - mut(Ca) = 1.5 - 0 = 1.5</li>
@@ -14608,7 +14608,7 @@ len(l2) = \frac{1}{2} \cdot (D_{l1,l2} \textcolor{#ff0000}{-} res)
 </tr>
 </tbody>
 </table>
-<p>The process is complete. Only a single cluster remains (representing the root) / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
+<p>The process is complete. Only a single <a href="#BM_(cluster)%2Fi">cluster</a> remains (representing the root) / the <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is fully generated.</p>
 <p><img src="svgbob_d60f7033a6d15c3337efd4d2055adb9ef9dfb1f8.svg" alt="Kroki diagram output"></p>
 <p>Note that the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> above is an estimation. The <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> for the example above isn't an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, meaning a unique <a href="#BM_(simple%20tree)%2Fi">simple tree</a> doesn't exist for it. Even if it were an <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a>, an <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, meaning it'll never qualify as the <a href="#BM_(simple%20tree)%2Fi">simple tree</a> unique to that <a href="#BM_(additive%20matrix%7Cadditive%20matrices%7Cadditive%20distance%20matrix%7Cadditive%20distance%20matrices)%2Fi">additive distance matrix</a> (root node has <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2 which isn't allowed in a <a href="#BM_(simple%20tree)%2Fi">simple tree</a>).</p>
 <p>In addition, some distances in the generated <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric tree</a> are wildly off from the original <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> distances. For example, ...</p>
@@ -15826,103 +15826,211 @@ n4_val = <span class="hljs-built_in">min</span>(
 <li>a protein, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA which in turn is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to that protein.</li>
 <li>functional RNA, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to a type of RNA that isn't mRNA (only mRNA is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a protein).</li>
 </ul>
-<p><img src="svgbob_62c38c1d1fd537859600d3068e1c4bffef5e99a8.svg" alt="Kroki diagram output"></p>
-<p>A snapshot of all mRNA within a cell at a given point in time, called a <a href="#BM_(transcriptome)%2Fi">transcriptome</a>, can be captured using <a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> technology. The capture provides both the mRNA <a href="#BM_(sequence)%2Fi">sequence</a>s and the abundance of each mRNA <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<p>Biologists typically capture multiple snapshots, either of the same organism at different time points or across multiple organisms of the same species but in different states, to help identify which <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are responsible for a change in state. If the abundance of some mRNA <a href="#BM_(sequence)%2Fi">sequence</a> is elevated or lowered across the set of snapshots, it may indicate that the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> for that mRNA is responsible for / influenced by the state. For example, some set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> more / less when comparing a ...</p>
+<p><img src="svgbob_4c3340936a17e2840e08c6fbcd2b26b03b1c812b.svg" alt="Kroki diagram output"></p>
+<p>A snapshot of all <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a>s within a cell at a given point in time, called a <a href="#BM_(transcriptome)%2Fi">transcriptome</a>, can be captured using <a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> technology. Both the <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a> <a href="#BM_(sequence)%2Fi">sequence</a>s and the counts of those <a href="#BM_(sequence)%2Fi">sequence</a>s (number of instances) are captured.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RNA A</td>
+<td>100</td>
+</tr>
+<tr>
+<td>RNA B</td>
+<td>70</td>
+</tr>
+<tr>
+<td>RNA C</td>
+<td>110</td>
+</tr>
+<tr>
+<td>RNA ...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p>Given that an <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a> is simply a <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> "copy" of the DNA it came from (it identifies the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>), a snapshot indirectly shows each <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s rate of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for at the time that snapshot was taken.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>100</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>70</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>110</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> ...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p>Biologists typically capture multiple snapshots, either of the same organism at different time points or across multiple organisms of the same species, to help identify which <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are responsible for some change in state. These snapshots are compiled together into a matrix called a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a>, where each row in the matrix is called a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1hr before drug given</th>
+<th>0hr before/after drug given</th>
+<th>1hr after drug given</th>
+<th>...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>100</td>
+<td>100</td>
+<td>100</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>100</td>
+<td>70</td>
+<td>50</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>100</td>
+<td>110</td>
+<td>140</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> ...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>breast cancer patient1</th>
+<th>breast cancer patient2</th>
+<th>cancer-free patient3</th>
+<th>...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>100</td>
+<td>100</td>
+<td>100</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>100</td>
+<td>70</td>
+<td>50</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>100</td>
+<td>110</td>
+<td>140</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> ...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p>If a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a> fluctuates across the set of snapshots, it may indicate that the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is either responsible for or influenced by the state. For example, there exists some set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> that are <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> more / less when comparing a ...</p>
 <ul>
 <li>cancerous blood cell to a non-cancerous blood cell.</li>
-<li>bloomed rose flower cell blooming vs a cell from that same rose when its un-bloomed.</li>
-<li>bacteria cell when its flagella is moving vs when it's remaining still.</li>
+<li>flower cell during bloom vs a cell from that same flower when un-bloomed.</li>
+<li>bacteria cell when its flagella is moving vs when remaining still.</li>
+<li>animal cell when its inflamed vs when it isn't.</li>
 </ul>
-<p>mRNA abundances are typically represented using a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a>. In a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a>, each column represents a state (e.g. cancerous / non-cancerous) or point in time (e.g. each hour) while each row represents a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>. Each cell is a number representing the abundance of mRNA <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> from that specific <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (row) at that time (column).</p>
+<p><img src="svgbob_244463cf241f3165a435a9043e21e7e80fc58e80.svg" alt="Kroki diagram output"></p>
+<p>Similarly, if two or more <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s fluctuate in a similar pattern, it could mean that the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> they represent either perform similar functions or are <a href="#BM_(co-regulate)%2Fi">co-regulate</a>d (e.g. each <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is influenced by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>).</p>
+<p><img src="svgbob_decc4524d6528c7b4852cb75f24e1f9afff9bc2a.svg" alt="Kroki diagram output"></p>
+<p>Biologists determine which <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> <em>may</em> be related to a change in state by grouping together similar <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. The goal is for the <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s in each group to be more similar to each other than to those in other groups. The process of grouping items together in this way is called <a href="#BM_(cluster)%2Fi">cluster</a>ing, and each group formed by the process is called a <a href="#BM_(cluster)%2Fi">cluster</a>. For example, the <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a> below clearly forms two <a href="#BM_(cluster)%2Fi">cluster</a>s if the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> is simply the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between points...</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>5 AM</th>
-<th>6 AM</th>
-<th>7 AM</th>
-<th>...</th>
+<th>1hr before</th>
+<th>1hr after</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 1</td>
-<td>1.0</td>
-<td>1.0</td>
-<td>1.0</td>
-<td>...</td>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>5</td>
+<td>1</td>
 </tr>
 <tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 2</td>
-<td>1.0</td>
-<td>0.7</td>
-<td>0.5</td>
-<td>...</td>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>20</td>
+<td>1</td>
 </tr>
 <tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 3</td>
-<td>1.0</td>
-<td>1.1</td>
-<td>1.4</td>
-<td>...</td>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>24</td>
+<td>4</td>
 </tr>
 <tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> ...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> D</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> E</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> F</td>
+<td>22</td>
+<td>4</td>
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Patient #1 (YESbreast Cancer)</th>
-<th>Patient #2 (YES breast cancer)</th>
-<th>Patient #3 (NO breast cancer)</th>
-<th>...</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 1</td>
-<td>1.0</td>
-<td>1.0</td>
-<td>1.0</td>
-<td>...</td>
-</tr>
-<tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 2</td>
-<td>1.0</td>
-<td>0.7</td>
-<td>0.5</td>
-<td>...</td>
-</tr>
-<tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> 3</td>
-<td>1.0</td>
-<td>1.1</td>
-<td>1.4</td>
-<td>...</td>
-</tr>
-<tr>
-<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> ...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-</tbody>
-</table>
+<p><img src="svgbob_87187f74bb020ad404fc5577bd9e7827afd790af.svg" alt="Kroki diagram output"></p>
+<p>In the above example, <a href="#BM_(cluster)%2Fi">cluster</a> 1 reveals <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> that weren't impacted while <a href="#BM_(cluster)%2Fi">cluster</a> 2 reveals <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> that had their expression drastically lowered. Real <a href="#BM_(gene%20expression)%2Fi">gene expression</a> matrices are often more complex than what's shown above. Specifically, real <a href="#BM_(gene%20expression)%2Fi">gene expression</a> matrices more often than not have ...</p>
+<ul>
+<li>noisy data, meaning that <a href="#BM_(cluster)%2Fi">cluster</a>ing may be thrown off.</li>
+<li>more than two dimensions (more than two columns), meaning that visual inspection of <a href="#BM_(cluster)%2Fi">cluster</a>s becomes difficult.</li>
+</ul>
+<p>To limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones.</p>
+<p><img src="svgbob_5dd52c9f97ea362fe4ae15de8b2072b203424d0e.svg" alt="Kroki diagram output"></p>
+<a name="H_Similarity%20Scoring"></a><h3>Similarity Scoring</h3>
+<p>https://www.statology.org/pearson-correlation-coefficient/</p>
 <a name="H_K-Centers%20Clustering"></a><h3>K-Centers Clustering</h3>
 <a name="H_K-Means%20Clustering"></a><h3>K-Means Clustering</h3>
 <a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
 <a name="H_CAST%20Clustering"></a><h3>CAST Clustering</h3>
-<a name="H_Similarity%20Scoring"></a><h3>Similarity Scoring</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -16356,8 +16464,8 @@ n4_val = <span class="hljs-built_in">min</span>(
 <li><a href="#BM_(Algorithms%5C%2FSynteny%2FSynteny%20Graph)_TOPIC%2F">Algorithms/Synteny/Synteny Graph</a></li>
 </ul>
 </div>
-<p><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by first finding matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s and <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, then combining matches that are close together (clustering) to reveal the long stretches of matches that make up <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
-<p>The visual manifestation of this concept is the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> and <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>. A <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> is a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, while a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> is the clustered form of a <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> that reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p><a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s are identified by first finding matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s and <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a> matching <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, then combining matches that are close together (<a href="#BM_(cluster)%2Fi">cluster</a>ing) to reveal the long stretches of matches that make up <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
+<p>The visual manifestation of this concept is the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> and <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>. A <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> is a 2D plot where each axis is assigned to one of the <a href="#BM_(genome)%2Fi">genome</a>s and a dot is placed at each coordinate containing a match, while a <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> is the <a href="#BM_(cluster)%2Fi">cluster</a>ed form of a <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> that reveals <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s.</p>
 <p><img src="svgbob_eb50ab9882ae13623c74006244614b059e22fa47.svg" alt="Kroki diagram output"></p>
 <p>The <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a> above reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (C) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, B, and D).</p>
 <p><img src="svgbob_725cfe74948aa476c335f99e888801f679a0059a.svg" alt="Kroki diagram output"></p>
@@ -16638,11 +16746,11 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</p>
 </li>
 <li>
-<p><a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">K-mer</a> hierarchial clustering - Hierarchical cluster together similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s using either <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>/<a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> [between one/zero vector of sub-<a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s] or <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance to form its <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> / <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a>. This is useful for when you're trying to identify which organism a <a href="#BM_(sequence)%2Fi">sequence</a> belongs to by searching for its <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a database. The <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that make up the database would be clustered, and <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that closely cluster together under a branch of the hierarchial cluster <a href="#BM_(tree)%2Fi">tree</a> are those you'd be more cautious with -- the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may have matched but it could have actually been a corrupted form of one of the other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in the cluster (<a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>).</p>
-<p>This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
+<p><a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">K-mer</a> <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Hierarchical <a href="#BM_(cluster)%2Fi">cluster</a> together similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s using either <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>/<a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> [between one/zero vector of sub-<a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s] or <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance to form its <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> / <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a>. This is useful for when you're trying to identify which organism a <a href="#BM_(sequence)%2Fi">sequence</a> belongs to by searching for its <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a database. The <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that make up the database would be <a href="#BM_(cluster)%2Fi">cluster</a>ed, and <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that closely <a href="#BM_(cluster)%2Fi">cluster</a> together under a branch of the <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a> <a href="#BM_(tree)%2Fi">tree</a> are those you'd be more cautious with -- the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may have matched but it could have actually been a corrupted form of one of the other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in the <a href="#BM_(cluster)%2Fi">cluster</a> (<a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>).</p>
+<p>This logic also applies to spell checking. Words that <a href="#BM_(cluster)%2Fi">cluster</a> together closely are more likely to be mis-identified by a standard spellchecker, meaning individual <a href="#BM_(cluster)%2Fi">cluster</a>s should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>.</p>
 </li>
 <li>
-<p>Hierarchial Clustering Explorer - Generate a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a> based on <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance, then visualize the <a href="#BM_(tree)%2Fi">tree</a> and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).</p>
+<p><a href="#BM_(hierarchial%20cluster)%2Fi">Hierarchial cluster</a>ing explorer - Generate a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a> based on <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance, then visualize the <a href="#BM_(tree)%2Fi">tree</a> and provide the user with "interesting" internal nodes (<a href="#BM_(cluster)%2Fi">cluster</a>s). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the <a href="#BM_(cluster)%2Fi">cluster</a>ed data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).</p>
 </li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
@@ -16795,7 +16903,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <li>a protein, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to mRNA which in turn is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a protein.</li>
 <li>functional RNA, the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> to a type of RNA that isn't mRNA (only mRNA is <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> to a protein).</li>
 </ul>
-<p><img src="svgbob_78b3833e37ddc45358bf3ebf79daba1a9e2604eb.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_4c3340936a17e2840e08c6fbcd2b26b03b1c812b.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(regulatory%20gene)%2Fi"></a><strong>regulatory gene</strong> / <a name="BM_(regulatory%20protein)%2Fi"></a><strong>regulatory protein</strong> - The proteins <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by these <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> affect <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>. That is, a <a href="#BM_(regulatory%20protein)%2Fi">regulatory protein</a> can cause certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> to be expressed more (promote <a href="#BM_(gene%20expression)%2Fi">gene expression</a>) or less (repress <a href="#BM_(gene%20expression)%2Fi">gene expression</a>).</p>
@@ -18850,7 +18958,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p><a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">Genomic dot-plot</a>s are typically used in building <a href="#BM_(synteny%20graph)%2Fi">synteny graph</a>s: Graphs that reveal shared <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s (shared stretches of DNA). <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">Synteny block</a>s exist because <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s account for a large percentage of mutations between two species that branched off from the same parent (given that they aren't too far removed -- e.g. mouse vs human).</p>
 </li>
 <li>
-<p><a name="BM_(synteny%20graph)%2Fi"></a><strong>synteny graph</strong> - Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, cluster together points so as to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, ...</p>
+<p><a name="BM_(synteny%20graph)%2Fi"></a><strong>synteny graph</strong> - Given the <a href="#BM_(genomic%20dot-plot%7Cgenomic%20dot%20plot)%2Fi">genomic dot-plot</a> for two <a href="#BM_(genome)%2Fi">genome</a>s, <a href="#BM_(cluster)%2Fi">cluster</a> together points so as to reveal <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s. For example, ...</p>
 <p><img src="svgbob_eb50ab9882ae13623c74006244614b059e22fa47.svg" alt="Kroki diagram output"></p>
 <p>... reveals that 4 <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s are shared between the <a href="#BM_(genome)%2Fi">genome</a>s. One of the <a href="#BM_(synteny%20block%7Csynteny%20region%7Csyntenic%20region%7Csynteny%7Csyntenic%7Csyntenies)%2Fi">synteny block</a>s is a normal match (C) while three are matching against their <a href="#BM_(reverse%20complement)%2Fi">reverse complement</a>s (A, B, and D)...</p>
 <p><img src="svgbob_725cfe74948aa476c335f99e888801f679a0059a.svg" alt="Kroki diagram output"></p>
@@ -20104,7 +20212,7 @@ dist(S3, S4) is 5 = x + u + z
 <p><a name="BM_(transcriptome)%2Fi"></a><strong>transcriptome</strong> - All <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a>s within a cell at a specific point in time.</p>
 </li>
 <li>
-<p><a name="BM_(good%20clustering%20principle)%2Fi"></a><strong>good clustering principle</strong> - The idea that every pair of points within the same cluster should be closer to each other than any points each from different clusters.</p>
+<p><a name="BM_(good%20clustering%20principle)%2Fi"></a><strong>good clustering principle</strong> - The idea that every pair of points within the same <a href="#BM_(cluster)%2Fi">cluster</a> should be closer to each other than any points each from different <a href="#BM_(cluster)%2Fi">cluster</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(euclidean%20distance)%2Fi"></a><strong>euclidean distance</strong> - The distance between two points.</p>
@@ -20143,8 +20251,11 @@ c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
 M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.302709em;"><span></span></span></span></span></span></span></span></span>, where v and w are two n dimensional points.</p>
 </li>
 <li>
-<p><a name="BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.</p>
-<p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.</p>
+<p><a name="BM_(cluster)%2Fi"></a><strong>clustering</strong> - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+</li>
+<li>
+<p><a name="BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where k "center" points are produced, where each point acts as the center of the <a href="#BM_(cluster)%2Fi">cluster</a> its assigned to.</p>
+<p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each <a href="#BM_(cluster)%2Fi">cluster</a> center. The center point with the minimum distance is chosen as the <a href="#BM_(cluster)%2Fi">cluster</a> for that data point.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
   center_pt = <span class="hljs-built_in">min</span>(
     center_pts,
@@ -20152,7 +20263,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
   )
   <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
 </code></pre>
-<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering is to produce cluster centers that minimize the farthest distance.</p>
+<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing is to produce <a href="#BM_(cluster)%2Fi">cluster</a> centers that minimize the farthest distance.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">farthest_closest_center</span>(<span class="hljs-params">data_pts, center_pts</span>):
   dists = []
   <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
@@ -20164,8 +20275,8 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_e53f2f29f301589040ea2ae613deaf308148ff71.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi"></a><strong>k-means clustering</strong> - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.</p>
-<p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.</p>
+<p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi"></a><strong>k-means clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where k "center" points are produced, where each point acts as the center of the <a href="#BM_(cluster)%2Fi">cluster</a> its assigned to.</p>
+<p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each <a href="#BM_(cluster)%2Fi">cluster</a> center. The center point with the minimum distance is chosen as the <a href="#BM_(cluster)%2Fi">cluster</a> for that data point.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
   center_pt = <span class="hljs-built_in">min</span>(
     center_pts,
@@ -20173,7 +20284,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
   )
   <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
 </code></pre>
-<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering is to produce cluster centers that minimize the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>.</p>
+<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing is to produce <a href="#BM_(cluster)%2Fi">cluster</a> centers that minimize the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">squared_error_distortion</span>(<span class="hljs-params">data_pts, center_pts</span>):
   res = []
   <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
@@ -20181,16 +20292,16 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
     res.append(dist_to ** <span class="hljs-number">2</span>)
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(res) / <span class="hljs-built_in">len</span>(res)
 </code></pre>
-<p>Compared against <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> clustering, the metric being minimized in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> (<a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>) factors in all data points while the metric being minimized in <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> (farthest distance to any center) factors in only a single data point. If outliers are present, <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>'s metric causes the cluster center to be wildly offset while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-mean</a>'s metric will only be mildly shift offset.</p>
-<p>In the example below, the minimized cluster center for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is wildly offset by outlier Z while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> isn't offset as much.</p>
+<p>Compared against <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing, the metric being minimized in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> (<a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>) factors in all data points while the metric being minimized in <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> (farthest distance to any center) factors in only a single data point. If outliers are present, <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>'s metric causes the <a href="#BM_(cluster)%2Fi">cluster</a> center to be wildly offset while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-mean</a>'s metric will only be mildly shift offset.</p>
+<p>In the example below, the minimized <a href="#BM_(cluster)%2Fi">cluster</a> center for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is wildly offset by outlier Z while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> isn't offset as much.</p>
 <p><img src="svgbob_50f9ef0bee677ed328acdaec5260e8530cf4b1be.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The book states that <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> clustering often doesn't produce good results if the clumps have a non-globular shape (e.g. elongated) or have widely different densities.</p>
+<p>The book states that <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing often doesn't produce good results if the clumps have a non-globular shape (e.g. elongated) or have widely different densities.</p>
 </div>
 </li>
 <li>
-<p><a name="BM_(center%20of%20gravity)%2Fi"></a><strong>center of gravity</strong> - In terms of clustering, the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for a set of points is the mean of each individual dimension / coordinates.</p>
+<p><a name="BM_(center%20of%20gravity)%2Fi"></a><strong>center of gravity</strong> - In terms of <a href="#BM_(cluster)%2Fi">cluster</a>ing, the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for a set of points is the mean of each individual dimension / coordinates.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
   dim_means = []
   <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
@@ -20208,7 +20319,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </ul>
 </li>
 <li>
-<p><a name="BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi"></a><strong>Lloyd algorithm</strong> - A heuristic for determining centers in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> clustering. The algorithm begins by choosing centers by arbitrarily selecting k points from the points being clustered, then iteratively...</p>
+<p><a name="BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi"></a><strong>Lloyd algorithm</strong> - A heuristic for determining centers in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing. The algorithm begins by choosing centers by arbitrarily selecting k points from the points being <a href="#BM_(cluster)%2Fi">cluster</a>ed, then iteratively...</p>
 <ol>
 <li>assigns each point to its nearest center (ties broken arbitrarily),</li>
 <li>calculates a new set of centers by calculating the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for the points in each.</li>
@@ -20256,15 +20367,15 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(hard%20clustering%7Csoft%20clustering)%2Fi"></a><strong>hard clustering / soft clustering</strong> - In the context of clustering, ...</p>
+<p><a name="BM_(hard%20clustering%7Csoft%20clustering)%2Fi"></a><strong>hard clustering / soft clustering</strong> - In the context of <a href="#BM_(cluster)%2Fi">cluster</a>ing, ...</p>
 <ul>
 <li>
-<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a> algorithms assign each data point to a set of probabilities, where each probability is how likely it is for that data point to be assigned to a cluster.</p>
-<p><img src="svgbob_d5da22e311346e4b0518c3feb5eef9f94da82571.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a> algorithms assign each data point to a set of probabilities, where each probability is how likely it is for that data point to be assigned to a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+<p><img src="svgbob_a9ecf872b60c1d4716510c88c16191c37ea93595.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">hard clustering</a> algorithms assign each data point to exactly one cluster.</p>
-<p><img src="svgbob_7c8762324eb16b3b6f8431f8bcdafe6bee6b3892.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">hard clustering</a> algorithms assign each data point to exactly one <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+<p><img src="svgbob_f204b4e17e060bba1acfa3d807b989726c554acf.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 </li>
@@ -20428,7 +20539,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </tbody>
 </table>
 <p><img src="svgbob_9d808e8cab6e4c6130daf068aabd299ef244ef53.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(similarity%20graph)%2Fi">Similarity graph</a>s are used for clustering (e.g. <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s). Assuming clusters exist and the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> captures them, there should be some threshold where the edges produced in the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> form <a href="#BM_(clique)%2Fi">clique</a>s or corrupted <a href="#BM_(clique)%2Fi">clique</a>s (a set of nodes that would form a <a href="#BM_(clique)%2Fi">clique</a> if it weren't for a few extra edges and/or missing edges).</p>
+<p><a href="#BM_(similarity%20graph)%2Fi">Similarity graph</a>s are used for <a href="#BM_(cluster)%2Fi">cluster</a>ing (e.g. <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s). Assuming <a href="#BM_(cluster)%2Fi">cluster</a>s exist and the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> captures them, there should be some threshold where the edges produced in the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> form <a href="#BM_(clique)%2Fi">clique</a>s or corrupted <a href="#BM_(clique)%2Fi">clique</a>s (a set of nodes that would form a <a href="#BM_(clique)%2Fi">clique</a> if it weren't for a few extra edges and/or missing edges).</p>
 </li>
 <li>
 <p><a name="BM_(clique)%2Fi"></a><strong>clique</strong> - A set of nodes in a graph where every possible node pairing has an edge.</p>
@@ -20440,6 +20551,14 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </li>
 <li>
 <p><a name="BM_(RNA%20sequencing)%2Fi"></a><strong>RNA sequencing</strong> <a name="BM_(RNA-Seq)%2F"></a><strong></strong> - A technique which uses next-generation <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> to reveal the presence and quantity of RNA in a biological sample at some given moment.</p>
+</li>
+<li>
+<p><a name="BM_(hierarchial%20cluster)%2Fi"></a><strong>hierarchial cluster</strong> - A form of tiered <a href="#BM_(cluster)%2Fi">cluster</a>ing where <a href="#BM_(cluster)%2Fi">cluster</a>s are represented as a <a href="#BM_(tree)%2Fi">tree</a>. Each node represents a <a href="#BM_(cluster)%2Fi">cluster</a> (leaf nodes being a <a href="#BM_(cluster)%2Fi">cluster</a> of size 1), where the <a href="#BM_(cluster)%2Fi">cluster</a>s represented by a parent node is the combination of the <a href="#BM_(cluster)%2Fi">cluster</a>s represented by its children.</p>
+<p><img src="svgbob_2f9c55682af0016a0ed148f5c7aaa46cea575dc6.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="#BM_(hierarchial%20cluster)%2Fi">Hierarchial cluster</a>ing has its roots in <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. The <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> to build <a href="#BM_(cluster)%2Fi">cluster</a>s is massages into a <a href="#BM_(distance%20metric)%2Fi">distance metric</a>, which is then used to form a <a href="#BM_(tree)%2Fi">tree</a> that represents the <a href="#BM_(cluster)%2Fi">cluster</a>s.</p>
+</div>
 </li>
 </ul>
 <p>
