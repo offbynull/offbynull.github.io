@@ -11039,6 +11039,8 @@ Algorithms/Sequence Alignment_TOPIC
 
 `{bm} /(Algorithms\/Phylogeny\/Sequence Inference\/Small Parsimony Algorithm)_TOPIC/`
 
+**ALGORITHM**:
+
 Given a phylogenetic tree and the sequences for its leaf nodes (known entities), this algorithm infers sequences for its internal nodes (ancestor entities) based on how likely it is for sequence elements to change from one type to another. The sequence / sequence element most likely to be there is said to be the most parsimonious.
 
 The algorithm only works on sequences of matching length.
@@ -11287,6 +11289,8 @@ The distance metric used in the example execution above is hamming distance. If 
 Algorithms/Phylogeny/Sequence Inference/Small Parsimony Algorithm_TOPIC
 ```
 
+**ALGORITHM**:
+
 The problem with small parsimony is that inferred sequences vary greatly based on both the given tree structure and the element distance metric used. Specifically, there are many ways in which...
 
  1. a phylogenetic tree structure can be generated (e.g. UPGMA, neighbour joining phylogeny, etc..).
@@ -11532,40 +11536,137 @@ Biologists determine which genes _may_ be related to a change by grouping togeth
 The goal described above is referred to as the good clustering principle.
 ```
 
-In the above example, cluster 1 reveals genes that weren't impacted while cluster 2 reveals genes that had their expression drastically lowered. Real-world gene expression matrices are often more complex. Specifically, ...
+In the above example, cluster 1 reveals genes that weren't impacted while cluster 2 reveals genes that had their expression drastically lowered. Real-world gene expression matrices are often much more complex. Specifically, ...
 
  1. there are often more than two columns to a gene expression matrix (more than two dimensions), meaning that the clustering becomes non-trivial.
- 2. RNA transcript counts can fluctuate due to normal cell operations (e.g. genes regulated by circadian clock), meaning that certain gene counts elevating or lowering doesn't necessarily mean that they're relevant.
- 3. RNA sequencing is an inherently a biased / noisy process, meaning that certain gene counts elevating or lowering could be bad data.
+ 2. RNA sequencing is an inherently a biased / noisy process, meaning that certain RNA transcript counts elevating or lowering could be bad data.
+ 3. RNA transcript counts can fluctuate due to normal cell operations (e.g. genes regulated by circadian clock), meaning that certain RNA transcript counts elevating or lowering doesn't necessarily mean that they're relevant. This especially becomes a problem in state-based gene expression matrices where variables can't be as tightly controlled (e.g. in the blood cancer example above,the samples include people at different stages of cancer, could have been taken at different times of day, etc..).
  
-Prior to clustering, RNA sequencing outputs typically have to go through several rounds of post-processing cleanup / normalization to limit the impact of points 2 and 3 above. For example, to limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones, which is often the ones biologists are interested in.
+Prior to clustering, RNA sequencing outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, to limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones, which is often the ones biologists are interested in.
 
 ```{svgbob}
-   "no log"             "log"
-|                   |              
+     "no log"             "log"
 |                   |
-|                   |           
-|   *   *           | 
-|  / \ / \          |              
-| *   *   *         | *-*-*-*-*  
-+--------------     +--------------
-
-
-   "no log"             "log"
 |   *               |              
 |  / \              |           
 | .   .             |
-| |   | *           |   *
-| |   |/ \          |  / \          
-| *   *   *         | *   *-*-*    
+| |   |             |
+| |   |             |
+| |   | *   *       |   *
+| |   |/ \ / \      |  / \          
+| *   *   *   *     | *   *-*-*-*-*   
 +--------------     +--------------
 ```
 
 ```{note}
-This section doesn't cover de-noising or de-biasing. It only covers clustering and common similarity / distance metrics for gene expression vectors. Note that clustering can be used with data types other than vectors. For example, you can cluster protein sequences where the similarity metric is the BLOSUM62 score.
+This section doesn't cover de-noising or de-biasing. It only covers clustering and common similarity / distance metrics for real-valued vectors (which are what gene expression vectors are). Note that clustering can be used with data types other than vectors. For example, you can cluster protein sequences where the similarity metric is the BLOSUM62 score.
 ```
 
-### Similarity Scoring
+### Euclidean Distance Metric
+
+**WHAT**: Given two n-dimensional vectors, compute the distance between those vectors if traveling directly from one to the other in a straight line, referred to as the euclidean distance.
+
+```{svgbob}
+   *
+    \
+     \ d
+      \
+       * 
+```
+
+**WHY**: This is one of many common metrics used for clustering gene expression vectors.
+
+**ALGORITHM**:
+
+The algorithm extends the basic 2D distance formula from highschool math to multiple dimensions. Recall that two compute the distance between two...
+
+ * 2D points is `{kt} \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}`.
+ * 3D points is `{kt} \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}`.
+
+In n dimensional space, this is calculated as `{kt} \sqrt{\sum_{i=1}^n{(v_i - w_i)^2}}`, where v and w are two n dimensional points.
+
+```{output}
+ch8_code/src/metrics/EuclideanDistance.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch8}
+metrics.EuclideanDistance
+[
+  [0.0, 1.0, 2.0],
+  [2.0, 1.0, 0.0]
+]
+```
+
+### Manhattan Distance Metric
+
+**WHAT**: Given two n-dimensional vectors, compute the distance between those vectors if traveling only via the axis of the coordinate system, referred to as the manhattan distance.
+
+```{svgbob}
+   *
+   | 
+ dx|
+   |  
+   +--* 
+    dy
+```
+
+**WHY**: This is one of many common metrics used for clustering gene expression vectors.
+
+**ALGORITHM**:
+
+The algorithm sums the absolute differences between the elements at each index: `{kt} \sum_{i=1}^n{|v_i - w_i|}`, where v and w are two n dimensional points. The absolute differences are used because a distance can't be negative.
+
+```{output}
+ch8_code/src/metrics/ManhattanDistance.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch8}
+metrics.ManhattanDistance
+[
+  [0.0, 1.0, 2.0],
+  [2.0, 1.0, 0.0]
+]
+```
+
+### Cosine Similarity Metric
+
+```{svgbob}
+    ^
+   /
+  /
+ / a 
++---------------> 
+```
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+
+### Pearson Similarity Metric
 
 https://www.statology.org/pearson-correlation-coefficient/
 
@@ -15865,13 +15966,38 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    This was originally introduced as "every pair of points within the same cluster should be closer to each other than any points each from different clusters", where "closer" was implying euclidean distance. I think the idea was intended to be abstracted out to the definition above since the items may not be thought of as "points" but as vectors or sequences + you can choose a similarity metric other than euclidean distance.
    ```
 
- * `{bm} euclidean distance` - The distance between two points.
+ * `{bm} euclidean distance` - The distance between two points if traveling directly from one to the other in a straight line.
+
+   ```{svgbob}
+      *
+       \
+        \ d
+         \
+          * 
+   ```
 
    In 2 dimensional space, this is calculated as `{kt} \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}`.
 
    In 3 dimensional space, this is calculated as `{kt} \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}`.
 
    In n dimensional space, this is calculated as `{kt} \sqrt{\sum_{i=1}^n{(v_i - w_i)^2}}`, where v and w are two n dimensional points.
+
+ * `{bm} manhattan distance/(manhattan distance|taxi[\s\-]?cab distance|city[\s\-]block distance)/i` - The distance between two points if traveling only via the axis of the coordinate system.
+
+   ```{svgbob}
+      *
+      | 
+    dx|
+      |  
+      +--* 
+       dy
+   ```
+
+   In n dimensional space, this is calculated as `{kt} \sum_{i=1}^n{|v_i - w_i|}`, where v and w are two n dimensional points.
+
+   ```{note}
+   The name manhattan distance is an allegory to the city blocks of manhattan, where your options (most of the time) are to move either left/right or up/down. Other names for this same metric are taxi-cab distance and city block distance.
+   ```
 
  * `{bm} clustering/(cluster)/i` - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a cluster.
 
