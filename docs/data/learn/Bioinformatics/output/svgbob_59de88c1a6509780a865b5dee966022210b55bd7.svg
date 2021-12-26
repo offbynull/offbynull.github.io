@@ -76,23 +76,13 @@ tspan.head{
 </style>
 <rect class="backdrop" height="128" width="672" x="0" y="0"/>
 <g>
-<text x="17" y="28">
-A=1.0
-</text>
-</g>
-<g>
-<text x="17" y="124">
-A=1.0
-</text>
-</g>
-<g>
 <text x="41" y="12">
 ●
 </text>
 </g>
 <g>
-<text x="41" y="76">
-A=1.0
+<text x="41" y="28">
+A
 </text>
 </g>
 <g>
@@ -101,13 +91,18 @@ A=1.0
 </text>
 </g>
 <g>
+<text x="41" y="124">
+A
+</text>
+</g>
+<g>
 <text x="65" y="60">
 ●
 </text>
 </g>
 <g>
-<text x="305" y="76">
-B=1.0
+<text x="65" y="76">
+A
 </text>
 </g>
 <g>
@@ -116,13 +111,8 @@ B=1.0
 </text>
 </g>
 <g>
-<text x="553" y="76">
-B=1.0
-</text>
-</g>
-<g>
-<text x="577" y="28">
-B=1.0
+<text x="329" y="76">
+B
 </text>
 </g>
 <g>
@@ -131,8 +121,8 @@ B=1.0
 </text>
 </g>
 <g>
-<text x="585" y="124">
-B=1.0
+<text x="577" y="76">
+B
 </text>
 </g>
 <g>
@@ -141,8 +131,18 @@ B=1.0
 </text>
 </g>
 <g>
+<text x="609" y="28">
+B
+</text>
+</g>
+<g>
 <text x="609" y="108">
 ●
+</text>
+</g>
+<g>
+<text x="609" y="124">
+B
 </text>
 </g>
 </svg>

@@ -11429,10 +11429,7 @@ i0
 
 ## Gene Expression
 
-Gene expression is the biological process by which a gene (segment of DNA) is synthesized into a gene product (e.g. protein). When a gene encodes for ...
-
- * a protein, the gene is transcribed to mRNA which in turn is translated to that protein.
- * functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
+Gene expression is the biological process by which a gene (segment of DNA) is synthesized into a gene product (e.g. protein).
 
 ```{svgbob}
        .----------------> mRNA --------------> "protein"
@@ -11443,46 +11440,30 @@ DNA   -+
          "transcribe"     "(gene product)"
 ```
 
-A snapshot of all RNA transcripts within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. Both the RNA transcript sequences and the counts of those sequences (number of instances) are captured.
+When a gene encodes for ...
 
-|         | Count |
-|---------|-------|
-| RNA A   |  100  |
-| RNA B   |   70  |
-| RNA C   |  110  |
-| RNA ... |  ...  |
+ * a protein, the gene is transcribed to mRNA which in turn is translated to that protein.
+ * functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
 
-Given that an RNA transcript is simply a transcribed "copy" of the DNA it came from (it identifies the gene), a snapshot indirectly shows each gene's rate of gene expression for at the time that snapshot was taken.
+A snapshot of all RNA transcripts within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. Both the RNA transcript sequences and the counts of those sequences (number of instances) are captured. Given that an RNA transcript is simply a transcribed "copy" of the DNA it came from (it identifies the gene), a snapshot indirectly shows the amount of gene expression taking place for each gene at the time that snapshot was taken.
 
-|          | Count |
-|----------|-------|
-| Gene A   |  100  |
-| Gene B   |   70  |
-| Gene C   |  110  |
-| Gene ... |  ...  |
+|               | Count |
+|---------------|-------|
+| Gene / RNA A  |  100  |
+| Gene / RNA B  |   70  |
+| Gene / RNA C  |  110  |
+| ...           |  ...  |
 
-Biologists typically capture multiple snapshots, either of the same organism at different time points or across multiple organisms of the same species, to help identify which genes are responsible for some change in state. These snapshots are compiled together into a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector.
+Biologists typically capture multiple snapshots to help identify which genes are influenced by or responsible for some change. The counts from each snapshot are placed together to form a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector. For example, the following gene expression matrix captures snapshots at regular intervals to help identify which genes are effected by a drug. Notice that the gene expression vector for B lowers after the drug is administered while C's elevates ...
 
 |          | 1hr before drug given | 0hr before/after drug given | 1hr after drug given | ... |
 |----------|-----------------------|-----------------------------|----------------------|-----|
 | Gene A   | 100                   | 100                         | 100                  | ... |
 | Gene B   | 100                   |  70                         | 50                   | ... |
 | Gene C   | 100                   | 110                         | 140                  | ... |
-| Gene ... | ...                   | ...                         | ...                  | ... |
+| ...      | ...                   | ...                         | ...                  | ... |
 
-|          | breast cancer patient1 | breast cancer patient2 | cancer-free patient3 | ... |
-|----------|------------------------|------------------------|----------------------|-----|
-| Gene A   | 100                    | 100                    | 100                  | ... |
-| Gene B   | 100                    |  70                    | 50                   | ... |
-| Gene C   | 100                    | 110                    | 140                  | ... |
-| Gene ... | ...                    | ...                    | ...                  | ... |
-
-If a gene expression vector fluctuates across the set of snapshots, it may indicate that the gene is either responsible for or influenced by the state. For example, there exists some set of genes that are transcribed more / less when comparing a ...
-
- * cancerous blood cell to a non-cancerous blood cell.
- * flower cell during bloom vs a cell from that same flower when un-bloomed.
- * bacteria cell when its flagella is moving vs when remaining still.
- * animal cell when its inflamed vs when it isn't.
+If a gene expression vector elevates/lowers across the set of snapshots, it may indicate that the gene is either responsible for or influenced by what happened.
 
 ```{svgbob}
          "GENE X"                              "GENE Y"                             "GENE Z"      
@@ -11498,23 +11479,37 @@ If a gene expression vector fluctuates across the set of snapshots, it may indic
 +-----------------------             +-----------------------             +-----------------------
 ```
 
-Similarly, if two or more gene expression vectors fluctuate in a similar pattern, it could mean that the genes they represent either perform similar functions or are co-regulated (e.g. each gene is influenced by the same transcription factor).
+Similarly, if two or more gene expression vectors elevate/lower in a similar pattern, it could mean that the genes they represent either perform similar functions or are co-regulated (e.g. each gene is influenced by the same transcription factor).
 
 ```{svgbob}
-     "GENES W and X"   
-|                       
-|  *----*               
-|  *----*\              
-|        \\             
-|         \*---*       
-|          *---*\      
-|               \\     
-|                \*     
-|                 *     
-+-----------------------
+     "GENES W and X"                  "GENES U and T"    
+|                                |                       
+|  *----*                        |  *             
+|  *----*\                       |  *\            
+|        \\                      |   \\           
+|         \*---*                 |    \*        
+|          *---*\                |     *\       
+|               \\               |      \\      
+|                \*              |       \*---*----*
+|                 *              |        *---*----*  
++-----------------------         +-----------------------
 ```
 
-Biologists determine which genes _may_ be related to a change in state by grouping together similar gene expression vectors. The goal is for the gene expression vectors in each group to be more similar to each other than to those in other groups. The process of grouping items together in this way is called clustering, and each group formed by the process is called a cluster. For example, the gene expression matrix below clearly forms two clusters if the similarity metric is simply the euclidean distance between points...
+In addition to the interval-based gene expression matrices described above, it's also common for gene expression matrices to state-based. State-based gene expression matrices combine snapshots from multiple organisms of the same species in different states. For example, there exists some set of genes that are transcribed more / less when comparing a ...
+
+ * cancerous blood cell vs non-cancerous blood cell.
+ * rose cell that's bloomed vs rose cell that's un-bloomed.
+ * bacteria cell when flagella is moving vs bacteria cell when flagella is still.
+ * mouse cell that's inflamed vs mouse cell that's un-inflamed.
+
+|          | blood cancer patient1 | blood cancer patient2 | cancer-free patient3 | ... |
+|----------|-----------------------|-----------------------|----------------------|-----|
+| Gene A   | 100                   | 100                   | 100                  | ... |
+| Gene B   | 100                   |  70                   | 50                   | ... |
+| Gene C   | 100                   | 110                   | 140                  | ... |
+| ...      | ...                   | ...                   | ...                  | ... |
+
+Biologists determine which genes _may_ be related to a change by grouping together similar gene expression vectors. The goal is for the gene expression vectors in each group to be more similar to each other than to those in other groups. The process of grouping items together in this way is called clustering, and each group formed by the process is called a cluster. For example, the gene expression matrix below clearly forms two clusters if the similarity metric is the euclidean distance between points...
 
 |        | 1hr before | 1hr after |
 |--------|------------|-----------|
@@ -11533,16 +11528,22 @@ Biologists determine which genes _may_ be related to a change in state by groupi
 +---------------------------
 ```
 
-In the above example, cluster 1 reveals genes that weren't impacted while cluster 2 reveals genes that had their expression drastically lowered. Real gene expression matrices are often more complex than what's shown above. Specifically, real gene expression matrices more often than not have ...
+```{note}
+The goal described above is referred to as the good clustering principle.
+```
 
- * noisy data, meaning that clustering may be thrown off.
- * more than two dimensions (more than two columns), meaning that visual inspection of clusters becomes difficult.
+In the above example, cluster 1 reveals genes that weren't impacted while cluster 2 reveals genes that had their expression drastically lowered. Real-world gene expression matrices are often more complex. Specifically, ...
 
-To limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones.
+ 1. there are often more than two columns to a gene expression matrix (more than two dimensions), meaning that the clustering becomes non-trivial.
+ 2. RNA transcript counts can fluctuate due to normal cell operations (e.g. genes regulated by circadian clock), meaning that certain gene counts elevating or lowering doesn't necessarily mean that they're relevant.
+ 3. RNA sequencing is an inherently a biased / noisy process, meaning that certain gene counts elevating or lowering could be bad data.
+ 
+Prior to clustering, RNA sequencing outputs typically have to go through several rounds of post-processing cleanup / normalization to limit the impact of points 2 and 3 above. For example, to limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones, which is often the ones biologists are interested in.
 
 ```{svgbob}
    "no log"             "log"
 |                   |              
+|                   |
 |                   |           
 |   *   *           | 
 |  / \ / \          |              
@@ -11551,12 +11552,17 @@ To limit the impact of small fluctuations caused by either noisy data or normal 
 
 
    "no log"             "log"
-|     *             |              
-|     |             |           
-|     +             |   *
-|    /              |  /            
-| *-'               | *            
+|   *               |              
+|  / \              |           
+| .   .             |
+| |   | *           |   *
+| |   |/ \          |  / \          
+| *   *   *         | *   *-*-*    
 +--------------     +--------------
+```
+
+```{note}
+This section doesn't cover de-noising or de-biasing. It only covers clustering and common similarity / distance metrics for gene expression vectors. Note that clustering can be used with data types other than vectors. For example, you can cluster protein sequences where the similarity metric is the BLOSUM62 score.
 ```
 
 ### Similarity Scoring
@@ -15837,7 +15843,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
  
    After duplication, much of the functionality provided by the genome becomes redundant. The organism evolves much more rapidly because a mutation in one copy of a gene won't necessarily make the organism less fit (duplicate copy still exists). It's typical for a whole genome duplication to be quickly followed up by massive amounts of gene mutations, gene loss, and genome rearrangements.
 
- * `{bm} gene expression matrix/(gene expression matrix|expression matrix|gene expression data|expression data|gene expression vector|expression vector)/i` - A matrix where each column represents a point in time, each row represents a gene, and each cell is a number representing the amount of gene expression taking place for that gene (row) at that time (column).
+ * `{bm} gene expression matrix/(gene expression matrix|expression matrix|gene expression matrices|expression matrices|gene expression data|expression data|gene expression vector|expression vector)/i` - A matrix where each column represents a point in time, each row represents a gene, and each cell is a number representing the amount of gene expression taking place for that gene (row) at that time (column).
 
    |        | 5 AM | 6 AM | 7 AM |
    |--------|------|------|------|
@@ -15853,7 +15859,11 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} transcriptome` - All RNA transcripts within a cell at a specific point in time.
 
- * `{bm} good clustering principle` - The idea that every pair of points within the same cluster should be closer to each other than any points each from different clusters.
+ * `{bm} good clustering principle` - The idea that items within the same cluster should be more similar to each other than items in other clusters.
+
+   ```{note}
+   This was originally introduced as "every pair of points within the same cluster should be closer to each other than any points each from different clusters", where "closer" was implying euclidean distance. I think the idea was intended to be abstracted out to the definition above since the items may not be thought of as "points" but as vectors or sequences + you can choose a similarity metric other than euclidean distance.
+   ```
 
  * `{bm} euclidean distance` - The distance between two points.
 
@@ -16048,13 +16058,13 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
      ```{svgbob}
           ●                                                                      ●       
-       "A=1.0"                                                               "B=1.0"
+          A                                                                      B 
                                                                                          
              ●                                ●                              ●       
-          "A=1.0"                          "B=1.0"                        "B=1.0"
+             A                                B                              B 
                                                                                          
           ●                                                                      ●       
-       "A=1.0"                                                                "B=1.0"
+          A                                                                      B
      ```
 
  * `{bm} dot product` - Given two equal sized vectors, the dot product of those vectors is calculated by first multiplying the pair at each index, then summing the result of those multiplications together. For example, the dot product (1, 2, 3) and (4, 5, 6) is 1\*4+2\*5+3\*6.
@@ -16184,19 +16194,31 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
  * `{bm} hierarchial cluster` - A form of tiered clustering where clusters are represented as a tree. Each node represents a cluster (leaf nodes being a cluster of size 1), where the clusters represented by a parent node is the combination of the clusters represented by its children.
 
    ```{svgbob}
-                .-g3
-              .-*   
-     .--------* '-g5
-     |        '---g8
-    -*   .--------g7
-     | .-* .------g1
-     | | '-*        
-     '-*   '------g6
-       |   .------g1
-       | .-* .----g2
+                .- g3
+                |
+              .-*
+              | |   
+     .--------* '- g5
+     |        |
+     |        '--- g8
+     |        
+    -*   .-------- g7
+     |   |
+     | .-* .------ g1
+     | | | |
+     | | '-*
+     | |   |        
+     '-*   '------ g6
+       |
+       |   .------ g1
+       |   |
+       | .-* .---- g2
+       | | | |
        '-* '-*      
-         |   '----g4
-         '--------g9
+         |   |
+         |   '---- g4
+         |
+         '-------- g9 
    ```
 
    ```{note}
