@@ -11655,11 +11655,13 @@ For example, imagine the following gene expression matrix ...
 | Gene C |  3     | 0     |
 | Gene J |  21    | 21    |
 
-Notice that ...
-
- * gene U's count remained unchanged while gene C's count lowered to zero. The angle between those gene vectors in 45deg.
+ * Gene U's count remained unchanged while gene C's count lowered to zero. The angle between those gene vectors is 45deg.
 
    ```{svgbob}
+   "angle between U and C"
+   "U=(9, 9)"
+   "C=(3, 0)"
+
          .' 
      U .' 
      .' 
@@ -11668,9 +11670,13 @@ Notice that ...
      C
    ```
 
- * gene U's count remained unchanged while gene T's count approximately doubled. The angle between those gene vectors is roughly 20deg. 
+ * Gene U's count remained unchanged while gene T's count approximately doubled. The angle between those gene vectors is roughly 20deg. 
 
    ```{svgbob}
+   "angle between U and T"
+   "U=(9, 9)"
+   "T=(15, 32)"
+
            /
           /
          /
@@ -11683,9 +11689,13 @@ Notice that ...
    .'
    ```
 
- * gene C's count lowered to zero but gene T's count approximately doubled. The angle between those gene vectors is roughly 65deg. 
+ * Gene C's count lowered to zero but gene T's count approximately doubled. The angle between those gene vectors is roughly 65deg. 
 
    ```{svgbob}
+   "angle between C and T"
+   "C=(3, 0)"
+   "T=(15, 32)"
+
            /
           /
          /
@@ -11698,9 +11708,13 @@ Notice that ...
      C
    ```
 
- * gene U and gene J's counts are different but both remained unchanged. The angle between those gene vectors in 0deg.
+ * Gene U and gene J's counts are different but both remained unchanged. The angle between those gene vectors is 0deg.
 
    ```{svgbob}
+   "angle between U and J"
+   "U=(9, 9)"
+   "J=(21, 21)"
+
                                   .'
                                 .'
                               .'
@@ -11726,6 +11740,25 @@ Since the algorithm is actually calculating the cosine of the angle, the metric 
 
  * maximum similarity is cos(0deg) = 1.
  * minimum similarity is cos(180deg) = -1.
+
+````{note}
+Still confused? Think of this as trying to match the pattern of movement but not the size. Imagine two 4-dimensional gene expression vectors with counts (1,9,1,9) and (3,7,3,7). If you were to plot out each component of the vectors, their patterns would look very similar ...
+
+```{svgbob}
+"plot of (1,9,1,9)'s components by index"      "plot of (3,7,3,7)'s components by index"
+
+v 9|     *       *                             v 9|
+a 7|    / \     /                              a 7|   *   *
+l 5|   /   \   /                               l 5|  / \ / 
+u 3|  /     \ /                                u 3| *   *  
+e 1| *       *                                 e 1|
+   +--------------                                +---------
+     0   1   2   3                                  0 1 2 3
+        index                                        index
+```
+
+The cosine of the angle between (1,9,1,9) and (3,7,3,7) is almost 1.0 (maximum similarity), meaning that the patterns are very similar even though the sizes aren't.
+````
 
 **ALGORITHM**:
 
@@ -11766,6 +11799,83 @@ metrics.CosineSimilarity
 ```
 
 ### Pearson Similarity Metric
+
+**WHAT**: Given two n-dimensional vectors, pair together each index and determine the slope of a line that fits through the points made up by the pairs. The slope of the fitted line, when calculated through this metric, is called the pearson correlation coefficient.
+
+```{svgbob}
+"vector A =" (1, 6, 5, 9)
+"vector B =" (3, 8, 4, 8)
+              |  |  |  |
+              |  |  |  '-- "T=(9, 8)"
+              |  |  '----- "R=(5, 4)"
+              |  '-------- "E=(6, 8)"
+              '----------- "W=(1, 3)"
+
+"Once points plotted, the slope of the line"
+"that fits those points is roughly 1.0"
+
+9|                .'
+8|           E  .' T 
+7|            .'   
+6|          .'      
+5|        .'        
+4|      .' R           
+3| W  .'            
+2|  .'              
+1|.'                
+ +-------------------
+   1 2 3 4 5 6 7 8 9
+```
+
+**WHY**:
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+TODO: Figure out why this is useful
+
+**ALGORITHM**:
+
+```{kt}
+r_{AB} = \frac{\sum_{i=1}^n {(A_i - \overline{A})(B_i - \overline{B})}}{\sqrt{\sum_{i=1}^n {(A_i - \overline{A})^2}} \cdot \sqrt{\sum_{i=1}^n {(B_i - \overline{B})^2}}}
+```
+
+(1,9,9,1) and (3,7,3,7)
+
+* W=(1,3)
+* E=(9,7)
+* R=(9,3)
+* T=(1,7)
+
+```{svgbob}
+  9|     R          .'
+B 8|              .'  
+  7| T          .'   E
+v 6|          .'      
+a 5|        .'        
+l 4|      .'          
+u 3| W  .'            
+e 2|  .'              
+s 1|.'                
+   +-------------------
+     1 2 3 4 5 6 7 8 9
+        "A values"
+```
 
 https://www.statology.org/pearson-correlation-coefficient/
 
