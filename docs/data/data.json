@@ -162,6 +162,14 @@
     ],
     "pendingStudyList": [
         {
+            "name": "Handbook of Graph Drawing and Visualization",
+            "source": {
+                "type": "book",
+                "isbn": "9781138034242",
+                "url": "https://news.ycombinator.com/item?id=29734063"
+            }
+        },
+        {
             "name": "The Algorithm Design Manual 3rd Edition",
             "source": {
                 "type": "book",
