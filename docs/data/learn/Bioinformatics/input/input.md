@@ -11634,6 +11634,8 @@ metrics.ManhattanDistance
 
 ### Cosine Similarity Metric
 
+**WHAT**: Given two n-dimensional vectors, compute the cosine of the single between them, referred to as the cosine similarity.
+
 ```{svgbob}
     ^
    /
@@ -11642,29 +11644,126 @@ metrics.ManhattanDistance
 +---------------> 
 ```
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+**WHY**: Cosine similarity metric is measuring if two vectors grew/shrunk in a similar trajectories. It doesn't take into account the magnitude (length) of the vector.
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+For example, imagine the following gene expression matrix ...
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+|        | before | after |
+|--------|--------|-------|
+| Gene U |  9     | 9     |
+| Gene T |  15    | 32    |
+| Gene C |  3     | 0     |
+| Gene J |  21    | 21    |
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+Notice that ...
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+ * gene U's count remained unchanged while gene C's count lowered to zero. The angle between those gene vectors in 45deg.
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+   ```{svgbob}
+         .' 
+     U .' 
+     .' 
+   .' 45
+    ---
+     C
+   ```
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+ * gene U's count remained unchanged while gene T's count approximately doubled. The angle between those gene vectors is roughly 20deg. 
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+   ```{svgbob}
+           /
+          /
+         /
+      T /
+       /     
+      / 20   
+     /   .'
+    /  .'  
+     .' U
+   .'
+   ```
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+ * gene C's count lowered to zero but gene T's count approximately doubled. The angle between those gene vectors is roughly 65deg. 
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+   ```{svgbob}
+           /
+          /
+         /
+      T /
+       /     
+      /     
+     /                               
+    /  65
+    ---
+     C
+   ```
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+ * gene U and gene J's counts are different but both remained unchanged. The angle between those gene vectors in 0deg.
 
-TODO: FILL ME IN, ALSO GO BACK INTO THE MANHATTAN AND EUCLIDEAN AND EXPLICITLY PUT IN THE SIMILARITY / DIS-SIMILARITY
+   ```{svgbob}
+                                  .'
+                                .'
+                              .'
+                         J  .'
+                          .'
+         .'             .' 
+     U .'             .'   
+     .'             .'    
+   .'             .'      
+
+   "Note: Separate because not possible to"
+   "differentiate between vectors if overlapping."
+   ```
+
+In the comparisons above, the counts of the genes (magnitudes of the vectors) don't matter. What's being compared is the trajectory at which the counts changed (angle between vectors). Given two gene vectors, if they grew/shrunk at ...
+
+ * exactly the same trajectory (angle of 0deg), they'll have maximum similarity: 0deg.
+ * completely opposite trajectories, they'll have maximum dissimilarity: 180deg.
+
+In the last example above, both genes have exactly the same trajectory (0deg) even though they have different counts, meaning they have maximum similarity.
+
+Since the algorithm is actually calculating the cosine of the angle, the metric returns a result from from 1 to -1 instead of 0deg to 180deg, where ...
+
+ * maximum similarity is cos(0deg) = 1.
+ * minimum similarity is cos(180deg) = -1.
+
+**ALGORITHM**:
+
+Given the vectors A and B, the formula for the algorithm is as follows ...
+
+```{kt}
+cos(\theta) = \frac{A \cdot B}{||A|| \: ||B||}
+```
+
+The formula is confusing in that the ...
+
+ * central dot is the dot-product between vectors: `{kt} A \cdot B = \sum_{i=1}^n {A_i \cdot B_i}`.
+ * double pipe encapsulation represents the magnitude of a vector: `{kt} ||A|| = \sqrt{\sum_{i=1}^{n} {A_i^2}}`.
+ * two double pipe encapsulations is a multiplication of vector magnitudes: `{kt} ||A|| \: ||B|| = ||A|| \cdot ||B||`
+
+```{kt}
+cos(\theta) = \frac{\sum_{i=1}^n {A_i \cdot B_i}}{\sqrt{\sum_{i=1}^n {A_i^2}} \cdot \sqrt{\sum_{i=1}^n {B_i^2}}}
+```
+
+```{note}
+What is the formula actually calculating / what's the reasoning behind the formula? The only part I understand is the magnitude calculation, which is just the euclidean distance between the origin and the coordinates of a vector. For example, the magnitude between (0,0) and (5,7) is calculated as sqrt((5-0)^2 + (7-0)^2). Since the components of the origin are all always going to be 0, it can be shortened to sqrt(5^2 + 7^2).
+
+The rest of it I don't understand. What is the dot product actually calculating? And why multiply the magnitudes and divide? How does that result in the cosine of the angle?
+```
+
+```{output}
+ch8_code/src/metrics/CosineSimilarity.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch8}
+metrics.CosineSimilarity
+[
+  [9.0, 9.0, 9.0],
+  [90.0, 90.0, 95.0]
+]
+```
 
 ### Pearson Similarity Metric
 
@@ -15023,7 +15122,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
     * levenshtein distance between the DNA sequences.
     * two-break count (reversal distance).
 
-   Distance matrices_PT are used to generate phylogenetic trees. A single distance matrix may fit many different trees or it's possible that it fits no tree at all. For example, the distance matrix above fits the tree...
+   Distance matrices are used to generate phylogenetic trees. A single distance matrix may fit many different trees or it's possible that it fits no tree at all. For example, the distance matrix above fits the tree...
 
    ```{svgbob}
              1
@@ -16350,6 +16449,28 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    ```{note}
    Hierarchial clustering has its roots in phylogeny. The similarity metric to build clusters is massages into a distance metric, which is then used to form a tree that represents the clusters.
    ```
+
+ * `{bm} cosine similarity` - A similarity metric that measures if two vectors grew/shrunk in a similar trajectories (similar angles).
+
+   ```{svgbob}
+                                            .'
+                                          .'
+           /                            .'
+          /                           .'
+         /                          .'
+      T /                         .'
+       /                  /     .' 
+      / 20             A / 20 .'  B
+     /   .'             /   .' 
+    /  .'              /  .'     
+     .' U               .'   
+   .'                 .'       
+   ```
+
+   The metric computes the trajectory as the cosine of an angle between vectors. In the example above, T and U have different magnitudes than A and B, but the angle between T and U is exactly the same as the angle between A and B: 20deg. The cosine similarity of both pairs is cos(20deg) = 0.939. Had the angle been ...
+
+   * smaller (more similar trajectory), the cosine would get closer to 1.
+   * larger (less similar trajectory), the cosine would get closer to -1.
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
