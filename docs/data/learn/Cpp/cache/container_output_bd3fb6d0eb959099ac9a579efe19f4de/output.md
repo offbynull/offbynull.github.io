@@ -2,6 +2,6 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-See [here](https://stackoverflow.com/a/20733537). No copying/moving is done by the assignment.
+Be careful, `static` has a different meaning for functions than it does for methods.
 </div>
 

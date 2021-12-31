@@ -3,15 +3,12 @@
 ```{toc}
 ```
 
-
 # TODOs
 
 TODO: Set prereqs
 
 
-
-TODO: https://github.com/AnthonyCalandra/modern-cpp-features
-
+TODO: Mention this website https://github.com/AnthonyCalandra/modern-cpp-features
 
 
 TODO:  https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiring-twos-complement
@@ -39,48 +36,321 @@ UNDEFINED OVERFLOW/UNDERFLOW: talk about how this can be used.
 ```c++
 #include <limits>
 try {
-    auto c = a + std::numeric_limits<unsigned int>::max(); ➌
+    auto c = a + std::numeric_limits<unsigned int>::max();
 } catch(const std::overflow_error& e) {
     printf("(a + max) Exception: %s\n", e.what());
 }
 ```
 
+TODO: add more example code into terminology
 
+TODO: ch 9 at std::function / std::callable
 
-TODO: https://www.fluentcpp.com/2021/12/13/the-evolutions-of-lambdas-in-c14-c17-and-c20/
+TODO: C++20 coroutines section needs to be fleshed out better (no good source for this)
 
+TODO: C++20 spaceship operator (https://devblogs.microsoft.com/cppblog/simplify-your-code-with-rocket-science-c20s-spaceship-operator/)
 
+TODO: add section on equals/hashcode/tostring equivalents
+      -- operator== overload
+      -- std::hash template overload: https://en.cppreference.com/w/cpp/utility/hash
+      -- friend function to ostringstream
 
-TODO: `static_assert`
+TODO: smart pointers
 
+TODO: modules
 
+TODO: add terminology for declarations and definitions
 
-TODO: what is the spaceship operator?
+# Introduction
 
+The following document is my attempt at charting out the various pieces of the modern C++ landscape. It was made for my own personal reference and put online in the hopes that it might be useful to others. It isn't comprehensive and some of the information may not be entirely correct or may be missing large portions. I tried to focus on the 80% of features that gets used most of the time and not the 20% of highly esoteric / confusing features.
 
+The key points of similarity to remember:
 
+1. Scope in C++ is similar to Java/C# (e.g. function scope, class scope, etc...). Variables, classes, etc.. come into and leave out of scopes in similar ways.
+1. Compound statements in C++ are similar Java/C#. They create a scope, and things declared in that scope are gone once the scope is exited.
+1. Control flow statements in C++ are similar to Java/C#. All the basics are there: for loops, for-each loops, while loops, if-else, switch, etc...
+1. Data can exist on the heap or stack similar to Java/C#.
 
-TODO: put in a section for user-defined literals? it's used by the chrono header a lot.
+The key point of dissimilarity to remember:
 
+1. **C++ does not come with a garbage collector**. You are responsible for releasing memory, although the C++ standard library has a lot of pieces to help with this.
+1. C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantic errors.
+1. C++ has a lot of ambiguous behaviour. Compared to Java/C#, the language specifically carves out pieces of the spec and leaves it as platform-specific behaviour, undefined behaviour, etc.. so that compilers have more room to optimize code. 
 
-TODO: organize constant sections under a common "Constant" section and volatile sections under a common "Volatile" section.
+The rest of the document assumes the following base knowledge:
 
+* The general purpose integral type is `int`.
 
-TODO: chapter 8 -- initialization statements within if statements (section called initialization statements and if), similar to for loop initialization
+* Variables use the format `modifiers type name initializer`.
 
+  ```c++
+  int x = 0;
+  int x (0);
+  int y {0};
+  ```
 
-TODO: chapter 8 -- initialization statements within switch statements (section on switch), similar to for loop initialization
+  C++ provides a bewildering number of ways to initialize a variable, each with its own set of edge cases. For best results, stick to the curly braces.
 
+* Functions use the format `modifiers return-type name(param-type1 arg-name1, param-type2 arg-name2, ...) modifiers { body }`.
 
-TODO: chapter 8 -- gotos
+  ```c++
+  int myFunction(int a) {
+      return x + a;
+  }
+  ```
 
+  C++ functions don't necessarily have to be methods (members of a class).
 
-TODO: type deduction section (auto) has something written for functions as well -- move the function portion under Functions / Return Type Deduction HEADER.
+* Classes use either `struct` or `class`.
 
+  `struct` makes all members of the class public by default, while `class` makes them all private by default. Members need to be grouped together by visibility, where a visibility (e.g. `private`) is a label within the class.
 
-TODO: ch 9 at function pointers section -- PUT UNDER Pointers / Function Pointer HEADER.
+  ```c++
+  class MyClass {
+      int myFunction(int a) {
+          return x + a;
+      }
+  private: // everything under this label is private
+     int x {0};
+  }
+  ```
+
+* A source file is often split into two: A header file which contains declarations (e.g. just the function's signature / prototype) and C++ files which contains definitions (e.g. the function implementation).
+
+  ```c++
+  // MyCode.hpp (header file w/ declarations)
+  int myFunction(int a);
+
+  // MyCode.cpp (source file w/ definitions)
+  int myFunction(int a) {
+      return x + a;
+  }
+  ```
+
+  This isn't required. Source files may contain declarations and / or header files may contain definitions, but the split is typically done for a variety of reasons: faster compile times, sharing the same object across multiple source files, compiling when there are cyclical references, etc..
+
+  To include functionality from one source file into another, include its header using `#include`
+
+  ```c++
+  #include <my_source_header>
+
+  my_function(); // declaration pulled in from my_source_header, compiler will
+                 // find the definition when the time comes
+  ```
+
+```{note}
+The above points aren't entirely correct or complete. They're generalizations that help set up a base for the explanations in the rest of the document.
+```
+
+A good tool to try things in is [cppinsights](https://cppinsights.io/), which breaks down C++ code and allows you some visibility into what the compiler is doing / what the compiler sees. This document doesn't so much detail using compilers as it does language features.
+
+```c++
+// hello.cpp file
+#include <iostream>
+int main() {
+    std::cout << "hello world\n";
+    return 0;
+}
+```
+
+# Compilation
+
+Several C++ compilers exist, the most popular of which are the GNU C++ compiler and LLVM clang. C++ compilers generally follow the same set of steps to go from C++ code to an executable.
+
+1. C++ source files get fed into a preprocessor to generate translation units. A translation unit is the C++ source file after going through modifications based compiler specifics, platform specifics, libraries used, compile options / library options, etc..
+1. Translation unit files get fed into a compiler to generate object files. An object file is the intermediary compiled form of each individual translation unit.
+1. Object files get fed into a linker to generate the executable. All object files come together and linkages between them are made to form the final executable.
+
+```{svgbob}
+.--------------------.
+|  "C++ source file" +--+
+'--------------------'  |
+                        | "preprocessor (1 to 1)"
+                        |  .--------------------.
+                        +--+ "translation unit" +--+
+                           '--------------------'  |
+                                                   | "compiler (1 to 1)"
+                                                   |  .---------------.
+                                                   +--+ "object file" +--+
+                                                      '---------------'  |
+                                                                         | "linker (1+ to 1)"
+                                                                         |  .--------------.
+                                                                         +--+ "executable" |
+                                                                            '--------------'
+```
+
+The C++ language has a lot of legacy baggage, edge cases, and ambiguous behaviour. Regardless of the compiler chosen, at least some of the following warning options should be enabled:
+
+* `-Wall` - Warns about questionable but easily avoidable constructs.
+* `-Wextra` - Warns about other questionable constructs not covered by `-Wall`. 
+* `-Wpedantic` - Warns about ISO conformance.
+* `-Weverything` - Turns on all warnings.
+
+Most compilers support some or all of the flags above.
+
+```c++
+// hello.cpp file
+#include <iostream>
+int main() {
+    std::cout << "hello world\n";
+    return 0;
+}
+```
+
+```
+$ g++ hello.cpp
+$ ./a.out
+hello world
+```
+
+# Object Lifecycle
+
+In C++, an object is a region of memory that has a type and a value (e.g. a class instance, an integer, a pointer to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ objects aren't exclusive to classes (e.g. an boolean is an object).
+
+An object's life cycle passes through the following stages:
+
+1. memory allocated
+2. constructor invoked
+3. destructor invoked
+4. memory deallocated
+
+The storage duration of an object starts from when its memory is allocated and ends when that memory is deallocated. An object's lifetime, on the other hand, starts when its constructor _completes_ (meaning the constructor finishes) and ends when its destructor is _invoked_ (meaning when the destructor starts).
+
+```{svgbob}
+.------------------------------------------------.
+|           "OBJECT STORAGE DURATION"            |
+|                                                |
+| "1. allocation"                                |
+|                                                |
+| "2. constructor invocation started"            |
+|                                                |
+|  .----------------------------------------.    |
+|  |           "OBJECT LIFETIME"            |    |
+|  |                                        |    |
+|  | "3. constructor invocation finished"   |    |
+|  |                                        |    |
+|  | "4. destructor invocation started"     |    |
+|  |                                        |    |
+|  | "5. destructor invocation finished"    |    |
+|  '----------------------------------------'    |
+|                                                |
+| "6. deallocation"                              |
+|                                                |
+'------------------------------------------------'
+```
+
+Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how object lifetimes. The user is responsible for knowing when objects should be destroyed and ensuring that objects are only accessed within their lifetime.
+
+The typical storage durations supported by C++ are...
+
+ * automatic storage duration - scoped to duration of some function within the program.
+ * static storage duration - scoped to the entire duration of the program.
+ * thread storage duration - scoped to the entire duration of a thread in the program.
+ * dynamic storage duration - allocated and deallocated on request of the user.
+
+## Static Objects
+
+By default, an object declared within a function is said to be an automatic object. Automatic objects have automatic storage durations: start at the beginning of the block and finish at the end of the block. When the keyword `static` (or `extern` in some cases) is added to the declaration, the storage duration of the function changes.
+
+At global scope, if an object is declared as `static` or `extern`, storage duration of the object spans the entire duration of the program. The difference between the two is essentially just visibility:
+
+ * `static` makes it so it's accessible to only the translation unit it's declared in.
+ * `extern` makes it so it's accessible to other translation units as well as the translation unit it's declared in.
+
+```c++
+static int a = 0; // static variable
+extern int b = 1; // static variable (accessible outside translation unit)
+```
+
+At function scope, the storage duration of objects declared as `static` starts at the first invocation of that function and ends when the program exits.
+
+```c++
+int f1() {
+    static int z = 0; // static variable
+    z += 1;
+    return z;
+}
+```
+
+At class level, the storage duration of a member (field or method) declared as `static` is essentially the same as if it were declared at global scope (they aren't bound to an individual instance of the class the same way a normal field or method is). The only differences are that the static member is accessed on the class itself using the scoped resolution operator (::) and that static members that are fields must be initialized at global scope.
+
+```c++
+class X {
+public:
+    static int m;         // static member (field initialized at end)
+    static int f1() {     // static member (method)
+        m += 1;
+        return m;
+    }
+};
+
+X::m = 0;                // initialize static member
+```
+
+If the `thread_local` modifier is added before `static` (or `extern`), each thread gets its own copy of the object. That is, the storage duration essentially gets changed to when the thread starts and ends.
+
+`thread_local static` can be shortened to just `thread_local` (it's assumed to be static).
+
+```c++
+static int a = 0;
+thread_local static int b = 1;
+thread_local extern int c = 2;
+```
+
+## Dynamic Objects
+
+An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The operator ...
+
+ * `new` allocates a new object and calling its the constructor.
+ * `delete` calls the destructor of some object and deallocates it.
+
+Both keywords work with pointers: `new` returns a pointer while `delete` requires a pointer. To create a new object, use `new` followed by the type.
+
+```c++
+int * ptr = new int;
+*ptr = 0;
+delete ptr;
+```
+
+Objects may be initialized directly within the `new` invocation just as if it were an automatic object initialization. The only caveat is that equals initialization and brace-plus-equals initialization won't work because the equal sign is already being used during `new` (speculation -- it doesn't work but I don't know the exact reason). As such, braced initialization is the best way to initialize a dynamic object.
+
+```c++
+int * ptr = new int {0}; // initialize to 0
+delete ptr;
+```
+
+The same process can be used to create an array of objects. Unlike automatic object arrays, dynamic arrays don't have a constant size array lengths restriction.. However, the return value `new` will decay from an array type to a pointer type.
+
+When deleting a dynamic object array, square brackets need to be appended to `delete` operator: `delete[]`. Doing so ensures that the destructor for each object in the array gets invoked before deallocation.
+
+```c++
+int * ptr = new int[len];  // len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.
+delete[] ptr;
+```
+
+Braced initialization may be used when declaring dynamic arrays so long as the size of the array is at least the size of the initialization list.
+
+```c++
+int * ptr1 = new int[10] {1,2,3};  // initialize the first 3 elems of a 10 elem array
+int * ptr2 = new int[2] {1,2,3};   // throws exception  (size too small for initializer list)
+int * ptr3 = new int[n] {1,2,3};   // okay -- so long as n >= 3
+delete[] ptr1;
+delete[] ptr2;
+delete[] ptr3;
+```
+
+By default, dynamic objects are stored on a block of memory called the heap, also sometimes referred to as the free store.
+
+```{note}
+See operator overloading section to see how the `new` and `delete` operators may be overridden to customize where and how a specific type gets stored.
+
+The `new` and `delete` operators may also be overridden globally rather than per-type. See the new header.
+```
 
 # Operators
+
+The following subsections provide the list of operators available in C++. Some operators are obvious, while others are explained in other sections.
 
 ## Bitwise Logical Operators
 
@@ -213,6 +483,7 @@ C++ provides a set of other operators such as the ...
  * comma operator (`,`).
  * function call operator (`()`).
  * conversion operator (e.g. casting).
+ * user-defined literal operator (e.g. `_`)
 
 While it isn't worth going into them in detail here, the reason the language explicitly lists them as operators is because they're overload-able (e.g. operator overloading). Overloading these operators is heavily discouraged since doing so causes confusion.
 
@@ -224,9 +495,45 @@ x = obj['column name', 100]
 ```
 ````
 
-# Types
+# Variables
+
+C++ variable declarations have the following form: `modifiers type name initializer`.
+
+ * **type** (required) - Type of variable.
+
+ * **name**: (required) - Name of variable.
+
+ * **initializer**: (optional) - Initial value to assign (object initialization).
+
+   There are multiple ways to initialize a variable, each with their own advantages and disadvantages.
+
+   * braced initialization / uniform initialization: braces used for initialization (e.g. `int x {a + b}`).
+   * equals initialization: equals sign used for initialization (e.g. `int x = 5`).
+   * brace-plus-equals initialization: equals sign and braces used for initialization (e.g. `int x = { a + b }`).
+   * etc..
+
+   ```{note}
+   The above is an over-simplification. The ways to initialize are vast and complex. See [here](https://en.cppreference.com/w/cpp/language/initialization) for a full accounting.
+   
+   It seems like the safest bet is to always use brace initialization where possible. Just use the braces as if they were parenthesis or braces in Java (specific to the context). The others have surprising behaviour (e.g. they won't warn about narrowing conversions).
+   ```
+
+ * **modifiers** (optional) - Markers controlling the behaviour / properties of a variable.
+
+   (e.g. `const`, `volatile`, `constexpr`, `inline`, ...)
+
+```c++
+int a;     // no initializer -- garbage possibly contained at memory location
+int b {};  // empty initializer -- zeros out the memory for the int
+int c {0}; // assign to constant 0
+int d {c}; // assign to value in c
+```
+
+In C++, variables that are fields (assigned to a class) are called member variables. This section deals with non-member variables (e.g. scoped somewhere other than a class -- global, inside a function, etc..).
 
 ## Core Types
+
+The following sections list out core C++ types and their analogs. These include numeric types, character types, and string types.
 
 ### Integral
 
@@ -350,6 +657,10 @@ To expand any integer __literal__ to a ...
  * `uint{N}_t`, use the macro `UINT{N}_C(...)` (where `{N}` is the bit length).
 
 ```{note}
+There is no macro `SIZE_C(...)` for `size_t`. Best to just assign a `size_t to one of the other types's literals and hope the compiler warns about any narrowing conversions that might happen.
+```
+
+```{note}
 What's the point of the above? You don't know what internal integer type each standardized type maps to. For example, `uint64_t` may map to `unsigned long long`, which means when you want to assign a literal to a variable of that type you need to add a `ULL` suffix...
 
 `uint64_t test = 9999999999999999999ULL`
@@ -426,7 +737,7 @@ I see online that `FLT_DIG`, `DBL_DIG`, `LDBL_DIG`, and `DECIMAL_DIG` define the
 See also `std::numeric_limits` in the limits header. This seems to also provide platform-specific definitions that are queryable via functions..
 ```
 
-### Character
+### Character String
 
 Core C++ strings are represented as an array of characters, where that array ends with a null character to signify its end. This is in contrast to other major platforms that typically structure strings a size integer along with the array (no null terminator).
 
@@ -621,7 +932,7 @@ An array guarantees that its elements appear contiguously and in order within me
 
 ### Void Pointer
 
-A pointer to the void type means that the type being pointed to is unknown. Since the type is unknown, dereferencing a void pointer isn't possible. In otherwords, it isn't possible to read or write to the data pointed to by a void * because the underlying type is void / unknown.
+A pointer to the void type means that the type being pointed to is unknown. Since the type is unknown, dereferencing a void pointer isn't possible. In other words, it isn't possible to read or write to the data pointed to by a void * because the underlying type is void / unknown.
 
 ```c++
 int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -640,6 +951,58 @@ y = y + 2; // fails
 ```{note}
 If you have a `void *` and you want to do raw memory manipulation at that address, use a `std::byte *` instead. Why not just use `char *` instead? Is a `char` guaranteed to be 1 byte (I think it is)? According to [this](https://stackoverflow.com/a/46151026), it's because certain assumptions about `char`s may not hold with bytes? I don't know. Just remember `std::byte *` if you're working with raw data.
 ``` 
+
+### Function Pointer
+
+A pointer to a function means the type being pointed to is a function with some specific structure. All functions have a type associated with them, defined by their return type, parameter type, and owning class if the function is a method.
+
+```c++
+// type is: int (int, int)
+int add(int a, int b) {
+    return a + b;
+}
+```
+
+To declare a function pointer to a free function or a static class method, write out the function type (return type and parameter list without names) but place the pointer name preceded by an asterisk (\*) _wrapped in parenthesis_ where the function name would be. Invoke it just like you would any other function.
+
+```c++
+int (*func_ptr)(int, int) {}; // unset pointer to a function of structure  int (int, int)
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int multiply(int a, int b) {
+    return a * b;
+}
+
+func_ptr = &add;  // point func_ptr to address of add()
+func_ptr(1, 2);   // invoke
+```
+
+To declare a function pointer to a non-static class method (member function), the class type needs to be included before the asterisk (\*) using the scoped resolution operator (::).
+
+```c++
+int (MyClass::*func_ptr)(int, int) {}; // unset pointer to a function of structure  int (int, int)  in or inherited from MyClass
+
+MyClass x {};
+
+func_ptr = &MyClass::multiply;  // point to:  int MyClass::multiply(int, int)
+(x.*func_ptr)(2, 3);            // provide x as the MyClass instance when invoking
+```
+
+Unlike normal functions, functors cannot be assigned to raw function pointers. A functor's equivalent of a function pointer is a pointer to the function-call operator overload (method).
+
+```c++
+int (MyFunctor::*func_ptr)(int, int) {};  // unset pointer to a function of structure  int (int, int)  in or inherited from MyClass
+
+MyFunctor x {};
+
+func_ptr = &MyFunctor::operator();
+(x.*func_ptr)(2, 3);            // provide x as the MyClass instance when invoking
+```
+
+Alternatively, to support both functions and functors, the parameter expecting a function pointer should be changed to the `std::function` or the code doing the invocation should be changed to use the `std::invoke` wrapper. These wrappers abstract away the differences between pointers to functions and functors.
 
 ## References
 
@@ -686,6 +1049,46 @@ MyObject c {b};               // move a into c (gut it into c) via the move cons
 
 ```{note}
 Once an object is moved, it's in an invalid state. The only two reliable operations you can perform on it is to either destroy or re-assign it to something else (assignments are discussed elsewhere).
+```
+
+```{note}
+There's a piece here I don't fully understand about "forwarding references". See [here](https://github.com/AnthonyCalandra/modern-cpp-features#forwarding-references).
+```
+
+## Size
+
+`sizeof` is a unary operator that returns the size of its operand in bytes as a `size_t` type. If the operand is a ...
+
+* data type or a variable, it'll return the number of bytes needed to hold that type. For example, ...
+
+  * `sizeof char` is guaranteed to be 1.
+  * `sizeof (char &)` is guaranteed to be 1.
+  * `sizeof (char *)` is platform dependant, typically either 4 or 8.
+  * `char * x = "hi"; sizeof x` is equivalent to `sizeof (char *)` (see above).
+
+* an expression such as a structure/class literal, array literal, or string literal, it'll return the number of bytes needed to hold it. For example, ...
+
+ * `sizeof "hi"` is 3 (added 1 for the null terminator at the end)
+ * `sizeof { 5, 5, 4 }` is platform dependent, typically either 12 or 24.
+ * `sizeof (int[3])` is platform dependent, typically either 12 or 24.
+ * `x = int[n]; sizeof x` is invalid C++ (variable length arrays allocated on stack are not allowed in C++).
+
+In other words, `sizeof` returns the size of things known at compile-time. If a variable is passed in, it outputs the size of the data type. For example, if the data type is a struct of type `MyStruct`, it'll return the number of bytes used to store a `MyStruct`. However, if the data type is a pointer to `MyStruct`, it'll return the number of bytes to hold that pointer. That is, you can't use it to get the size of something like a dynamically allocated array of integers.
+
+In certain cases, the compiler may add padding to objects (e.g. byte boundary alignments or performance reasons), meaning that the size returned by `sizeof` for an object shouldn't be used to make inferences about the characteristics of that object. For example, a `long double` may get reported as being 16 bytes, but that doesn't necessarily mean that a `long double` is a 128-bit quad floating point. It could be that only 12 of those bytes are used to represent the floating point number while the remainder is just padding for alignment reasons. 
+
+```{note}
+As shown in the examples above, the `sizeof` a C++ reference is equivalent to the raw size. For example, `sizeof char == sizeof (char &)`.
+```
+
+```{note}
+The last example is valid in C99 (called a VLA -- variable length array) but not C++. The reason is C++ has std::vector and std::array that give you basically the same thing as variable arrays.
+
+In C, where VLAs are allowed, doing a `sizeof` on a VLA is undefined.
+```
+
+```{note}
+Remember that `sizeof` is a unary operator, similar to how the negative sign is a unary operator that negates whatever is to the right of it. People usually structure its usage in code as if it were a function (e.g. `sizeof(x)` vs `sizeof x`). This sometimes causes confusion for people coming from other languages.
 ```
 
 ## Aliasing
@@ -804,18 +1207,6 @@ auto &e { a }; // int &  <-- THIS IS A SPECIAL CASE. YOU ALWAYS NEED TO USE auto
 
 Note that the last variable in the example above explicitly the ampersand (&) to declare e as a reference type. This is required because reference initialization works the same way as normal initialization (`auto` can't disambiguate).
 
-The `auto` keyword is also usable as a function return type, where the return type is deduced. Using `auto` on functions is discouraged because function definitions act as documentation. The exception is with templates, where the return type depends in potentially complex ways on template parameters.
-
-```c++
-auto my_function(int x) {
-    return x + 5;
-}
-```
-
-```{note}
-The book is saying that when you use `auto` for return type, you can optionally add a `->` after the parameter list to evaulate a "type expression", saying that it's useful for documentation? Something about `decltype()`. I wasn't able to understand what the point of this was. It said that it's something commonly used with templates.
-```
-
 ## Implicit Conversion
 
 An implicit type conversion is when an object of a certain type is converted (cast) automatically, without code explicitly changing the object to a different type. For example, `long x {1}` implicitly converts the `int` literal in the initializer to a `long`.
@@ -844,6 +1235,17 @@ Depending on the operation performed or how an object is initialized, the result
 
 ```{note}
 The book recommends to always use braced initialization because when you do, the compiler produces warnings about types not fitting. However, those warnings don't seem to cover everything, at least that's the impression I get from what I've tried.
+```
+
+## Common Attributes
+
+If a variable has been deprecated, adding a `[[deprecated]]` attribute will allow the compiler to generate a warning if it sees it being used.
+
+```c++
+[[deprecated("Warning -- this is going away in the next release")]]
+int add(int a, int b) {
+    return a + b;
+}
 ```
 
 ## Explicit Conversion
@@ -923,35 +1325,229 @@ int x = (int) 9999999999L;
 
 The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
 
+## User-defined Literals
+
+C++ provides a way for users to define their own literals through the use of operator overloading, called user-defined literals. User-defined literals wrap built-in literals and perform some operation to convert them to either another type or another value. It's identified by a unique suffix that starts with an underscore (e.g. `_km`). 
+
+The operator overload is identified by two quotes followed by the suffix.
+
+```c++
+Distance operator"" _km (long double n) {
+    return Distance {n * 1000.0};
+}
+
+Distance operator"" _mi (long double n) {
+    return Distance {n * 1609.34};
+}
+
+Distance d = 1.2_km + 4.0_mi;
+```
+
+As stated above, user-defined literals must wrap an existing built-in literal type.
+
+| Type                  | Definition                                                   |
+|-----------------------|--------------------------------------------------------------|
+| integral              | `return_type operator"" identifier (unsigned long long int)` |
+| floating point        | `return_type operator"" identifier (long double)`            | 
+| character             | `return_type operator"" identifier (char)`                   |
+| wide character        | `return_type operator"" identifier (wchar_t)`                | 
+| utf-8 character       | `return_type operator"" identifier (char8_t)`                | 
+| utf-16 character      | `return_type operator"" identifier (char16_t)`               | 
+| utf-32 character      | `return_type operator"" identifier (char32_t)`               | 
+| character string      | `return_type operator"" identifier (char *, size_t)`         |
+| wide character string | `return_type operator"" identifier (wchar_t *, size_t)`      | 
+| utf-8 string          | `return_type operator"" identifier (char8_t *, size_t)`      | 
+| utf-16 string         | `return_type operator"" identifier (char16_t *, size_t)`     | 
+| utf-32 string         | `return_type operator"" identifier (char32_t *, size_t)`     | 
+| raw                   | `return_type operator"" identifier (const char *)`           |
+
+Note that, for ...
+
+ * numerics, the widest possible C++ type is used for both integral (unsigned long long int) and floating point (long double).
+ * characters, each character type gets its own definition.
+ * strings, each string type gets its own definition.
+
+The last definition in the table above, raw, will get a character string of any numeric literal used.
+
+```c++
+const char * operator"" _as_str (const char * n) {
+    std::cout << "input str: " << n;
+    return n;
+}
+
+123.5e+12_as_str;  // outputs "input str: 123.5e+12"
+```
+
+The standard C++ library makes use of user-defined literals in various places, but its identifiers don't require an underscore (_) prefix.
+
+ * Date-time API (chrono header): `std:chrono::duration d  = 2h + 15ms`.
+ * Complex numbers API (complex header): `std::complex<double> = (1.0 + 2.0i) * (3.0 + 4.0i)`.
+ * String API (string): `std::string str = "hello"s + "world"s`.
+
 # Functions
 
-C++ function declarations and definitions have the following form:
+C++ function declarations and definitions have the following form: `prefix-modifiers return-type name(parameters) suffix-modifiers`
 
+ * **return-type** (required) - Type returned by function.
+
+ * **name**: (required) - Name of function.
+
+ * **parameters** (required) - Parameter list of function.
+
+ * **prefix-modifiers** (optional) - Markers controlling the behaviour / properties of a function.
+
+   (e.g. `static`, `virtual`,  `constexpr`, `[[noreturn]]`, `inline`, ...)
+
+ * **suffix-modifiers** (optional) - Markers controlling the behaviour / properties of a function.
+
+   (e.g. `noexcept`, `const`,  `final`, `override`, `volatile`, ...)
+
+```c++
+int add(int x, int y) {
+    return x + y;
+}
 ```
-prefix-modifiers return-type name(parameters) suffix-modifiers;
+
+In C++, functions that are ...
+
+ * methods (assigned to a class) are called member functions.
+ * global are called free functions.
+
+This section deals with free functions.
+
+```{note}
+Some of the modifiers listed above are for member functions, not free functions.
 ```
 
- * Return type: The type returned by a function.
- * Name: The name of a function.
- * Parameters: The parameter list of a function.
- * Prefix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (before return type).
- * Suffix modifiers: Optional markers that control the behaviour / properties of a function, placed at the beginning (after parameter list).
+## Overloading
 
-Prefix modifiers include...
+Function overloading is when there are multiple functions with the same name in the same scope. For free functions, each function overload must have the same return type and a unique set of parameters.
 
- * `static`
- * `virtual`
- * `constexpr`
- * `[[noreturn]]`
- * `inline`
+```c++
+bool test(int a) { return a != 0; }
+bool test(double a) { return a != 0.0; }
+bool test(int a, int b) { return a != b; }
+```
 
-Suffix modifiers include...
+When an overloaded function is called, the compiler will try to match argument types against parameter types to figure out which overloaded function to call. If no exact match can be found, the compiler attempts to obtain a correct set of types through a set of conversions.
 
- * `noexcept`
- * `const`
- * `final`
- * `override`
- * `volatile`
+```c++
+int num = 1;
+test(1);  // calls the first overload in the code above:  bool test(int a);
+```
+
+```{note}
+See argument matching section.
+```
+
+## Argument Matching
+
+When an function is called but the arguments types don't match the parameter list types, the compiler attempts to obtain a correct set of types through a set of conversions on the arguments. For example, if a parameter expects a reference to an constant object but what gets passed into the argument is an object, the argument is automatically converted to a constant object and its reference is used.
+
+```c++
+bool test(const int &obj) { ... }
+
+int x {};
+test(x); // x is turned into a "const int" and passed in as a reference
+```
+
+For floating point and integral types, the compiler will widen or _narrow_ the if the exact type isn't found.
+
+```c++
+bool test(int32_t a) {
+    std::cout << a;
+    return a != 0;
+}
+
+float x {1.5};
+test(x); // automatic narrowing
+```
+
+Similarly, the compiler will convert between signed and unsigned integral types if the exact integral type isn't found.
+
+```c++
+bool test(uint32_t a) {
+    std::cout << a;
+    return a != 0;
+}
+
+int64_t x {10};
+test(x); // automatic narrowing and change to unsigned
+```
+
+When function overloads are involved, the candidate with the arguments matching most closely is the one chosen.
+
+```{note}
+The exact rules here seem hard to definitively pin down. If you have two overloads of a function, one accepting int16 and int64, it'll fail when you try to call it with int8 claiming that it's too ambiguous. The best thing to do is to just ask the compiler to either warn on implicit conversion (`-Wconversion`) flag or on narrowing implicit conversion (`-Wnarrowing` / `-Wno-narrowing`). These flags may not be included under `-Wall`.
+```
+
+## Type Deduction
+
+Similar to variable declarations, the `auto` keyword is also usable to deduce a function's parameter and return types based on usage.
+
+```c++
+auto add(auto x) {
+    return x + 5;
+}
+```
+
+The use of `auto` is essentially short-hand for a function template. In the example above, each unique set of types used when invoking `add()` is a template instantiation.
+
+```c++
+test(5);     // uses  int add(int x)
+test(6);     // uses  int add(int x)
+test(5ULL);  // uses  unsigned long long add(unsigned long long x)
+```
+
+When using `auto` for a return type, you can optionally add a `->` immediately after the parameter list followed by a type expression that defines what expression should generate the returning type.
+
+```c++
+// return type should be whatever type the result of x + 5LL is, which is long long
+auto add(auto x) -> decltype(x+5LL) {
+    return x + 5;
+}
+```
+
+```{note}
+Why is the above useful? Using `auto` on functions is discouraged because function definitions act as documentation. The exception is with templates, where the types depend in potentially complex ways on template parameters.
+
+By adding the type expression in, you're re-introducing a form of documentation.
+```
+
+```{note}
+Try running functions with auto through [here](https://cppinsights.io) to get a feel for how this transforms to function templates.
+```
+
+## Main Function
+
+The entry-point to any C++ program is the `main` function, which can take one of three possible forms:
+
+ 1. `int main()`
+
+    No arguments.
+
+ 1. `int main(int argc, char* argv[])`
+
+    Command-line arguments, where `argv` is an array of size `argc` containing the null-terminated command-line arguments. On most modern platform, the first argument is the path of the executable.
+
+ 1. `int main(int argc, char* argv[], EXTRA_PLATFORM_SPECIFIC_PARAMS)`
+
+    Same as the above except extra arguments are supplied that are platform-specific.
+
+All three forms return an integer known as an exit code. On most modern day platforms, an exit code of 0 means success. If the code doesn't return an exit code, 0 is assumed.
+
+```c++
+#include <iostream>
+
+int main(int argc, char* argv[]) {
+    std::cout << "hello world!" << ' ' << argv[0];
+    return 0;
+}
+```
+
+```{note}
+Should `argv` be `const char * const *`? In that you shouldn't be able to change the strings or the string pointer at each array index.
+```
 
 ## Variadic
 
@@ -1006,20 +1602,122 @@ float add_and_mult(size_t n, ...) {
 The book recommends against using variadic functions due to confusing usage and having to explicitly know the count and types of the variadic arguments before hand (can become security problem is screwed up). Instead it recommends using variadic templates for functions instead.
 ```
 
-## Static
+## No Exception
 
-A static function is a function that's only visible to other functions in the same translation unit. Static functions have the `static` prefix modifier applied to the function.
+In certain cases, it'll be impossible for a function to throw an exception. Either the function (and the functions it calls into) never throws an exception or the conditions imposed by the function make it impossible for any exception to be thrown. In such cases, a function may be marked with the `noexcept` keyword. This keyword allows the compiler to perform certain optimizations that it otherwise wouldn't have been able to, but it doesn't necessarily mean that the compiler will check to ensure an exception can't be thrown.
 
 ```c++
-static int add(int a, int b) {
+int add(int a, int b) noexcept {
     return a + b;
 }
 ```
 
 ```{note}
-This is only for free functions (not belonging to a class).
+The book mentions this is documented in "Item 16 of Effective Modern C++ by Scott Meyers". It goes on to say that, unless specified otherwise, the compiler assumes move constructors / move-assignment operators can thrown an exception if they try to allocate memory but the system doesn't have any. This prevents it from making certain optimizations.
+```
 
-The meaning of `static` changes when the function belongs to a class (method). When applied on a method, it means that the method isn't bound to any instance of the class -- it can't access fields belonging to an instance.
+## Common Attributes
+
+If a function has no possibility of ever gracefully returning to the caller, adding a `[[noreturn]]` attribute will allow the compiler to make certain optimizations and provide / remove relevant warnings around that function.
+
+```c++
+[[noreturn]] int add(int a, int b) {
+    throw "error";
+}
+```
+
+If a function returns something and it's of vital importance that the return value should be used by the invoker, adding a `[[nodicard]]` attribute will allow the compiler to generate a warning.
+
+```c++
+[[nodiscard]] Result perform(int a) {
+    // perform some computation
+    if (result < 0) {
+        return ERROR_CODE;
+    }
+    return SUCCESS_CODE;
+}
+```
+
+If a function's parameter isn't used but it's inclusion in the parameter list is intentional, adding a `[[maybe_used]]` attribute will allow the compiler to remove any warnings that it might otherwise show up about it being unused.
+
+```c++
+int add(int a, int b, [[maybe_unused]] int c) {
+    return a + b;
+}
+```
+
+If a function has been deprecated, adding a `[[deprecated]]` attribute will allow the compiler to generate a warning if it it being used.
+
+```c++
+[[deprecated("Warning -- this is going away in the next release")]]
+int add(int a, int b) {
+    return a + b;
+}
+```
+
+## Coroutines
+
+A coroutine that can suspend its own execution and have it be continued at a later time. Similar to async functions in Javascript, C++ coroutines can work with promise objects (objects that do work asynchronously). A function can be made into a coroutine by using any of the following: 
+
+ * `co_await` - suspend execution waiting for a promise to finish.
+ * `co_yield` - suspend execution and optionally return a value. 
+ * `co_return` - complete execution and optionally return a value.
+
+The return value of a coroutine is a "promise type", a C++ class that has a specific structure and specific set of functionality that the compiler calls to determine and control the coroutine's state.
+
+```{note}
+This is deeply convoluted and requires a lot more digging and documentation, possibly in its own section instead of sub-section under the Function header.
+```
+
+```c++
+#include <iostream>
+#include <cstdlib>
+#include <coroutine>
+
+struct Resumable {
+    struct promise_type; // forward declaration
+    Resumable(std::coroutine_handle<promise_type> coro) : coro(coro) {}
+    ~Resumable() {
+        coro.destroy();
+    }
+    void destroy() { coro.destroy(); }
+    void resume() { coro.resume(); }
+private:
+    std::coroutine_handle<promise_type> coro;
+};
+
+struct Resumable::promise_type {
+    auto get_return_object() { return Resumable(std::coroutine_handle<Resumable::promise_type>::from_promise(*this)); }
+    auto initial_suspend() { return std::suspend_never(); }
+    auto final_suspend() noexcept { return std::suspend_never(); }
+    auto yield_value(int value) {
+        current_value = value;
+        return std::suspend_always{};
+    }
+    void return_void() { }
+    void unhandled_exception() { }
+    int current_value;
+};
+
+Resumable range(int start, int end) {
+    while (start < end) {
+        co_yield start;
+        std::cout << start << '\n';
+        start++;
+    }
+    co_return;
+}
+
+int main() {
+    auto x = range(0, 10);
+    x.resume();  // prints 0
+    x.resume();  // prints 1
+    x.resume();  // prints 2
+}
+```
+
+```{note}
+It's said that the coroutine state is kept on the stack, resulting in C++ coroutines being a performance hog. Maybe it's possible to use a custom allocator to work around performance problems?
 ```
 
 # Enumerations
@@ -1034,13 +1732,7 @@ enum class MyEnum {
 };
 
 MyEnum x = MyEnum::OptionC;
-```
 
-Under the hood, an enum is represented as an integer data type where each of its options is a particular integer constant (speculation -- is it guaranteed to be an int or is it something that's platform-specific?).
-
-Enumerations may be used with `switch` statements as well.
-
-```c++
 switch (x) {
     case MyEnum::OptionA:
         ...
@@ -1049,6 +1741,25 @@ switch (x) {
         ...
         break;
     case MyEnum::OptionC:
+        ...
+        break;
+    default:
+        break;
+}
+```
+
+An enumeration may be brought into scope via `using` to removing the need to prefix with the enumeration's name.
+
+```c++
+switch (x) {
+    using enum MyEnum;
+    case OptionA:
+        ...
+        break;
+    case OptionB:
+        ...
+        break;
+    case OptionC:
         ...
         break;
     default:
@@ -1080,7 +1791,10 @@ C++ classes are declared using either the `struct` keyword or `class` keyword. W
  * `struct` is used, the default visibility of class members is public.
  * `class` is used, the default visibility of class members is private.
 
-Public and private visibility are the same as in most other languages: private members aren't accessible outside the class while public members are.
+Public and private visibility are the same as in most other languages: private members aren't accessible outside the class while public members are. In C++ nomenclature, ...
+
+ * methods are commonly referred to as member functions. 
+ * fields are commonly referred to as member variables.
 
 ```c++
 class MyStruct {
@@ -1196,6 +1910,17 @@ struct X {
         inner.change(15); 
     }
 };
+```
+
+## Common Attributes
+
+If a class has been deprecated, adding a `[[deprecated]]` attribute will allow the compiler to generate a warning if it sees it being used.
+
+```c++
+[[deprecated("Warning -- this is going away in the next release")]]
+int add(int a, int b) {
+    return a + b;
+}
 ```
 
 ## Static
@@ -1344,7 +2069,7 @@ class MyStruct {
 };
 ```
 
-Destructors must never be called directly by the user, nor should an exception ever be thrown in a destructor.
+Destructors must never be called directly by the user. Treat any destructor as if it were marked with `noexcept`. That is, an exception should never be thrown in a destructor. When an exception gets thrown, the call stack unwinds. As each function exits, the destructors for automatic variables of that function get invoked. Another exception getting thrown while one is already in flight means two exceptions would be in flight, which isn't supported.
 
 If a destructor isn't declared, an empty one is implicitly generated.
 
@@ -1739,6 +2464,281 @@ The book recommends not preferring explicit over implicit because implicit is a 
 Do these still qualify as operator overloads? Return types should be there.
 ```
 
+## Const / Volatile Overloading
+
+In addition to following the same function overloading rules as free functions, a member function may be overloaded based on whether the `this` pointer is to a `volatile` and / or `const` object.
+
+```c++
+class MyClass {
+public:
+    int get_data() {
+        std::cout << "non-const non-volatile\n";
+        counter += 1;
+        return counter;
+    }
+    int get_data() const {
+        std::cout << "const non-volatile\n";
+        return counter;
+    }
+    int get_data() volatile {
+        std::cout << "non-const volatile\n";
+        counter += 1;
+        return counter;
+    }
+    int get_data() volatile const {
+        std::cout << "const volatile\n";
+        return counter;
+    }
+private:
+    int counter;
+};
+
+
+MyClass c1{};
+c1.get_data(); // prints "non-const non-volatile"
+const MyClass c2{};
+c2.get_data(); // prints "const non-volatile"
+volatile MyClass c3{};
+c3.get_data(); // prints "non-const volatile"
+const volatile MyClass c4{};
+c4.get_data(); // prints "const volatile"
+```
+
+## Reference Overloading
+
+In addition to following the same function overloading rules as free functions, a member function may be overloaded based on whether the `this` reference is an l-value or r-value. To target ...
+
+ * l-value, add an ampersand (&) after the parameter list
+ * r-value, add two ampersands (&&) after the parameter list
+
+The benefit of reference overloading is being able to define a version of the function with efficient move semantics when the object is transient.
+
+```c++
+// THIS EXAMPLE WAS LIFTED FROM https://docs.microsoft.com/en-us/cpp/cpp/function-overloading?view=msvc-170#ref-qualifiers
+class MyClass {
+public:
+    MyClass() {/*expensive initialization*/}
+    std::vector<int> get_data() & {
+        std::cout << "lvalue\n";
+        return _data;
+    }
+    std::vector<int> get_data() && {
+        std::cout << "rvalue\n";
+        return std::move(_data);
+    }
+private:
+    std::vector<int> _data;
+};
+
+
+MyClass c {};
+auto v = c.get_data(); // get a copy. prints "lvalue".
+auto v2 = C().get_data(); // get the original. prints "rvalue"
+```
+
+```{note}
+The website said l-value, but does it mean gl-value?
+```
+
+## Functors
+
+A functor, also called a function object, is a class that you can invoke as if it were a function because it has an operator overloads for function-call.
+
+```c++
+struct MyFunctor {
+    int operator()(int y) const { return -y + x; }
+private:
+    int x {5};
+};
+
+MyFunctor inst{};
+inst(15);  // computes -15 + 5
+```
+
+Functors are useful because they allow for state (via fields) and parameterization (via constructor arguments) but still retain a function-like syntax.
+
+```{note}
+Unlike normal functions, functors cannot be assigned to function pointers. See section on function pointers.
+```
+
+## Lambdas
+
+Lambdas are unnamed functors (not functions) that are expressed in a succinct form. Lambdas in C++ work similarly to lambdas in other high-level languages. They allow for capturing objects from the outer scope and pulling them into the body, where they can be used for whatever processing the functor's body performs.
+
+```c++
+// as a function
+struct MyFunctor {
+    MyFunctor(int x) {
+        this->x = x;
+    };
+    int operator()(int y) const { return -y + x; }
+private:
+    int x {5};
+};
+
+MyFunction f1{}
+f1(42);
+
+// as a lambda
+int x {5};
+auto f2 = [=] (int y) { return -y + x; };
+
+f2(42);
+```
+
+The general syntax of a lambda is as follows: `[captures] (parameters) modifiers -> return-type { body }`.
+
+ * **capture** (required) - Objects to pull in from outer scopes.
+
+   ```c++
+   int x = 5;
+   int y = 6;
+   auto f1 = [] (int z) -> int { return z / 2; };           // no capture
+   auto f2 = [x, y] (int z) -> int { return x + y + z; };   // explicitly copy x and y from outer scope
+   auto f3 = [&x, &y] (int z) -> int { return x + y + z; }; // explicitly reference x and y from outer scope
+   auto f4 = [=] (int z) -> int { return x + y + z; };      // automatically copy x and y from outer scope
+   auto f5 = [&] (int z) -> int { return x + y + z; };      // automatically reference x and y from outer scope
+   int t = 1;
+   auto f6 = [&, y] () -> int { return x + y + t; };        // automatically reference x and t but force y to be a copy
+   ```
+
+   Capture lists are essentially the functor's constructor. When the capture was pulled in ...
+
+   * because it was explicitly stated, it's called to as a named capture.
+   * automatically, it's called a default capture.
+
+   ```{note}
+   The book recommends against default captures.
+   ```
+
+   Named captures can also be initializer expressions by adding an equal sign after the name of the capture.
+
+   ```c++
+   int x = 5;
+   int y = 6;
+   auto f1 = [modified_x=x/2, y] (int z) -> int { return x + y + z; };
+   ```
+
+   If used within an enclosing class, the this pointer can be captured.
+
+   ```c++
+   auto f1 = [*this] (int z) -> int { return z / 2; };  // capture a COPY OF *this and pass it in as a pointer
+   auto f1 = [this] (int z) -> int { return z / 2; };   // capture this as pointer
+   ```
+
+   ```{note}
+   It's mentioned that prior to C++20, automatic copy capturing (`[=]`) would pull in `this`. That feature has been deprecated.
+   ```
+
+ * **parameters** (optional) - Parameter list of functor.
+
+   ```c++
+   auto f1 = [] (int x, int y) -> int { return x + y; };
+   auto f2 = [] (int x, int y = 99) -> int { return x + y; };  // default args
+   auto f3 = [] (auto x, auto y) { return x + y; };            // generic params (compiler deduces types based on usage)
+   ```
+
+ * **modifiers** (optional) - Function modifiers.
+
+   ```c++
+   auto f1 = [] (int x, int y) constexpr -> int { return x + y; };  // constant expression
+   ```
+ 
+ * **return-type** (optional) - Return type.
+
+   ```c++
+   auto f1 = [] (int x, int y) { return x + y; };                    // deduced by compiler if not set
+   auto f2 = [] (int x, int y) -> int { return x + y; };
+   auto f3 = [] (int x, auto y) -> decltype(x+y) { return x + y; };  // generic param + decltype (compiler sets return type to resulting type of x + y)
+   ```
+
+ * **body** (required) - Function body.
+
+   ```c++
+   auto f1 = [] (int x, int y) { return x + y; };
+   ```
+
+If the compiler decides that a lambda can be turned into a constant expression, it will automatically do so. Alternatively, you can force a lambda to be a constant expression by adding `constexpr` as one of the modifiers.
+
+```{note}
+In many cases, you need to return a lambda from a function. The easiest way to do this is to set the function's return type to `auto` and return the lambda as if it were any other variable.
+```
+
+## Friends
+
+A friend is a function or class that can access the non-public members of some other class that it wasn't declared in.
+
+For friend functions, the class to be accessed needs to declare the function's prototype (function declaration) before implementations of a friend function (function definition) can exist. The prototype is included in the class just like any other member function, but the `friend` prefix modifier is tacked on.
+
+```c++
+class MyClass {
+public:
+    friend int addAndNegate(MyClass& obj, int n);  // prototype
+private:
+    int x {0};
+};
+
+int addAndNegate(MyClass& obj, int n) {  // implementation -- friend of MyClass
+    return -(n + obj.x);
+}
+
+// test
+MyClass obj{};
+cout << addAndNegate(obj,5);
+```
+
+For friend classes, the class to be accessed needs to specify which outside class is able to access it using `friend class`.
+
+```c++
+class MyClass {
+public:
+    friend class MyFriend;  // state that MyFriend can access MyClass's non-public members
+private:
+    int x {0};
+};
+
+class MyFriend {
+public:
+    int addAndNegate(MyClass& obj, int n) {  // function in MyFriend accessing non-public members of MyClass
+        return -(n + obj.x);
+    }
+};
+
+
+// test
+MyFriend obj_friend{};
+MyClass obj{};
+cout << obj_friend.addAndNegate(obj,5);
+```
+
+```{note}
+The `class` in `friend class` may be omitted if `MyFriend` was already declared before `MyClass`. Adding the word `class` is a forward declaration -- it tells the compiler to just believe that it exists even though it may not have come across it yet.
+```
+
+Friend functions and friend classes may also target templated types.
+
+```c++
+class MyClass {
+public:
+    template<typename T> friend int addAndNegate(MyClass& obj, T n);  // every addAndNegate(MyClass&, T) will be a friend
+private:
+    int x {0};
+};
+```
+
+````{note}
+This is how C++ provides its equivalent of Java's `Object.toString()`. For each class that you want to be able to print as a string, you implement a templated friend function of the left-shift operator overload (<<) that targets the class `ostream`, making it usable in something like `std::cout`.
+
+```c++
+ostream& operator<<(ostream &os, const MyClass &obj) {
+    os << obj.x << "\n";
+    return os;
+}
+```
+
+It seems like a convoluted way to do it.
+````
+
 # Templates
 
 Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types and code are unknown, called template parameters. Each template parameter in a template either maps to a ...
@@ -2123,6 +3123,215 @@ using FirstLevel:MiddleLevel::LastLevel::MyStruct;
 MyStruct z{};
 ```
 
+# Linker Behaviour
+
+Modifiers on a variable or function declaration are used to control how the linker behaves. Specifically, the modifiers can ask the linker to automatically ...
+
+ * merge the item that has the modifier applied (`inline`)
+ * find the item that has the modifier applied (`extern`)
+ * keep hidden the item that has the modifier applied (`static`). 
+
+## Static Linkage
+
+A static function or variable is one that's only visible to other code in the same translation unit. The linker will make sure that the function doesn't intermingle with other translation units.
+
+Static functions/variables have the `static` modifier applied.
+
+```c++
+static int add(int a, int b) {
+    return a + b;
+}
+```
+
+```{note}
+This is only for non-members (not belonging to a class).
+
+The meaning of `static` changes when the function or variables belongs to a class (method). When applied on a member function, it means that it isn't bound to any instance of the class -- it can't access fields belonging to an instance.
+```
+
+## Inline Linkage
+
+An inline function or variable is one that may be defined in multiple different translation units. The linker will make sure all translation units use a single instance of that function/variable even though it may have been defined multiple times.
+
+Inline functions/variables have the `inline` modifier applied.
+
+```c++
+int add(int a, int b) inline {
+    return a + b;
+}
+```
+
+```{note}
+See [this](https://stackoverflow.com/a/1759575). Typically, the compiler applies `inline` automatically based on what it sees, meaning that it isn't something that should be adding in most cases. The only exception to that seems to be templates? See some of the other answers in the linked stack overflow question.
+```
+
+```{note}
+The original intent of `inline` was to indicate to the compiler that embedding a copy of the function for an invocation was preferred over an function call. The reason being that is certain cases the code would be faster if it were embedded rather than having it branch into a function call.
+```
+
+## External Linkage
+
+An external function or variable is a one that's usable within the translation unit but isn't defined. The linker will sort out where the function is when the time comes.
+
+External linkage functions/variables have the `extern` modifier applied.
+
+```c++
+extern int add(int a, int b);
+```
+
+```{note}
+Sounds similar to forward declaration but across different translation units?
+```
+
+# Control Flow
+
+C++ flow control structures are similar to those in other high-level languages (e.g. Java), with the exception that ...
+
+ * it's possible to have initializer statements in control structures other than for loops.
+ * jumping to arbitrary labels are allowed (goto statements).
+
+```{note}
+An important caveat about loops in C++ from [cppreference.com](https://en.cppreference.com/w/cpp/language/while):
+
+> As part of the C++ forward progress guarantee, the behavior is undefined if a loop that has no observable behavior (does not make calls to I/O functions, access volatile objects, or perform atomic or synchronization operations) does not terminate. Compilers are permitted to remove such loops. 
+```
+
+## If Statement
+
+If statements follow a similar structure to if statements in Java. The only major difference is that an initializer statement is allowed before the condition in the initial `if`.
+
+```c++
+if (int r = rand(); r % 2 == 0) {
+    std::cout << r << " even";
+else if (r % 5 == 0) {
+    std::cout << r << " div by 5";
+} else {
+    std::cout << r << " odd";
+}
+```
+
+In the example above, an initializer statement has been added that sets a variable to a random number. That variable is only accessible inside the different branches of the if statement.
+
+## Switch Statement
+
+Switch statements follow a similar structure to switch statements in Java. The only major difference is that an initializer statement is allowed before the condition.
+
+```c++
+switch (int r = rand(); r % 2) {
+    case 0:
+    std::cout << r << " even";
+    break;
+    case 1:
+    std::cout << r << " odd";
+    break;
+    default:
+    std::cout << "this should never happen";
+    break;
+}
+```
+
+To indicate to the compiler that a fallthrough case is intended behaviour, use the `[[fallthrough]]` attribute.
+
+```c++
+switch (x) {
+    case 0: [[fallthrough]]
+    std::cout << r << " even";
+    case 1:
+    std::cout << r << " odd";
+    break;
+    default:
+    std::cout << "this should never happen";
+    break;
+}
+```
+
+## For Loop
+
+For loops follow a similar structure to for loop in Java.
+
+```c++
+for (int i = 0; i < 10; i++)  {
+    std::cout << i;
+}
+```
+
+Similarly, an analog to Java's for-each loop exists called range-based for loops. The only major difference is that an initializer statement is allowed before the range declaration.
+
+```c++
+for (int r = rand(); int val : array)  {
+    std::cout << (r + val) << ' ';
+}
+```
+
+## While Loop
+
+While and do-while loops follow a similar structure to their counterparts in Java.
+
+```c++
+int r = rand() % 5;
+while (r > 0) {
+    std::cout << r << " ";
+    r--;
+}
+```
+
+```c++
+int r = rand() % 5;
+do {
+    std::cout << r << " ";
+    r--;
+} while (r > 0);  // semicolon required at the end
+```
+
+```{note}
+Unlike other control structures, these loops cannot have initializer statements.
+```
+
+## Goto Statement
+
+Unlike most other high-level languages (e.g. Java), C++ allows the use of goto statements. However, note that goto statements are generally considered bad practice and should somehow be refactored to higher-level constructs (e.g. loops, if statements, etc..).
+
+```c++
+retry:
+int r = rand();
+if (r % 2 == 0) {
+    goto retry;
+}
+std::cout << r << " odd";
+```
+
+## Branching Likelihood
+
+Conditional branching operations in flow control statements may have the `[[likely]]` and `[[unlikely]]` attributes applied to hint at the likelihood / unlikelihood that of the path execution will take. This allows for better optimization by the compiler (based on your assumptions).
+
+```c++
+switch (exit_code) {
+    case 0:
+    // happy path
+    break;
+    case 1:
+    // recognized error path
+    break;
+    [[likely]] default:
+    // unrecognized error path
+    break;
+}
+```
+
+```c++
+if (is_valid(email)) [[likely]] {
+    // happy path
+} else {
+    // error path
+}
+```
+
+```c++
+while (i > 0) [[unlikely]] {
+  // do something
+}
+```
+
 # Attributes
 
 C++ attributes are similar to annotations in Java, providing information to the user / compiler about the code that it's applied to. Unlike Java, C++ compilers are free to pick and choose which attributes they support and how they support them. There is no guarantee what action a compiler will take, if any, when it sees an attribute (e.g. compiler warnings).
@@ -2157,10 +3366,11 @@ const int x {5 + 5};      // COULD BE evaluated at run-time or compile-time, but
 constexpr int y {5 + 5};  // MUST BE evaluated at compile-time and guaranteed to be unmodifiable
 ```
 
-Similarly, a constant expression function requires prefixing `constexpr` to a function.
+Similarly, a constant expression function requires prefixing `constexpr` to a function. The entire compilation can be terminated at any point through the use of `static_assert`.
 
 ```c++
 constexpr unsigned int fibonacci(unsigned int n) {
+    static_assert(n >= 0, "ERROR: negative value passed as n");  // error msg is optional
     if (n == 0) {
         return 0;
     } else if (n == 1 || n == 2) {
@@ -2172,6 +3382,27 @@ constexpr unsigned int fibonacci(unsigned int n) {
 
 int x {fibonacci(7)}; // at compile-time, fibonacci(7) is executed and its return value substituted into the initializer
 ```
+
+````{note}
+An alternate version of constant expression functions, called immediate functions, have the restriction that they must produce a compile-time constants. An immediate function requires a requires prefixing `consteval` to a function instead of `constexpr`.
+
+What's the point on this? According to [here](https://stackoverflow.com/a/53347377)...
+
+> constexpr functions may be evaluated at compile time or run time, and need not produce a constant in all cases.
+
+Here's an example from [here](https://github.com/AnthonyCalandra/modern-cpp-features)...
+
+```c++
+consteval int sqr(int n) {
+  return n * n;
+}
+
+constexpr int r = sqr(100); // OK
+int x = 100;
+int r2 = sqr(x); // ERROR: the value of 'x' is not usable in a constant expression
+                 // OK if `sqr` were a `constexpr` function
+```
+````
 
 The restrictions on constant expressions are vast. At a high-level, a constant expression is only allowed inputs and outputs that are literal types:
 
@@ -2212,183 +3443,6 @@ Those are what you would commonly use in `if constexpr` blocks. They help with b
 ```{note}
 All of this seems to replace the need for C preprocessor macros `#define` / `#ifdef` / etc...
 ```
-
-# Object Lifecycle
-
-In C++, an object is a region of memory that has a type and a value (e.g. a class instance, an integer, a pointer to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ objects aren't exclusive to classes (e.g. an boolean is an object).
-
-An object's life cycle passes through the following stages:
-
-1. memory allocated
-2. constructor invoked
-3. destructor invoked
-4. memory deallocated
-
-The storage duration of an object starts from when its memory is allocated and ends when that memory is deallocated. An object's lifetime, on the other hand, starts when its constructor _completes_ (meaning the constructor finishes) and ends when its destructor is _invoked_ (meaning when the destructor starts).
-
-```{svgbob}
-.------------------------------------------------.
-|           "OBJECT STORAGE DURATION"            |
-|                                                |
-| "1. allocation"                                |
-|                                                |
-| "2. constructor invocation started"            |
-|                                                |
-|  .----------------------------------------.    |
-|  |           "OBJECT LIFETIME"            |    |
-|  |                                        |    |
-|  | "3. constructor invocation finished"   |    |
-|  |                                        |    |
-|  | "4. destructor invocation started"     |    |
-|  |                                        |    |
-|  | "5. destructor invocation finished"    |    |
-|  '----------------------------------------'    |
-|                                                |
-| "6. deallocation"                              |
-|                                                |
-'------------------------------------------------'
-```
-
-Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how object lifetimes. The user is responsible for knowing when objects should be destroyed and ensuring that objects are only accessed within their lifetime.
-
-The typical storage durations supported by C++ are...
-
- * automatic storage duration - scoped to duration of some function within the program.
- * static storage duration - scoped to the entire duration of the program.
- * thread storage duration - scoped to the entire duration of a thread in the program.
- * dynamic storage duration - allocated and deallocated on request of the user.
-
-## Static Objects
-
-By default, an object declared within a function is said to be an automatic object. Automatic objects have automatic storage durations: start at the beginning of the block and finish at the end of the block. When the keyword `static` (or `extern` in some cases) is added to the declaration, the storage duration of the function changes.
-
-At global scope, if an object is declared as `static` or `extern`, storage duration of the object spans the entire duration of the program. The difference between the two is essentially just visibility:
-
- * `static` makes it so it's accessible to only the translation unit it's declared in.
- * `extern` makes it so it's accessible to other translation units as well as the translation unit it's declared in.
-
-```c++
-static int a = 0; // static variable
-extern int b = 1; // static variable (accessible outside translation unit)
-```
-
-At function scope, the storage duration of objects declared as `static` starts at the first invocation of that function and ends when the program exits.
-
-```c++
-int f1() {
-    static int z = 0; // static variable
-    z += 1;
-    return z;
-}
-```
-
-At class level, the storage duration of a member (field or method) declared as `static` is essentially the same as if it were declared at global scope (they aren't bound to an individual instance of the class the same way a normal field or method is). The only differences are that the static member is accessed on the class itself using the scoped resolution operator (::) and that static members that are fields must be initialized at global scope.
-
-```c++
-struct X {
-    static int m;         // static member (field initialized at end)
-    static int f1() {     // static member (method)
-        m += 1;
-        return m;
-    }
-};
-
-X::m = 0;                // initialize static member
-```
-
-If the `thread_local` modifier is added before `static` (or `extern`), each thread gets its own copy of the object. That is, the storage duration essentially gets changed to when the thread starts and ends.
-
-`thread_local static` can be shortened to just `thread_local` (it's assumed to be static).
-
-```c++
-static int a = 0;
-thread_local static int b = 1;
-thread_local extern int c = 2;
-```
-
-## Dynamic Objects
-
-An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The operator ...
-
- * `new` allocates a new object and calling its the constructor.
- * `delete` calls the destructor of some object and deallocates it.
-
-Both keywords work with pointers: `new` returns a pointer while `delete` requires a pointer. To create a new object, use `new` followed by the type.
-
-```c++
-int * ptr = new int;
-*ptr = 0;
-delete ptr;
-```
-
-Objects may be initialized directly within the `new` invocation just as if it were an automatic object initialization. The only caveat is that equals initialization and brace-plus-equals initialization won't work because the equal sign is already being used during `new` (speculation -- it doesn't work but I don't know the exact reason). As such, braced initialization is the best way to initialize a dynamic object.
-
-```c++
-int * ptr = new int {0}; // initialize to 0
-delete ptr;
-```
-
-The same process can be used to create an array of objects. Unlike automatic object arrays, dynamic arrays don't have a constant size array lengths restriction.. However, the return value `new` will decay from an array type to a pointer type.
-
-When deleting a dynamic object array, square brackets need to be appended to `delete` operator: `delete[]`. Doing so ensures that the destructor for each object in the array gets invoked before deallocation.
-
-```c++
-int * ptr = new int[len];  // len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.
-delete[] ptr;
-```
-
-Braced initialization may be used when declaring dynamic arrays so long as the size of the array is at least the size of the initialization list.
-
-```c++
-int * ptr1 = new int[10] {1,2,3};  // initialize the first 3 elems of a 10 elem array
-int * ptr2 = new int[2] {1,2,3};   // throws exception  (size too small for initializer list)
-int * ptr3 = new int[n] {1,2,3};   // okay -- so long as n >= 3
-delete[] ptr1;
-delete[] ptr2;
-delete[] ptr3;
-```
-
-By default, dynamic objects are stored on a block of memory called the heap, also sometimes referred to as the free store.
-
-```{note}
-See operator overloading section to see how the `new` and `delete` operators may be overridden to customize where and how a specific type gets stored.
-
-The `new` and `delete` operators may also be overridden globally rather than per-type. See the new header.
-```
-
-## Object Size
-
-`sizeof` is a _unary operator_ that returns the size of its operand in bytes as a `size_t` type. If the operand is a ...
-
-* data type or a variable, it'll return the number of bytes needed to hold that type. For example, ...
-
-  * `sizeof char` is guaranteed to be 1.
-  * `sizeof (char &)` is guaranteed to be 1.
-  * `sizeof (char *)` is platform dependant, typically either 4 or 8.
-  * `char * x = "hi"; sizeof x` is equivalent to `sizeof (char *)` (see above).
-
-* an expression such as a struct literal, array literal, or string literal, it'll return the number of bytes needed to hold it. For example, ...
-
- * `sizeof "hi"` is 3 (added 1 for the null terminator at the end)
- * `sizeof { 5, 5, 4 }` is platform dependent, typically either 12 or 24.
- * `sizeof (int[3])` is platform dependent, typically either 12 or 24.
- * `x = int[n]; sizeof x` is invalid C++ (variable length arrays allocated on stack are not allowed in C++).
-
-In other words, `sizeof` returns the size of things known at compile-time. If a variable is passed in, it outputs the size of the data type. For example, if the data type is a struct of type `MyStruct`, it'll return the number of bytes used to store a `MyStruct`. However, if the data type is a pointer to `MyStruct`, it'll return the number of bytes to hold that pointer. That is, you can't use it to get the size of something like a dynamically allocated array of integers.
-
-In certain cases, the compiler may add padding to objects (e.g. byte boundary alignments or performance reasons), meaning that the size returned by `sizeof` for an object shouldn't be used to make inferences about the characteristics of that object. For example, a `long double` may get reported as being 16 bytes, but that doesn't necessarily mean that a `long double` is a 128-bit quad floating point. It could be that only 12 of those bytes are used to represent the floating point number while the remainder is just padding for alignment reasons. 
-
-```{note}
-As shown in the examples above, the `sizeof` a C++ reference is equivalent to the raw size. For example, `sizeof char == sizeof (char &)`.
-```
-
-```{note}
-The last example is valid in C99 (called a VLA -- variable length array) but not C++. The reason is C++ has std::vector and std::array that give you basically the same thing as variable arrays.
-
-In C, where VLAs are allowed, doing a `sizeof` on a VLA is undefined.
-```
-
-Remember that `sizeof` is a _unary operator_, similar to how the negative sign is a unary operator that negates whatever is to the right of it. People usually structure its usage in code as if it were a function (e.g. `sizeof(x)` vs `sizeof x`). This sometimes causes confusion for people coming from other languages.
 
 # Exceptions
 
@@ -2471,20 +3525,6 @@ try {
     // do something, note the exception object is not accessible here
 }
 ```
-
-In certain cases, it'll be impossible for a function to throw an exception. Either the function (and the functions it calls into) never throws an exception or the conditions imposed by the function make it impossible for any exception to be thrown. In such cases, a function may be marked with the `noexcept` keyword. This keyword allows the compiler to perform certain optimizations that it otherwise wouldn't have been able to, but it doesn't necessarily mean that the compiler will check to ensure an exception can't be thrown.
-
-```c++
-int add(int a, int b) noexcept {
-    return a + b;
-}
-```
-
-```{note}
-The book mentions this is documented in "Item 16 of Effective Modern C++ by Scott Meyers". It goes on to say that, unless specified otherwise, the compiler assumes move constructors / move-assignment operators can thrown an exception if they try to allocate memory but the system doesn't have any. This prevents it from making certain optimizations.
-```
-
-Treat any destructor as if it were marked with `noexcept`. That is, an exception should never be thrown in a destructor. When an exception gets thrown, the call stack unwinds. As each function exits, the destructors for automatic variables of that function get invoked. Another exception getting thrown while one is already in flight means two exceptions would be in flight, which isn't supported.
 
 # Structured Binding
 
@@ -2769,17 +3809,38 @@ If you're dealing with the STL, there's also special iterator implementations th
 
  * `{bm} member/\b(member)/i` - Data or function belonging to a class.
 
- * `{bm} method` - Function belonging to a class (class member that is a function).
+ * `{bm} method/(method|\bmember function)/i` - Function belonging to a class (class member that is a function).
 
- * `{bm} field` - Data belonging to a class (class member that is a variable).
+   ```c++
+   struct C {
+       ...
+       int add(int y) { return this->x + y; }
+   };
+   ```
+
+ * `{bm} free function/(free function|non-member function)/i` - Function not belonging to a class.
+
+   ```c++
+   int negate(int x) { return -x; }
+   ```
+
+ * `{bm} field/(field|\bmember variable|\bmember field)/i` - Variable belonging to a class (class member that is a variable).
+
+   ```c++
+   struct C {
+       int x;
+   };
+   ```
 
  * `{bm} class invariant` - When using some class, a class invariant is a feature of that class that is always true (never varies). For example, if a class is used to hold on to an IP and port combination, and it ensures that the port can never be 0, that's a class invariant.
 
  * `{bm} fundamental type/(fundamental type|built-in type)/i` - C++ type that's built into the compiler itself rather than being declared through code. Examples include `void`, `bool`, `int`, `char`, etc..
 
+* `{bm} user-defined type/(user[\s\-]defined type)/i` - A type that's defined by a user, typically derived from existing types. Examples include enumerations, classes, unions, etc..
+
  * `{bm} object initialization` - The process by which a C++ program initializes an object (e.g. an `int`, array of `int`s, object of a class type, etc..).
 
- * `{bm} braced initialization/(brace initialization|braced initialization|uniform initialization)/i` - A form of object initialization where braces are used to set values (e.g. `MyStruct x = { 1, true }`, `MyStruct x{ 1, true }`, etc..). Braced initialization is often the least error-prone form of object initialization, where other forms may introduce ambiguity.
+ * `{bm} braced initialization/(brace initialization|braced initialization|uniform initialization)/i` - A form of object initialization where braces are used to set values (e.g. `int x {1}`, `MyStruct x{ 1, true }`, etc..). Braced initialization is often the least error-prone form of object initialization, where other forms may introduce ambiguity.
 
    ```c++
    MyStruct x{int(a), int(b)};  // call the constructor taking in two ints
@@ -2794,12 +3855,12 @@ If you're dealing with the STL, there's also special iterator implementations th
    This is also called uniform initialization.
    ```
 
- * `{bm} equals initialization/(equals? initialization)/i` - A form of object initialization where the equals sign is used (e.g. `int x { 5 }`).
+ * `{bm} equals initialization/(equals? initialization)/i` - A form of object initialization where the equals sign is used (e.g. `int x = 5`).
 
  * `{bm} braces-plus-equals initialization/(brace[sd]?[\-\s]plus[\-\s]equals? initialization)/i` - A form of object initialization where both the equals sign and braces are used for initialization (e.g. `MyStruct x = { 1, true }`). This is mostly equivalent to braced initialization.
 
    ```{note}
-   See [here](https://stackoverflow.com/a/20733537). No copying/moving is done by the assignment.
+   See [here](https://stackoverflow.com/a/20733537). Even though there's an equal sign (=), there is no copy semantics / move semantics.
    ```
 
  * `{bm} constructor` - A function used for initializing an object.
@@ -2880,7 +3941,7 @@ If you're dealing with the STL, there's also special iterator implementations th
 
  * `{bm} move assignment` - An assignment operator overload that moves one object into another (e.g. `x = y`).
 
- * `{bm} value categories/(value categories|value category|prvalue|lvalue|xvalue|rvalue|glvalue)/i` - A classification hierarchy for C++ expressions. Any C++ expression falls into one of the following categories: lvalue, xvalue, or prvalue.
+ * `{bm} value categories/(value categories|value category|pr[\s\-]?value|l[\s\-]?value|x[\s\-]?value|r[\s\-]?value|gl[\s\-]?value)/i` - A classification hierarchy for C++ expressions. Any C++ expression falls into one of the following categories: lvalue, xvalue, or prvalue.
 
    The intent of this hierarchy is to enable the _moving_ of objects. In this case, moving doesn't mean copying. It means gutting out the contents of one object and moving it into another object.
 
@@ -2982,7 +4043,9 @@ If you're dealing with the STL, there's also special iterator implementations th
 
    Narrowing conversions may be implicit during object initialization. To erroneous cases of narrowing, use braced initialization to force the compiler to generate a warning.
 
- * `{bm} constant expression` - A function that gets evaluated at compile-time, such that at run-time any invocation of it simply returns the result computed at compile-time. Constant expressions are represented as functions prefixed with the `constexpr` keyword.
+ * `{bm} constant expression` - A function that gets evaluated at compile-time, such that at run-time any invocation of it simply returns the result computed at compile-time. Constant expressions are represented as functions prefixed with `constexpr`.
+
+ * `{bm} immediate function` - A function that gets evaluated at compile-time and must produce a compile-time constant. Immediate functions expressions are represented as functions prefixed with `consteval`.
 
  * `{bm} literal type` - A type that's usable in a constant expression (for parameters and return), meaning that objects of this type can have a value that's knowable at compile-time.
 
@@ -3015,14 +4078,87 @@ If you're dealing with the STL, there's also special iterator implementations th
    * left associative means that the chain is evaluated left-to-right (left-most first, right-most last).
 
      ```c++
-     a ? b ? c ? d = (((a ? b) ? c) ? d)
+     a ? b ? c ? d == (((a ? b) ? c) ? d)
      ```
 
    * right associative means that the chain is evaluated right-to-left (right-most first, left-most last).
 
      ```c++
-     a ? b ? c ? d = (a ? (b ? (c ? d)))
+     a ? b ? c ? d == (a ? (b ? (c ? d)))
      ```
+
+ * `{bm} function pointer` - A pointer to a function.
+
+ * `{bm} functor/(functor|function object)/i` - A class that you can invoke as if it were a function because it has an operator overloads for function-call.
+
+ * `{bm} function call operator/(function[\s\-]call operator)/i` - The operator used for making function calls (parenthesis), may be operator overloaded on classes to turn them into functors.
+
+ * `{bm} lambda` - Shorthand notation for an unnamed functor.
+
+   ```c++
+   auto f = [] (int z) -> int { return -z; };
+   ```
+
+ * `{bm} named capture` - Pulling in objects from the outer scope into a lambda by explicitly listing their names in the capture clause, adding `&` before each name if wanting to pull it in by reference rather than by copy.
+
+   ```c++
+   auto f = [&x, &y] (int z) -> int { return x + y + z; }; // x and y from outer scope
+   ```
+
+ * `{bm} default capture` - Pulling in objects from the outer scope into a lambda automatically (based on their usage) but putting either an `=` (for copying into lambda) or `&` (for referencing into lambda) in the capture clause.
+
+   ```c++
+   auto f = [=] (int z) -> int { return x + y + z; };
+   ```
+
+ * `{bm} init capture/(init capture|initializer capture)/i` - An initializer expression used as a lambda named capture.
+
+   ```c++
+   auto f = [new_x=x/2, &y] (int z) -> int { return new_x + y + z; };
+   ```
+
+ * `{bm} callable object` - An object that can be invoked: a function, functor, or lambda.
+
+ * `{bm} function overload/(function overload|overloaded function|overload)/i` - A function that has the same name as another function within the same scope.
+
+   ```c++
+   bool test(int a) { return a != 0; }
+   bool test(double a) { return a != 0.0; }
+   ```
+
+ * `{bm} forward declaration` - To use a function, class, variable, etc.. within some C++ code, only its declaration is needed, not its definition (implementation). The compiler wll ensure that the usage points to the implementation when the time comes.
+
+   The compiler needs this to handle cyclical references. It can also significantly reduce build times.
+
+   ```c++
+   class MyClassA; // forward declaration of MyClassA
+   class MyClassB; // forward declaration of MyClassB
+   int myFunction(MyClassA &objA, MyClassB &objB); // forward declaration of a function
+
+
+   // implement myFunction, using MyClassA and MyClassB before implementation is defined
+   int myFunction(MyClassA &objA, MyClassB &objB) {
+       ...
+   }
+   // implement MyClassA, using MyClassB before implementation is defined
+   class MyClassA {
+       ...
+   private:
+       MyClassB objB;
+   }
+   // implement MyClassB
+   class MyClassA {
+       ...
+   private:
+       MyClassA objA;
+   }
+   ```
+
+ * `{bm} user-defined literal` - A literal suffix defined by a user, where when that suffix is applied to some literal, some computation is performed.
+
+   ```c++
+   Distance d = 42.0_km;  // the suffix _km converts the literal 42.0 to an instance of the Distance type
+   ```
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
