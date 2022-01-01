@@ -57,6 +57,8 @@ TODO: add section on equals/hashcode/tostring equivalents
 
 TODO: smart pointers
 
+TODO: header file best practices under (e.g. guards)
+
 TODO: modules
 
 TODO: add terminology for declarations and definitions
@@ -3736,6 +3738,35 @@ Note that the adding of iterators is listed above but is not supported by any of
 ```{note}
 If you're dealing with the STL, there's also special iterator implementations that allow insertions rather than setting elements. See `insert_iterator`, `back_insert_iterator`, and `front_insert_iterator`.
 ```
+
+# Modules
+
+C++ modules change how C++ source code files interface with each other. Normally, a C++ source / header file would use `#include <...>` directives to pull in outside source code files that it needed access to. Those outside source code files provided things like preprocessor macros, function declarations, class declarations, global variable constants, forward declarations, templates, etc...
+
+Instead of dealing with source code files directly, C++ modules allow for independently "compiling" source code files and importing them for use into different source code files, similar to how a Java source code file imports compiled Java class files for use. Modules reduce some of the complexities of using header files but certain functionality is also gone. Specifically, before modules go through compilation, preprocessor macros and preprocessor directives aren't included.
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
+TODO: continue to fill me in
+
 
 # Terminology
 
