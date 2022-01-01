@@ -16095,10 +16095,9 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Cosine%20Similarity%20Metric"></a><h3>Cosine Similarity Metric</h3>
-<p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the cosine of the single between them, referred to as the <a href="#BM_(cosine%20similarity)%2Fi">cosine similarity</a>.</p>
+<p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the cosine of the single between them, referred to as the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a>.</p>
 <p><img src="svgbob_504c5b0c7c25a852e40496991ce6164fb25bfd05.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>: <a href="#BM_(cosine%20similarity)%2Fi">Cosine similarity</a> metric is measuring if two vectors grew/shrunk in a similar trajectories. It doesn't take into account the magnitude (length) of the vector.</p>
-<p>For example, imagine the following <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrix</a> ...</p>
+<p>This metric only factors in the angles between vectors, not their magnitudes (lengths). For example, imagine the following 2-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s ...</p>
 <table>
 <thead>
 <tr>
@@ -16132,38 +16131,123 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </table>
 <ul>
 <li>
-<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> U's count remained unchanged while <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> C's count lowered to zero. The angle between those <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> vectors is 45deg.</p>
+<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> U's count remained unchanged while <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> C's count lowered to zero. The angle between those vectors is 45deg.</p>
 <p><img src="svgbob_a53e618e5b8ad9142adca2dcbcd1acbcaa59ed0d.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> U's count remained unchanged while <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> T's count approximately doubled. The angle between those <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> vectors is roughly 20deg.</p>
+<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> U's count remained unchanged while <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> T's count approximately doubled. The angle between those vectors is roughly 20deg.</p>
 <p><img src="svgbob_6ffa484453c5b156d0cd353c713d36d401fc604c.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C's count lowered to zero but <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> T's count approximately doubled. The angle between those <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> vectors is roughly 65deg.</p>
+<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C's count lowered to zero but <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> T's count approximately doubled. The angle between those vectors is roughly 65deg.</p>
 <p><img src="svgbob_4fada2461e1ece3179922b290d9b31f2c453acfb.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> U and <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> J's counts are different but both remained unchanged. The angle between those <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> vectors is 0deg.</p>
+<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> U and <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> J's counts are different but both remained unchanged. The angle between those vectors is 0deg.</p>
 <p><img src="svgbob_04b95b704a55c5b0910b9ccee54209850edd8882.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
-<p>In the comparisons above, the counts of the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> (magnitudes of the vectors) don't matter. What's being compared is the trajectory at which the counts changed (angle between vectors). Given two <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> vectors, if they grew/shrunk at ...</p>
+<p>What's being compared is the trajectory at which the counts changed (angle between vectors), not the counts themselves (vector magnitudes). Given two <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s, if they grew/shrunk at ...</p>
 <ul>
 <li>exactly the same trajectory (angle of 0deg), they'll have maximum similarity: 0deg.</li>
 <li>completely opposite trajectories, they'll have maximum dissimilarity: 180deg.</li>
 </ul>
-<p>In the last example above, both <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have exactly the same trajectory (0deg) even though they have different counts, meaning they have maximum similarity.</p>
-<p>Since the algorithm is actually calculating the cosine of the angle, the metric returns a result from from 1 to -1 instead of 0deg to 180deg, where ...</p>
+<p>Since the algorithm is calculating the cosine of the angle, the metric returns a result from from 1 to -1 instead of 0deg to 180deg, where ...</p>
 <ul>
 <li>maximum similarity is cos(0deg) = 1.</li>
 <li>minimum similarity is cos(180deg) = -1.</li>
 </ul>
+<p><strong>WHY</strong>: Imagine the following two 4-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour1</th>
+<th>hour2</th>
+<th>hour3</th>
+<th>hour4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>2</td>
+<td>10</td>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>Plotting out each component of the <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s above reveals that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> B's expression is a scaled down version of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> A's expression ...</p>
+<p><img src="svgbob_3825eb8406ae4f47e2f738a066b7e507a34bffb4.svg" alt="Kroki diagram output"></p>
+<p>The cosine of the angle between <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> A's expression and <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> B's expression is 1.0 (maximum similarity). This will always be the case as long as one <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s expression is a linearly scaled version of the other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s expression. For example, the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> of ...</p>
+<ul>
+<li>(1, 5, 1, 5) and (1, 5, 1, 5) is 1.0 -- scaled 1x from first to second</li>
+<li>(1, 5, 1, 5) and (2, 10, 2, 10) is 1.0 -- scaled 2x from first to second</li>
+<li>(1, 5, 1, 5) and (3, 15, 3, 15) is 1.0 -- scaled 3x from first to second</li>
+<li>(1, 5, 1, 5) and (1.5, 7.5, 1.5, 7.5) is 1.0 -- scaled 1.5x from first to second</li>
+<li>(1, 5, 1, 5) and (0.5, 2.5, 0.5, 2.5) is 1.0 -- scaled 0.5x from first to second</li>
+</ul>
+<p>While <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> does take into account scaling of components, <em>it doesn't support shifting of components</em>. Imagine the following 4-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour1</th>
+<th>hour2</th>
+<th>hour3</th>
+<th>hour4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>2</td>
+<td>10</td>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>5</td>
+<td>9</td>
+<td>5</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>Plotting out each component of the <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s above reveals that...</p>
+<ul>
+<li>B is a scaled down version of A (by 0.5x).</li>
+<li>C is a shifted version of B (by +4).</li>
+<li>C is a scaled down and shifted version of A (by 0.5x and +4).</li>
+</ul>
+<p><img src="svgbob_843812b9fc06fffd9e97dae300501423d03b1e2e.svg" alt="Kroki diagram output"></p>
+<p>All <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s follow the same pattern, notice that ...</p>
+<ul>
+<li>B is A where each component has been scaled by 0.5x, <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> is 1.0 (maximum similarity).</li>
+<li>C is A where each component has been scaled by 0.5x then shifted up by 4, <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> is 0.992.</li>
+<li>C is B where each component has been shifted up by 4, <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> is 0.992.</li>
+</ul>
+<p>Even though the patterns are the same across all three <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s, <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> gets thrown off in the presence of shifting.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Still confused? Think of this as trying to match the pattern of movement but not the size. Imagine two 4-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s with counts (1,9,1,9) and (3,7,3,7). If you were to plot out each component of the vectors, their patterns would look very similar ...</p>
-<p><img src="svgbob_b7e481202719f2cc66708b7d7d6bded2d5980230.svg" alt="Kroki diagram output"></p>
-<p>The cosine of the angle between (1,9,1,9) and (3,7,3,7) is almost 1.0 (maximum similarity), meaning that the patterns are very similar even though the sizes aren't.</p>
+<p>If you're trying to determine if the the components of the <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s follow the same pattern regardless of scale, the lack of shift support seems to make this unusable. The <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s may follow a similarly scaled patterns but it seems likely that each pattern is at an arbitrary offset (shift). So then what's the point of this? Why did the book mention if for <a href="#BM_(gene%20expression)%2Fi">gene expression</a> analysis?</p>
+<p><a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">Pearson similarity</a> seems to factor in both scaling and shifting. Use that instead.</p>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Given the vectors A and B, the formula for the algorithm is as follows ...</p>
@@ -16228,48 +16312,148 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Pearson%20Similarity%20Metric"></a><h3>Pearson Similarity Metric</h3>
-<p><strong>WHAT</strong>: Given two n-dimensional vectors, pair together each index and determine the slope of a line that fits through the points made up by the pairs. The slope of the fitted line, when calculated through this metric, is called the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson correlation coefficient</a>.</p>
-<p><img src="svgbob_497323d235f1c812327eb5bc8a16989cd98236e2.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>:</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p>TODO: Figure out why this is useful</p>
-<p><strong>ALGORITHM</strong>:</p>
-<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>r</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>A</mi><mo stretchy="true">‾</mo></mover><mo stretchy="false">)</mo><mo stretchy="false">(</mo><msub><mi>B</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>B</mi><mo stretchy="true">‾</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mrow><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>A</mi><mo stretchy="true">‾</mo></mover><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mrow></msqrt><mo>⋅</mo><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>B</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>B</mi><mo stretchy="true">‾</mo></mover><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mrow></msqrt></mrow></mfrac></mrow><annotation encoding="application/x-tex">r_{AB} = \frac{\sum_{i=1}^n {(A_i - \overline{A})(B_i - \overline{B})}}{\sqrt{\sum_{i=1}^n {(A_i - \overline{A})^2}} \cdot \sqrt{\sum_{i=1}^n {(B_i - \overline{B})^2}}}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.3030400000000006em;vertical-align:-1.7300000000000004em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5730400000000002em;"><span style="top:-2.11em;"><span class="pstrut" style="height:3.2768100000000002em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2768100000000002em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833300000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.80333em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.2368099999999997em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.8800000000000001em;"><svg width="400em" height="1.8800000000000001em" viewBox="0 0 400000 1944" preserveAspectRatio="xMinYMin slice"><path d="M983 90
-l0 -0
-c4,-6.7,10,-10,18,-10 H400000v40
-H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7
-s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744
-c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30
-c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722
-c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5
-c53.7,-170.3,84.5,-266.8,92.5,-289.5z
-M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.56319em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2768100000000002em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833300000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.80333em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.2368099999999997em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.8800000000000001em;"><svg width="400em" height="1.8800000000000001em" viewBox="0 0 400000 1944" preserveAspectRatio="xMinYMin slice"><path d="M983 90
-l0 -0
-c4,-6.7,10,-10,18,-10 H400000v40
-H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7
-s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744
-c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30
-c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722
-c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5
-c53.7,-170.3,84.5,-266.8,92.5,-289.5z
-M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.56319em;"><span></span></span></span></span></span></span></span><span style="top:-3.50681em;"><span class="pstrut" style="height:3.2768100000000002em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.9665200000000005em;"><span class="pstrut" style="height:3.2768100000000002em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833300000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.80333em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mclose">)</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833300000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.80333em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.7300000000000004em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><p>(1,9,9,1) and (3,7,3,7)</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A lot of what's below is my understanding of what's going on, which I'm almost certain is flawed. I've put up a <a href="https://stats.stackexchange.com/q/558913">question asking for help</a>.</p>
+</div>
+<p><strong>WHAT</strong>: Given two n-dimensional vectors, ...</p>
+<ol>
+<li>
+<p>pair together each index to produce a set of 2D points.</p>
+<p><img src="svgbob_8a51306e40078da605b817e49a9cfc8efd9ef259.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>fit a straight line to those points.</p>
+<p><img src="svgbob_34537ac0704f3bc4cc192e942b87c516be82d143.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p>quantify the proximity of those points to the fitted line, where the proximity of larger points contribute more to a strong similarity than smaller points. The quantity ranges from 0.0 (loose proximity) and 1.0 (tight proximity), negating the if the slope of the fitted line is negative.</p>
+<p><img src="svgbob_56335bffa65afe36045fbbc42b3c280b1f643c9a.svg" alt="Kroki diagram output"></p>
+</li>
+</ol>
+<p><strong>WHY</strong>: Imagine the following 4-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour1</th>
+<th>hour2</th>
+<th>hour3</th>
+<th>hour4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>2</td>
+<td>10</td>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>5</td>
+<td>9</td>
+<td>5</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>Plotting out each component of the <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s above reveals that ...</p>
 <ul>
-<li>W=(1,3)</li>
-<li>E=(9,7)</li>
-<li>R=(9,3)</li>
-<li>T=(1,7)</li>
+<li>B is a scaled down version of A (by 0.5x).</li>
+<li>C is a shifted version of B (by +4).</li>
+<li>C is a scaled down and shifted version of A (by 0.5x and +4).</li>
 </ul>
-<p><img src="svgbob_fd3dd4ce7a88d9e5c9d375481facffc576bc9c74.svg" alt="Kroki diagram output"></p>
-<p>https://www.statology.org/pearson-correlation-coefficient/</p>
+<p><img src="svgbob_bf01aa75a9035951e9d9462b6a70567479a339e8.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">Pearson similarity</a> returns 1.0 (maximum similarity) for all possible comparison of the three <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s above. Note that this isn't the case with <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a>. <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">Cosine similarity</a> gets thrown off in the presence of shifting while <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a> does not.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">Cosine similarity</a></th>
+<th><a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">Pearson similarity</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B vs A</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>C vs A</td>
+<td>0.992</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>C vs B</td>
+<td>0.992</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<p>Similarly, comparing a <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a> with a mirror (across the X-axis) that has been scaled and / or shifted will result in a <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a> of -1.0.</p>
+<p><img src="svgbob_be0bbfb08a95364703d513e64acc89a395b495e4.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're trying to determine if the the components of the <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s follow the same pattern regardless of scale OR offset, this is the similarity to use. They may have similar patterns even though they're scaled differently or offset differently. For example, both <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> below may be influenced by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>, but their base expression rates are different so the <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a> influences their <a href="#BM_(gene%20expression)%2Fi">gene expression</a> proportionally.</p>
+<p><img src="svgbob_357557bde44ac14c02730aba47f77f1f29bde3a2.svg" alt="Kroki diagram output"></p>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Given the vectors A and B, the formula for the algorithm is as follows ...</p>
+<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>r</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">(</mo><msub><mi>B</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow></mrow><mrow><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>A</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mrow></msqrt><mo>⋅</mo><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>B</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mrow></msqrt></mrow></mfrac></mrow><annotation encoding="application/x-tex">r_{AB} = \frac{\sum_{i=1}^n {(A_i - avg(A))(B_i - avg(B))}}{\sqrt{\sum_{i=1}^n {(A_i - avg(A))^2}} \cdot \sqrt{\sum_{i=1}^n {(B_i - avg(B))^2}}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">A</span><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.624002em;vertical-align:-1.13em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.494002em;"><span style="top:-2.1727090000000002em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.937291em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-2.897291em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.302709em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.937291em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.740108em;"><span style="top:-2.9890000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-2.897291em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.302709em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897100000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.13em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Much like <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a>, I can't pinpoint what exactly it is that the formula is calculating / the reasoning behind the calculations. The only part I somewhat understand where it's getting the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> to the average of each vector.</p>
+<p>The rest of it I don't understand.</p>
+</div>
+<p><a href="ch8_code/src/metrics/PearsonSimilarity.py">ch8_code/src/metrics/PearsonSimilarity.py</a> (lines 10 to 17):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">pearson_similarity</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
+    v_avg = mean(v)
+    w_avg = mean(w)
+    vec_avg_diffs_dp = <span class="hljs-built_in">sum</span>((v[i] - v_avg) * (w[i] - w_avg) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims))
+    dist_to_v_avg = sqrt(<span class="hljs-built_in">sum</span>((v[i] - v_avg) ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims)))
+    dist_to_w_avg = sqrt(<span class="hljs-built_in">sum</span>((w[i] - w_avg) ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims)))
+    <span class="hljs-keyword">return</span> vec_avg_diffs_dp / (dist_to_v_avg * dist_to_w_avg)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given the vectors ...</p>
+<ul>
+<li>[2, 10, 4, 12, 6, 14]</li>
+<li>[5, 9, 6, 10, 7, 11]</li>
+</ul>
+<p>Their pearson similarity is 0.9999999999999999</p>
+</div>
+<p></p>
 <a name="H_K-Centers%20Clustering"></a><h3>K-Centers Clustering</h3>
 <a name="H_K-Means%20Clustering"></a><h3>K-Means Clustering</h3>
 <a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
@@ -20656,20 +20840,17 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </ul>
 </li>
 <li>
-<p><a name="BM_(similarity%20metric)%2Fi"></a><strong>similarity metric</strong> - A metric used to measure how similar a pair of entities are to each other. Where as a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> starts at 0 for total similarity and grows based on how different the entities are, a <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> starts at 0 for total dissimilarity (orthogonal) and grows based on how similar the entities are. Examples of <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s include ...</p>
+<p><a name="BM_(similarity%20metric)%2Fi"></a><strong>similarity metric</strong> - A metric used to measure how similar a pair of entities are to each other. Where as a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> must start at 0 for total similarity and grows based on how different the entities are, a <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> has no requirements for bounds on similarity or dissimilarity. Examples of <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s include ...</p>
 <ul>
-<li><a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>.</li>
-<li><a href="#BM_(dot%20product)%2Fi">dot product</a> between two vector.</li>
+<li><a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a> for <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.</li>
+<li><a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> for <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.</li>
+<li><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> / <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> matrices for protein <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s.</li>
 <li>etc..</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>How does <a href="#BM_(dot%20product)%2Fi">dot product</a> capture similarity? See <a href="https://math.stackexchange.com/a/689078">here</a>.</p>
-</div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This topic was only briefly discussed, so I have no idea what properties are required other than: 0 = completely dissimilar / orthogonal and anything higher than that is more similar. It didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does <code>similarity(snake,snake) == similarity(bird,bird)</code> have to be true or can it be that <code>similarity(snake,snake) &gt; similarity(bird,bird)</code>? I saw on Wikipedia that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> scoring matrices like <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> and <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> are <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrices</a>, so that implies that totally similar entities don't have to be the same score. For example, in <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 <code>similarity(A,A) = 4</code> but <code>similarity(R,R) =5</code>.</p>
-<p>There may be other properties involved, such as how the triangle inequality property is a thing for <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrices</a> / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s.</p>
+<p>This topic was only briefly discussed, so I don't know for sure what the properties/requirements are for a <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> other than higher = more similar. Contrast this to <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s, where it explicitly mentions the requirements that need to be followed (e.g. triangle inequality property). For <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s, it didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does <code>similarity(snake,snake) == similarity(bird,bird)</code> have to be true or can it be that <code>similarity(snake,snake) &gt; similarity(bird,bird)</code>?</p>
+<p>I saw on Wikipedia that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> scoring matrices like <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> and <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> are <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrices</a>, so that implies that totally similar entities don't have to be the same score. For example, in <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 <code>similarity(A,A) = 4</code> but <code>similarity(R,R) = 5</code>.</p>
 </div>
 </li>
 <li>
@@ -20746,11 +20927,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>0 represents no correlation.</li>
 <li>1 represents a total positive correlation.</li>
 </ul>
-<p>The formula may be modified to become a ...</p>
-<ul>
-<li><a href="#BM_(distance%20metric)%2Fi">distance metric</a> as follows: <code>1 - pearson_correlation(x, y)</code>. Where as the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson correlation coefficient</a> varies between -1 and 1, the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> varies between 0 (totally similar) and 2 (totally orthogonal).</li>
-<li><a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> as follows: <code>1 + pearson_correlation(x, y)</code>. Where as the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson correlation coefficient</a> varies between -1 and 1, the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a> varies between 0 (totally orthogonal) and 2 (totally similar).</li>
-</ul>
+<p>The formula may be modified to become a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> as follows: <code>1 - pearson_correlation(x, y)</code>. Where as the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson correlation coefficient</a> varies between -1 and 1, the <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> varies between 0 (totally similar) and 2 (totally dissimilar).</p>
 </li>
 <li>
 <p><a name="BM_(similarity%20graph)%2Fi"></a><strong>similarity graph</strong> - A transformation of a <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> into a graph, where the entities that make up the <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> are represented as nodes and edges between nodes are only made if the similarity exceeds a certain threshold.</p>
@@ -20819,13 +20996,14 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(cosine%20similarity)%2Fi"></a><strong>cosine similarity</strong> - A <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> that measures if two vectors grew/shrunk in a similar trajectories (similar angles).</p>
+<p><a name="BM_(cosine%20similarity%7Ccosine%20distance)%2Fi"></a><strong>cosine similarity</strong> - A <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> that measures if two vectors grew/shrunk in a similar trajectories (similar angles).</p>
 <p><img src="svgbob_b7fe91c303f6d60163c6d99da6f196ea8e1f0d4d.svg" alt="Kroki diagram output"></p>
-<p>The metric computes the trajectory as the cosine of an angle between vectors. In the example above, T and U have different magnitudes than A and B, but the angle between T and U is exactly the same as the angle between A and B: 20deg. The <a href="#BM_(cosine%20similarity)%2Fi">cosine similarity</a> of both pairs is cos(20deg) = 0.939. Had the angle been ...</p>
+<p>The metric computes the trajectory as the cosine of an angle between vectors. In the example above, T and U have different magnitudes than A and B, but the angle between T and U is exactly the same as the angle between A and B: 20deg. The <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> of both pairs is cos(20deg) = 0.939. Had the angle been ...</p>
 <ul>
 <li>smaller (more similar trajectory), the cosine would get closer to 1.</li>
 <li>larger (less similar trajectory), the cosine would get closer to -1.</li>
 </ul>
+<p>The formula may be modified to become a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> as follows: <code>1 - cosine_similarity(x, y)</code>. Where as the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> varies between -1 and 1, the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine distance</a> varies between 0 (totally similar) and 2 (totally dissimilar).</p>
 </li>
 </ul>
 <p>

@@ -11644,9 +11644,7 @@ metrics.ManhattanDistance
 +---------------> 
 ```
 
-**WHY**: Cosine similarity metric is measuring if two vectors grew/shrunk in a similar trajectories. It doesn't take into account the magnitude (length) of the vector.
-
-For example, imagine the following gene expression matrix ...
+This metric only factors in the angles between vectors, not their magnitudes (lengths). For example, imagine the following 2-dimensional gene expression vectors ...
 
 |        | before | after |
 |--------|--------|-------|
@@ -11655,7 +11653,7 @@ For example, imagine the following gene expression matrix ...
 | Gene C |  3     | 0     |
 | Gene J |  21    | 21    |
 
- * Gene U's count remained unchanged while gene C's count lowered to zero. The angle between those gene vectors is 45deg.
+ * Gene U's count remained unchanged while gene C's count lowered to zero. The angle between those vectors is 45deg.
 
    ```{svgbob}
    "angle between U and C"
@@ -11670,7 +11668,7 @@ For example, imagine the following gene expression matrix ...
      C
    ```
 
- * Gene U's count remained unchanged while gene T's count approximately doubled. The angle between those gene vectors is roughly 20deg. 
+ * Gene U's count remained unchanged while gene T's count approximately doubled. The angle between those vectors is roughly 20deg. 
 
    ```{svgbob}
    "angle between U and T"
@@ -11689,7 +11687,7 @@ For example, imagine the following gene expression matrix ...
    .'
    ```
 
- * Gene C's count lowered to zero but gene T's count approximately doubled. The angle between those gene vectors is roughly 65deg. 
+ * Gene C's count lowered to zero but gene T's count approximately doubled. The angle between those vectors is roughly 65deg. 
 
    ```{svgbob}
    "angle between C and T"
@@ -11708,7 +11706,7 @@ For example, imagine the following gene expression matrix ...
      C
    ```
 
- * Gene U and gene J's counts are different but both remained unchanged. The angle between those gene vectors is 0deg.
+ * Gene U and gene J's counts are different but both remained unchanged. The angle between those vectors is 0deg.
 
    ```{svgbob}
    "angle between U and J"
@@ -11729,36 +11727,88 @@ For example, imagine the following gene expression matrix ...
    "differentiate between vectors if overlapping."
    ```
 
-In the comparisons above, the counts of the genes (magnitudes of the vectors) don't matter. What's being compared is the trajectory at which the counts changed (angle between vectors). Given two gene vectors, if they grew/shrunk at ...
+What's being compared is the trajectory at which the counts changed (angle between vectors), not the counts themselves (vector magnitudes). Given two gene expression vectors, if they grew/shrunk at ...
 
  * exactly the same trajectory (angle of 0deg), they'll have maximum similarity: 0deg.
  * completely opposite trajectories, they'll have maximum dissimilarity: 180deg.
 
-In the last example above, both genes have exactly the same trajectory (0deg) even though they have different counts, meaning they have maximum similarity.
-
-Since the algorithm is actually calculating the cosine of the angle, the metric returns a result from from 1 to -1 instead of 0deg to 180deg, where ...
+Since the algorithm is calculating the cosine of the angle, the metric returns a result from from 1 to -1 instead of 0deg to 180deg, where ...
 
  * maximum similarity is cos(0deg) = 1.
  * minimum similarity is cos(180deg) = -1.
 
-````{note}
-Still confused? Think of this as trying to match the pattern of movement but not the size. Imagine two 4-dimensional gene expression vectors with counts (1,9,1,9) and (3,7,3,7). If you were to plot out each component of the vectors, their patterns would look very similar ...
+**WHY**: Imagine the following two 4-dimensional gene expression vectors...
+
+|        | hour1 | hour2 | hour3 | hour4 |
+|--------|-------|-------|-------|-------|
+| Gene A |  2    | 10    | 2     | 10    |
+| Gene B |  1    | 5     | 1     | 5     |
+
+Plotting out each component of the gene expression vectors above reveals that gene B's expression is a scaled down version of gene A's expression ...
 
 ```{svgbob}
-"plot of (1,9,1,9)'s components by index"      "plot of (3,7,3,7)'s components by index"
+"plot of (2,10,2,10)'s components by index"    "plot of (1,5,1,5)'s components by index"
 
-v 9|     *       *                             v 9|
-a 7|    / \     /                              a 7|   *   *
-l 5|   /   \   /                               l 5|  / \ / 
-u 3|  /     \ /                                u 3| *   *  
-e 1| *       *                                 e 1|
-   +--------------                                +---------
-     0   1   2   3                                  0 1 2 3
-        index                                        index
+  10|     *       *
+v  8|    / \     /                              v  9|
+a  6|   /   \   /                               a  7|
+l  4|  /     \ /                                l  5|   *   *
+u  2| *       *                                 u  3|  / \ /
+e  0|                                           e  1| *   *  
+    +--------------                                 +---------
+      0   1   2   3                                   0 1 2 3
+         index                                         index
 ```
 
-The cosine of the angle between (1,9,1,9) and (3,7,3,7) is almost 1.0 (maximum similarity), meaning that the patterns are very similar even though the sizes aren't.
-````
+The cosine of the angle between gene A's expression and gene B's expression is 1.0 (maximum similarity). This will always be the case as long as one gene's expression is a linearly scaled version of the other gene's expression. For example, the cosine similarity of ...
+
+ * (1, 5, 1, 5) and (1, 5, 1, 5) is 1.0 -- scaled 1x from first to second
+ * (1, 5, 1, 5) and (2, 10, 2, 10) is 1.0 -- scaled 2x from first to second
+ * (1, 5, 1, 5) and (3, 15, 3, 15) is 1.0 -- scaled 3x from first to second
+ * (1, 5, 1, 5) and (1.5, 7.5, 1.5, 7.5) is 1.0 -- scaled 1.5x from first to second
+ * (1, 5, 1, 5) and (0.5, 2.5, 0.5, 2.5) is 1.0 -- scaled 0.5x from first to second
+
+While cosine similarity does take into account scaling of components, _it doesn't support shifting of components_. Imagine the following 4-dimensional gene expression vectors...
+
+|        | hour1 | hour2 | hour3 | hour4 |
+|--------|-------|-------|-------|-------|
+| Gene A |  2    | 10    | 2     | 10    |
+| Gene B |  1    | 5     | 1     | 5     |
+| Gene C |  5    | 9     | 5     | 9     |
+
+Plotting out each component of the gene expression vectors above reveals that...
+
+ * B is a scaled down version of A (by 0.5x).
+ * C is a shifted version of B (by +4).
+ * C is a scaled down and shifted version of A (by 0.5x and +4).
+
+```{svgbob}
+"plot of (2,10,2,10)'s components by index"    "plot of (1,5,1,5)'s components by index"    "plot of (5,9,5,9)'s components by index"
+                                                                                                           
+  10|     *       *                                                                                        
+v  8|    / \     /                              v  9|                                        v  9|   *   * 
+a  6|   /   \   /                               a  7|                                        a  7|  / \ /  
+l  4|  /     \ /                                l  5|   *   *                                l  5| *   *   
+u  2| *       *                                 u  3|  / \ /                                 u  3|         
+e  0|                                           e  1| *   *                                  e  1|         
+    +--------------                                 +---------                                   +---------
+      0   1   2   3                                   0 1 2 3                                      0 1 2 3 
+         index                                         index                                        index  
+```
+
+All gene expression vectors follow the same pattern, notice that ...
+
+ * B is A where each component has been scaled by 0.5x, cosine similarity is 1.0 (maximum similarity).
+ * C is A where each component has been scaled by 0.5x then shifted up by 4, cosine similarity is 0.992.
+ * C is B where each component has been shifted up by 4, cosine similarity is 0.992.
+
+Even though the patterns are the same across all three gene expression vectors, cosine similarity gets thrown off in the presence of shifting.
+
+```{note}
+If you're trying to determine if the the components of the gene expression vectors follow the same pattern regardless of scale, the lack of shift support seems to make this unusable. The gene expression vectors may follow a similarly scaled patterns but it seems likely that each pattern is at an arbitrary offset (shift). So then what's the point of this? Why did the book mention if for gene expression analysis?
+
+Pearson similarity seems to factor in both scaling and shifting. Use that instead.
+```
 
 **ALGORITHM**:
 
@@ -11800,84 +11850,181 @@ metrics.CosineSimilarity
 
 ### Pearson Similarity Metric
 
-**WHAT**: Given two n-dimensional vectors, pair together each index and determine the slope of a line that fits through the points made up by the pairs. The slope of the fitted line, when calculated through this metric, is called the pearson correlation coefficient.
 
-```{svgbob}
-"vector A =" (1, 6, 5, 9)
-"vector B =" (3, 8, 4, 8)
-              |  |  |  |
-              |  |  |  '-- "T=(9, 8)"
-              |  |  '----- "R=(5, 4)"
-              |  '-------- "E=(6, 8)"
-              '----------- "W=(1, 3)"
-
-"Once points plotted, the slope of the line"
-"that fits those points is roughly 1.0"
-
-9|                .'
-8|           E  .' T 
-7|            .'   
-6|          .'      
-5|        .'        
-4|      .' R           
-3| W  .'            
-2|  .'              
-1|.'                
- +-------------------
-   1 2 3 4 5 6 7 8 9
+```{note}
+A lot of what's below is my understanding of what's going on, which I'm almost certain is flawed. I've put up a [question asking for help](https://stats.stackexchange.com/q/558913).
 ```
 
-**WHY**:
+**WHAT**: Given two n-dimensional vectors, ...
 
-TODO: Figure out why this is useful
+1. pair together each index to produce a set of 2D points.
 
-TODO: Figure out why this is useful
+   ```{svgbob}
+   "vector A =" (1, 6, 5, 9)
+   "vector B =" (3, 8, 4, 8)
+                 |  |  |  |
+                 |  |  |  '-- "(9, 8)"
+                 |  |  '----- "(5, 4)"
+                 |  '-------- "(6, 8)"
+                 '----------- "(1, 3)"
+   ```
 
-TODO: Figure out why this is useful
+2. fit a straight line to those points.
 
-TODO: Figure out why this is useful
+   ```{svgbob}
+   "vector A =" (1, 6, 5, 9)
+   "vector B =" (3, 8, 4, 8)
+                 |  |  |  |
+                 |  |  |  '-- "(9, 8)"
+                 |  |  '----- "(5, 4)"
+                 |  '-------- "(6, 8)"
+                 '----------- "(1, 3)"
 
-TODO: Figure out why this is useful
+     9|                .'
+      |           ●  .' ● 
+     7|            .'   
+      |          .'      
+   B 5|        .'        
+      |      .' ●         
+     3| ●  .'            
+      |  .'              
+     1|.'                
+      +-------------------
+        1   3   5   7   9
+                A
+   ```
 
-TODO: Figure out why this is useful
+3. quantify the proximity of those points to the fitted line, where the proximity of larger points contribute more to a strong similarity than smaller points. The quantity ranges from 0.0 (loose proximity) and 1.0 (tight proximity), negating the if the slope of the fitted line is negative.
 
-TODO: Figure out why this is useful
+   ```{svgbob}
+   "* r is the proximity quantity described above."
 
-TODO: Figure out why this is useful
+   "vector A = (0, 1, 1, 0, 5,  2, 1, 6)"            "vector A = (1,  2.5, 3, 6.5, 8, 8.5, 9.5)"       "vector A = (1, 3, 5, 7, 9, 11, 13)"
+   "vector B = (1, 0, 2, 0, 10, 0, 2, 14)"           "vector B = (14, 11,  13,  2, 3, 2,   2)"         "vector B = (5, 7, 5, 7, 5, 7,  5)"
+                                                                                                                                                  
+                    "r = 0.95"                                       "r = -0.95"                                      "r = 0.0"           
+                                                                                                                                                  
+     15|               /                               15|   \                                           15|                                        
+       |             ●/                                  |   ●\                                            |                                        
+     13|             /                                 13|     \ ●                                       13|                                        
+       |            /                                    |      \                                          |                                        
+     11|           /                                   11|      ●\                                       11|                                        
+       |          /●                                     |        \                                        |                                        
+      9|         /                                      9|         \                                      9|                                        
+   B   |        /                                    B   |          \                                  B   |                                        
+      7|       /                                        7|           \                                    7|       ●       ●       ●                
+       |      /                                          |            \                                    |  ----------------------------          
+      5|     /                                          5|             \                                  5|   ●       ●       ●       ●            
+       |    /                                            |              \                                  |                                        
+      3|   /                                            3|               \ ●                              3|                                        
+       |  /●                                             |              ● \ ● ●                            |                                        
+      1|●/   ●                                          1|                                                1|                                        
+       |●  ●                                             |                                                 |                                        
+       +----------------------------------               +----------------------------------               +----------------------------------      
+           1   3   5   7   9   11  13  15                    1   3   5   7   9   11  13  15                    1   3   5   7   9   11  13  15       
+                         A                                                 A                                                 A
+   ```
 
-TODO: Figure out why this is useful
+**WHY**: Imagine the following 4-dimensional gene expression vectors...
 
-TODO: Figure out why this is useful
+|        | hour1 | hour2 | hour3 | hour4 |
+|--------|-------|-------|-------|-------|
+| Gene A |  2    | 10    | 2     | 10    |
+| Gene B |  1    | 5     | 1     | 5     |
+| Gene C |  5    | 9     | 5     | 9     |
+
+Plotting out each component of the gene expression vectors above reveals that ...
+
+ * B is a scaled down version of A (by 0.5x).
+ * C is a shifted version of B (by +4).
+ * C is a scaled down and shifted version of A (by 0.5x and +4).
+
+```{svgbob}
+"plot of (2,10,2,10)'s"          "plot of (1,5,1,5)'s"           "plot of (5,9,5,9)'s"
+"components by index"            "components by index"           "components by index"
+                                                                                
+  10|     *       *                                                            
+v  8|    / \     /               v  9|                           v  9|   *   * 
+a  6|   /   \   /                a  7|                           a  7|  / \ /  
+l  4|  /     \ /                 l  5|   *   *                   l  5| *   *   
+u  2| *       *                  u  3|  / \ /                    u  3|         
+e  0|                            e  1| *   *                     e  1|         
+    +--------------                  +---------                      +---------
+      0   1   2   3                    0 1 2 3                         0 1 2 3 
+         index                          index                           index  
+```
+
+Pearson similarity returns 1.0 (maximum similarity) for all possible comparison of the three gene expression vectors above. Note that this isn't the case with cosine similarity. Cosine similarity gets thrown off in the presence of shifting while pearson similarity does not.
+
+|        | Cosine similarity | Pearson similarity |
+|--------|-------------------|--------------------|
+| B vs A | 1.0               | 1.0                |
+| C vs A | 0.992             | 1.0                |
+| C vs B | 0.992             | 1.0                |
+
+Similarly, comparing a gene expression vector with a mirror (across the X-axis) that has been scaled and / or shifted will result in a pearson similarity of -1.0.
+
+```{svgbob}
+"plot of (2,10,2,10)'s"          "plot of (9,5,9,5)'s"
+"components by index"            "components by index"
+                                                
+  10|     *       *                             
+v  8|    / \     /                v  9| *   * 
+a  6|   /   \   /                 a  7|  \ / \  
+l  4|  /     \ /                  l  5|   *   *  
+u  2| *       *                   u  3|         
+e  0|                             e  1|         
+    +--------------                   +---------
+      0   1   2   3                     0 1 2 3 
+         index                           index  
+```
+
+````{note}
+If you're trying to determine if the the components of the gene expression vectors follow the same pattern regardless of scale OR offset, this is the similarity to use. They may have similar patterns even though they're scaled differently or offset differently. For example, both genes below may be influenced by the same transcription factor, but their base expression rates are different so the transcription factor influences their gene expression proportionally.
+
+```{svgbob}
+"gene A's expression"          "gene B's expression"
+"across time-points"           "across time-points"
+                               
+   10|     *       *                                    
+ v  8|    / \     /             v  9|         
+ a  6|   /   \   /              a  7|   *   * 
+ l  4|  /     \ /               l  5|  / \ / 
+ u  2| *       *                u  3| *   *  
+ e  0|                          e  1| 
+     +--------------                +---------
+       0   1   2   3                  0 1 2 3 
+          index                        index  
+```
+````
 
 **ALGORITHM**:
 
+Given the vectors A and B, the formula for the algorithm is as follows ...
+
 ```{kt}
-r_{AB} = \frac{\sum_{i=1}^n {(A_i - \overline{A})(B_i - \overline{B})}}{\sqrt{\sum_{i=1}^n {(A_i - \overline{A})^2}} \cdot \sqrt{\sum_{i=1}^n {(B_i - \overline{B})^2}}}
+r_{AB} = \frac{\sum_{i=1}^n {(A_i - avg(A))(B_i - avg(B))}}{\sqrt{\sum_{i=1}^n {(A_i - avg(A))^2}} \cdot \sqrt{\sum_{i=1}^n {(B_i - avg(B))^2}}}
 ```
 
-(1,9,9,1) and (3,7,3,7)
+```{note}
+Much like cosine similarity, I can't pinpoint what exactly it is that the formula is calculating / the reasoning behind the calculations. The only part I somewhat understand where it's getting the euclidean distance to the average of each vector.
 
-* W=(1,3)
-* E=(9,7)
-* R=(9,3)
-* T=(1,7)
-
-```{svgbob}
-  9|     R          .'
-B 8|              .'  
-  7| T          .'   E
-v 6|          .'      
-a 5|        .'        
-l 4|      .'          
-u 3| W  .'            
-e 2|  .'              
-s 1|.'                
-   +-------------------
-     1 2 3 4 5 6 7 8 9
-        "A values"
+The rest of it I don't understand.
 ```
 
-https://www.statology.org/pearson-correlation-coefficient/
+```{output}
+ch8_code/src/metrics/PearsonSimilarity.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch8}
+metrics.PearsonSimilarity
+[
+  [2, 10, 4, 12, 6, 14],
+  [5, 9,  6, 10, 7, 11]
+]
+```
 
 ### K-Centers Clustering
 ### K-Means Clustering
@@ -16420,20 +16567,17 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
     * independent events, Pr(B|A) is simply Pr(B).
     * dependent events, Pr(B|A) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).
 
- * `{bm} similarity metric` - A metric used to measure how similar a pair of entities are to each other. Where as a distance metric starts at 0 for total similarity and grows based on how different the entities are, a similarity metric starts at 0 for total dissimilarity (orthogonal) and grows based on how similar the entities are. Examples of similarity metrics include ...
+ * `{bm} similarity metric` - A metric used to measure how similar a pair of entities are to each other. Where as a distance metric must start at 0 for total similarity and grows based on how different the entities are, a similarity metric has no requirements for bounds on similarity or dissimilarity. Examples of similarity metrics include ...
 
-   * pearson similarity.
-   * dot product between two vector.
+   * pearson similarity for gene expression vectors.
+   * cosine similarity for gene expression vectors.
+   * BLOSUM / PAM matrices for protein sequence alignments.
    * etc..
 
    ```{note}
-   How does dot product capture similarity? See [here](https://math.stackexchange.com/a/689078).
-   ```
-
-   ```{note}
-   This topic was only briefly discussed, so I have no idea what properties are required other than: 0 = completely dissimilar / orthogonal and anything higher than that is more similar. It didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does `similarity(snake,snake) == similarity(bird,bird)` have to be true or can it be that `similarity(snake,snake) > similarity(bird,bird)`? I saw on Wikipedia that sequence alignment scoring matrices like PAM and BLOSUM are similarity matrices, so that implies that totally similar entities don't have to be the same score. For example, in BLOSUM62 `similarity(A,A) = 4` but `similarity(R,R) =5`.
-
-   There may be other properties involved, such as how the triangle inequality property is a thing for distance matrices / distance metrics.
+   This topic was only briefly discussed, so I don't know for sure what the properties/requirements are for a similarity metric other than higher = more similar. Contrast this to distance metrics, where it explicitly mentions the requirements that need to be followed (e.g. triangle inequality property). For similarity metrics, it didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does `similarity(snake,snake) == similarity(bird,bird)` have to be true or can it be that `similarity(snake,snake) > similarity(bird,bird)`?
+   
+   I saw on Wikipedia that sequence alignment scoring matrices like PAM and BLOSUM are similarity matrices, so that implies that totally similar entities don't have to be the same score. For example, in BLOSUM62 `similarity(A,A) = 4` but `similarity(R,R) = 5`.
    ```
 
  * `{bm} similarity matrix/(similarity matrix|similarity matrices)/i` - Given a set of n different entities, a similarity matrix is an n-by-n matrix where each element contains the similarity measure between the entities for that cell. For example, for the species snake, lizard, bird, and crocodile ...
@@ -16469,10 +16613,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    * 0 represents no correlation.
    * 1 represents a total positive correlation.
 
-   The formula may be modified to become a ...
-
-   * distance metric as follows: `1 - pearson_correlation(x, y)`. Where as the pearson correlation coefficient varies between -1 and 1, the pearson distance varies between 0 (totally similar) and 2 (totally orthogonal).
-   * similarity metric as follows: `1 + pearson_correlation(x, y)`. Where as the pearson correlation coefficient varies between -1 and 1, the pearson similarity varies between 0 (totally orthogonal) and 2 (totally similar).
+   The formula may be modified to become a distance metric as follows: `1 - pearson_correlation(x, y)`. Where as the pearson correlation coefficient varies between -1 and 1, the pearson distance varies between 0 (totally similar) and 2 (totally dissimilar).
 
  * `{bm} similarity graph` - A transformation of a similarity matrix into a graph, where the entities that make up the similarity matrix are represented as nodes and edges between nodes are only made if the similarity exceeds a certain threshold.
 
@@ -16560,7 +16701,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    Hierarchial clustering has its roots in phylogeny. The similarity metric to build clusters is massages into a distance metric, which is then used to form a tree that represents the clusters.
    ```
 
- * `{bm} cosine similarity` - A similarity metric that measures if two vectors grew/shrunk in a similar trajectories (similar angles).
+ * `{bm} cosine similarity/(cosine similarity|cosine distance)/i` - A similarity metric that measures if two vectors grew/shrunk in a similar trajectories (similar angles).
 
    ```{svgbob}
                                             .'
@@ -16581,6 +16722,8 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
    * smaller (more similar trajectory), the cosine would get closer to 1.
    * larger (less similar trajectory), the cosine would get closer to -1.
+
+   The formula may be modified to become a distance metric as follows: `1 - cosine_similarity(x, y)`. Where as the cosine similarity varies between -1 and 1, the cosine distance varies between 0 (totally similar) and 2 (totally dissimilar).
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

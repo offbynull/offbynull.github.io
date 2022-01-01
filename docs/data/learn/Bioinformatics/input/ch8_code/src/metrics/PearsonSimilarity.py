@@ -1,4 +1,3 @@
-from itertools import product
 from math import sqrt
 from statistics import mean
 from sys import stdin
@@ -8,7 +7,7 @@ import yaml
 
 
 # MARKDOWN
-def cosine_similarity(v: Sequence[float], w: Sequence[float], dims: int):
+def pearson_similarity(v: Sequence[float], w: Sequence[float], dims: int):
     v_avg = mean(v)
     w_avg = mean(w)
     vec_avg_diffs_dp = sum((v[i] - v_avg) * (w[i] - w_avg) for i in range(dims))
@@ -31,8 +30,8 @@ def main():
         print(f' * {v}')
         print(f' * {w}')
         print()
-        d = cosine_similarity(v, w, dims)
-        print(f'Their cosine similarity is {d}')
+        d = pearson_similarity(v, w, dims)
+        print(f'Their pearson similarity is {d}')
         print()
     finally:
         print("</div>", end="\n\n")
@@ -41,6 +40,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print(f'{cosine_similarity([1, 2, 3, 4, 5, 6], [-1, 2, 3, 4, 5, 6], 6)=}')
-    # for a, b, c, d, e, f in product(range(0,10), repeat=6):
-    #     print(f'{(a,b,c), (d,e,f)} = {cosine_similarity([a, b + 0.01, c], [d, e + 0.01, f], 2)}')
