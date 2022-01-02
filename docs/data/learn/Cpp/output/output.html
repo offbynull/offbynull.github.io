@@ -6,8 +6,11 @@
 <div class="toc">
 <ul>
 <li><a href="#H_TODOs">TODOs</a></li>
-<li><a href="#H_Introduction">Introduction</a></li>
+<li><a href="#H_Essentials">Essentials</a></li>
+<ul>
 <li><a href="#H_Compilation">Compilation</a></li>
+<li><a href="#H_Headers">Headers</a></li>
+</ul>
 <li><a href="#H_Object%20Lifecycle">Object Lifecycle</a></li>
 <ul>
 <li><a href="#H_Static%20Objects">Static Objects</a></li>
@@ -121,11 +124,13 @@
 <li><a href="#H_Structured%20Binding">Structured Binding</a></li>
 <li><a href="#H_Expression%20Categories">Expression Categories</a></li>
 <li><a href="#H_Iterators">Iterators</a></li>
+<li><a href="#H_Modules">Modules</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
 <a name="H_TODOs"></a><h1>TODOs</h1>
 <p>TODO: Set prereqs</p>
+<p>TODO: Mention this website https://github.com/AnthonyCalandra/modern-cpp-features</p>
 <p>TODO:  https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiring-twos-complement</p>
 <p>TODO:  https://www.reddit.com/r/cpp/comments/r3pmw2/writing_portable_c_code_and_undefined_unspecified/  + evaluation order of isn't defined (<strong>SEE CH7 -- EXECUTION ORDER SECTION</strong>)</p>
 <p></p>
@@ -149,8 +154,9 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 -- std::hash <a href="#BM_(template)%2Fi">template</a> <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>: https://en.cpp<a href="#BM_(reference)%2Fi">reference</a>.com/w/cpp/utility/hash
 -- friend function to ostringstream</p>
 <p>TODO: smart <a href="#BM_(pointer)%2Fi">pointer</a>s</p>
-<p>TODO: modules</p>
-<a name="H_Introduction"></a><h1>Introduction</h1>
+<p>TODO: header file best practices under (e.g. guards)</p>
+<p>TODO: add terminology for declarations and definitions</p>
+<a name="H_Essentials"></a><h1>Essentials</h1>
 <p>The following document is my attempt at charting out the various pieces of the modern C++ landscape. It was made for my own personal <a href="#BM_(reference)%2Fi">reference</a> and put online in the hopes that it might be useful to others. It isn't comprehensive and some of the information may not be entirely correct or may be missing large portions. I tried to focus on the 80% of features that gets used most of the time and not the 20% of highly esoteric / confusing features.</p>
 <p>The key points of similarity to remember:</p>
 <ol>
@@ -162,7 +168,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <p>The key point of dissimilarity to remember:</p>
 <ol>
 <li><strong>C++ does not come with a garbage collector</strong>. You are responsible for releasing memory, although the C++ standard library has a lot of pieces to help with this.</li>
-<li>C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantic errors.</li>
+<li>C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantics.</li>
 <li>C++ has a lot of ambiguous behaviour. Compared to Java/C#, the language specifically carves out pieces of the spec and leaves it as platform-specific behaviour, undefined behaviour, etc.. so that <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s have more room to optimize code.</li>
 </ol>
 <p>The rest of the document assumes the following base knowledge:</p>
@@ -229,7 +235,7 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 </code></pre>
-<a name="H_Compilation"></a><h1>Compilation</h1>
+<a name="H_Compilation"></a><h2>Compilation</h2>
 <p>Several C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s exist, the most popular of which are the GNU C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> and LLVM clang. C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s generally follow the same set of steps to go from C++ code to an <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>.</p>
 <ol>
 <li>C++ source files get fed into a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> to generate <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>s. A <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> is the C++ source file after going through modifications based <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> specifics, platform specifics, libraries used, compile options / library options, etc..</li>
@@ -256,6 +262,35 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 $ ./a.out
 hello world
 </code></pre>
+<a name="H_Headers"></a><h2>Headers</h2>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
+<p>TODO: FILL ME IN</p>
 <a name="H_Object%20Lifecycle"></a><h1>Object Lifecycle</h1>
 <p>In C++, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is a region of memory that has a type and a value (e.g. a <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(object%7Cinstance)%2Fi">instance</a>, an integer, a <a href="#BM_(pointer)%2Fi">pointer</a> to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ <a href="#BM_(object%7Cinstance)%2Fi">object</a>s aren't exclusive to <a href="#BM_(class%7Cstruct)%2Fi">class</a>es (e.g. an boolean is an <a href="#BM_(object%7Cinstance)%2Fi">object</a>).</p>
 <p>An <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s life cycle passes through the following stages:</p>
@@ -731,7 +766,7 @@ X::m = <span class="hljs-number">0</span>;                <span class="hljs-comm
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The above is an over-simplification. The ways to initialize are vast and complex. See <a href="https://en.cppreference.com/w/cpp/language/initialization">here</a> for a full accounting.</p>
+<p>The above is an over-simplification. The ways to initialize are vast and complex. See <a href="https://en.cppreference.com/w/cpp/language/initialization">here</a> for a full accounting and <a href="https://youtu.be/7DTlWPgX6zs">here</a> for an hour long talk about the edge cases.</p>
 <p>It seems like the safest bet is to always use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">brace initialization</a> where possible. Just use the braces as if they were parenthesis or braces in Java (specific to the context). The others have surprising behaviour (e.g. they won't warn about <a href="#BM_(narrowing%20conversion)%2Fi">narrowing conversion</a>s).</p>
 </div>
 </li>
@@ -3826,19 +3861,120 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you're dealing with the STL, there's also special <a href="#BM_(iterator)%2Fi">iterator</a> implementations that allow insertions rather than setting elements. See <code>insert_iterator</code>, <code>back_insert_iterator</code>, and <code>front_insert_iterator</code>.</p>
 </div>
+<a name="H_Modules"></a><h1>Modules</h1>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Source is <a href="https://vector-of-bool.github.io/2019/03/10/modules-1.html">this website</a>.</p>
+</div>
+<p>C++ modules change how C++ source code files interface with each other. Normally, a C++ source / header file would use <code>#include &lt;...&gt;</code> directives to pull in other source code files that it needs access to. Those outside source code files provided things like <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros, function declarations, <a href="#BM_(class%7Cstruct)%2Fi">class</a> declarations, global variable constants, <a href="#BM_(forward%20declaration)%2Fi">forward declaration</a>s, <a href="#BM_(template)%2Fi">template</a>s, etc...</p>
+<p>Instead of dealing with source code files directly, C++ modules allow for independently "compiling" source code files and importing them for use into different source code files, similar to how a Java source code file imports compiled Java <a href="#BM_(class%7Cstruct)%2Fi">class</a> files for use. Modules reduce some of the complexities of using header files but certain functionality is also gone. Specifically, before modules go through compilation, <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros and <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directives aren't included.</p>
+<p>To create a module from a single file, add <code>export module</code> followed by the name of the module in the beginning of the file. Then, prefix <code>export</code> to any function, <a href="#BM_(enumeration%7Cenum)%2Fi">enumeration</a>, <a href="#BM_(class%7Cstruct)%2Fi">class</a>, etc.. that the module should expose.</p>
+<pre class="hljs"><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">module</span> my_module;
+
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a + b;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a * b;
+}
+</code></pre>
+<p>To make use of a module in some other source code, use <code>import</code> followed by the module's name.</p>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> my_module;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+   <span class="hljs-keyword">return</span> <span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+}
+</code></pre>
+<p>Similar to how non-module C++ source code is broken up into a source file containing definitions and its accompanying header file would containing declarations, a module may also be broken up into separate definition and declaration files. The declarations go in a file with <code>export module</code> at the top (as shown above) and the definitions go in a file with just <code>module</code>. Declaration files aren't allowed to use <code>export</code> at all.</p>
+<pre class="hljs"><code><span class="hljs-comment">// my_module.cpp</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">module</span> my_module;
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;
+
+<span class="hljs-comment">// my_module_impl.cpp</span>
+<span class="hljs-keyword">module</span> my_module;  <span class="hljs-comment">// no "export" in module declaration, meaning export not allowed anywhere else in this file</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a + b;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a * b;
+}
+</code></pre>
+<p>Modules may be broken up into several pieces using module partitions, with each piece in its own file, using colons (:).</p>
+<pre class="hljs"><code><span class="hljs-comment">// my_module_addition.cpp</span>
+<span class="hljs-keyword">export</span> my_module:addition;
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a + b;
+}
+
+<span class="hljs-comment">// my_module_multiplication.cpp</span>
+<span class="hljs-keyword">export</span> my_module:multiplication;
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a * b;
+}
+
+<span class="hljs-comment">// my_module.cpp</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">module</span> my_module;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">import</span> :addition;        <span class="hljs-comment">// export everything under my_module:addition partition</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">import</span> :multiplication;  <span class="hljs-comment">// export everything under my_module:multiplication partition</span>
+</code></pre>
+<p>Module partitions may be made non-exportable as well, similar to the definition / declaration example earlier. The parent would need to re-define anything it wants to explicitly export.</p>
+<pre class="hljs"><code><span class="hljs-comment">// my_module_addition.cpp</span>
+<span class="hljs-keyword">export</span> my_module:addition;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a + b;
+}
+
+<span class="hljs-comment">// my_module_multiplication.cpp</span>
+my_module:multiplication;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a * b;
+}
+
+<span class="hljs-comment">// my_module.cpp</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">module</span> my_module;
+<span class="hljs-keyword">import</span> :addition;
+<span class="hljs-keyword">import</span> :multiplication;
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;      <span class="hljs-comment">// explicitly export this function (imported from my_module:addition partition)</span>
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>; <span class="hljs-comment">// explicitly export this function (imported from my_module:multiplication partition)</span>
+</code></pre>
+<p>Note that there can only ever be 1 parent for a partition. All partitions are a part of their parent module, not modules themselves. The parent module must import all of its partitions using either <code>import</code> or <code>export import</code> as shown in the examples above. No module can directly import a partition that doesn't belong to it.</p>
+<p>One way to work around these restrictions is to simply make the partitions their own modules. The most common way to do this is to replace the colons (:) in each partition name with a dot (.), making sure to use the full name in the import lines (because the pieces being imported are no longer partitions of the parent module).</p>
+<pre class="hljs"><code><span class="hljs-comment">// my_module_addition.cpp</span>
+<span class="hljs-keyword">export</span> my_module.addition;
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a + b;
+}
+
+<span class="hljs-comment">// my_module_multiplication.cpp</span>
+<span class="hljs-keyword">export</span> my_module.multiplication;
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a * b;
+}
+
+<span class="hljs-comment">// my_module.cpp</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">module</span> my_module;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">import</span> my_module.addition;        <span class="hljs-comment">// export everything under my_module.addition (FULL NAME USED)</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">import</span> my_module.multiplication;  <span class="hljs-comment">// export everything under my_module.multiplication (FULL NAME USED)</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Last I recall using this, each <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> required a special flag to turn on modules. Just because you're code uses modules doesn't mean the internal C++ libraries (e.g. standard <a href="#BM_(template)%2Fi">template</a> library, <code>cstdint</code>, etc..) are going to expose things as modules. You still have to include those using the <code>#include &lt;...&gt;</code> directives (maybe -- I think I remember there being some roundabout way of getting modules to work).</p>
+</div>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
 <p><a name="BM_(preprocessor%7Ctranslation%20unit)%2Fi"></a><strong>processor</strong> - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>.</p>
-<p><img src="svgbob_80c99337d0ee9d0afb6fdd8cc113d933be8d1ce9.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_212eb4f5da36a915c157410252db4d63381c77c9.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi"></a><strong>compiler</strong> - A tool that takes in a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> to produce an intermediary format called an <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">object file</a>.</p>
-<p><img src="svgbob_80c99337d0ee9d0afb6fdd8cc113d933be8d1ce9.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_212eb4f5da36a915c157410252db4d63381c77c9.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(linker%7Cexecutable)%2Fi"></a><strong>linker</strong> - A tool that takes multiple <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">object file</a>s to produce an <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>. <a href="#BM_(linker%7Cexecutable)%2Fi">Linker</a>s are are also responsible for finding libraries used by the program and integrating them into the <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>.</p>
-<p><img src="svgbob_80c99337d0ee9d0afb6fdd8cc113d933be8d1ce9.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_212eb4f5da36a915c157410252db4d63381c77c9.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(enumeration%7Cenum)%2Fi"></a><strong>enumeration</strong> - A <a href="#BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi">user-defined type</a> that can be set to one of a set of possibilities.</p>
@@ -4261,6 +4397,15 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 <li>
 <p><a name="BM_(user-defined%20literal)%2Fi"></a><strong>user-defined literal</strong> - A literal suffix defined by a user, where when that suffix is applied to some literal, some computation is performed.</p>
 <pre class="hljs"><code>Distance d = <span class="hljs-number">42.0</span>_km;  <span class="hljs-comment">// the suffix _km converts the literal 42.0 to an instance of the Distance type</span>
+</code></pre>
+</li>
+<li>
+<p><a name="BM_(module%20unit)%2Fi"></a><strong>module unit</strong> - A <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> that contains a module declaration.</p>
+<pre class="hljs"><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">module</span> MyModule;  <span class="hljs-comment">// module declaration</span>
+
+<span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+   <span class="hljs-keyword">return</span> a + b;
+}
 </code></pre>
 </li>
 </ul>

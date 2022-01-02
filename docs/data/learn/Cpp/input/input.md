@@ -59,11 +59,9 @@ TODO: smart pointers
 
 TODO: header file best practices under (e.g. guards)
 
-TODO: modules
-
 TODO: add terminology for declarations and definitions
 
-# Introduction
+# Essentials
 
 The following document is my attempt at charting out the various pieces of the modern C++ landscape. It was made for my own personal reference and put online in the hopes that it might be useful to others. It isn't comprehensive and some of the information may not be entirely correct or may be missing large portions. I tried to focus on the 80% of features that gets used most of the time and not the 20% of highly esoteric / confusing features.
 
@@ -77,7 +75,7 @@ The key points of similarity to remember:
 The key point of dissimilarity to remember:
 
 1. **C++ does not come with a garbage collector**. You are responsible for releasing memory, although the C++ standard library has a lot of pieces to help with this.
-1. C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantic errors.
+1. C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantics.
 1. C++ has a lot of ambiguous behaviour. Compared to Java/C#, the language specifically carves out pieces of the spec and leaves it as platform-specific behaviour, undefined behaviour, etc.. so that compilers have more room to optimize code. 
 
 The rest of the document assumes the following base knowledge:
@@ -156,7 +154,7 @@ int main() {
 }
 ```
 
-# Compilation
+## Compilation
 
 Several C++ compilers exist, the most popular of which are the GNU C++ compiler and LLVM clang. C++ compilers generally follow the same set of steps to go from C++ code to an executable.
 
@@ -205,6 +203,65 @@ $ g++ hello.cpp
 $ ./a.out
 hello world
 ```
+
+## Headers
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
+TODO: FILL ME IN
+
 
 # Object Lifecycle
 
@@ -515,7 +572,7 @@ C++ variable declarations have the following form: `modifiers type name initiali
    * etc..
 
    ```{note}
-   The above is an over-simplification. The ways to initialize are vast and complex. See [here](https://en.cppreference.com/w/cpp/language/initialization) for a full accounting.
+   The above is an over-simplification. The ways to initialize are vast and complex. See [here](https://en.cppreference.com/w/cpp/language/initialization) for a full accounting and [here](https://youtu.be/7DTlWPgX6zs) for an hour long talk about the edge cases.
    
    It seems like the safest bet is to always use brace initialization where possible. Just use the braces as if they were parenthesis or braces in Java (specific to the context). The others have surprising behaviour (e.g. they won't warn about narrowing conversions).
    ```
@@ -3741,93 +3798,145 @@ If you're dealing with the STL, there's also special iterator implementations th
 
 # Modules
 
-C++ modules change how C++ source code files interface with each other. Normally, a C++ source / header file would use `#include <...>` directives to pull in outside source code files that it needed access to. Those outside source code files provided things like preprocessor macros, function declarations, class declarations, global variable constants, forward declarations, templates, etc...
+```{note}
+Source is [this website](https://vector-of-bool.github.io/2019/03/10/modules-1.html).
+```
+
+C++ modules change how C++ source code files interface with each other. Normally, a C++ source / header file would use `#include <...>` directives to pull in other source code files that it needs access to. Those outside source code files provided things like preprocessor macros, function declarations, class declarations, global variable constants, forward declarations, templates, etc...
 
 Instead of dealing with source code files directly, C++ modules allow for independently "compiling" source code files and importing them for use into different source code files, similar to how a Java source code file imports compiled Java class files for use. Modules reduce some of the complexities of using header files but certain functionality is also gone. Specifically, before modules go through compilation, preprocessor macros and preprocessor directives aren't included.
 
-TODO: continue to fill me in
+To create a module from a single file, add `export module` followed by the name of the module in the beginning of the file. Then, prefix `export` to any function, enumeration, class, etc.. that the module should expose.
 
-TODO: continue to fill me in
+```c++
+export module my_module;
 
-TODO: continue to fill me in
+export int add(int a, int b) {
+   return a + b;
+}
 
-TODO: continue to fill me in
+export int multiply(int a, int b) {
+   return a * b;
+}
+```
 
-TODO: continue to fill me in
+To make use of a module in some other source code, use `import` followed by the module's name.
 
-TODO: continue to fill me in
+```c++
+import my_module;
 
-TODO: continue to fill me in
+int main() {
+   return add(1, 2);
+}
+```
 
-TODO: continue to fill me in
+Similar to how non-module C++ source code is broken up into a source file containing definitions and its accompanying header file would containing declarations, a module may also be broken up into separate definition and declaration files. The declarations go in a file with `export module` at the top (as shown above) and the definitions go in a file with just `module`. Declaration files aren't allowed to use `export` at all.
 
-TODO: continue to fill me in
+```c++
+// my_module.cpp
+export module my_module;
+export int add(int a, int b);
+export int multiply(int a, int b);
 
-TODO: continue to fill me in
+// my_module_impl.cpp
+module my_module;  // no "export" in module declaration, meaning export not allowed anywhere else in this file
+int add(int a, int b) {
+   return a + b;
+}
+int multiply(int a, int b) {
+   return a * b;
+}
+```
 
-TODO: continue to fill me in
+Modules may be broken up into several pieces using module partitions, with each piece in its own file, using colons (:).
 
+```c++
+// my_module_addition.cpp
+export my_module:addition;
+export int add(int a, int b) {
+   return a + b;
+}
+
+// my_module_multiplication.cpp
+export my_module:multiplication;
+export int multiply(int a, int b) {
+   return a * b;
+}
+
+// my_module.cpp
+export module my_module;
+export import :addition;        // export everything under my_module:addition partition
+export import :multiplication;  // export everything under my_module:multiplication partition
+```
+
+Module partitions may be made non-exportable as well, similar to the definition / declaration example earlier. The parent would need to re-define anything it wants to explicitly export.
+
+```c++
+// my_module_addition.cpp
+export my_module:addition;
+int add(int a, int b) {
+   return a + b;
+}
+
+// my_module_multiplication.cpp
+my_module:multiplication;
+int multiply(int a, int b) {
+   return a * b;
+}
+
+// my_module.cpp
+export module my_module;
+import :addition;
+import :multiplication;
+export int add(int a, int b);      // explicitly export this function (imported from my_module:addition partition)
+export int multiply(int a, int b); // explicitly export this function (imported from my_module:multiplication partition)
+```
+
+Note that there can only ever be 1 parent for a partition. All partitions are a part of their parent module, not modules themselves. The parent module must import all of its partitions using either `import` or `export import` as shown in the examples above. No module can directly import a partition that doesn't belong to it.
+
+One way to work around these restrictions is to simply make the partitions their own modules. The most common way to do this is to replace the colons (:) in each partition name with a dot (.), making sure to use the full name in the import lines (because the pieces being imported are no longer partitions of the parent module).
+
+```c++
+// my_module_addition.cpp
+export my_module.addition;
+export int add(int a, int b) {
+   return a + b;
+}
+
+// my_module_multiplication.cpp
+export my_module.multiplication;
+export int multiply(int a, int b) {
+   return a * b;
+}
+
+// my_module.cpp
+export module my_module;
+export import my_module.addition;        // export everything under my_module.addition (FULL NAME USED)
+export import my_module.multiplication;  // export everything under my_module.multiplication (FULL NAME USED)
+```
+
+```{note}
+Last I recall using this, each compiler required a special flag to turn on modules. Just because you're code uses modules doesn't mean the internal C++ libraries (e.g. standard template library, `cstdint`, etc..) are going to expose things as modules. You still have to include those using the `#include <...>` directives (maybe -- I think I remember there being some roundabout way of getting modules to work).
+```
 
 # Terminology
 
  * `{bm} processor/(preprocessor|translation unit)/i` - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a translation unit.
 
    ```{svgbob}
-   .--------------------.
-   |  "C++ source file" +--+
-   '--------------------'  |
-                           | "preprocessor (1 to 1)"
-                           |  .--------------------.
-                           +--+ "translation unit" +--+
-                              '--------------------'  |
-                                                      | "compiler (1 to 1)"
-                                                      |  .---------------.
-                                                      +--+ "object file" +--+
-                                                         '---------------'  |
-                                                                            | "linker (1+ to 1)"
-                                                                            |  .--------------.
-                                                                            +--+ "executable" |
-                                                                               '--------------'
+   See compilation section.
    ```
 
  * `{bm} compiler/(compiler|object file|object code)/i` - A tool that takes in a translation unit to produce an intermediary format called an object file.
 
    ```{svgbob}
-   .--------------------.
-   |  "C++ source file" +--+
-   '--------------------'  |
-                           | "preprocessor (1 to 1)"
-                           |  .--------------------.
-                           +--+ "translation unit" +--+
-                              '--------------------'  |
-                                                      | "compiler (1 to 1)"
-                                                      |  .---------------.
-                                                      +--+ "object file" +--+
-                                                         '---------------'  |
-                                                                            | "linker (1+ to 1)"
-                                                                            |  .--------------.
-                                                                            +--+ "executable" |
-                                                                               '--------------'
+   See compilation section.
    ```
 
  * `{bm} linker/(linker|executable)/i` - A tool that takes multiple object files to produce an executable. Linkers are are also responsible for finding libraries used by the program and integrating them into the executable.
 
    ```{svgbob}
-   .--------------------.
-   |  "C++ source file" +--+
-   '--------------------'  |
-                           | "preprocessor (1 to 1)"
-                           |  .--------------------.
-                           +--+ "translation unit" +--+
-                              '--------------------'  |
-                                                      | "compiler (1 to 1)"
-                                                      |  .---------------.
-                                                      +--+ "object file" +--+
-                                                         '---------------'  |
-                                                                            | "linker (1+ to 1)"
-                                                                            |  .--------------.
-                                                                            +--+ "executable" |
-                                                                               '--------------'
+   See compilation section.
    ```
 
  * `{bm} enumeration/(enumeration|enum)/i` - A user-defined type that can be set to one of a set of possibilities.
@@ -4189,6 +4298,16 @@ TODO: continue to fill me in
 
    ```c++
    Distance d = 42.0_km;  // the suffix _km converts the literal 42.0 to an instance of the Distance type
+   ```
+
+ * `{bm} module unit` - A translation unit that contains a module declaration.
+
+   ```c++
+   export module MyModule;  // module declaration
+
+   export int add(int a, int b) {
+      return a + b;
+   }
    ```
 
 `{bm-ignore} (classification)/i`
