@@ -11433,6 +11433,8 @@ i0
 
 ## Gene Expression
 
+`{bm} /(Algorithms\/Gene Expression)_TOPIC/`
+
 Gene expression is the biological process by which a gene (segment of DNA) is synthesized into a gene product (e.g. protein).
 
 ```{svgbob}
@@ -11564,6 +11566,8 @@ This section doesn't cover de-noising or de-biasing. It only covers clustering a
 
 ### Euclidean Distance Metric
 
+`{bm} /(Algorithms\/Gene Expression\/Euclidean Distance Metric)_TOPIC/`
+
 **WHAT**: Given two n-dimensional vectors, compute the distance between those vectors if traveling directly from one to the other in a straight line, referred to as the euclidean distance.
 
 ```{svgbob}
@@ -11601,6 +11605,8 @@ metrics.EuclideanDistance
 
 ### Manhattan Distance Metric
 
+`{bm} /(Algorithms\/Gene Expression\/Manhattan Distance Metric)_TOPIC/`
+
 **WHAT**: Given two n-dimensional vectors, compute the distance between those vectors if traveling only via the axis of the coordinate system, referred to as the manhattan distance.
 
 ```{svgbob}
@@ -11633,6 +11639,8 @@ metrics.ManhattanDistance
 ```
 
 ### Cosine Similarity Metric
+
+`{bm} /(Algorithms\/Gene Expression\/Cosine Similarity Metric)_TOPIC/`
 
 **WHAT**: Given two n-dimensional vectors, compute the cosine of the single between them, referred to as the cosine similarity.
 
@@ -11768,6 +11776,27 @@ The cosine of the angle between gene A's expression and gene B's expression is 1
  * (1, 5, 1, 5) and (1.5, 7.5, 1.5, 7.5) is 1.0 -- scaled 1.5x from first to second
  * (1, 5, 1, 5) and (0.5, 2.5, 0.5, 2.5) is 1.0 -- scaled 0.5x from first to second
 
+````{note}
+Still confused? Scaling makes sense if you think of it in terms of angles. The vectors (5,5) vs (10,10) have the same angle. Any vector with the same angle is just a scaled version of the other -- each of it's components are scaled by the same constant...
+
+* (10,10) is (5,5) with each component scaled by 2.0x
+* (5,5) is (10,10) with each component scaled by 0.5x
+
+```{svgbob}
+                              "(10,10)"
+                               .'
+                             .'
+                           .'
+                         .'
+      "(5,5)"          .'
+      .'             .' 
+    .'             .'   
+  .'             .'    
+.' 45          .'  45  
+--------       ----------
+```
+````
+
 While cosine similarity does take into account scaling of components, _it doesn't support shifting of components_. Imagine the following 4-dimensional gene expression vectors...
 
 |        | hour1 | hour2 | hour3 | hour4 |
@@ -11850,6 +11879,11 @@ metrics.CosineSimilarity
 
 ### Pearson Similarity Metric
 
+`{bm} /(Algorithms\/Gene Expression\/Pearson Similarity Metric)_TOPIC/`
+
+```{prereq}
+Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
+```
 
 ```{note}
 A lot of what's below is my understanding of what's going on, which I'm almost certain is flawed. I've put up a [question asking for help](https://stats.stackexchange.com/q/558913).
@@ -12027,9 +12061,169 @@ metrics.PearsonSimilarity
 ```
 
 ### K-Centers Clustering
+
+`{bm} /(Algorithms\/Gene Expression\/K-Centers Clustering)_TOPIC/`
+
+```{prereq}
+Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
+```
+
+**WHAT**: Given a list of n-dimensional points (vectors), put them into a predefined number of groups (denoted as k) and set a "center" for each group. The goal is to find the combination of point groupings and group centers that minimizes euclidean distances between points and their group's center.
+
+```{svgbob}
+"Dots are 2D gene expression vectors. Each C or D denotes a point"
+"belonging to that groups. Each line is from a point to its group"
+"center."
+
+             "bad centers"                                 "good centers"     
+                                                                                 
+|    C                                        |    C                             
+|     \                                       |    |                             
+|C ----●                                      |C --●                             
+|     /                                       |    |                             
+|    C                                        |    C                             
+|                                             |                                  
+|                   ●                         |                                  
+|                  /|\                        |                                  
+|                 / | \                       |                                  
+|                D  |  D                      |                D     D           
+|                   |                         |                 '. .'            
+|                   |                         |                   ●               
+|                   |                         |                   |              
+|                   D                         |                   D              
+|                                             |                                  
+|                                             |                                  
++----------------------------------           +----------------------------------
+```
+
+```{note}
+Confused? It's an optimization problem. You're trying to ...
+
+1. group points
+2. find centers for those groups
+
+... such that when you measure the euclidean distances from points to their group's center, it's the minimum out of all possible point grouping + group centers combinations.
+```
+
+**WHY**: This is one of the methodologies used for clustering gene expression vectors. However, it's not used very often because it ...
+
+ * it requires knowing the number of clusters (k) beforehand.
+ * limits the metric to euclidean distance (as opposed to other similarity metrics / distance metrics).
+
+Other clustering algorithms don't have these restrictions.
+
+**ALGORITHM**:
+
+There are some practical complications with k-centers. The most prominent one is that the search space is huge for any non-trivial input. K-centers requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...
+
+ 1. How many number of ways can those 100 points be grouped?
+ 1. How many dimensions does each point have?
+ 1. What's the minimum / maximum value across points for each of those dimensions?
+ 1. What's the minimum step size for each dimension when searching for a center?
+ 1. How many possibilities are there to check for each of the 5 centers?
+
+Because of this, heuristics are used for k-centers. A common k-centers heuristic is the farthest first traversal algorithm. The algorithm iteratively builds out the centers by inspecting point distances to other centers. At each step, the algorithm ...
+
+ 1. walks over all points and finds the center closest to it,
+ 2. picks the point with the farthest distance from step 1 and sets it as the new center.
+
+The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.
+
+```{output}
+ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{ch8}
+clustering.KCenters_FarthestFirstTraversal
+[
+  3,
+  [
+    [2,2], [2,4], [2.5,6], [3.5,2], [4,3], [4,5], [4.5,4],
+    [7,2], [7.5,3], [8,1], [9,2],
+    [8,7], [8.5,8], [9,6], [10,7]
+  ]
+]
+```
+
+One problem that should be noted with this heuristic is that, when outliers are present, it'll likely place those outliers into their own cluster. 
+
+```{svgbob}
+"Points chosen as centers are in brackets"
+
+"When k=3, each outlier may become become its own"
+"cluster, leaving everything else as the last cluster."
+
+          "no outliers"                                       "with outliers"       
+
+|                                                |                                 [C] 
+|                                                |                                       
+|                                                |                                      
+|                                                |                                      
+|                C                               |                E                     
+|               C  [C]                           |               E   E                  
+|    D            C                              |    E            E                    
+|       D                                        |       E                             
+|  [D]   D                                       |  [E]   E                             
+|       D      E                                 |       E      E                       
+|   D  D      E   E                              |   E  E      E   E                    
+|               [E]                              |               E                      
+|                                                |                                      
+|                                                |                                     
+|                                                |                                     
+|                                                |                                  [D] 
++--------------------------------------          +--------------------------------------
+```
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
+TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
+
 ### K-Means Clustering
+
+`{bm} /(Algorithms\/Gene Expression\/K-Means Clustering)_TOPIC/`
+
+```{prereq}
+Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
+Algorithms/Gene Expression/K-Centers Clustering_TOPIC
+```
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
 ### Soft K-Means Clustering
 ### Hierarchial Clustering
+### K-Medioids Clustering
+https://stats.stackexchange.com/a/81496
+https://stats.stackexchange.com/a/32942
 ### CAST Clustering
 
 # Stories

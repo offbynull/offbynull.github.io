@@ -181,6 +181,7 @@
 <li><a href="#H_K-Means%20Clustering">K-Means Clustering</a></li>
 <li><a href="#H_Soft%20K-Means%20Clustering">Soft K-Means Clustering</a></li>
 <li><a href="#H_Hierarchial%20Clustering">Hierarchial Clustering</a></li>
+<li><a href="#H_K-Medioids%20Clustering">K-Medioids Clustering</a></li>
 <li><a href="#H_CAST%20Clustering">CAST Clustering</a></li>
 </ul>
 </ul>
@@ -15826,6 +15827,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 </div>
 <p></p>
 <a name="H_Gene%20Expression"></a><h2>Gene Expression</h2>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression)_TOPIC%2F"></a><strong></strong></p>
 <p><a href="#BM_(gene%20expression)%2Fi">Gene expression</a> is the biological process by which a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (segment of DNA) is synthesized into a <a href="#BM_(gene%20product)%2Fi">gene product</a> (e.g. protein).</p>
 <p><img src="svgbob_4c3340936a17e2840e08c6fbcd2b26b03b1c812b.svg" alt="Kroki diagram output"></p>
 <p>When a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s for ...</p>
@@ -16014,6 +16016,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>This section doesn't cover de-noising or de-biasing. It only covers <a href="#BM_(cluster)%2Fi">cluster</a>ing and common similarity / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s for real-valued vectors (which are what <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s are). Note that <a href="#BM_(cluster)%2Fi">cluster</a>ing can be used with data types other than vectors. For example, you can <a href="#BM_(cluster)%2Fi">cluster</a> protein <a href="#BM_(sequence)%2Fi">sequence</a>s where the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> is the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 score.</p>
 </div>
 <a name="H_Euclidean%20Distance%20Metric"></a><h3>Euclidean Distance Metric</h3>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the distance between those vectors if traveling directly from one to the other in a straight line, referred to as the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>.</p>
 <p><img src="svgbob_812b661882246e5c5673044d47b2a743122f1f75.svg" alt="Kroki diagram output"></p>
 <p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.</p>
@@ -16072,6 +16075,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Manhattan%20Distance%20Metric"></a><h3>Manhattan Distance Metric</h3>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FManhattan%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the distance between those vectors if traveling only via the axis of the coordinate system, referred to as the <a href="#BM_(manhattan%20distance%7Ctaxi%5B%5Cs%5C-%5D%3Fcab%20distance%7Ccity%5B%5Cs%5C-%5Dblock%20distance)%2Fi">manhattan distance</a>.</p>
 <p><img src="svgbob_19c8269cf6dc61112d64c53c1045bfe1e1f518e3.svg" alt="Kroki diagram output"></p>
 <p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.</p>
@@ -16095,6 +16099,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Cosine%20Similarity%20Metric"></a><h3>Cosine Similarity Metric</h3>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FCosine%20Similarity%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the cosine of the single between them, referred to as the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a>.</p>
 <p><img src="svgbob_504c5b0c7c25a852e40496991ce6164fb25bfd05.svg" alt="Kroki diagram output"></p>
 <p>This metric only factors in the angles between vectors, not their magnitudes (lengths). For example, imagine the following 2-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s ...</p>
@@ -16195,6 +16200,15 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>(1, 5, 1, 5) and (1.5, 7.5, 1.5, 7.5) is 1.0 -- scaled 1.5x from first to second</li>
 <li>(1, 5, 1, 5) and (0.5, 2.5, 0.5, 2.5) is 1.0 -- scaled 0.5x from first to second</li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Still confused? Scaling makes sense if you think of it in terms of angles. The vectors (5,5) vs (10,10) have the same angle. Any vector with the same angle is just a scaled version of the other -- each of it's components are scaled by the same constant...</p>
+<ul>
+<li>(10,10) is (5,5) with each component scaled by 2.0x</li>
+<li>(5,5) is (10,10) with each component scaled by 0.5x</li>
+</ul>
+<p><img src="svgbob_719a091a73ddb79c940edce9e59ee352db129d25.svg" alt="Kroki diagram output"></p>
+</div>
 <p>While <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> does take into account scaling of components, <em>it doesn't support shifting of components</em>. Imagine the following 4-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s...</p>
 <table>
 <thead>
@@ -16294,12 +16308,23 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>What is the formula actually calculating / what's the reasoning behind the formula? The only part I understand is the magnitude calculation, which is just the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between the origin and the coordinates of a vector. For example, the magnitude between (0,0) and (5,7) is calculated as sqrt((5-0)^2 + (7-0)^2). Since the components of the origin are all always going to be 0, it can be shortened to sqrt(5^2 + 7^2).</p>
 <p>The rest of it I don't understand. What is the <a href="#BM_(dot%20product)%2Fi">dot product</a> actually calculating? And why multiply the magnitudes and divide? How does that result in the cosine of the angle?</p>
 </div>
-<p><a href="ch8_code/src/metrics/CosineSimilarity.py">ch8_code/src/metrics/CosineSimilarity.py</a> (lines 9 to 14):</p>
+<p><a href="ch8_code/src/metrics/CosineSimilarity.py">ch8_code/src/metrics/CosineSimilarity.py</a> (lines 9 to 25):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cosine_similarity</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
     vec_dp = <span class="hljs-built_in">sum</span>(v[i] * w[i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims))
     v_mag = sqrt(<span class="hljs-built_in">sum</span>(v[i] ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims)))
     w_mag = sqrt(<span class="hljs-built_in">sum</span>(w[i] ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims)))
     <span class="hljs-keyword">return</span> vec_dp / (v_mag * w_mag)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cosine_distance</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
+    <span class="hljs-comment"># To turn cosine similarity into a distance metric, subtract 1.0 from it. By</span>
+    <span class="hljs-comment"># subtracting 1.0, you're changing the bounds from [1.0, -1.0] to [0.0, 2.0].</span>
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># Recall that any distance metric must return 0 when the items being compared</span>
+    <span class="hljs-comment"># are the same and increases the more different they get. By subtracting 1.0,</span>
+    <span class="hljs-comment"># you're matching that distance metric requirement: 0.0 when totally similar</span>
+    <span class="hljs-comment"># and 2.0 for totally dissimilar.</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1.0</span> - cosine_similarity(v, w, dims)
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -16312,6 +16337,13 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Pearson%20Similarity%20Metric"></a><h3>Pearson Similarity Metric</h3>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FPearson%20Similarity%20Metric)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Cosine Similarity Metric</a></li>
+</ul>
+</div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>A lot of what's below is my understanding of what's going on, which I'm almost certain is flawed. I've put up a <a href="https://stats.stackexchange.com/q/558913">question asking for help</a>.</p>
@@ -16435,7 +16467,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>Much like <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a>, I can't pinpoint what exactly it is that the formula is calculating / the reasoning behind the calculations. The only part I somewhat understand where it's getting the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> to the average of each vector.</p>
 <p>The rest of it I don't understand.</p>
 </div>
-<p><a href="ch8_code/src/metrics/PearsonSimilarity.py">ch8_code/src/metrics/PearsonSimilarity.py</a> (lines 10 to 17):</p>
+<p><a href="ch8_code/src/metrics/PearsonSimilarity.py">ch8_code/src/metrics/PearsonSimilarity.py</a> (lines 10 to 28):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">pearson_similarity</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
     v_avg = mean(v)
     w_avg = mean(w)
@@ -16443,6 +16475,17 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
     dist_to_v_avg = sqrt(<span class="hljs-built_in">sum</span>((v[i] - v_avg) ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims)))
     dist_to_w_avg = sqrt(<span class="hljs-built_in">sum</span>((w[i] - w_avg) ** <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims)))
     <span class="hljs-keyword">return</span> vec_avg_diffs_dp / (dist_to_v_avg * dist_to_w_avg)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">pearson_distance</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
+    <span class="hljs-comment"># To turn pearson similarity into a distance metric, subtract 1.0 from it. By</span>
+    <span class="hljs-comment"># subtracting 1.0, you're changing the bounds from [1.0, -1.0] to [0.0, 2.0].</span>
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># Recall that any distance metric must return 0 when the items being compared</span>
+    <span class="hljs-comment"># are the same and increases the more different they get. By subtracting 1.0,</span>
+    <span class="hljs-comment"># you're matching that distance metric requirement: 0.0 when totally similar</span>
+    <span class="hljs-comment"># and 2.0 for totally dissimilar.</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1.0</span> - pearson_similarity(v, w, dims)
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -16455,9 +16498,134 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_K-Centers%20Clustering"></a><h3>K-Centers Clustering</h3>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FK-Centers%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), put them into a predefined number of groups (denoted as k) and set a "center" for each group. The goal is to find the combination of point groupings and group centers that minimizes <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s between points and their group's center.</p>
+<p><img src="svgbob_d656b37a40b6a0bdf581714d459ef96b7c3ccc8a.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Confused? It's an optimization problem. You're trying to ...</p>
+<ol>
+<li>group points</li>
+<li>find centers for those groups</li>
+</ol>
+<p>... such that when you measure the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to their group's center, it's the minimum out of all possible point grouping + group centers combinations.</p>
+</div>
+<p><strong>WHY</strong>: This is one of the methodologies used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. However, it's not used very often because it ...</p>
+<ul>
+<li>it requires knowing the number of <a href="#BM_(cluster)%2Fi">cluster</a>s (k) beforehand.</li>
+<li>limits the metric to <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> (as opposed to other <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s).</li>
+</ul>
+<p>Other <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithms don't have these restrictions.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>There are some practical complications with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>. The most prominent one is that the search space is huge for any non-trivial input. <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-centers</a> requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...</p>
+<ol>
+<li>How many number of ways can those 100 points be grouped?</li>
+<li>How many dimensions does each point have?</li>
+<li>What's the minimum / maximum value across points for each of those dimensions?</li>
+<li>What's the minimum step size for each dimension when searching for a center?</li>
+<li>How many possibilities are there to check for each of the 5 centers?</li>
+</ol>
+<p>Because of this, heuristics are used for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>. A common <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> heuristic is the farthest first traversal algorithm. The algorithm iteratively builds out the centers by inspecting point distances to other centers. At each step, the algorithm ...</p>
+<ol>
+<li>walks over all points and finds the center closest to it,</li>
+<li>picks the point with the farthest distance from step 1 and sets it as the new center.</li>
+</ol>
+<p>The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.</p>
+<p><a href="ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py">ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py</a> (lines 11 to 54):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_to_closest_center</span>(<span class="hljs-params">
+        v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>],
+        centers: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">float</span>]:
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(
+        ((c, dist(v, c)) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> centers),
+        key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>]
+    )
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">pick_centers</span>(<span class="hljs-params">
+        k: <span class="hljs-built_in">int</span>,
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        dims: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]:
+    centers = [random.choice(vectors)]
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(centers) &lt; k:
+        <span class="hljs-comment"># For each vector, find the distance to its closest center</span>
+        dists = {}
+        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> vectors:
+            _, d = distance_to_closest_center(v, centers)
+            v = <span class="hljs-built_in">tuple</span>(v)  <span class="hljs-comment"># Dict requires hashable keys</span>
+            dists[v] = d
+        <span class="hljs-comment"># Of all the "closest distance"s found above, get the</span>
+        <span class="hljs-comment"># vector with the largest one (farthest closest center)</span>
+        v_with_max_closest_center_dist = <span class="hljs-built_in">max</span>(dists, key=<span class="hljs-keyword">lambda</span> x: dists[x])
+        <span class="hljs-comment"># Add that vector as a center</span>
+        centers.append(v_with_max_closest_center_dist)
+    <span class="hljs-keyword">return</span> centers
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">k_centers</span>(<span class="hljs-params">
+        k: <span class="hljs-built_in">int</span>,
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        dims: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">list</span>]]:
+    centers = pick_centers(k, vectors, dims)
+    clusters = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> vectors:
+        center, _ = distance_to_closest_center(v, centers)
+        center = <span class="hljs-built_in">tuple</span>(center)  <span class="hljs-comment"># Dict requires hashable keys</span>
+        clusters[center].append(v)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(clusters.values())
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given k=3 and vectors=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]...</p>
+<p>The farthest first travel heuristic produced the clusters ...</p>
+<ul>
+<li>cluster 0=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster 1=[[7, 2], [7.5, 3], [8, 1], [9, 2]]</li>
+<li>cluster 2=[[8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
+</ul>
+</div>
+<p></p>
+<p>One problem that should be noted with this heuristic is that, when outliers are present, it'll likely place those outliers into their own <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+<p><img src="svgbob_f152fef6c3d23d49ac829d2c6c6de716018854ca.svg" alt="Kroki diagram output"></p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
+<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
 <a name="H_K-Means%20Clustering"></a><h3>K-Means Clustering</h3>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FK-Means%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FK-Centers%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/K-Centers Clustering</a></li>
+</ul>
+</div>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
 <a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
+<a name="H_K-Medioids%20Clustering"></a><h3>K-Medioids Clustering</h3>
+<p>https://stats.stackexchange.com/a/81496
+https://stats.stackexchange.com/a/32942</p>
 <a name="H_CAST%20Clustering"></a><h3>CAST Clustering</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>

@@ -1,12 +1,6 @@
-from math import sqrt
-from statistics import mean
-from sys import stdin
-from typing import Sequence
+`{bm-disable-all}`[ch8_code/src/metrics/PearsonSimilarity.py](ch8_code/src/metrics/PearsonSimilarity.py) (lines 10 to 28):`{bm-enable-all}`
 
-import yaml
-
-
-# MARKDOWN
+```python
 def pearson_similarity(v: Sequence[float], w: Sequence[float], dims: int):
     v_avg = mean(v)
     w_avg = mean(w)
@@ -25,29 +19,4 @@ def pearson_distance(v: Sequence[float], w: Sequence[float], dims: int):
     # you're matching that distance metric requirement: 0.0 when totally similar
     # and 2.0 for totally dissimilar.
     return 1.0 - pearson_similarity(v, w, dims)
-# MARKDOWN
-
-
-def main():
-    print("<div style=\"border:1px solid black;\">", end="\n\n")
-    print("`{bm-disable-all}`", end="\n\n")
-    try:
-        data = yaml.safe_load(stdin)
-        v = data[0]
-        w = data[1]
-        dims = max(len(v), len(w))
-        print('Given the vectors ...')
-        print()
-        print(f' * {v}')
-        print(f' * {w}')
-        print()
-        d = pearson_similarity(v, w, dims)
-        print(f'Their pearson similarity is {d}')
-        print()
-    finally:
-        print("</div>", end="\n\n")
-        print("`{bm-enable-all}`", end="\n\n")
-
-
-if __name__ == '__main__':
-    main()
+```
