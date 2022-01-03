@@ -57,9 +57,9 @@ TODO: add section on equals/hashcode/tostring equivalents
 
 TODO: smart pointers
 
-TODO: header file best practices under (e.g. guards)
-
 TODO: add terminology for declarations and definitions
+
+TODO: fix header files section -- put the fact that it copies in source code FIRST, then talk about why its used for declarations.
 
 # Essentials
 
@@ -78,72 +78,68 @@ The key point of dissimilarity to remember:
 1. C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantics.
 1. C++ has a lot of ambiguous behaviour. Compared to Java/C#, the language specifically carves out pieces of the spec and leaves it as platform-specific behaviour, undefined behaviour, etc.. so that compilers have more room to optimize code. 
 
-The rest of the document assumes the following base knowledge:
+## Language Essentials
 
-* The general purpose integral type is `int`.
+Other parts of the document require the reader to know about the following base set of C++ language consturcts:
 
-* Variables use the format `modifiers type name initializer`.
+1. The general purpose integral type is `int`.
 
-  ```c++
-  int x = 0;
-  int x (0);
-  int y {0};
-  ```
+2. Variables use the format `modifiers type name initializer`.
 
-  C++ provides a bewildering number of ways to initialize a variable, each with its own set of edge cases. For best results, stick to the curly braces.
+   ```c++
+   int x = 0;
+   int x (0);
+   int y {0};
+   ```
+ 
+   C++ provides a bewildering number of ways to initialize a variable, each with its own set of edge cases. For best results, stick to the curly braces.
 
-* Functions use the format `modifiers return-type name(param-type1 arg-name1, param-type2 arg-name2, ...) modifiers { body }`.
+3. Functions use the format `modifiers return-type name(param-type1 arg-name1, param-type2 arg-name2, ...) modifiers { body }`.
+ 
+   ```c++
+   int myFunction(int a) {
+       return x + a;
+   }
+   ```
+ 
+   C++ functions don't necessarily have to be methods (members of a class).
 
-  ```c++
-  int myFunction(int a) {
-      return x + a;
-  }
-  ```
+4. Classes use either `struct` or `class`.
 
-  C++ functions don't necessarily have to be methods (members of a class).
+   `struct` makes all members of the class public by default, while `class` makes them all private by default. Members need to be grouped together by visibility, where a visibility (e.g. `private`) is a label within the class.
 
-* Classes use either `struct` or `class`.
-
-  `struct` makes all members of the class public by default, while `class` makes them all private by default. Members need to be grouped together by visibility, where a visibility (e.g. `private`) is a label within the class.
-
-  ```c++
-  class MyClass {
+   ```c++
+   class MyClass {
       int myFunction(int a) {
-          return x + a;
+         return x + a;
       }
-  private: // everything under this label is private
-     int x {0};
-  }
-  ```
+   private: // everything under this label is private
+      int x {0};
+   };
+   ```
 
-* A source file is often split into two: A header file which contains declarations (e.g. just the function's signature / prototype) and C++ files which contains definitions (e.g. the function implementation).
+5. Source code often comes in pairs: A header file usually contains declarations (e.g. just the function's signature / prototype) while a C++ file usually contains definitions (e.g. the function implementation).
 
-  ```c++
-  // MyCode.hpp (header file w/ declarations)
-  int myFunction(int a);
+   ```c++
+   // MyCode.hpp (header file w/ declarations)
+   int myFunction(int a);
+ 
+   // MyCode.cpp (source file w/ definitions)
+   #include "MyCode.hpp"
+   int myFunction(int a) {
+       return x + a;
+   }
+   ```
 
-  // MyCode.cpp (source file w/ definitions)
-  int myFunction(int a) {
-      return x + a;
-  }
-  ```
-
-  This isn't required. Source files may contain declarations and / or header files may contain definitions, but the split is typically done for a variety of reasons: faster compile times, sharing the same object across multiple source files, compiling when there are cyclical references, etc..
-
-  To include functionality from one source file into another, include its header using `#include`
-
-  ```c++
-  #include <my_source_header>
-
-  my_function(); // declaration pulled in from my_source_header, compiler will
-                 // find the definition when the time comes
-  ```
+   This isn't required. Source files may contain declarations and / or header files may contain definitions, but the split is typically done for a variety of reasons: faster compile times, sharing the same object across multiple source files, compiling when there are cyclical references, etc..
 
 ```{note}
 The above points aren't entirely correct or complete. They're generalizations that help set up a base for the explanations in the rest of the document.
 ```
 
-A good tool to try things in is [cppinsights](https://cppinsights.io/), which breaks down C++ code and allows you some visibility into what the compiler is doing / what the compiler sees. This document doesn't so much detail using compilers as it does language features.
+## Example Program
+
+The following is an example C++ program that prints "hello world" to stdout.
 
 ```c++
 // hello.cpp file
@@ -152,6 +148,21 @@ int main() {
     std::cout << "hello world\n";
     return 0;
 }
+```
+
+The ...
+
+ * `#include <iostream>` pulls in a library that lets you interface with stdout, stderr, and stdin.
+ * `int main() { ... }` is the entry point of the program.
+ * `std:cout << ...` is what prints to stdout.
+ * `return 0` returns from the `main()` function, ending the program with an exit code of 0.
+
+Pretty much any modern C++ compiler will compile the above code. The output below uses the GNU C++ compiler to compile the example, then runs the executable.
+
+```
+$ g++ hello.cpp
+$ ./a.out
+hello world
 ```
 
 ## Compilation
@@ -189,222 +200,67 @@ The C++ language has a lot of legacy baggage, edge cases, and ambiguous behaviou
 
 Most compilers support some or all of the flags above.
 
+```{note}
+A good online tool to try things in is [cppinsights](https://cppinsights.io/), which breaks down C++ code and allows you some visibility into what the compiler is doing / what the compiler sees.
+```
+
+## Header Files
+
+For each source code file that gets compiled, the compiler needs to know that the entities (variables, functions, classes, etc..) being used in that file exist. The scope at which the compiler keeps track of these entities is per source code file. For example, imagine a function named `myFunction`. If `myFunction` is being used in 5 different source code files, each of those 5 files needs to tell the compiler about it before it can use it.
+
+One way to handle this scenario is to put `myFunction`'s declaration in each source code file that uses it.
+
 ```c++
-// hello.cpp file
-#include <iostream>
-int main() {
-    std::cout << "hello world\n";
-    return 0;
-}
+OtherClass myFunction(int a);
 ```
 
+The problem with doing this is that ...
+
+1. you're duplicating something 5 times, meaning you need to update 5 different places should anything change with the class.
+2. you need to declare more than just `myFunction` (e.g. `myFunction` requires `OtherClass`, which may require even more entities). 
+3. as a result of 1 and 2, source code file sizes explode and quickly becomes unmanageable.
+
+The preferred way to handle this scenario is to put `myFunction`'s declaration into a header file. Then, any file that needs to know about `myFunction` can use the `#include` directive.,,
+
+```c++
+// MyFunction.hpp
+#include "OtherClass.hpp"
+OtherClass myFunction(int a);
+
+// UsageFile1.cpp
+#include "MyFunction.hpp"
+myFunction(44);
 ```
-$ g++ hello.cpp
-$ ./a.out
-hello world
-```
 
-## Headers
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-TODO: FILL ME IN
-
-
-# Object Lifecycle
-
-In C++, an object is a region of memory that has a type and a value (e.g. a class instance, an integer, a pointer to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ objects aren't exclusive to classes (e.g. an boolean is an object).
-
-An object's life cycle passes through the following stages:
-
-1. memory allocated
-2. constructor invoked
-3. destructor invoked
-4. memory deallocated
-
-The storage duration of an object starts from when its memory is allocated and ends when that memory is deallocated. An object's lifetime, on the other hand, starts when its constructor _completes_ (meaning the constructor finishes) and ends when its destructor is _invoked_ (meaning when the destructor starts).
+If an entity is declared once already within an include, it shouldn't be declared again. A header file may get included more than once the `#include` hierearchy gets processed, meaning that duplicate declarations are possible. For example, `Main.cpp` includes `ParentA.hpp` and `ParentB.hpp`. Both `ParentA.hpp` and `ParentB.hpp` then go on to include `Child.hpp`....
 
 ```{svgbob}
-.------------------------------------------------.
-|           "OBJECT STORAGE DURATION"            |
-|                                                |
-| "1. allocation"                                |
-|                                                |
-| "2. constructor invocation started"            |
-|                                                |
-|  .----------------------------------------.    |
-|  |           "OBJECT LIFETIME"            |    |
-|  |                                        |    |
-|  | "3. constructor invocation finished"   |    |
-|  |                                        |    |
-|  | "4. destructor invocation started"     |    |
-|  |                                        |    |
-|  | "5. destructor invocation finished"    |    |
-|  '----------------------------------------'    |
-|                                                |
-| "6. deallocation"                              |
-|                                                |
-'------------------------------------------------'
+Main.cpp
+  |
+  +----- ParentA.hpp ------+
+  |                        +----- Child.cpp
+  +----- ParentB.hpp ------+
 ```
 
-Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how object lifetimes. The user is responsible for knowing when objects should be destroyed and ensuring that objects are only accessed within their lifetime.
-
-The typical storage durations supported by C++ are...
-
- * automatic storage duration - scoped to duration of some function within the program.
- * static storage duration - scoped to the entire duration of the program.
- * thread storage duration - scoped to the entire duration of a thread in the program.
- * dynamic storage duration - allocated and deallocated on request of the user.
-
-## Static Objects
-
-By default, an object declared within a function is said to be an automatic object. Automatic objects have automatic storage durations: start at the beginning of the block and finish at the end of the block. When the keyword `static` (or `extern` in some cases) is added to the declaration, the storage duration of the function changes.
-
-At global scope, if an object is declared as `static` or `extern`, storage duration of the object spans the entire duration of the program. The difference between the two is essentially just visibility:
-
- * `static` makes it so it's accessible to only the translation unit it's declared in.
- * `extern` makes it so it's accessible to other translation units as well as the translation unit it's declared in.
+To mitigate this problem, an include guard is typically provided in each header file.
 
 ```c++
-static int a = 0; // static variable
-extern int b = 1; // static variable (accessible outside translation unit)
+// MyFunction.hpp
+#ifndef MY_FUNCTION_H // include guard
+#define MY_FUNCTION_H
+
+#include "OtherClass.hpp"
+OtherClass myFunction(int a);
+
+#endif
 ```
-
-At function scope, the storage duration of objects declared as `static` starts at the first invocation of that function and ends when the program exits.
-
-```c++
-int f1() {
-    static int z = 0; // static variable
-    z += 1;
-    return z;
-}
-```
-
-At class level, the storage duration of a member (field or method) declared as `static` is essentially the same as if it were declared at global scope (they aren't bound to an individual instance of the class the same way a normal field or method is). The only differences are that the static member is accessed on the class itself using the scoped resolution operator (::) and that static members that are fields must be initialized at global scope.
-
-```c++
-class X {
-public:
-    static int m;         // static member (field initialized at end)
-    static int f1() {     // static member (method)
-        m += 1;
-        return m;
-    }
-};
-
-X::m = 0;                // initialize static member
-```
-
-If the `thread_local` modifier is added before `static` (or `extern`), each thread gets its own copy of the object. That is, the storage duration essentially gets changed to when the thread starts and ends.
-
-`thread_local static` can be shortened to just `thread_local` (it's assumed to be static).
-
-```c++
-static int a = 0;
-thread_local static int b = 1;
-thread_local extern int c = 2;
-```
-
-## Dynamic Objects
-
-An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The operator ...
-
- * `new` allocates a new object and calling its the constructor.
- * `delete` calls the destructor of some object and deallocates it.
-
-Both keywords work with pointers: `new` returns a pointer while `delete` requires a pointer. To create a new object, use `new` followed by the type.
-
-```c++
-int * ptr = new int;
-*ptr = 0;
-delete ptr;
-```
-
-Objects may be initialized directly within the `new` invocation just as if it were an automatic object initialization. The only caveat is that equals initialization and brace-plus-equals initialization won't work because the equal sign is already being used during `new` (speculation -- it doesn't work but I don't know the exact reason). As such, braced initialization is the best way to initialize a dynamic object.
-
-```c++
-int * ptr = new int {0}; // initialize to 0
-delete ptr;
-```
-
-The same process can be used to create an array of objects. Unlike automatic object arrays, dynamic arrays don't have a constant size array lengths restriction.. However, the return value `new` will decay from an array type to a pointer type.
-
-When deleting a dynamic object array, square brackets need to be appended to `delete` operator: `delete[]`. Doing so ensures that the destructor for each object in the array gets invoked before deallocation.
-
-```c++
-int * ptr = new int[len];  // len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.
-delete[] ptr;
-```
-
-Braced initialization may be used when declaring dynamic arrays so long as the size of the array is at least the size of the initialization list.
-
-```c++
-int * ptr1 = new int[10] {1,2,3};  // initialize the first 3 elems of a 10 elem array
-int * ptr2 = new int[2] {1,2,3};   // throws exception  (size too small for initializer list)
-int * ptr3 = new int[n] {1,2,3};   // okay -- so long as n >= 3
-delete[] ptr1;
-delete[] ptr2;
-delete[] ptr3;
-```
-
-By default, dynamic objects are stored on a block of memory called the heap, also sometimes referred to as the free store.
 
 ```{note}
-See operator overloading section to see how the `new` and `delete` operators may be overridden to customize where and how a specific type gets stored.
+`#ifdef`, `#define`, and `#endif` are preprocessor macros that aren't covered here. Look them up online if you need to. 
+```
 
-The `new` and `delete` operators may also be overridden globally rather than per-type. See the new header.
+```{note}
+You may notice that sometimes `#include` puts quotes around the files and sometimes angle brackets. Use quotes when the files are in the same directory structure, angle brackets when the files are coming from some external library.
 ```
 
 # Operators
@@ -1383,6 +1239,150 @@ int x = (int) 9999999999L;
 ```
 
 The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
+
+## Object Lifecycle
+
+In C++, an object is a region of memory that has a type and a value (e.g. a class instance, an integer, a pointer to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ objects aren't exclusive to classes (e.g. an boolean is an object).
+
+An object's life cycle passes through the following stages:
+
+1. memory allocated
+2. constructor invoked
+3. destructor invoked
+4. memory deallocated
+
+The storage duration of an object starts from when its memory is allocated and ends when that memory is deallocated. An object's lifetime, on the other hand, starts when its constructor _completes_ (meaning the constructor finishes) and ends when its destructor is _invoked_ (meaning when the destructor starts).
+
+```{svgbob}
+.------------------------------------------------.
+|           "OBJECT STORAGE DURATION"            |
+|                                                |
+| "1. allocation"                                |
+|                                                |
+| "2. constructor invocation started"            |
+|                                                |
+|  .----------------------------------------.    |
+|  |           "OBJECT LIFETIME"            |    |
+|  |                                        |    |
+|  | "3. constructor invocation finished"   |    |
+|  |                                        |    |
+|  | "4. destructor invocation started"     |    |
+|  |                                        |    |
+|  | "5. destructor invocation finished"    |    |
+|  '----------------------------------------'    |
+|                                                |
+| "6. deallocation"                              |
+|                                                |
+'------------------------------------------------'
+```
+
+Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how object lifetimes. The user is responsible for knowing when objects should be destroyed and ensuring that objects are only accessed within their lifetime.
+
+The typical storage durations supported by C++ are...
+
+ * automatic storage duration - scoped to duration of some function within the program.
+ * static storage duration - scoped to the entire duration of the program.
+ * thread storage duration - scoped to the entire duration of a thread in the program.
+ * dynamic storage duration - allocated and deallocated on request of the user.
+
+### Static Objects
+
+By default, an object declared within a function is said to be an automatic object. Automatic objects have automatic storage durations: start at the beginning of the block and finish at the end of the block. When the keyword `static` (or `extern` in some cases) is added to the declaration, the storage duration of the function changes.
+
+At global scope, if an object is declared as `static` or `extern`, storage duration of the object spans the entire duration of the program. The difference between the two is essentially just visibility:
+
+ * `static` makes it so it's accessible to only the translation unit it's declared in.
+ * `extern` makes it so it's accessible to other translation units as well as the translation unit it's declared in.
+
+```c++
+static int a = 0; // static variable
+extern int b = 1; // static variable (accessible outside translation unit)
+```
+
+At function scope, the storage duration of objects declared as `static` starts at the first invocation of that function and ends when the program exits.
+
+```c++
+int f1() {
+    static int z = 0; // static variable
+    z += 1;
+    return z;
+}
+```
+
+At class level, the storage duration of a member (field or method) declared as `static` is essentially the same as if it were declared at global scope (they aren't bound to an individual instance of the class the same way a normal field or method is). The only differences are that the static member is accessed on the class itself using the scoped resolution operator (::) and that static members that are fields must be initialized at global scope.
+
+```c++
+class X {
+public:
+    static int m;         // static member (field initialized at end)
+    static int f1() {     // static member (method)
+        m += 1;
+        return m;
+    }
+};
+
+X::m = 0;                // initialize static member
+```
+
+If the `thread_local` modifier is added before `static` (or `extern`), each thread gets its own copy of the object. That is, the storage duration essentially gets changed to when the thread starts and ends.
+
+`thread_local static` can be shortened to just `thread_local` (it's assumed to be static).
+
+```c++
+static int a = 0;
+thread_local static int b = 1;
+thread_local extern int c = 2;
+```
+
+### Dynamic Objects
+
+An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The operator ...
+
+ * `new` allocates a new object and calling its the constructor.
+ * `delete` calls the destructor of some object and deallocates it.
+
+Both keywords work with pointers: `new` returns a pointer while `delete` requires a pointer. To create a new object, use `new` followed by the type.
+
+```c++
+int * ptr = new int;
+*ptr = 0;
+delete ptr;
+```
+
+Objects may be initialized directly within the `new` invocation just as if it were an automatic object initialization. The only caveat is that equals initialization and brace-plus-equals initialization won't work because the equal sign is already being used during `new` (speculation -- it doesn't work but I don't know the exact reason). As such, braced initialization is the best way to initialize a dynamic object.
+
+```c++
+int * ptr = new int {0}; // initialize to 0
+delete ptr;
+```
+
+The same process can be used to create an array of objects. Unlike automatic object arrays, dynamic arrays don't have a constant size array lengths restriction.. However, the return value `new` will decay from an array type to a pointer type.
+
+When deleting a dynamic object array, square brackets need to be appended to `delete` operator: `delete[]`. Doing so ensures that the destructor for each object in the array gets invoked before deallocation.
+
+```c++
+int * ptr = new int[len];  // len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.
+delete[] ptr;
+```
+
+Braced initialization may be used when declaring dynamic arrays so long as the size of the array is at least the size of the initialization list.
+
+```c++
+int * ptr1 = new int[10] {1,2,3};  // initialize the first 3 elems of a 10 elem array
+int * ptr2 = new int[2] {1,2,3};   // throws exception  (size too small for initializer list)
+int * ptr3 = new int[n] {1,2,3};   // okay -- so long as n >= 3
+delete[] ptr1;
+delete[] ptr2;
+delete[] ptr3;
+```
+
+By default, dynamic objects are stored on a block of memory called the heap, also sometimes referred to as the free store.
+
+```{note}
+See operator overloading section to see how the `new` and `delete` operators may be overridden to customize where and how a specific type gets stored.
+
+The `new` and `delete` operators may also be overridden globally rather than per-type. See the new header.
+```
 
 ## User-defined Literals
 

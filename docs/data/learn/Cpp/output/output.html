@@ -8,13 +8,10 @@
 <li><a href="#H_TODOs">TODOs</a></li>
 <li><a href="#H_Essentials">Essentials</a></li>
 <ul>
+<li><a href="#H_Language%20Essentials">Language Essentials</a></li>
+<li><a href="#H_Example%20Program">Example Program</a></li>
 <li><a href="#H_Compilation">Compilation</a></li>
-<li><a href="#H_Headers">Headers</a></li>
-</ul>
-<li><a href="#H_Object%20Lifecycle">Object Lifecycle</a></li>
-<ul>
-<li><a href="#H_Static%20Objects">Static Objects</a></li>
-<li><a href="#H_Dynamic%20Objects">Dynamic Objects</a></li>
+<li><a href="#H_Header%20Files">Header Files</a></li>
 </ul>
 <li><a href="#H_Operators">Operators</a></li>
 <ul>
@@ -59,6 +56,11 @@
 <li><a href="#H_Named%20Conversions">Named Conversions</a></li>
 <li><a href="#H_C-style%20Casts">C-style Casts</a></li>
 </ul>
+</ul>
+<li><a href="#H_Object%20Lifecycle">Object Lifecycle</a></li>
+<ul>
+<li><a href="#H_Static%20Objects">Static Objects</a></li>
+<li><a href="#H_Dynamic%20Objects">Dynamic Objects</a></li>
 </ul>
 <li><a href="#H_User-defined%20Literals">User-defined Literals</a></li>
 </ul>
@@ -154,8 +156,8 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 -- std::hash <a href="#BM_(template)%2Fi">template</a> <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>: https://en.cpp<a href="#BM_(reference)%2Fi">reference</a>.com/w/cpp/utility/hash
 -- friend function to ostringstream</p>
 <p>TODO: smart <a href="#BM_(pointer)%2Fi">pointer</a>s</p>
-<p>TODO: header file best practices under (e.g. guards)</p>
 <p>TODO: add terminology for declarations and definitions</p>
+<p>TODO: fix header files section -- put the fact that it copies in source code FIRST, then talk about why its used for declarations.</p>
 <a name="H_Essentials"></a><h1>Essentials</h1>
 <p>The following document is my attempt at charting out the various pieces of the modern C++ landscape. It was made for my own personal <a href="#BM_(reference)%2Fi">reference</a> and put online in the hopes that it might be useful to others. It isn't comprehensive and some of the information may not be entirely correct or may be missing large portions. I tried to focus on the 80% of features that gets used most of the time and not the 20% of highly esoteric / confusing features.</p>
 <p>The key points of similarity to remember:</p>
@@ -171,8 +173,9 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <li>C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantics.</li>
 <li>C++ has a lot of ambiguous behaviour. Compared to Java/C#, the language specifically carves out pieces of the spec and leaves it as platform-specific behaviour, undefined behaviour, etc.. so that <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s have more room to optimize code.</li>
 </ol>
-<p>The rest of the document assumes the following base knowledge:</p>
-<ul>
+<a name="H_Language%20Essentials"></a><h2>Language Essentials</h2>
+<p>Other parts of the document require the reader to know about the following base set of C++ language consturcts:</p>
+<ol>
 <li>
 <p>The general purpose integral type is <code>int</code>.</p>
 </li>
@@ -196,44 +199,52 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <p><a href="#BM_(class%7Cstruct)%2Fi">Class</a>es use either <code>struct</code> or <code>class</code>.</p>
 <p><code>struct</code> makes all <a href="#BM_%5Cb(member)%2Fi">member</a>s of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> public by default, while <code>class</code> makes them all private by default. <a href="#BM_%5Cb(member)%2Fi">Member</a>s need to be grouped together by visibility, where a visibility (e.g. <code>private</code>) is a label within the <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> {
-    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> </span>{
-        <span class="hljs-keyword">return</span> x + a;
-    }
+   <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> </span>{
+      <span class="hljs-keyword">return</span> x + a;
+   }
 <span class="hljs-keyword">private</span>: <span class="hljs-comment">// everything under this label is private</span>
    <span class="hljs-type">int</span> x {<span class="hljs-number">0</span>};
-}
+};
 </code></pre>
 </li>
 <li>
-<p>A source file is often split into two: A header file which contains declarations (e.g. just the function's signature / prototype) and C++ files which contains definitions (e.g. the function implementation).</p>
+<p>Source code often comes in pairs: A header file usually contains declarations (e.g. just the function's signature / prototype) while a C++ file usually contains definitions (e.g. the function implementation).</p>
 <pre class="hljs"><code><span class="hljs-comment">// MyCode.hpp (header file w/ declarations)</span>
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span></span>;
 
 <span class="hljs-comment">// MyCode.cpp (source file w/ definitions)</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"MyCode.hpp"</span></span>
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> </span>{
     <span class="hljs-keyword">return</span> x + a;
 }
 </code></pre>
 <p>This isn't required. Source files may contain declarations and / or header files may contain definitions, but the split is typically done for a variety of reasons: faster compile times, sharing the same <a href="#BM_(object%7Cinstance)%2Fi">object</a> across multiple source files, compiling when there are cyclical <a href="#BM_(reference)%2Fi">reference</a>s, etc..</p>
-<p>To include functionality from one source file into another, include its header using <code>#include</code></p>
-<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;my_source_header&gt;</span></span>
-
-<span class="hljs-built_in">my_function</span>(); <span class="hljs-comment">// declaration pulled in from my_source_header, compiler will</span>
-               <span class="hljs-comment">// find the definition when the time comes</span>
-</code></pre>
 </li>
-</ul>
+</ol>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The above points aren't entirely correct or complete. They're generalizations that help set up a base for the explanations in the rest of the document.</p>
 </div>
-<p>A good tool to try things in is <a href="https://cppinsights.io/">cppinsights</a>, which breaks down C++ code and allows you some visibility into what the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> is doing / what the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> sees. This document doesn't so much detail using <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s as it does language features.</p>
+<a name="H_Example%20Program"></a><h2>Example Program</h2>
+<p>The following is an example C++ program that prints "hello world" to stdout.</p>
 <pre class="hljs"><code><span class="hljs-comment">// hello.cpp file</span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
     std::cout &lt;&lt; <span class="hljs-string">"hello world\n"</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
+</code></pre>
+<p>The ...</p>
+<ul>
+<li><code>#include &lt;iostream&gt;</code> pulls in a library that lets you interface with stdout, stderr, and stdin.</li>
+<li><code>int main() { ... }</code> is the entry point of the program.</li>
+<li><code>std:cout &lt;&lt; ...</code> is what prints to stdout.</li>
+<li><code>return 0</code> returns from the <code>main()</code> function, ending the program with an exit code of 0.</li>
+</ul>
+<p>Pretty much any modern C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> will compile the above code. The output below uses the GNU C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to compile the example, then runs the <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>.</p>
+<pre><code>$ g++ hello.cpp
+$ ./a.out
+hello world
 </code></pre>
 <a name="H_Compilation"></a><h2>Compilation</h2>
 <p>Several C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s exist, the most popular of which are the GNU C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> and LLVM clang. C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s generally follow the same set of steps to go from C++ code to an <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>.</p>
@@ -251,133 +262,49 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <li><code>-Weverything</code> - Turns on all warnings.</li>
 </ul>
 <p>Most <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s support some or all of the flags above.</p>
-<pre class="hljs"><code><span class="hljs-comment">// hello.cpp file</span>
-<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
-<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
-    std::cout &lt;&lt; <span class="hljs-string">"hello world\n"</span>;
-    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-}
-</code></pre>
-<pre><code>$ g++ hello.cpp
-$ ./a.out
-hello world
-</code></pre>
-<a name="H_Headers"></a><h2>Headers</h2>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<p>TODO: FILL ME IN</p>
-<a name="H_Object%20Lifecycle"></a><h1>Object Lifecycle</h1>
-<p>In C++, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is a region of memory that has a type and a value (e.g. a <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(object%7Cinstance)%2Fi">instance</a>, an integer, a <a href="#BM_(pointer)%2Fi">pointer</a> to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ <a href="#BM_(object%7Cinstance)%2Fi">object</a>s aren't exclusive to <a href="#BM_(class%7Cstruct)%2Fi">class</a>es (e.g. an boolean is an <a href="#BM_(object%7Cinstance)%2Fi">object</a>).</p>
-<p>An <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s life cycle passes through the following stages:</p>
-<ol>
-<li>memory <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d</li>
-<li><a href="#BM_(constructor)%2Fi">constructor</a> invoked</li>
-<li><a href="#BM_(destructor)%2Fi">destructor</a> invoked</li>
-<li>memory <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d</li>
-</ol>
-<p>The <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of an <a href="#BM_(object%7Cinstance)%2Fi">object</a> starts from when its memory is <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d and ends when that memory is <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d. An <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s <a href="#BM_(lifetime)%2Fi">lifetime</a>, on the other hand, starts when its <a href="#BM_(constructor)%2Fi">constructor</a> <em>completes</em> (meaning the <a href="#BM_(constructor)%2Fi">constructor</a> finishes) and ends when its <a href="#BM_(destructor)%2Fi">destructor</a> is <em>invoked</em> (meaning when the <a href="#BM_(destructor)%2Fi">destructor</a> starts).</p>
-<p><img src="svgbob_5382fe6e4bca4e56d9147249ff0bb4082202935e.svg" alt="Kroki diagram output"></p>
-<p>Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how <a href="#BM_(object%7Cinstance)%2Fi">object</a> <a href="#BM_(lifetime)%2Fi">lifetime</a>s. The user is responsible for knowing when <a href="#BM_(object%7Cinstance)%2Fi">object</a>s should be destroyed and ensuring that <a href="#BM_(object%7Cinstance)%2Fi">object</a>s are only accessed within their <a href="#BM_(lifetime)%2Fi">lifetime</a>.</p>
-<p>The typical <a href="#BM_(storage%20duration)%2Fi">storage duration</a>s supported by C++ are...</p>
-<ul>
-<li><a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic storage duration</a> - scoped to duration of some function within the program.</li>
-<li><a href="#BM_(static%20object%7Cstatic%20variable%7Cstatic%20storage%20duration)%2Fi">static storage duration</a> - scoped to the entire duration of the program.</li>
-<li><a href="#BM_(thread%5B%5C-%5Cs%5Dlocal%20object%7Cthread%5B%5C-%5Cs%5Dlocal%20variable%7Cthread%5B%5C-%5Cs%5Dlocal%20storage%20duration%7Cthread%20storage%20duration)%2Fi">thread storage duration</a> - scoped to the entire duration of a thread in the program.</li>
-<li><a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic storage duration</a> - <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d and <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d on request of the user.</li>
-</ul>
-<a name="H_Static%20Objects"></a><h2>Static Objects</h2>
-<p>By default, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> declared within a function is said to be an <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a>. <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">Automatic object</a>s have <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic storage duration</a>s: start at the beginning of the block and finish at the end of the block. When the keyword <code>static</code> (or <code>extern</code> in some cases) is added to the declaration, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of the function changes.</p>
-<p>At global scope, if an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is declared as <code>static</code> or <code>extern</code>, <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of the <a href="#BM_(object%7Cinstance)%2Fi">object</a> spans the entire duration of the program. The difference between the two is essentially just visibility:</p>
-<ul>
-<li><code>static</code> makes it so it's accessible to only the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> it's declared in.</li>
-<li><code>extern</code> makes it so it's accessible to other <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>s as well as the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> it's declared in.</li>
-</ul>
-<pre class="hljs"><code><span class="hljs-keyword">static</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0</span>; <span class="hljs-comment">// static variable</span>
-<span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> b = <span class="hljs-number">1</span>; <span class="hljs-comment">// static variable (accessible outside translation unit)</span>
-</code></pre>
-<p>At function scope, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of <a href="#BM_(object%7Cinstance)%2Fi">object</a>s declared as <code>static</code> starts at the first invocation of that function and ends when the program exits.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f1</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> z = <span class="hljs-number">0</span>; <span class="hljs-comment">// static variable</span>
-    z += <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">return</span> z;
-}
-</code></pre>
-<p>At <a href="#BM_(class%7Cstruct)%2Fi">class</a> level, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of a <a href="#BM_%5Cb(member)%2Fi">member</a> (<a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>) declared as <code>static</code> is essentially the same as if it were declared at global scope (they aren't bound to an individual <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> the same way a normal <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is). The only differences are that the <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a> is accessed on the <a href="#BM_(class%7Cstruct)%2Fi">class</a> itself using the scoped resolution operator (::) and that <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a>s that are <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s must be initialized at global scope.</p>
-<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> {
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> m;         <span class="hljs-comment">// static member (field initialized at end)</span>
-    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-title">f1</span><span class="hljs-params">()</span> </span>{     <span class="hljs-comment">// static member (method)</span>
-        m += <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">return</span> m;
-    }
-};
-
-X::m = <span class="hljs-number">0</span>;                <span class="hljs-comment">// initialize static member</span>
-</code></pre>
-<p>If the <code>thread_local</code> <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a> is added before <code>static</code> (or <code>extern</code>), each thread gets its own copy of the <a href="#BM_(object%7Cinstance)%2Fi">object</a>. That is, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> essentially gets changed to when the thread starts and ends.</p>
-<p><code>thread_local static</code> can be shortened to just <code>thread_local</code> (it's assumed to be static).</p>
-<pre class="hljs"><code><span class="hljs-keyword">static</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0</span>;
-<span class="hljs-keyword">thread_local</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> b = <span class="hljs-number">1</span>;
-<span class="hljs-keyword">thread_local</span> <span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> c = <span class="hljs-number">2</span>;
-</code></pre>
-<a name="H_Dynamic%20Objects"></a><h2>Dynamic Objects</h2>
-<p>An <a href="#BM_(object%7Cinstance)%2Fi">object</a> can be created in an ad-hoc manner, such that its <a href="#BM_(storage%20duration)%2Fi">storage duration</a> is entirely controlled by the user. The operator ...</p>
-<ul>
-<li><code>new</code> <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>s a new <a href="#BM_(object%7Cinstance)%2Fi">object</a> and calling its the <a href="#BM_(constructor)%2Fi">constructor</a>.</li>
-<li><code>delete</code> calls the <a href="#BM_(destructor)%2Fi">destructor</a> of some <a href="#BM_(object%7Cinstance)%2Fi">object</a> and <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>s it.</li>
-</ul>
-<p>Both keywords work with <a href="#BM_(pointer)%2Fi">pointer</a>s: <code>new</code> returns a <a href="#BM_(pointer)%2Fi">pointer</a> while <code>delete</code> requires a <a href="#BM_(pointer)%2Fi">pointer</a>. To create a new <a href="#BM_(object%7Cinstance)%2Fi">object</a>, use <code>new</code> followed by the type.</p>
-<pre class="hljs"><code><span class="hljs-type">int</span> * ptr = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>;
-*ptr = <span class="hljs-number">0</span>;
-<span class="hljs-keyword">delete</span> ptr;
-</code></pre>
-<p><a href="#BM_(object%7Cinstance)%2Fi">Object</a>s may be initialized directly within the <code>new</code> invocation just as if it were an <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a> initialization. The only caveat is that <a href="#BM_(equals%3F%20initialization)%2Fi">equals initialization</a> and <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a> won't work because the equal sign is already being used during <code>new</code> (speculation -- it doesn't work but I don't know the exact reason). As such, <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> is the best way to initialize a <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>.</p>
-<pre class="hljs"><code><span class="hljs-type">int</span> * ptr = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span> {<span class="hljs-number">0</span>}; <span class="hljs-comment">// initialize to 0</span>
-<span class="hljs-keyword">delete</span> ptr;
-</code></pre>
-<p>The same process can be used to create an array of <a href="#BM_(object%7Cinstance)%2Fi">object</a>s. Unlike <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a> arrays, <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic array</a>s don't have a constant size array lengths restriction.. However, the return value <code>new</code> will decay from an array type to a <a href="#BM_(pointer)%2Fi">pointer</a> type.</p>
-<p>When deleting a <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a> array, square brackets need to be appended to <code>delete</code> operator: <code>delete[]</code>. Doing so ensures that the <a href="#BM_(destructor)%2Fi">destructor</a> for each <a href="#BM_(object%7Cinstance)%2Fi">object</a> in the array gets invoked before <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocation</a>.</p>
-<pre class="hljs"><code><span class="hljs-type">int</span> * ptr = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[len];  <span class="hljs-comment">// len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.</span>
-<span class="hljs-keyword">delete</span>[] ptr;
-</code></pre>
-<p><a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">Braced initialization</a> may be used when declaring <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic array</a>s so long as the size of the array is at least the size of the initialization list.</p>
-<pre class="hljs"><code><span class="hljs-type">int</span> * ptr1 = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">10</span>] {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>};  <span class="hljs-comment">// initialize the first 3 elems of a 10 elem array</span>
-<span class="hljs-type">int</span> * ptr2 = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">2</span>] {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>};   <span class="hljs-comment">// throws exception  (size too small for initializer list)</span>
-<span class="hljs-type">int</span> * ptr3 = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[n] {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>};   <span class="hljs-comment">// okay -- so long as n &gt;= 3</span>
-<span class="hljs-keyword">delete</span>[] ptr1;
-<span class="hljs-keyword">delete</span>[] ptr2;
-<span class="hljs-keyword">delete</span>[] ptr3;
-</code></pre>
-<p>By default, <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s are stored on a block of memory called the <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, also sometimes referred to as the <a href="#BM_(heap%7Cfree%20store)%2Fi">free store</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing section to see how the <code>new</code> and <code>delete</code> operators may be overridden to customize where and how a specific type gets stored.</p>
-<p>The <code>new</code> and <code>delete</code> operators may also be overridden globally rather than per-type. See the new header.</p>
+<p>A good online tool to try things in is <a href="https://cppinsights.io/">cppinsights</a>, which breaks down C++ code and allows you some visibility into what the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> is doing / what the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> sees.</p>
+</div>
+<a name="H_Header%20Files"></a><h2>Header Files</h2>
+<p>For each source code file that gets compiled, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> needs to know that the entities (variables, functions, <a href="#BM_(class%7Cstruct)%2Fi">class</a>es, etc..) being used in that file exist. The scope at which the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> keeps track of these entities is per source code file. For example, imagine a function named <code>myFunction</code>. If <code>myFunction</code> is being used in 5 different source code files, each of those 5 files needs to tell the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> about it before it can use it.</p>
+<p>One way to handle this scenario is to put <code>myFunction</code>'s declaration in each source code file that uses it.</p>
+<pre class="hljs"><code><span class="hljs-function">OtherClass <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span></span>;
+</code></pre>
+<p>The problem with doing this is that ...</p>
+<ol>
+<li>you're duplicating something 5 times, meaning you need to update 5 different places should anything change with the <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</li>
+<li>you need to declare more than just <code>myFunction</code> (e.g. <code>myFunction</code> requires <code>OtherClass</code>, which may require even more entities).</li>
+<li>as a result of 1 and 2, source code file sizes explode and quickly becomes unmanageable.</li>
+</ol>
+<p>The preferred way to handle this scenario is to put <code>myFunction</code>'s declaration into a header file. Then, any file that needs to know about <code>myFunction</code> can use the <code>#include</code> directive.,,</p>
+<pre class="hljs"><code><span class="hljs-comment">// MyFunction.hpp</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"OtherClass.hpp"</span></span>
+<span class="hljs-function">OtherClass <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span></span>;
+
+<span class="hljs-comment">// UsageFile1.cpp</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"MyFunction.hpp"</span></span>
+<span class="hljs-built_in">myFunction</span>(<span class="hljs-number">44</span>);
+</code></pre>
+<p>If an entity is declared once already within an include, it shouldn't be declared again. A header file may get included more than once the <code>#include</code> hierearchy gets processed, meaning that duplicate declarations are possible. For example, <code>Main.cpp</code> includes <code>ParentA.hpp</code> and <code>ParentB.hpp</code>. Both <code>ParentA.hpp</code> and <code>ParentB.hpp</code> then go on to include <code>Child.hpp</code>....</p>
+<p><img src="svgbob_5213a5895047752ce0725a3e29c70b5b87a5d640.svg" alt="Kroki diagram output"></p>
+<p>To mitigate this problem, an include guard is typically provided in each header file.</p>
+<pre class="hljs"><code><span class="hljs-comment">// MyFunction.hpp</span>
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> MY_FUNCTION_H <span class="hljs-comment">// include guard</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MY_FUNCTION_H</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"OtherClass.hpp"</span></span>
+<span class="hljs-function">OtherClass <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span></span>;
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>#ifdef</code>, <code>#define</code>, and <code>#endif</code> are <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros that aren't covered here. Look them up online if you need to.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You may notice that sometimes <code>#include</code> puts quotes around the files and sometimes angle brackets. Use quotes when the files are in the same directory structure, angle brackets when the files are coming from some external library.</p>
 </div>
 <a name="H_Operators"></a><h1>Operators</h1>
 <p>The following subsections provide the list of operators available in C++. Some operators are obvious, while others are explained in other sections.</p>
@@ -1796,6 +1723,94 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
 <pre class="hljs"><code><span class="hljs-type">int</span> x = (<span class="hljs-type">int</span>) <span class="hljs-number">9999999999L</span>;
 </code></pre>
 <p>The problem with C-style casts are that they don't provide the same safety mechanisms as <a href="#BM_(named%20conversion%20function%7Cnamed%20conversion%7Cconst%5B_%5Cs%5Dcast%7Cstatic%5B_%5Cs%5Dcast%7Creinterpret%5B_%5Cs%5Dcast%7Cnarrow%5B_%5Cs%5Dcast)%2Fi">named conversion</a>s do (e.g. inadvertently strip the <code>const</code>-ness). <a href="#BM_(named%20conversion%20function%7Cnamed%20conversion%7Cconst%5B_%5Cs%5Dcast%7Cstatic%5B_%5Cs%5Dcast%7Creinterpret%5B_%5Cs%5Dcast%7Cnarrow%5B_%5Cs%5Dcast)%2Fi">Named conversion</a>s provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a <a href="#BM_(named%20conversion%20function%7Cnamed%20conversion%7Cconst%5B_%5Cs%5Dcast%7Cstatic%5B_%5Cs%5Dcast%7Creinterpret%5B_%5Cs%5Dcast%7Cnarrow%5B_%5Cs%5Dcast)%2Fi">named conversion</a>.</p>
+<a name="H_Object%20Lifecycle"></a><h2>Object Lifecycle</h2>
+<p>In C++, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is a region of memory that has a type and a value (e.g. a <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(object%7Cinstance)%2Fi">instance</a>, an integer, a <a href="#BM_(pointer)%2Fi">pointer</a> to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ <a href="#BM_(object%7Cinstance)%2Fi">object</a>s aren't exclusive to <a href="#BM_(class%7Cstruct)%2Fi">class</a>es (e.g. an boolean is an <a href="#BM_(object%7Cinstance)%2Fi">object</a>).</p>
+<p>An <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s life cycle passes through the following stages:</p>
+<ol>
+<li>memory <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d</li>
+<li><a href="#BM_(constructor)%2Fi">constructor</a> invoked</li>
+<li><a href="#BM_(destructor)%2Fi">destructor</a> invoked</li>
+<li>memory <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d</li>
+</ol>
+<p>The <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of an <a href="#BM_(object%7Cinstance)%2Fi">object</a> starts from when its memory is <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d and ends when that memory is <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d. An <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s <a href="#BM_(lifetime)%2Fi">lifetime</a>, on the other hand, starts when its <a href="#BM_(constructor)%2Fi">constructor</a> <em>completes</em> (meaning the <a href="#BM_(constructor)%2Fi">constructor</a> finishes) and ends when its <a href="#BM_(destructor)%2Fi">destructor</a> is <em>invoked</em> (meaning when the <a href="#BM_(destructor)%2Fi">destructor</a> starts).</p>
+<p><img src="svgbob_5382fe6e4bca4e56d9147249ff0bb4082202935e.svg" alt="Kroki diagram output"></p>
+<p>Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how <a href="#BM_(object%7Cinstance)%2Fi">object</a> <a href="#BM_(lifetime)%2Fi">lifetime</a>s. The user is responsible for knowing when <a href="#BM_(object%7Cinstance)%2Fi">object</a>s should be destroyed and ensuring that <a href="#BM_(object%7Cinstance)%2Fi">object</a>s are only accessed within their <a href="#BM_(lifetime)%2Fi">lifetime</a>.</p>
+<p>The typical <a href="#BM_(storage%20duration)%2Fi">storage duration</a>s supported by C++ are...</p>
+<ul>
+<li><a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic storage duration</a> - scoped to duration of some function within the program.</li>
+<li><a href="#BM_(static%20object%7Cstatic%20variable%7Cstatic%20storage%20duration)%2Fi">static storage duration</a> - scoped to the entire duration of the program.</li>
+<li><a href="#BM_(thread%5B%5C-%5Cs%5Dlocal%20object%7Cthread%5B%5C-%5Cs%5Dlocal%20variable%7Cthread%5B%5C-%5Cs%5Dlocal%20storage%20duration%7Cthread%20storage%20duration)%2Fi">thread storage duration</a> - scoped to the entire duration of a thread in the program.</li>
+<li><a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic storage duration</a> - <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d and <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d on request of the user.</li>
+</ul>
+<a name="H_Static%20Objects"></a><h3>Static Objects</h3>
+<p>By default, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> declared within a function is said to be an <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a>. <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">Automatic object</a>s have <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic storage duration</a>s: start at the beginning of the block and finish at the end of the block. When the keyword <code>static</code> (or <code>extern</code> in some cases) is added to the declaration, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of the function changes.</p>
+<p>At global scope, if an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is declared as <code>static</code> or <code>extern</code>, <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of the <a href="#BM_(object%7Cinstance)%2Fi">object</a> spans the entire duration of the program. The difference between the two is essentially just visibility:</p>
+<ul>
+<li><code>static</code> makes it so it's accessible to only the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> it's declared in.</li>
+<li><code>extern</code> makes it so it's accessible to other <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>s as well as the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> it's declared in.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-keyword">static</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0</span>; <span class="hljs-comment">// static variable</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> b = <span class="hljs-number">1</span>; <span class="hljs-comment">// static variable (accessible outside translation unit)</span>
+</code></pre>
+<p>At function scope, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of <a href="#BM_(object%7Cinstance)%2Fi">object</a>s declared as <code>static</code> starts at the first invocation of that function and ends when the program exits.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f1</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> z = <span class="hljs-number">0</span>; <span class="hljs-comment">// static variable</span>
+    z += <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> z;
+}
+</code></pre>
+<p>At <a href="#BM_(class%7Cstruct)%2Fi">class</a> level, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of a <a href="#BM_%5Cb(member)%2Fi">member</a> (<a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>) declared as <code>static</code> is essentially the same as if it were declared at global scope (they aren't bound to an individual <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> the same way a normal <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is). The only differences are that the <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a> is accessed on the <a href="#BM_(class%7Cstruct)%2Fi">class</a> itself using the scoped resolution operator (::) and that <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a>s that are <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s must be initialized at global scope.</p>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> {
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> m;         <span class="hljs-comment">// static member (field initialized at end)</span>
+    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-title">f1</span><span class="hljs-params">()</span> </span>{     <span class="hljs-comment">// static member (method)</span>
+        m += <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> m;
+    }
+};
+
+X::m = <span class="hljs-number">0</span>;                <span class="hljs-comment">// initialize static member</span>
+</code></pre>
+<p>If the <code>thread_local</code> <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a> is added before <code>static</code> (or <code>extern</code>), each thread gets its own copy of the <a href="#BM_(object%7Cinstance)%2Fi">object</a>. That is, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> essentially gets changed to when the thread starts and ends.</p>
+<p><code>thread_local static</code> can be shortened to just <code>thread_local</code> (it's assumed to be static).</p>
+<pre class="hljs"><code><span class="hljs-keyword">static</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">thread_local</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> b = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">thread_local</span> <span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> c = <span class="hljs-number">2</span>;
+</code></pre>
+<a name="H_Dynamic%20Objects"></a><h3>Dynamic Objects</h3>
+<p>An <a href="#BM_(object%7Cinstance)%2Fi">object</a> can be created in an ad-hoc manner, such that its <a href="#BM_(storage%20duration)%2Fi">storage duration</a> is entirely controlled by the user. The operator ...</p>
+<ul>
+<li><code>new</code> <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>s a new <a href="#BM_(object%7Cinstance)%2Fi">object</a> and calling its the <a href="#BM_(constructor)%2Fi">constructor</a>.</li>
+<li><code>delete</code> calls the <a href="#BM_(destructor)%2Fi">destructor</a> of some <a href="#BM_(object%7Cinstance)%2Fi">object</a> and <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>s it.</li>
+</ul>
+<p>Both keywords work with <a href="#BM_(pointer)%2Fi">pointer</a>s: <code>new</code> returns a <a href="#BM_(pointer)%2Fi">pointer</a> while <code>delete</code> requires a <a href="#BM_(pointer)%2Fi">pointer</a>. To create a new <a href="#BM_(object%7Cinstance)%2Fi">object</a>, use <code>new</code> followed by the type.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> * ptr = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>;
+*ptr = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">delete</span> ptr;
+</code></pre>
+<p><a href="#BM_(object%7Cinstance)%2Fi">Object</a>s may be initialized directly within the <code>new</code> invocation just as if it were an <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a> initialization. The only caveat is that <a href="#BM_(equals%3F%20initialization)%2Fi">equals initialization</a> and <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a> won't work because the equal sign is already being used during <code>new</code> (speculation -- it doesn't work but I don't know the exact reason). As such, <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> is the best way to initialize a <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> * ptr = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span> {<span class="hljs-number">0</span>}; <span class="hljs-comment">// initialize to 0</span>
+<span class="hljs-keyword">delete</span> ptr;
+</code></pre>
+<p>The same process can be used to create an array of <a href="#BM_(object%7Cinstance)%2Fi">object</a>s. Unlike <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a> arrays, <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic array</a>s don't have a constant size array lengths restriction.. However, the return value <code>new</code> will decay from an array type to a <a href="#BM_(pointer)%2Fi">pointer</a> type.</p>
+<p>When deleting a <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a> array, square brackets need to be appended to <code>delete</code> operator: <code>delete[]</code>. Doing so ensures that the <a href="#BM_(destructor)%2Fi">destructor</a> for each <a href="#BM_(object%7Cinstance)%2Fi">object</a> in the array gets invoked before <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocation</a>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> * ptr = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[len];  <span class="hljs-comment">// len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.</span>
+<span class="hljs-keyword">delete</span>[] ptr;
+</code></pre>
+<p><a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">Braced initialization</a> may be used when declaring <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic array</a>s so long as the size of the array is at least the size of the initialization list.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> * ptr1 = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">10</span>] {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>};  <span class="hljs-comment">// initialize the first 3 elems of a 10 elem array</span>
+<span class="hljs-type">int</span> * ptr2 = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[<span class="hljs-number">2</span>] {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>};   <span class="hljs-comment">// throws exception  (size too small for initializer list)</span>
+<span class="hljs-type">int</span> * ptr3 = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[n] {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>};   <span class="hljs-comment">// okay -- so long as n &gt;= 3</span>
+<span class="hljs-keyword">delete</span>[] ptr1;
+<span class="hljs-keyword">delete</span>[] ptr2;
+<span class="hljs-keyword">delete</span>[] ptr3;
+</code></pre>
+<p>By default, <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s are stored on a block of memory called the <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, also sometimes referred to as the <a href="#BM_(heap%7Cfree%20store)%2Fi">free store</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing section to see how the <code>new</code> and <code>delete</code> operators may be overridden to customize where and how a specific type gets stored.</p>
+<p>The <code>new</code> and <code>delete</code> operators may also be overridden globally rather than per-type. See the new header.</p>
+</div>
 <a name="H_User-defined%20Literals"></a><h2>User-defined Literals</h2>
 <p>C++ provides a way for users to define their own literals through the use of operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing, called <a href="#BM_(user-defined%20literal)%2Fi">user-defined literal</a>s. <a href="#BM_(user-defined%20literal)%2Fi">User-defined literal</a>s wrap built-in literals and perform some operation to convert them to either another type or anothe<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">r value</a>. It's identified by a unique suffix that starts with an underscore (e.g. <code>_km</code>).</p>
 <p>The operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> is identified by two quotes followed by the suffix.</p>
