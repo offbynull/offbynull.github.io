@@ -3451,7 +3451,7 @@ std::cout &lt;&lt; r &lt;&lt; <span class="hljs-string">" odd"</span>;
     <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
     <span class="hljs-comment">// recognized error path</span>
     <span class="hljs-keyword">break</span>;
-    [[likely]] <span class="hljs-keyword">default</span>:
+    [[unlikely]] <span class="hljs-keyword">default</span>:
     <span class="hljs-comment">// unrecognized error path</span>
     <span class="hljs-keyword">break</span>;
 }
@@ -3466,6 +3466,10 @@ std::cout &lt;&lt; r &lt;&lt; <span class="hljs-string">" odd"</span>;
   <span class="hljs-comment">// do something</span>
 }
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I read something online saying you shouldn't use both <code>[[likely]]</code> and <code>[[unlikely]]</code> on the same switch/if/while/etc...</p>
+</div>
 <a name="H_Attributes"></a><h1>Attributes</h1>
 <p>C++ <a href="#BM_(attribute)%2Fi">attribute</a>s are similar to annotations in Java, providing information to the user / <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> about the code that it's applied to. Unlike Java, C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s are free to pick and choose which <a href="#BM_(attribute)%2Fi">attribute</a>s they support and how they support them. There is no guarantee what action a <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> will take, if any, when it sees an <a href="#BM_(attribute)%2Fi">attribute</a> (e.g. <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> warnings).</p>
 <p>An <a href="#BM_(attribute)%2Fi">attribute</a> is applied by nesting it in double squared brackets (e.g. <code>[[noreturn]]</code>) and placing it as a <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a> on the function.</p>
@@ -4001,18 +4005,18 @@ my_module:multiplication;
 <p>To stop replacing a string, use <code>#undef</code>.</p>
 <pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">define</span> INITIAL_VALUE 500</span>
 <span class="hljs-type">int</span> x {INITIAL_VALUE};
-<span class="hljs-meta">#<span class="hljs-keyword">undef</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">undef</span> INITIAL_VALUE</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> INITIAL_VALUE 8</span>
 <span class="hljs-type">int</span> y {INITIAL_VALUE};
 </code></pre>
-<p>To conditionally include portions of a file, use an <code>#ifdef</code> / <code>#else</code> / <code>#endif</code> block.</p>
+<p>To conditionally include / ignore portions of a file, use an <code>#ifdef</code> / <code>#else</code> / <code>#endif</code> block.</p>
 <pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> INITIAL_VALUE</span>
 <span class="hljs-type">int</span> x {INITIAL_VALUE};
 <span class="hljs-meta">#<span class="hljs-keyword">else</span></span>
 <span class="hljs-type">int</span> x {<span class="hljs-built_in">ADDED_VALUE</span>(<span class="hljs-number">1</span>, <span class="hljs-number">7</span>)};
 <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span>
 </code></pre>
-<p>Similarly, <code>#ifndef</code> may be used to conditionally include imports (n was added to the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directive -- if NOT defined).</p>
+<p>Similarly, <code>#ifndef</code> may be used to conditionally include / ignore portions of a file (<code>#ifndef</code> -- note the n, if NOT defined).</p>
 <pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> INITIAL_VALUE</span>
 <span class="hljs-type">int</span> x {<span class="hljs-built_in">ADDED_VALUE</span>(<span class="hljs-number">1</span>, <span class="hljs-number">7</span>)};
 <span class="hljs-meta">#<span class="hljs-keyword">else</span></span>

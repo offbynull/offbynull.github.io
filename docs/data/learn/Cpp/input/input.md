@@ -7,48 +7,9 @@
 
 TODO: Set prereqs
 
-
-TODO: Mention this website https://github.com/AnthonyCalandra/modern-cpp-features
-
-
-TODO:  https://stackoverflow.com/questions/57363324/ramifications-of-c20-requiring-twos-complement
-
-
-
-TODO:  https://www.reddit.com/r/cpp/comments/r3pmw2/writing_portable_c_code_and_undefined_unspecified/  + evaluation order of isn't defined (**SEE CH7 -- EXECUTION ORDER SECTION**)
-
-
-
-`{bm-disable-all}`
-> Evaluation order determines the execution sequence of operators in an expression. A common misconception is that precedence and evaluation order are equivalent: they are not. Precedence is a compile time concept that drives how operators bind to operands. Evaluation order is a runtime concept that drives the scheduling of operator execution.
-> 
-> In general, C++ has no clearly specified execution order for operands. Although operators bind to operands in the well-defined way explained in the preceding sections, those operands evaluate in an undefined order. The compiler can order operand evaluation however it likes.
-
-the last few paragraphs list out exceptions
-
-SEE https://stackoverflow.com/a/5473530
-`{bm-enable-all}`
-
-worth putting in associtivity and operator precedence in operator section????
-implementaiton-specific behaviour with implict casts (see implicit casts section -- AVOIDABLE USING BRACED INITIALIZATION)
-
-UNDEFINED OVERFLOW/UNDERFLOW: talk about how this can be used.
-```c++
-#include <limits>
-try {
-    auto c = a + std::numeric_limits<unsigned int>::max();
-} catch(const std::overflow_error& e) {
-    printf("(a + max) Exception: %s\n", e.what());
-}
-```
-
-TODO: add more example code into terminology
-
 TODO: ch 9 at std::function / std::callable
 
 TODO: C++20 coroutines section needs to be fleshed out better (no good source for this)
-
-TODO: C++20 spaceship operator (https://devblogs.microsoft.com/cppblog/simplify-your-code-with-rocket-science-c20s-spaceship-operator/)
 
 TODO: add section on equals/hashcode/tostring equivalents
       -- operator== overload
@@ -57,7 +18,7 @@ TODO: add section on equals/hashcode/tostring equivalents
 
 TODO: smart pointers
 
-TODO: add terminology for declarations and definitions
+TODO: add terminology for declarations and definitions + add more example code into terminology
 
 # Essentials
 
@@ -86,8 +47,8 @@ The following are a base set of language constructs required for understanding t
 
    ```c++
    int a = 0;
-   int b (0);
-   int c {0};
+   int b (0); // parenthesis
+   int c {0}; // curly braces
    ```
  
    C++ provides a bewildering number of ways to initialize a variable, each with its own set of edge cases. For best results, stick to the curly braces.
@@ -304,7 +265,7 @@ There are implicit rules for how fundamental types get promoted. The general rul
 These rules are similar to those in other languages (e.g. Java and Python).
 
 ```{note}
-If confused, use type deduction via the `auto` keyword: `auto x = 5 + y`, then check to see what the type of `y` is in the IDE or using `typeid`.
+If confused, use type deduction via the `auto` keyword: `auto x {5 + y}`, then check to see what the type of `y` is in the IDE or using `typeid`.
 ```
 
 ## Assignment Operators
@@ -328,29 +289,30 @@ If confused, use type deduction via the `auto` keyword: `auto x = 5 + y`, then c
 All assignment operators work similar to those in Java except for the increment and decrement operators. Due to the confusion it causes, Java disallows the increment / decrement from returning a value, meaning that it can't be used in an expression. Not so in C++. In addition to modifying the variable passed as the operand, in C++ these operators also return a result, meaning that it's okay to an increment / decrement operator within some larger expression. 
 
 ```c++
-int x = 3;
-int y = (x++) + 2;
+int x {3};
+int y {(x++) + 2};
 // at this point, x is 4, y is 5
-int a = 3;
-int b = (++a) + 2;
+int a {3};
+int b {(++a) + 2};
 // at this point, a is 4, b is 6
 ```
 
 ## Comparison Operator
 
-| Name                            | Example  | Note |
-|---------------------------------|----------|------|
-| Equal To                 (`==`) | `5 == 7` |      |
-| Not Equal To             (`!=`) | `5 != 7` |      |
-| Less Than                (`<`)  | `5 < 7`  |      |
-| Less Than Or Equal To    (`<=`) | `5 <= 7` |      |
-| Greater Than             (`>`)  | `5 > 7`  |      |
-| Greater Than Or Equal To (`>=`) | `5 >= 7` |      |
+| Name                             | Example   | Note                                                                                    |
+|----------------------------------|-----------|-----------------------------------------------------------------------------------------|
+| Equal To                 (`==`)  | `5 == 7`  |                                                                                         |
+| Not Equal To             (`!=`)  | `5 != 7`  |                                                                                         |
+| Less Than                (`<`)   | `5 < 7`   |                                                                                         |
+| Less Than Or Equal To    (`<=`)  | `5 <= 7`  |                                                                                         |
+| Greater Than             (`>`)   | `5 > 7`   |                                                                                         |
+| Greater Than Or Equal To (`>=`)  | `5 >= 7`  |                                                                                         |
+| Three-way Comparison     (`<=>`) | `5 <=> 7` | Returns a special ordering type, not boolean (discussed in spaceship operator section). |
 
 In addition, the ternary conditional operator is a pseudo operator that takes in 3 operands similar to those found in other high-level languages: `CONDITION ? EXPRESSION_IF_TRUE : EXPRESSION_IF_FALSE`. It's essentially a shorthand if-else block. 
 
 ```c++
-int x = n % 7 == 1 ? 1000 : -1000;
+int x {n % 7 == 1 ? 1000 : -1000};
 // equiv to...
 if (n % 7 == 1) {
     x = 1000;
@@ -579,11 +541,11 @@ There is no macro `SIZE_C(...)` for `size_t`. Best to just assign a `size_t to o
 ```{note}
 What's the point of the above? You don't know what internal integer type each standardized type maps to. For example, `uint64_t` may map to `unsigned long long`, which means when you want to assign a literal to a variable of that type you need to add a `ULL` suffix...
 
-`uint64_t test = 9999999999999999999ULL`
+`uint64_t test {9999999999999999999ULL}`
 
 The macros above make it so that you don't need to know the underlying mapping...
 
-`uint64_t test = UINT64_C(9999999999999999999)`
+`uint64_t test {UINT64_C(9999999999999999999)}`
 ```
 
 ```{note}
@@ -721,7 +683,7 @@ int test(int *x) {
 
 void run() {
    int x[3] = { 1, 2, 3 };
-   int y = test(x);
+   int y { test(x) };
 }
 ```
 
@@ -735,7 +697,7 @@ size_t test(int x[10]) {
 
 int main() {
    int x[3] = { 1, 2, 3 };
-   size_t y = test(x); // compiler doesn't complain that test() expects int[10] but this is int[3]
+   size_t y { test(x) }; // compiler doesn't complain that test() expects int[10] but this is int[3]
    cout << y;
    return 0;
 }
@@ -747,7 +709,7 @@ Be careful when using the `sizeof` operator on an array. If the type is the orig
 
 ```c++
 int x[3];
-int *y = x;  // equiv to setting to &(x[0]);
+int *y {x};  // equiv to setting to &(x[0]);
 cout << sizeof x;  // should be the size of 3 ints
 cout << sizeof y;  // should be the size of a pointer
 ```
@@ -756,8 +718,8 @@ Similarly, range-based for loops won't work if the type has decayed to a pointer
 
 ```c++
 int x[3] = {1,2,3};
-int *y = x;
-for (int i = 0; i < 3; i++) { // OK
+int *y {x};
+for (int i {0}; i < 3; i++) { // OK
    cout << y[i] << endl;
 }
 for (int v : x) { // OK
@@ -780,7 +742,7 @@ Adding an asterisk (\*) to the end of any type makes it a pointer type (e.g. `in
 int w {5};
 int *x { &w }; // x points to w
 int *y { &w }; // y points to w
-int z = *x;    // z is a copy of whatever x points to, which is w, which means it gets set to 5
+int z { *x };   // z is a copy of whatever x points to, which is w, which means it gets set to 5
 *x = 7;        // w is set to 5 through x
 
 int **a { &x }; // a points to x, which points to w (a pointer to a pointer to an int)
@@ -809,7 +771,7 @@ See also: member-of-pointer operator.
 In addition, a pointer can optionally be set to nothing via the `nullptr` literal. `nullptr` is actually of type `std::nullptr_t`, but the compiler will implicit conversion to/from other pointer types when required.
 
 ```c++
-int *y = nullptr; // implicit conversion
+int *y { nullptr }; // implicit conversion
 if (y == nullptr) {
     // report error
 }
@@ -829,15 +791,15 @@ Certain arithmetic operators are allowed on pointers, called pointer arithmetic.
 
 ```c++
 int []x = {1, 5, 7};
-int *ptrA = &(x[1]);  // points to idx 1 of x (5)
-int *ptrB = ptrA + 1; // points to idx 2 of x (7)
+int *ptrA { &(x[1]) };  // points to idx 1 of x (5)
+int *ptrB { ptrA + 1 }; // points to idx 2 of x (7)
 ```
 
 This is similar to array access via the subscript operator. In fact, both arrays and pointers can be accessed in the same way using the subscript operator and pointer arithmetic.
 
 ```c++
 int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-int *y = x;
+int *y {x};
 *(y+1) = 99;  // equivalent to x[1] = 99
 x[2] = 101;   // equivalent to *(y+2) = 101;
 ```
@@ -852,7 +814,7 @@ A pointer to the void type means that the type being pointed to is unknown. Sinc
 
 ```c++
 int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-void *y = x;
+void *y { x };
 *y = 2; // fails
 ```
 
@@ -860,7 +822,7 @@ Since the underlying type of the pointer is unknown, pointer arithmetic isn't al
 
 ```c++
 int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-void *y = x;
+void *y { x };
 y = y + 2; // fails
 ```
 
@@ -903,8 +865,8 @@ int (MyClass::*func_ptr)(int, int) {}; // unset pointer to a function of structu
 
 MyClass x {};
 
-func_ptr = &MyClass::multiply;  // point to:  int MyClass::multiply(int, int)
-(x.*func_ptr)(2, 3);            // provide x as the MyClass instance when invoking
+func_ptr { &MyClass::multiply }; // point to:  int MyClass::multiply(int, int)
+(x.*func_ptr)(2, 3);             // provide x as the MyClass instance when invoking
 ```
 
 Unlike normal functions, functors cannot be assigned to raw function pointers. A functor's equivalent of a function pointer is a pointer to the function-call operator overload (method).
@@ -914,7 +876,7 @@ int (MyFunctor::*func_ptr)(int, int) {};  // unset pointer to a function of stru
 
 MyFunctor x {};
 
-func_ptr = &MyFunctor::operator();
+func_ptr { &MyFunctor::operator() };
 (x.*func_ptr)(2, 3);            // provide x as the MyClass instance when invoking
 ```
 
@@ -958,8 +920,8 @@ Rvalue references are typically used for moving objects (not copying, but actual
 
 ```c++
 MyObject a {};
-MyObject &&b = std::move(a);  // get rvalue reference
-MyObject c {b};               // move a into c (gut it into c) via the move constructor
+MyObject &&b { std::move(a) }; // get rvalue reference
+MyObject c {b};                // move a into c (gut it into c) via the move constructor
 // b is in an invalid state
 ```
 
@@ -980,7 +942,7 @@ There's a piece here I don't fully understand about "forwarding references". See
   * `sizeof char` is guaranteed to be 1.
   * `sizeof (char &)` is guaranteed to be 1.
   * `sizeof (char *)` is platform dependant, typically either 4 or 8.
-  * `char * x = "hi"; sizeof x` is equivalent to `sizeof (char *)` (see above).
+  * `char * x { "hi" }; sizeof x` is equivalent to `sizeof (char *)` (see above).
 
 * an expression such as a structure/class literal, array literal, or string literal, it'll return the number of bytes needed to hold it. For example, ...
 
@@ -1057,7 +1019,7 @@ The simplest way to interpret `const`-ness of a type is to read it from right-to
       |         '----------- "a pointer to"
       '--------------------- "an unmodifiable int"
                   
-"int const * * const = An unmodifiable pointer to a pointer to an unmodifiable int" 
+"int const * * const: An unmodifiable pointer to a pointer to an unmodifiable int" 
 ```
 
 One caveat to the above is that a type beginning with `const` is equivalent to the first part of that type having `const` applied on it.
@@ -1188,7 +1150,7 @@ Named conversion functions are a set of (seemingly templated) functions to conve
    
    ```c++
    void func(const MyType &t) {
-       T &moddable_t = const_cast<MyType &>(t);
+       T &moddable_t { const_cast<MyType &>(t) };
    }
    ```
 
@@ -1198,10 +1160,10 @@ Named conversion functions are a set of (seemingly templated) functions to conve
 
    ```c++
    int a[] {1,2,3,4};
-   int *b = a;  // ok, implicit conversion (decay to pointer)
-   void *c = b; // ok, implicit conversion
-   int *d = c;  // error, can't go in reverse
-   int *e = static_cast<int *>(c); // ok
+   int *b { a };  // ok, implicit conversion (decay to pointer)
+   void *c { b }; // ok, implicit conversion
+   int *d { c };  // error, can't go in reverse
+   int *e { static_cast<int *>(c) }; // ok
    ```
 
    In the above example, a `uint32_t *` implicitly converts to `void *`, but not the reverse. A `static_cast` makes going in reverse possible. However, that doesn't mean it's always safe to do. For example, `uint32_t` reads may need to be aligned to 4 byte boundaries on certain platforms. If the `void *` was arbitrary data (e.g. coming in over a network), it might cause a crash to just treat it as a `uint32_t *` and start reading.
@@ -1214,17 +1176,17 @@ Named conversion functions are a set of (seemingly templated) functions to conve
 
    ```c++
    int a[] {1,2,3,4};
-   int *b = a;   // ok, implicit conversion (decay to pointer)
-   short *c = b; // error, you can't convert from an int* to a short* (not even with a static_cast because it's not an implicit conversion)
-   short *d = reinterpret_cast<int *>;  // ok
+   int *b { a };   // ok, implicit conversion (decay to pointer)
+   short *c { b }; // error, you can't convert from an int* to a short* (not even with a static_cast because it's not an implicit conversion)
+   short *d { reinterpret_cast<int *>; } // ok
    ```
 
  * `narrow_cast` is similar to `static_cast` for numerics, except it ensures that no information loss occurred.
 
    ```c++
-   uint32_t a = 70000;                     // ok
-   uint16_t b = static_cast<uint16_t>(a);  // ok, but since uint16_t has a max of65535, this object is mangled
-   uint16_t c = narrow_cast<uint16_t>(a);  // runtime exception, narrow_cast sees that the object will be mangled
+   uint32_t a { 70000 };                     // ok
+   uint16_t b { static_cast<uint16_t>(a) };  // ok, but since uint16_t has a max of65535, this object is mangled
+   uint16_t c { narrow_cast<uint16_t>(a) };  // runtime exception, narrow_cast sees that the object will be mangled
    ```
 
    ```{note}
@@ -1236,7 +1198,7 @@ Named conversion functions are a set of (seemingly templated) functions to conve
 C-style casts are similar to casts seen in Java. The type is bracketed before whatever is being evaluated.
 
 ```c++
-int x = (int) 9999999999L;
+int x { (int) 9999999999L };
 ```
 
 The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
@@ -1296,15 +1258,15 @@ At global scope, if an object is declared as `static` or `extern`, storage durat
  * `extern` makes it so it's accessible to other translation units as well as the translation unit it's declared in.
 
 ```c++
-static int a = 0; // static variable
-extern int b = 1; // static variable (accessible outside translation unit)
+static int a { 0 }; // static variable
+extern int b { 1 }; // static variable (accessible outside translation unit)
 ```
 
 At function scope, the storage duration of objects declared as `static` starts at the first invocation of that function and ends when the program exits.
 
 ```c++
 int f1() {
-    static int z = 0; // static variable
+    static int z {0}; // static variable
     z += 1;
     return z;
 }
@@ -1330,9 +1292,9 @@ If the `thread_local` modifier is added before `static` (or `extern`), each thre
 `thread_local static` can be shortened to just `thread_local` (it's assumed to be static).
 
 ```c++
-static int a = 0;
-thread_local static int b = 1;
-thread_local extern int c = 2;
+static int a {0};
+thread_local static int b {1};
+thread_local extern int c {2};
 ```
 
 ### Dynamic Objects
@@ -1345,7 +1307,7 @@ An object can be created in an ad-hoc manner, such that its storage duration is 
 Both keywords work with pointers: `new` returns a pointer while `delete` requires a pointer. To create a new object, use `new` followed by the type.
 
 ```c++
-int * ptr = new int;
+int * ptr { new int };
 *ptr = 0;
 delete ptr;
 ```
@@ -1353,7 +1315,7 @@ delete ptr;
 Objects may be initialized directly within the `new` invocation just as if it were an automatic object initialization. The only caveat is that equals initialization and brace-plus-equals initialization won't work because the equal sign is already being used during `new` (speculation -- it doesn't work but I don't know the exact reason). As such, braced initialization is the best way to initialize a dynamic object.
 
 ```c++
-int * ptr = new int {0}; // initialize to 0
+int * ptr { new int {0} }; // initialize to 0
 delete ptr;
 ```
 
@@ -1362,16 +1324,16 @@ The same process can be used to create an array of objects. Unlike automatic obj
 When deleting a dynamic object array, square brackets need to be appended to `delete` operator: `delete[]`. Doing so ensures that the destructor for each object in the array gets invoked before deallocation.
 
 ```c++
-int * ptr = new int[len];  // len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.
+int * ptr { new int[len] };  // len is some non-constant positive integer, decayed to pointer type because array length can be non-constant.
 delete[] ptr;
 ```
 
 Braced initialization may be used when declaring dynamic arrays so long as the size of the array is at least the size of the initialization list.
 
 ```c++
-int * ptr1 = new int[10] {1,2,3};  // initialize the first 3 elems of a 10 elem array
-int * ptr2 = new int[2] {1,2,3};   // throws exception  (size too small for initializer list)
-int * ptr3 = new int[n] {1,2,3};   // okay -- so long as n >= 3
+int * ptr1 { new int[10] {1,2,3} };  // initialize the first 3 elems of a 10 elem array
+int * ptr2 { new int[2] {1,2,3} };   // throws exception  (size too small for initializer list)
+int * ptr3 { new int[n] {1,2,3} };   // okay -- so long as n >= 3
 delete[] ptr1;
 delete[] ptr2;
 delete[] ptr3;
@@ -1400,7 +1362,7 @@ Distance operator"" _mi (long double n) {
     return Distance {n * 1609.34};
 }
 
-Distance d = 1.2_km + 4.0_mi;
+Distance d { 1.2_km + 4.0_mi };
 ```
 
 As stated above, user-defined literals must wrap an existing built-in literal type.
@@ -1440,9 +1402,9 @@ const char * operator"" _as_str (const char * n) {
 
 The standard C++ library makes use of user-defined literals in various places, but its identifiers don't require an underscore (_) prefix.
 
- * Date-time API (chrono header): `std:chrono::duration d  = 2h + 15ms`.
- * Complex numbers API (complex header): `std::complex<double> = (1.0 + 2.0i) * (3.0 + 4.0i)`.
- * String API (string): `std::string str = "hello"s + "world"s`.
+ * Date-time API (chrono header): `std:chrono::duration d  { 2h + 15ms }`.
+ * Complex numbers API (complex header): `std::complex<double> { (1.0 + 2.0i) * (3.0 + 4.0i) }`.
+ * String API (string): `std::string str { "hello"s + "world"s }`.
 
 # Functions
 
@@ -1492,7 +1454,7 @@ bool test(int a, int b) { return a != b; }
 When an overloaded function is called, the compiler will try to match argument types against parameter types to figure out which overloaded function to call. If no exact match can be found, the compiler attempts to obtain a correct set of types through a set of conversions.
 
 ```c++
-int num = 1;
+int num { 1 };
 test(1);  // calls the first overload in the code above:  bool test(int a);
 ```
 
@@ -1622,7 +1584,7 @@ float avg(size_t n, ...) {
     va_list args;
     va_start(args, n);
     float sum {0};
-    while (size_t i = 0; i < n; i++) {
+    while (size_t i {0}; i < n; i++) {
         sum += va_args(args, float);
     }
     va_end(args);
@@ -1646,11 +1608,11 @@ float add_and_mult(size_t n, ...) {
     va_start(args, n);
     va_copy(args2, args);  // 1st param is dst, 2nd param is src
     float res {0};
-    while (size_t i = 0; i < n; i++) {
+    while (size_t i {0}; i < n; i++) {
         res += va_args(args, float);
     }
     va_end(args);
-    while (size_t i = 0; i < n; i++) {
+    while (size_t i {0}; i < n; i++) {
         res *= va_args(args2, float);
     }
     va_end(args2);
@@ -1769,7 +1731,7 @@ Resumable range(int start, int end) {
 }
 
 int main() {
-    auto x = range(0, 10);
+    auto x {range(0, 10)};
     x.resume();  // prints 0
     x.resume();  // prints 1
     x.resume();  // prints 2
@@ -1791,7 +1753,7 @@ enum class MyEnum {
    OptionC
 };
 
-MyEnum x = MyEnum::OptionC;
+MyEnum x {MyEnum::OptionC};
 
 switch (x) {
     case MyEnum::OptionA:
@@ -1837,8 +1799,8 @@ enum MyEnum { // no class keywrod
    OptionC
 };
 
-MyEnum x = OptionC; // this is okay -- don't have to use MyEnum::OptionC
-int y = OptionC;    // this is okay -- options are integers
+MyEnum x {OptionC}; // this is okay -- don't have to use MyEnum::OptionC
+int y {OptionC};    // this is okay -- options are integers
 ```
 
 You should prefer `enum class`.
@@ -1918,15 +1880,15 @@ For methods of a class, a `const` after the parameter list indicates that the cl
 
 ```c++
 struct Inner {
-    int x = 5;
-    int y = 6;
+    int x {5};
+    int y {6};
     void change(int n) {
         x = n;
     }
 };
 
 struct X {
-    int a = 0;
+    int a {0};
     Inner inner;
     void test1() const {
         a = 5;  // NOT okay -- no mutation allowed
@@ -2366,7 +2328,7 @@ struct MyChild : MyParent {
 };
 
 
-MyParent *c = new MyChild{};
+MyParent *c {new MyChild{}};
 delete c;  // calls MyParent's destructor instead of MyChild's destructor
 ```
 
@@ -2440,13 +2402,13 @@ To overload an operator the second way, introduce a function (not a method) usin
 
 ```c++
 // MyClass + int
-MyClass operator+(const MyClass &lhs, int rhs) const {
+MyClass operator+(const MyClass &lhs, int rhs) {
     MyClass ret { lhs.value + x };
     return ret;
 };
 
 // MyClass + MyClass
-MyClass operator+(const MyClass &lhs, const MyClass &rhs) const {
+MyClass operator+(const MyClass &lhs, const MyClass &rhs) {
     MyClass ret { lhs.value + rhs.value };
     return ret;
 }
@@ -2465,7 +2427,7 @@ Evidently the two ways described above aren't equivalent. The second way has som
 Note how the `const` keyword is added to the method in cases where the operator shouldn't modify itself. Similarly, when the argument for a parameter shouldn't be changed, `const` is used on that parameter. `const`-ness depends on the scenario. For example, the second `operator+` requires two references to `const` types.
 
 ```c++
-MyClass operator+(const MyClass &lhs, const MyClass &rhs) const {
+MyClass operator+(const MyClass &lhs, const MyClass &rhs) {
     MyClass ret { lhs.value + rhs.value };
     return ret;
 }
@@ -2476,7 +2438,7 @@ Those `const`s ensures that the operands aren't changed in the method. Imagine t
 The signature could have just as well been modified to be the types themselves rather than `const` references, in which case both the left-hand side and right-hand side would get copied on invocation of the method (modifications to copies don't matter).
 
 ```c++
-MyClass operator+(MyClass lhs, MyClass rhs) const {
+MyClass operator+(MyClass lhs, MyClass rhs) {
     MyClass ret { lhs.value + rhs.value };
     return ret;
 }
@@ -2487,6 +2449,119 @@ See [here](https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393) for
 
 There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.
 ```
+
+## Three-way Comparison Overloading
+
+The three-way comparison operator, also called the spaceship operator, is a more terse way of providing comparison operators for a class. Typically, if a class is sortable and comparable, it should provide operator overloads for the typical comparison operators:
+
+ * equality (==)
+ * inequality (!=)
+ * less-than (<)
+ * less-than or equal (<=)
+ * greater-than (>)
+ * greater-than or equal (>=)
+
+The three-way comparison operator bundles the at least the last four of those (potentially all of them) into a single operator, where the symbol for that operator is an equal-sign sandwiched between angle brackets (\<=\>).
+
+```c++
+struct MyClass {
+    int hour;
+    int minute;
+};
+
+std::strong_ordering operator<=>(MyClass& lhs, MyClass& rhs) const {
+    if (lhs.hour < rhs.hour) {
+        return std::strong_ordering::less;
+    } else if (lhs.hour > rhs.hour) {
+        return std::strong_ordering::greater;
+    } else {
+        if (lhs.minute < rhs.minute) {
+            return std::strong_ordering::less;
+        } else if (lhs.minute > rhs.minute) {
+            return std::strong_ordering::greater;
+        } else {
+            return std::strong_ordering::equal;
+        }
+    }
+}
+
+// Test
+MyClass lunch_time {12, 00};
+MyClass sleep_time {22, 00};
+std::cout << "<= via spaceship operator: " << (lunch_time <= sleep_time) << "\n";
+// You can also call the spaceship operator directly:   std::strong_ordering res {lunch_time <=> sleep_time}
+```
+
+```{note}
+Not sure why but when the above operator overload is a member function (instead of a free function) the compiler starts producing a bunch of warnings.
+```
+
+Note that the above is comparing each member variable in the order it's declared. The default operator overload implementation of the spaceship operator will do exactly the same thing. Had the class inherited from some other class, the default implementation would first compare the parent classes (left-right order -- C++ has multiple inheritance) before comparing the member variables in the class itself.
+
+```c++
+struct MyClass {
+    int hour;
+    int minute;
+    std::strong_ordering operator<=>(MyClass& rhs) const = default;
+};
+```
+
+In addition, a default operator overload implementation provides both equality (==) and inequality (!=) support. The operator overload implementation in the first example does not support either -- their operator overloads need to be added manually.
+
+```{note}
+See [here](https://stackoverflow.com/a/58780946) for reasoning.
+```
+
+There are three types of ordering supported by the spaceship operator:
+
+ * `std::strong_ordering` - equality (==) means that one object may be substituted for the other (they are the same).
+
+   Possible values:
+
+   * `std::strong_ordering::less` for less-than
+   * `std::strong_ordering::greater` for greater-than
+   * `std::strong_ordering::equal` for equality
+
+   Examples:
+
+   * Comparing circles by their radius. A circle with a radius of 5 is the same as another circle with a radius of 5.
+
+ * `std::weak_ordering` - equality (==) means that one object substitution isn't guaranteed (they may not be the same even though they're equivalent).
+
+   Possible values:
+
+   * `std::weak_ordering::less` for less-than
+   * `std::weak_ordering::greater` for greater-than
+   * `std::weak_ordering::equivalent` for equivalence (note that this is NOT equality -- it's equivalence)
+
+   Examples:
+
+   * Comparing rectangles by their area: A rectangle that's 1-by-15 has the same area as a rectangle that's 5-by-3, but those rectangles are not the same.
+   * Comparing strings while ignoring case: The string `"hello world"` is equivalent to `"HELLO WORLD"`, but the two strings aren't the same.
+
+ * `std::partial_ordering` -- same as `std::weak_ordering`, but with the addition that objects may not being comparable at all.
+
+   Possible values:
+
+   * `std::partial_ordering::less` for less-than
+   * `std::partial_ordering::greater` for greater-than
+   * `std::partial_ordering::equivalent` for equivalence (Note that this is NOT equality -- it's equivalence)
+   * `std::partial_ordering::unordered` the objects weren't comparable
+
+   Examples:
+   
+   * Comparing floating point numbers: The number `3.5` is not comparable at all to `NaN` (not a number).
+
+The return type defined for the operator overload provides context to the user as to how the objects are comparable.
+
+```{note}
+Source of ordering types is [here](https://news.ycombinator.com/item?id=20551212).
+
+[here](https://news.ycombinator.com/item?id=20550165) talks about the importance of choosing the right ordering type.
+
+The rectangle example was lifted from [here](https://blog.tartanllama.xyz/spaceship-operator/).
+```
+
 
 ## Conversion Overloading
 
@@ -2501,7 +2576,7 @@ struct MyClass {
 };
 ...
 MyClass cls {};
-int x = cls; // triggers operator overload method
+int x {cls}; // triggers operator overload method
 ```
 
 Explicit type conversions are enabled the same way as implicit type conversions, except the overload method is preceded by the `explicit` keyword. The `explicit` keyword makes it so that conversion to that type requires a `static_cast`
@@ -2515,7 +2590,7 @@ struct MyClass {
 };
 ...
 MyClass cls {};
-int x = static_cast<int>(cls);  // static_cast required to trigger operator overload method
+int x {static_cast<int>(cls)};  // static_cast required to trigger operator overload method
 ```
 
 ```{note}
@@ -2592,8 +2667,8 @@ private:
 
 
 MyClass c {};
-auto v = c.get_data(); // get a copy. prints "lvalue".
-auto v2 = C().get_data(); // get the original. prints "rvalue"
+auto v {c.get_data()}; // get a copy. prints "lvalue".
+auto v2 {C().get_data()}; // get the original. prints "rvalue"
 ```
 
 ```{note}
@@ -2651,14 +2726,14 @@ The general syntax of a lambda is as follows: `[captures] (parameters) modifiers
  * **capture** (required) - Objects to pull in from outer scopes.
 
    ```c++
-   int x = 5;
-   int y = 6;
+   int x {5};
+   int y {6};
    auto f1 = [] (int z) -> int { return z / 2; };           // no capture
    auto f2 = [x, y] (int z) -> int { return x + y + z; };   // explicitly copy x and y from outer scope
    auto f3 = [&x, &y] (int z) -> int { return x + y + z; }; // explicitly reference x and y from outer scope
    auto f4 = [=] (int z) -> int { return x + y + z; };      // automatically copy x and y from outer scope
    auto f5 = [&] (int z) -> int { return x + y + z; };      // automatically reference x and y from outer scope
-   int t = 1;
+   int t {1};
    auto f6 = [&, y] () -> int { return x + y + t; };        // automatically reference x and t but force y to be a copy
    ```
 
@@ -2674,8 +2749,8 @@ The general syntax of a lambda is as follows: `[captures] (parameters) modifiers
    Named captures can also be initializer expressions by adding an equal sign after the name of the capture.
 
    ```c++
-   int x = 5;
-   int y = 6;
+   int x {5};
+   int y {6};
    auto f1 = [modified_x=x/2, y] (int z) -> int { return x + y + z; };
    ```
 
@@ -2831,7 +2906,7 @@ To use a template, use it just as you would a non-template but provide substitut
 
 ```c++
 MyClass<float, int, int, 2> obj {}; // X = float, Y = int, Z = int, N = 2
-float x = obj.perform(5, 3);
+float x {obj.perform(5, 3)};
 ```
 
 Declaring templated functions is done in the same manner as templated classes, and using templated functions is done similarly to templated classes: Use the function as if it were a normal function but immediately after the function name add in a common separated list of substitutions sandwiched within angle brackets.
@@ -2844,7 +2919,7 @@ X perform(Y &var1, Z &var2) {
 }
 
 // use
-float x = perform<float, int, int, 2>(5, 3);
+float x {perform<float, int, int, 2>(5, 3)};
 ```
 
 When the template parameters are for types only (not values), it's possible to leave out substitutions during usage. The compiler will deduce the types from the argument you pass in and substitute them automatically.
@@ -2857,7 +2932,7 @@ X perform(Y &var1, Z &var2) {
 }
 
 // use
-float x = perform(5, 3);  // template arguments omitted, deduced by compiler
+float x {perform(5, 3)};  // template arguments omitted, deduced by compiler
 ```
 
 It's possible to supply a default substitution for a template parameter by appending it with `=` followed by the substitution, called default template argument.
@@ -3126,7 +3201,7 @@ union MyUnion {
 
 MyUnion x;
 // set all bytes of raw to 0
-for (int i = 0; i < sizeof(x.raw); i++) {
+for (int i {0}; i < sizeof(x.raw); i++) {
    x.raw[i] = 0;
 }
 // since all members of the union start at the same memory location, these
@@ -3261,7 +3336,7 @@ An important caveat about loops in C++ from [cppreference.com](https://en.cppref
 If statements follow a similar structure to if statements in Java. The only major difference is that an initializer statement is allowed before the condition in the initial `if`.
 
 ```c++
-if (int r = rand(); r % 2 == 0) {
+if (int r {rand()}; r % 2 == 0) {
     std::cout << r << " even";
 else if (r % 5 == 0) {
     std::cout << r << " div by 5";
@@ -3277,7 +3352,7 @@ In the example above, an initializer statement has been added that sets a variab
 Switch statements follow a similar structure to switch statements in Java. The only major difference is that an initializer statement is allowed before the condition.
 
 ```c++
-switch (int r = rand(); r % 2) {
+switch (int r {rand()}; r % 2) {
     case 0:
     std::cout << r << " even";
     break;
@@ -3310,7 +3385,7 @@ switch (x) {
 For loops follow a similar structure to for loop in Java.
 
 ```c++
-for (int i = 0; i < 10; i++)  {
+for (int i {0}; i < 10; i++)  {
     std::cout << i;
 }
 ```
@@ -3318,7 +3393,7 @@ for (int i = 0; i < 10; i++)  {
 Similarly, an analog to Java's for-each loop exists called range-based for loops. The only major difference is that an initializer statement is allowed before the range declaration.
 
 ```c++
-for (int r = rand(); int val : array)  {
+for (int r {rand()}; int val : array)  {
     std::cout << (r + val) << ' ';
 }
 ```
@@ -3328,7 +3403,7 @@ for (int r = rand(); int val : array)  {
 While and do-while loops follow a similar structure to their counterparts in Java.
 
 ```c++
-int r = rand() % 5;
+int r {rand() % 5};
 while (r > 0) {
     std::cout << r << " ";
     r--;
@@ -3336,7 +3411,7 @@ while (r > 0) {
 ```
 
 ```c++
-int r = rand() % 5;
+int r {rand() % 5};
 do {
     std::cout << r << " ";
     r--;
@@ -3353,7 +3428,7 @@ Unlike most other high-level languages (e.g. Java), C++ allows the use of goto s
 
 ```c++
 retry:
-int r = rand();
+int r {rand()};
 if (r % 2 == 0) {
     goto retry;
 }
@@ -3372,7 +3447,7 @@ switch (exit_code) {
     case 1:
     // recognized error path
     break;
-    [[likely]] default:
+    [[unlikely]] default:
     // unrecognized error path
     break;
 }
@@ -3390,6 +3465,10 @@ if (is_valid(email)) [[likely]] {
 while (i > 0) [[unlikely]] {
   // do something
 }
+```
+
+```{note}
+I read something online saying you shouldn't use both `[[likely]]` and `[[unlikely]]` on the same switch/if/while/etc...
 ```
 
 # Attributes
@@ -3430,7 +3509,6 @@ Similarly, a constant expression function requires prefixing `constexpr` to a fu
 
 ```c++
 constexpr unsigned int fibonacci(unsigned int n) {
-    static_assert(n >= 0, "ERROR: negative value passed as n");  // error msg is optional
     if (n == 0) {
         return 0;
     } else if (n == 1 || n == 2) {
@@ -3457,9 +3535,9 @@ consteval int sqr(int n) {
   return n * n;
 }
 
-constexpr int r = sqr(100); // OK
-int x = 100;
-int r2 = sqr(x); // ERROR: the value of 'x' is not usable in a constant expression
+constexpr int r {sqr(100)}; // OK
+int x {100};
+int r2 {sqr(x)}; // ERROR: the value of 'x' is not usable in a constant expression
                  // OK if `sqr` were a `constexpr` function
 ```
 ````
@@ -3630,12 +3708,12 @@ This is explicitly categorizing expressions, not objects, variables or types. Ea
 A prvalue is an expression that generates some transient result, where that result is typically either used for assignment or passed into a function invocation by _moving_ it.
 
 ```c++
-int a = 0; // move -- 0 is being generated and MOVED into a (the expression 0 is a prvalue)
+int a { 0 }; // move -- 0 is being generated and MOVED into a (the expression 0 is a prvalue)
 //      ^
 //      |
 //   rvalue
 
-int b = a; // copy -- a already exists and its being COPIED into b (the expression a is NOT a prvalue)
+int b { a }; // copy -- a already exists and its being COPIED into b (the expression a is NOT a prvalue)
 ```
 
 In essence, the way to think of a prvalue is that its an expression that meets the following 3 conditions ...
@@ -3643,9 +3721,9 @@ In essence, the way to think of a prvalue is that its an expression that meets t
 1. can't have the address-of operator used on it.
 
    ```c++
-   MyStruct* a = &MyStruct(true); // error -- right-hand expression is transient, not a var that you can get the address of   
-   int* b = &(5)                  // error -- right-hand expression is a literal, not a var that you can get the address of
-   int* c = &get_int()            // error -- right-hand expression is the return val of function, not a var that you can get the address of
+   MyStruct* a {&MyStruct(true)}; // error -- right-hand expression is transient, not a var that you can get the address of   
+   int* b {&(5)}                  // error -- right-hand expression is a literal, not a var that you can get the address of
+   int* c {&get_int()}            // error -- right-hand expression is the return val of function, not a var that you can get the address of
    ```   
 
 2. can have its guts be scooped out and moved into something else.
@@ -3682,7 +3760,7 @@ An xvalue is an expression which can have the address-of operator used on it but
 
 ```c++
 MyObject a {};
-MyObject &&b = std::move(a);  // get rvalue reference
+MyObject &&b {std::move(a)};  // get rvalue reference
 MyObject c {b};               // move a into c (gut it into c) via the move constructor
 // b is in an invalid state
 ```
@@ -3730,7 +3808,7 @@ In C++, there is no requirement to extend from any base classes or interfaces. I
 
  * `!=` - test if the position of one iterator doesn't match the position of another iterator (e.g. `my_iterator != end_iterator`).
  * `++` - move to the next item (e.g. `my_iterator++`).
- * `*` (dereference) - access the next item (e.g. `int value = *my_iterator`).
+ * `*` (dereference) - access the next item (e.g. `int value {*my_iterator}`).
 
 ```{note}
 Notice that the operators are more or less array / pointer behaviour. Given something like `int *` pointing to the beginning of an array, ...
@@ -3767,8 +3845,8 @@ for (MyIterator it : collection) {
 
 In total, 5 kinds of iterators are supported by C++. The kind of iterator described above is called an input iterator and it typically requires an equality operator overload (`operator ==()`) in addition to inequality. Input iterators are the closest thing to a standard Java `Iterator` -- read-only and forward-only. Other kinds of iterators require different operator overloads.
 
- * Input iterator, steps forwards one element at a time and gets items of the container.
- * Output iterator, steps forwards one element at a time and sets items of the container.
+ * Input iterator, steps forwards one element at a time and reads items of the container.
+ * Output iterator, steps forwards one element at a time and writers items of the container.
  * Forward iterator, combination of input iterator and output iterator.
  * Bidirectional iterator, forward iterator with the ability to move back.
  * Random access iterator, bidirectional iterator with the ability to jump to different positions.
@@ -3957,12 +4035,12 @@ To stop replacing a string, use `#undef`.
 ```c++
 #define INITIAL_VALUE 500
 int x {INITIAL_VALUE};
-#undef
+#undef INITIAL_VALUE
 #define INITIAL_VALUE 8
 int y {INITIAL_VALUE};
 ```
 
-To conditionally include portions of a file, use an `#ifdef` / `#else` / `#endif` block.
+To conditionally include / ignore portions of a file, use an `#ifdef` / `#else` / `#endif` block.
 
 ```c++
 #ifdef INITIAL_VALUE
@@ -3972,7 +4050,7 @@ int x {ADDED_VALUE(1, 7)};
 #endif
 ```
 
-Similarly, `#ifndef` may be used to conditionally include imports (n was added to the preprocessor directive -- if NOT defined).
+Similarly, `#ifndef` may be used to conditionally include / ignore portions of a file (`#ifndef` -- note the n, if NOT defined).
 
 ```c++
 #ifndef INITIAL_VALUE
@@ -3998,37 +4076,262 @@ int x {INITIAL_VALUE}
 Compiler / compilation options may be controlled through `#pragma`s. I've left `#pragma`s out of the document because they're specific to the compiler and platform.
 ```
 
+# Inconsistent Behaviour
+
+High-level languages are typically very consistent. For example, except for a handful of small things, Java's runtime and core libraries are consistent across different platforms (e.g. Windows vs Linux), architectures (e.g. ARM vs x86), and compilers (e.g. OpenJDK vs Eclipse compiler). C++ has much less consistency than those other high-level languages because it has to support more platforms and architectures. In addition, having less consistency sometimes allows for more aggressive optimization during compilation.
+
+Inconsistencies comes in three different types:
+
+* Implementation-defined behaviour: Behaviour varies between implementations, where that behaviour is valid (e.g. no hard crash) and documented.
+* Unspecified behaviour: Behaviour varies between implementations, where that behaviour is valid (e.g. no hard crash) but _not_ documented.
+* Undefined behaviour: Behaviour is unrestricted (e.g. maybe hard crash, bad computation, or expected computation) and not documented.
+
+|                                  | Valid | Documented |
+|----------------------------------|-------|------------|
+| Implementation-defined behaviour | YES   | YES        |
+| Unspecified behaviour            | YES   | NO         |
+| Undefined behaviour              | MAYBE | NO         |
+
+## Implementation-defined Behaviour
+
+Implementation-defined behaviour is behaviour that varies between implementations, where that behaviour is valid (e.g. no hard crash) and documented. The obvious example is with numeric data types: `short`, `int`, `float`, etc.. will each have a different minimum and maximum across different platforms:
+
+ * `short` is from `SHORT_MIN` to `SHORT_MAX`.
+ * `int` is from `INT_MIN` to `INT_MAX`.
+ * ...
+
+```{note}
+Someone posted up [this](http://eel.is/c++draft/impldefindex) as a comprehensive list of implementation-defined behaviour.
+```
+
+## Unspecified Behaviour
+
+Unspecified behaviour is behaviour that varies between implementations, where that behaviour is valid (e.g. no hard crash) but _not_ documented. The obvious example is the order in which operands are evaluated in an expression. For example, consider the following statement ...
+
+```c++
+int x {bird_func() / cow_func()};
+```
+
+The results of `bird_func()` and `cow_func()` may be gotten in any order prior to performing the division. There is no requirement as to which one gets invoked first. The division itself with the correct operands in the correct spots, but which function gets called first is up to the compiler.
+
+```c++
+// option1  -- bird_func() evaluated first
+int a {bird_func()};
+int b {cow_func()};
+int x {a / b};
+
+// option2  -- cow_func() evaluated first
+int b {cow_func()};
+int a {bird_func()};
+int x {a / b};
+```
+
+Another example is the memory representation of core types (e.g. integral types). The platform's memory layout could be either big-endian, little-endian, or some other uncommon memory layout.
+
+```c++
+int x {5};
+// big endian:    00 00 00 05  (e.g. ARM)
+// little endian: 05 00 00 00  (e.g. x86)
+```
+
+The above doesn't matter unless you're trying to read raw contents of core types (e.g. for serializing classes to disk).
+
+```{note}
+I wasn't able to find a comprehensive list of what the C++ spec considers as unspecified behaviour.
+```
+
+## Undefined Behaviour
+
+```{note}
+According to documentation online: "Compilers are not required to diagnose or do anything meaningful when undefined behaviour is present. Correct C++ programs are free of undefined behaviour". Not exactly sure how to fix some scenarios to be "free" of undefined behaviour. Specifically, there are a lot of cases where signed integer overflow (described below) happens, but that's undefined behaviour. I read online that the way to handle these cases is to test at the beginning of the function if overflow is possible and bail out if it is, but there's no built-in C++ mechanism to do that.
+
+The statement and the examples below, were lifted from [here](https://en.cppreference.com/w/cpp/language/ub).
+```
+
+Undefined behaviour is behaviour that is unrestricted and not documented. The compiler may do anything for code producing undefined behaviour. For example, code producing undefined behaviour could end up ...
+
+ * causing a hard crash.
+ * doing exactly what the the author of the source code originally intended for.
+ * doing something different than what the author of the source code originally intended for.
+ * causing the program to not immediately crash, but potentially much later.
+
+None of the examples have to be consistent. For example, it could produce a hard crash some of the time and the intended results the rest of the time.
+
+ * Signed integer overflow
+
+   Although signed integers are guaranteed to be two's complement (as of C++20), what happens when a signed integer overflows is still undefined behaviour. In many cases, the compiler will treat signed integer operations as if overflowing isn't possible. For example, consider the following function ...
+   
+   ```c++
+   bool test(int x) {
+       return x < x + 1;
+   }
+   ```
+
+   What may happen: The compilers will optimize away the return expression to always return `true`. Had signed integer overflow NOT been undefined behaviour, the function would return `true` except in the case where `x == INT_MAX`: When `x == INT_MIN`, the expression `x + 1` would rollover to `INT_MIN`, leading `x < x + 1` to evaluate to `false`.
+
+ * Array out of bounds access
+
+   Array out of bounds access typically ends up touching memory past the array's boundaries.
+   
+   ```c++
+   int data[5] {1,2,3,4,5};
+   data[65535] {15};
+   ```
+
+   What may happen: Out of bounds data access will result in either...
+
+    * the reading/writing of some other object's memory (e.g. corruption of another object, if writing).
+    * the reading/writing of memory not assigned to an object.
+    * a crash.
+
+ * Uninitialized scalar
+
+   Uninitialized scalars are scalars that are read before being written to.
+
+   ```c++
+   int x;
+   std:cout << x; // what's in x? 
+   ```
+
+   What may happen: Uninitialized scalars contain junk data (e.g. whatever was in the memory before).
+
+   ```{note}
+   Scalar typically means arithmetic type or pointer / reference type. See [this](https://stackoverflow.com/a/14822074).
+   ```
+   
+ * Invalid scalar
+
+   When a scalar gets reinterpreted as something else (e.g. a byte array) and its contents are manipulated, reading from that original scalar is undefined behaviour.
+
+   ```c++
+   // EXAMPLE FROM https://en.cppreference.com/w/cpp/language/ub
+   int f() {
+       bool b {true};
+       unsigned char* p {reinterpret_cast<unsigned char*>(&b)};
+       *p {10};
+       // reading from b is now UB
+       return b == 0;
+   }
+   ```
+
+   What may happen: modifications on the reinterpretation are treated as if it never happened.
+
+   ```{note}
+   Scalar typically means arithmetic type or pointer / reference type. See [this](https://stackoverflow.com/a/14822074).
+   ```
+
+ * Null pointer dereference
+
+   ```c++
+   // EXAMPLE FROM https://en.cppreference.com/w/cpp/language/ub
+   int foo(int* p) {
+       int x {*p};
+       if(!p) return x; // Either UB above or this branch is never taken
+       else return 0;
+   }
+   int bar() {
+       int* p {nullptr};
+       return *p;        // Unconditional UB
+   }
+   ```
+
+   What may happen: Trying to read or write to a dereferenced `nullptr` will cause a crash.
+
+ * Side-effect free infinite loops
+
+   A side-effect free infinite loop is a loop goes on forever but doesn't change anything outside of its own scope (e.g. no global variable is changed, nothing is printed to standard out, etc..).
+
+   ```c++
+   // EXAMPLE FROM https://en.cppreference.com/w/cpp/language/ub
+   while (1) {
+       if (((a*a*a) == ((b*b*b)+(c*c*c)))) return 1;
+       a++;
+       if (a>MAX) { a=1; b++; }
+       if (b>MAX) { b=1; c++; }
+       if (c>MAX) { c=1;}
+   }
+   ```
+
+   What may happen: Side-effect free infinite loops are removed entirely.
+
+
+```{note}
+I wasn't able to find a comprehensive list of what the C++ spec considers as undefined behaviour. The above examples were taken from [cppreference](https://en.cppreference.com/w/cpp/language/ub).
+```
+
 # Terminology
 
  * `{bm} processor/(preprocessor|translation unit)/i` - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a translation unit.
 
-   ```{svgbob}
+   ```{note}
    See compilation section.
    ```
 
  * `{bm} compiler/(compiler|object file|object code)/i` - A tool that takes in a translation unit to produce an intermediary format called an object file.
 
-   ```{svgbob}
+   ```{note}
    See compilation section.
    ```
 
  * `{bm} linker/(linker|executable)/i` - A tool that takes multiple object files to produce an executable. Linkers are are also responsible for finding libraries used by the program and integrating them into the executable.
 
-   ```{svgbob}
+   ```{note}
    See compilation section.
    ```
 
  * `{bm} enumeration/(enumeration|enum)/i` - A user-defined type that can be set to one of a set of possibilities.
 
+   ```c++
+   enum class MyEnum {
+      OptionA,
+      OptionB,
+      OptionC
+   };
+   
+   MyEnum x {MyEnum::OptionC};
+   ```
+
  * `{bm} class/(class|\bstruct)/i` - A user-defined type that pairs together data and the functions that operate on that data.
+
+   ```c++
+   class MyClass {
+   public:
+       MyClass(int x, long y) {
+           this->x = x;
+           this->y = y;
+       }
+
+       int add(int z) {
+           this->x += z;
+           return y + z;
+       }
+   private:
+       int x;
+       long y;
+   }
+   ```
 
  * `{bm} union` - A user-defined type where all members share the same memory location (different representations of the same data).
 
+   ```c++
+   union MyUnion {
+       int x;
+       long y;
+   }
+   ```
+
  * `{bm} plain-old-data class/(plain-old-data class|plain-old data class|plain old data class|plain-old-data structure|plain-old data structure|plain old data structure|plain-old-data struct|plain-old data struct|plain old data struct)/i` `{bm} /(POD)/` - A class that contains only data, not functions.
+
+   ```c++
+   struct Podo {
+       int x;
+       long y;
+   }
+   ```
 
  * `{bm} member/\b(member)/i` - Data or function belonging to a class.
 
- * `{bm} method/(method|\bmember function)/i` - Function belonging to a class (class member that is a function).
+ * `{bm} member function/(method|\bmember function)/i` - Function belonging to a class (class member that is a function).
 
    ```c++
    struct C {
@@ -4084,13 +4387,38 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} constructor` - A function used for initializing an object.
 
+    ```c++
+    struct MyStruct : MyParent {
+        ...
+        MyStruct() {
+            // do some setup here
+        }
+    };
+    ```
+
  * `{bm} destructor` - A function used for cleanup when an object is destroyed.
+
+    ```c++
+    struct MyStruct : MyParent {
+        ...
+        ~MyStruct() {
+            // do some cleanup here
+        }
+    };
+    ```
+
+    See also: virtual destructor.
 
  * `{bm} pointer` - A data type used to point to a different piece of memory (e.g. `int yPtr { &y }`).
 
  * `{bm} reference` - A data type used to point to a different piece of memory, but in a more sanitized / less confusing manner (e.g. `int &yRef { y };`).
 
- * `{bm} sizeof` - An operator that returns the size of a type or object (known at compile-time).
+ * `{bm} sizeof` - A unary operator that returns the size of a type or object (known at compile-time).
+
+   ```c++
+   int x {5};
+   size_t x_size {sizeof x};
+   ```
 
  * `{bm} address-of (&)/(address[\-\s]of)/i` - A unary operator used to obtain the memory address of an object (pointer) (e.g. `int *ptr {&x}`).
 
@@ -4104,9 +4432,33 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} reseating/(reseat)/i` - The concept_NORM of a variable that points to something updating to point to something else. Pointers can be reseated, but references cannot.
 
+   ```c++
+   int x {5};
+   int *p {&x};
+   int y {7};
+   p = &y; // reseat p
+   ```
+
  * `{bm} member initializer list/(member initializer list|member initialization list|member initializer)/i` - A comma separated list of object initializations for the fields of a class appearing just before a constructor's body.
 
+   ```c++
+   struct MyStruct {
+       int count;
+       bool flag;
+   
+       MyStruct(): count{0}, flag{false} {
+       }
+   }
+   ```
+
  * `{bm} default member initialization/(default member initializer|default member initialization)/i` - The object initialization of a field directly where that field is declared.
+
+   ```c++
+   struct MyClass {
+       ...
+       int my_var {5};
+   };
+   ```
 
  * `{bm} object/(object|instance)/i` - A region of memory that has a type and a value (e.g. class, an integer, a pointer to an integer, etc..).
 
@@ -4120,15 +4472,42 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} automatic object/(automatic object|automatic variable|automatic storage duration)/i` - An object that's declared within an enclosing code block. The storage duration of these objects start at the beginning of the block and finish at the end of the block.
 
+   ```c++
+   int my_func(int x) {
+       int automatic_object {x + 5};
+       return automatic_object;
+   }
+   ```
+
  * `{bm} static object/(static object|static variable|static storage duration)/i` - An object that's declared using `static` or `extern`. The storage duration of these objects start at the beginning of the program and finish at the end of the program.
 
  * `{bm} local static object/(local static object|local static variable|local static storage duration)/i` - A static object but declared at function scope. The storage duration of these objects start at the first invocation of the function and finish at the end of the program.
 
+   ```c++
+   int my_func() {
+       static int local_static_object {0};
+       local_static_object++;
+       return local_static_object;
+   }
+   ```
+
  * `{bm} static member/(static field|static member)/i` - An object that's a member of a class but bound globally rather than on an instance of the class. A static field is essentially a static object that's accessible through the class itself (not an instance of the class). Similarly, a static method is essentially a global function that's accessed through the class (not an instance of the class).
+
+   ```c++
+   struct MyClass {
+       ...
+       static int my_var {5};
+   };
+   ```
 
  * `{bm} thread local object/(thread[\-\s]local object|thread[\-\s]local variable|thread[\-\s]local storage duration|thread storage duration)/i` - An object where each thread has access to its own copy. The storage duration of these objects start at the beginning of the thread and finish when the thread ends.
 
  * `{bm} dynamically allocated object/(dynamic object|dynamic array|dynamically allocated object|dynamically allocated array|dynamic storage duration)/i` - An object that's allocated and deallocated at the user's behest, meaning that it's storage duration is also controlled by the user.
+
+   ```c++
+   int * x { new x {5} };
+   delete x;
+   ```
 
  * `{bm} internal linkage` - A variable only visible to the translation unit it's in.
 
@@ -4140,7 +4519,7 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} exception/(exception|try[\-\s]catch)/i` - An exception operation accepts an object and unwinds the call stack until reaching a special region specifically intended to stop the unwinding for objects of that type, called a try-catch block. Exceptions are a way for code to signal that something unexpected / exceptional happened.
 
- * `{bm} structured binding` - A language feature that allows for unpacking an object's members / array's elements into a set of variables (e.g. `auto [x, y] = two_elem_array`).
+ * `{bm} structured binding` - A language feature that allows for unpacking an object's members / array's elements into a set of variables (e.g. `auto [x, y] { two_elem_array }`).
 
  * `{bm} copy semantics` - The rules used for making copies of objects of some type. A copy, once made, should be equivalent to its source. A modification on the copy shouldn't modify the source as well.
 
@@ -4212,25 +4591,99 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} virtual method/(virtual method|virtual function)/i` - A method in a base class that is overridable by any class that inherits from that base class.
 
+   ```c++
+   struct MyParent {
+       ...
+       virtual int v2() {
+           return this->x + this->y;
+       }
+   };
+   ```
+
  * `{bm} pure virtual method/(pure[\-\s]virtual method|pure[\-\s]virtual function)/i` - A virtual method that requires an implementation (no implementation has been provided by the base class that declares it). For a class to be instantiable, it cannot have any pure virtual methods (similar to an abstract class in Java).
+
+   ```c++
+   struct MyParent {
+       ...
+       virtual int v2() = 0;
+       ...
+   };
+   ```
 
  * `{bm} pure virtual class/(pure[\-\s]virtual class)/i` - A class that only contains pure virtual methods.
 
+   ```c++
+   struct MyParent {
+       virtual int v1() = 0;
+       virtual int v2() = 0;
+       virtual ~MyParent() {};  // also okay to do   "virtual ~MyParent() = default"
+   };
+   ```
+
  * `{bm} virtual destructor` - A destructor that's a virtual method.
+
+    ```c++
+    struct MyStruct : MyParent {
+        ...
+        virtual ~MyStruct() {
+            // do some cleanup here
+        }
+    };
+    ```
 
  * `{bm} vtable` - A table of pointers to virtual functions, generated by the compiler. When a virtual function gets invoked (runtime) vtables are used to determining which method implementation to use.
 
  * `{bm} template` - A class or function where parts of the code are intended for substitution (by other code). At compile-time, a user supplies a set of substitutions for each usage of a template, customizing it for the specific use-case that user is dealing with.
 
+   ```c++
+   template <typename X, typename Y, typename Z>
+   X add(Y y, Z z) {
+       return y + z;
+   }
+   ```
+
  * `{bm} template parameter` - An identifier within the template. At compile time, any time a template is used its template parameters are substituted with code that the usage supplies.
  
    A template parameter may be used multiple times throughout the template. At compile-time, each usage is substituted with the same piece of code.
 
+   ```c++
+   // X, Y, Z, and N are template parameters
+   template <typename X, typename Y, typename Z, int N>
+   struct MyClass {
+       X perform(Y &var1, Z &var2) {
+           return (var1 + var2) * N;
+       }
+   };
+   ```
+
  * `{bm} template instantiation` - The process of substituting the template parameters in a template with real code.
+
+   ```c++
+   MyClass<float, int, int, 2> obj {}; // X = float, Y = int, Z = int, N = 2
+   float x { obj.perform(5, 3) };
+   ```
 
  * `{bm} named conversion/(named conversion function|named conversion|const[_\s]cast|static[_\s]cast|reinterpret[_\s]cast|narrow[_\s]cast)/i` - A set of language features / functions used for converting types (casting): `const_cast`, `static_cast`, `reinterpret_cast`, and `narrow_cast`.
 
  * `{bm} concept/(concept)_TEMPLATE/i` - A compile-time check to ensure that the type substituted for a template parameter matches a set of requirements (e.g. the type support certain operators).
+
+   ```c++
+   // concept
+   template <typename T1, typename T2, typename TR>
+   concept MyConcept = std::is_default_constructible<T1>::value
+           && std::is_default_constructible<T2>::value
+           && requires(T1 a, T2 b) {
+               { a + b } -> std::same_as<TR>;
+               { a * b } -> std::same_as<TR>;
+           };
+   
+   // usage of concept
+   template <typename T1, typename T2>
+       requires MyConcept<T1, T2, T1>
+   T1 add_and_multiply(T1 &var1, T2 &var2) {
+       return (var1 + var2) * var2;
+   }
+   ```
 
  * `{bm} compile-time` - Used in reference to something that happens during the compilation process.
 
@@ -4240,15 +4693,84 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} parameter pack` - In the context of templates, a parameter pack is a single template parameter declaration that can take in zero or more substitutions (variadic).
 
+   ```c++
+   template <typename X, typename... R>
+   X create(R... args) {
+       return X {args...};
+   }
+   ```
+
  * `{bm} variadic/(variadic|vararg)/i` - A function that takes in a variable number of arguments, sometimes also called varargs.
+
+   ```c++
+   float avg(size_t n, ...) {
+       va_list args;
+       va_start(args, n);
+       float sum {0};
+       while (size_t i {0}; i < n; i++) {
+           sum += va_args(args, float);
+       }
+       va_end(args);
+       return sum /= n;
+   }
+   ```
 
  * `{bm} template specialization` - Given a specific substitutions set substitutions for the template parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code.
 
+   ```c++
+   // template
+   template<typename T>
+   T sum(T a, T b) {
+       return a + b;
+   }
+   
+   // template specialization for bool: bit-wise or
+   template<>
+   bool sum<bool>(bool a, bool b) {
+       return a | b;
+   }
+   ```
+
  * `{bm} partial template specialization/(partial template specialization | template partial specialization)/i` - A template specialization where not all of the template parameters have been removed.
+
+   ```c++
+   // template
+   template<typename R, typename T>
+   struct MyClass {
+       R sum(T a, T b) {
+           return a + b;
+       }
+   };
+   
+   // template specialization for pointers of unknown type: already return false
+   template<typename X>
+   struct MyClass<bool, X*> {
+       bool sum(X * a, X* b) {
+           return false;
+       }
+   };
+   ```
 
  * `{bm} partial template` - A template with some of its template parameters set (not all).
 
+   ```c++
+   // declare
+   template <typename Y, typename Z>
+   using MyClassPartialTemplate = MyClass<float, Y, Z, 42>;
+   
+   // use
+   MyClass<float, int, int, 42> x{}; 
+   MyClassPartialTemplate<int, int> y{};  // same type as previous line
+   ```
+
  * `{bm} default template argument` - The default substitute in use for a template parameter.
+
+   ```c++
+   template <typename X, typename Y = long, typename Z = long>
+   X perform(Y &var1, Z &var2) {
+       return var1 + var2;
+   }
+   ```
 
  * `{bm} heap/(heap|free store)/i` - An implementation-specific block of memory used for dynamic objects. Also called the free store.
 
@@ -4258,39 +4780,103 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} promotion rule` - An implicit type conversion that may occur when an operator's operands are of differing integral and floating point types. For example, adding an integral type with a smaller integral type will cause the result to be of the same type as the larger type.
 
+   ```c++
+   int x {5};
+   long y {5L};
+   auto z {x + y};  // z will be long
+   ```
+
  * `{bm} narrowing conversion` - When an object of a certain type is truncated to a lesser type (e.g. `int` to `short`). 
 
    Narrowing conversions may be implicit during object initialization. To erroneous cases of narrowing, use braced initialization to force the compiler to generate a warning.
 
  * `{bm} constant expression` - A function that gets evaluated at compile-time, such that at run-time any invocation of it simply returns the result computed at compile-time. Constant expressions are represented as functions prefixed with `constexpr`.
 
+   ```c++
+   constexpr int test(int n) {
+       return n % 2;
+   }
+   ```
+
  * `{bm} immediate function` - A function that gets evaluated at compile-time and must produce a compile-time constant. Immediate functions expressions are represented as functions prefixed with `consteval`.
 
- * `{bm} literal type` - A type that's usable in a constant expression (for parameters and return), meaning that objects of this type can have a value that's knowable at compile-time.
+   ```c++
+   consteval int test(const int n) {
+       return n % 2;
+   }
+   ```
+
+ * `{bm} literal type` - A type that's usable in a constant expression (for parameters and return), meaning that objects of this type can have a value that's knowable at compile-time (e.g. `nullptr`).
 
  * `{bm} volatile` - A volatile variable's usage in code is immune to compiler optimizations such as operation re-ordering and removal. Mutations and accesses, no matter how irrelevant they may seem, are kept in-place and in-order by the compiler.
 
+   ```c++
+   volatile int x {5};
+   x = 5;
+   x = 6;
+   x = 7;
+   ```
+
  * `{bm} type alias` - A synonym (different name) for an existing type.
+
+   ```c++
+   using BasicGraph = DirectedGraph::Graph<std::string, std::map<std::string, std::string>, std::string, std::map<std::string, std::string>>;
+   
+   BasicGraph removeLimbs(const BasicGraph &g);
+   ```
 
  * `{bm} attribute` - A tag applied to code that provides information to the user / compiler about whatever it is that it's applied to. Similar to Java annotations.
 
- * `{bm} iterator` - A type used to access elements within some sequence (e.g. array, class representing a list, class representing an infinite stream of `int`s, etc..). An iterator requires a specific set of operator overloads.
+   ```c++
+   if (x == 0) [[likely]] {
+       return x + y;
+   } else {
+       report_error();
+   }
+   ```
 
- * `{bm} input iterator` - An iterator that can only move forward in the sequence one element at a time and can only get elements of the sequence.
+ * `{bm} iterator/(input iterator|output iterator|forward iterator|bi-?directional iterator|random access iterator|iterator)/i` - A type used to access elements within some sequence (e.g. array, class representing a list, class representing an infinite stream of `int`s, etc..). An iterator requires a specific set of operators to be implemented, where those operators function similar to accessing memory using pointer arithmetic / arrays.
  
- * `{bm} output iterator` - An iterator that can only move forward in the sequence one element at a time and can only set elements of the sequence.
- 
- * `{bm} forward iterator` - An iterator that combines the functionality of both input iterator and output iterator.
+   ```c++
+   MyIterator it {collection.begin()};
+   while (it != collection.end()) {
+       MyObject value {*it};
+       // do something with value here
+       ++iterator;
+   }
+   ```
 
- * `{bm} bidirectional iterator` - An iterator that has the same functionality as forward iterator but also allows for moving backward in the sequence one element at a time, meaning it can move forward as well as backward.
+   Five types of iterators exist:
 
- * `{bm} random access iterator` - An iterator that has the same functionality as bidirectional iterator but also allows randomly jumping to different elements within the sequence.
-
+    * input iterator - An iterator that can only move forward in the sequence one element at a time and can only read elements of the sequence.
+    * output iterator - An iterator that can only move forward in the sequence one element at a time and can only write elements of the sequence.
+    * forward iterator - An iterator that combines the functionality of both input iterator and output iterator.
+    * bidirectional iterator - An iterator that has the same functionality as forward iterator but also allows for moving backward in the sequence one element at a time, meaning it
+    can move forward as well as backward.
+    * random access iterator - An iterator that has the same functionality as bidirectional iterator but also allows randomly jumping to different elements within the sequence.
+   
  * `{bm} modifier/(specifier|modifier)/i` - Optional marker that alters a function. With functions, a modifier may be required to go either before the return type (prefix modifier) or after the parameter list (suffix modifier).
  
+    ```c++
+    //                  modifier here
+    //                    vvvvvvvv
+    int add(int x, int y) noexcept {
+        return x + y;
+    }
+    ```
+
    Modifiers are also sometimes referred to as specifiers.
 
  * `{bm} fold expression` - Exhaustively applies a binary operator to the contents of a parameter pack and return the final result.
+
+    ```c++
+    template<typename... R>
+    T test(R... args) {
+        R l_ass_res {... - args};  // ((((a-b)-c)-d)-...)
+        R r_ass_res {args - ...};  // (...-(w-(x-(y-z))))
+        return l_ass_res + r_ass_res;
+    }
+    ```
 
  * `{bm} associativity/(associativity|associative)/i` - In the context of binary operators, associativity refers to the order in which an expression with a chain of the same binary operator is evaluated. The term ...
 
@@ -4308,9 +4894,30 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
 
  * `{bm} function pointer` - A pointer to a function.
 
- * `{bm} functor/(functor|function object)/i` - A class that you can invoke as if it were a function because it has an operator overloads for function-call.
+   ```c++
+   int add(int a, int b) {
+       return a + b;
+   }
+
+   int (*p)(int, int) {add};
+   p(1, 2);   // invoke
+   ```
+
+ * `{bm} functor/(functor|function object)/i` - A class that you can invoke as if it were a function because it has an operator overload for the function-call operator.
+
+   ```c++
+   struct MyFunctor {
+       int operator()(int y) const { return -y + x; }
+   private:
+       int x {5};
+   };
+   ```
 
  * `{bm} function call operator/(function[\s\-]call operator)/i` - The operator used for making function calls (parenthesis), may be operator overloaded on classes to turn them into functors.
+
+   ```c++
+   int operator()(int y) const { return -y + x; }
+   ```
 
  * `{bm} lambda` - Shorthand notation for an unnamed functor.
 
@@ -4376,7 +4983,7 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
  * `{bm} user-defined literal` - A literal suffix defined by a user, where when that suffix is applied to some literal, some computation is performed.
 
    ```c++
-   Distance d = 42.0_km;  // the suffix _km converts the literal 42.0 to an instance of the Distance type
+   Distance d {42.0_km};  // the suffix _km converts the literal 42.0 to an instance of the Distance type
    ```
 
  * `{bm} module unit` - A translation unit that contains a module declaration.
@@ -4388,6 +4995,10 @@ Compiler / compilation options may be controlled through `#pragma`s. I've left `
       return a + b;
    }
    ```
+
+ * `{bm} three-way comparison operator/(three-way comparison operator|3-way comparison operator|spaceship operator)/i` - Given two objects `a` and `b`, the three-way comparison operator determines if `a < b`, `a == b`, or `a > b`.
+ 
+   The symbol for the operator is an equal-sign sandwiched between angle brackets: `a <=> b`. This operator is sometimes called the spaceship operator because it's said that the symbol for the operator looks like a spaceship.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
