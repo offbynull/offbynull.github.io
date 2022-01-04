@@ -59,11 +59,9 @@ TODO: smart pointers
 
 TODO: add terminology for declarations and definitions
 
-TODO: fix header files section -- put the fact that it copies in source code FIRST, then talk about why its used for declarations.
-
 # Essentials
 
-The following document is my attempt at charting out the various pieces of the modern C++ landscape. It was made for my own personal reference and put online in the hopes that it might be useful to others. It isn't comprehensive and some of the information may not be entirely correct or may be missing large portions. I tried to focus on the 80% of features that gets used most of the time and not the 20% of highly esoteric / confusing features.
+The following document is my attempt at charting out the various pieces of the modern C++ landscape, focusing on the 80% of features that gets used most of the time rather than the 20% of highly esoteric / confusing features. It isn't comprehensive and some of the information may not be entirely correct / may be missing large portions.
 
 The key points of similarity to remember:
 
@@ -78,18 +76,18 @@ The key point of dissimilarity to remember:
 1. C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantics.
 1. C++ has a lot of ambiguous behaviour. Compared to Java/C#, the language specifically carves out pieces of the spec and leaves it as platform-specific behaviour, undefined behaviour, etc.. so that compilers have more room to optimize code. 
 
-## Language Essentials
+## Language Basics
 
-Other parts of the document require the reader to know about the following base set of C++ language consturcts:
+The following are a base set of language constructs required for understanding the rest of the document.
 
 1. The general purpose integral type is `int`.
 
 2. Variables use the format `modifiers type name initializer`.
 
    ```c++
-   int x = 0;
-   int x (0);
-   int y {0};
+   int a = 0;
+   int b (0);
+   int c {0};
    ```
  
    C++ provides a bewildering number of ways to initialize a variable, each with its own set of edge cases. For best results, stick to the curly braces.
@@ -206,9 +204,9 @@ A good online tool to try things in is [cppinsights](https://cppinsights.io/), w
 
 ## Header Files
 
-For each source code file that gets compiled, the compiler needs to know that the entities (variables, functions, classes, etc..) being used in that file exist. The scope at which the compiler keeps track of these entities is per source code file. For example, imagine a function named `myFunction`. If `myFunction` is being used in 5 different source code files, each of those 5 files needs to tell the compiler about it before it can use it.
+For each source code file that gets compiled, the compiler needs to know that the entities (variables, functions, classes, etc..) accessed within that file actually exist. The scope at which the compiler keeps track of these entities is per source code file. For example, imagine a source code file that defines a function named `myFunction` (definition). There are 5 other source code files that call `myFunction` at some point. Each of those 5 other files is required to tell the compiler what `myFunction` is (declaration) before it can invoke it.
 
-One way to handle this scenario is to put `myFunction`'s declaration in each source code file that uses it.
+One way to handle this scenario is to put `myFunction`'s declaration in each source code file that calls it.
 
 ```c++
 OtherClass myFunction(int a);
@@ -217,7 +215,7 @@ OtherClass myFunction(int a);
 The problem with doing this is that ...
 
 1. you're duplicating something 5 times, meaning you need to update 5 different places should anything change with the class.
-2. you need to declare more than just `myFunction` (e.g. `myFunction` requires `OtherClass`, which may require even more entities). 
+2. you need a declaration for more than just `myFunction` (e.g. `myFunction` requires `OtherClass`, which may require even more entities). 
 3. as a result of 1 and 2, source code file sizes explode and quickly becomes unmanageable.
 
 The preferred way to handle this scenario is to put `myFunction`'s declaration into a header file. Then, any file that needs to know about `myFunction` can use the `#include` directive.,,
@@ -232,17 +230,17 @@ OtherClass myFunction(int a);
 myFunction(44);
 ```
 
-If an entity is declared once already within an include, it shouldn't be declared again. A header file may get included more than once the `#include` hierearchy gets processed, meaning that duplicate declarations are possible. For example, `Main.cpp` includes `ParentA.hpp` and `ParentB.hpp`. Both `ParentA.hpp` and `ParentB.hpp` then go on to include `Child.hpp`....
+If an entity is declared once already by an `#include`, it shouldn't be declared again.  For example, imagine that the file `Main.cpp` includes `ParentA.hpp` and `ParentB.hpp`. Both `ParentA.hpp` and `ParentB.hpp` then go on to include `Child.hpp`....
 
 ```{svgbob}
 Main.cpp
   |
-  +----- ParentA.hpp ------+
-  |                        +----- Child.cpp
-  +----- ParentB.hpp ------+
+  +----> ParentA.hpp ------+
+  |                        +----> Child.hpp
+  +----> ParentB.hpp ------+
 ```
 
-To mitigate this problem, an include guard is typically provided in each header file.
+The problem the above example scenario creates is that `Child.hpp` gets `#include`'d twice, meaning that everything in it is declared twice. To mitigate this problem, an include guard is typically provided in each header file.
 
 ```c++
 // MyFunction.hpp
@@ -259,8 +257,11 @@ OtherClass myFunction(int a);
 `#ifdef`, `#define`, and `#endif` are preprocessor macros that aren't covered here. Look them up online if you need to. 
 ```
 
-```{note}
 You may notice that sometimes `#include` puts quotes around the files and sometimes angle brackets. Use quotes when the files are in the same directory structure, angle brackets when the files are coming from some external library.
+
+```c++
+#include <vector>          // library header
+#include "OtherClass.hpp"  // local header
 ```
 
 # Operators
@@ -3919,6 +3920,84 @@ export import my_module.multiplication;  // export everything under my_module.mu
 Last I recall using this, each compiler required a special flag to turn on modules. Just because you're code uses modules doesn't mean the internal C++ libraries (e.g. standard template library, `cstdint`, etc..) are going to expose things as modules. You still have to include those using the `#include <...>` directives (maybe -- I think I remember there being some roundabout way of getting modules to work).
 ```
 
+# Preprocessor
+
+The preprocessor is a component of the C++ compiler. Before the programming statements in a source code file are compiled, the processor goes over the file looking for preprocessor directives. Preprocessor directives either...
+
+1. perform some basic text manipulation.
+1. signal certain things to the compiler (e.g. use a specific feature, turn off a specific feature, etc..).
+
+The first case (text manipulation) is primarily what the preprocessor is used for. Unlike normal C++ programming statements, preprocessor directives start with the pound sign (#) and shouldn't include a semicolon (;) at the end.
+
+To include one file in another file, use `#include`. Local files should be wrapped in quotes while files coming from libraries should be wrapped in a angled brackets.
+
+```c++
+#include <vector>          // library header
+#include "OtherClass.hpp"  // local header
+```
+
+To replace strings in a file with another string, use `#define`.
+
+```c++
+#define INITIAL_VALUE 500
+int x {INITIAL_VALUE};
+int y {INITIAL_VALUE};
+```
+
+To replace strings in a file with a _parameterized replacement_, use `#define` with parenthesis.
+
+```c++
+#define ADDED_VALUE(x, y) x + y - 15
+int x {ADDED_VALUE(1, 7)};
+int y {ADDED_VALUE(5, 3)};
+```
+
+To stop replacing a string, use `#undef`.
+
+```c++
+#define INITIAL_VALUE 500
+int x {INITIAL_VALUE};
+#undef
+#define INITIAL_VALUE 8
+int y {INITIAL_VALUE};
+```
+
+To conditionally include portions of a file, use an `#ifdef` / `#else` / `#endif` block.
+
+```c++
+#ifdef INITIAL_VALUE
+int x {INITIAL_VALUE};
+#else
+int x {ADDED_VALUE(1, 7)};
+#endif
+```
+
+Similarly, `#ifndef` may be used to conditionally include imports (n was added to the preprocessor directive -- if NOT defined).
+
+```c++
+#ifndef INITIAL_VALUE
+int x {ADDED_VALUE(1, 7)};
+#else
+int x {INITIAL_VALUE};
+#endif
+```
+
+Conditional inclusion preprocessor directives come in an alternate form that allows for more flexible conditions: `#if` / `#elif` /`#else` / `#endif` block.
+
+```c++
+#if !defined INITIAL_VALUE
+int x {1}
+#elif INITIAL_VALUE > 50
+int x {INITIAL_VALUE - 50}
+#else
+int x {INITIAL_VALUE}
+#endif
+```
+
+```{note}
+Compiler / compilation options may be controlled through `#pragma`s. I've left `#pragma`s out of the document because they're specific to the compiler and platform.
+```
+
 # Terminology
 
  * `{bm} processor/(preprocessor|translation unit)/i` - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a translation unit.
@@ -3941,7 +4020,7 @@ Last I recall using this, each compiler required a special flag to turn on modul
 
  * `{bm} enumeration/(enumeration|enum)/i` - A user-defined type that can be set to one of a set of possibilities.
 
- * `{bm} class/(class|struct)/i` - A user-defined type that pairs together data and the functions that operate on that data.
+ * `{bm} class/(class|\bstruct)/i` - A user-defined type that pairs together data and the functions that operate on that data.
 
  * `{bm} union` - A user-defined type where all members share the same memory location (different representations of the same data).
 

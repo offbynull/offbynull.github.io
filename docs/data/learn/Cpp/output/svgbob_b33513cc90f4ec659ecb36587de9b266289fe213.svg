@@ -78,14 +78,14 @@ tspan.head{
 <g>
 <line x1="20" x2="20" y1="16" y2="40"/>
 <line x1="20" x2="20" y1="40" y2="72"/>
-<line x1="20" x2="64" y1="40" y2="40"/>
-<line x1="20" x2="64" y1="72" y2="72"/>
+<line marker-end="url(#triangle)" x1="20" x2="60" y1="40" y2="40"/>
+<line marker-end="url(#triangle)" x1="20" x2="60" y1="72" y2="72"/>
 </g>
 <g>
 <line x1="168" x2="220" y1="40" y2="40"/>
 <line x1="220" x2="220" y1="40" y2="56"/>
 <line x1="220" x2="220" y1="56" y2="72"/>
-<line x1="220" x2="264" y1="56" y2="56"/>
+<line marker-end="url(#triangle)" x1="220" x2="260" y1="56" y2="56"/>
 </g>
 <g>
 <line x1="168" x2="220" y1="72" y2="72"/>
@@ -107,7 +107,7 @@ ParentB.hpp
 </g>
 <g>
 <text x="273" y="60">
-Child.cpp
+Child.hpp
 </text>
 </g>
 </svg>

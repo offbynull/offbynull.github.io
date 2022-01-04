@@ -8,7 +8,7 @@
 <li><a href="#H_TODOs">TODOs</a></li>
 <li><a href="#H_Essentials">Essentials</a></li>
 <ul>
-<li><a href="#H_Language%20Essentials">Language Essentials</a></li>
+<li><a href="#H_Language%20Basics">Language Basics</a></li>
 <li><a href="#H_Example%20Program">Example Program</a></li>
 <li><a href="#H_Compilation">Compilation</a></li>
 <li><a href="#H_Header%20Files">Header Files</a></li>
@@ -127,6 +127,7 @@
 <li><a href="#H_Expression%20Categories">Expression Categories</a></li>
 <li><a href="#H_Iterators">Iterators</a></li>
 <li><a href="#H_Modules">Modules</a></li>
+<li><a href="#H_Preprocessor">Preprocessor</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
@@ -157,12 +158,11 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 -- friend function to ostringstream</p>
 <p>TODO: smart <a href="#BM_(pointer)%2Fi">pointer</a>s</p>
 <p>TODO: add terminology for declarations and definitions</p>
-<p>TODO: fix header files section -- put the fact that it copies in source code FIRST, then talk about why its used for declarations.</p>
 <a name="H_Essentials"></a><h1>Essentials</h1>
-<p>The following document is my attempt at charting out the various pieces of the modern C++ landscape. It was made for my own personal <a href="#BM_(reference)%2Fi">reference</a> and put online in the hopes that it might be useful to others. It isn't comprehensive and some of the information may not be entirely correct or may be missing large portions. I tried to focus on the 80% of features that gets used most of the time and not the 20% of highly esoteric / confusing features.</p>
+<p>The following document is my attempt at charting out the various pieces of the modern C++ landscape, focusing on the 80% of features that gets used most of the time rather than the 20% of highly esoteric / confusing features. It isn't comprehensive and some of the information may not be entirely correct / may be missing large portions.</p>
 <p>The key points of similarity to remember:</p>
 <ol>
-<li>Scope in C++ is similar to Java/C# (e.g. function scope, <a href="#BM_(class%7Cstruct)%2Fi">class</a> scope, etc...). Variables, <a href="#BM_(class%7Cstruct)%2Fi">class</a>es, etc.. come into and leave out of scopes in similar ways.</li>
+<li>Scope in C++ is similar to Java/C# (e.g. function scope, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> scope, etc...). Variables, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es, etc.. come into and leave out of scopes in similar ways.</li>
 <li>Compound statements in C++ are similar Java/C#. They create a scope, and things declared in that scope are gone once the scope is exited.</li>
 <li>Control flow statements in C++ are similar to Java/C#. All the basics are there: for loops, for-each loops, while loops, if-else, switch, etc...</li>
 <li>Data can exist on the <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a> or stack similar to Java/C#.</li>
@@ -173,17 +173,17 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
 <li>C++ has a lot of legacy baggage and many edge cases. Compared to Java/C#, the language is powerful but also deeply convoluted with many foot-guns and esoteric syntax / semantics.</li>
 <li>C++ has a lot of ambiguous behaviour. Compared to Java/C#, the language specifically carves out pieces of the spec and leaves it as platform-specific behaviour, undefined behaviour, etc.. so that <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>s have more room to optimize code.</li>
 </ol>
-<a name="H_Language%20Essentials"></a><h2>Language Essentials</h2>
-<p>Other parts of the document require the reader to know about the following base set of C++ language consturcts:</p>
+<a name="H_Language%20Basics"></a><h2>Language Basics</h2>
+<p>The following are a base set of language constructs required for understanding the rest of the document.</p>
 <ol>
 <li>
 <p>The general purpose integral type is <code>int</code>.</p>
 </li>
 <li>
 <p>Variables use the format <code>modifiers type name initializer</code>.</p>
-<pre class="hljs"><code><span class="hljs-type">int</span> x = <span class="hljs-number">0</span>;
-<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">x</span> <span class="hljs-params">(<span class="hljs-number">0</span>)</span></span>;
-<span class="hljs-type">int</span> y {<span class="hljs-number">0</span>};
+<pre class="hljs"><code><span class="hljs-type">int</span> a = <span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">b</span> <span class="hljs-params">(<span class="hljs-number">0</span>)</span></span>;
+<span class="hljs-type">int</span> c {<span class="hljs-number">0</span>};
 </code></pre>
 <p>C++ provides a bewildering number of ways to initialize a variable, each with its own set of edge cases. For best results, stick to the curly braces.</p>
 </li>
@@ -193,11 +193,11 @@ implementaiton-specific behaviour with implict casts (see implicit casts section
     <span class="hljs-keyword">return</span> x + a;
 }
 </code></pre>
-<p>C++ functions don't necessarily have to be <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s (<a href="#BM_%5Cb(member)%2Fi">member</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>).</p>
+<p>C++ functions don't necessarily have to be <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s (<a href="#BM_%5Cb(member)%2Fi">member</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).</p>
 </li>
 <li>
-<p><a href="#BM_(class%7Cstruct)%2Fi">Class</a>es use either <code>struct</code> or <code>class</code>.</p>
-<p><code>struct</code> makes all <a href="#BM_%5Cb(member)%2Fi">member</a>s of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> public by default, while <code>class</code> makes them all private by default. <a href="#BM_%5Cb(member)%2Fi">Member</a>s need to be grouped together by visibility, where a visibility (e.g. <code>private</code>) is a label within the <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
+<p><a href="#BM_(class%7C%5Cbstruct)%2Fi">Class</a>es use either <code>struct</code> or <code>class</code>.</p>
+<p><code>struct</code> makes all <a href="#BM_%5Cb(member)%2Fi">member</a>s of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> public by default, while <code>class</code> makes them all private by default. <a href="#BM_%5Cb(member)%2Fi">Member</a>s need to be grouped together by visibility, where a visibility (e.g. <code>private</code>) is a label within the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> {
    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> </span>{
       <span class="hljs-keyword">return</span> x + a;
@@ -256,8 +256,8 @@ hello world
 <p><img src="svgbob_80c99337d0ee9d0afb6fdd8cc113d933be8d1ce9.svg" alt="Kroki diagram output"></p>
 <p>The C++ language has a lot of legacy baggage, edge cases, and ambiguous behaviour. Regardless of the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> chosen, at least some of the following warning options should be enabled:</p>
 <ul>
-<li><code>-Wall</code> - Warns about questionable but easily avoidable con<a href="#BM_(class%7Cstruct)%2Fi">struct</a>s.</li>
-<li><code>-Wextra</code> - Warns about other questionable con<a href="#BM_(class%7Cstruct)%2Fi">struct</a>s not covered by <code>-Wall</code>.</li>
+<li><code>-Wall</code> - Warns about questionable but easily avoidable constructs.</li>
+<li><code>-Wextra</code> - Warns about other questionable constructs not covered by <code>-Wall</code>.</li>
 <li><code>-Wpedantic</code> - Warns about ISO conformance.</li>
 <li><code>-Weverything</code> - Turns on all warnings.</li>
 </ul>
@@ -267,14 +267,14 @@ hello world
 <p>A good online tool to try things in is <a href="https://cppinsights.io/">cppinsights</a>, which breaks down C++ code and allows you some visibility into what the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> is doing / what the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> sees.</p>
 </div>
 <a name="H_Header%20Files"></a><h2>Header Files</h2>
-<p>For each source code file that gets compiled, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> needs to know that the entities (variables, functions, <a href="#BM_(class%7Cstruct)%2Fi">class</a>es, etc..) being used in that file exist. The scope at which the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> keeps track of these entities is per source code file. For example, imagine a function named <code>myFunction</code>. If <code>myFunction</code> is being used in 5 different source code files, each of those 5 files needs to tell the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> about it before it can use it.</p>
-<p>One way to handle this scenario is to put <code>myFunction</code>'s declaration in each source code file that uses it.</p>
+<p>For each source code file that gets compiled, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> needs to know that the entities (variables, functions, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es, etc..) accessed within that file actually exist. The scope at which the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> keeps track of these entities is per source code file. For example, imagine a source code file that defines a function named <code>myFunction</code> (definition). There are 5 other source code files that call <code>myFunction</code> at some point. Each of those 5 other files is required to tell the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> what <code>myFunction</code> is (declaration) before it can invoke it.</p>
+<p>One way to handle this scenario is to put <code>myFunction</code>'s declaration in each source code file that calls it.</p>
 <pre class="hljs"><code><span class="hljs-function">OtherClass <span class="hljs-title">myFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span></span>;
 </code></pre>
 <p>The problem with doing this is that ...</p>
 <ol>
-<li>you're duplicating something 5 times, meaning you need to update 5 different places should anything change with the <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</li>
-<li>you need to declare more than just <code>myFunction</code> (e.g. <code>myFunction</code> requires <code>OtherClass</code>, which may require even more entities).</li>
+<li>you're duplicating something 5 times, meaning you need to update 5 different places should anything change with the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</li>
+<li>you need a declaration for more than just <code>myFunction</code> (e.g. <code>myFunction</code> requires <code>OtherClass</code>, which may require even more entities).</li>
 <li>as a result of 1 and 2, source code file sizes explode and quickly becomes unmanageable.</li>
 </ol>
 <p>The preferred way to handle this scenario is to put <code>myFunction</code>'s declaration into a header file. Then, any file that needs to know about <code>myFunction</code> can use the <code>#include</code> directive.,,</p>
@@ -286,9 +286,9 @@ hello world
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"MyFunction.hpp"</span></span>
 <span class="hljs-built_in">myFunction</span>(<span class="hljs-number">44</span>);
 </code></pre>
-<p>If an entity is declared once already within an include, it shouldn't be declared again. A header file may get included more than once the <code>#include</code> hierearchy gets processed, meaning that duplicate declarations are possible. For example, <code>Main.cpp</code> includes <code>ParentA.hpp</code> and <code>ParentB.hpp</code>. Both <code>ParentA.hpp</code> and <code>ParentB.hpp</code> then go on to include <code>Child.hpp</code>....</p>
-<p><img src="svgbob_5213a5895047752ce0725a3e29c70b5b87a5d640.svg" alt="Kroki diagram output"></p>
-<p>To mitigate this problem, an include guard is typically provided in each header file.</p>
+<p>If an entity is declared once already by an <code>#include</code>, it shouldn't be declared again.  For example, imagine that the file <code>Main.cpp</code> includes <code>ParentA.hpp</code> and <code>ParentB.hpp</code>. Both <code>ParentA.hpp</code> and <code>ParentB.hpp</code> then go on to include <code>Child.hpp</code>....</p>
+<p><img src="svgbob_b33513cc90f4ec659ecb36587de9b266289fe213.svg" alt="Kroki diagram output"></p>
+<p>The problem the above example scenario creates is that <code>Child.hpp</code> gets <code>#include</code>'d twice, meaning that everything in it is declared twice. To mitigate this problem, an include guard is typically provided in each header file.</p>
 <pre class="hljs"><code><span class="hljs-comment">// MyFunction.hpp</span>
 <span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> MY_FUNCTION_H <span class="hljs-comment">// include guard</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> MY_FUNCTION_H</span>
@@ -302,10 +302,10 @@ hello world
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p><code>#ifdef</code>, <code>#define</code>, and <code>#endif</code> are <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros that aren't covered here. Look them up online if you need to.</p>
 </div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>You may notice that sometimes <code>#include</code> puts quotes around the files and sometimes angle brackets. Use quotes when the files are in the same directory structure, angle brackets when the files are coming from some external library.</p>
-</div>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span>          <span class="hljs-comment">// library header</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"OtherClass.hpp"</span>  <span class="hljs-comment">// local header</span></span>
+</code></pre>
 <a name="H_Operators"></a><h1>Operators</h1>
 <p>The following subsections provide the list of operators available in C++. Some operators are obvious, while others are explained in other sections.</p>
 <a name="H_Bitwise%20Logical%20Operators"></a><h2>Bitwise Logical Operators</h2>
@@ -603,7 +603,7 @@ hello world
 </tr>
 </tbody>
 </table>
-<p>There operators are used in scenarios that deal with accessing the <a href="#BM_%5Cb(member)%2Fi">member</a>s of an <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. element in an array, <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>) or dealing with memory addresses / <a href="#BM_(pointer)%2Fi">pointer</a>s. The subscript and and <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dobject)%2Fi">member of object</a> operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.</p>
+<p>There operators are used in scenarios that deal with accessing the <a href="#BM_%5Cb(member)%2Fi">member</a>s of an <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. element in an array, <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>) or dealing with memory addresses / <a href="#BM_(pointer)%2Fi">pointer</a>s. The subscript and and <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dobject)%2Fi">member of object</a> operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.</p>
 <a name="H_Dynamic%20Object%20Operators"></a><h2>Dynamic Object Operators</h2>
 <table>
 <thead>
@@ -707,7 +707,7 @@ hello world
 <span class="hljs-type">int</span> c {<span class="hljs-number">0</span>}; <span class="hljs-comment">// assign to constant 0</span>
 <span class="hljs-type">int</span> d {c}; <span class="hljs-comment">// assign to value in c</span>
 </code></pre>
-<p>In C++, variables that are <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s (assigned to a <a href="#BM_(class%7Cstruct)%2Fi">class</a>) are called <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s. This section deals with non-<a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s (e.g. scoped somewhere other than a <a href="#BM_(class%7Cstruct)%2Fi">class</a> -- global, inside a function, etc..).</p>
+<p>In C++, variables that are <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s (assigned to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>) are called <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s. This section deals with non-<a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s (e.g. scoped somewhere other than a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> -- global, inside a function, etc..).</p>
 <a name="H_Core%20Types"></a><h2>Core Types</h2>
 <p>The following sections list out core C++ types and their analogs. These include numeric types, character types, and string types.</p>
 <a name="H_Integral"></a><h3>Integral</h3>
@@ -1287,7 +1287,7 @@ hello world
 <li><code>int x[] = { 5, 5, 5 }</code> - Equivalent to above (assignment does not do any extra work).</li>
 <li><code>int x[3] {}</code> - Creates an array of 3 ints where each of those ints are 0 (memory zero'd out -- <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>).</li>
 <li><code>int x[3] = {}</code> - Equivalent to above (assignment does not do any extra work).</li>
-<li><code>int x[n]</code> - Disallowed by C++ if n isn't a constant. These types of arrays are allowed in C (called <a href="#BM_(variable%20length%20array)%2Fi">variable length array</a>s / <a href="#BM_(VLA)%2F">VLA</a>), but not in C++ because C++ has collection <a href="#BM_(class%7Cstruct)%2Fi">class</a>es that allow for sizes not known at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</li>
+<li><code>int x[n]</code> - Disallowed by C++ if n isn't a constant. These types of arrays are allowed in C (called <a href="#BM_(variable%20length%20array)%2Fi">variable length array</a>s / <a href="#BM_(VLA)%2F">VLA</a>), but not in C++ because C++ has collection <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that allow for sizes not known at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</li>
 </ul>
 <p>Accessing arrays is done similarly to how it is in most other languages, by subscripting (e.g. <code>x[0] = 5</code>). The only difference is that array access isn't bounds-checked and array length information isn't automatically maintained at run-time. For example, if an array has 100 elements, C++ won't stop you from trying to access element 250 -- out-of-bounds array access is undefined behaviour.</p>
 <p>One way to think of an arrays is as <a href="#BM_(pointer)%2Fi">pointer</a> to a contiguous block of elements of the array type. In fact, if an array type gets used where it isn't expected, that array type automatically decays to a <a href="#BM_(pointer)%2Fi">pointer</a> type.</p>
@@ -1409,13 +1409,13 @@ y = y + <span class="hljs-number">2</span>; <span class="hljs-comment">// fails<
 <p>If you have a <code>void *</code> and you want to do raw memory manipulation at that address, use a <code>std::byte *</code> instead. Why not just use <code>char *</code> instead? Is a <code>char</code> guaranteed to be 1 byte (I think it is)? According to <a href="https://stackoverflow.com/a/46151026">this</a>, it's because certain assumptions about <code>char</code>s may not hold with bytes? I don't know. Just remember <code>std::byte *</code> if you're working with raw data.</p>
 </div>
 <a name="H_Function%20Pointer"></a><h3>Function Pointer</h3>
-<p>A <a href="#BM_(pointer)%2Fi">pointer</a> to a function means the type being pointed to is a function with some specific structure. All functions have a type associated with them, defined by their return type, parameter type, and owning <a href="#BM_(class%7Cstruct)%2Fi">class</a> if the function is a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>.</p>
+<p>A <a href="#BM_(pointer)%2Fi">pointer</a> to a function means the type being pointed to is a function with some specific structure. All functions have a type associated with them, defined by their return type, parameter type, and owning <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> if the function is a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>.</p>
 <pre class="hljs"><code><span class="hljs-comment">// type is: int (int, int)</span>
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
     <span class="hljs-keyword">return</span> a + b;
 }
 </code></pre>
-<p>To declare a <a href="#BM_(function%20pointer)%2Fi">function pointer</a> to a <a href="#BM_(free%20function%7Cnon-member%20function)%2Fi">free function</a> or a static <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>, write out the function type (return type and parameter list without names) but place the <a href="#BM_(pointer)%2Fi">pointer</a> name preceded by an asterisk (*) <em>wrapped in parenthesis</em> where the function name would be. Invoke it just like you would any other function.</p>
+<p>To declare a <a href="#BM_(function%20pointer)%2Fi">function pointer</a> to a <a href="#BM_(free%20function%7Cnon-member%20function)%2Fi">free function</a> or a static <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>, write out the function type (return type and parameter list without names) but place the <a href="#BM_(pointer)%2Fi">pointer</a> name preceded by an asterisk (*) <em>wrapped in parenthesis</em> where the function name would be. Invoke it just like you would any other function.</p>
 <pre class="hljs"><code><span class="hljs-built_in">int</span> (*func_ptr)(<span class="hljs-type">int</span>, <span class="hljs-type">int</span>) {}; <span class="hljs-comment">// unset pointer to a function of structure  int (int, int)</span>
 
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
@@ -1429,7 +1429,7 @@ y = y + <span class="hljs-number">2</span>; <span class="hljs-comment">// fails<
 func_ptr = &amp;add;  <span class="hljs-comment">// point func_ptr to address of add()</span>
 <span class="hljs-built_in">func_ptr</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);   <span class="hljs-comment">// invoke</span>
 </code></pre>
-<p>To declare a <a href="#BM_(function%20pointer)%2Fi">function pointer</a> to a non-static <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> (<a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>), the <a href="#BM_(class%7Cstruct)%2Fi">class</a> type needs to be included before the asterisk (*) using the scoped resolution operator (::).</p>
+<p>To declare a <a href="#BM_(function%20pointer)%2Fi">function pointer</a> to a non-static <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> (<a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>), the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> type needs to be included before the asterisk (*) using the scoped resolution operator (::).</p>
 <pre class="hljs"><code><span class="hljs-built_in">int</span> (MyClass::*func_ptr)(<span class="hljs-type">int</span>, <span class="hljs-type">int</span>) {}; <span class="hljs-comment">// unset pointer to a function of structure  int (int, int)  in or inherited from MyClass</span>
 
 MyClass x {};
@@ -1494,7 +1494,7 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 </ul>
 </li>
 <li>
-<p>an expression such as a structure/<a href="#BM_(class%7Cstruct)%2Fi">class</a> literal, array literal, or string literal, it'll return the number of bytes needed to hold it. For example, ...</p>
+<p>an expression such as a structure/<a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> literal, array literal, or string literal, it'll return the number of bytes needed to hold it. For example, ...</p>
 </li>
 <li>
 <p><code>sizeof "hi"</code> is 3 (added 1 for the null terminator at the end)</p>
@@ -1509,7 +1509,7 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 <p><code>x = int[n]; sizeof x</code> is invalid C++ (<a href="#BM_(variable%20length%20array)%2Fi">variable length array</a>s <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d on stack are not allowed in C++).</p>
 </li>
 </ul>
-<p>In other words, <code>sizeof</code> returns the size of things known at <a href="#BM_(compile-time)%2Fi">compile-time</a>. If a variable is passed in, it outputs the size of the data type. For example, if the data type is a <a href="#BM_(class%7Cstruct)%2Fi">struct</a> of type <code>MyStruct</code>, it'll return the number of bytes used to store a <code>MyStruct</code>. However, if the data type is a <a href="#BM_(pointer)%2Fi">pointer</a> to <code>MyStruct</code>, it'll return the number of bytes to hold that <a href="#BM_(pointer)%2Fi">pointer</a>. That is, you can't use it to get the size of something like a <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamically allocated array</a> of integers.</p>
+<p>In other words, <code>sizeof</code> returns the size of things known at <a href="#BM_(compile-time)%2Fi">compile-time</a>. If a variable is passed in, it outputs the size of the data type. For example, if the data type is a <a href="#BM_(class%7C%5Cbstruct)%2Fi">struct</a> of type <code>MyStruct</code>, it'll return the number of bytes used to store a <code>MyStruct</code>. However, if the data type is a <a href="#BM_(pointer)%2Fi">pointer</a> to <code>MyStruct</code>, it'll return the number of bytes to hold that <a href="#BM_(pointer)%2Fi">pointer</a>. That is, you can't use it to get the size of something like a <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamically allocated array</a> of integers.</p>
 <p>In certain cases, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> may add padding to <a href="#BM_(object%7Cinstance)%2Fi">object</a>s (e.g. byte boundary alignments or performance reasons), meaning that the size returned by <code>sizeof</code> for an <a href="#BM_(object%7Cinstance)%2Fi">object</a> shouldn't be used to make inferences about the characteristics of that <a href="#BM_(object%7Cinstance)%2Fi">object</a>. For example, a <code>long double</code> may get reported as being 16 bytes, but that doesn't necessarily mean that a <code>long double</code> is a 128-bit quad floating point. It could be that only 12 of those bytes are used to represent the floating point number while the remainder is just padding for alignment reasons.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -1538,7 +1538,7 @@ IntegerButWithNewName z {x + y}; <span class="hljs-comment">// equivalent to:  i
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>To allow for use-cases such as the <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>ing case in the example above, the cleanest solution is to wrap the type in a <a href="#BM_(class%7Cstruct)%2Fi">class</a></p>
+<p>To allow for use-cases such as the <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>ing case in the example above, the cleanest solution is to wrap the type in a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a></p>
 </div>
 <p>The benefit of <a href="#BM_(type%20alias)%2Fi">type alias</a>ing is that it helps shorten type names, which can be especially useful when using a <a href="#BM_(template)%2Fi">template</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">using</span> BasicGraph = DirectedGraph::Graph&lt;std::string, std::map&lt;std::string, std::string&gt;, std::string, std::map&lt;std::string, std::string&gt;&gt;;
@@ -1557,7 +1557,7 @@ IntegerButWithNewName z {x + y}; <span class="hljs-comment">// equivalent to:  i
 <p>One caveat to the above is that a type beginning with <code>const</code> is equivalent to the first part of that type having <code>const</code> applied on it.</p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> <span class="hljs-type">int</span> x {<span class="hljs-number">5</span>};  <span class="hljs-comment">// equivalent to int const x {5}</span>
 </code></pre>
-<p>All of the examples above were for <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">fundamental type</a>s. Appending a <code>const</code> on a <a href="#BM_(class%7Cstruct)%2Fi">class</a> type works exactly the same way: None of its <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s are modifiable ever, even by its own <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s.</p>
+<p>All of the examples above were for <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">fundamental type</a>s. Appending a <code>const</code> on a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> type works exactly the same way: None of its <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s are modifiable ever, even by its own <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyStruct</span> {
     <span class="hljs-type">int</span> x {<span class="hljs-number">5</span>}
 };
@@ -1724,7 +1724,7 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
 </code></pre>
 <p>The problem with C-style casts are that they don't provide the same safety mechanisms as <a href="#BM_(named%20conversion%20function%7Cnamed%20conversion%7Cconst%5B_%5Cs%5Dcast%7Cstatic%5B_%5Cs%5Dcast%7Creinterpret%5B_%5Cs%5Dcast%7Cnarrow%5B_%5Cs%5Dcast)%2Fi">named conversion</a>s do (e.g. inadvertently strip the <code>const</code>-ness). <a href="#BM_(named%20conversion%20function%7Cnamed%20conversion%7Cconst%5B_%5Cs%5Dcast%7Cstatic%5B_%5Cs%5Dcast%7Creinterpret%5B_%5Cs%5Dcast%7Cnarrow%5B_%5Cs%5Dcast)%2Fi">Named conversion</a>s provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a <a href="#BM_(named%20conversion%20function%7Cnamed%20conversion%7Cconst%5B_%5Cs%5Dcast%7Cstatic%5B_%5Cs%5Dcast%7Creinterpret%5B_%5Cs%5Dcast%7Cnarrow%5B_%5Cs%5Dcast)%2Fi">named conversion</a>.</p>
 <a name="H_Object%20Lifecycle"></a><h2>Object Lifecycle</h2>
-<p>In C++, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is a region of memory that has a type and a value (e.g. a <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(object%7Cinstance)%2Fi">instance</a>, an integer, a <a href="#BM_(pointer)%2Fi">pointer</a> to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ <a href="#BM_(object%7Cinstance)%2Fi">object</a>s aren't exclusive to <a href="#BM_(class%7Cstruct)%2Fi">class</a>es (e.g. an boolean is an <a href="#BM_(object%7Cinstance)%2Fi">object</a>).</p>
+<p>In C++, an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is a region of memory that has a type and a value (e.g. a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_(object%7Cinstance)%2Fi">instance</a>, an integer, a <a href="#BM_(pointer)%2Fi">pointer</a> to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ <a href="#BM_(object%7Cinstance)%2Fi">object</a>s aren't exclusive to <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es (e.g. an boolean is an <a href="#BM_(object%7Cinstance)%2Fi">object</a>).</p>
 <p>An <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s life cycle passes through the following stages:</p>
 <ol>
 <li>memory <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d</li>
@@ -1759,7 +1759,7 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
     <span class="hljs-keyword">return</span> z;
 }
 </code></pre>
-<p>At <a href="#BM_(class%7Cstruct)%2Fi">class</a> level, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of a <a href="#BM_%5Cb(member)%2Fi">member</a> (<a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>) declared as <code>static</code> is essentially the same as if it were declared at global scope (they aren't bound to an individual <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> the same way a normal <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is). The only differences are that the <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a> is accessed on the <a href="#BM_(class%7Cstruct)%2Fi">class</a> itself using the scoped resolution operator (::) and that <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a>s that are <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s must be initialized at global scope.</p>
+<p>At <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> level, the <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of a <a href="#BM_%5Cb(member)%2Fi">member</a> (<a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>) declared as <code>static</code> is essentially the same as if it were declared at global scope (they aren't bound to an individual <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> the same way a normal <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> or <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is). The only differences are that the <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a> is accessed on the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> itself using the scoped resolution operator (::) and that <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a>s that are <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s must be initialized at global scope.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> m;         <span class="hljs-comment">// static member (field initialized at end)</span>
@@ -1934,7 +1934,7 @@ Distance d = <span class="hljs-number">1.2</span>_km + <span class="hljs-number"
 </code></pre>
 <p>In C++, functions that are ...</p>
 <ul>
-<li><a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s (assigned to a <a href="#BM_(class%7Cstruct)%2Fi">class</a>) are called <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s.</li>
+<li><a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s (assigned to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>) are called <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s.</li>
 <li>global are called <a href="#BM_(free%20function%7Cnon-member%20function)%2Fi">free function</a>s.</li>
 </ul>
 <p>This section deals with <a href="#BM_(free%20function%7Cnon-member%20function)%2Fi">free function</a>s.</p>
@@ -2129,7 +2129,7 @@ Distance d = <span class="hljs-number">1.2</span>_km + <span class="hljs-number"
 <li><code>co_yield</code> - suspend execution and optionally return a value.</li>
 <li><code>co_return</code> - complete execution and optionally return a value.</li>
 </ul>
-<p>The return value of a coroutine is a "promise type", a C++ <a href="#BM_(class%7Cstruct)%2Fi">class</a> that has a specific structure and specific set of functionality that the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> calls to determine and control the coroutine's state.</p>
+<p>The return value of a coroutine is a "promise type", a C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that has a specific structure and specific set of functionality that the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> calls to determine and control the coroutine's state.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This is deeply convoluted and requires a lot more digging and documentation, possibly in its own section instead of sub-section under the Function header.</p>
@@ -2238,12 +2238,12 @@ MyEnum x = OptionC; <span class="hljs-comment">// this is okay -- don't have to 
 <p>You should prefer <code>enum class</code>.</p>
 </div>
 <a name="H_Classes"></a><h1>Classes</h1>
-<p>C++ <a href="#BM_(class%7Cstruct)%2Fi">class</a>es are declared using either the <code>struct</code> keyword or <code>class</code> keyword. When ...</p>
+<p>C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are declared using either the <code>struct</code> keyword or <code>class</code> keyword. When ...</p>
 <ul>
-<li><code>struct</code> is used, the default visibility of <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a>s is public.</li>
-<li><code>class</code> is used, the default visibility of <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a>s is private.</li>
+<li><code>struct</code> is used, the default visibility of <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a>s is public.</li>
+<li><code>class</code> is used, the default visibility of <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a>s is private.</li>
 </ul>
-<p>Public and private visibility are the same as in most other languages: private <a href="#BM_%5Cb(member)%2Fi">member</a>s aren't accessible outside the <a href="#BM_(class%7Cstruct)%2Fi">class</a> while public <a href="#BM_%5Cb(member)%2Fi">member</a>s are. In C++ nomenclature, ...</p>
+<p>Public and private visibility are the same as in most other languages: private <a href="#BM_%5Cb(member)%2Fi">member</a>s aren't accessible outside the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> while public <a href="#BM_%5Cb(member)%2Fi">member</a>s are. In C++ nomenclature, ...</p>
 <ul>
 <li><a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s are commonly referred to as <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s.</li>
 <li><a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s are commonly referred to as <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s.</li>
@@ -2261,7 +2261,7 @@ MyEnum x = OptionC; <span class="hljs-comment">// this is okay -- don't have to 
     }
 };
 </code></pre>
-<p>C++ <a href="#BM_(class%7Cstruct)%2Fi">class</a>es that contain only data are called <a href="#BM_(plain-old-data%20class%7Cplain-old%20data%20class%7Cplain%20old%20data%20class%7Cplain-old-data%20structure%7Cplain-old%20data%20structure%7Cplain%20old%20data%20structure%7Cplain-old-data%20struct%7Cplain-old%20data%20struct%7Cplain%20old%20data%20struct)%2Fi">plain-old-data class</a>es (<a href="#BM_(POD)%2F">POD</a>), and they're typically created using the <code>struct</code> keyword so as their <a href="#BM_%5Cb(member)%2Fi">member</a>s are all accessible by default.</p>
+<p>C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that contain only data are called <a href="#BM_(plain-old-data%20class%7Cplain-old%20data%20class%7Cplain%20old%20data%20class%7Cplain-old-data%20structure%7Cplain-old%20data%20structure%7Cplain%20old%20data%20structure%7Cplain-old-data%20struct%7Cplain-old%20data%20struct%7Cplain%20old%20data%20struct)%2Fi">plain-old-data class</a>es (<a href="#BM_(POD)%2F">POD</a>), and they're typically created using the <code>struct</code> keyword so as their <a href="#BM_%5Cb(member)%2Fi">member</a>s are all accessible by default.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyStruct</span> {
    <span class="hljs-type">int</span> count;
    <span class="hljs-type">char</span> name[<span class="hljs-number">256</span>];
@@ -2270,10 +2270,10 @@ MyEnum x = OptionC; <span class="hljs-comment">// this is okay -- don't have to 
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>C++ guarantees that a <a href="#BM_(class%7Cstruct)%2Fi">class</a>'s <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s will be sequentially stored in memory, but they may be padded / aligned based on the platform. Be aware when using the <a href="#BM_(sizeof)%2Fi">sizeof</a> operator.</p>
+<p>C++ guarantees that a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>'s <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s will be sequentially stored in memory, but they may be padded / aligned based on the platform. Be aware when using the <a href="#BM_(sizeof)%2Fi">sizeof</a> operator.</p>
 </div>
 <a name="H_This%20Pointer"></a><h2>This Pointer</h2>
-<p>Non-static <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a> have access to an implicit <a href="#BM_(pointer)%2Fi">pointer</a> called <code>this</code>, which allows for accessing that <a href="#BM_(object%7Cinstance)%2Fi">instance</a>'s <a href="#BM_%5Cb(member)%2Fi">member</a>s. As long as the <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a> doesn't conflict with a parameter name of the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> invoked, the usage of that name will implicitly <a href="#BM_(reference)%2Fi">reference</a> the <code>this</code> <a href="#BM_(pointer)%2Fi">pointer</a>.</p>
+<p>Non-static <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> have access to an implicit <a href="#BM_(pointer)%2Fi">pointer</a> called <code>this</code>, which allows for accessing that <a href="#BM_(object%7Cinstance)%2Fi">instance</a>'s <a href="#BM_%5Cb(member)%2Fi">member</a>s. As long as the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a> doesn't conflict with a parameter name of the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> invoked, the usage of that name will implicitly <a href="#BM_(reference)%2Fi">reference</a> the <code>this</code> <a href="#BM_(pointer)%2Fi">pointer</a>.</p>
 <p>The <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dpointer)%2Fi">member-of-pointer</a> operator (-&gt;) allows for <a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> a <a href="#BM_(pointer)%2Fi">pointer</a> and accessing a <a href="#BM_%5Cb(member)%2Fi">member</a> on the result in a more concise form.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
     <span class="hljs-keyword">private</span>:
@@ -2293,8 +2293,8 @@ MyEnum x = OptionC; <span class="hljs-comment">// this is okay -- don't have to 
 }
 </code></pre>
 <a name="H1_Constant"></a><h2>Constant</h2>
-<p>For <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>const</code> before the type has the same meaning as a <code>const</code> type at global scope: It's unmodifiable.</p>
-<p>For <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>const</code> after the parameter list indicates that the <a href="#BM_(class%7Cstruct)%2Fi">class</a>'s <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.</p>
+<p>For <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, a <code>const</code> before the type has the same meaning as a <code>const</code> type at global scope: It's unmodifiable.</p>
+<p>For <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, a <code>const</code> after the parameter list indicates that the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>'s <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s won't be modified (read-only). This is a deep check rather than a shallow check, meaning that the entire call graph is considered when checking for modification.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Inner</span> {
     <span class="hljs-type">int</span> x = <span class="hljs-number">5</span>;
     <span class="hljs-type">int</span> y = <span class="hljs-number">6</span>;
@@ -2318,11 +2318,11 @@ MyEnum x = OptionC; <span class="hljs-comment">// this is okay -- don't have to 
 };
 </code></pre>
 <a name="H1_Volatile"></a><h2>Volatile</h2>
-<p>For <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>volatile</code> before the type has the same meaning as a <code>volatile</code> type at global scope: The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> won't optimize its access.</p>
-<p>For <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>volatile</code> after the parameter list indicates that all <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s should be treated as <code>volatile</code> (access won't be optimized away or re-ordered). This is a deep check rather than a shallow check, meaning that the entire call graph requires <code>volatile</code>.</p>
+<p>For <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, a <code>volatile</code> before the type has the same meaning as a <code>volatile</code> type at global scope: The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> won't optimize its access.</p>
+<p>For <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, a <code>volatile</code> after the parameter list indicates that all <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s should be treated as <code>volatile</code> (access won't be optimized away or re-ordered). This is a deep check rather than a shallow check, meaning that the entire call graph requires <code>volatile</code>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Another way to think of this is that the <code>volatile</code> on a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> makes it treat the <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> as if the variable that was declaring it were <code>volatile</code> -- meaning all of its <a href="#BM_%5Cb(member)%2Fi">member</a>s are treated as <code>volatile</code> recursively down the <a href="#BM_(object%7Cinstance)%2Fi">object</a> tree.</p>
+<p>Another way to think of this is that the <code>volatile</code> on a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> makes it treat the <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> as if the variable that was declaring it were <code>volatile</code> -- meaning all of its <a href="#BM_%5Cb(member)%2Fi">member</a>s are treated as <code>volatile</code> recursively down the <a href="#BM_(object%7Cinstance)%2Fi">object</a> tree.</p>
 </div>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Inner</span> {
     <span class="hljs-type">int</span> x {<span class="hljs-number">5</span>};
@@ -2345,16 +2345,16 @@ MyEnum x = OptionC; <span class="hljs-comment">// this is okay -- don't have to 
 };
 </code></pre>
 <a name="H2_Common%20Attributes"></a><h2>Common Attributes</h2>
-<p>If a <a href="#BM_(class%7Cstruct)%2Fi">class</a> has been deprecated, adding a <code>[[deprecated]]</code> <a href="#BM_(attribute)%2Fi">attribute</a> will allow the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to generate a warning if it sees it being used.</p>
+<p>If a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> has been deprecated, adding a <code>[[deprecated]]</code> <a href="#BM_(attribute)%2Fi">attribute</a> will allow the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to generate a warning if it sees it being used.</p>
 <pre class="hljs"><code>[[<span class="hljs-built_in">deprecated</span>(<span class="hljs-string">"Warning -- this is going away in the next release"</span>)]]
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
     <span class="hljs-keyword">return</span> a + b;
 }
 </code></pre>
 <a name="H_Static"></a><h2>Static</h2>
-<p>For <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>static</code> before the type indicates that the function is independent of any <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> type: a <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static field</a> points the same memory across all <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s.</p>
-<p>For <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <code>static</code> before the return type indicates that the function is independent of any <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> type, meaning that the only <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s that a <code>static</code> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> can access are <code>static</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s.</p>
-<p><code>static</code> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s and <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s are accessed using the <a href="#BM_(scope%20resolution)%2Fi">scope resolution</a> (::) operator, where the scope is the <a href="#BM_(class%7Cstruct)%2Fi">class</a> itself.</p>
+<p>For <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, a <code>static</code> before the type indicates that the function is independent of any <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> type: a <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static field</a> points the same memory across all <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s.</p>
+<p>For <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, a <code>static</code> before the return type indicates that the function is independent of any <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> type, meaning that the only <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s that a <code>static</code> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> can access are <code>static</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s.</p>
+<p><code>static</code> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s and <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s are accessed using the <a href="#BM_(scope%20resolution)%2Fi">scope resolution</a> (::) operator, where the scope is the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> itself.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> {
     <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> a {<span class="hljs-number">1</span>};
     <span class="hljs-type">int</span> b {<span class="hljs-number">0</span>};
@@ -2370,7 +2370,7 @@ X::<span class="hljs-built_in">double_it</span>();  <span class="hljs-comment">/
 <p>Be careful, <code>static</code> has a different meaning for functions than it does for <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s.</p>
 </div>
 <a name="H_Construction"></a><h2>Construction</h2>
-<p>C++ <a href="#BM_(class%7Cstruct)%2Fi">class</a>es are allowed one or more <a href="#BM_(constructor)%2Fi">constructor</a>s that initialize the <a href="#BM_(object%7Cinstance)%2Fi">object</a>. Similar to Java, each <a href="#BM_(constructor)%2Fi">constructor</a> should have the same name as the <a href="#BM_(class%7Cstruct)%2Fi">class</a> itself, no return type, and a unique parameter list.</p>
+<p>C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are allowed one or more <a href="#BM_(constructor)%2Fi">constructor</a>s that initialize the <a href="#BM_(object%7Cinstance)%2Fi">object</a>. Similar to Java, each <a href="#BM_(constructor)%2Fi">constructor</a> should have the same name as the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> itself, no return type, and a unique parameter list.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
     <span class="hljs-keyword">private</span>:
     <span class="hljs-type">int</span> count;
@@ -2388,15 +2388,15 @@ X::<span class="hljs-built_in">double_it</span>();  <span class="hljs-comment">/
     }
 }
 </code></pre>
-<p>The above <a href="#BM_(constructor)%2Fi">constructor</a>s are using the <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dpointer)%2Fi">member-of-pointer</a> operator (-&gt;) to access the <code>this</code> <a href="#BM_(pointer)%2Fi">pointer</a>. Non-static <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a> have access to an implicit <a href="#BM_(pointer)%2Fi">pointer</a> called <code>this</code>, which allows for accessing that <a href="#BM_(object%7Cinstance)%2Fi">instance</a>'s <a href="#BM_%5Cb(member)%2Fi">member</a>s. The <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dpointer)%2Fi">member-of-pointer</a> operator allows for <a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> a <a href="#BM_(pointer)%2Fi">pointer</a> and accessing a <a href="#BM_%5Cb(member)%2Fi">member</a> on the result in a more concise form.</p>
+<p>The above <a href="#BM_(constructor)%2Fi">constructor</a>s are using the <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dpointer)%2Fi">member-of-pointer</a> operator (-&gt;) to access the <code>this</code> <a href="#BM_(pointer)%2Fi">pointer</a>. Non-static <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> have access to an implicit <a href="#BM_(pointer)%2Fi">pointer</a> called <code>this</code>, which allows for accessing that <a href="#BM_(object%7Cinstance)%2Fi">instance</a>'s <a href="#BM_%5Cb(member)%2Fi">member</a>s. The <a href="#BM_(member%5B%5C-%5Cs%5Dof%5B%5C-%5Cs%5Dpointer)%2Fi">member-of-pointer</a> operator allows for <a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> a <a href="#BM_(pointer)%2Fi">pointer</a> and accessing a <a href="#BM_%5Cb(member)%2Fi">member</a> on the result in a more concise form.</p>
 <pre class="hljs"><code><span class="hljs-keyword">this</span>-&gt;count = <span class="hljs-number">0</span>;  <span class="hljs-comment">// equivalent to (*this).member = 0</span>
 </code></pre>
-<p>If a <a href="#BM_(class%7Cstruct)%2Fi">class</a> offers <a href="#BM_(constructor)%2Fi">constructor</a>s, the least error-prone way to invoke it is to use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>: <code>MyStruct x { 5, true }</code>. The reason is that C++ has so many <a href="#BM_(object%20initialization)%2Fi">object initialization</a> foot-guns that, while simpler <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s may work (e.g. <code>MyStruct x(5, true)</code>), those <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s may end up being interpreted by the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> as something else that's entirely different (e.g. function declaration).</p>
+<p>If a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> offers <a href="#BM_(constructor)%2Fi">constructor</a>s, the least error-prone way to invoke it is to use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>: <code>MyStruct x { 5, true }</code>. The reason is that C++ has so many <a href="#BM_(object%20initialization)%2Fi">object initialization</a> foot-guns that, while simpler <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s may work (e.g. <code>MyStruct x(5, true)</code>), those <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s may end up being interpreted by the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> as something else that's entirely different (e.g. function declaration).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This ambiguity is often referred to as the "most vexing parse" problem.</p>
 </div>
-<p><a href="#BM_(class%7Cstruct)%2Fi">Class</a>es that don't have any <a href="#BM_(constructor)%2Fi">constructor</a>s declared get an implicit <a href="#BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi">zero-arg</a> <a href="#BM_(constructor)%2Fi">constructor</a> that zeros out the memory of that <a href="#BM_(class%7Cstruct)%2Fi">class</a> (speculation). If the <a href="#BM_(class%7Cstruct)%2Fi">class</a> is a <a href="#BM_(POD)%2F">POD</a>, a <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> that is ...</p>
+<p><a href="#BM_(class%7C%5Cbstruct)%2Fi">Class</a>es that don't have any <a href="#BM_(constructor)%2Fi">constructor</a>s declared get an implicit <a href="#BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi">zero-arg</a> <a href="#BM_(constructor)%2Fi">constructor</a> that zeros out the memory of that <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (speculation). If the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a <a href="#BM_(POD)%2F">POD</a>, a <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> that is ...</p>
 <ul>
 <li>empty will zero out the memory for all <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s, (implicit default <a href="#BM_(constructor)%2Fi">constructor</a>).</li>
 <li>non-empty will set the individual <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s, in the order they're declared in.</li>
@@ -2415,7 +2415,7 @@ MyStruct b {<span class="hljs-number">5</span>, <span class="hljs-string">"steve
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See <a href="https://stackoverflow.com/a/49802943">here</a> for more information. The = operator won't result in a copy or anything like that (meaning performance won't suffer).</p>
 </div>
-<p>If a <a href="#BM_(class%7Cstruct)%2Fi">class</a> does explicitly declare <a href="#BM_(constructor)%2Fi">constructor</a>s, the implicit <a href="#BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi">zero-arg</a> <a href="#BM_(constructor)%2Fi">constructor</a> won't be generated. If desired, a <a href="#BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi">zero-arg</a> <a href="#BM_(constructor)%2Fi">constructor</a> may be declared with the default behaviour of the implicit zero arg <a href="#BM_(constructor)%2Fi">constructor</a> by adding <code>= default</code> instead of a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> body.</p>
+<p>If a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> does explicitly declare <a href="#BM_(constructor)%2Fi">constructor</a>s, the implicit <a href="#BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi">zero-arg</a> <a href="#BM_(constructor)%2Fi">constructor</a> won't be generated. If desired, a <a href="#BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi">zero-arg</a> <a href="#BM_(constructor)%2Fi">constructor</a> may be declared with the default behaviour of the implicit zero arg <a href="#BM_(constructor)%2Fi">constructor</a> by adding <code>= default</code> instead of a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> body.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
     <span class="hljs-keyword">private</span>:
     <span class="hljs-type">int</span> count;
@@ -2436,7 +2436,7 @@ MyStruct b {<span class="hljs-number">5</span>, <span class="hljs-string">"steve
    <span class="hljs-type">bool</span> flag {<span class="hljs-literal">true</span>};
 };
 </code></pre>
-<p>In contrast, a <a href="#BM_(member%20initializer%20list%7Cmember%20initialization%20list%7Cmember%20initializer)%2Fi">member initializer list</a> is a comma separated list of <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>s for the <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a>. It's specified just before a <a href="#BM_(constructor)%2Fi">constructor</a>'s body.</p>
+<p>In contrast, a <a href="#BM_(member%20initializer%20list%7Cmember%20initialization%20list%7Cmember%20initializer)%2Fi">member initializer list</a> is a comma separated list of <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>s for the <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>. It's specified just before a <a href="#BM_(constructor)%2Fi">constructor</a>'s body.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyStruct</span> {
     <span class="hljs-type">int</span> count;
     <span class="hljs-type">bool</span> flag;
@@ -2451,9 +2451,9 @@ MyStruct b {<span class="hljs-number">5</span>, <span class="hljs-string">"steve
 <p>How is this better than <a href="#BM_(default%20member%20initializer%7Cdefault%20member%20initialization)%2Fi">default member initialization</a>, where initialization is done directly after the <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> declaration? According to <a href="https://stackoverflow.com/a/48098997">this</a>, it's more-or-less the same?</p>
 </div>
 <a name="H_Destruction"></a><h2>Destruction</h2>
-<p>C++ <a href="#BM_(class%7Cstruct)%2Fi">class</a>es are allowed an explicit cleanup function called a <a href="#BM_(destructor)%2Fi">destructor</a> (e.g. closing an open file handle, zeroing out memory for security purposes, etc..). A <a href="#BM_(destructor)%2Fi">destructor</a> is declared similarly to a <a href="#BM_(constructor)%2Fi">constructor</a>, the only differences being ...</p>
+<p>C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are allowed an explicit cleanup function called a <a href="#BM_(destructor)%2Fi">destructor</a> (e.g. closing an open file handle, zeroing out memory for security purposes, etc..). A <a href="#BM_(destructor)%2Fi">destructor</a> is declared similarly to a <a href="#BM_(constructor)%2Fi">constructor</a>, the only differences being ...</p>
 <ol>
-<li>a tilde must appear just before the <a href="#BM_(class%7Cstruct)%2Fi">class</a> / function name.</li>
+<li>a tilde must appear just before the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> / function name.</li>
 <li>it doesn't take in any arguments.</li>
 </ol>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
@@ -2471,7 +2471,7 @@ MyStruct b {<span class="hljs-number">5</span>, <span class="hljs-string">"steve
 <p>If a <a href="#BM_(destructor)%2Fi">destructor</a> isn't declared, an empty one is implicitly generated.</p>
 <a name="H_Copying"></a><h2>Copying</h2>
 <p>There are two built-in mechanisms for copying in C++: the <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> and <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a>.</p>
-<p>A <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> is a <a href="#BM_(constructor)%2Fi">constructor</a> that has a single parameter, a <a href="#BM_(reference)%2Fi">reference</a> to a <code>const</code> <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type. By default, <a href="#BM_(class%7Cstruct)%2Fi">class</a>es are implicitly provided with a default <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> if one hasn't been explicitly declared by the user. The <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> of this default <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> is to copy each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> individually, called a <a href="#BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi">member-wise copy</a>.</p>
+<p>A <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> is a <a href="#BM_(constructor)%2Fi">constructor</a> that has a single parameter, a <a href="#BM_(reference)%2Fi">reference</a> to a <code>const</code> <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type. By default, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are implicitly provided with a default <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> if one hasn't been explicitly declared by the user. The <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> of this default <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> is to copy each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> individually, called a <a href="#BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi">member-wise copy</a>.</p>
 <p><a href="#BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi">Member-wise copy</a>ing may not be the correct way to copy in certain cases, in which case a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> should be explicitly provided with the correct <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
     ...
@@ -2486,7 +2486,7 @@ MyStruct b {<span class="hljs-number">5</span>, <span class="hljs-string">"steve
 MyStruct x {host, port};
 MyStruct y {x}; <span class="hljs-comment">// both x and y are independent and equal, but y has its own DatabaseConnection</span>
 </code></pre>
-<p>Similarly, <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> is a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> invoked when the assignment operator is used, called an operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>. Unlike <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>s, <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> is required to clean up any resources in the destination <a href="#BM_(object%7Cinstance)%2Fi">object</a> prior to copying. By default, <a href="#BM_(class%7Cstruct)%2Fi">class</a>es are implicitly provided with a <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> if one hasn't been explicitly declared by the user. The <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> of this default <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is to assign each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> individually, called a <a href="#BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi">member-wise copy</a>.</p>
+<p>Similarly, <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> is a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> invoked when the assignment operator is used, called an operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>. Unlike <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>s, <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> is required to clean up any resources in the destination <a href="#BM_(object%7Cinstance)%2Fi">object</a> prior to copying. By default, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are implicitly provided with a <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> if one hasn't been explicitly declared by the user. The <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> of this default <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is to assign each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> individually, called a <a href="#BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi">member-wise copy</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
     ...
 
@@ -2519,7 +2519,7 @@ MyStruct y {x}; <span class="hljs-comment">// both x and y are independent and e
 }
 </code></pre>
 <p>ALSO, there's ambiguity around when the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> generates default move/copy/<a href="#BM_(destructor)%2Fi">destructor</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s. It might be <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> specific. The book recommends that if you're using the defaults, always set them to <code>= default</code> (or do <code>= delete</code> to disallow them).</p>
-<p><a href="#BM_(class%7Cstruct)%2Fi">class</a> My<a href="#BM_(class%7Cstruct)%2Fi">Struct</a> {
+<p><a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> MyStruct {
 ...</p>
 <pre><code>// copy
 MyStruct(MyStruct &amp;&amp;orig) = default;
@@ -2535,7 +2535,7 @@ MyStruct&amp; operator=(MyStruct &amp;&amp;orig) = default;
 </div>
 <a name="H_Moving"></a><h2>Moving</h2>
 <p>There are two built-in mechanisms for moving in C++: the <a href="#BM_(move%20constructor)%2Fi">move constructor</a> and <a href="#BM_(move%20assignment)%2Fi">move assignment</a>. Moving is different from copying in that moving actually guts the insides (data) of one <a href="#BM_(object%7Cinstance)%2Fi">object</a> and transfers it into another, leaving that <a href="#BM_(object%7Cinstance)%2Fi">object</a> in an invalid state. If the scenario allows for it, moving is often times more efficient than copying.</p>
-<p>A <a href="#BM_(move%20constructor)%2Fi">move constructor</a> is a <a href="#BM_(constructor)%2Fi">constructor</a> that has a single parameter, an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type. By default, <a href="#BM_(class%7Cstruct)%2Fi">class</a>es are implicitly provided with a default <a href="#BM_(move%20constructor)%2Fi">move constructor</a> if one hasn't been explicitly declared by the user. The move semantics of this default <a href="#BM_(move%20constructor)%2Fi">move constructor</a> is to <em>copy</em> each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> rather than actually move anything, called a <a href="#BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi">member-wise copy</a>.</p>
+<p>A <a href="#BM_(move%20constructor)%2Fi">move constructor</a> is a <a href="#BM_(constructor)%2Fi">constructor</a> that has a single parameter, an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type. By default, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are implicitly provided with a default <a href="#BM_(move%20constructor)%2Fi">move constructor</a> if one hasn't been explicitly declared by the user. The move semantics of this default <a href="#BM_(move%20constructor)%2Fi">move constructor</a> is to <em>copy</em> each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> rather than actually move anything, called a <a href="#BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi">member-wise copy</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
     ...
 
@@ -2571,7 +2571,7 @@ MyStruct c {b};               <span class="hljs-comment">// move a into c (gut i
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>There's ambiguity around when the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> generates default move/copy/<a href="#BM_(destructor)%2Fi">destructor</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s. It might be <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> specific. The book recommends that if you're using the defaults, always set them to <code>= default</code> (or do <code>= delete</code> to disallow them).</p>
-<p><a href="#BM_(class%7Cstruct)%2Fi">class</a> My<a href="#BM_(class%7Cstruct)%2Fi">Struct</a> {
+<p><a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> MyStruct {
 ...</p>
 <pre><code>// copy
 MyStruct(MyStruct &amp;&amp;orig) = default;
@@ -2586,19 +2586,19 @@ MyStruct&amp; operator=(MyStruct &amp;&amp;orig) = default;
 ```</p>
 </div>
 <a name="H_Inheritance"></a><h2>Inheritance</h2>
-<p>In C++, a <a href="#BM_(class%7Cstruct)%2Fi">class</a> inherits another <a href="#BM_(class%7Cstruct)%2Fi">class</a> by, just after its name, appending a colon (:) followed by the name of the parent <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
+<p>In C++, a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> inherits another <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> by, just after its name, appending a colon (:) followed by the name of the parent <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyChild</span> : MyParent {
 };
 </code></pre>
-<p>Like in most other <a href="#BM_(object%7Cinstance)%2Fi">object</a> oriented languages, a child <a href="#BM_(class%7Cstruct)%2Fi">class</a>...</p>
+<p>Like in most other <a href="#BM_(object%7Cinstance)%2Fi">object</a> oriented languages, a child <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>...</p>
 <ul>
-<li>can access the non-private <a href="#BM_%5Cb(member)%2Fi">member</a>s of any of the <a href="#BM_(class%7Cstruct)%2Fi">class</a>es it inherits.</li>
-<li>is assignable to the type of any of the <a href="#BM_(class%7Cstruct)%2Fi">class</a>es it inherits.</li>
+<li>can access the non-private <a href="#BM_%5Cb(member)%2Fi">member</a>s of any of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es it inherits.</li>
+<li>is assignable to the type of any of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es it inherits.</li>
 </ul>
 <pre class="hljs"><code>MyChild c {};
 MyParent p {x}; <span class="hljs-comment">// MyChild inherits from MyParent, meaning that it's assignable to MyParent</span>
 </code></pre>
-<p>To be able to override a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> in a child <a href="#BM_(class%7Cstruct)%2Fi">class</a> the same way as its done in other languages (e.g. Java), the base call must have the <code>virtual</code> keyword prepended on the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>, making it a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a>. Similarly, any <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> that overrides a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a> should have the <code>override</code> keyword appended just after the parameter list.</p>
+<p>To be able to override a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> in a child <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> the same way as its done in other languages (e.g. Java), the base call must have the <code>virtual</code> keyword prepended on the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>, making it a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a>. Similarly, any <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> that overrides a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a> should have the <code>override</code> keyword appended just after the parameter list.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p><code>override</code> isn't strictly required, but it's a hint that the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> can use to prevent you from making a mistake (e.g. it sees <code>override</code> but what's being overridden isn't <code>virtual</code>). It's similar to Java's <code>@Override</code> annotation.</p>
@@ -2612,7 +2612,7 @@ MyParent p {x}; <span class="hljs-comment">// MyChild inherits from MyParent, me
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">virt_method</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>{ ... }
 };
 </code></pre>
-<p>If the base <a href="#BM_(class%7Cstruct)%2Fi">class</a> and child <a href="#BM_(class%7Cstruct)%2Fi">class</a> have the exact same non-<a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a>, which <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> gets called depends the type of the variable.</p>
+<p>If the base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> and child <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> have the exact same non-<a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a>, which <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> gets called depends the type of the variable.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyParent</span> {
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">virt_method</span><span class="hljs-params">()</span> </span>{ ... }
     <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">non_virt_method</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> </span>{ ... }
@@ -2639,12 +2639,12 @@ pref.<span class="hljs-built_in">non_virt_method</span>(<span class="hljs-number
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">methodA</span><span class="hljs-params">()</span> </span>{ ... }  <span class="hljs-comment">// ERROR HERE -- not allowed</span>
 };
 </code></pre>
-<p>Similarly, to prevent the entire <a href="#BM_(class%7Cstruct)%2Fi">class</a> itself from being inheritable, add the <code>final</code> keyword just after the name.</p>
+<p>Similarly, to prevent the entire <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> itself from being inheritable, add the <code>final</code> keyword just after the name.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyParent</span> <span class="hljs-keyword">final</span> {
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">methodA</span><span class="hljs-params">()</span> </span>{ ... }
 };
 </code></pre>
-<p>C++ chains <a href="#BM_(constructor)%2Fi">constructor</a> and <a href="#BM_(destructor)%2Fi">destructor</a> invocations appropriately as expected. The one caveat is that <a href="#BM_(destructor)%2Fi">destructor</a>, if not a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a>, will use the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> resolution mechanism described above: If the type of the variable doesn't match the <a href="#BM_(object%7Cinstance)%2Fi">object</a> (variable type is the base <a href="#BM_(class%7Cstruct)%2Fi">class</a> but <a href="#BM_(object%7Cinstance)%2Fi">object</a> is not), the wrong <a href="#BM_(destructor)%2Fi">destructor</a> gets invoked, resulting in <a href="#BM_(object%7Cinstance)%2Fi">object</a> potentially not cleaning up resources (e.g. closing file handles).</p>
+<p>C++ chains <a href="#BM_(constructor)%2Fi">constructor</a> and <a href="#BM_(destructor)%2Fi">destructor</a> invocations appropriately as expected. The one caveat is that <a href="#BM_(destructor)%2Fi">destructor</a>, if not a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a>, will use the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> resolution mechanism described above: If the type of the variable doesn't match the <a href="#BM_(object%7Cinstance)%2Fi">object</a> (variable type is the base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> but <a href="#BM_(object%7Cinstance)%2Fi">object</a> is not), the wrong <a href="#BM_(destructor)%2Fi">destructor</a> gets invoked, resulting in <a href="#BM_(object%7Cinstance)%2Fi">object</a> potentially not cleaning up resources (e.g. closing file handles).</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyParent</span> {
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">v1</span><span class="hljs-params">()</span> </span>{ ... };
     ~<span class="hljs-built_in">MyParent</span>() { ... };
@@ -2666,26 +2666,26 @@ MyParent *c = <span class="hljs-keyword">new</span> MyChild{};
 };
 </code></pre>
 <a name="H_Interfaces"></a><h2>Interfaces</h2>
-<p>Interfaces and abstract <a href="#BM_(class%7Cstruct)%2Fi">class</a>es are supported in C++, but not in the same way as other high-level languages. The C++ approach to interfaces is to explicitly mark certain <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s as requiring an implementation. This is done by appending <code>= 0</code> to the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> declaration.</p>
+<p>Interfaces and abstract <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are supported in C++, but not in the same way as other high-level languages. The C++ approach to interfaces is to explicitly mark certain <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s as requiring an implementation. This is done by appending <code>= 0</code> to the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> declaration.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyParent</span> {
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">virt_method</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;
     <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">non_virt_method</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;
 };
 </code></pre>
-<p>A <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> that is both a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a> and requires an implementation is called a <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>. A <a href="#BM_(class%7Cstruct)%2Fi">class</a> that contains all <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>s is called a <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20class)%2Fi">pure virtual class</a>.</p>
+<p>A <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> that is both a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a> and requires an implementation is called a <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>. A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that contains all <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>s is called a <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20class)%2Fi">pure virtual class</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyParent</span> {
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">v1</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> <span class="hljs-title">v2</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;
     <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">MyParent</span>() {};  <span class="hljs-comment">// also okay to do   "virtual ~MyParent() = default"</span>
 };
 </code></pre>
-<p>As shown in the example above, a <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20class)%2Fi">pure virtual class</a> should have a <a href="#BM_(virtual%20destructor)%2Fi">virtual destructor</a>. While not required, failing to do so means that the wrong <a href="#BM_(destructor)%2Fi">destructor</a> may get invoked if the type of the variable doesn't match the <a href="#BM_(object%7Cinstance)%2Fi">object</a> (variable type is the base <a href="#BM_(class%7Cstruct)%2Fi">class</a> but <a href="#BM_(object%7Cinstance)%2Fi">object</a> is not), resulting in <a href="#BM_(class%7Cstruct)%2Fi">class</a> resources being left open (e.g. file handles).</p>
+<p>As shown in the example above, a <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20class)%2Fi">pure virtual class</a> should have a <a href="#BM_(virtual%20destructor)%2Fi">virtual destructor</a>. While not required, failing to do so means that the wrong <a href="#BM_(destructor)%2Fi">destructor</a> may get invoked if the type of the variable doesn't match the <a href="#BM_(object%7Cinstance)%2Fi">object</a> (variable type is the base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> but <a href="#BM_(object%7Cinstance)%2Fi">object</a> is not), resulting in <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> resources being left open (e.g. file handles).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See inheritance section for a more thorough explanation.</p>
 </div>
 <a name="H_Operator%20Overloading"></a><h2>Operator Overloading</h2>
-<p>C++ <a href="#BM_(class%7Cstruct)%2Fi">class</a>es support operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing.</p>
+<p>C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es support operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing.</p>
 <p>Operators are <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>-able in two ways. To <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> an operator the first way, introduce a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> but instead of naming it, add the <code>operator</code> keyword followed by the operator being <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ed. The parameters and return type of the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> need to match whatever types the operator is intended to deal with.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyClass</span> {
     ...
@@ -2751,7 +2751,7 @@ MyClass &amp; <span class="hljs-keyword">operator</span>+=(MyClass &amp;rhs, <sp
 <p>There's also the option to create operators that allow for implicit type casting and explicit type casting. See the type casting section for more information.</p>
 </div>
 <a name="H_Conversion%20Overloading"></a><h2>Conversion Overloading</h2>
-<p>C++ <a href="#BM_(class%7Cstruct)%2Fi">class</a>es support both <a href="#BM_(implicit%20type%20conversion)%2Fi">implicit type conversion</a>s and <a href="#BM_(explicit%20type%20conversion)%2Fi">explicit type conversion</a>s via operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing. <a href="#BM_(implicit%20type%20conversion)%2Fi">Implicit type conversion</a>s are represented as operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s where the name of the operator being <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ed is the destination type and the return type is omitted.</p>
+<p>C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es support both <a href="#BM_(implicit%20type%20conversion)%2Fi">implicit type conversion</a>s and <a href="#BM_(explicit%20type%20conversion)%2Fi">explicit type conversion</a>s via operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing. <a href="#BM_(implicit%20type%20conversion)%2Fi">Implicit type conversion</a>s are represented as operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s where the name of the operator being <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ed is the destination type and the return type is omitted.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyClass</span> {
     ...
     <span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">int</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{
@@ -2847,7 +2847,7 @@ MyClass c {};
 <p>The website said <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l-value</a>, but does it mean <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">gl-value</a>?</p>
 </div>
 <a name="H_Functors"></a><h2>Functors</h2>
-<p>A <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, also called a <a href="#BM_(functor%7Cfunction%20object)%2Fi">function object</a>, is a <a href="#BM_(class%7Cstruct)%2Fi">class</a> that you can invoke as if it were a function because it has an operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s for function-call.</p>
+<p>A <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, also called a <a href="#BM_(functor%7Cfunction%20object)%2Fi">function object</a>, is a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that you can invoke as if it were a function because it has an operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s for function-call.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyFunctor</span> {
     <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span> y)</span> <span class="hljs-keyword">const</span> </span>{ <span class="hljs-keyword">return</span> -y + x; }
 <span class="hljs-keyword">private</span>:
@@ -2911,7 +2911,7 @@ MyFunction f1{}
 <span class="hljs-type">int</span> y = <span class="hljs-number">6</span>;
 <span class="hljs-keyword">auto</span> f1 = [modified_x=x/<span class="hljs-number">2</span>, y] (<span class="hljs-type">int</span> z) -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> x + y + z; };
 </code></pre>
-<p>If used within an enclosing <a href="#BM_(class%7Cstruct)%2Fi">class</a>, the this <a href="#BM_(pointer)%2Fi">pointer</a> can be captured.</p>
+<p>If used within an enclosing <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, the this <a href="#BM_(pointer)%2Fi">pointer</a> can be captured.</p>
 <pre class="hljs"><code><span class="hljs-keyword">auto</span> f1 = [*<span class="hljs-keyword">this</span>] (<span class="hljs-type">int</span> z) -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> z / <span class="hljs-number">2</span>; };  <span class="hljs-comment">// capture a COPY OF *this and pass it in as a pointer</span>
 <span class="hljs-keyword">auto</span> f1 = [<span class="hljs-keyword">this</span>] (<span class="hljs-type">int</span> z) -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> z / <span class="hljs-number">2</span>; };   <span class="hljs-comment">// capture this as pointer</span>
 </code></pre>
@@ -2951,8 +2951,8 @@ MyFunction f1{}
 <p>In many cases, you need to return a <a href="#BM_(lambda)%2Fi">lambda</a> from a function. The easiest way to do this is to set the function's return type to <code>auto</code> and return the <a href="#BM_(lambda)%2Fi">lambda</a> as if it were any other variable.</p>
 </div>
 <a name="H_Friends"></a><h2>Friends</h2>
-<p>A friend is a function or <a href="#BM_(class%7Cstruct)%2Fi">class</a> that can access the non-public <a href="#BM_%5Cb(member)%2Fi">member</a>s of some other <a href="#BM_(class%7Cstruct)%2Fi">class</a> that it wasn't declared in.</p>
-<p>For friend functions, the <a href="#BM_(class%7Cstruct)%2Fi">class</a> to be accessed needs to declare the function's prototype (function declaration) before implementations of a friend function (function definition) can exist. The prototype is included in the <a href="#BM_(class%7Cstruct)%2Fi">class</a> just like any other <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>, but the <code>friend</code> prefix <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a> is tacked on.</p>
+<p>A friend is a function or <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that can access the non-public <a href="#BM_%5Cb(member)%2Fi">member</a>s of some other <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that it wasn't declared in.</p>
+<p>For friend functions, the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> to be accessed needs to declare the function's prototype (function declaration) before implementations of a friend function (function definition) can exist. The prototype is included in the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> just like any other <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>, but the <code>friend</code> prefix <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a> is tacked on.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">int</span> <span class="hljs-title">addAndNegate</span><span class="hljs-params">(MyClass&amp; obj, <span class="hljs-type">int</span> n)</span></span>;  <span class="hljs-comment">// prototype</span>
@@ -2968,7 +2968,7 @@ MyFunction f1{}
 MyClass obj{};
 cout &lt;&lt; <span class="hljs-built_in">addAndNegate</span>(obj,<span class="hljs-number">5</span>);
 </code></pre>
-<p>For friend <a href="#BM_(class%7Cstruct)%2Fi">class</a>es, the <a href="#BM_(class%7Cstruct)%2Fi">class</a> to be accessed needs to specify which outside <a href="#BM_(class%7Cstruct)%2Fi">class</a> is able to access it using <code>friend class</code>.</p>
+<p>For friend <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es, the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> to be accessed needs to specify which outside <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is able to access it using <code>friend class</code>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-keyword">friend</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyFriend</span>;  <span class="hljs-comment">// state that MyFriend can access MyClass's non-public members</span>
@@ -2993,7 +2993,7 @@ cout &lt;&lt; obj_friend.<span class="hljs-built_in">addAndNegate</span>(obj,<sp
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The <code>class</code> in <code>friend class</code> may be omitted if <code>MyFriend</code> was already declared before <code>MyClass</code>. Adding the word <code>class</code> is a <a href="#BM_(forward%20declaration)%2Fi">forward declaration</a> -- it tells the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to just believe that it exists even though it may not have come across it yet.</p>
 </div>
-<p>Friend functions and friend <a href="#BM_(class%7Cstruct)%2Fi">class</a>es may also target <a href="#BM_(template)%2Fi">template</a>d types.</p>
+<p>Friend functions and friend <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es may also target <a href="#BM_(template)%2Fi">template</a>d types.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> {
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">friend</span> <span class="hljs-type">int</span> <span class="hljs-title">addAndNegate</span><span class="hljs-params">(MyClass&amp; obj, T n)</span></span>;  <span class="hljs-comment">// every addAndNegate(MyClass&amp;, T) will be a friend</span>
@@ -3003,7 +3003,7 @@ cout &lt;&lt; obj_friend.<span class="hljs-built_in">addAndNegate</span>(obj,<sp
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This is how C++ provides its equivalent of Java's <code>Object.toString()</code>. For each <a href="#BM_(class%7Cstruct)%2Fi">class</a> that you want to be able to print as a string, you implement a <a href="#BM_(template)%2Fi">template</a>d friend function of the left-shift operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> (&lt;&lt;) that targets the <a href="#BM_(class%7Cstruct)%2Fi">class</a> <code>ostream</code>, making it usable in something like <code>std::cout</code>.</p>
+<p>This is how C++ provides its equivalent of Java's <code>Object.toString()</code>. For each <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that you want to be able to print as a string, you implement a <a href="#BM_(template)%2Fi">template</a>d friend function of the left-shift operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> (&lt;&lt;) that targets the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <code>ostream</code>, making it usable in something like <code>std::cout</code>.</p>
 <pre class="hljs"><code>ostream&amp; <span class="hljs-keyword">operator</span>&lt;&lt;(ostream &amp;os, <span class="hljs-keyword">const</span> MyClass &amp;obj) {
     os &lt;&lt; obj.x &lt;&lt; <span class="hljs-string">"\n"</span>;
     <span class="hljs-keyword">return</span> os;
@@ -3012,7 +3012,7 @@ cout &lt;&lt; obj_friend.<span class="hljs-built_in">addAndNegate</span>(obj,<sp
 <p>It seems like a convoluted way to do it.</p>
 </div>
 <a name="H_Templates"></a><h1>Templates</h1>
-<p><a href="#BM_(template)%2Fi">Template</a>s are loosely similar to generics in other high-level languages such as Java. A <a href="#BM_(template)%2Fi">template</a> defines a <a href="#BM_(class%7Cstruct)%2Fi">class</a> or function where some of the types and code are unknown, called <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s. Each <a href="#BM_(template%20parameter)%2Fi">template parameter</a> in a <a href="#BM_(template)%2Fi">template</a> either maps to a ...</p>
+<p><a href="#BM_(template)%2Fi">Template</a>s are loosely similar to generics in other high-level languages such as Java. A <a href="#BM_(template)%2Fi">template</a> defines a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> or function where some of the types and code are unknown, called <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s. Each <a href="#BM_(template%20parameter)%2Fi">template parameter</a> in a <a href="#BM_(template)%2Fi">template</a> either maps to a ...</p>
 <ul>
 <li>a type (e.g. <code>int</code>).</li>
 <li>an integra<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> available at <a href="#BM_(compile-time)%2Fi">compile-time</a> (e.g. <code>5</code>).</li>
@@ -3035,11 +3035,11 @@ cout &lt;&lt; obj_friend.<span class="hljs-built_in">addAndNegate</span>(obj,<sp
 <li>type substitution is prefixed with the keyword <code>typename</code>. The keyword <code>class</code> may be used instead of <code>typename</code>. The meaning is exactly the same (<code>typename</code> should be preferred).</li>
 <li>value substitution is prefixed with the type name.</li>
 </ul>
-<p>To use a <a href="#BM_(template)%2Fi">template</a>, use it just as you would a non-<a href="#BM_(template)%2Fi">template</a> but provide substitutions (<a href="#BM_(template%20instantiation)%2Fi">template instantiation</a>). To instantiate a <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(template)%2Fi">template</a>, use the <a href="#BM_(class%7Cstruct)%2Fi">class</a> as if it were a normal <a href="#BM_(class%7Cstruct)%2Fi">class</a> but immediately after the <a href="#BM_(class%7Cstruct)%2Fi">class</a> name add in a comma separated list of <a href="#BM_(template%20parameter)%2Fi">template parameter</a> substitutions sandwiched within angle brackets. These substitutions should be in the same order as the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s.</p>
+<p>To use a <a href="#BM_(template)%2Fi">template</a>, use it just as you would a non-<a href="#BM_(template)%2Fi">template</a> but provide substitutions (<a href="#BM_(template%20instantiation)%2Fi">template instantiation</a>). To instantiate a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_(template)%2Fi">template</a>, use the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> as if it were a normal <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> but immediately after the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> name add in a comma separated list of <a href="#BM_(template%20parameter)%2Fi">template parameter</a> substitutions sandwiched within angle brackets. These substitutions should be in the same order as the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s.</p>
 <pre class="hljs"><code>MyClass&lt;<span class="hljs-type">float</span>, <span class="hljs-type">int</span>, <span class="hljs-type">int</span>, <span class="hljs-number">2</span>&gt; obj {}; <span class="hljs-comment">// X = float, Y = int, Z = int, N = 2</span>
 <span class="hljs-type">float</span> x = obj.<span class="hljs-built_in">perform</span>(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>);
 </code></pre>
-<p>Declaring <a href="#BM_(template)%2Fi">template</a>d functions is done in the same manner as <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7Cstruct)%2Fi">class</a>es, and using <a href="#BM_(template)%2Fi">template</a>d functions is done similarly to <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7Cstruct)%2Fi">class</a>es: Use the function as if it were a normal function but immediately after the function name add in a common separated list of substitutions sandwiched within angle brackets.</p>
+<p>Declaring <a href="#BM_(template)%2Fi">template</a>d functions is done in the same manner as <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es, and using <a href="#BM_(template)%2Fi">template</a>d functions is done similarly to <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es: Use the function as if it were a normal function but immediately after the function name add in a common separated list of substitutions sandwiched within angle brackets.</p>
 <pre class="hljs"><code><span class="hljs-comment">// declare</span>
 <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> X, <span class="hljs-keyword">typename</span> Y, <span class="hljs-keyword">typename</span> Z, <span class="hljs-type">int</span> N&gt;
 <span class="hljs-function">X <span class="hljs-title">perform</span><span class="hljs-params">(Y &amp;var1, Z &amp;var2)</span> </span>{
@@ -3107,7 +3107,7 @@ MyClassPartialTemplate&lt;<span class="hljs-type">int</span>, <span class="hljs-
 <li><code>std::is_integral</code> - ensures a type is an integer (e.g. <code>short int</code>, <code>int</code>, <code>unsigned long long int</code>, etc..)</li>
 <li><code>std::is_pod</code> - ensures a type is a <a href="#BM_(POD)%2F">POD</a>.</li>
 <li><code>std::is_fundamental</code> - ensures a type is a <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">fundamental type</a>.</li>
-<li><code>std::is_abstract</code> - ensures a type is an abstract <a href="#BM_(class%7Cstruct)%2Fi">class</a> (has at least one <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual function</a>).</li>
+<li><code>std::is_abstract</code> - ensures a type is an abstract <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (has at least one <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual function</a>).</li>
 <li><code>std::is_copy_constructible</code> - ensures type has a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>.</li>
 <li><code>std::is_copy_assignable</code> - ensures type has <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a>.</li>
 <li><code>std::is_move_constructible</code> - ensures type has a <a href="#BM_(move%20constructor)%2Fi">move constructor</a>.</li>
@@ -3172,7 +3172,7 @@ MyClassPartialTemplate&lt;<span class="hljs-type">int</span>, <span class="hljs-
     <span class="hljs-keyword">return</span> X {args...};
 }
 </code></pre>
-<p>Another less common use-case is specifying the base <a href="#BM_(class%7Cstruct)%2Fi">class</a>es to inherit from (multiple inheritance).</p>
+<p>Another less common use-case is specifying the base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es to inherit from (multiple inheritance).</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> X, <span class="hljs-keyword">typename</span>... R&gt;
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> : R... {
     <span class="hljs-built_in">X</span>(<span class="hljs-keyword">const</span> R&amp;... args) : <span class="hljs-built_in">R</span>(args)... { <span class="hljs-comment">// member initializer list calls constructors of base class</span>
@@ -3215,8 +3215,8 @@ T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</spa
 <p>Examples adapted from <a href="https://crascit.com/2015/03/21/practical-uses-for-variadic-templates/">here</a>.</p>
 </div>
 <a name="H_Specialization"></a><h2>Specialization</h2>
-<p>Given a specific set of substitutions for the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s of a <a href="#BM_(template)%2Fi">template</a>, a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> is code that overrides the <a href="#BM_(template)%2Fi">template</a> generated code. Often times <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s are introduced because they're more memory or computationally efficient than the standard <a href="#BM_(template)%2Fi">template</a> generated code. The <a href="#BM_(class%7Cstruct)%2Fi">class</a>ic example is a <a href="#BM_(template)%2Fi">template</a> that holds on to an array. Most C++ implementations represent a <code>bool</code> as a single byte, however it's more compact to store an array of <code>bool</code>s as a set of bits.</p>
-<p>Declare a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> with the <code>template</code> keyword but without any <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s (empty angle brackets). The <a href="#BM_(class%7Cstruct)%2Fi">class</a> or function that follows should list out substitutions after its name and the code within it should be real (non-<a href="#BM_(template)%2Fi">template</a>d).</p>
+<p>Given a specific set of substitutions for the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s of a <a href="#BM_(template)%2Fi">template</a>, a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> is code that overrides the <a href="#BM_(template)%2Fi">template</a> generated code. Often times <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s are introduced because they're more memory or computationally efficient than the standard <a href="#BM_(template)%2Fi">template</a> generated code. The <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>ic example is a <a href="#BM_(template)%2Fi">template</a> that holds on to an array. Most C++ implementations represent a <code>bool</code> as a single byte, however it's more compact to store an array of <code>bool</code>s as a set of bits.</p>
+<p>Declare a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> with the <code>template</code> keyword but without any <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s (empty angle brackets). The <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> or function that follows should list out substitutions after its name and the code within it should be real (non-<a href="#BM_(template)%2Fi">template</a>d).</p>
 <pre class="hljs"><code><span class="hljs-comment">// template</span>
 <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
 T <span class="hljs-title">sum</span><span class="hljs-params">(T a, T b)</span> </span>{
@@ -3327,8 +3327,8 @@ MyStruct z{};
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This is only for non-<a href="#BM_%5Cb(member)%2Fi">member</a>s (not belonging to a <a href="#BM_(class%7Cstruct)%2Fi">class</a>).</p>
-<p>The meaning of <code>static</code> changes when the function or variables belongs to a <a href="#BM_(class%7Cstruct)%2Fi">class</a> (<a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>). When applied on a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>, it means that it isn't bound to any <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a> -- it can't access <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s belonging to an <a href="#BM_(object%7Cinstance)%2Fi">instance</a>.</p>
+<p>This is only for non-<a href="#BM_%5Cb(member)%2Fi">member</a>s (not belonging to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).</p>
+<p>The meaning of <code>static</code> changes when the function or variables belongs to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (<a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>). When applied on a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>, it means that it isn't bound to any <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> -- it can't access <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s belonging to an <a href="#BM_(object%7Cinstance)%2Fi">instance</a>.</p>
 </div>
 <a name="H_Inline%20Linkage"></a><h2>Inline Linkage</h2>
 <p>An inline function or variable is one that may be defined in multiple different <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>s. The <a href="#BM_(linker%7Cexecutable)%2Fi">linker</a> will make sure all <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>s use a single <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of that function/variable even though it may have been defined multiple times.</p>
@@ -3434,7 +3434,7 @@ MyStruct z{};
 <p>Unlike other control structures, these loops cannot have initializer statements.</p>
 </div>
 <a name="H_Goto%20Statement"></a><h2>Goto Statement</h2>
-<p>Unlike most other high-level languages (e.g. Java), C++ allows the use of goto statements. However, note that goto statements are generally considered bad practice and should somehow be refactored to higher-level con<a href="#BM_(class%7Cstruct)%2Fi">struct</a>s (e.g. loops, if statements, etc..).</p>
+<p>Unlike most other high-level languages (e.g. Java), C++ allows the use of goto statements. However, note that goto statements are generally considered bad practice and should somehow be refactored to higher-level constructs (e.g. loops, if statements, etc..).</p>
 <pre class="hljs"><code>retry:
 <span class="hljs-type">int</span> r = <span class="hljs-built_in">rand</span>();
 <span class="hljs-keyword">if</span> (r % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
@@ -3547,7 +3547,7 @@ std::cout &lt;&lt; r &lt;&lt; <span class="hljs-string">" odd"</span>;
 <li><strong>Scalar</strong>: Floating point types, integral types, <a href="#BM_(pointer)%2Fi">pointer</a> types, <a href="#BM_(enumeration%7Cenum)%2Fi">enumeration</a> types, <code>std::nullptr_t</code>, etc..</li>
 <li><strong><a href="#BM_(reference)%2Fi">Reference</a></strong></li>
 <li><strong>Array</strong>: Every element must be a literal.</li>
-<li><strong><a href="#BM_(class%7Cstruct)%2Fi">Class</a></strong>: <a href="#BM_(constructor)%2Fi">Constructor</a> must be a <a href="#BM_(constant%20expression)%2Fi">constant expression</a>. Non-<a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static field</a>s initializers using <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>, <a href="#BM_(equals%3F%20initialization)%2Fi">equals initialization</a>, or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a> must use <a href="#BM_(constant%20expression)%2Fi">constant expression</a>s. The <a href="#BM_(destructor)%2Fi">destructor</a> must be a trivial <a href="#BM_(destructor)%2Fi">destructor</a> (non-virtual, does nothing, and all base <a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_(destructor)%2Fi">destructor</a>s do nothing).</li>
+<li><strong><a href="#BM_(class%7C%5Cbstruct)%2Fi">Class</a></strong>: <a href="#BM_(constructor)%2Fi">Constructor</a> must be a <a href="#BM_(constant%20expression)%2Fi">constant expression</a>. Non-<a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static field</a>s initializers using <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>, <a href="#BM_(equals%3F%20initialization)%2Fi">equals initialization</a>, or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a> must use <a href="#BM_(constant%20expression)%2Fi">constant expression</a>s. The <a href="#BM_(destructor)%2Fi">destructor</a> must be a trivial <a href="#BM_(destructor)%2Fi">destructor</a> (non-virtual, does nothing, and all base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_(destructor)%2Fi">destructor</a>s do nothing).</li>
 <li><strong><a href="#BM_(union)%2Fi">Union</a></strong>: Must have at least one non-<a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a> that is a <a href="#BM_(literal%20type)%2Fi">literal type</a>.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -3582,7 +3582,7 @@ std::cout &lt;&lt; r &lt;&lt; <span class="hljs-string">" odd"</span>;
 <p>C++ <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s work similarly to <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s in other languages, except that there is no <code>finally</code> block. The idea behind this is that resources should be bound to an <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s <a href="#BM_(lifetime)%2Fi">lifetime</a> (<a href="#BM_(destructor)%2Fi">destructor</a>). As the call stack unwinds and the <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a>s that each function owns are destroyed, the <a href="#BM_(destructor)%2Fi">destructor</a>s of those <a href="#BM_(object%7Cinstance)%2Fi">object</a>s should be cleaning up any resources that would have been cleaned up by the <code>finally</code> block. This concept is referred to as resource acquisition is initialization (<a href="#BM_(RAII%7CCADRe)%2F">RAII</a>).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>What does accordingly mean? For example, wrap the <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamically allocated object</a> in a <a href="#BM_(class%7Cstruct)%2Fi">class</a> where <a href="#BM_(allocation%7Callocate)%2Fi">allocation</a> happens in the <a href="#BM_(constructor)%2Fi">constructor</a> / <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocation</a> happens in the <a href="#BM_(destructor)%2Fi">destructor</a>. An <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a> of that <a href="#BM_(class%7Cstruct)%2Fi">class</a> type will cleanup properly when the function exits.</p>
+<p>What does accordingly mean? For example, wrap the <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamically allocated object</a> in a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> where <a href="#BM_(allocation%7Callocate)%2Fi">allocation</a> happens in the <a href="#BM_(constructor)%2Fi">constructor</a> / <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocation</a> happens in the <a href="#BM_(destructor)%2Fi">destructor</a>. An <a href="#BM_(automatic%20object%7Cautomatic%20variable%7Cautomatic%20storage%20duration)%2Fi">automatic object</a> of that <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> type will cleanup properly when the function exits.</p>
 </div>
 <p>To throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>, use the <code>throw</code> keyword followed by the <a href="#BM_(object%7Cinstance)%2Fi">object</a> to throw. Most <a href="#BM_(object%7Cinstance)%2Fi">object</a> types are throwable, but thrown <a href="#BM_(object%7Cinstance)%2Fi">object</a>s are typically limited to types either in or derived from those in the stdexcept header.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">no_negatives_check</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
@@ -3623,7 +3623,7 @@ std::cout &lt;&lt; r &lt;&lt; <span class="hljs-string">" odd"</span>;
 }
 </code></pre>
 <a name="H_Structured%20Binding"></a><h1>Structured Binding</h1>
-<p><a href="#BM_(structured%20binding)%2Fi">Structured binding</a> declaration is a C++ language feature similar to Python's unpacking of lists and tuples. Given an array or a <a href="#BM_(class%7Cstruct)%2Fi">class</a>, the values contained within are unpackable to individual variables.</p>
+<p><a href="#BM_(structured%20binding)%2Fi">Structured binding</a> declaration is a C++ language feature similar to Python's unpacking of lists and tuples. Given an array or a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, the values contained within are unpackable to individual variables.</p>
 <pre class="hljs"><code><span class="hljs-comment">// array example</span>
 <span class="hljs-type">int</span> x[] = {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>};
 <span class="hljs-keyword">auto</span> [a, b] = x;  <span class="hljs-comment">// a is a copy of x[0], b is a copy of x[1]</span>
@@ -3708,7 +3708,7 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 <li>produce an <a href="#BM_(iterator)%2Fi">iterator</a> typically implement the <code>Iterable</code> interface (e.g. <code>ArrayList</code>)</li>
 <li>are <a href="#BM_(iterator)%2Fi">iterator</a>s must implement the <code>Iterator</code> interface.</li>
 </ul>
-<p>In C++, there is no requirement to <a href="#BM_(extend%7Csubclass)%2Fi">extend</a> from any base <a href="#BM_(class%7Cstruct)%2Fi">class</a>es or interfaces. Instead, any type can act as an <a href="#BM_(iterator)%2Fi">iterator</a> so long as it supports as set of operators:</p>
+<p>In C++, there is no requirement to <a href="#BM_(extend%7Csubclass)%2Fi">extend</a> from any base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es or interfaces. Instead, any type can act as an <a href="#BM_(iterator)%2Fi">iterator</a> so long as it supports as set of operators:</p>
 <ul>
 <li><code>!=</code> - test if the position of one <a href="#BM_(iterator)%2Fi">iterator</a> doesn't match the position of another <a href="#BM_(iterator)%2Fi">iterator</a> (e.g. <code>my_iterator != end_iterator</code>).</li>
 <li><code>++</code> - move to the next item (e.g. <code>my_iterator++</code>).</li>
@@ -3722,9 +3722,9 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 <li><a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> it (<code>*</code>) provides the value at the array element its points to.</li>
 <li>testing it using inequality (<code>!=</code>) is a way to check if it hasn't gone past the last array element.</li>
 </ul>
-<p>An <a href="#BM_(iterator)%2Fi">iterator</a> is basically a set of operators that walk elements in the same way as you would an array. A <a href="#BM_(class%7Cstruct)%2Fi">class</a> can implement the operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s and behave the same way.</p>
+<p>An <a href="#BM_(iterator)%2Fi">iterator</a> is basically a set of operators that walk elements in the same way as you would an array. A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> can implement the operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s and behave the same way.</p>
 </div>
-<p>Similarly, any <a href="#BM_(class%7Cstruct)%2Fi">class</a> can act as an iterable by implementing begin and end <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s, commonly referred to as a range:</p>
+<p>Similarly, any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> can act as an iterable by implementing begin and end <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s, commonly referred to as a range:</p>
 <ul>
 <li><code>begin()</code> - returns an <a href="#BM_(iterator)%2Fi">iterator</a> pointing to the first item.</li>
 <li><code>end()</code> - returns an <a href="#BM_(iterator)%2Fi">iterator</a> pointing to <em>past-the-end</em> (just after the last element).</li>
@@ -3881,9 +3881,9 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Source is <a href="https://vector-of-bool.github.io/2019/03/10/modules-1.html">this website</a>.</p>
 </div>
-<p>C++ modules change how C++ source code files interface with each other. Normally, a C++ source / header file would use <code>#include &lt;...&gt;</code> directives to pull in other source code files that it needs access to. Those outside source code files provided things like <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros, function declarations, <a href="#BM_(class%7Cstruct)%2Fi">class</a> declarations, global variable constants, <a href="#BM_(forward%20declaration)%2Fi">forward declaration</a>s, <a href="#BM_(template)%2Fi">template</a>s, etc...</p>
-<p>Instead of dealing with source code files directly, C++ modules allow for independently "compiling" source code files and importing them for use into different source code files, similar to how a Java source code file imports compiled Java <a href="#BM_(class%7Cstruct)%2Fi">class</a> files for use. Modules reduce some of the complexities of using header files but certain functionality is also gone. Specifically, before modules go through compilation, <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros and <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directives aren't included.</p>
-<p>To create a module from a single file, add <code>export module</code> followed by the name of the module in the beginning of the file. Then, prefix <code>export</code> to any function, <a href="#BM_(enumeration%7Cenum)%2Fi">enumeration</a>, <a href="#BM_(class%7Cstruct)%2Fi">class</a>, etc.. that the module should expose.</p>
+<p>C++ modules change how C++ source code files interface with each other. Normally, a C++ source / header file would use <code>#include &lt;...&gt;</code> directives to pull in other source code files that it needs access to. Those outside source code files provided things like <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros, function declarations, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> declarations, global variable constants, <a href="#BM_(forward%20declaration)%2Fi">forward declaration</a>s, <a href="#BM_(template)%2Fi">template</a>s, etc...</p>
+<p>Instead of dealing with source code files directly, C++ modules allow for independently "compiling" source code files and importing them for use into different source code files, similar to how a Java source code file imports compiled Java <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> files for use. Modules reduce some of the complexities of using header files but certain functionality is also gone. Specifically, before modules go through compilation, <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> macros and <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directives aren't included.</p>
+<p>To create a module from a single file, add <code>export module</code> followed by the name of the module in the beginning of the file. Then, prefix <code>export</code> to any function, <a href="#BM_(enumeration%7Cenum)%2Fi">enumeration</a>, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, etc.. that the module should expose.</p>
 <pre class="hljs"><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">module</span> my_module;
 
 <span class="hljs-function"><span class="hljs-keyword">export</span> <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
@@ -3977,6 +3977,61 @@ my_module:multiplication;
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Last I recall using this, each <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> required a special flag to turn on modules. Just because you're code uses modules doesn't mean the internal C++ libraries (e.g. standard <a href="#BM_(template)%2Fi">template</a> library, <code>cstdint</code>, etc..) are going to expose things as modules. You still have to include those using the <code>#include &lt;...&gt;</code> directives (maybe -- I think I remember there being some roundabout way of getting modules to work).</p>
 </div>
+<a name="H_Preprocessor"></a><h1>Preprocessor</h1>
+<p>The <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> is a component of the C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>. Before the programming statements in a source code file are compiled, the processor goes over the file looking for <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directives. <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">Preprocessor</a> directives either...</p>
+<ol>
+<li>perform some basic text manipulation.</li>
+<li>signal certain things to the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> (e.g. use a specific feature, turn off a specific feature, etc..).</li>
+</ol>
+<p>The first case (text manipulation) is primarily what the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> is used for. Unlike normal C++ programming statements, <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directives start with the pound sign (#) and shouldn't include a semicolon (;) at the end.</p>
+<p>To include one file in another file, use <code>#include</code>. Local files should be wrapped in quotes while files coming from libraries should be wrapped in a angled brackets.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span>          <span class="hljs-comment">// library header</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"OtherClass.hpp"</span>  <span class="hljs-comment">// local header</span></span>
+</code></pre>
+<p>To replace strings in a file with another string, use <code>#define</code>.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">define</span> INITIAL_VALUE 500</span>
+<span class="hljs-type">int</span> x {INITIAL_VALUE};
+<span class="hljs-type">int</span> y {INITIAL_VALUE};
+</code></pre>
+<p>To replace strings in a file with a <em>parameterized replacement</em>, use <code>#define</code> with parenthesis.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">define</span> ADDED_VALUE(x, y) x + y - 15</span>
+<span class="hljs-type">int</span> x {<span class="hljs-built_in">ADDED_VALUE</span>(<span class="hljs-number">1</span>, <span class="hljs-number">7</span>)};
+<span class="hljs-type">int</span> y {<span class="hljs-built_in">ADDED_VALUE</span>(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>)};
+</code></pre>
+<p>To stop replacing a string, use <code>#undef</code>.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">define</span> INITIAL_VALUE 500</span>
+<span class="hljs-type">int</span> x {INITIAL_VALUE};
+<span class="hljs-meta">#<span class="hljs-keyword">undef</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> INITIAL_VALUE 8</span>
+<span class="hljs-type">int</span> y {INITIAL_VALUE};
+</code></pre>
+<p>To conditionally include portions of a file, use an <code>#ifdef</code> / <code>#else</code> / <code>#endif</code> block.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> INITIAL_VALUE</span>
+<span class="hljs-type">int</span> x {INITIAL_VALUE};
+<span class="hljs-meta">#<span class="hljs-keyword">else</span></span>
+<span class="hljs-type">int</span> x {<span class="hljs-built_in">ADDED_VALUE</span>(<span class="hljs-number">1</span>, <span class="hljs-number">7</span>)};
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span>
+</code></pre>
+<p>Similarly, <code>#ifndef</code> may be used to conditionally include imports (n was added to the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directive -- if NOT defined).</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> INITIAL_VALUE</span>
+<span class="hljs-type">int</span> x {<span class="hljs-built_in">ADDED_VALUE</span>(<span class="hljs-number">1</span>, <span class="hljs-number">7</span>)};
+<span class="hljs-meta">#<span class="hljs-keyword">else</span></span>
+<span class="hljs-type">int</span> x {INITIAL_VALUE};
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span>
+</code></pre>
+<p>Conditional inclusion <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">preprocessor</a> directives come in an alternate form that allows for more flexible conditions: <code>#if</code> / <code>#elif</code> /<code>#else</code> / <code>#endif</code> block.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-keyword">if</span> !defined INITIAL_VALUE</span>
+<span class="hljs-type">int</span> x {<span class="hljs-number">1</span>}
+<span class="hljs-meta">#<span class="hljs-keyword">elif</span> INITIAL_VALUE &gt; 50</span>
+<span class="hljs-type">int</span> x {INITIAL_VALUE - <span class="hljs-number">50</span>}
+<span class="hljs-meta">#<span class="hljs-keyword">else</span></span>
+<span class="hljs-type">int</span> x {INITIAL_VALUE}
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">Compiler</a> / compilation options may be controlled through <code>#pragma</code>s. I've left <code>#pragma</code>s out of the document because they're specific to the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> and platform.</p>
+</div>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -3995,19 +4050,19 @@ my_module:multiplication;
 <p><a name="BM_(enumeration%7Cenum)%2Fi"></a><strong>enumeration</strong> - A <a href="#BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi">user-defined type</a> that can be set to one of a set of possibilities.</p>
 </li>
 <li>
-<p><a name="BM_(class%7Cstruct)%2Fi"></a><strong>class</strong> - A <a href="#BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi">user-defined type</a> that pairs together data and the functions that operate on that data.</p>
+<p><a name="BM_(class%7C%5Cbstruct)%2Fi"></a><strong>class</strong> - A <a href="#BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi">user-defined type</a> that pairs together data and the functions that operate on that data.</p>
 </li>
 <li>
 <p><a name="BM_(union)%2Fi"></a><strong>union</strong> - A <a href="#BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi">user-defined type</a> where all <a href="#BM_%5Cb(member)%2Fi">member</a>s share the same memory location (different representations of the same data).</p>
 </li>
 <li>
-<p><a name="BM_(plain-old-data%20class%7Cplain-old%20data%20class%7Cplain%20old%20data%20class%7Cplain-old-data%20structure%7Cplain-old%20data%20structure%7Cplain%20old%20data%20structure%7Cplain-old-data%20struct%7Cplain-old%20data%20struct%7Cplain%20old%20data%20struct)%2Fi"></a><strong>plain-old-data class</strong> <a name="BM_(POD)%2F"></a><strong></strong> - A <a href="#BM_(class%7Cstruct)%2Fi">class</a> that contains only data, not functions.</p>
+<p><a name="BM_(plain-old-data%20class%7Cplain-old%20data%20class%7Cplain%20old%20data%20class%7Cplain-old-data%20structure%7Cplain-old%20data%20structure%7Cplain%20old%20data%20structure%7Cplain-old-data%20struct%7Cplain-old%20data%20struct%7Cplain%20old%20data%20struct)%2Fi"></a><strong>plain-old-data class</strong> <a name="BM_(POD)%2F"></a><strong></strong> - A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that contains only data, not functions.</p>
 </li>
 <li>
-<p><a name="BM_%5Cb(member)%2Fi"></a><strong>member</strong> - Data or function belonging to a <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
+<p><a name="BM_%5Cb(member)%2Fi"></a><strong>member</strong> - Data or function belonging to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
 </li>
 <li>
-<p><a name="BM_(method%7C%5Cbmember%20function)%2Fi"></a><strong>method</strong> - Function belonging to a <a href="#BM_(class%7Cstruct)%2Fi">class</a> (<a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a> that is a function).</p>
+<p><a name="BM_(method%7C%5Cbmember%20function)%2Fi"></a><strong>method</strong> - Function belonging to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (<a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a> that is a function).</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span> {
     ...
     <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> y)</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>-&gt;x + y; }
@@ -4015,28 +4070,28 @@ my_module:multiplication;
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(free%20function%7Cnon-member%20function)%2Fi"></a><strong>free function</strong> - Function not belonging to a <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
+<p><a name="BM_(free%20function%7Cnon-member%20function)%2Fi"></a><strong>free function</strong> - Function not belonging to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">negate</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{ <span class="hljs-keyword">return</span> -x; }
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi"></a><strong>field</strong> - Variable belonging to a <a href="#BM_(class%7Cstruct)%2Fi">class</a> (<a href="#BM_(class%7Cstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a> that is a variable).</p>
+<p><a name="BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi"></a><strong>field</strong> - Variable belonging to a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (<a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <a href="#BM_%5Cb(member)%2Fi">member</a> that is a variable).</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span> {
     <span class="hljs-type">int</span> x;
 };
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(class%20invariant)%2Fi"></a><strong>class invariant</strong> - When using some <a href="#BM_(class%7Cstruct)%2Fi">class</a>, a <a href="#BM_(class%20invariant)%2Fi">class invariant</a> is a feature of that <a href="#BM_(class%7Cstruct)%2Fi">class</a> that is always true (never varies). For example, if a <a href="#BM_(class%7Cstruct)%2Fi">class</a> is used to hold on to an IP and port combination, and it ensures that the port can never be 0, that's a <a href="#BM_(class%20invariant)%2Fi">class invariant</a>.</p>
+<p><a name="BM_(class%20invariant)%2Fi"></a><strong>class invariant</strong> - When using some <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, a <a href="#BM_(class%20invariant)%2Fi">class invariant</a> is a feature of that <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that is always true (never varies). For example, if a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is used to hold on to an IP and port combination, and it ensures that the port can never be 0, that's a <a href="#BM_(class%20invariant)%2Fi">class invariant</a>.</p>
 </li>
 <li>
 <p><a name="BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi"></a><strong>fundamental type</strong> - C++ type that's built into the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> itself rather than being declared through code. Examples include <code>void</code>, <code>bool</code>, <code>int</code>, <code>char</code>, etc..</p>
 </li>
 <li>
-<p><a name="BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi"></a><strong>user-defined type</strong> - A type that's defined by a user, typically derived from existing types. Examples include <a href="#BM_(enumeration%7Cenum)%2Fi">enumeration</a>s, <a href="#BM_(class%7Cstruct)%2Fi">class</a>es, <a href="#BM_(union)%2Fi">union</a>s, etc..</p>
+<p><a name="BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi"></a><strong>user-defined type</strong> - A type that's defined by a user, typically derived from existing types. Examples include <a href="#BM_(enumeration%7Cenum)%2Fi">enumeration</a>s, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es, <a href="#BM_(union)%2Fi">union</a>s, etc..</p>
 </li>
 <li>
-<p><a name="BM_(object%20initialization)%2Fi"></a><strong>object initialization</strong> - The process by which a C++ program initializes an <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. an <code>int</code>, array of <code>int</code>s, <a href="#BM_(object%7Cinstance)%2Fi">object</a> of a <a href="#BM_(class%7Cstruct)%2Fi">class</a> type, etc..).</p>
+<p><a name="BM_(object%20initialization)%2Fi"></a><strong>object initialization</strong> - The process by which a C++ program initializes an <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. an <code>int</code>, array of <code>int</code>s, <a href="#BM_(object%7Cinstance)%2Fi">object</a> of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> type, etc..).</p>
 </li>
 <li>
 <p><a name="BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi"></a><strong>braced initialization</strong> - A form of <a href="#BM_(object%20initialization)%2Fi">object initialization</a> where braces are used to set values (e.g. <code>int x {1}</code>, <code>MyStruct x{ 1, true }</code>, etc..). <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">Braced initialization</a> is often the least error-prone form of <a href="#BM_(object%20initialization)%2Fi">object initialization</a>, where other forms may introduce ambiguity.</p>
@@ -4096,13 +4151,13 @@ my_module:multiplication;
 <p><a name="BM_(reseat)%2Fi"></a><strong>reseating</strong> - The concept of a variable that points to something updating to point to something else. <a href="#BM_(pointer)%2Fi">Pointer</a>s can be <a href="#BM_(reseat)%2Fi">reseat</a>ed, but <a href="#BM_(reference)%2Fi">reference</a>s cannot.</p>
 </li>
 <li>
-<p><a name="BM_(member%20initializer%20list%7Cmember%20initialization%20list%7Cmember%20initializer)%2Fi"></a><strong>member initializer list</strong> - A comma separated list of <a href="#BM_(object%20initialization)%2Fi">object initialization</a>s for the <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7Cstruct)%2Fi">class</a> appearing just before a <a href="#BM_(constructor)%2Fi">constructor</a>'s body.</p>
+<p><a name="BM_(member%20initializer%20list%7Cmember%20initialization%20list%7Cmember%20initializer)%2Fi"></a><strong>member initializer list</strong> - A comma separated list of <a href="#BM_(object%20initialization)%2Fi">object initialization</a>s for the <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> appearing just before a <a href="#BM_(constructor)%2Fi">constructor</a>'s body.</p>
 </li>
 <li>
 <p><a name="BM_(default%20member%20initializer%7Cdefault%20member%20initialization)%2Fi"></a><strong>default member initialization</strong> - The <a href="#BM_(object%20initialization)%2Fi">object initialization</a> of a <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> directly where that <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> is declared.</p>
 </li>
 <li>
-<p><a name="BM_(object%7Cinstance)%2Fi"></a><strong>object</strong> - A region of memory that has a type and a value (e.g. <a href="#BM_(class%7Cstruct)%2Fi">class</a>, an integer, a <a href="#BM_(pointer)%2Fi">pointer</a> to an integer, etc..).</p>
+<p><a name="BM_(object%7Cinstance)%2Fi"></a><strong>object</strong> - A region of memory that has a type and a value (e.g. <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, an integer, a <a href="#BM_(pointer)%2Fi">pointer</a> to an integer, etc..).</p>
 </li>
 <li>
 <p><a name="BM_(allocation%7Callocate)%2Fi"></a><strong>allocation</strong> - The act of reserving memory for an <a href="#BM_(object%7Cinstance)%2Fi">object</a>.</p>
@@ -4126,7 +4181,7 @@ my_module:multiplication;
 <p><a name="BM_(local%20static%20object%7Clocal%20static%20variable%7Clocal%20static%20storage%20duration)%2Fi"></a><strong>local static object</strong> - A <a href="#BM_(static%20object%7Cstatic%20variable%7Cstatic%20storage%20duration)%2Fi">static object</a> but declared at function scope. The <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of these <a href="#BM_(object%7Cinstance)%2Fi">object</a>s start at the first invocation of the function and finish at the end of the program.</p>
 </li>
 <li>
-<p><a name="BM_(static%20field%7Cstatic%20member)%2Fi"></a><strong>static member</strong> - An <a href="#BM_(object%7Cinstance)%2Fi">object</a> that's a <a href="#BM_%5Cb(member)%2Fi">member</a> of a <a href="#BM_(class%7Cstruct)%2Fi">class</a> but bound globally rather than on an <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a>. A <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static field</a> is essentially a <a href="#BM_(static%20object%7Cstatic%20variable%7Cstatic%20storage%20duration)%2Fi">static object</a> that's accessible through the <a href="#BM_(class%7Cstruct)%2Fi">class</a> itself (not an <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a>). Similarly, a static <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is essentially a global function that's accessed through the <a href="#BM_(class%7Cstruct)%2Fi">class</a> (not an <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7Cstruct)%2Fi">class</a>).</p>
+<p><a name="BM_(static%20field%7Cstatic%20member)%2Fi"></a><strong>static member</strong> - An <a href="#BM_(object%7Cinstance)%2Fi">object</a> that's a <a href="#BM_%5Cb(member)%2Fi">member</a> of a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> but bound globally rather than on an <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>. A <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static field</a> is essentially a <a href="#BM_(static%20object%7Cstatic%20variable%7Cstatic%20storage%20duration)%2Fi">static object</a> that's accessible through the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> itself (not an <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>). Similarly, a static <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> is essentially a global function that's accessed through the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (not an <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).</p>
 </li>
 <li>
 <p><a name="BM_(thread%5B%5C-%5Cs%5Dlocal%20object%7Cthread%5B%5C-%5Cs%5Dlocal%20variable%7Cthread%5B%5C-%5Cs%5Dlocal%20storage%20duration%7Cthread%20storage%20duration)%2Fi"></a><strong>thread local object</strong> - An <a href="#BM_(object%7Cinstance)%2Fi">object</a> where each thread has access to its own copy. The <a href="#BM_(storage%20duration)%2Fi">storage duration</a> of these <a href="#BM_(object%7Cinstance)%2Fi">object</a>s start at the beginning of the thread and finish when the thread ends.</p>
@@ -4144,7 +4199,7 @@ my_module:multiplication;
 <p><a name="BM_(scope%20resolution)%2Fi"></a><strong>scope resolution (::)</strong> - A operator that's used to access <a href="#BM_(static%20field%7Cstatic%20member)%2Fi">static member</a>s (e.g. <code>MyStruct::static_func()</code>).</p>
 </li>
 <li>
-<p><a name="BM_(extend%7Csubclass)%2Fi"></a><strong>extend</strong> - Another way of expressing <a href="#BM_(class%7Cstruct)%2Fi">class</a> inheritance (e.g. B <a href="#BM_(extend%7Csubclass)%2Fi">extend</a>s A is equivalent to saying B is a child of A).</p>
+<p><a name="BM_(extend%7Csubclass)%2Fi"></a><strong>extend</strong> - Another way of expressing <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> inheritance (e.g. B <a href="#BM_(extend%7Csubclass)%2Fi">extend</a>s A is equivalent to saying B is a child of A).</p>
 </li>
 <li>
 <p><a name="BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi"></a><strong>exception</strong> - An <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> operation accepts an <a href="#BM_(object%7Cinstance)%2Fi">object</a> and unwinds the call stack until reaching a special region specifically intended to stop the unwinding for <a href="#BM_(object%7Cinstance)%2Fi">object</a>s of that type, called a <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">try-catch</a> block. <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">Exception</a>s are a way for code to signal that something unexpected / <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>al happened.</p>
@@ -4156,10 +4211,10 @@ my_module:multiplication;
 <p><a name="BM_(copy%20semantics)%2Fi"></a><strong>copy semantics</strong> - The rules used for making copies of <a href="#BM_(object%7Cinstance)%2Fi">object</a>s of some type. A copy, once made, should be equivalent to its source. A modification on the copy shouldn't modify the source as well.</p>
 </li>
 <li>
-<p><a name="BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi"></a><strong>member-wise copy</strong> - The default <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> for <a href="#BM_(class%7Cstruct)%2Fi">class</a>es. Each individual <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> is copied.</p>
+<p><a name="BM_(member%5B%5C-%5Cs%5Dwise%20copy)%2Fi"></a><strong>member-wise copy</strong> - The default <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> for <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es. Each individual <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> is copied.</p>
 </li>
 <li>
-<p><a name="BM_(copy%20constructor)%2Fi"></a><strong>copy constructor</strong> - A <a href="#BM_(constructor)%2Fi">constructor</a> with a single parameter that takes in a <a href="#BM_(reference)%2Fi">reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type (e.g. <code>T(const T &amp;) { ... }</code>). A <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> is used to specify the <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> for that <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
+<p><a name="BM_(copy%20constructor)%2Fi"></a><strong>copy constructor</strong> - A <a href="#BM_(constructor)%2Fi">constructor</a> with a single parameter that takes in a <a href="#BM_(reference)%2Fi">reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type (e.g. <code>T(const T &amp;) { ... }</code>). A <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> is used to specify the <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> for that <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
 </li>
 <li>
 <p><a name="BM_(copy%20assignment)%2Fi"></a><strong>copy assignment</strong> - An assignment operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> that copies one <a href="#BM_(object%7Cinstance)%2Fi">object</a> into another (e.g. <code>x = y</code>). <a href="#BM_(copy%20assignment)%2Fi">Copy assignment</a> requires that resources in the destination <a href="#BM_(object%7Cinstance)%2Fi">object</a> be cleaned up prior to performing the copy.</p>
@@ -4169,10 +4224,10 @@ my_module:multiplication;
 <p>Sometimes also referred to <a href="#BM_(constructor)%2Fi">constructor</a> acquires <a href="#BM_(destructor)%2Fi">destructor</a> releases (<a href="#BM_(RAII%7CCADRe)%2F">CADRe</a>).</p>
 </li>
 <li>
-<p><a name="BM_(moved%5B%5C-%5Cs%5Dfrom%20object%7Cmoved%5B%5C-%5Cs%5Dfrom%20state)%2Fi"></a><strong>moved-from object</strong> - When an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is moved to another <a href="#BM_(object%7Cinstance)%2Fi">object</a>, that <a href="#BM_(object%7Cinstance)%2Fi">object</a> enters a special state where the only possible operation allowed on it is either de<a href="#BM_(class%7Cstruct)%2Fi">struct</a>ion or re-assignment.</p>
+<p><a name="BM_(moved%5B%5C-%5Cs%5Dfrom%20object%7Cmoved%5B%5C-%5Cs%5Dfrom%20state)%2Fi"></a><strong>moved-from object</strong> - When an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is moved to another <a href="#BM_(object%7Cinstance)%2Fi">object</a>, that <a href="#BM_(object%7Cinstance)%2Fi">object</a> enters a special state where the only possible operation allowed on it is either destruction or re-assignment.</p>
 </li>
 <li>
-<p><a name="BM_(move%20constructor)%2Fi"></a><strong>move constructor</strong> - A <a href="#BM_(constructor)%2Fi">constructor</a> with a single parameter that takes in an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type (e.g. <code>T(T &amp;&amp;) { ... }</code>). A <a href="#BM_(move%20constructor)%2Fi">move constructor</a> is used to specify the move semantics for that <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
+<p><a name="BM_(move%20constructor)%2Fi"></a><strong>move constructor</strong> - A <a href="#BM_(constructor)%2Fi">constructor</a> with a single parameter that takes in an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the same type (e.g. <code>T(T &amp;&amp;) { ... }</code>). A <a href="#BM_(move%20constructor)%2Fi">move constructor</a> is used to specify the move semantics for that <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
 </li>
 <li>
 <p><a name="BM_(move%20assignment)%2Fi"></a><strong>move assignment</strong> - An assignment operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> that moves one <a href="#BM_(object%7Cinstance)%2Fi">object</a> into another (e.g. <code>x = y</code>).</p>
@@ -4214,13 +4269,13 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 <p><a name="BM_(rvalue%20reference)%2Fi"></a><strong>rvalue reference</strong> - A data type that's more-or-less the same as a <a href="#BM_(reference)%2Fi">reference</a> but conveys to the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> that the data its pointing to is an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a> (e.g. <code>MyType &amp;&amp;rref { y }</code>).</p>
 </li>
 <li>
-<p><a name="BM_(virtual%20method%7Cvirtual%20function)%2Fi"></a><strong>virtual method</strong> - A <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> in a base <a href="#BM_(class%7Cstruct)%2Fi">class</a> that is overridable by any <a href="#BM_(class%7Cstruct)%2Fi">class</a> that inherits from that base <a href="#BM_(class%7Cstruct)%2Fi">class</a>.</p>
+<p><a name="BM_(virtual%20method%7Cvirtual%20function)%2Fi"></a><strong>virtual method</strong> - A <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> in a base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that is overridable by any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that inherits from that base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
 </li>
 <li>
-<p><a name="BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi"></a><strong>pure virtual method</strong> - A <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a> that requires an implementation (no implementation has been provided by the base <a href="#BM_(class%7Cstruct)%2Fi">class</a> that declares it). For a <a href="#BM_(class%7Cstruct)%2Fi">class</a> to be instantiable, it cannot have any <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>s (similar to an abstract <a href="#BM_(class%7Cstruct)%2Fi">class</a> in Java).</p>
+<p><a name="BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi"></a><strong>pure virtual method</strong> - A <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a> that requires an implementation (no implementation has been provided by the base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that declares it). For a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> to be instantiable, it cannot have any <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>s (similar to an abstract <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> in Java).</p>
 </li>
 <li>
-<p><a name="BM_(pure%5B%5C-%5Cs%5Dvirtual%20class)%2Fi"></a><strong>pure virtual class</strong> - A <a href="#BM_(class%7Cstruct)%2Fi">class</a> that only contains <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>s.</p>
+<p><a name="BM_(pure%5B%5C-%5Cs%5Dvirtual%20class)%2Fi"></a><strong>pure virtual class</strong> - A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that only contains <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual method</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(virtual%20destructor)%2Fi"></a><strong>virtual destructor</strong> - A <a href="#BM_(destructor)%2Fi">destructor</a> that's a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual method</a>.</p>
@@ -4229,7 +4284,7 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 <p><a name="BM_(vtable)%2Fi"></a><strong>vtable</strong> - A table of <a href="#BM_(pointer)%2Fi">pointer</a>s to <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual function</a>s, generated by the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a>. When a <a href="#BM_(virtual%20method%7Cvirtual%20function)%2Fi">virtual function</a> gets invoked (<a href="#BM_(runtime)%2Fi">runtime</a>) <a href="#BM_(vtable)%2Fi">vtable</a>s are used to determining which <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> implementation to use.</p>
 </li>
 <li>
-<p><a name="BM_(template)%2Fi"></a><strong>template</strong> - A <a href="#BM_(class%7Cstruct)%2Fi">class</a> or function where parts of the code are intended for substitution (by other code). At <a href="#BM_(compile-time)%2Fi">compile-time</a>, a user supplies a set of substitutions for each usage of a <a href="#BM_(template)%2Fi">template</a>, customizing it for the specific use-case that user is dealing with.</p>
+<p><a name="BM_(template)%2Fi"></a><strong>template</strong> - A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> or function where parts of the code are intended for substitution (by other code). At <a href="#BM_(compile-time)%2Fi">compile-time</a>, a user supplies a set of substitutions for each usage of a <a href="#BM_(template)%2Fi">template</a>, customizing it for the specific use-case that user is dealing with.</p>
 </li>
 <li>
 <p><a name="BM_(template%20parameter)%2Fi"></a><strong>template parameter</strong> - An identifier within the <a href="#BM_(template)%2Fi">template</a>. At compile time, any time a <a href="#BM_(template)%2Fi">template</a> is used its <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s are substituted with code that the usage supplies.</p>
@@ -4306,7 +4361,7 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 <p><a name="BM_(attribute)%2Fi"></a><strong>attribute</strong> - A tag applied to code that provides information to the user / <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> about whatever it is that it's applied to. Similar to Java annotations.</p>
 </li>
 <li>
-<p><a name="BM_(iterator)%2Fi"></a><strong>iterator</strong> - A type used to access elements within some sequence (e.g. array, <a href="#BM_(class%7Cstruct)%2Fi">class</a> representing a list, <a href="#BM_(class%7Cstruct)%2Fi">class</a> representing an infinite stream of <code>int</code>s, etc..). An <a href="#BM_(iterator)%2Fi">iterator</a> requires a specific set of operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s.</p>
+<p><a name="BM_(iterator)%2Fi"></a><strong>iterator</strong> - A type used to access elements within some sequence (e.g. array, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> representing a list, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> representing an infinite stream of <code>int</code>s, etc..). An <a href="#BM_(iterator)%2Fi">iterator</a> requires a specific set of operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(input%20iterator)%2Fi"></a><strong>input iterator</strong> - An <a href="#BM_(iterator)%2Fi">iterator</a> that can only move forward in the sequence one element at a time and can only get elements of the sequence.</p>
@@ -4349,10 +4404,10 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 <p><a name="BM_(function%20pointer)%2Fi"></a><strong>function pointer</strong> - A <a href="#BM_(pointer)%2Fi">pointer</a> to a function.</p>
 </li>
 <li>
-<p><a name="BM_(functor%7Cfunction%20object)%2Fi"></a><strong>functor</strong> - A <a href="#BM_(class%7Cstruct)%2Fi">class</a> that you can invoke as if it were a function because it has an operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s for function-call.</p>
+<p><a name="BM_(functor%7Cfunction%20object)%2Fi"></a><strong>functor</strong> - A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that you can invoke as if it were a function because it has an operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s for function-call.</p>
 </li>
 <li>
-<p><a name="BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi"></a><strong>function call operator</strong> - The operator used for making function calls (parenthesis), may be operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ed on <a href="#BM_(class%7Cstruct)%2Fi">class</a>es to turn them into <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s.</p>
+<p><a name="BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi"></a><strong>function call operator</strong> - The operator used for making function calls (parenthesis), may be operator <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ed on <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es to turn them into <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(lambda)%2Fi"></a><strong>lambda</strong> - Shorthand notation for an unnamed <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>.</p>
@@ -4384,7 +4439,7 @@ x               <span class="hljs-comment">// this is a lvalue      (the result 
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(forward%20declaration)%2Fi"></a><strong>forward declaration</strong> - To use a function, <a href="#BM_(class%7Cstruct)%2Fi">class</a>, variable, etc.. within some C++ code, only its declaration is needed, not its definition (implementation). The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> wll ensure that the usage points to the implementation when the time comes.</p>
+<p><a name="BM_(forward%20declaration)%2Fi"></a><strong>forward declaration</strong> - To use a function, <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, variable, etc.. within some C++ code, only its declaration is needed, not its definition (implementation). The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> wll ensure that the usage points to the implementation when the time comes.</p>
 <p>The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> needs this to handle cyclical <a href="#BM_(reference)%2Fi">reference</a>s. It can also significantly reduce build times.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClassA</span>; <span class="hljs-comment">// forward declaration of MyClassA</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClassB</span>; <span class="hljs-comment">// forward declaration of MyClassB</span>
