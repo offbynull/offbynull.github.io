@@ -16585,23 +16585,30 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), put them into a predefined number of <a href="#BM_(cluster)%2Fi">cluster</a>s (denoted as k) and set a center for each <a href="#BM_(cluster)%2Fi">cluster</a>. The goal is find both the ...</p>
-<ol>
-<li>points to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
-<li>center to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
-</ol>
-<p>... such that the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between a <a href="#BM_(cluster)%2Fi">cluster</a>'s center and a <a href="#BM_(cluster)%2Fi">cluster</a>'s points is the minimum out of all point and center assignment combinations.</p>
-<p><img src="svgbob_bbe3e2f07ce0fa30939960ca992e1b16fc02076b.svg" alt="Kroki diagram output"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Confused? It's an optimization problem. You're trying to ...</p>
-<ol>
-<li>group together points</li>
-<li>find centers for those groups</li>
-</ol>
-<p>... such that when you measure the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to their group's center, it's the minimum out of all possible point grouping + group centers combinations.</p>
-</div>
-<p><strong>WHY</strong>: This is one of the methods used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. Because it's limited to use <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> as the metric, it's essentially <a href="#BM_(cluster)%2Fi">cluster</a>ing by how close the coordinate plots match up. For example, ...</p>
+<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a <a href="#BM_(cluster)%2Fi">cluster</a>, where the points closest to that center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) are that <a href="#BM_(cluster)%2Fi">cluster</a>'s members. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to member distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.</p>
+<p>In terms of a scoring function, the score being minimized is ...</p>
+<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mi>m</mi><mi>a</mi><msub><mi>x</mi><mrow><mi>v</mi><mo>∈</mo><mi>P</mi></mrow></msub><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><mi>v</mi><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">score = max_{v \in P}(d(v, C))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mrel mtight">∈</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div><ul>
+<li>P is the set of points.</li>
+<li>C is the set of centers.</li>
+<li>v is an individual point in P.</li>
+<li>d is the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> to v's closest center.</li>
+<li>max is the maximum function.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-comment"># d() function from the formula</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dist_to_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
+  center_pt = <span class="hljs-built_in">min</span>(
+    center_pts,
+    key=<span class="hljs-keyword">lambda</span> cp: dist(data_pt, cp)
+  )
+  <span class="hljs-keyword">return</span> dist(center_pt, data_pt)
+
+<span class="hljs-comment"># scoring function (what's trying to be minimized)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">k_centers_score</span>(<span class="hljs-params">data_pts, center_pts</span>):
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dist_to_closest_center(p, center_pts) <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> data_pts)
+</code></pre>
+<p><img src="svgbob_049e214f3ef4fbb258190aeac55bfbf167a4b32b.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: This is one of the methods used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. Because it's limited to use <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> as the metric, it's essentially <a href="#BM_(cluster)%2Fi">cluster</a>ing by how close the component plots match up. For example, ...</p>
 <table>
 <thead>
 <tr>
@@ -16642,16 +16649,9 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><code>dist((2,10,2,10), (2,2,2,10)) = 8</code></li>
 <li><code>dist((2,8,2,8), (2,2,2,10)) = 6.325</code></li>
 </ul>
-<p>In addition to that, another limitation is that it requires knowing the number of <a href="#BM_(cluster)%2Fi">cluster</a>s (k) beforehand. Other <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithms exist that don't have these restrictions.</p>
+<p>In addition to only being able to use <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>, another limitation is that it requires knowing the number of <a href="#BM_(cluster)%2Fi">cluster</a>s (k) beforehand. Other <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithms exist that don't have either restriction.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>Solving <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> for any non-trivial input isn't possible because the search space is too huge. <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-centers</a> requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...</p>
-<ol>
-<li>How many number of ways can those 100 points be grouped?</li>
-<li>How many dimensions does each point have?</li>
-<li>What's the minimum / maximum value across points for each of those dimensions?</li>
-<li>How many possibilities are there to check for each of the 5 centers?</li>
-</ol>
-<p>Because of this, heuristics are used for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>. A common <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> heuristic is the <a href="#BM_(farthest%20first%20traversal)%2Fi">farthest first traversal</a> algorithm. The algorithm iteratively builds out more centers by inspecting the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to existing centers. At each step, the algorithm ...</p>
+<p>Solving <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> for any non-trivial input isn't possible because the search space is too huge. Because of this, heuristics are used. A common <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> heuristic is the <a href="#BM_(farthest%20first%20traversal)%2Fi">farthest first traversal</a> algorithm. The algorithm iteratively builds out more centers by inspecting the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to existing centers. At each step, the algorithm ...</p>
 <ol>
 <li>gets the closest center for each point,</li>
 <li>picks the point with the farthest <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> and sets it as the new center.</li>
@@ -16726,10 +16726,34 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FK-Centers%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/K-Centers Clustering</a></li>
 </ul>
 </div>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
+<p><strong>WHAT</strong>: <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">K-means</a> is <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> except the scoring function for deciding the quality of centers is different. Recall that goal for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is to find both the ...</p>
+<ol>
+<li>points to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
+<li>center to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
+</ol>
+<p>... such that the <em><a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between a <a href="#BM_(cluster)%2Fi">cluster</a>'s center and a <a href="#BM_(cluster)%2Fi">cluster</a>'s points</em> is the minimum out of all point and center assignment combinations. For <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, the scoring function is the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> of that <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> rather than the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> itself. That is, rather than the goal being ot minimize the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>, it's to minimize the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> of the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>.</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>TODO: THE ABOVE IS WRONG, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-CENTERS</a> DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL</p>
+<p>The formula for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> is as follows ...</p>
+<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>C</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mrow><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{
+  \sum_{i=1}^{n} {d(P_i, C)^2}
+}{
+  n
+}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.189818em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5038179999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897100000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><ul>
+<li>P is the set of points / vectors.</li>
+<li>C is the set of centers.</li>
+<li>d calculates the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between a point and its closest center.</li>
+</ul>
+<p><strong>WHY</strong>:</p>
+<p><strong>ALGORITHM</strong>:</p>
 <a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
 <a name="H_K-Medioids%20Clustering"></a><h3>K-Medioids Clustering</h3>
@@ -17456,6 +17480,9 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </li>
 <li>
 <p><a href="#BM_(hierarchial%20cluster)%2Fi">Hierarchial cluster</a>ing explorer - Generate a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a> based on <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance, then visualize the <a href="#BM_(tree)%2Fi">tree</a> and provide the user with "interesting" internal nodes (<a href="#BM_(cluster)%2Fi">cluster</a>s). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the <a href="#BM_(cluster)%2Fi">cluster</a>ed data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).</p>
+</li>
+<li>
+<p><a href="#BM_(hierarchial%20cluster)%2Fi">Hierarchial cluster</a>ing as a means of detecting outliers - <a href="#BM_(cluster)%2Fi">Cluster</a> data using <a href="#BM_(neighbour)%2Fi">neighbour</a>ing join <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. How far is each leaf node to its parent internal node? Find any that are grossly over the average / <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>).</p>
 </li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
@@ -20973,13 +21000,17 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(cluster)%2Fi"></a><strong>clustering</strong> - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
 </li>
 <li>
-<p><a name="BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where points are grouped together into k <a href="#BM_(cluster)%2Fi">cluster</a>s and each <a href="#BM_(cluster)%2Fi">cluster</a> has a center. The goal is find both the ...</p>
-<ol>
-<li>points to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
-<li>center to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
-</ol>
-<p>... such that the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between a <a href="#BM_(cluster)%2Fi">cluster</a>'s center and a <a href="#BM_(cluster)%2Fi">cluster</a>'s points is the minimum out of all point and center assignment combinations.</p>
-<p><img src="svgbob_c32bbe24b2329a02c530ad2b02d1e3ee099fb88c.svg" alt="Kroki diagram output"></p>
+<p><a name="BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where a point, called a center, defines <a href="#BM_(cluster)%2Fi">cluster</a> membership. k different centers are chosen (one for each <a href="#BM_(cluster)%2Fi">cluster</a>), and the points closest to each center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) make up members of that <a href="#BM_(cluster)%2Fi">cluster</a>. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to member distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.</p>
+<p>In terms of a scoring function, the score being minimized is ...</p>
+<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mi>m</mi><mi>a</mi><msub><mi>x</mi><mrow><mi>v</mi><mo>∈</mo><mi>P</mi></mrow></msub><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><mi>v</mi><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">score = max_{v \in P}(d(v, C))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">v</span><span class="mrel mtight">∈</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div><ul>
+<li>P is the set of points.</li>
+<li>C is the set of centers.</li>
+<li>v is an individual point in P.</li>
+<li>d is the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> to v's closest center.</li>
+<li>max is the maximum function.</li>
+</ul>
+<p><img src="svgbob_5fa140a687d17ef8490f92bae2a74d597d2d56f9.svg" alt="Kroki diagram output"></p>
 <p>This effectively becomes an optimization problem. For any non-trivial input, the search space is too massive for a straight-forward algorithm to work. As such, heuristics are commonly used instead.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -21130,6 +21161,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This topic was only briefly discussed, so I don't know for sure what the properties/requirements are for a <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> other than higher = more similar. Contrast this to <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s, where it explicitly mentions the requirements that need to be followed (e.g. triangle inequality property). For <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s, it didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does <code>similarity(snake,snake) == similarity(bird,bird)</code> have to be true or can it be that <code>similarity(snake,snake) &gt; similarity(bird,bird)</code>?</p>
 <p>I saw on Wikipedia that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> scoring matrices like <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> and <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> are <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrices</a>, so that implies that totally similar entities don't have to be the same score. For example, in <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 <code>similarity(A,A) = 4</code> but <code>similarity(R,R) = 5</code>.</p>
+<p>Also, does a <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> have to be symmetric? For example, <code>similarity(snake,bird) == similarity(bird,snake)</code>. I think it does have to be symmetric.</p>
 </div>
 </li>
 <li>

@@ -12118,28 +12118,49 @@ metrics.PearsonSimilarity
 Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 ```
 
-**WHAT**: Given a list of n-dimensional points (vectors), put them into a predefined number of clusters (denoted as k) and set a center for each cluster. The goal is find both the ...
- 
-1. points to be assigned to each cluster
-2. center to be assigned to each cluster
+**WHAT**: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a cluster, where the points closest to that center (euclidean distance) are that cluster's member_NORMs. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
 
-... such that the euclidean distance between a cluster's center and a cluster's points is the minimum out of all point and center assignment combinations.
+In terms of a scoring function, the score being minimized is ...
+
+```{kt}
+score = max_{v \in P}(d(v, C))
+```
+
+* P is the set of points.
+* C is the set of centers.
+* v is an individual point in P.
+* d is the euclidean distance to v's closest center.
+* max is the maximum function.
+
+```python
+# d() function from the formula
+def dist_to_closest_center(data_pt, center_pts):
+  center_pt = min(
+    center_pts,
+    key=lambda cp: dist(data_pt, cp)
+  )
+  return dist(center_pt, data_pt)
+
+# scoring function (what's trying to be minimized)
+def k_centers_score(data_pts, center_pts):
+  return max(dist_to_closest_center(p, center_pts) for p in data_pts)
+```
 
 ```{svgbob}
 "Points are 2D gene expression vectors. Each point is represented as"
 "a letter, where the letter defines which cluster it belongs to. Each"
 "line is from a point to its cluster center."
 
-        "bad centers and points"                       "good centers and points"     
+           "bad centers"                                 "good centers"     
                                                                                  
 |    C                                        |    C                             
 |     \                                       |    |                             
 |C ----●                                      |C --●                             
-|                                             |    |                             
-|    D                                        |    C                             
-|     '.                                      |                                  
-|       '.                                    |                                  
-|         '.                                  |                                  
+|     /                                       |    |                             
+|    C                                        |    C                             
+|                                             |                                  
+|                                             |                                  
+|                                             |                                  
 |           ●                                 |                                  
 |          /|\                                |                           
 |         / | \                               |                           
@@ -12151,16 +12172,7 @@ Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 +----------------------------------           +----------------------------------
 ```
 
-```{note}
-Confused? It's an optimization problem. You're trying to ...
-
-1. group together points
-2. find centers for those groups
-
-... such that when you measure the euclidean distances from points to their group's center, it's the minimum out of all possible point grouping + group centers combinations.
-```
-
-**WHY**: This is one of the methods used for clustering gene expression vectors. Because it's limited to use euclidean distance as the metric, it's essentially clustering by how close the coordinate plots match up. For example, ...
+**WHY**: This is one of the methods used for clustering gene expression vectors. Because it's limited to use euclidean distance as the metric, it's essentially clustering by how close the component plots match up. For example, ...
 
 |        | hour0 | hour1 | hour2 | hour3 |
 |--------|-------|-------|-------|-------|
@@ -12187,18 +12199,11 @@ e  0|                           e  0|                            e  0|
 * `dist((2,10,2,10), (2,2,2,10)) = 8`
 * `dist((2,8,2,8), (2,2,2,10)) = 6.325`
 
-In addition to that, another limitation is that it requires knowing the number of clusters (k) beforehand. Other clustering algorithms exist that don't have these restrictions.
+In addition to only being able to use euclidean distance, another limitation is that it requires knowing the number of clusters (k) beforehand. Other clustering algorithms exist that don't have either restriction.
 
 **ALGORITHM**:
 
-Solving k-centers for any non-trivial input isn't possible because the search space is too huge. K-centers requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...
-
- 1. How many number of ways can those 100 points be grouped?
- 1. How many dimensions does each point have?
- 1. What's the minimum / maximum value across points for each of those dimensions?
- 1. How many possibilities are there to check for each of the 5 centers?
-
-Because of this, heuristics are used for k-centers. A common k-centers heuristic is the farthest first traversal algorithm. The algorithm iteratively builds out more centers by inspecting the euclidean distances from points to existing centers. At each step, the algorithm ...
+Solving k-centers for any non-trivial input isn't possible because the search space is too huge. Because of this, heuristics are used. A common k-centers heuristic is the farthest first traversal algorithm. The algorithm iteratively builds out more centers by inspecting the euclidean distances from points to existing centers. At each step, the algorithm ...
 
  1. gets the closest center for each point,
  1. picks the point with the farthest euclidean distance and sets it as the new center.
@@ -12261,13 +12266,48 @@ Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 Algorithms/Gene Expression/K-Centers Clustering_TOPIC
 ```
 
-TODO: fill me in
+**WHAT**: K-means is k-centers except the scoring function for deciding the quality of centers is different. Recall that goal for k-centers is to find both the ...
+ 
+1. points to be assigned to each cluster
+2. center to be assigned to each cluster
 
-TODO: fill me in
+... such that the _euclidean distance between a cluster's center and a cluster's points_ is the minimum out of all point and center assignment combinations. For k-means, the scoring function is the squared error distortion of that euclidean distance rather than the euclidean distance itself. That is, rather than the goal being ot minimize the euclidean distance, it's to minimize the squared error distortion of the euclidean distance.
 
-TODO: fill me in
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
 
-TODO: fill me in
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
+
+The formula for squared error distortion is as follows ...
+
+```{kt}
+\frac{
+  \sum_{i=1}^{n} {d(P_i, C)^2}
+}{
+  n
+}
+```
+
+ * P is the set of points / vectors.
+ * C is the set of centers.
+ * d calculates the euclidean distance between a point and its closest center.
+
+**WHY**:
+
+**ALGORITHM**:
 
 ### Soft K-Means Clustering
 ### Hierarchial Clustering
@@ -13356,6 +13396,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
    This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / distance matrix.
  * Hierarchial clustering explorer - Generate a neighbour joining phylogeny tree based on pearson distance of sequence alignment distance, then visualize the tree and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).
+ * Hierarchial clustering as a means of detecting outliers - Cluster data using neighbouring join phylogeny. How far is each leaf node to its parent internal node? Find any that are grossly over the average / squared error distortion / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or squared error distortion).
 
 # Terminology
 
@@ -16601,28 +16642,35 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} clustering/(cluster)/i` - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a cluster.
 
- * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where points are grouped together into k clusters and each cluster has a center. The goal is find both the ...
- 
-   1. points to be assigned to each cluster
-   2. center to be assigned to each cluster
-   
-   ... such that the euclidean distance between a cluster's center and a cluster's points is the minimum out of all point and center assignment combinations.
+ * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where a point, called a center, defines cluster member_NORMship. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_NORMs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
 
+   In terms of a scoring function, the score being minimized is ...
+
+   ```{kt}
+   score = max_{v \in P}(d(v, C))
+   ```
+
+   * P is the set of points.
+   * C is the set of centers.
+   * v is an individual point in P.
+   * d is the euclidean distance to v's closest center.
+   * max is the maximum function.
+ 
    ```{svgbob}
    "Points represented as letters, where each letter"
    "represents the cluster its assigned to. Each line is"
    "from a point to its cluster center."
    
-           "bad centers and points"                       "good centers and points"     
+              "bad centers"                                 "good centers"     
                                                                                     
    |    C                                        |    C                             
    |     \                                       |    |                             
    |C ----●                                      |C --●                             
-   |                                             |    |                             
-   |    D                                        |    C                             
-   |     '.                                      |                                  
-   |       '.                                    |                                  
-   |         '.                                  |                                  
+   |     /                                       |    |                             
+   |    C                                        |    C                             
+   |                                             |                                  
+   |                                             |                                  
+   |                                             |                                  
    |           ●                                 |                                  
    |          /|\                                |                           
    |         / | \                               |                           
@@ -16858,6 +16906,8 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    This topic was only briefly discussed, so I don't know for sure what the properties/requirements are for a similarity metric other than higher = more similar. Contrast this to distance metrics, where it explicitly mentions the requirements that need to be followed (e.g. triangle inequality property). For similarity metrics, it didn't say if there's some upper-bound to similarity or if totally similar entities have to score the same. For example, does `similarity(snake,snake) == similarity(bird,bird)` have to be true or can it be that `similarity(snake,snake) > similarity(bird,bird)`?
    
    I saw on Wikipedia that sequence alignment scoring matrices like PAM and BLOSUM are similarity matrices, so that implies that totally similar entities don't have to be the same score. For example, in BLOSUM62 `similarity(A,A) = 4` but `similarity(R,R) = 5`.
+
+   Also, does a similarity metric have to be symmetric? For example, `similarity(snake,bird) == similarity(bird,snake)`. I think it does have to be symmetric.
    ```
 
  * `{bm} similarity matrix/(similarity matrix|similarity matrices)/i` - Given a set of n different entities, a similarity matrix is an n-by-n matrix where each element contains the similarity measure between the entities for that cell. For example, for the species snake, lizard, bird, and crocodile ...
