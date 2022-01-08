@@ -16019,7 +16019,47 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the distance between those vectors if traveling directly from one to the other in a straight line, referred to as the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>.</p>
 <p><img src="svgbob_812b661882246e5c5673044d47b2a743122f1f75.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.</p>
+<p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. One way to think about it is that it checks to see how closely component plots of the vectors match up. For example, ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour0</th>
+<th>hour1</th>
+<th>hour2</th>
+<th>hour3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>2</td>
+<td>10</td>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>2</td>
+<td>8</td>
+<td>2</td>
+<td>8</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_9e826f4a4ade56f78f3c26b7b256969a30621136.svg" alt="Kroki diagram output"></p>
+<ul>
+<li><code>dist((2,10,2,10), (2,8,2,8)) = 2.82</code></li>
+<li><code>dist((2,10,2,10), (2,2,2,10)) = 8</code></li>
+<li><code>dist((2,8,2,8), (2,2,2,10)) = 6.325</code></li>
+</ul>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm extends the basic 2D distance formula from highschool math to multiple dimensions. Recall that two compute the distance between two...</p>
 <ul>
@@ -16078,7 +16118,47 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FManhattan%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the distance between those vectors if traveling only via the axis of the coordinate system, referred to as the <a href="#BM_(manhattan%20distance%7Ctaxi%5B%5Cs%5C-%5D%3Fcab%20distance%7Ccity%5B%5Cs%5C-%5Dblock%20distance)%2Fi">manhattan distance</a>.</p>
 <p><img src="svgbob_19c8269cf6dc61112d64c53c1045bfe1e1f518e3.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.</p>
+<p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.  One way to think about it is that it checks to see how closely component plots of the vectors match up. For example, ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour0</th>
+<th>hour1</th>
+<th>hour2</th>
+<th>hour3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>2</td>
+<td>10</td>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>2</td>
+<td>8</td>
+<td>2</td>
+<td>8</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_9e826f4a4ade56f78f3c26b7b256969a30621136.svg" alt="Kroki diagram output"></p>
+<ul>
+<li><code>dist((2,10,2,10), (2,8,2,8)) = 4</code></li>
+<li><code>dist((2,10,2,10), (2,2,2,10)) = 8</code></li>
+<li><code>dist((2,8,2,8), (2,2,2,10)) = 8</code></li>
+</ul>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm sums the absolute differences between the elements at each index: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mrow><mi mathvariant="normal">∣</mi><msub><mi>v</mi><mi>i</mi></msub><mo>−</mo><msub><mi>w</mi><mi>i</mi></msub><mi mathvariant="normal">∣</mi></mrow></mrow><annotation encoding="application/x-tex">\sum_{i=1}^n{|v_i - w_i|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span></span>, where v and w are two n dimensional points. The absolute differences are used because a distance can't be negative.</p>
 <p><a href="ch8_code/src/metrics/ManhattanDistance.py">ch8_code/src/metrics/ManhattanDistance.py</a> (lines 9 to 14):</p>
@@ -16167,10 +16247,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <thead>
 <tr>
 <th></th>
+<th>hour0</th>
 <th>hour1</th>
 <th>hour2</th>
 <th>hour3</th>
-<th>hour4</th>
 </tr>
 </thead>
 <tbody>
@@ -16214,10 +16294,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <thead>
 <tr>
 <th></th>
+<th>hour0</th>
 <th>hour1</th>
 <th>hour2</th>
 <th>hour3</th>
-<th>hour4</th>
 </tr>
 </thead>
 <tbody>
@@ -16368,10 +16448,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <thead>
 <tr>
 <th></th>
+<th>hour0</th>
 <th>hour1</th>
 <th>hour2</th>
 <th>hour3</th>
-<th>hour4</th>
 </tr>
 </thead>
 <tbody>
@@ -16505,39 +16585,79 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), put them into a predefined number of groups (denoted as k) and set a "center" for each group. The goal is to find the combination of point groupings and group centers that minimizes <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s between points and their group's center.</p>
-<p><img src="svgbob_d656b37a40b6a0bdf581714d459ef96b7c3ccc8a.svg" alt="Kroki diagram output"></p>
+<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), put them into a predefined number of <a href="#BM_(cluster)%2Fi">cluster</a>s (denoted as k) and set a center for each <a href="#BM_(cluster)%2Fi">cluster</a>. The goal is find both the ...</p>
+<ol>
+<li>points to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
+<li>center to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
+</ol>
+<p>... such that the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between a <a href="#BM_(cluster)%2Fi">cluster</a>'s center and a <a href="#BM_(cluster)%2Fi">cluster</a>'s points is the minimum out of all point and center assignment combinations.</p>
+<p><img src="svgbob_bbe3e2f07ce0fa30939960ca992e1b16fc02076b.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Confused? It's an optimization problem. You're trying to ...</p>
 <ol>
-<li>group points</li>
+<li>group together points</li>
 <li>find centers for those groups</li>
 </ol>
 <p>... such that when you measure the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to their group's center, it's the minimum out of all possible point grouping + group centers combinations.</p>
 </div>
-<p><strong>WHY</strong>: This is one of the methodologies used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. However, it's not used very often because it ...</p>
+<p><strong>WHY</strong>: This is one of the methods used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. Because it's limited to use <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> as the metric, it's essentially <a href="#BM_(cluster)%2Fi">cluster</a>ing by how close the coordinate plots match up. For example, ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour0</th>
+<th>hour1</th>
+<th>hour2</th>
+<th>hour3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>2</td>
+<td>10</td>
+<td>2</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>2</td>
+<td>8</td>
+<td>2</td>
+<td>8</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_9e826f4a4ade56f78f3c26b7b256969a30621136.svg" alt="Kroki diagram output"></p>
 <ul>
-<li>it requires knowing the number of <a href="#BM_(cluster)%2Fi">cluster</a>s (k) beforehand.</li>
-<li>limits the metric to <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> (as opposed to other <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s).</li>
+<li><code>dist((2,10,2,10), (2,8,2,8)) = 2.82</code></li>
+<li><code>dist((2,10,2,10), (2,2,2,10)) = 8</code></li>
+<li><code>dist((2,8,2,8), (2,2,2,10)) = 6.325</code></li>
 </ul>
-<p>Other <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithms don't have these restrictions.</p>
+<p>In addition to that, another limitation is that it requires knowing the number of <a href="#BM_(cluster)%2Fi">cluster</a>s (k) beforehand. Other <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithms exist that don't have these restrictions.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>There are some practical complications with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>. The most prominent one is that the search space is huge for any non-trivial input. <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-centers</a> requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...</p>
+<p>Solving <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> for any non-trivial input isn't possible because the search space is too huge. <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">K-centers</a> requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...</p>
 <ol>
 <li>How many number of ways can those 100 points be grouped?</li>
 <li>How many dimensions does each point have?</li>
 <li>What's the minimum / maximum value across points for each of those dimensions?</li>
-<li>What's the minimum step size for each dimension when searching for a center?</li>
 <li>How many possibilities are there to check for each of the 5 centers?</li>
 </ol>
-<p>Because of this, heuristics are used for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>. A common <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> heuristic is the farthest first traversal algorithm. The algorithm iteratively builds out the centers by inspecting point distances to other centers. At each step, the algorithm ...</p>
+<p>Because of this, heuristics are used for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>. A common <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> heuristic is the <a href="#BM_(farthest%20first%20traversal)%2Fi">farthest first traversal</a> algorithm. The algorithm iteratively builds out more centers by inspecting the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to existing centers. At each step, the algorithm ...</p>
 <ol>
-<li>walks over all points and finds the center closest to it,</li>
-<li>picks the point with the farthest distance from step 1 and sets it as the new center.</li>
+<li>gets the closest center for each point,</li>
+<li>picks the point with the farthest <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> and sets it as the new center.</li>
 </ol>
 <p>The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.</p>
-<p><a href="ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py">ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py</a> (lines 11 to 54):</p>
+<p><a href="ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py">ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py</a> (lines 98 to 141):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_to_closest_center</span>(<span class="hljs-params">
         v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>],
         centers: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]
@@ -16573,41 +16693,30 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
         k: <span class="hljs-built_in">int</span>,
         vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
         dims: <span class="hljs-built_in">int</span>
-</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">list</span>]]:
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]:
     centers = pick_centers(k, vectors, dims)
     clusters = defaultdict(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> vectors:
         center, _ = distance_to_closest_center(v, centers)
         center = <span class="hljs-built_in">tuple</span>(center)  <span class="hljs-comment"># Dict requires hashable keys</span>
         clusters[center].append(v)
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(clusters.values())
+    <span class="hljs-keyword">return</span> clusters
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given k=3 and vectors=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]...</p>
 <p>The farthest first travel heuristic produced the clusters ...</p>
 <ul>
-<li>cluster 0=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
-<li>cluster 1=[[7, 2], [7.5, 3], [8, 1], [9, 2]]</li>
-<li>cluster 2=[[8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
+<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (8, 1)=[[7, 2], [7.5, 3], [8, 1], [9, 2]]</li>
+<li>cluster center (10, 7)=[[8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
 </ul>
+<p><img src="ch8_256b2f2256589a635fa616c7753a26b6_plot.svg" alt="k-centers 2D plot"></p>
+<p>Note: Each cluster is its own color, a point that's diamond shaped is the centers for its clusters</p>
 </div>
 <p></p>
 <p>One problem that should be noted with this heuristic is that, when outliers are present, it'll likely place those outliers into their own <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
 <p><img src="svgbob_f152fef6c3d23d49ac829d2c6c6de716018854ca.svg" alt="Kroki diagram output"></p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
-<p>TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT</p>
 <a name="H_K-Means%20Clustering"></a><h3>K-Means Clustering</h3>
 <p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FK-Means%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -20864,25 +20973,27 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(cluster)%2Fi"></a><strong>clustering</strong> - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
 </li>
 <li>
-<p><a name="BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where k "center" points are produced, where each point acts as the center of the <a href="#BM_(cluster)%2Fi">cluster</a> its assigned to.</p>
-<p>For each actual data point, the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> is calculated from that point to each <a href="#BM_(cluster)%2Fi">cluster</a> center. The center point with the minimum distance is chosen as the <a href="#BM_(cluster)%2Fi">cluster</a> for that data point.</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
-  center_pt = <span class="hljs-built_in">min</span>(
-    center_pts,
-    key=<span class="hljs-keyword">lambda</span> cp: dist(data_pt, cp)
-  )
-  <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
-</code></pre>
-<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing is to produce <a href="#BM_(cluster)%2Fi">cluster</a> centers that minimize the farthest distance.</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">farthest_closest_center</span>(<span class="hljs-params">data_pts, center_pts</span>):
-  dists = []
-  <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
-    closest_center_pt, dist_to = find_closest_center(data_pt, center_pts)
-    dists.append(dist_to)
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dists)
-</code></pre>
-<p>In the example below, the left center point is better than the right center point because it has a lower farthest distance: The right center point's distance to A is farther than any distance in the left center point.</p>
-<p><img src="svgbob_e53f2f29f301589040ea2ae613deaf308148ff71.svg" alt="Kroki diagram output"></p>
+<p><a name="BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where points are grouped together into k <a href="#BM_(cluster)%2Fi">cluster</a>s and each <a href="#BM_(cluster)%2Fi">cluster</a> has a center. The goal is find both the ...</p>
+<ol>
+<li>points to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
+<li>center to be assigned to each <a href="#BM_(cluster)%2Fi">cluster</a></li>
+</ol>
+<p>... such that the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> between a <a href="#BM_(cluster)%2Fi">cluster</a>'s center and a <a href="#BM_(cluster)%2Fi">cluster</a>'s points is the minimum out of all point and center assignment combinations.</p>
+<p><img src="svgbob_c32bbe24b2329a02c530ad2b02d1e3ee099fb88c.svg" alt="Kroki diagram output"></p>
+<p>This effectively becomes an optimization problem. For any non-trivial input, the search space is too massive for a straight-forward algorithm to work. As such, heuristics are commonly used instead.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <a href="#BM_(farthest%20first%20traversal)%2Fi">farthest first traversal</a> heuristic.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(farthest%20first%20traversal)%2Fi"></a><strong>farthest first traversal</strong> - A heuristic commonly used for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers clustering</a>. The algorithm iteratively builds out more centers by inspecting the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to existing centers. At each step, the algorithm ...</p>
+<ol>
+<li>gets the closest center for each point,</li>
+<li>picks the point with the farthest <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> and sets it as the new center.</li>
+</ol>
+<p>The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.</p>
+<p><img src="svgbob_52c67bd6a373b1ba175fc4205574ee9cfc99b6fb.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi"></a><strong>k-means clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where k "center" points are produced, where each point acts as the center of the <a href="#BM_(cluster)%2Fi">cluster</a> its assigned to.</p>
@@ -20894,7 +21005,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
   )
   <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
 </code></pre>
-<p>The goal with <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing is to produce <a href="#BM_(cluster)%2Fi">cluster</a> centers that minimize the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>.</p>
+<p>The goal with <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center clustering</a> is to produce <a href="#BM_(cluster)%2Fi">cluster</a> centers that minimize the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">squared_error_distortion</span>(<span class="hljs-params">data_pts, center_pts</span>):
   res = []
   <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
@@ -20902,8 +21013,8 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
     res.append(dist_to ** <span class="hljs-number">2</span>)
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(res) / <span class="hljs-built_in">len</span>(res)
 </code></pre>
-<p>Compared against <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing, the metric being minimized in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> (<a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>) factors in all data points while the metric being minimized in <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> (farthest distance to any center) factors in only a single data point. If outliers are present, <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>'s metric causes the <a href="#BM_(cluster)%2Fi">cluster</a> center to be wildly offset while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-mean</a>'s metric will only be mildly shift offset.</p>
-<p>In the example below, the minimized <a href="#BM_(cluster)%2Fi">cluster</a> center for <a href="#BM_(k-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is wildly offset by outlier Z while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> isn't offset as much.</p>
+<p>Compared against <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center clustering</a>, the metric being minimized in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> (<a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>) factors in all data points while the metric being minimized in <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-center</a> (farthest distance to any center) factors in only a single data point. If outliers are present, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>'s metric causes the <a href="#BM_(cluster)%2Fi">cluster</a> center to be wildly offset while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-mean</a>'s metric will only be mildly shift offset.</p>
+<p>In the example below, the minimized <a href="#BM_(cluster)%2Fi">cluster</a> center for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is wildly offset by outlier Z while <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> isn't offset as much.</p>
 <p><img src="svgbob_50f9ef0bee677ed328acdaec5260e8530cf4b1be.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>

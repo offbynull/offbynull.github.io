@@ -11578,7 +11578,32 @@ This section doesn't cover de-noising or de-biasing. It only covers clustering a
        * 
 ```
 
-**WHY**: This is one of many common metrics used for clustering gene expression vectors.
+**WHY**: This is one of many common metrics used for clustering gene expression vectors. One way to think about it is that it checks to see how closely component plots of the vectors match up. For example, ...
+
+|        | hour0 | hour1 | hour2 | hour3 |
+|--------|-------|-------|-------|-------|
+| Gene A |  2    | 10    | 2     | 10    |
+| Gene B |  2    | 8     | 2     | 8     |
+| Gene C |  2    | 2     | 2     | 10    |
+
+```{svgbob}
+"plot of (2,10,2,10)'s"          "plot of (2,8,2,8)'s"            "plot of (2,2,2,10)'s"
+"components by index"            "components by index"            "components by index"
+                                                                                
+  10|     *       *               10|                              10|             *
+v  8|    / \     /              v  8|    *     *                 v  8|            / 
+a  6|   /   \   /               a  6|   / \   /                  a  6|           /  
+l  4|  /     \ /                l  4|  /   \ /                   l  4|          /   
+u  2| *       *                 u  2| *     *                    u  2| *---*---*      
+e  0|                           e  0|                            e  0|              
+    +--------------                 +-----------                     +--------------
+      0   1   2   3                   0  1  2  3                       0   1   2   3
+         index                           index                            index     
+```
+
+* `dist((2,10,2,10), (2,8,2,8)) = 2.82`
+* `dist((2,10,2,10), (2,2,2,10)) = 8`
+* `dist((2,8,2,8), (2,2,2,10)) = 6.325`
 
 **ALGORITHM**:
 
@@ -11618,7 +11643,32 @@ metrics.EuclideanDistance
     dy
 ```
 
-**WHY**: This is one of many common metrics used for clustering gene expression vectors.
+**WHY**: This is one of many common metrics used for clustering gene expression vectors.  One way to think about it is that it checks to see how closely component plots of the vectors match up. For example, ...
+
+|        | hour0 | hour1 | hour2 | hour3 |
+|--------|-------|-------|-------|-------|
+| Gene A |  2    | 10    | 2     | 10    |
+| Gene B |  2    | 8     | 2     | 8     |
+| Gene C |  2    | 2     | 2     | 10    |
+
+```{svgbob}
+"plot of (2,10,2,10)'s"          "plot of (2,8,2,8)'s"            "plot of (2,2,2,10)'s"
+"components by index"            "components by index"            "components by index"
+                                                                                
+  10|     *       *               10|                              10|             *
+v  8|    / \     /              v  8|    *     *                 v  8|            / 
+a  6|   /   \   /               a  6|   / \   /                  a  6|           /  
+l  4|  /     \ /                l  4|  /   \ /                   l  4|          /   
+u  2| *       *                 u  2| *     *                    u  2| *---*---*      
+e  0|                           e  0|                            e  0|              
+    +--------------                 +-----------                     +--------------
+      0   1   2   3                   0  1  2  3                       0   1   2   3
+         index                           index                            index     
+```
+
+* `dist((2,10,2,10), (2,8,2,8)) = 4`
+* `dist((2,10,2,10), (2,2,2,10)) = 8`
+* `dist((2,8,2,8), (2,2,2,10)) = 8`
 
 **ALGORITHM**:
 
@@ -11747,7 +11797,7 @@ Since the algorithm is calculating the cosine of the angle, the metric returns a
 
 **WHY**: Imagine the following two 4-dimensional gene expression vectors...
 
-|        | hour1 | hour2 | hour3 | hour4 |
+|        | hour0 | hour1 | hour2 | hour3 |
 |--------|-------|-------|-------|-------|
 | Gene A |  2    | 10    | 2     | 10    |
 | Gene B |  1    | 5     | 1     | 5     |
@@ -11799,7 +11849,7 @@ Still confused? Scaling makes sense if you think of it in terms of angles. The v
 
 While cosine similarity does take into account scaling of components, _it doesn't support shifting of components_. Imagine the following 4-dimensional gene expression vectors...
 
-|        | hour1 | hour2 | hour3 | hour4 |
+|        | hour0 | hour1 | hour2 | hour3 |
 |--------|-------|-------|-------|-------|
 | Gene A |  2    | 10    | 2     | 10    |
 | Gene B |  1    | 5     | 1     | 5     |
@@ -11961,7 +12011,7 @@ A lot of what's below is my understanding of what's going on, which I'm almost c
 
 **WHY**: Imagine the following 4-dimensional gene expression vectors...
 
-|        | hour1 | hour2 | hour3 | hour4 |
+|        | hour0 | hour1 | hour2 | hour3 |
 |--------|-------|-------|-------|-------|
 | Gene A |  2    | 10    | 2     | 10    |
 | Gene B |  1    | 5     | 1     | 5     |
@@ -12068,64 +12118,90 @@ metrics.PearsonSimilarity
 Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 ```
 
-**WHAT**: Given a list of n-dimensional points (vectors), put them into a predefined number of groups (denoted as k) and set a "center" for each group. The goal is to find the combination of point groupings and group centers that minimizes euclidean distances between points and their group's center.
+**WHAT**: Given a list of n-dimensional points (vectors), put them into a predefined number of clusters (denoted as k) and set a center for each cluster. The goal is find both the ...
+ 
+1. points to be assigned to each cluster
+2. center to be assigned to each cluster
+
+... such that the euclidean distance between a cluster's center and a cluster's points is the minimum out of all point and center assignment combinations.
 
 ```{svgbob}
-"Dots are 2D gene expression vectors. Each C or D denotes a point"
-"belonging to that groups. Each line is from a point to its group"
-"center."
+"Points are 2D gene expression vectors. Each point is represented as"
+"a letter, where the letter defines which cluster it belongs to. Each"
+"line is from a point to its cluster center."
 
-             "bad centers"                                 "good centers"     
+        "bad centers and points"                       "good centers and points"     
                                                                                  
 |    C                                        |    C                             
 |     \                                       |    |                             
 |C ----●                                      |C --●                             
-|     /                                       |    |                             
-|    C                                        |    C                             
-|                                             |                                  
-|                   ●                         |                                  
-|                  /|\                        |                                  
-|                 / | \                       |                                  
-|                D  |  D                      |                D     D           
-|                   |                         |                 '. .'            
-|                   |                         |                   ●               
-|                   |                         |                   |              
-|                   D                         |                   D              
-|                                             |                                  
-|                                             |                                  
+|                                             |    |                             
+|    D                                        |    C                             
+|     '.                                      |                                  
+|       '.                                    |                                  
+|         '.                                  |                                  
+|           ●                                 |                                  
+|          /|\                                |                           
+|         / | \                               |                           
+|        D  |  D                              |        D     D                    
+|           |                                 |         '. .'                    
+|           |                                 |           ●                      
+|           |                                 |           |                      
+|           D                                 |           D                      
 +----------------------------------           +----------------------------------
 ```
 
 ```{note}
 Confused? It's an optimization problem. You're trying to ...
 
-1. group points
+1. group together points
 2. find centers for those groups
 
 ... such that when you measure the euclidean distances from points to their group's center, it's the minimum out of all possible point grouping + group centers combinations.
 ```
 
-**WHY**: This is one of the methodologies used for clustering gene expression vectors. However, it's not used very often because it ...
+**WHY**: This is one of the methods used for clustering gene expression vectors. Because it's limited to use euclidean distance as the metric, it's essentially clustering by how close the coordinate plots match up. For example, ...
 
- * it requires knowing the number of clusters (k) beforehand.
- * limits the metric to euclidean distance (as opposed to other similarity metrics / distance metrics).
+|        | hour0 | hour1 | hour2 | hour3 |
+|--------|-------|-------|-------|-------|
+| Gene A |  2    | 10    | 2     | 10    |
+| Gene B |  2    | 8     | 2     | 8     |
+| Gene C |  2    | 2     | 2     | 10    |
 
-Other clustering algorithms don't have these restrictions.
+```{svgbob}
+"plot of (2,10,2,10)'s"          "plot of (2,8,2,8)'s"            "plot of (2,2,2,10)'s"
+"components by index"            "components by index"            "components by index"
+                                                                                
+  10|     *       *               10|                              10|             *
+v  8|    / \     /              v  8|    *     *                 v  8|            / 
+a  6|   /   \   /               a  6|   / \   /                  a  6|           /  
+l  4|  /     \ /                l  4|  /   \ /                   l  4|          /   
+u  2| *       *                 u  2| *     *                    u  2| *---*---*      
+e  0|                           e  0|                            e  0|              
+    +--------------                 +-----------                     +--------------
+      0   1   2   3                   0  1  2  3                       0   1   2   3
+         index                           index                            index     
+```
+
+* `dist((2,10,2,10), (2,8,2,8)) = 2.82`
+* `dist((2,10,2,10), (2,2,2,10)) = 8`
+* `dist((2,8,2,8), (2,2,2,10)) = 6.325`
+
+In addition to that, another limitation is that it requires knowing the number of clusters (k) beforehand. Other clustering algorithms exist that don't have these restrictions.
 
 **ALGORITHM**:
 
-There are some practical complications with k-centers. The most prominent one is that the search space is huge for any non-trivial input. K-centers requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...
+Solving k-centers for any non-trivial input isn't possible because the search space is too huge. K-centers requires finding the combination of centers and point groupings such that the point distances to their centers are minimized. Imagine the steps you'd have to go through to solve for 100 points and 5 centers ...
 
  1. How many number of ways can those 100 points be grouped?
  1. How many dimensions does each point have?
  1. What's the minimum / maximum value across points for each of those dimensions?
- 1. What's the minimum step size for each dimension when searching for a center?
  1. How many possibilities are there to check for each of the 5 centers?
 
-Because of this, heuristics are used for k-centers. A common k-centers heuristic is the farthest first traversal algorithm. The algorithm iteratively builds out the centers by inspecting point distances to other centers. At each step, the algorithm ...
+Because of this, heuristics are used for k-centers. A common k-centers heuristic is the farthest first traversal algorithm. The algorithm iteratively builds out more centers by inspecting the euclidean distances from points to existing centers. At each step, the algorithm ...
 
- 1. walks over all points and finds the center closest to it,
- 2. picks the point with the farthest distance from step 1 and sets it as the new center.
+ 1. gets the closest center for each point,
+ 1. picks the point with the farthest euclidean distance and sets it as the new center.
 
 The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.
 
@@ -12175,32 +12251,6 @@ One problem that should be noted with this heuristic is that, when outliers are 
 |                                                |                                  [D] 
 +--------------------------------------          +--------------------------------------
 ```
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
-
-TODO: PROOF AND CLARIFY ALL TEXT IN THIS SECTION. CHANGE CODE TO AUTOMATICALLY DRAW PLOT IF NUMBER OF DIMENSIONS ALLOW FOR IT
 
 ### K-Means Clustering
 
@@ -16551,40 +16601,76 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} clustering/(cluster)/i` - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a cluster.
 
- * `{bm} k-centers clustering/(k-centers?|\d+-centers?)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.
-
-   For each actual data point, the euclidean distance is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.
-
-   ```python
-   def find_closest_center(data_pt, center_pts):
-     center_pt = min(
-       center_pts,
-       key=lambda cp: dist(data_pt, cp)
-     )
-     return center_pt, dist(center_pt, data_pt)
-   ```
-
-   The goal with k-center clustering is to produce cluster centers that minimize the farthest distance.
-
-   ```python
-   def farthest_closest_center(data_pts, center_pts):
-     dists = []
-     for data_pt in data_pts:
-       closest_center_pt, dist_to = find_closest_center(data_pt, center_pts)
-       dists.append(dist_to)
-     return max(dists)
-   ```
-
-   In the example below, the left center point is better than the right center point because it has a lower farthest distance: The right center point's distance to A is farther than any distance in the left center point.
+ * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where points are grouped together into k clusters and each cluster has a center. The goal is find both the ...
+ 
+   1. points to be assigned to each cluster
+   2. center to be assigned to each cluster
+   
+   ... such that the euclidean distance between a cluster's center and a cluster's points is the minimum out of all point and center assignment combinations.
 
    ```{svgbob}
-     "Good"           "Bad"
+   "Points represented as letters, where each letter"
+   "represents the cluster its assigned to. Each line is"
+   "from a point to its cluster center."
+   
+           "bad centers and points"                       "good centers and points"     
+                                                                                    
+   |    C                                        |    C                             
+   |     \                                       |    |                             
+   |C ----●                                      |C --●                             
+   |                                             |    |                             
+   |    D                                        |    C                             
+   |     '.                                      |                                  
+   |       '.                                    |                                  
+   |         '.                                  |                                  
+   |           ●                                 |                                  
+   |          /|\                                |                           
+   |         / | \                               |                           
+   |        D  |  D                              |        D     D                    
+   |           |                                 |         '. .'                    
+   |           |                                 |           ●                      
+   |           |                                 |           |                      
+   |           D                                 |           D                      
+   +----------------------------------           +----------------------------------
+   ```
 
-       B                B    
-       |                 \    
-   A---*---D        A-----*-D
-       |                 /    
-       C                C    
+   This effectively becomes an optimization problem. For any non-trivial input, the search space is too massive for a straight-forward algorithm to work. As such, heuristics are commonly used instead.
+
+   ```{note}
+   See farthest first traversal heuristic.
+   ```
+
+ * `{bm} farthest first traversal` - A heuristic commonly used for k-centers clustering. The algorithm iteratively builds out more centers by inspecting the euclidean distances from points to existing centers. At each step, the algorithm ...
+
+   1. gets the closest center for each point,
+   1. picks the point with the farthest euclidean distance and sets it as the new center.
+
+   The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.
+
+   ```{svgbob}
+   "k=3"
+   " * Points represented as letters, where the letter denotes cluster assignment."
+   " * Points chosen as centers are in brackets."
+   
+          "step1: pick random initial"                    "step2: pick next farthest"                       "step3: pick next farthest"
+                                                                                                                                            
+   |                                                |                                                |                                      
+   |                                                |                                                |                                      
+   |                                                |                                                |                                      
+   |                                                |                                                |                                      
+   |                  D                             |                  C                             |                  C                   
+   |                 D   D                          |                 C  [C]                         |                 C  [C]               
+   |    D              D                            |    D              C                            |    D              C                  
+   |       D                                        |       D                                        |       D                              
+   |  [D]   D                                       |  [D]   D                                       |  [D]   D                             
+   |       D        D                               |       D        C                               |       D        E                     
+   |   D  D        D   D                            |   D  D        C   C                            |   D  D        E   E                  
+   |                  D                             |                  C                             |                 [E]                  
+   |                                                |                                                |                                      
+   |                                                |                                                |                                      
+   |                                                |                                                |                                      
+   |                                                |                                                |                                      
+   +--------------------------------------          +--------------------------------------          +--------------------------------------
    ```
 
  * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.

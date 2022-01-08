@@ -1,4 +1,4 @@
-`{bm-disable-all}`[ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py](ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py) (lines 11 to 54):`{bm-enable-all}`
+`{bm-disable-all}`[ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py](ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py) (lines 98 to 141):`{bm-enable-all}`
 
 ```python
 def distance_to_closest_center(
@@ -36,12 +36,12 @@ def k_centers(
         k: int,
         vectors: list[Sequence[float]],
         dims: int
-) -> list[Sequence[list]]:
+) -> dict[tuple[float], list[Sequence[float]]]:
     centers = pick_centers(k, vectors, dims)
     clusters = defaultdict(list)
     for v in vectors:
         center, _ = distance_to_closest_center(v, centers)
         center = tuple(center)  # Dict requires hashable keys
         clusters[center].append(v)
-    return list(clusters.values())
+    return clusters
 ```

@@ -4,7 +4,7 @@
 
 Confused? It's an optimization problem. You're trying to ...
 
-1. group points
+1. group together points
 2. find centers for those groups
 
 ... such that when you measure the euclidean distances from points to their group's center, it's the minimum out of all possible point grouping + group centers combinations.
