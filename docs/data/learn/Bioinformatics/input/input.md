@@ -12123,13 +12123,13 @@ Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 In terms of a scoring function, the score being minimized is ...
 
 ```{kt}
-score = max_{v \in P}(d(v, C))
+score = max(d(P_1, C), d(P_2, C), ..., d(P_n, C))
 ```
 
 * P is the set of points.
 * C is the set of centers.
-* v is an individual point in P.
-* d is the euclidean distance to v's closest center.
+* n is the number of points in P
+* d returns the euclidean distance between a point and its closest center.
 * max is the maximum function.
 
 ```python
@@ -12266,48 +12266,163 @@ Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 Algorithms/Gene Expression/K-Centers Clustering_TOPIC
 ```
 
-**WHAT**: K-means is k-centers except the scoring function for deciding the quality of centers is different. Recall that goal for k-centers is to find both the ...
- 
-1. points to be assigned to each cluster
-2. center to be assigned to each cluster
-
-... such that the _euclidean distance between a cluster's center and a cluster's points_ is the minimum out of all point and center assignment combinations. For k-means, the scoring function is the squared error distortion of that euclidean distance rather than the euclidean distance itself. That is, rather than the goal being ot minimize the euclidean distance, it's to minimize the squared error distortion of the euclidean distance.
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-TODO: THE ABOVE IS WRONG, K-CENTERS DESCRIPTION HAS BEEN FIXED. FIX THE ABOVE AS WELL
-
-The formula for squared error distortion is as follows ...
+**WHAT**: K-means is k-centers except the scoring function is different. Recall that the scoring function for k-centers is ...
 
 ```{kt}
-\frac{
-  \sum_{i=1}^{n} {d(P_i, C)^2}
-}{
-  n
-}
+score = max(d(P_1, C), d(P_2, C), ..., d(P_n, C))
 ```
 
- * P is the set of points / vectors.
- * C is the set of centers.
- * d calculates the euclidean distance between a point and its closest center.
+... where ...
 
-**WHY**:
+* P is the set of points.
+* C is the set of centers.
+* n is the number of points in P
+* d returns the euclidean distance between a point and its closest center.
+* max is the maximum function.
+
+The scoring function for k-means, called squared error distortion, is as follows ...
+
+```{kt}
+score = \frac{\sum_{i=1}^{n} {d(P_i, C)^2}}{n}
+```
+
+```{note}
+The formula above is averaging the squares.
+```
+
+```python
+# d() function from the formula
+def dist_to_closest_center(data_pt, center_pts):
+  center_pt = min(
+    center_pts,
+    key=lambda cp: dist(data_pt, cp)
+  )
+  return dist(center_pt, data_pt)
+
+# scoring function (what's trying to be minimized)
+def k_means_score(data_pts, center_pts):
+  res = []
+  for data_pt in data_pts:
+    dist_to = dist_to_closest_center(data_pt, center_pts)
+    res.append(dist_to ** 2)
+  return sum(res) / len(res)
+```
+
+Compared to k-centers, cluster membership_NORM is still decided by the distance to its closest cluster (d in the formula above). It's the placement of centers that's different.
+
+**WHY**: K-means is more resilient to outliers than k-centers. For example, consider finding a single center (k=1) for the following 1-D points: [0, 0.5, 1, 1.5, 10]. The last point (10) is an outlier. Without that outlier, k-centers has a center of 0.75 ...
+
+```{svgbob}
+   |                                       "center: 0.75"
+   v                                     
+*-*-*-*----------------------------------
+0   1   2   3   4   5   6   7   8   9   10
+```
+
+With that outlier, the k-centers has a center of 5, which is a drastic shift from the original 0.75 shown above ...
+
+```{svgbob}
+                    |                      "center: 5"
+                    v                    
+*-*-*-*---------------------------------* 
+0   1   2   3   4   5   6   7   8   9   10
+```
+
+K-means combats this shift by applying weighting: The idea is that the 4 real points should have a stronger influence on the center than the one outlier point, essentially dragging it back to towards them. Using k-means, the center is 2.6 ...
+
+```{svgbob}
+          |                                "center: 2.6"
+          v                              
+*-*-*-*---------------------------------*
+0   1   2   3   4   5   6   7   8   9   10
+```
+
+Note that the scoring functions for k-means and k-centers produce vastly different scores, but the scores themselves don't matter. What matters is the minimization of the score. The diagram below shows the scores for both k-means and k-centers as the center shifts from 10 to 0 ...
+
+```{svgbob}
+                                        |  "center: 10"
+                                        v  "k-centers score: 10"
+*-*-*-*---------------------------------*  "k-means score: 68.7"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+                                    |      "center: 9"
+                                    v      "k-centers score: 9"
+*-*-*-*---------------------------------*  "k-means score: 54.9"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+                                |          "center: 8"
+                                v          "k-centers score: 8"
+*-*-*-*---------------------------------*  "k-means score: 43.1"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+                            |              "center: 7"
+                            v              "k-centers score: 7"
+*-*-*-*---------------------------------*  "k-means score: 33.3"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+                        |                  "center: 6"
+                        v                  "k-centers score: 6"
+*-*-*-*---------------------------------*  "k-means score: 25.5"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+                    |                      "center: 5"
+                    v                      "k-centers score: 5  (LOWEST K-CENTERS SCORE IN SET)"
+*-*-*-*---------------------------------*  "k-means score: 19.7"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+                |                          "center: 4"
+                v                          "k-centers score: 6"
+*-*-*-*---------------------------------*  "k-means score: 15.9"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+            |                              "center: 3"
+            v                              "k-centers score: 7"
+*-*-*-*---------------------------------*  "k-means score: 14.1  (LOWEST K-MEANS SCORE IN SET)"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+        |                                  "center: 2"
+        v                                  "k-centers score: 8"
+*-*-*-*---------------------------------*  "k-means score: 14.3"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+    |                                      "center: 1"
+    v                                      "k-centers score: 9"
+*-*-*-*---------------------------------*  "k-means score: 16.5"
+0   1   2   3   4   5   6   7   8   9   10
+
+
+|                                          "center: 0"
+v                                          "k-centers score: 10"
+*-*-*-*---------------------------------*  "k-means score: 20.7"
+0   1   2   3   4   5   6   7   8   9   10
+```
 
 **ALGORITHM**:
+
+Similar to solving k-centers, solving k-means for any non-trivial input isn't possible because the search space is too huge. Because of this, heuristics are used. A common k-means heuristic is Lloyd's algorithm.
+
+TODO IMPLEMENT ME The algorithm iteratively builds out more centers by inspecting the euclidean distances from points to existing centers. At each step, the algorithm ...
+
+TODO IMPLEMENT ME 
+
+TODO IMPLEMENT ME 
+
+TODO IMPLEMENT ME 
+
+TODO IMPLEMENT ME 
+
+TODO IMPLEMENT ME 
+
+TODO IMPLEMENT ME 
 
 ### Soft K-Means Clustering
 ### Hierarchial Clustering
@@ -13648,7 +13763,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} motif` - A pattern that matches against many different k-mers, where those matched k-mers have some shared biological significance. The pattern matches a fixed k where each position may have alternate forms. The simplest way to think of a motif is a regex pattern without quantifiers. For example, the regex `[AT]TT[GC]C` may match to ATTGC, ATTCC, TTTGC, and TTTCC.
 
- * `{bm} motif member` `{bm} /\b(member)_MOTIF/i` - A specific nucleotide sequence that matches a motif. For example, given a motif represented by the regex `[AT]TT[GC]C`, the sequences ATTGC, ATTCC, TTTGC, and TTTCC would be its member_MOTIFs.
+ * `{bm} motif member` `{bm} /\b(membership|member)_MOTIF/i` - A specific nucleotide sequence that matches a motif. For example, given a motif represented by the regex `[AT]TT[GC]C`, the sequences ATTGC, ATTCC, TTTGC, and TTTCC would be its member_MOTIFs.
 
  * `{bm} motif matrix/(motif matrix|motif matrices)/i` - A set of k-mers stacked on top of each other in a matrix, where the k-mers are either...
 
@@ -16642,18 +16757,18 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} clustering/(cluster)/i` - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a cluster.
 
- * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where a point, called a center, defines cluster member_NORMship. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_NORMs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
+ * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_NORMs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
 
    In terms of a scoring function, the score being minimized is ...
 
    ```{kt}
-   score = max_{v \in P}(d(v, C))
+   score = max(d(P_1, C), d(P_2, C), ..., d(P_n, C))
    ```
 
    * P is the set of points.
    * C is the set of centers.
-   * v is an individual point in P.
-   * d is the euclidean distance to v's closest center.
+   * n is the number of points in P
+   * d returns the euclidean distance between a point and its closest center.
    * max is the maximum function.
  
    ```{svgbob}
@@ -17058,8 +17173,8 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
-`{bm-ignore} \b(member)_NORM/i`
-`{bm-error} Apply suffix _NORM or _MOTIF/\b(member)/i`
+`{bm-ignore} \b(membership|member)_NORM/i`
+`{bm-error} Apply suffix _NORM or _MOTIF/\b(membership|member)/i`
 
 `{bm-ignore} (balanced)_NORM/i`
 `{bm-error} Apply suffix _NORM, _GRAPH, or _NODE/(balanced)/i`
