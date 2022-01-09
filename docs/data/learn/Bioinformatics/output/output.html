@@ -16657,62 +16657,88 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>picks the point with the farthest <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> and sets it as the new center.</li>
 </ol>
 <p>The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.</p>
-<p><a href="ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py">ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py</a> (lines 98 to 141):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_to_closest_center</span>(<span class="hljs-params">
-        v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>],
-        centers: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]
-</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">float</span>]:
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(
-        ((c, dist(v, c)) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> centers),
-        key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>]
+<p><a href="ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py">ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py</a> (lines 119 to 169):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
+    center_pt = <span class="hljs-built_in">min</span>(
+        center_pts,
+        key=<span class="hljs-keyword">lambda</span> cp: dist(data_pt, cp)
     )
+    <span class="hljs-keyword">return</span> center_pt, dist(center_pt, data_pt)
 
 
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">pick_centers</span>(<span class="hljs-params">
-        k: <span class="hljs-built_in">int</span>,
-        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
-        dims: <span class="hljs-built_in">int</span>
-</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]:
-    centers = [random.choice(vectors)]
-    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(centers) &lt; k:
-        <span class="hljs-comment"># For each vector, find the distance to its closest center</span>
-        dists = {}
-        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> vectors:
-            _, d = distance_to_closest_center(v, centers)
-            v = <span class="hljs-built_in">tuple</span>(v)  <span class="hljs-comment"># Dict requires hashable keys</span>
-            dists[v] = d
-        <span class="hljs-comment"># Of all the "closest distance"s found above, get the</span>
-        <span class="hljs-comment"># vector with the largest one (farthest closest center)</span>
-        v_with_max_closest_center_dist = <span class="hljs-built_in">max</span>(dists, key=<span class="hljs-keyword">lambda</span> x: dists[x])
-        <span class="hljs-comment"># Add that vector as a center</span>
-        centers.append(v_with_max_closest_center_dist)
-    <span class="hljs-keyword">return</span> centers
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">k_centers</span>(<span class="hljs-params">
-        k: <span class="hljs-built_in">int</span>,
-        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
-        dims: <span class="hljs-built_in">int</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">centers_to_clusters</span>(<span class="hljs-params">
+        centers: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]
 </span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]:
-    centers = pick_centers(k, vectors, dims)
-    clusters = defaultdict(<span class="hljs-built_in">list</span>)
-    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> vectors:
-        center, _ = distance_to_closest_center(v, centers)
-        center = <span class="hljs-built_in">tuple</span>(center)  <span class="hljs-comment"># Dict requires hashable keys</span>
-        clusters[center].append(v)
-    <span class="hljs-keyword">return</span> clusters
+    mapping = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> vectors:
+        ct_pt, _ = find_closest_center(pt, centers)
+        ct_pt = <span class="hljs-built_in">tuple</span>(ct_pt)
+        mapping[ct_pt].append(pt)
+    <span class="hljs-keyword">return</span> mapping
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">k_centers_farthest_first_traversal</span>(<span class="hljs-params">
+        k: <span class="hljs-built_in">int</span>,
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        dims: <span class="hljs-built_in">int</span>,
+        iteration_callback: <span class="hljs-type">Callable</span>[  <span class="hljs-comment"># callback func to invoke on each iteration</span>
+            [
+                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]
+            ],
+            <span class="hljs-literal">None</span>
+        ] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]:
+    <span class="hljs-comment"># choose an initial center</span>
+    centers = [random.choice(vectors)]
+    <span class="hljs-comment"># notify of cluster for first iteration</span>
+    mapping = centers_to_clusters(centers, vectors)
+    iteration_callback(mapping)
+    <span class="hljs-comment"># iterate</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(centers) &lt; k:
+        <span class="hljs-comment"># get next center</span>
+        dists = {}
+        <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> vectors:
+            _, d = find_closest_center(pt, centers)
+            pt = <span class="hljs-built_in">tuple</span>(pt)
+            dists[pt] = d
+        farthest_closest_center_pt = <span class="hljs-built_in">max</span>(dists, key=<span class="hljs-keyword">lambda</span> x: dists[x])
+        centers.append(farthest_closest_center_pt)
+        <span class="hljs-comment"># notify of the current iteration's cluster</span>
+        mapping = centers_to_clusters(centers, vectors)
+        iteration_callback(mapping)
+    <span class="hljs-keyword">return</span> mapping
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Given k=3 and vectors=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]...</p>
-<p>The farthest first travel heuristic produced the clusters ...</p>
+<p>The farthest first travel heuristic produced the clusters at each iteration ...</p>
+<ul>
+<li>
+<p>Iteration 0</p>
+<ul>
+<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
+</ul>
+<p><img src="ch8_8a65e8c96a95d33cd726c81fc4814cb5_plot0.svg" alt="k-centers 2D plot"></p>
+</li>
+<li>
+<p>Iteration 1</p>
+<ul>
+<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1]]</li>
+<li>cluster center (10, 7)=[[9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
+</ul>
+<p><img src="ch8_8a65e8c96a95d33cd726c81fc4814cb5_plot1.svg" alt="k-centers 2D plot"></p>
+</li>
+<li>
+<p>Iteration 2</p>
 <ul>
 <li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
 <li>cluster center (8, 1)=[[7, 2], [7.5, 3], [8, 1], [9, 2]]</li>
 <li>cluster center (10, 7)=[[8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
 </ul>
-<p><img src="ch8_256b2f2256589a635fa616c7753a26b6_plot.svg" alt="k-centers 2D plot"></p>
-<p>Note: Each cluster is its own color, a point that's diamond shaped is the centers for its clusters</p>
+<p><img src="ch8_8a65e8c96a95d33cd726c81fc4814cb5_plot2.svg" alt="k-centers 2D plot"></p>
+</li>
+</ul>
 </div>
 <p></p>
 <p>One problem that should be noted with this heuristic is that, when outliers are present, it'll likely place those outliers into their own <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
@@ -16768,14 +16794,102 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>Note that the scoring functions for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> and <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> produce vastly different scores, but the scores themselves don't matter. What matters is the minimization of the score. The diagram below shows the scores for both <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> and <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as the center shifts from 10 to 0 ...</p>
 <p><img src="svgbob_26fcdb256e94f273fe5fceadb585adb25da2cb6c.svg" alt="Kroki diagram output"></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>Similar to solving <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>, solving <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> for any non-trivial input isn't possible because the search space is too huge. Because of this, heuristics are used. A common <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> heuristic is Lloyd's algorithm.</p>
-<p>TODO IMPLEMENT ME The algorithm iteratively builds out more centers by inspecting the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>s from points to existing centers. At each step, the algorithm ...</p>
-<p>TODO IMPLEMENT ME</p>
-<p>TODO IMPLEMENT ME</p>
-<p>TODO IMPLEMENT ME</p>
-<p>TODO IMPLEMENT ME</p>
-<p>TODO IMPLEMENT ME</p>
-<p>TODO IMPLEMENT ME</p>
+<p>Similar to <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>, solving <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> for any non-trivial input isn't possible because the search space is too huge. Because of this, heuristics are used. A common <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> heuristic is Lloyd's algorithm. The algorithm randomly picks k points to set as the centers and iteratively refines those centers. At each step, the algorithm ...</p>
+<ol>
+<li>
+<p>converts centers to <a href="#BM_(cluster)%2Fi">cluster</a>s,</p>
+<p>The point closest to a center becomes a member of that <a href="#BM_(cluster)%2Fi">cluster</a>. Ties are broken arbitrarily.</p>
+</li>
+<li>
+<p>converts <a href="#BM_(cluster)%2Fi">cluster</a>s to centers.</p>
+<p>The <a href="#BM_(cluster)%2Fi">cluster</a>s from step 1 are turned into new centers. Each dimension of a center becomes the average of that dimension across <a href="#BM_(cluster)%2Fi">cluster</a> members, referred to as the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
+    center = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
+        val = mean(pt[i] <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> data_pts)
+        center.append(val)
+    <span class="hljs-keyword">return</span> center
+</code></pre>
+</li>
+</ol>
+<p>The algorithm will converge to stable centers, at which point it stops iterating.</p>
+<p><a href="ch8_code/src/clustering/KMeans_Lloyds.py">ch8_code/src/clustering/KMeans_Lloyds.py</a> (lines 137 to 167):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">k_means_lloyds</span>(<span class="hljs-params">
+        k: <span class="hljs-built_in">int</span>,
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        dims: <span class="hljs-built_in">int</span>,
+        iteration_callback: <span class="hljs-type">Callable</span>[  <span class="hljs-comment"># callback func to invoke on each iteration</span>
+            [
+                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]
+            ],
+            <span class="hljs-literal">None</span>
+        ] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]:
+    old_centers = []
+    centers = random.sample(vectors, k)
+    <span class="hljs-keyword">while</span> centers != old_centers:
+        <span class="hljs-comment"># centers to clusters</span>
+        mapping = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> vectors:
+            ct_pt, _ = find_closest_center(pt, centers)
+            ct_pt = <span class="hljs-built_in">tuple</span>(ct_pt)
+            mapping[ct_pt].append(pt)
+        <span class="hljs-comment"># clusters to centers</span>
+        old_centers = centers
+        centers = []
+        <span class="hljs-keyword">for</span> pts <span class="hljs-keyword">in</span> mapping.values():
+            new_ct_pt = center_of_gravity(pts, dims)
+            new_ct_pt = <span class="hljs-built_in">tuple</span>(new_ct_pt)
+            centers.append(new_ct_pt)
+        <span class="hljs-comment"># notify of current iteration's cluster</span>
+        iteration_callback(mapping)
+    <span class="hljs-keyword">return</span> mapping
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Given k=3 and vectors=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [17, 12], [17.5, 13], [18, 11], [19, 12], [18, -7], [18.5, -8], [19, -6], [20, -7]]...</p>
+<p>The llyod's algorithm heuristic produced the clusters at each iteration ...</p>
+<ul>
+<li>
+<p>Iteration 0</p>
+<ul>
+<li>cluster center (2, 2)=[[2, 2], [2, 4], [3.5, 2], [18, -7], [18.5, -8]]</li>
+<li>cluster center (2.5, 6)=[[2.5, 6]]</li>
+<li>cluster center (4, 5)=[[4, 3], [4, 5], [4.5, 4], [17, 12], [17.5, 13], [18, 11], [19, 12], [19, -6], [20, -7]]</li>
+</ul>
+<p><img src="ch8_ef41507bcc98739895942db22db4b6d4_plot0.svg" alt="k-centers 2D plot"></p>
+</li>
+<li>
+<p>Iteration 1</p>
+<ul>
+<li>cluster center (2.5, 6)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (13.666666666666666, 5.222222222222222)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
+<li>cluster center (8.8, -1.4)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
+</ul>
+<p><img src="ch8_ef41507bcc98739895942db22db4b6d4_plot1.svg" alt="k-centers 2D plot"></p>
+</li>
+<li>
+<p>Iteration 2</p>
+<ul>
+<li>cluster center (3.2142857142857144, 3.7142857142857144)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (17.875, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
+<li>cluster center (18.875, -7)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
+</ul>
+<p><img src="ch8_ef41507bcc98739895942db22db4b6d4_plot2.svg" alt="k-centers 2D plot"></p>
+</li>
+</ul>
+</div>
+<p></p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag the center towards it in the actual <a href="#BM_(cluster)%2Fi">cluster</a> to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degrees and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is adjusting based on axis). TALK about how <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> as well). ADD <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a> modification below the initial lloyd's example. FIX terminology for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>, lloyd's algorithm <a href="#BM_(lloyd%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++</a>, and <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
 <a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
 <a name="H_K-Medioids%20Clustering"></a><h3>K-Medioids Clustering</h3>
@@ -21075,16 +21189,13 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(center%20of%20gravity)%2Fi"></a><strong>center of gravity</strong> - In terms of <a href="#BM_(cluster)%2Fi">cluster</a>ing, the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for a set of points is the mean of each individual dimension / coordinates.</p>
+<p><a name="BM_(center%20of%20gravity)%2Fi"></a><strong>center of gravity</strong> - In terms of <a href="#BM_(cluster)%2Fi">cluster</a>ing using <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>, the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for a set of points is the mean of each individual dimension / coordinates.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
-  dim_means = []
-  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
-    mean = <span class="hljs-number">0.0</span>
-    <span class="hljs-keyword">for</span> data_pt <span class="hljs-keyword">in</span> data_pts:
-      mean += data_pt[i]
-    mean /= <span class="hljs-built_in">len</span>(data_pts)
-    dim_means.append(mean)
-  <span class="hljs-keyword">return</span> dim_means
+   center = []
+   <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
+     val = mean(pt[i] <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> data_pts)
+     center.append(val)
+   <span class="hljs-keyword">return</span> center
 </code></pre>
 <p>For example, for the 2D points (0,5), (1,3), and (2,2), the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is (1, 3.3333). The coordinate / dimension for ...</p>
 <ul>

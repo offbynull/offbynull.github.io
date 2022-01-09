@@ -5,6 +5,7 @@ import random
 from collections import defaultdict
 from math import dist
 from pathlib import Path
+from statistics import mean
 from sys import stdin
 from typing import Sequence, Optional, Callable
 
@@ -115,7 +116,6 @@ def plot_3d(
 
 
 
-# MARKDOWN
 def find_closest_center(data_pt, center_pts):
     center_pt = min(
         center_pts,
@@ -124,19 +124,17 @@ def find_closest_center(data_pt, center_pts):
     return center_pt, dist(center_pt, data_pt)
 
 
-def centers_to_clusters(
-        centers: list[Sequence[float]],
-        vectors: list[Sequence[float]]
-) -> dict[tuple[float], list[Sequence[float]]]:
-    mapping = defaultdict(list)
-    for pt in vectors:
-        ct_pt, _ = find_closest_center(pt, centers)
-        ct_pt = tuple(ct_pt)
-        mapping[ct_pt].append(pt)
-    return mapping
+# MARKDOWN_CENTER_OF_GRAVITY
+def center_of_gravity(data_pts, dim):
+    center = []
+    for i in range(dim):
+        val = mean(pt[i] for pt in data_pts)
+        center.append(val)
+    return center
+# MARKDOWN_CENTER_OF_GRAVITY
 
-
-def k_centers_farthest_first_traversal(
+# MARKDOWN
+def k_means_lloyds(
         k: int,
         vectors: list[Sequence[float]],
         dims: int,
@@ -147,23 +145,23 @@ def k_centers_farthest_first_traversal(
             None
         ] | None = None
 ) -> dict[tuple[float], list[Sequence[float]]]:
-    # choose an initial center
-    centers = [random.choice(vectors)]
-    # notify of cluster for first iteration
-    mapping = centers_to_clusters(centers, vectors)
-    iteration_callback(mapping)
-    # iterate
-    while len(centers) < k:
-        # get next center
-        dists = {}
+    old_centers = []
+    centers = random.sample(vectors, k)
+    while centers != old_centers:
+        # centers to clusters
+        mapping = defaultdict(list)
         for pt in vectors:
-            _, d = find_closest_center(pt, centers)
-            pt = tuple(pt)
-            dists[pt] = d
-        farthest_closest_center_pt = max(dists, key=lambda x: dists[x])
-        centers.append(farthest_closest_center_pt)
-        # notify of the current iteration's cluster
-        mapping = centers_to_clusters(centers, vectors)
+            ct_pt, _ = find_closest_center(pt, centers)
+            ct_pt = tuple(ct_pt)
+            mapping[ct_pt].append(pt)
+        # clusters to centers
+        old_centers = centers
+        centers = []
+        for pts in mapping.values():
+            new_ct_pt = center_of_gravity(pts, dims)
+            new_ct_pt = tuple(new_ct_pt)
+            centers.append(new_ct_pt)
+        # notify of current iteration's cluster
         iteration_callback(mapping)
     return mapping
 # MARKDOWN
@@ -179,7 +177,7 @@ def main():
         dims = max(len(v) for v in vectors)
         print(f'Given {k=} and {vectors=}...')
         print()
-        print(f'The farthest first travel heuristic produced the clusters at each iteration ...')
+        print(f'The llyod\'s algorithm heuristic produced the clusters at each iteration ...')
         print()
         unique_id_path = Path('/input/.__UNIQUE_INPUT_ID')
         iteration = 0
@@ -206,7 +204,7 @@ def main():
                 print(f"   Unable to plot iteration -- too many dimensions")
                 print()
             iteration += 1
-        clusters = k_centers_farthest_first_traversal(k, vectors, dims, plot_iteration)
+        k_means_lloyds(k, vectors, dims, plot_iteration)
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

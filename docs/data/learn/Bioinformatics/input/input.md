@@ -12408,21 +12408,62 @@ v                                          "k-centers score: 10"
 
 **ALGORITHM**:
 
-Similar to solving k-centers, solving k-means for any non-trivial input isn't possible because the search space is too huge. Because of this, heuristics are used. A common k-means heuristic is Lloyd's algorithm.
+Similar to k-centers, solving k-means for any non-trivial input isn't possible because the search space is too huge. Because of this, heuristics are used. A common k-means heuristic is Lloyd's algorithm. The algorithm randomly picks k points to set as the centers and iteratively refines those centers. At each step, the algorithm ...
 
-TODO IMPLEMENT ME The algorithm iteratively builds out more centers by inspecting the euclidean distances from points to existing centers. At each step, the algorithm ...
+ 1. converts centers to clusters,
+ 
+    The point closest to a center becomes a member_NORM of that cluster. Ties are broken arbitrarily.
 
-TODO IMPLEMENT ME 
+ 2. converts clusters to centers.
 
-TODO IMPLEMENT ME 
+    The clusters from step 1 are turned into new centers. Each dimension of a center becomes the average of that dimension across cluster member_NORMs, referred to as the center of gravity.
 
-TODO IMPLEMENT ME 
+    ```{output}
+    ch8_code/src/clustering/KMeans_Lloyds.py
+    python
+    # MARKDOWN_CENTER_OF_GRAVITY\s*\n([\s\S]+)\n\s*# MARKDOWN_CENTER_OF_GRAVITY
+    no_preamble
+    ```
 
-TODO IMPLEMENT ME 
+The algorithm will converge to stable centers, at which point it stops iterating.
 
-TODO IMPLEMENT ME 
+```{output}
+ch8_code/src/clustering/KMeans_Lloyds.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
 
-TODO IMPLEMENT ME 
+```{ch8}
+clustering.KMeans_Lloyds
+[
+  3,
+  [
+    [2,2], [2,4], [2.5,6], [3.5,2], [4,3], [4,5], [4.5,4],
+    [17,12], [17.5,13], [18,11], [19,12],
+    [18,-7], [18.5,-8], [19,-6], [20,-7]
+  ]
+]
+```
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+
+TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
 
 ### Soft K-Means Clustering
 ### Hierarchial Clustering
@@ -16892,18 +16933,15 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    The book states that k-means clustering often doesn't produce good results if the clumps have a non-globular shape (e.g. elongated) or have widely different densities.
    ```
 
- * `{bm} center of gravity` - In terms of clustering, the center of gravity for a set of points is the mean of each individual dimension / coordinates.
+ * `{bm} center of gravity` - In terms of clustering using euclidean distance, the center of gravity for a set of points is the mean of each individual dimension / coordinates.
 
    ```python
    def center_of_gravity(data_pts, dim):
-     dim_means = []
-     for i in range(dim):
-       mean = 0.0
-       for data_pt in data_pts:
-         mean += data_pt[i]
-       mean /= len(data_pts)
-       dim_means.append(mean)
-     return dim_means
+      center = []
+      for i in range(dim):
+        val = mean(pt[i] for pt in data_pts)
+        center.append(val)
+      return center
    ```
 
    For example, for the 2D points (0,5), (1,3), and (2,2), the center of gravity is (1, 3.3333). The coordinate / dimension for ...
