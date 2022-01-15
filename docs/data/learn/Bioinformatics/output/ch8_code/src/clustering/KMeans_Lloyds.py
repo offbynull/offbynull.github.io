@@ -133,10 +133,12 @@ def center_of_gravity(data_pts, dim):
     return center
 # MARKDOWN_CENTER_OF_GRAVITY
 
+
 # MARKDOWN
 def k_means_lloyds(
         k: int,
         vectors: list[Sequence[float]],
+        centers_init: list[Sequence[float]],
         dims: int,
         iteration_callback: Callable[  # callback func to invoke on each iteration
             [
@@ -146,10 +148,10 @@ def k_means_lloyds(
         ] | None = None
 ) -> dict[tuple[float], list[Sequence[float]]]:
     old_centers = []
-    centers = random.sample(vectors, k)
+    centers = centers_init[:]
     while centers != old_centers:
+        mapping = {tuple(ct_pt): [] for ct_pt in centers}
         # centers to clusters
-        mapping = defaultdict(list)
         for pt in vectors:
             ct_pt, _ = find_closest_center(pt, centers)
             ct_pt = tuple(ct_pt)
@@ -168,6 +170,102 @@ def k_means_lloyds(
 
 
 def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data = yaml.safe_load(stdin)
+        k = data[0]
+        vectors = data[1]
+        if len(data) > 2:
+            centers = data[2]
+        else:
+            centers = random.sample(vectors, k)
+        assert len(centers) == k, 'k must match number of centers'
+        dims = max(len(v) for v in vectors)
+        print(f'Given {k=} and {vectors=}...')
+        print()
+        print(f'The llyod\'s algorithm heuristic produced the clusters at each iteration ...')
+        print()
+        unique_id_path = Path('/input/.__UNIQUE_INPUT_ID')
+        iteration = 0
+        def plot_iteration(clusters):
+            nonlocal iteration
+            plot_path = None
+            if unique_id_path.exists():
+                unique_id = unique_id_path.read_text()
+                plot_path = Path(f'/output/{unique_id}_plot{iteration}.svg')
+            print(f' * Iteration {iteration}')
+            print()
+            for center in clusters:
+                print(f'    * cluster center {center}={clusters[center]}')
+            print()
+            if dims == 2:
+                plot_2d(clusters, plot_path)
+                print(f'   ![k-centers 2D plot]({None if plot_path is None else plot_path.name})')
+                print()
+            elif dims == 3:
+                plot_3d(clusters, plot_path)
+                print(f'   ![k-centers 3D plot]({None if plot_path is None else plot_path.name})')
+                print()
+            else:
+                print(f"   Unable to plot iteration -- too many dimensions")
+                print()
+            iteration += 1
+        k_means_lloyds(k, vectors, centers, dims, plot_iteration)
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# MARKDOWN_KMEANS_PP_INITIALIZER
+def k_means_PP_initializer(
+        k: int,
+        vectors: list[Sequence[float]],
+):
+    centers = [random.choice(vectors)]
+    while len(centers) < k:
+        choice_points = []
+        choice_weights = []
+        for v in vectors:
+            if v in centers:
+                continue
+            _, d = find_closest_center(v, centers)
+            choice_weights.append(d)
+            choice_points.append(v)
+        total = sum(choice_weights)
+        choice_weights = [w / total for w in choice_weights]
+        c_pt = random.choices(choice_points, weights=choice_weights, k=1).pop(0)
+        centers.append(c_pt)
+    return centers
+# MARKDOWN_KMEANS_PP_INITIALIZER
+
+
+def main_WITH_k_means_PP_initializer():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
     try:
@@ -204,10 +302,34 @@ def main():
                 print(f"   Unable to plot iteration -- too many dimensions")
                 print()
             iteration += 1
-        k_means_lloyds(k, vectors, dims, plot_iteration)
+        k_means_lloyds(k, vectors, k_means_PP_initializer(k, vectors), dims, plot_iteration)
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':

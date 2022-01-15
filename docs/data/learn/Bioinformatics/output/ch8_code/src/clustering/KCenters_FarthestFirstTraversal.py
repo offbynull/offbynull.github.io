@@ -128,7 +128,7 @@ def centers_to_clusters(
         centers: list[Sequence[float]],
         vectors: list[Sequence[float]]
 ) -> dict[tuple[float], list[Sequence[float]]]:
-    mapping = defaultdict(list)
+    mapping = {tuple(ct_pt): [] for ct_pt in centers}
     for pt in vectors:
         ct_pt, _ = find_closest_center(pt, centers)
         ct_pt = tuple(ct_pt)

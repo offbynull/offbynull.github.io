@@ -12231,7 +12231,8 @@ clustering.KCenters_FarthestFirstTraversal
 One problem that should be noted with this heuristic is that, when outliers are present, it'll likely place those outliers into their own cluster. 
 
 ```{svgbob}
-"Points chosen as centers are in brackets"
+"Cluster membership is denoted using letters. Points"
+"chosen as centers are in brackets"
 
 "When k=3, each outlier may become become its own"
 "cluster, leaving everything else as the last cluster."
@@ -12287,7 +12288,7 @@ score = \frac{\sum_{i=1}^{n} {d(P_i, C)^2}}{n}
 ```
 
 ```{note}
-The formula above is averaging the squares.
+The formula is taking the squares of d() and averaging them.
 ```
 
 ```python
@@ -12416,7 +12417,7 @@ Similar to k-centers, solving k-means for any non-trivial input isn't possible b
 
  2. converts clusters to centers.
 
-    The clusters from step 1 are turned into new centers. Each dimension of a center becomes the average of that dimension across cluster member_NORMs, referred to as the center of gravity.
+    The clusters from step 1 are turned into new centers. Each component of a center becomes the average of that dimension across cluster member_NORMs, referred to as the center of gravity.
 
     ```{output}
     ch8_code/src/clustering/KMeans_Lloyds.py
@@ -12430,7 +12431,7 @@ The algorithm will converge to stable centers, at which point it stops iterating
 ```{output}
 ch8_code/src/clustering/KMeans_Lloyds.py
 python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
 ```
 
 ```{ch8}
@@ -12441,29 +12442,149 @@ clustering.KMeans_Lloyds
     [2,2], [2,4], [2.5,6], [3.5,2], [4,3], [4,5], [4.5,4],
     [17,12], [17.5,13], [18,11], [19,12],
     [18,-7], [18.5,-8], [19,-6], [20,-7]
+  ],
+# Remove the following element to have the system pick k random points
+  [
+    [2,2], [2,4], [2.5,6]
   ]
 ]
 ```
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+At each iteration, the cluster member_NORMs captured (step 1) will drag the new center towards them (step 2). After so many iterations, each center will be at a point where further iterations won't capture a different set of member_NORMs, meaning that the centers will stay where they're at (converged).
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+```{note}
+I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner book says. This isn't entirely true? I think it's possible to get into a situation where a tied point ping-pongs back and forth between clusters. So, maybe what actually needs to happen is you need to break ties consistently -- it doesn't matter how, just that its consistent (e.g. the center closest to origin + smallest angle from origin always wins the tied member_NORM).
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+Also, if the centers haven't converged, the dragged center is guaranteed to decrease the squared error distortion when compared to the previous center. But, does that mean that a set of converged centers are optimal in terms of squared error distortion? I don't think so. Even if a cluster converged to all the correct member_NORMs, could it be that the center can be slightly tweaked to get the squared error distortion down even more? Probably.
+```
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+The hope with the heuristic is that, at each iteration, enough true cluster member_NORMs are captured (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other, referred to as k-means++ initializer.
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+ 1. The 1st center is chosen from the list of points at random.
+ 2. The 2nd center is chosen by selecting a point that's likely to be much farther away from center 1 than most other points.
+ 3. The 3rd center is chosen by selecting a point that's likely to be much farther away from center 1 and 2 than most other points.
+ 4. ...
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+The probability of selecting a point as the next center is proportional to its squared distance to the existing centers.
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+```{output}
+ch8_code/src/clustering/KMeans_Lloyds.py
+python
+# MARKDOWN_KMEANS_PP_INITIALIZER\s*\n([\s\S]+)\n\s*# MARKDOWN_KMEANS_PP_INITIALIZER\s*[\n$]
+```
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+```{ch8}
+clustering.KMeans_Lloyds main_WITH_k_means_PP_initializer
+[
+  3,
+  [
+    [2,2], [2,4], [2.5,6], [3.5,2], [4,3], [4,5], [4.5,4],
+    [17,12], [17.5,13], [18,11], [19,12],
+    [18,-7], [18.5,-8], [19,-6], [20,-7]
+  ]
+]
+```
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+Even with k-means++ initializer, Lloyd's algorithm isn't guaranteed to always converge to a good solution. The typically workflow is to run it multiple times, where the run producing centers with the lowest squared error distortion is the one accepted.
 
-TODO: TALK about what step 2 is doing -- it's hoping to capture enough nearby points of the actual cluster to drag the center towards it in the actual cluster to drag it in. THE example in the WHY section above where center = 2.6, rotate the data points by 45 degree_NORMs and see if that's still the case (2.6 will get rotated as well) when this heuristic is used (probably won't be because center of gravity is adjusting based on axis). TALK about how euclidean distance only really works for globular data, not elongated or the other examples shown in the book (maybe replicate this for k-centers as well). ADD k-means++ initializer modification below the initial lloyd's example. FIX terminology for k-means, lloyd's algorithm k-means++, and center of gravity.
+Futhermore, Lloyd's algorithm may fail to converge to a good solution when the clusters aren't globular and / or aren't of similar densities. Below are example clusters that are obvious to a human but problematic for the algorithm.
+
+```{note}
+The Pevzner book explicitly calls out Lloyd's algorithm for this, but I'm thinking this is more to do with the scoring function for k-means (what's trying to be minimized)? I think the same problem applies to the scoring function for k-centers and the furthest first traveled heuristic?
+
+The examples below are taken directly from the Pevzner book.
+```
+
+```{svgbob}
+"Cluster membership is denoted using letters."
+ 
+                                                  ELONGATED
+                 .-----------------------------.              .-----------------------------.
+                 |          EXPECTED           |              |           ACTUAL            |
+                 |                             |              |                             |
+                 |   C               E   E     |              |   C               C   C     |
+                 | C     C             E     E |              | C     C             C     C |
+                 |    C    C         E   E     |              |    C    C         C   C     |
+                 | C     C                 E   |              | C     C                 C   |
+                 |   C C             E   E     |              |   C C             C   C     |
+                 |         C           E       |              |         C           C       |
+                 |   C   C               E   E |              |   C   C               C   C |
+                 | C   C   C           E       |              | C   C   C           C       |
+                 |     C             E       E |              |     C             C       C |
+                 |   C     C               E   |              |   C     C               C   |
+                 |     C             E   E     |              |     C             C   C     |
+                 | C     C           E     E   |              | E     E           E     E   |
+                 |   C     C           E     E |              |   E     E           E     E |
+                 |       C           E     E   |              |       E           E     E   |
+                 |   C     C           E     E |              |   E     E           E     E |
+                 | C     C                 E   |              | E     E                 E   |
+                 |         C           E     E |              |         E           E     E |
+                 | C     C               E     |              | E     E               E     |
+                 |     C             E       E |              |     E             E       E |
+                 | C     C             E       |              | E     E             E       |
+                 |   C     C         E       E |              |   E     E         E       E |
+                 '-----------------------------'              '-----------------------------'
+ 
+ 
+ 
+                                             "ELONGATED ANE CURVED"
+             
+             .----------------------------------.             .----------------------------------.
+             |           EXPECTED               |             |            ACTUAL                |
+             |                                  |             |                                  |
+             |                  E   E           |             |                  E   E           |
+             |                 E   E   E        |             |                 E   E   E        |
+             |                    E   E         |             |                    E   E         |
+             |                           E      |             |                           E      |
+             |                      E   E  E    |             |                      E   E  E    |
+             |                         E        |             |                         E        |
+             |                       E   E   E  |             |                       E   E   E  |
+             |           C                E     |             |           E                E     | 
+             |        C     C          E      E |             |        E     E          E      E |
+             |          C    C           E  E   |             |          E    E           E  E   |
+             |      C     C             E   E   |             |      E     E             E   E   |
+             |    C  C C             E     E    |             |    E  E E             E     E    |
+             |     C      C           E     E   |             |     E      E           E     E   |
+             |     C   C             E  E  E    |             |     C   C             C  C  C    |
+             |  C   C   C             E     E   |             |  C   C   C             C     C   |
+             |     C                  E         |             |     C                  C         |
+             |   C   C C            E  E  E     |             |   C   C C            C  C  C     |
+             |     C   C           E            |             |     C   C           C            |
+             |  C     C           E     E       |             |  C     C           C     C       |
+             |   C  C  C        E    E          |             |   C  C  C        C    C          |
+             |      C  C      E   E   E         |             |      C  C      C   C   C         |
+             |     C  C  C                      |             |     C  C  C                      |
+             |     C     C                      |             |     C     C                      |
+             |    C   C    C                    |             |    C   C    C                    |
+             |       C     C                    |             |       C     C                    |
+             |       C   C                      |             |       C   C                      |
+             |         C     C                  |             |         C     C                  |
+             |        C  C     C                |             |        C  C     C                |
+             '----------------------------------'             '----------------------------------'
+
+
+
+                                       "GLOBULAR BUT DIFFERENT DENSITY"
+
+.--------------------------------------------------.        .--------------------------------------------------.
+|                      EXPECTED                    |        |                       ACTUAL                     |
+|                                                  |        |                                                  |
+|        M       M                      C C C      |        |        M       E                      C C C      |
+|                                    C  CC C C C   |        |                                    C  CC C C C   |
+|     M                M           CC CC  CC C CC  |        |     M                E           CC CC  CC C CC  |
+|                                  C CC CC C C C C |        |                                  C CC CC C C C C |
+|                  M                 C CC CC C C   |        |                  E                 C CC CC C C   |
+| M            M        M               CCC C      |        | M            E        E               CCC C      |
+|       M                                          |        |       M                                          |
+|                                                  |        |                                                  |
+|                 M                     EEE E      |        |                 E                     CCC C      |
+|    M                               EE E  E E E   |        |    M                               CC C  C C C   |
+|           M         M            E E EE E E E EE |        |           M         E            C C CC C C C CC |
+|      M                           E E EE E E E E  |        |      M                           C C CC C C C C  |
+|                  M                 E  E  E EE E  |        |                  E                 C  C  C CC C  |
+|    M                M                 E E E      |        |    M                E                 C C C      |
+'--------------------------------------------------'        '--------------------------------------------------'
+```
 
 ### Soft K-Means Clustering
 ### Hierarchial Clustering
@@ -16811,7 +16932,21 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    * n is the number of points in P
    * d returns the euclidean distance between a point and its closest center.
    * max is the maximum function.
- 
+
+   ```python
+   # d() function from the formula
+   def dist_to_closest_center(data_pt, center_pts):
+     center_pt = min(
+       center_pts,
+       key=lambda cp: dist(data_pt, cp)
+     )
+     return dist(center_pt, data_pt)
+   
+   # scoring function (what's trying to be minimized)
+   def k_centers_score(data_pts, center_pts):
+     return max(dist_to_closest_center(p, center_pts) for p in data_pts)
+   ```
+
    ```{svgbob}
    "Points represented as letters, where each letter"
    "represents the cluster its assigned to. Each line is"
@@ -16838,7 +16973,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    +----------------------------------           +----------------------------------
    ```
 
-   This effectively becomes an optimization problem. For any non-trivial input, the search space is too massive for a straight-forward algorithm to work. As such, heuristics are commonly used instead.
+   For a non-trivial input, the search space is too massive for a straight-forward algorithm to work. As such, heuristics are commonly used instead.
 
    ```{note}
    See farthest first traversal heuristic.
@@ -16877,22 +17012,30 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    +--------------------------------------          +--------------------------------------          +--------------------------------------
    ```
 
- * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where k "center" points are produced, where each point acts as the center of the cluster its assigned to.
+ * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_NORMs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the formula below is the minimum it could possibly be out of all possible choices for centers.
+ 
+   The formula below is referred to as squared error distortion.
 
-   For each actual data point, the euclidean distance is calculated from that point to each cluster center. The center point with the minimum distance is chosen as the cluster for that data point.
+   ```{kt}
+   score = \frac{\sum_{i=1}^{n} {d(P_i, C)^2}}{n}
+   ```
+   
+    * P is the set of points.
+    * C is the set of centers.
+    * n is the number of points in P
+    * d returns the euclidean distance between a point and its closest center.
+    * max is the maximum function.
 
    ```python
+   # d() function from the formula
    def find_closest_center(data_pt, center_pts):
      center_pt = min(
        center_pts,
        key=lambda cp: dist(data_pt, cp)
      )
      return center_pt, dist(center_pt, data_pt)
-   ```
 
-   The goal with k-center clustering is to produce cluster centers that minimize the squared error distortion.
-
-   ```python
+   # scoring function (what's trying to be minimized) -- taking squares of d() and averaging
    def squared_error_distortion(data_pts, center_pts):
      res = []
      for data_pt in data_pts:
@@ -16901,9 +17044,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
      return sum(res) / len(res)
    ```
 
-   Compared against k-center clustering, the metric being minimized in k-means (squared error distortion) factors in all data points while the metric being minimized in k-center (farthest distance to any center) factors in only a single data point. If outliers are present, k-centers's metric causes the cluster center to be wildly offset while k-mean's metric will only be mildly shift offset.
-
-   In the example below, the minimized cluster center for k-centers is wildly offset by outlier Z while k-means isn't offset as much.
+   Compared to k-centers, k-means more appropriately handles outliers. If outliers are present, k-centers's metric causes the cluster center to be wildly offset while k-mean's metric will only be mildly offset. In the example below, the best scoring cluster center for k-centers is wildly offset by outlier Z while k-means isn't offset as much.
 
    ```{svgbob}
    .-------------------.       .-------------------.       .-------------------.
@@ -16929,11 +17070,17 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
                                '-------------------'       '-------------------'
    ```
 
+   For a non-trivial input, the search space is too massive for a straight-forward algorithm to work. As such, heuristics are commonly used instead.
+
    ```{note}
-   The book states that k-means clustering often doesn't produce good results if the clumps have a non-globular shape (e.g. elongated) or have widely different densities.
+   See Lloyd's algorithm.
    ```
 
- * `{bm} center of gravity` - In terms of clustering using euclidean distance, the center of gravity for a set of points is the mean of each individual dimension / coordinates.
+   ```{note}
+   The Pevzner book states that k-means clustering often doesn't produce good results if the clumps have a non-globular shape (e.g. elongated) or have widely different densities. This probably applies to k-centers as well
+   ```
+
+ * `{bm} center of gravity` - In terms of clustering using euclidean distance, the center of gravity for a set of points is the average of each individual dimension / coordinates.
 
    ```python
    def center_of_gravity(data_pts, dim):
@@ -16949,32 +17096,14 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    * x is calculated as `0+1+2/3 = 1`.
    * y is calculated as `5+3+2/3 = 3.3333`.
 
- * `{bm} Lloyd algorithm/(lloyd algorithm|k-means?\+\+ initializer|k-means?\+\+)/i` - A heuristic for determining centers in k-means clustering. The algorithm begins by choosing centers by arbitrarily selecting k points from the points being clustered, then iteratively...
+ * `{bm} Lloyd's algorithm/(lloyd algorithm|lloyd's algorithm|k-means?\+\+ initializer|k-means?\+\+)/i` - A heuristic for determining centers in k-means clustering. The algorithm begins by choosing centers by arbitrarily selecting k points from the points being clustered, then iteratively...
  
    1. assigns each point to its nearest center (ties broken arbitrarily),
-   2. calculates a new set of centers by calculating the center of gravity for the points in each.
+   2. calculates a new set of centers by calculating the center of gravity from the points in each.
 
-   It repeats this until the newly generated centers are the same as the centers from the previous iteration (stops converging).
+   The algorithm stops once the new centers are the same as the centers from the previous iteration (stops converging).
 
-   ```python
-   def lloyd(points, num_centers, dims):
-     old_centers = []
-     centers = random.sample(points, num_centers)
-     while centers != old_centers:
-       mapping = defaultdict(list)
-       for pt in points:
-         ct_pt, _ = find_closest_center(pt, centers)
-         mapping[ct_pt].append(pt)
-       old_centers = centers
-       centers = [nan] * num_centers
-       for i, pts in enumerate(mapping.values()):
-         centers[i] = center_of_gravity(pts, dims)
-     return centers
-   ```
-
-   Since this algorithm is a heuristic, it doesn't always converge to a good solution. The algorithm typically runs multiple times, where the run producing centers with the lowest squared error distortion is accepted.
-
-   An enhancement to the algorithm, called k-means++ initializer, increases the chances of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other:
+   Since this algorithm is a heuristic, it doesn't always converge to a good solution. The algorithm typically runs multiple times, where the run producing centers with the lowest squared error distortion is accepted. An enhancement to the algorithm, called k-means++ initializer, increases the chances of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other:
    
    1. The 1st center is chosen from the list of points at random.
    2. The 2nd center is chosen by selecting a point that's likely to be much farther away from center 1 than most other points.
