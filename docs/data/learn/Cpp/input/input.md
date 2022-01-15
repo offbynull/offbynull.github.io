@@ -300,18 +300,18 @@ Make sure that you don't have other C++ extensions installed. I'd initially inst
 You can swap out "C++ Extension" in the C++ extension pack for the clangd extension. It'll work with the CMake plugin and provide intellisense / auto-complete / formatting / etc.. support using LLVM Clang's engine.
 ```
 
-Assuming you have all the software above installed, [`{bm-skip} this cookie cutter template`](my_cpp_template.tar.xz) can be used to setup a simple project structure that you can open directly in vscode. The template primes the project by ...
+Assuming you have all the software above installed, [`{bm-skip} this cookie cutter template`](my_cpp_template.tar.xz) can be used to set up a simple project structure that you can open directly in vscode. The template primes the project by ...
 
  1. creating a main source folder (`src/main`).
  1. creating a test source folder (`src/test`).
  1. setting Conan to download POCO C++ Libraries and Google Test.
  1. setting CMake and Conan to use LLVM Clang 12.
  1. setting CMake to build using C++20.
- 1. setting CMake to use integrate with Conan.
+ 1. setting CMake to integrate with Conan.
  1. setting CMake to recursive glob compile.
 
 ```{note}
-I keep reading that globs aren't recommended in CMake. If you don't use globs, you'll have to go in and manually add in each source files into the CMake configuration.
+I keep reading that globs aren't recommended in CMake. If you don't use globs, you'll have to go in and manually add in each source file into the CMake configuration.
 ```
 
 ```{note}
@@ -474,7 +474,7 @@ C++ provides a set of other operators such as the ...
 While it isn't worth going into them in detail here, the reason the language explicitly lists them as operators is because they're overload-able (e.g. operator overloading). Overloading these operators is heavily discouraged since doing so causes confusion.
 
 ````{note}
-The book mentions the comma operator specifically. It doesn't look this is used for much and the book recommends against using it for anything (e.g. operator overloading) due to the confusion it causes. This gives off similar vibes to Python's tuple syntax, where you can pass an unenclosed tuple as a subscript to something. When I was learning Python, that also came off as very confusing.
+The book mentions the comma operator specifically. It doesn't look like this is used for much and the book recommends against using it for anything (e.g. operator overloading) due to the confusion it causes. This gives off similar vibes to Python's tuple syntax, where you can pass an unenclosed tuple as a subscript to something. When I was learning Python, that also came off as very confusing.
 
 ```python
 x = obj['column name', 100]
@@ -508,7 +508,7 @@ C++ variable declarations have the following form: `modifiers type name initiali
    ```{note}
    The above is an over-simplification. The ways to initialize are vast and complex. See [here](https://en.cppreference.com/w/cpp/language/initialization) for a full accounting and [here](https://youtu.be/7DTlWPgX6zs) for an hour long talk about the edge cases.
    
-   It seems like the safest bet is to always use brace initialization where possible. Just use the braces as if they were parenthesis or braces in Java (specific to the context). The others have surprising behaviour (e.g. they won't warn about narrowing conversions).
+   It seems like the safest bet is to always use brace initialization where possible. Just use the braces as if they were parentheses or braces in Java (specific to the context). The others have surprising behaviour (e.g. they won't warn about narrowing conversions).
    ```
 
  * **modifiers** (optional) - Markers controlling the behaviour / properties of a variable.
@@ -547,8 +547,8 @@ C++'s core integer types are as follows...
 
 The above integer types come in two forms: signed and unsigned. Tha range of ...
 
-* unsigned integers starts at 0 and ends at a positive integer.
-* signed integers starts at a negative integer and positive integer.
+* unsigned integers start at 0 and end at a positive integer.
+* signed integers start at a negative integer and positive integer.
 
 By default, the integer types above are signed (speculation). Signed-ness can be explicitly stated by prefixing either `signed` or `unsigned` to the type, but if the type is signed the prefix is usually omitted.
 
@@ -647,7 +647,7 @@ Integer types with standardized bit lengths are defined in the cstdlib header.
 The minimum and maximum extents of each type are defined in `{TYPE}_MIN` and `{TYPE}_MAX`, where `{TYPE}` doesn't include the `_t` suffix. For example the maximum value an `uint64_t` can be is `UINT64_MAX`.
 
 ```{note}
-Not all types guaranteed to be present (e.g. 64-bit types may be missing if platform can't support it). Unsigned types don't have a minimum extent defined because a minimum of any unsigned integer type is always 0 (e.g. uint64_t can't go any lower than 0).
+Not all types guaranteed to be present (e.g. 64-bit types may be missing if the platform can't support it). Unsigned types don't have a minimum extent defined because a minimum of any unsigned integer type is always 0 (e.g. uint64_t can't go any lower than 0).
 ```
 
 To expand any integer __literal__ to a ...
@@ -687,7 +687,7 @@ C++'s core floating point types are as follows...
 | `double`      | double precision   |                | `123.0`  |
 | `long double` | extended precision | `L`            | `123.0L` |
 
-The specifics of each type are platform-dependent. The only guarantee is that each each type has to hold at least the same range as the type before it (e.g. `double`'s range should cover `float`'s range). Other than that, ...
+The specifics of each type are platform-dependent. The only guarantee is that each type has to hold at least the same range as the type before it (e.g. `double`'s range should cover `float`'s range). Other than that, ...
 
 * rounding mode is undefined.
 * exponent bit length is undefined.
@@ -716,7 +716,7 @@ The rounding behaviour of all floating point types is queryable via `FLT_ROUNDS`
 
  * -1 means undetermined.
  * 0 means toward zero.
- * 1 means toward nearest.
+ * 1 means toward whichever is nearest.
  * 2 means toward positive infinity.
  * 3 means toward negative infinity.
 
@@ -765,7 +765,7 @@ Note that `char` and `wchar_t` don't have predefined bit lengths. They are platf
 * `wchar_t` must be equal to or greater than that of `char`.
 
 ```{note}
-`char` literals can also be integers, but the signed-ness of the `char` type isn't defined by default (speculation). It can specifically be made to signed / unsigned by prefixing it as such: `signed char` / `unsigned char`.
+`char` literals can also be integers, but the signed-ness of the `char` type isn't defined by default (speculation). It can specifically be made to be signed / unsigned by prefixing it as such: `signed char` / `unsigned char`.
 ```
 
 Strings literals are wrapped in double quotes instead of single quotes, where they get transformed into an array terminated by a null character.
@@ -803,7 +803,7 @@ Variables/Core Types_TOPIC
 Variables/Pointers_TOPIC: Just the main section, not any of the subsections.
 ```
 
-C++ allows for the creation of arrays of constant length (size of the array must be known at compile-time). Elements of an array are guaranteed to be a contiguous in memory (speculation).
+C++ allows for the creation of arrays of constant length (size of the array must be known at compile-time). Elements of an array are guaranteed to be contiguous in memory (speculation).
 
 * `int x[100]` - Creates an array of 100 ints where those 100 ints are junk values (data previously at that memory location is not zero'd out).
 * `int x[] { 5, 5, 5 }` - Creates an array of 3 ints where each of those ints have been initialized to 5 (braced initialization).
@@ -814,7 +814,7 @@ C++ allows for the creation of arrays of constant length (size of the array must
 
 Accessing arrays is done similarly to how it is in most other languages, by subscripting (e.g. `x[0] = 5`). The only difference is that array access isn't bounds-checked and array length information isn't automatically maintained at run-time. For example, if an array has 100 elements, C++ won't stop you from trying to access element 250 -- out-of-bounds array access is undefined behaviour.
 
-One way to think of an arrays is as pointer to a contiguous block of elements of the array type. In fact, if an array type gets used where it isn't expected, that array type automatically decays to a pointer type.
+One way to think of an array is as a pointer to a contiguous block of elements of the array type. In fact, if an array type gets used where it isn't expected, that array type automatically decays to a pointer type.
 
 ```c++
 int test(int *x) {
@@ -828,7 +828,7 @@ void run() {
 ```
 
 ````{note}
-My understanding is that arrays are typically passed to functions as pointers + array length. This is because the array length information is only available at compile-time, meaning that if you have a function that takes in an array, how would it know the size of the array it's working with (it isn't the one who declared it). It looks like you can for the function to an array type of fixed size, but apparently that doesn't mean anything? The compiler doesn't enforce that a caller use an array of that fixed size, and using sizeof on the array will produce a warning saying that it's decaying into a pointer.
+My understanding is that arrays are typically passed to functions as pointers + array length. This is because the array length information is only available at compile-time, meaning that if you have a function that takes in an array, how would it know the size of the array it's working with when it runs (it isn't the one who declared it). It looks like a function parameter can be an array type of fixed size, but apparently that doesn't mean anything? The compiler doesn't enforce that a caller use an array of that fixed size, and using sizeof on the array will produce a warning saying that it's decaying into a pointer.
 
 ```c++
 size_t test(int x[10]) {
@@ -1060,17 +1060,17 @@ int *x { &w }; // x points to w
 int &y { w };  // y references to w (note address-of operator not used here)
 ```
 
-The main difference is between pointer types and reference types is that a reference type doesn't need to explicitly dereference to access the object pointed to. The object pointed to by the reference type is accessed as if it were the object itself.
+The main difference between pointer types and reference types is that a reference type doesn't need to explicitly dereference to access the object pointed to. The object pointed to by the reference type is accessed as if it were the object itself.
 
 ```c++
 *x = 10;       // x explicitly dereferenced to w and set to 10
 y = 15;        // y implicitly dereferenced to w and set to 15
 ```
 
-As shown in the example above, assignment to a reference type is assignment on the underlying object being referenced. As such, having the reference type point a different object isn't possible (reseating).
+As shown in the example above, assignment to a reference type is assignment on the underlying object being referenced. As such, having the reference type point to a different object isn't possible (reseating).
 
 ```{note}
-One way to think of this is that it's implicitly `const` -- the compiler won't let explicitly set a reference to be `const`.
+One way to think of this is that it's implicitly `const` -- the compiler won't let you explicitly set a reference to be `const`.
 ```
 
 Similarly, it's not possible to have a reference to a reference.
@@ -1088,7 +1088,7 @@ Variables/References_TOPIC
 Expression Categories_TOPIC
 ```
 
-An rvalue reference is similar to a reference except that it tells the compiler that it's working with is an rvalue. Rvalue references are declared by adding two ampersands (&&) after the type rather than just one. It's initialized using the `std::move()` function within the utility header, which casts its input into an rvalue reference.
+An rvalue reference is similar to a reference except that it tells the compiler that it's working with an rvalue. Rvalue references are declared by adding two ampersands (&&) after the type rather than just one. It's initialized using the `std::move()` function within the utility header, which casts its input into an rvalue reference.
 
 Rvalue references are typically used for moving objects (not copying, but actually moving the guts of one object into another). This is typically done through something called a move constructor, which will be explained further on.
 
@@ -1127,7 +1127,7 @@ Variables/Pointers_TOPIC
 
   * `sizeof char` is guaranteed to be 1.
   * `sizeof (char &)` is guaranteed to be 1.
-  * `sizeof (char *)` is platform dependant, typically either 4 or 8.
+  * `sizeof (char *)` is platform dependent, typically either 4 or 8.
   * `char * x { "hi" }; sizeof x` is equivalent to `sizeof (char *)` (see above).
 
 * an expression such as a structure/class literal, array literal, or string literal, it'll return the number of bytes needed to hold it. For example, ...
@@ -1442,16 +1442,16 @@ C-style casts are similar to casts seen in Java. The type is bracketed before wh
 int x { (int) 9999999999L };
 ```
 
-The problem with C-style casts are that they don't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
+The problem with C-style casting is that it doesn't provide the same safety mechanisms as named conversions do (e.g. inadvertently strip the `const`-ness). Named conversions provide these safety mechanisms and as such should be preferred over C-style casts. Any C-style cast can be performed using a named conversion.
 
 # Object Lifecycle
 
 `{bm} /(Object Lifecycle)_TOPIC/`
 
 ```{prereq}
-Variables_TOPIC: Just enough to how to define and use one.
-Functions_TOPIC: Just enough to how to define and use one.
-Classes_TOPIC: Just enough to how to define and use one.
+Variables_TOPIC: Just enough to know how to define and use one.
+Functions_TOPIC: Just enough to know how to define and use one.
+Classes_TOPIC: Just enough to know how to define and use one.
 ```
 
 In C++, an object is a region of memory that has a type and a value (e.g. a class instance, an integer, a pointer to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ objects aren't exclusive to classes (e.g. a boolean is an object).
@@ -1488,7 +1488,7 @@ The storage duration of an object starts from when its memory is allocated and e
 '------------------------------------------------'
 ```
 
-Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure how object lifetimes. The user is responsible for knowing when objects should be destroyed and ensuring that objects are only accessed within their lifetime.
+Since C++ doesn't have a garbage collector performing cleanup like other high-level languages, it's the user's responsibility to ensure object lifetimes. The user is responsible for knowing when objects should be destroyed and ensuring that objects are only accessed within their lifetime.
 
 The typical storage durations supported by C++ are...
 
@@ -1554,7 +1554,7 @@ thread_local extern int c {2};
 
 An object can be created in an ad-hoc manner, such that its storage duration is entirely controlled by the user. The operator ...
 
- * `new` allocates a new object and calling its the constructor.
+ * `new` allocates a new object and calls its constructor.
  * `delete` calls the destructor of some object and deallocates it.
 
 Both keywords work with pointers: `new` returns a pointer while `delete` requires a pointer. To create a new object, use `new` followed by the type.
@@ -1572,7 +1572,7 @@ int * ptr { new int {0} }; // initialize to 0
 delete ptr;
 ```
 
-The same process can be used to create an array of objects. Unlike automatic object arrays, dynamic arrays don't have a constant size array lengths restriction.. However, the return value `new` will decay from an array type to a pointer type.
+The same process can be used to create an array of objects. Unlike automatic object arrays, dynamic arrays don't have a constant size array length restriction. However, the return value of `new` will decay from an array type to a pointer type.
 
 When deleting a dynamic object array, square brackets need to be appended to `delete` operator: `delete[]`. Doing so ensures that the destructor for each object in the array gets invoked before deallocation.
 
@@ -1605,7 +1605,7 @@ The `new` and `delete` operators may also be overridden globally rather than per
 `{bm} /(Functions)_TOPIC/`
 
 ```{prereq}
-Variables_TOPIC: Just enough to how to define and use one.
+Variables_TOPIC: Just enough to know how to define and use one.
 ```
 
 C++ function declarations and definitions have the following form: `prefix-modifiers return-type name(parameters) suffix-modifiers`
@@ -1668,7 +1668,7 @@ See argument matching section.
 
 `{bm} /(Functions\/Argument Matching)_TOPIC/`
 
-When an function is called but the arguments types don't match the parameter list types, the compiler attempts to obtain a correct set of types through a set of conversions on the arguments. For example, if a parameter expects a reference to an constant object but what gets passed into the argument is an object, the argument is automatically converted to a constant object and its reference is used.
+When a function is called but the arguments types don't match the parameter list types, the compiler attempts to obtain a correct set of types through a set of conversions on the arguments. For example, if a parameter expects a reference to a constant object but what gets passed into the argument is an object, the argument is automatically converted to a constant object and its reference is used.
 
 ```c++
 bool test(const int &obj) { ... }
@@ -1712,7 +1712,7 @@ The exact rules here seem hard to definitively pin down. If you have two overloa
 `{bm} /(Functions\/Type Deduction)_TOPIC/`
 
 ```{prereq}
-Templates_TOPIC: Just enough to how to define and use one.
+Templates_TOPIC: Just enough to know how to define and use one.
 Variables/Type Deduction_TOPIC
 ```
 
@@ -1769,7 +1769,7 @@ The entry-point to any C++ program is the `main` function, which can take one of
 
  1. `int main(int argc, char* argv[])`
 
-    Command-line arguments, where `argv` is an array of size `argc` containing the null-terminated command-line arguments. On most modern platform, the first argument is the path of the executable.
+    Command-line arguments, where `argv` is an array of size `argc` containing the null-terminated command-line arguments. On most modern platforms, the first argument is the path of the executable.
 
  1. `int main(int argc, char* argv[], EXTRA_PLATFORM_SPECIFIC_PARAMS)`
 
@@ -1848,7 +1848,7 @@ float add_and_mult(size_t n, ...) {
 ```
 
 ```{note}
-The book recommends against using variadic functions due to confusing usage and having to explicitly know the count and types of the variadic arguments before hand (can become security problem is screwed up). Instead it recommends using variadic templates for functions instead.
+The book recommends against using variadic functions due to confusing usage and having to explicitly know the count and types of the variadic arguments beforehand (can become security problem if screwed up). Instead it recommends using variadic templates for functions instead.
 ```
 
 ## No Exception
@@ -1899,7 +1899,7 @@ int add(int a, int b, [[maybe_unused]] int c) {
 }
 ```
 
-If a function has been deprecated, adding a `[[deprecated]]` attribute will allow the compiler to generate a warning if it it being used.
+If a function has been deprecated, adding a `[[deprecated]]` attribute will allow the compiler to generate a warning if it's being used.
 
 ```c++
 [[deprecated("Warning -- this is going away in the next release")]]
@@ -2009,7 +2009,7 @@ switch (x) {
 }
 ```
 
-An enumeration may be brought into scope via `using` to removing the need to prefix with the enumeration's name.
+An enumeration may be brought into scope via `using` to remove the need to prefix with the enumeration's name.
 
 ```c++
 switch (x) {
@@ -2050,8 +2050,8 @@ You should prefer `enum class`.
 `{bm} /(Classes)_TOPIC/`
 
 ```{prereq}
-Variables_TOPIC: Just enough to how to define and use one.
-Functions_TOPIC: Just enough to how to define and use one.
+Variables_TOPIC: Just enough to know how to define and use one.
+Functions_TOPIC: Just enough to know how to define and use one.
 ```
 
 C++ classes are declared using either the `struct` keyword or `class` keyword. When ...
@@ -2101,7 +2101,7 @@ C++ guarantees that a class's fields will be sequentially stored in memory, but 
 Variables/Pointers_TOPIC
 ```
 
-Non-static methods of a class have access to an implicit pointer called `this`, which allows for accessing that instance's members. As long as the class member doesn't conflict with a parameter name of the method invoked, the usage of that name will implicitly reference the `this` pointer.
+Non-static methods of a class have access to an implicit pointer called `this`, which allows for accessing that instance's members. As long as the class member doesn't conflict with any parameter name of the method invoked, the usage of that name will implicitly reference the `this` pointer.
 
 The member-of-pointer operator (->) allows for dereferencing a pointer and accessing a member on the result in a more concise form.
 
@@ -2439,7 +2439,7 @@ class MyStruct {
 }
 ```
 
-To suppress the compiler from allowing copying or assignment of an object, add ` = delete` after both signatures instead of specifying a body. This is important if the object holds on to an un-copyable resource such as a lock.
+To suppress the compiler from allowing copying or assignment of an object, add ` = delete` after both signatures instead of specifying a body. This is important if the object holds on to an uncopyable resource such as a lock.
 
 ```c++
 class MyStruct {
@@ -2491,7 +2491,7 @@ Classes/Copying_TOPIC
 Variables/Rvalue References_TOPIC
 ```
 
-There are two built-in mechanisms for moving in C++: the move constructor and move assignment. Moving is different from copying in that moving actually guts the insides (data) of one object and transfers it into another, leaving that object in an invalid state. If the scenario allows for it, moving is often times more efficient than copying.
+There are two built-in mechanisms for moving in C++: the move constructor and move assignment. Moving is different from copying in that moving actually guts the insides (data) of one object and transfers it into another, leaving that object in an invalid state. If the scenario allows for it, moving is oftentimes more efficient than copying.
 
 A move constructor is a constructor that has a single parameter, an rvalue reference to an object of the same type. By default, classes are implicitly provided with a default move constructor if one hasn't been explicitly declared by the user. The move semantics of this default move constructor is to _copy_ each field rather than actually move anything, called a member-wise copy.
 
@@ -2513,9 +2513,9 @@ MyStruct c {b};               // move a into c (gut it into c) via the move cons
 // b is in an invalid state
 ```
 
-In the example above, the move constructor has `noexcept` set to indicate that it will never throws an exception. Move constructors that can throw exceptions are problematic for the compiler to use. If a move constructor throws an exception, the source object will likely enter into an inconsistent state, meaning the program will likely be in an inconsistent state. As such, if the compiler sees that the move constructor can throw an exception, it'll prefer to copy it instead.
+In the example above, the move constructor has `noexcept` set to indicate that it will never throw an exception. Move constructors that can throw exceptions are problematic for the compiler to use. If a move constructor throws an exception, the source object will likely enter into an inconsistent state, meaning the program will likely be in an inconsistent state. As such, if the compiler sees that the move constructor can throw an exception, it'll prefer to copy it instead.
 
-Similarly to the move constructor, move assignment is a method invoked when the assignment operator is used, called an operator overload. It has the same parameter list and it shouldn't throw exceptions either (`noexcept`), the only difference is that it return a reference to itself at the end.
+Similarly to the move constructor, move assignment is a method invoked when the assignment operator is used, called an operator overload. It has the same parameter list and it shouldn't throw exceptions either (`noexcept`), the only difference is that it returns a reference to itself at the end.
 
 ```c++
 class MyStruct {
@@ -2594,7 +2594,7 @@ struct MyChild : MyParent {
 };
 ```
 
-If the base class and child class have the exact same non-virtual method, which method gets called depends the type of the variable.
+If the base class and child class have the exact same non-virtual method, which method gets called depends on the type of the variable.
 
 ```c++
 struct MyParent {
@@ -2615,7 +2615,7 @@ cref.non_virt_method(0);  // calls MyChild::non_virt_method()
 pref.non_virt_method(0);  // calls MyParent::non_virt_method() even though object is a MyChild
 ```
 
-To prevent a method from being overriddable at all, add the `final` keyword just after the parameter list.
+To prevent a method from being overridable at all, add the `final` keyword just after the parameter list.
 
 ```c++
 struct MyParent {
@@ -2767,7 +2767,7 @@ MyClass operator+(const MyClass &lhs, const MyClass &rhs) {
 }
 ```
 
-Those `const`s ensures that the operands aren't changed in the method. Imagine that you're performing `x = y + z`. It doesn't make sense for `y` or `z` to get modified.
+Those `const`s ensure that the operands aren't changed in the method. Imagine that you're performing `x = y + z`. It doesn't make sense for `y` or `z` to get modified.
 
 The signature could have just as well been modified to be the types themselves rather than `const` references, in which case both the left-hand side and right-hand side would get copied on invocation of the method (modifications to copies don't matter).
 
@@ -2801,7 +2801,7 @@ The three-way comparison operator, also called the spaceship operator, is a more
  * greater-than (>)
  * greater-than or equal (>=)
 
-The three-way comparison operator bundles the at least the last four of those (potentially all of them) into a single operator, where the symbol for that operator is an equal-sign sandwiched between angle brackets (\<=\>).
+The three-way comparison operator bundles _at least_ the last four of those (potentially all of them) into a single operator, where the symbol for that operator is an equal-sign sandwiched between angle brackets (\<=\>).
 
 ```c++
 struct MyClass {
@@ -2879,7 +2879,7 @@ There are three types of ordering supported by the spaceship operator:
    * Comparing rectangles by their area: A rectangle that's 1-by-15 has the same area as a rectangle that's 5-by-3, but those rectangles are not the same.
    * Comparing strings while ignoring case: The string `"hello world"` is equivalent to `"HELLO WORLD"`, but the two strings aren't the same.
 
- * `std::partial_ordering` -- same as `std::weak_ordering`, but with the addition that objects may not being comparable at all.
+ * `std::partial_ordering` -- same as `std::weak_ordering`, but with the addition that objects may not be comparable at all.
 
    Possible values:
 
@@ -3049,7 +3049,7 @@ Classes/Operator Overloading_TOPIC
 Functions_TOPIC
 ```
 
-A functor, also called a function object, is a class that you can invoke as if it were a function because it has an operator overloads for function-call.
+A functor, also called a function object, is a class that you can invoke as if it were a function because it has an operator overload for function-call.
 
 ```c++
 struct MyFunctor {
@@ -3117,7 +3117,7 @@ The general syntax of a lambda is as follows: `[captures] (parameters) modifiers
 
    Capture lists are essentially the functor's constructor. When the capture was pulled in ...
 
-   * because it was explicitly stated, it's called to as a named capture.
+   * because it was explicitly stated, it's called a named capture.
    * automatically, it's called a default capture.
 
    ```{note}
@@ -3132,7 +3132,7 @@ The general syntax of a lambda is as follows: `[captures] (parameters) modifiers
    auto f1 = [modified_x=x/2, y] (int z) -> int { return x + y + z; };
    ```
 
-   If used within an enclosing class, the this pointer can be captured.
+   If used within an enclosing class, the `this` pointer can be captured.
 
    ```c++
    auto f1 = [*this] (int z) -> int { return z / 2; };  // capture a COPY OF *this and pass it in as a pointer
@@ -3328,8 +3328,8 @@ The standard C++ library makes use of user-defined literals in various places, b
 `{bm} /(Templates)_TOPIC/`
 
 ```{prereq}
-Functions_TOPIC: Just enough to how to define and use one.
-Classes_TOPIC: Just enough to how to define and use one.
+Functions_TOPIC: Just enough to know how to define and use one.
+Classes_TOPIC: Just enough to know how to define and use one.
 ```
 
 Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types and code are unknown, called template parameters. Each template parameter in a template either maps to a ...
@@ -3365,7 +3365,7 @@ MyClass<float, int, int, 2> obj {}; // X = float, Y = int, Z = int, N = 2
 float x {obj.perform(5, 3)};
 ```
 
-Declaring templated functions is done in the same manner as templated classes, and using templated functions is done similarly to templated classes: Use the function as if it were a normal function but immediately after the function name add in a common separated list of substitutions sandwiched within angle brackets.
+Declaring templated functions is done in the same manner as templated classes, and using templated functions is done similarly to templated classes: Use the function as if it were a normal function but immediately after the function name add in a comma separated list of substitutions sandwiched within angle brackets.
 
 ```c++
 // declare
@@ -3436,7 +3436,7 @@ X perform(Y &var1, Z &var2) {
 
 In the example above, `X perform(Y &var1, Z &var2) { ... }` needs `Y` and `Z` to be types that support the plus operator (+) on each other (e.g. `int` and `short`). Setting them to types that don't support the plus operator typically causes cryptic compilation error, especially if the user is only making use of the template and isn't familiar with its innards.
 
-To mitigate this problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that return a `bool`.
+To mitigate this problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that returns a `bool`.
 
 ```c++
 template <typename T1, typename T2, typename TR>
@@ -3473,7 +3473,7 @@ The remaining checks are done through a `requires` clause, which lists out the r
 Each item in the list has the syntax `{ EXPRESSION } -> RESULT`, where the result is wrapped with functionality from the concept_NORMs header. This functionality describes how the result of the expression should behave. In the example above, ...
 
  * `std::same_as<TR>` means that the expression should return the exact type as specified by `TR`.
- * `std::convertible_to<std::size_t>` means that the expression should return a type can implicitly convert to `std::size_t` (e.g. a `short` can implicitly convert to an `int` without requiring any kind of casting).
+ * `std::convertible_to<std::size_t>` means that the expression should return a type that can implicitly convert to `std::size_t` (e.g. a `short` can implicitly convert to an `int` without requiring any kind of casting).
 
 ```{note}
 The book says that these are / are related to "type functions". I can't find much information on this or how to create new "type functions".
@@ -3548,7 +3548,7 @@ struct X : R... {
 }
 ```
 
-Another less common use-case is to apply an repeatedly apply some operator or function.
+Another less common use-case is to repeatedly apply some operator or function.
 
 ```c++
 template<typename T>
@@ -3562,7 +3562,7 @@ T sum(const T& first, R... rest) {
 }
 ```
 
-Alternatively, rather than using recursion to exhaustively apply a binary operator, a fold expression may be applied to the parameter pack. A fold expression applies a binary operator to the contents of a parameter pack and return the final result.
+Alternatively, rather than using recursion to exhaustively apply a binary operator, a fold expression may be applied to the parameter pack. A fold expression applies a binary operator to the contents of a parameter pack and returns the final result.
 
 The syntax for fold expressions is `...` and the parameter pack's name sandwiched in between the operator, all encapsulated within a pair of brackets. Which side of the operator the `...` appears at defines if the fold expression will be left associative or right associative.
 
@@ -3598,7 +3598,7 @@ Examples adapted from [here](https://crascit.com/2015/03/21/practical-uses-for-v
 
 `{bm} /(Templates\/Specialization)_TOPIC/`
 
-Given a specific set of substitutions for the template parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code. The classic example is a template that holds on to an array. Most C++ implementations represent a `bool` as a single byte, however it's more compact to store an array of `bool`s as a set of bits.
+Given a specific set of substitutions for the template parameters of a template, a template specialization is code that overrides the template generated code. Oftentimes template specializations are introduced because they're more memory or computationally efficient than the standard template generated code. The classic example is a template that holds on to an array. Most C++ implementations represent a `bool` as a single byte, however it's more compact to store an array of `bool`s as a set of bits.
 
 Declare a template specialization with the `template` keyword but without any template parameters (empty angle brackets). The class or function that follows should list out substitutions after its name and the code within it should be real (non-templated).
 
@@ -3616,7 +3616,7 @@ bool sum<bool>(bool a, bool b) {
 }
 ```
 
-Template specialization doesn't have to substitute all template parameters. When a template specialization only provides substitutes some of its template parameters, leaving other template parameters as-is or partially refined, it's called a partial template specialization.
+Template specialization doesn't have to substitute all template parameters. When a template specialization only provides substitutes for some of its template parameters, leaving other template parameters as-is or partially refined, it's called a partial template specialization.
 
 ```c++
 // template
@@ -3689,7 +3689,7 @@ Consider using std::variant instead of unions.
 
 ```{prereq}
 Essentials_TOPIC
-Classes_TOPIC: Just enough to how to define and use one.
+Classes_TOPIC: Just enough to know how to define and use one.
 ```
 
 Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using `namespace` blocks.
@@ -3718,7 +3718,7 @@ namespace FirstLevel::MiddleLevel::LastLevel {
 }
 ```
 
-To use the symbols within a namespace, either include the namespace in symbol or bring all symbols within the namespace to the forefront via the `using` keyword (similar to Java's `import` or Python's `from` / `import`).
+To use the symbols within a namespace, either include them directly or bring all symbols within the namespace to the forefront via the `using` keyword (similar to Java's `import` or Python's `from` / `import`).
 
 ```c++
 // Use namespace directly.
@@ -3982,14 +3982,14 @@ I read something online saying you shouldn't use both `[[likely]]` and `[[unlike
 `{bm} /(Attributes)_TOPIC/`
 
 ```{prereq}
-Variables_TOPIC: Just enough to how to define and use one.
-Functions_TOPIC: Just enough to how to define and use one.
-Classes_TOPIC: Just enough to how to define and use one.
+Variables_TOPIC: Just enough to know how to define and use one.
+Functions_TOPIC: Just enough to know how to define and use one.
+Classes_TOPIC: Just enough to know how to define and use one.
 ```
 
 C++ attributes are similar to annotations in Java, providing information to the user / compiler about the code that it's applied to. Unlike Java, C++ compilers are free to pick and choose which attributes they support and how they support them. There is no guarantee what action a compiler will take, if any, when it sees an attribute (e.g. compiler warnings).
 
-An attribute is applied by nesting it in double squared brackets (e.g. `[[noreturn]]`) and placing it as a modifier on the function.
+An attribute is applied by nesting it in double square brackets (e.g. `[[noreturn]]`) and placing it as a modifier on the function.
 
 ```c++
 [[noreturn]] void fail() {
@@ -4018,9 +4018,9 @@ Classes/Common Attributes_TOPIC
 `{bm} /(Constant Expressions)_TOPIC/`
 
 ```{prereq}
-Variables_TOPIC: Just enough to how to define and use one.
-Functions_TOPIC: Just enough to how to define and use one.
-Classes_TOPIC: Just enough to how to define and use one.
+Variables_TOPIC: Just enough to know how to define and use one.
+Functions_TOPIC: Just enough to know how to define and use one.
+Classes_TOPIC: Just enough to know how to define and use one.
 ```
 
 A constant expression is an expression that gets evaluated at compile-time, such that any invocation of it gets swapped out for the result computed at compile-time. It comes in two forms: variable and function.
@@ -4049,9 +4049,9 @@ int x {fibonacci(7)}; // at compile-time, fibonacci(7) is executed and its retur
 ```
 
 ````{note}
-An alternate version of constant expression functions, called immediate functions, have the restriction that they must produce a compile-time constants. An immediate function requires a requires prefixing `consteval` to a function instead of `constexpr`.
+An alternate version of constant expression functions, called immediate functions, have the restriction that they must produce a compile-time constant. An immediate function requires prefixing `consteval` to a function instead of `constexpr`.
 
-What's the point on this? According to [here](https://stackoverflow.com/a/53347377)...
+What's the point of this? According to [here](https://stackoverflow.com/a/53347377)...
 
 > constexpr functions may be evaluated at compile time or run time, and need not produce a constant in all cases.
 
@@ -4114,13 +4114,13 @@ All of this seems to replace the need for C preprocessor macros `#define` / `#if
 `{bm} /(Exceptions)_TOPIC/`
 
 ```{prereq}
-Functions_TOPIC: Just enough to how to define and use one.
+Functions_TOPIC: Just enough to know how to define and use one.
 ```
 
 C++ exceptions work similarly to exceptions in other languages, except that there is no `finally` block. The idea behind this is that resources should be bound to an object's lifetime (destructor). As the call stack unwinds and the automatic objects that each function owns are destroyed, the destructors of those objects should be cleaning up any resources that would have been cleaned up by the `finally` block. This concept_NORM is referred to as resource acquisition is initialization (RAII).
 
 ```{note}
-What does accordingly mean? For example, wrap the dynamically allocated object in a class where allocation happens in the constructor / deallocation happens in the destructor. An automatic object of that class type will cleanup properly when the function exits.
+What does accordingly mean? For example, wrap the dynamically allocated object in a class where allocation happens in the constructor / deallocation happens in the destructor. An automatic object of that class type will clean up properly when the function exits.
 ```
 
 To throw an exception, use the `throw` keyword followed by the object to throw. Most object types are throwable, but thrown objects are typically limited to types either in or derived from those in the stdexcept header.
@@ -4202,9 +4202,9 @@ try {
 `{bm} /(Structured Binding)_TOPIC/`
 
 ```{prereq}
-Variables_TOPIC: Just enough to how to define and use one.
-Functions_TOPIC: Just enough to how to define and use one.
-Classes_TOPIC: Just enough to how to define and use one.
+Variables_TOPIC: Just enough to know how to define and use one.
+Functions_TOPIC: Just enough to know how to define and use one.
+Classes_TOPIC: Just enough to know how to define and use one.
 ```
 
 Structured binding declaration is a C++ language feature similar to Python's unpacking of lists and tuples. Given an array or a class, the values contained within are unpackable to individual variables.
@@ -4259,7 +4259,7 @@ int a { 0 }; // move -- 0 is being generated and MOVED into a (the expression 0 
 int b { a }; // copy -- a already exists and its being COPIED into b (the expression a is NOT a prvalue)
 ```
 
-In essence, the way to think of a prvalue is that its an expression that meets the following 3 conditions ...
+In essence, the way to think of a prvalue is that it's an expression that meets the following 3 conditions ...
 
 1. can't have the address-of operator used on it.
 
@@ -4286,7 +4286,7 @@ In essence, the way to think of a prvalue is that its an expression that meets t
 The name prvalue is short for pure right value. It's called that because prvalue expressions are usually found on the right side of an assignment.
 ```
 
-An lvalue is an expression is the opposite of a prvalue. An lvalue expression CAN use the address-of operator (opposite of point 1 above), it CANNOT have guts scooped out and moved into something else (opposite of point 2 above), and it DOES persist (opposite of point 3 above). The typical example of an lvalue is an expression that's solely a variable name or function name.
+An lvalue is an expression that is the opposite of a prvalue. An lvalue expression CAN use the address-of operator (opposite of point 1 above), it CANNOT have guts scooped out and moved into something else (opposite of point 2 above), and it DOES persist (opposite of point 3 above). The typical example of an lvalue is an expression that's solely a variable name or function name.
 
 ```c++
 x = y;  // both x and y are lvalue
@@ -4324,7 +4324,7 @@ glvalue "(addressable)"
           xvalue "(addressable and can be gutted)"
 ```
 
-Similarly, if it's an expression that can be _moved_ (gutted), its called an rvalue regardless of if the address-of operator can be used on it or not.
+Similarly, if it's an expression that can be _moved_ (gutted), it's called an rvalue regardless of if the address-of operator can be used on it or not.
 
 ```{svgbob}
           xvalue   "(can be gutted and addressable)"
@@ -4368,7 +4368,7 @@ In C++, there is no requirement to extend from any base classes or interfaces. I
 Notice that the operators are more or less array / pointer behaviour. Given something like `int *` pointing to the beginning of an array, ...
 
  * incrementing it by 1 (`++`) moves it to the next element of the array via pointer arithmetic.
- * dereferencing it (`*`) provides the value at the array element its points to.
+ * dereferencing it (`*`) provides the value at the array element it points to.
  * testing it using inequality (`!=`) is a way to check if it hasn't gone past the last array element.
 
 An iterator is basically a set of operators that walk elements in the same way as you would an array. A class can implement the operator overloads and behave the same way.
@@ -4399,8 +4399,8 @@ for (MyIterator it : collection) {
 
 In total, 5 kinds of iterators are supported by C++. The kind of iterator described above is called an input iterator and it typically requires an equality operator overload (`operator ==()`) in addition to inequality. Input iterators are the closest thing to a standard Java `Iterator` -- read-only and forward-only. Other kinds of iterators require different operator overloads.
 
- * Input iterator, steps forwards one element at a time and reads items of the container.
- * Output iterator, steps forwards one element at a time and writers items of the container.
+ * Input iterator, steps forward one element at a time and reads items of the container.
+ * Output iterator, steps forward one element at a time and writes items of the container.
  * Forward iterator, combination of input iterator and output iterator.
  * Bidirectional iterator, forward iterator with the ability to move back.
  * Random access iterator, bidirectional iterator with the ability to jump to different positions.
@@ -4469,7 +4469,7 @@ int main() {
 }
 ```
 
-Similar to how non-module C++ source code is broken up into a source file containing definitions and its accompanying header file would containing declarations, a module may also be broken up into separate definition and declaration files. The declarations go in a file with `export module` at the top (as shown above) and the definitions go in a file with just `module`. Declaration files aren't allowed to use `export` at all.
+Similar to how non-module C++ source code is broken up into a source file containing definitions and accompanying header file containing declarations, a module may also be broken up into separate definition and declaration files. The declarations go in a file with `export module` at the top (as shown above) and the definitions go in a file with just `module`. Declaration files aren't allowed to use `export` at all.
 
 ```c++
 // my_module.cpp
@@ -4555,7 +4555,7 @@ export import my_module.multiplication;  // export everything under my_module.mu
 ```
 
 ```{note}
-Last I recall using this, each compiler required a special flag to turn on modules. Just because you're code uses modules doesn't mean the internal C++ libraries (e.g. standard template library, `cstdint`, etc..) are going to expose things as modules. You still have to include those using the `#include <...>` directives (maybe -- I think I remember there being some roundabout way of getting modules to work).
+Last I recall using this, each compiler required a special flag to turn on modules. Just because your code uses modules doesn't mean the internal C++ libraries (e.g. standard template library, `cstdint`, etc..) are going to expose things as modules. You still have to include those using the `#include <...>` directives (maybe -- I think I remember there being some roundabout way of getting modules to work).
 ```
 
 # Preprocessor
@@ -4573,7 +4573,7 @@ The preprocessor is a component of the C++ compiler. Before the programming stat
 
 The first case (text manipulation) is primarily what the preprocessor is used for. Unlike normal C++ programming statements, preprocessor directives start with the pound sign (#) and shouldn't include a semicolon (;) at the end.
 
-To include one file in another file, use `#include`. Local files should be wrapped in quotes while files coming from libraries should be wrapped in a angled brackets.
+To include one file in another file, use `#include`. Local files should be wrapped in quotes while files coming from libraries should be wrapped in angled brackets.
 
 ```c++
 #include <vector>          // library header
@@ -4675,7 +4675,7 @@ Implementation-defined behaviour is behaviour that varies between implementation
  * ...
 
 ```{note}
-Someone posted up [this](http://eel.is/c++draft/impldefindex) as a comprehensive list of implementation-defined behaviour.
+Someone posted [this](http://eel.is/c++draft/impldefindex) as a comprehensive list of implementation-defined behaviour.
 ```
 
 ## Unspecified Behaviour
@@ -4734,7 +4734,7 @@ The statement and the examples below, were lifted from [here](https://en.cpprefe
 Undefined behaviour is behaviour that is unrestricted and not documented. The compiler may do anything for code producing undefined behaviour. For example, code producing undefined behaviour could end up ...
 
  * causing a hard crash.
- * doing exactly what the the author of the source code originally intended for.
+ * doing exactly what the author of the source code originally intended for.
  * doing something different than what the author of the source code originally intended for.
  * causing the program to not immediately crash, but potentially much later.
 
@@ -4822,7 +4822,7 @@ None of the examples have to be consistent. For example, it could produce a hard
 
  * Side-effect free infinite loops
 
-   A side-effect free infinite loop is a loop goes on forever but doesn't change anything outside of its own scope (e.g. no global variable is changed, nothing is printed to standard out, etc..).
+   A side-effect free infinite loop is a loop that goes on forever but doesn't change anything outside of its own scope (e.g. no global variable is changed, nothing is printed to standard out, etc..).
 
    ```c++
    // EXAMPLE FROM https://en.cppreference.com/w/cpp/language/ub
@@ -4856,7 +4856,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
    See compilation section.
    ```
 
- * `{bm} linker/(linker|executable)/i` - A tool that takes multiple object files to produce an executable. Linkers are are also responsible for finding libraries used by the program and integrating them into the executable.
+ * `{bm} linker/(linker|executable)/i` - A tool that takes multiple object files to produce an executable. Linkers are also responsible for finding libraries used by the program and integrating them into the executable.
 
    ```{note}
    See compilation section.
@@ -5096,9 +5096,9 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
 
  * `{bm} external linkage` - A variable visible to the translation units that it's in as well as other translation units.
 
- * `{bm} scope resolution (::)/(scope resolution)/i` - A operator that's used to access static members (e.g. `MyStruct::static_func()`).
+ * `{bm} scope resolution (::)/(scope resolution)/i` - An operator that's used to access static members (e.g. `MyStruct::static_func()`).
 
- * `{bm} extend/(extend|subclass)/i` - Another way of expressing class inheritance (e.g. B extends A is equivalent to saying B is a child of A).
+ * `{bm} extend/(extends?|subclass)/i` - Another way of expressing class inheritance (e.g. B extends A is equivalent to saying B is a child of A).
 
  * `{bm} exception/(exception|try[\-\s]catch)/i` - An exception operation accepts an object and unwinds the call stack until reaching a special region specifically intended to stop the unwinding for objects of that type, called a try-catch block. Exceptions are a way for code to signal that something unexpected / exceptional happened.
 
@@ -5114,7 +5114,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
 
  * `{bm} RAII/(RAII|CADRe)/` - Short for resource acquisition is initialization, the concept_NORM that the life cycle of some resource (e.g. open file, database object, etc..) is bound to an object's lifetime via it's constructor and destructor.
 
-   Sometimes also referred to constructor acquires destructor releases (CADRe).
+   Sometimes also referred to as constructor acquires destructor releases (CADRe).
 
  * `{bm} moved-from object/(moved[\-\s]from object|moved[\-\s]from state)/i` - When an object is moved to another object, that object enters a special state where the only possible operation allowed on it is either destruction or re-assignment.
 
@@ -5214,7 +5214,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
     };
     ```
 
- * `{bm} vtable` - A table of pointers to virtual functions, generated by the compiler. When a virtual function gets invoked (runtime) vtables are used to determining which method implementation to use.
+ * `{bm} vtable` - A table of pointers to virtual functions, generated by the compiler. When a virtual function gets invoked (runtime) vtables are used to determine which method implementation to use.
 
  * `{bm} template` - A class or function where parts of the code are intended for substitution (by other code). At compile-time, a user supplies a set of substitutions for each usage of a template, customizing it for the specific use-case that user is dealing with.
 
@@ -5248,7 +5248,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
 
  * `{bm} named conversion/(named conversion function|named conversion|const[_\s]cast|static[_\s]cast|reinterpret[_\s]cast|narrow[_\s]cast)/i` - A set of language features / functions used for converting types (casting): `const_cast`, `static_cast`, `reinterpret_cast`, and `narrow_cast`.
 
- * `{bm} concept/(concept)_TEMPLATE/i` - A compile-time check to ensure that the type substituted for a template parameter matches a set of requirements (e.g. the type support certain operators).
+ * `{bm} concept/(concept)_TEMPLATE/i` - A compile-time check to ensure that the type substituted for a template parameter matches a set of requirements (e.g. the type supports certain operators).
 
    ```c++
    // concept
@@ -5298,7 +5298,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
    }
    ```
 
- * `{bm} template specialization` - Given a specific substitutions set substitutions for the template parameters of a template, a template specialization is code that overrides the template generated code. Often times template specializations are introduced because they're more memory or computationally efficient than the standard template generated code.
+ * `{bm} template specialization` - Given a specific substitutions set substitutions for the template parameters of a template, a template specialization is code that overrides the template generated code. Oftentimes template specializations are introduced because they're more memory or computationally efficient than the standard template generated code.
 
    ```c++
    // template
@@ -5450,7 +5450,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
 
    Modifiers are also sometimes referred to as specifiers.
 
- * `{bm} fold expression` - Exhaustively applies a binary operator to the contents of a parameter pack and return the final result.
+ * `{bm} fold expression` - Exhaustively applies a binary operator to the contents of a parameter pack and returns the final result.
 
     ```c++
     template<typename... R>
@@ -5535,7 +5535,16 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
    bool test(double a) { return a != 0.0; }
    ```
 
- * `{bm} forward declaration` - To use a function, class, variable, etc.. within some C++ code, only its declaration is needed, not its definition (implementation). The compiler wll ensure that the usage points to the implementation when the time comes.
+ * `{bm} operator overload/(operator overload|overloaded operator)/i` - A function that gets invoked when a certain operator is used with some specific class. The function can be either a free function or a member function of the class the operator is intended for.
+
+   ```c++
+   struct MyClass {
+      int operator()(int y) const { return -y + x; } // function call operator
+      ...
+   };
+   ```
+
+ * `{bm} forward declaration` - To use a function, class, variable, etc.. within some C++ code, only its declaration is needed, not its definition (implementation). The compiler will ensure that the usage points to the implementation when the time comes.
 
    The compiler needs this to handle cyclical references. It can also significantly reduce build times.
 
