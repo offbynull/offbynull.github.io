@@ -12311,6 +12311,13 @@ def k_means_score(data_pts, center_pts):
 
 Compared to k-centers, cluster membership_NORM is still decided by the distance to its closest cluster (d in the formula above). It's the placement of centers that's different.
 
+```{note}
+There's a version of k-centers / k-means for similarity metrics / distance metrics other than euclidean distance. It's called k-medods but I haven't have a chance to look at it yet and it wasn't covered by the book.
+
+ * [link 1](https://stats.stackexchange.com/a/81496)
+ * [link 2](https://stats.stackexchange.com/a/32942)
+```
+
 **WHY**: K-means is more resilient to outliers than k-centers. For example, consider finding a single center (k=1) for the following 1-D points: [0, 0.5, 1, 1.5, 10]. The last point (10) is an outlier. Without that outlier, k-centers has a center of 0.75 ...
 
 ```{svgbob}
@@ -12587,10 +12594,28 @@ The examples below are taken directly from the Pevzner book.
 ```
 
 ### Soft K-Means Clustering
+
+`{bm} /(Algorithms\/Gene Expression\/Soft K-Means Clustering)_TOPIC/`
+
+```{prereq}
+Algorithms/Gene Expression/K-Means Clustering_TOPIC
+```
+
+**WHAT**:
+
+**WHY**:
+
+**HOW**:
+
 ### Hierarchial Clustering
-### K-Medioids Clustering
-https://stats.stackexchange.com/a/81496
-https://stats.stackexchange.com/a/32942
+### Soft Hierarchial Clustering
+
+THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.)
+
+Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_NORMs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_NORM of cluster X.
+
+This seems like it'd be very useful. It's easy to understand (if you understand neighbour joining phylogeny / additive phylogeny)
+
 ### CAST Clustering
 
 # Stories
@@ -13664,16 +13689,32 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 # Ideas
 
  * CPU optimized C++ global alignment - Simple global alignment is C++ with all optimizations turned on AND multi-threading or fibers that optimize work size to fit in cache lines.
+
  * GPU optimized C++ global alignment - Simple global alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches. Maybe do the divide-and-conquer variant as well. (divide and conquer might be a good idea because it'll work on super fat sequences)
+
  * GPU optimized C++ probabilistic multiple alignment - Probabilistic multiple alignment in Nvidia's HPC SDK C++ where GPU "thread" is optimized to fit in caches.
+
  * Deep-learning Regulatory Motif Detection - Try training a deep learning model to "find" regulatory motifs for new transcription factors based on past training data.
+
  * Global alignment that takes genome rearrangements into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, fissions, fusions, copies, etc..
+
  * Organism lookup by k-mer - Two-tiered database containing k-mers. The first tier is an "inverse index" of k-mers that rarely appear across all organisms (unique or almost unique to the genome) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all k-mers.
+
  * K-mer hierarchial clustering - Hierarchical cluster together similar k-mers using either pearson similarity/pearson distance [between one/zero vector of sub-k-mers] or sequence alignment distance to form its distance matrix / similarity matrix. This is useful for when you're trying to identify which organism a sequence belongs to by searching for its k-mers in a database. The k-mers that make up the database would be clustered, and k-mers that closely cluster together under a branch of the hierarchial cluster tree are those you'd be more cautious with -- the k-mer may have matched but it could have actually been a corrupted form of one of the other k-mers in the cluster (sequencing error).
 
    This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / distance matrix.
+
  * Hierarchial clustering explorer - Generate a neighbour joining phylogeny tree based on pearson distance of sequence alignment distance, then visualize the tree and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).
+
+   Another idea is to take the generated tree and convert it back into distance matrix. If the data isn't junk, the distance metric isn't junk, and the data is clusterable on that distance metric, the generated distance matrix should match closely to the input distance metric. The tool can warn the user if it doesn't.
+
+ * Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_NORMs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_NORM of cluster X.
+   
+   This relates to the idea above (hierarchial clustering explorer) -- You can identify "interesting clusters" using this (e.g. a small group tightly clustered together) and return it to the user for inspection.
+
  * Hierarchial clustering as a means of detecting outliers - Cluster data using neighbouring join phylogeny. How far is each leaf node to its parent internal node? Find any that are grossly over the average / squared error distortion / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or squared error distortion).
+
+   This relates to the idea above (soft hierarchial clustering) -- You may be able to identify outliers using soft hierarchial clustering using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).
 
 # Terminology
 

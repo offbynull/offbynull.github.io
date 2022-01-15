@@ -181,7 +181,7 @@
 <li><a href="#H_K-Means%20Clustering">K-Means Clustering</a></li>
 <li><a href="#H_Soft%20K-Means%20Clustering">Soft K-Means Clustering</a></li>
 <li><a href="#H_Hierarchial%20Clustering">Hierarchial Clustering</a></li>
-<li><a href="#H_K-Medioids%20Clustering">K-Medioids Clustering</a></li>
+<li><a href="#H_Soft%20Hierarchial%20Clustering">Soft Hierarchial Clustering</a></li>
 <li><a href="#H_CAST%20Clustering">CAST Clustering</a></li>
 </ul>
 </ul>
@@ -16785,6 +16785,14 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(res) / <span class="hljs-built_in">len</span>(res)
 </code></pre>
 <p>Compared to <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>, <a href="#BM_(cluster)%2Fi">cluster</a> membership is still decided by the distance to its closest <a href="#BM_(cluster)%2Fi">cluster</a> (d in the formula above). It's the placement of centers that's different.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's a version of <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> / <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> for <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s other than <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>. It's called k-medods but I haven't have a chance to look at it yet and it wasn't covered by the book.</p>
+<ul>
+<li><a href="https://stats.stackexchange.com/a/81496">link 1</a></li>
+<li><a href="https://stats.stackexchange.com/a/32942">link 2</a></li>
+</ul>
+</div>
 <p><strong>WHY</strong>: <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">K-means</a> is more resilient to outliers than <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a>. For example, consider finding a single center (k=1) for the following 1-D points: [0, 0.5, 1, 1.5, 10]. The last point (10) is an outlier. Without that outlier, <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> has a center of 0.75 ...</p>
 <p><img src="svgbob_5d89462992602e4a4d116f317249afe9b4f5f378.svg" alt="Kroki diagram output"></p>
 <p>With that outlier, the <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> has a center of 5, which is a drastic shift from the original 0.75 shown above ...</p>
@@ -16960,10 +16968,21 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p><img src="svgbob_5a95bee7c208bcd365a2c0338c8cf2d7900cdce7.svg" alt="Kroki diagram output"></p>
 <a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FSoft%20K-Means%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FK-Means%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/K-Means Clustering</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>:</p>
+<p><strong>WHY</strong>:</p>
+<p><strong>HOW</strong>:</p>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
-<a name="H_K-Medioids%20Clustering"></a><h3>K-Medioids Clustering</h3>
-<p>https://stats.stackexchange.com/a/81496
-https://stats.stackexchange.com/a/32942</p>
+<a name="H_Soft%20Hierarchial%20Clustering"></a><h3>Soft Hierarchial Clustering</h3>
+<p>THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.)</p>
+<p>Soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Build out a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a>. Each internal node is a <a href="#BM_(cluster)%2Fi">cluster</a>. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that <a href="#BM_(cluster)%2Fi">cluster</a>? This makes sense because <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> produces <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s). If it were a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are members of <a href="#BM_(cluster)%2Fi">cluster</a> X. But, because it's unrooted, technically any leaf node in the graph could be a member of <a href="#BM_(cluster)%2Fi">cluster</a> X.</p>
+<p>This seems like it'd be very useful. It's easy to understand (if you understand <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> / <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>)</p>
 <a name="H_CAST%20Clustering"></a><h3>CAST Clustering</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
@@ -17685,9 +17704,15 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </li>
 <li>
 <p><a href="#BM_(hierarchial%20cluster)%2Fi">Hierarchial cluster</a>ing explorer - Generate a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a> based on <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> of <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance, then visualize the <a href="#BM_(tree)%2Fi">tree</a> and provide the user with "interesting" internal nodes (<a href="#BM_(cluster)%2Fi">cluster</a>s). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the <a href="#BM_(cluster)%2Fi">cluster</a>ed data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).</p>
+<p>Another idea is to take the generated <a href="#BM_(tree)%2Fi">tree</a> and convert it back into <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. If the data isn't junk, the <a href="#BM_(distance%20metric)%2Fi">distance metric</a> isn't junk, and the data is <a href="#BM_(cluster)%2Fi">cluster</a>able on that <a href="#BM_(distance%20metric)%2Fi">distance metric</a>, the generated <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> should match closely to the input <a href="#BM_(distance%20metric)%2Fi">distance metric</a>. The tool can warn the user if it doesn't.</p>
+</li>
+<li>
+<p>Soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Build out a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a>. Each internal node is a <a href="#BM_(cluster)%2Fi">cluster</a>. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that <a href="#BM_(cluster)%2Fi">cluster</a>? This makes sense because <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> produces <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s). If it were a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are members of <a href="#BM_(cluster)%2Fi">cluster</a> X. But, because it's unrooted, technically any leaf node in the graph could be a member of <a href="#BM_(cluster)%2Fi">cluster</a> X.</p>
+<p>This relates to the idea above (<a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing explorer) -- You can identify "interesting <a href="#BM_(cluster)%2Fi">cluster</a>s" using this (e.g. a small group tightly <a href="#BM_(cluster)%2Fi">cluster</a>ed together) and return it to the user for inspection.</p>
 </li>
 <li>
 <p><a href="#BM_(hierarchial%20cluster)%2Fi">Hierarchial cluster</a>ing as a means of detecting outliers - <a href="#BM_(cluster)%2Fi">Cluster</a> data using <a href="#BM_(neighbour)%2Fi">neighbour</a>ing join <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. How far is each leaf node to its parent internal node? Find any that are grossly over the average / <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>).</p>
+<p>This relates to the idea above (soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing) -- You may be able to identify outliers using soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).</p>
 </li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
