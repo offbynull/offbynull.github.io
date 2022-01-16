@@ -5,7 +5,7 @@
 It's possible to remove the `class` from `enum class`, which heavily loosens type-safety and scope. By removing `class`, the options within have their values implicitly converted to integers and you don't need the resolution scope operator (their options are accessible at the same level as an enum).
 
 ```c++
-enum MyEnum { // no class keywrod
+enum MyEnum { // no class keyword
    OptionA,
    OptionB,
    OptionC

@@ -12118,7 +12118,7 @@ metrics.PearsonSimilarity
 Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 ```
 
-**WHAT**: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a cluster, where the points closest to that center (euclidean distance) are that cluster's member_NORMs. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
+**WHAT**: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a cluster, where the points closest to that center (euclidean distance) are that cluster's member_CLUSTERs. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
 
 In terms of a scoring function, the score being minimized is ...
 
@@ -12420,11 +12420,11 @@ Similar to k-centers, solving k-means for any non-trivial input isn't possible b
 
  1. converts centers to clusters,
  
-    The point closest to a center becomes a member_NORM of that cluster. Ties are broken arbitrarily.
+    The point closest to a center becomes a member_CLUSTER of that cluster. Ties are broken arbitrarily.
 
  2. converts clusters to centers.
 
-    The clusters from step 1 are turned into new centers. Each component of a center becomes the average of that dimension across cluster member_NORMs, referred to as the center of gravity.
+    The clusters from step 1 are turned into new centers. Each component of a center becomes the average of that dimension across cluster member_CLUSTERs, referred to as the center of gravity.
 
     ```{output}
     ch8_code/src/clustering/KMeans_Lloyds.py
@@ -12457,15 +12457,15 @@ clustering.KMeans_Lloyds
 ]
 ```
 
-At each iteration, the cluster member_NORMs captured (step 1) will drag the new center towards them (step 2). After so many iterations, each center will be at a point where further iterations won't capture a different set of member_NORMs, meaning that the centers will stay where they're at (converged).
+At each iteration, the cluster member_CLUSTERs captured (step 1) will drag the new center towards them (step 2). After so many iterations, each center will be at a point where further iterations won't capture a different set of member_CLUSTERs, meaning that the centers will stay where they're at (converged).
 
 ```{note}
-I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner book says. This isn't entirely true? I think it's possible to get into a situation where a tied point ping-pongs back and forth between clusters. So, maybe what actually needs to happen is you need to break ties consistently -- it doesn't matter how, just that its consistent (e.g. the center closest to origin + smallest angle from origin always wins the tied member_NORM).
+I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner book says. This isn't entirely true? I think it's possible to get into a situation where a tied point ping-pongs back and forth between clusters. So, maybe what actually needs to happen is you need to break ties consistently -- it doesn't matter how, just that its consistent (e.g. the center closest to origin + smallest angle from origin always wins the tied member_CLUSTER).
 
-Also, if the centers haven't converged, the dragged center is guaranteed to decrease the squared error distortion when compared to the previous center. But, does that mean that a set of converged centers are optimal in terms of squared error distortion? I don't think so. Even if a cluster converged to all the correct member_NORMs, could it be that the center can be slightly tweaked to get the squared error distortion down even more? Probably.
+Also, if the centers haven't converged, the dragged center is guaranteed to decrease the squared error distortion when compared to the previous center. But, does that mean that a set of converged centers are optimal in terms of squared error distortion? I don't think so. Even if a cluster converged to all the correct member_CLUSTERs, could it be that the center can be slightly tweaked to get the squared error distortion down even more? Probably.
 ```
 
-The hope with the heuristic is that, at each iteration, enough true cluster member_NORMs are captured (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other, referred to as k-means++ initializer.
+The hope with the heuristic is that, at each iteration, enough true cluster member_CLUSTERs are captured (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other, referred to as k-means++ initializer.
 
  1. The 1st center is chosen from the list of points at random.
  2. The 2nd center is chosen by selecting a point that's likely to be much farther away from center 1 than most other points.
@@ -12601,9 +12601,33 @@ The examples below are taken directly from the Pevzner book.
 Algorithms/Gene Expression/K-Means Clustering_TOPIC
 ```
 
-**WHAT**:
+**WHAT**: Soft k-means clustering is the soft clustering variant of k-means. Where as the original k-means definitively assigns each point to a cluster (hard clustering), this variant of k-means assigns each point to how likely it is to be a member_CLUSTER of each cluster (soft clustering).
 
-**WHY**:
+In other words, soft k-means clustering finds both "centers" for clusters and 
+
+```{svgbob}
+     ●                                                                      ●       
+"A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
+                                                                                    
+        ●                                                               ●       
+   "A=0.9,B=0.1"                                                   "A=0.1,B=0.9"
+                                                                                    
+     ●                                                                      ●       
+"A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
+```
+
+**WHY**: Soft clustering is a way to suss out ambiguous points. For example, a point that sits exactly between two obvious clusters will be just as likely be a member_CLUSTER of each...
+
+```{svgbob}
+     ●                            "ambiguous point"                         ●       
+"A=0.9,B=0.1"                            |                             "A=0.1,B=0.9"
+                                         v                                          
+        ●                                ●                              ●       
+   "A=0.9,B=0.1"                    "A=0.5,B=0.5"                  "A=0.1,B=0.9"
+                                                                                    
+     ●                                                                      ●       
+"A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
+```
 
 **HOW**:
 
@@ -12612,9 +12636,13 @@ Algorithms/Gene Expression/K-Means Clustering_TOPIC
 
 THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.)
 
-Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_NORMs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_NORM of cluster X.
+Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_CLUSTERs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_CLUSTER of cluster X.
 
 This seems like it'd be very useful. It's easy to understand (if you understand neighbour joining phylogeny / additive phylogeny)
+
+How to get from distances to probabilities? Try this: for an internal node, sum distance of closest leaf with the distance of farthest leaf: base = closest + farthest. Then, divide distances by that to get probabilities: e.g. (10/(10+90))=0.1 means very close -- as a probability of likelihood it would be 1-0.1=0.9.
+
+So what's the way to find the best high-level clusters? Maybe find the internal node with the most uniform probabilities (e.g all leaf nodes have ~0.05 probability of being a member) -- each edge protruding out from that leaf node is a cluster
 
 ### CAST Clustering
 
@@ -13708,7 +13736,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
    Another idea is to take the generated tree and convert it back into distance matrix. If the data isn't junk, the distance metric isn't junk, and the data is clusterable on that distance metric, the generated distance matrix should match closely to the input distance metric. The tool can warn the user if it doesn't.
 
- * Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_NORMs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_NORM of cluster X.
+ * Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_CLUSTERs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_CLUSTER of cluster X.
    
    This relates to the idea above (hierarchial clustering explorer) -- You can identify "interesting clusters" using this (e.g. a small group tightly clustered together) and return it to the user for inspection.
 
@@ -16960,7 +16988,9 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} clustering/(cluster)/i` - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a cluster.
 
- * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_NORMs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
+ * `{bm} member/(membership|member)_CLUSTER/i` - An object assigned to a cluster is said to be a member_CLUSTER of that cluster.
+
+ * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_CLUSTERs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
 
    In terms of a scoring function, the score being minimized is ...
 
@@ -17053,7 +17083,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    +--------------------------------------          +--------------------------------------          +--------------------------------------
    ```
 
- * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_NORMs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_NORM distances, the formula below is the minimum it could possibly be out of all possible choices for centers.
+ * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_CLUSTERs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the formula below is the minimum it could possibly be out of all possible choices for centers.
  
    The formula below is referred to as squared error distortion.
 
@@ -17174,7 +17204,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} hard clustering \/ soft clustering/(hard clustering|soft clustering)/i` - In the context of clustering, ...
  
-   * soft clustering algorithms assign each data point to a set of probabilities, where each probability is how likely it is for that data point to be assigned to a cluster.
+   * soft clustering algorithms assign each object to a set of probabilities, where each probability is how likely it is for that object to be assigned to a cluster.
 
      ```{svgbob}
           ●                                                                      ●       
@@ -17187,7 +17217,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
      "A=0.9,B=0.1"                                                          "A=0.1,B=0.9"
      ```
 
-   * hard clustering algorithms assign each data point to exactly one cluster.
+   * hard clustering algorithms assign each object to exactly one cluster.
 
      ```{svgbob}
           ●                                                                      ●       
@@ -17382,7 +17412,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 
 `{bm-ignore} \b(membership|member)_NORM/i`
-`{bm-error} Apply suffix _NORM or _MOTIF/\b(membership|member)/i`
+`{bm-error} Apply suffix _NORM, _MOTIF, or _CLUSTER/\b(membership|member)/i`
 
 `{bm-ignore} (balanced)_NORM/i`
 `{bm-error} Apply suffix _NORM, _GRAPH, or _NODE/(balanced)/i`

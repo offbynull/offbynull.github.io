@@ -2,7 +2,7 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-If using the defaults, the book recommends explicitly declaring the methods but adding ` = default` after both signatures instead of specifying a body. The reason is that the default is almost always wrong, so if you tack this on it makes it explicit to other that you intended this.
+If using the defaults, the book recommends explicitly declaring the methods but adding ` = default` after both signatures instead of specifying a body. The reason is that the default is almost always wrong, so if you tack this on it makes it explicit to others that you intended this.
 
 ```c++
 class MyStruct {

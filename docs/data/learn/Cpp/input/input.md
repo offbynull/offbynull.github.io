@@ -439,7 +439,7 @@ __Member Access Operators__
 | Member Of Object  (`.`)  | `x.member`  |                                                                                            |
 | Member Of Pointer (`->`) | `x->member` |                                                                                            |
 
-There operators are used in scenarios that deal with accessing the members of an object (e.g. element in an array, field of a class) or dealing with memory addresses / pointers. The subscript and and member of object operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.
+These operators are used in scenarios that deal with accessing the members of an object (e.g. element in an array, field of a class) or dealing with memory addresses / pointers. The subscript and and member of object operators are similar to their counterparts in other high-level languages (e.g. Java, Python, C#, etc..). The others are unique to languages with support for lower-level programming like C++. Their usage is detailed in other sections.
 
 __Dynamic Object Operators__
 
@@ -545,7 +545,7 @@ C++'s core integer types are as follows...
 1. `long int`
 1. `long long int`
 
-The above integer types come in two forms: signed and unsigned. Tha range of ...
+The above integer types come in two forms: signed and unsigned. The range of ...
 
 * unsigned integers start at 0 and end at a positive integer.
 * signed integers start at a negative integer and positive integer.
@@ -805,10 +805,10 @@ Variables/Pointers_TOPIC: Just the main section, not any of the subsections.
 
 C++ allows for the creation of arrays of constant length (size of the array must be known at compile-time). Elements of an array are guaranteed to be contiguous in memory (speculation).
 
-* `int x[100]` - Creates an array of 100 ints where those 100 ints are junk values (data previously at that memory location is not zero'd out).
+* `int x[100]` - Creates an array of 100 ints where those 100 ints are junk values (data previously at that memory location is not zeroed out).
 * `int x[] { 5, 5, 5 }` - Creates an array of 3 ints where each of those ints have been initialized to 5 (braced initialization).
 * `int x[] = { 5, 5, 5 }` - Equivalent to above (assignment does not do any extra work).
-* `int x[3] {}` - Creates an array of 3 ints where each of those ints are 0 (memory zero'd out -- braced initialization).
+* `int x[3] {}` - Creates an array of 3 ints where each of those ints are 0 (memory zeroed out -- braced initialization).
 * `int x[3] = {}` - Equivalent to above (assignment does not do any extra work).
 * `int x[n]` - Disallowed by C++ if n isn't a constant. These types of arrays are allowed in C (called variable length arrays / VLA), but not in C++ because C++ has collection classes that allow for sizes not known at compile-time.
 
@@ -882,7 +882,7 @@ Variables/Core Types_TOPIC
 
 C++ provides types that reference a memory address, called pointers. Variables of these types can point to different memory addresses / objects.
 
-Adding an asterisk (\*) to the end of any type makes it a pointer type (e.g. `int *` is a type that can contain a pointer to an `int`). A pointer to any object can be retrieved using the address-of unary operator (&). Similarly, the value in any pointer can be retrieved using the deference unary operator (\*).
+Adding an asterisk (\*) to the end of any type makes it a pointer type (e.g. `int *` is a type that can contain a pointer to an `int`). A pointer to any object can be retrieved using the address-of unary operator (&). Similarly, the value in any pointer can be retrieved using the dereference unary operator (\*).
 
 ```c++
 int w {5};
@@ -894,7 +894,7 @@ int z { *x };   // z is a copy of whatever x points to, which is w, which means 
 int **a { &x }; // a points to x, which points to w (a pointer to a pointer to an int)
 ```
 
-As shown in the example above, it's perfectly valid to use the deference operator on the left-side of the equals. It defines where the result of the right side should go.
+As shown in the example above, it's perfectly valid to use the dereference operator on the left-side of the equals. It defines where the result of the right side should go.
 
 ```c++
 int w {5};
@@ -924,7 +924,7 @@ if (y == nullptr) {
 ```
 
 ```{note}
-It seems like there's some implicit conversions to boolean that are possible with pointers. If whatever the pointer is going to expects a boolean, its implicitly converted to `ptr != nullptr`? So in if / while/ for conditions, you can just use the pointer as is without explicitly writing out a condition?
+It seems like there's some implicit conversions to boolean that are possible with pointers. If whatever the pointer is going to expect a boolean, it's implicitly converted to `ptr != nullptr`? So in if / while/ for conditions, you can just use the pointer as is without explicitly writing out a condition?
 ```
 
 ```{note}
@@ -957,7 +957,7 @@ x[2] = 101;   // equivalent to *(y+2) = 101;
 ```
 
 ```{note}
-An array guarantees that its elements appear contiguously and in order within memory (I think?), so if the pointer is from a decay'd array, using pointer arithmetic to access its elements is perfectly fine.
+An array guarantees that its elements appear contiguously and in order within memory (I think?), so if the pointer is from a decayed array, using pointer arithmetic to access its elements is perfectly fine.
 ```
 
 ### Void Pointer
@@ -1051,7 +1051,7 @@ Variables/Core Types_TOPIC
 Variables/Pointers_TOPIC
 ```
 
-C++ provides a more sanitized version of pointers called references. A reference type is declared by adding an ampersand (&) after the type rather than an asterisk (*), and it implicitly takes the address of whatever is passed into it when its created.
+C++ provides a more sanitized version of pointers called references. A reference type is declared by adding an ampersand (&) after the type rather than an asterisk (*), and it implicitly takes the address of whatever is passed into it when it's created.
 
 ```c++
 int w {5};
@@ -1383,7 +1383,7 @@ Named conversions should be preferred over C-style casts. Any C-style cast can b
 
 `{bm} /(Variables\/Explicit Conversion\/Named Conversions)_TOPIC/`
 
-Named conversion functions are a set of (seemingly templated) functions to convert an object's types. These functions provides safety mechanisms that aren't available in other older ways of casting.
+Named conversion functions are a set of (seemingly templated) functions to convert an object's types. These functions provide safety mechanisms that aren't available in other older ways of casting.
 
  * `const_cast` removes the `const` modifier from an object's type.
    
@@ -1848,7 +1848,7 @@ float add_and_mult(size_t n, ...) {
 ```
 
 ```{note}
-The book recommends against using variadic functions due to confusing usage and having to explicitly know the count and types of the variadic arguments beforehand (can become security problem if screwed up). Instead it recommends using variadic templates for functions instead.
+The book recommends against using variadic functions due to confusing usage and having to explicitly know the count and types of the variadic arguments before hand (can become security problem if screwed up). Instead it recommends using variadic templates for functions instead.
 ```
 
 ## No Exception
@@ -1864,7 +1864,7 @@ int add(int a, int b) noexcept {
 ```
 
 ```{note}
-The book mentions this is documented in "Item 16 of Effective Modern C++ by Scott Meyers". It goes on to say that, unless specified otherwise, the compiler assumes move constructors / move-assignment operators can thrown an exception if they try to allocate memory but the system doesn't have any. This prevents it from making certain optimizations.
+The book mentions this is documented in "Item 16 of Effective Modern C++ by Scott Meyers". It goes on to say that, unless specified otherwise, the compiler assumes move constructors / move-assignment operators can throw an exception if they try to allocate memory but the system doesn't have any. This prevents it from making certain optimizations.
 ```
 
 ## Common Attributes
@@ -2032,7 +2032,7 @@ switch (x) {
 It's possible to remove the `class` from `enum class`, which heavily loosens type-safety and scope. By removing `class`, the options within have their values implicitly converted to integers and you don't need the resolution scope operator (their options are accessible at the same level as an enum).
 
 ```c++
-enum MyEnum { // no class keywrod
+enum MyEnum { // no class keyword
    OptionA,
    OptionB,
    OptionC
@@ -2297,8 +2297,8 @@ struct MyStruct {
    bool flag;
 };
 
-MyStruct a;                    // initialized to zero'd out memory (via implicit constructor)
-MyStruct b {};                 // initialized to zero'd out memory (via implicit constructor)
+MyStruct a;                    // initialized to zeroed out memory (via implicit constructor)
+MyStruct b {};                 // initialized to zeroed out memory (via implicit constructor)
 MyStruct b {5, "steve", true}; // initialized to supplied arguments
 ```
 
@@ -2323,7 +2323,7 @@ class MyStruct {
 }
 ```
 
-A field may be initialized to a value either through default member initializations or the member initializer list. For default member initializations, the initialization is done directly in the field's declaration.
+A field may be initialized to a value either through default member initialization or the member initializer list. For default member initializations, the initialization is done directly in the field's declaration.
 
 ```c++
 struct MyStruct {
@@ -2451,7 +2451,7 @@ class MyStruct {
 ```
 
 ````{note}
-If using the defaults, the book recommends explicitly declaring the methods but adding ` = default` after both signatures instead of specifying a body. The reason is that the default is almost always wrong, so if you tack this on it makes it explicit to other that you intended this.
+If using the defaults, the book recommends explicitly declaring the methods but adding ` = default` after both signatures instead of specifying a body. The reason is that the default is almost always wrong, so if you tack this on it makes it explicit to others that you intended this.
 
 ```c++
 class MyStruct {
@@ -2577,7 +2577,7 @@ MyChild c {};
 MyParent p {x}; // MyChild inherits from MyParent, meaning that it's assignable to MyParent
 ```
 
-To be able to override a method in a child class the same way as its done in other languages (e.g. Java), the base call must have the `virtual` keyword prepended on the method, making it a virtual method. Similarly, any method that overrides a virtual method should have the `override` keyword appended just after the parameter list.
+To be able to override a method in a child class the same way as it's done in other languages (e.g. Java), the base call must have the `virtual` keyword prepended on the method, making it a virtual method. Similarly, any method that overrides a virtual method should have the `override` keyword appended just after the parameter list.
 
 ```{note}
 `override` isn't strictly required, but it's a hint that the compiler can use to prevent you from making a mistake (e.g. it sees `override` but what's being overridden isn't `virtual`). It's similar to Java's `@Override` annotation.
@@ -2897,7 +2897,7 @@ The return type defined for the operator overload provides context to the user a
 ```{note}
 Source of ordering types is [here](https://news.ycombinator.com/item?id=20551212).
 
-[here](https://news.ycombinator.com/item?id=20550165) talks about the importance of choosing the right ordering type.
+[Here](https://news.ycombinator.com/item?id=20550165) talks about the importance of choosing the right ordering type.
 
 The rectangle example was lifted from [here](https://blog.tartanllama.xyz/spaceship-operator/).
 ```
@@ -3436,7 +3436,7 @@ X perform(Y &var1, Z &var2) {
 
 In the example above, `X perform(Y &var1, Z &var2) { ... }` needs `Y` and `Z` to be types that support the plus operator (+) on each other (e.g. `int` and `short`). Setting them to types that don't support the plus operator typically causes cryptic compilation error, especially if the user is only making use of the template and isn't familiar with its innards.
 
-To mitigate this problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that returns a `bool`.
+To mitigate these problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that returns a `bool`.
 
 ```c++
 template <typename T1, typename T2, typename TR>
@@ -3529,7 +3529,7 @@ X add_and_multiply(X &var1, X &var2) {
 
 A variadic function is one that takes in a variable number of arguments, sometimes called varargs in other languages. A template can be made variadic by placing a final template parameter with `...` preceding the name, where this template parameter is referred to as parameter pack.
 
-One common use-case for parameter packs is invoking functions where the parameter list isn't known beforehand.
+One common use-case for parameter packs is invoking functions where the parameter list isn't known before hand.
 
 ```c++
 template <typename X, typename... R>
@@ -3637,7 +3637,7 @@ struct MyClass<bool, X*> {
 ```
 
 ```{note}
-Partial template specializations for functions isn't supported (yet?). See [here](https://stackoverflow.com/a/8061522).
+Partial template specializations for functions aren't supported (yet?). See [here](https://stackoverflow.com/a/8061522).
 ```
 
 In certain cases, the compiler is able to deduce the types for a specialization from its usage, meaning explicitly listing substitutions after the name may not be required.
@@ -3783,11 +3783,11 @@ int add(int a, int b) inline {
 ```
 
 ```{note}
-See [this](https://stackoverflow.com/a/1759575). Typically, the compiler applies `inline` automatically based on what it sees, meaning that it isn't something that should be adding in most cases. The only exception to that seems to be templates? See some of the other answers in the linked stack overflow question.
+See [this](https://stackoverflow.com/a/1759575). Typically, the compiler applies `inline` automatically based on what it sees, meaning that it isn't something that should be added by the programmer in most cases. The only exception to that seems to be templates? See some of the other answers in the linked stack overflow question.
 ```
 
 ```{note}
-The original intent of `inline` was to indicate to the compiler that embedding a copy of the function for an invocation was preferred over an function call. The reason being that is certain cases the code would be faster if it were embedded rather than having it branch into a function call.
+The original intent of `inline` was to indicate to the compiler that embedding a copy of the function for an invocation was preferred over an function call. The reason being that in certain cases the code would be faster if it were embedded rather than having it branch into a function call.
 ```
 
 ## External Linkage
@@ -4074,14 +4074,14 @@ The restrictions on constant expressions are vast. At a high-level, a constant e
  * **Scalar**: Floating point types, integral types, pointer types, enumeration types, `std::nullptr_t`, etc..
  * **Reference**
  * **Array**: Every element must be a literal.
- * **Class**: Constructor must be a constant expression. Non-static fields initializers using braced initialization, equals initialization, or brace-plus-equals initialization must use constant expressions. The destructor must be a trivial destructor (non-virtual, does nothing, and all base class destructors do nothing).
+ * **Class**: Constructor must be a constant expression. Non-static field initializers using braced initialization, equals initialization, or brace-plus-equals initialization must use constant expressions. The destructor must be a trivial destructor (non-virtual, does nothing, and all base class destructors do nothing).
  * **Union**: Must have at least one non-static member that is a literal type.
 
 ```{note}
 The rules here are vast and complicated. The above might not be entirely correct, may be missing some conditions, or may not cover certain aspects. In the type_traits header, there's a function called `std::is_literal_type` that can be used to test if a type is a literal type.
 ```
 
-There are several benefits to constant expressions. First, constant expressions help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A constant expression uses the computation to get to that obtuse magic number rather than the number itself, meaning its easier to understand and requires less effort to tweak (via the parameters of the constant expression).
+There are several benefits to constant expressions. First, constant expressions help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A constant expression uses the computation to get to that obtuse magic number rather than the number itself, meaning it's easier to understand and requires less effort to tweak (via the parameters of the constant expression).
 
 Second, there exists a special type of compile-time if-else where the chosen path is the only one in which code is generated for. These compile-time if-elses, identified by the `constexpr` keyword immediately after the `if`, use constant expressions in their conditionals when deciding which path to choose. These are use-cases such as ...
 
@@ -4159,7 +4159,7 @@ Similar to Java and Python, C++ provides a standard set of exceptions in stdexce
               +-- "std:underflow_error"
 ```
 
-To catch a exception potentially being thrown, wrap code in a try-catch block. Typical inheritance rules apply when catching an exception. For example, catching a `std:runtime_error` type will also catch anything that extends from it as well (e.g. `std:overflow_error`).
+To catch an exception potentially being thrown, wrap code in a try-catch block. Typical inheritance rules apply when catching an exception. For example, catching a `std:runtime_error` type will also catch anything that extends from it as well (e.g. `std:overflow_error`).
 
 ```c++
 try {
@@ -4229,7 +4229,7 @@ auto &[k, l] = y; // k is a REFERENCE to y.count, l is a REFERENCE to y.flag
 
 `{bm} /(Expression Categories)_TOPIC/`
 
-Value categories are a classification of expressions in C++. At their core, these categories are used for determining when objects get _moved_ vs copied, where a move means that the guts of the object and scooped out and transferred to another object.
+Value categories are a classification of expressions in C++. At their core, these categories are used for determining when objects get _moved_ vs copied, where a move means that the guts of the object are scooped out and transferred to another object.
 
 ```{svgbob}
           lvalue
@@ -5007,7 +5007,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
 
  * `{bm} dereference (*)/(dereference|dereferencing)/i` - A unary operator used to obtain the object at some memory address (e.g. `int x {*ptr}`).
 
- * `{bm} member-of-pointer (->)/(member[\-\s]of[\-\s]pointer)/i` - An operator that dereferences a pointer and access a member of the object pointed to (e.g. `ptr->x`).
+ * `{bm} member-of-pointer (->)/(member[\-\s]of[\-\s]pointer)/i` - An operator that dereferences a pointer and accesses a member of the object pointed to (e.g. `ptr->x`).
 
  * `{bm} member-of-object (.)/(member[\-\s]of[\-\s]object)/i` - An operator that accesses a member of an object to (e.g. `obj.x`).
 
@@ -5170,7 +5170,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
    }
    ```
 
- * `{bm} rvalue reference` - A data type that's more-or-less the same as a reference but conveys to the compiler that the data its pointing to is an rvalue (e.g. `MyType &&rref { y }`).
+ * `{bm} rvalue reference` - A data type that's more-or-less the same as a reference but conveys to the compiler that the data it's pointing to is an rvalue (e.g. `MyType &&rref { y }`).
 
  * `{bm} virtual method/(virtual method|virtual function)/i` - A method in a base class that is overridable by any class that inherits from that base class.
 
