@@ -16585,7 +16585,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a <a href="#BM_(cluster)%2Fi">cluster</a>, where the points closest to that center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) are that <a href="#BM_(cluster)%2Fi">cluster</a>'s members. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to member distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.</p>
+<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a <a href="#BM_(cluster)%2Fi">cluster</a>, where the points closest to that center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) are that <a href="#BM_(cluster)%2Fi">cluster</a>'s <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.</p>
 <p>In terms of a scoring function, the score being minimized is ...</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mn>2</mn></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mi>n</mi></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">score = max(d(P_1, C), d(P_2, C), ..., d(P_n, C))
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div><ul>
@@ -16717,26 +16717,26 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (8.5, 8)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
+<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
 </ul>
-<p><img src="ch8_007dfb27f4db5c8496443fd990231612_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_45994bd456462545adc7ae201dc0ab94_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (8.5, 8)=[[7.5, 3], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
-<li>cluster center (2, 2)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [8, 1]]</li>
+<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1]]</li>
+<li>cluster center (10, 7)=[[9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
 </ul>
-<p><img src="ch8_007dfb27f4db5c8496443fd990231612_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_45994bd456462545adc7ae201dc0ab94_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
 <ul>
-<li>cluster center (8.5, 8)=[[8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
-<li>cluster center (2, 2)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (10, 7)=[[8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
 <li>cluster center (8, 1)=[[7, 2], [7.5, 3], [8, 1], [9, 2]]</li>
 </ul>
-<p><img src="ch8_007dfb27f4db5c8496443fd990231612_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_45994bd456462545adc7ae201dc0ab94_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16806,11 +16806,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <ol>
 <li>
 <p>converts centers to <a href="#BM_(cluster)%2Fi">cluster</a>s,</p>
-<p>The point closest to a center becomes a member of that <a href="#BM_(cluster)%2Fi">cluster</a>. Ties are broken arbitrarily.</p>
+<p>The point closest to a center becomes a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of that <a href="#BM_(cluster)%2Fi">cluster</a>. Ties are broken arbitrarily.</p>
 </li>
 <li>
 <p>converts <a href="#BM_(cluster)%2Fi">cluster</a>s to centers.</p>
-<p>The <a href="#BM_(cluster)%2Fi">cluster</a>s from step 1 are turned into new centers. Each component of a center becomes the average of that dimension across <a href="#BM_(cluster)%2Fi">cluster</a> members, referred to as the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a>.</p>
+<p>The <a href="#BM_(cluster)%2Fi">cluster</a>s from step 1 are turned into new centers. Each component of a center becomes the average of that dimension across <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s, referred to as the center of gravity.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
     center = []
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
@@ -16866,7 +16866,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (2, 4)=[[2, 4], [4.5, 4]]</li>
 <li>cluster center (2.5, 6)=[[2.5, 6], [4, 5], [17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 </ul>
-<p><img src="ch8_722c596c7a5f2cad02f1f095ebc56d59_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_784c1e3ba1125a476a6bf2caadfaa543_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16875,7 +16875,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.25, 4)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
 <li>cluster center (13.0, 9.833333333333334)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 </ul>
-<p><img src="ch8_722c596c7a5f2cad02f1f095ebc56d59_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_784c1e3ba1125a476a6bf2caadfaa543_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -16884,18 +16884,18 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
 <li>cluster center (17.875, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 </ul>
-<p><img src="ch8_722c596c7a5f2cad02f1f095ebc56d59_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_784c1e3ba1125a476a6bf2caadfaa543_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
 <p></p>
-<p>At each iteration, the <a href="#BM_(cluster)%2Fi">cluster</a> members captured (step 1) will drag the new center towards them (step 2). After so many iterations, each center will be at a point where further iterations won't capture a different set of members, meaning that the centers will stay where they're at (converged).</p>
+<p>At each iteration, the <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s captured (step 1) will drag the new center towards them (step 2). After so many iterations, each center will be at a point where further iterations won't capture a different set of <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s, meaning that the centers will stay where they're at (converged).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner book says. This isn't entirely true? I think it's possible to get into a situation where a tied point ping-pongs back and forth between <a href="#BM_(cluster)%2Fi">cluster</a>s. So, maybe what actually needs to happen is you need to break ties consistently -- it doesn't matter how, just that its consistent (e.g. the center closest to origin + smallest angle from origin always wins the tied member).</p>
-<p>Also, if the centers haven't converged, the dragged center is guaranteed to decrease the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> when compared to the previous center. But, does that mean that a set of converged centers are optimal in terms of <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>? I don't think so. Even if a <a href="#BM_(cluster)%2Fi">cluster</a> converged to all the correct members, could it be that the center can be slightly tweaked to get the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> down even more? Probably.</p>
+<p>I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner book says. This isn't entirely true? I think it's possible to get into a situation where a tied point ping-pongs back and forth between <a href="#BM_(cluster)%2Fi">cluster</a>s. So, maybe what actually needs to happen is you need to break ties consistently -- it doesn't matter how, just that its consistent (e.g. the center closest to origin + smallest angle from origin always wins the tied <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>).</p>
+<p>Also, if the centers haven't converged, the dragged center is guaranteed to decrease the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> when compared to the previous center. But, does that mean that a set of converged centers are optimal in terms of <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>? I don't think so. Even if a <a href="#BM_(cluster)%2Fi">cluster</a> converged to all the correct <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s, could it be that the center can be slightly tweaked to get the <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> down even more? Probably.</p>
 </div>
-<p>The hope with the heuristic is that, at each iteration, enough true <a href="#BM_(cluster)%2Fi">cluster</a> members are captured (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by <em>probabilistically</em> selecting initial centers that are far from each other, referred to as <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a>.</p>
+<p>The hope with the heuristic is that, at each iteration, enough true <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s are captured (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by <em>probabilistically</em> selecting initial centers that are far from each other, referred to as <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a>.</p>
 <ol>
 <li>The 1st center is chosen from the list of points at random.</li>
 <li>The 2nd center is chosen by selecting a point that's likely to be much farther away from center 1 than most other points.</li>
@@ -16932,29 +16932,20 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (4.5, 4)=[[2.5, 6], [4, 3], [4, 5], [4.5, 4], [18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
-<li>cluster center (19, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
-<li>cluster center (2, 2)=[[2, 2], [2, 4], [3.5, 2]]</li>
+<li>cluster center (2.5, 6)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (17.5, 13)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
+<li>cluster center (20, -7)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
 </ul>
-<p><img src="ch8_388fae171efe60a95e37b946e7ae343d_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_b2aab62a88f08f75a8089f137bf5e737_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (11.3125, -1.25)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
-<li>cluster center (17.875, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
-<li>cluster center (2.5, 2.6666666666666665)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
-</ul>
-<p><img src="ch8_388fae171efe60a95e37b946e7ae343d_plot1.svg" alt="k-centers 2D plot"></p>
-</li>
-<li>
-<p>Iteration 2</p>
-<ul>
-<li>cluster center (18.875, -7)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
-<li>cluster center (17.875, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (17.875, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
+<li>cluster center (18.875, -7)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
 </ul>
-<p><img src="ch8_388fae171efe60a95e37b946e7ae343d_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_b2aab62a88f08f75a8089f137bf5e737_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16975,14 +16966,122 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FK-Means%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/K-Means Clustering</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>:</p>
-<p><strong>WHY</strong>:</p>
-<p><strong>HOW</strong>:</p>
+<p><strong>WHAT</strong>: Soft <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing is the <a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a> variant of <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>. Where as the original <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> definitively assigns each point to a <a href="#BM_(cluster)%2Fi">cluster</a> (<a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">hard clustering</a>), this variant of <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> assigns each point to how likely it is to be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of each <a href="#BM_(cluster)%2Fi">cluster</a> (<a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a>).</p>
+<p><img src="svgbob_340a882a019eb7e365d2c34e483fb272a3d63bc7.svg" alt="Kroki diagram output"></p>
+<p>The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> centers, you're maximizing the likelihood of the points belonging to <a href="#BM_(cluster)%2Fi">cluster</a>s (maximizing for definitiveness / minimizing for unsureness).</p>
+<p><img src="svgbob_f5597fa9156c91afdb5af3c463a1491f04bf6af9.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's some ambiguity here on what the function being minimized / maximized is and how probabilities are derived. It seems like <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> isn't involved here at all, so how is this related in anyway to <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>? My understanding is that <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> is what makes <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>.</p>
+<p>It seems like this is called soft <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> because the high-level steps of the algorithm for this are similar to the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> heuristic. That's where the similarity ends (as far as I can tell). So maybe it should be called soft <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> instead?</p>
+</div>
+<p><strong>WHY</strong>: <a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">Soft clustering</a> is a way to suss out ambiguous points. For example, a point that sits exactly between two obvious <a href="#BM_(cluster)%2Fi">cluster</a>s will be just as likely be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of each...</p>
+<p><img src="svgbob_7707372b418f31d9cd50f377775622b0d1bcaf8f.svg" alt="Kroki diagram output"></p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>similar to <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a></p>
+<ol>
+<li>centers to <a href="#BM_(cluster)%2Fi">cluster</a>s: assign each data point to a set of probabilities (not to nearest center)</li>
+<li><a href="#BM_(cluster)%2Fi">cluster</a>s to centers: computer new centers as <a href="#BM_(cluster)%2Fi">cluster</a>s center of gravity</li>
+</ol>
+<p>cp = i / n, where
+i is num of heads
+n is num of heads+tails
+cp is the <em>probability of heads for that coin</em></p>
+<p>coinA and coinB -- two coins, randomly switch or keep every 10 flips (without exposing the choice to you)
+at every 10 flips (1 round), you calculate the heads percentage: cp = i / n
+cpA = probability of coin A to give heads
+cpB = probability of coin B to give heads</p>
+<p>[<a href="#BM_(cluster)%2Fi">CLUSTER</a>S TO CENTER] -- you know which coin was used per 10 flip round (coinA or coinB)
+-- you know the <em>outcome</em> of each 10 flip round (heads ratio)
+-- find cpA and cpB -- prob of coinA and coinB to produce heads
+say did that for 5x 10 flips:
+HTTTHTTHTH=4/10=0.4
+HHHHTHHHHH=9/10=0.9
+HTHHHHHTHH=9/10=0.8
+HTTTTTHHTT=3/10=0.3
+THHHTHHHTH=7/10=0.7
+heads_ratios = [0.4, 0.9, 0.8, 0.3, 0.7]
+the goal is to <em>estimate the cpA and cpB</em> that produced every 10 flips above (remember the random switch/keep between coinA and coinB is hidden)</p>
+<p>if you knew that idx coinA was used to generate idx0 and idx3, you could estimate ...
+cpA = (0.4 + 0.3) / 2          or .. avg([0.4, 0.3])        = 0.35
+cpB = (0.9 + 0.8 + 0.7) / 3    or .. avg([0.9, 0.8, 0.7])   = 0.8</p>
+<p>if you treat the choices as a vector, where 1=coinA and 0=coinB, idx0 and idx3 for coinA would be represented as...
+choice_vec=[1, 0, 0, 1, 0]
+then the calculation about could be written as ...
+cpA = dot_product(choice_vec, heads_ratios) / dot_product(choice_vec, 1)
+= (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
+= (0.4 + 0.3) / 2
+= 0.35
+cpB = dot_product((1-choice_vec), heads_ratios) / dot_product((1-choice_vec), 1)
+= (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
+= (0.9 + 0.8 + 0.7) / 3
+= 0.8</p>
+<p>[CENTERS TO <a href="#BM_(cluster)%2Fi">CLUSTER</a>S] -- you know the <em>outcome</em> of each 10 flip round (heads ratio)
+-- you know cpA and cpB -- prob of coinA and coinB to produce heads
+-- find which coin was used per 10 flip round (coinA or coinB)
+assume cpA=0.6 and cpB=0.82
+assume heads_ratios = [0.4, 0.9, 0.8, 0.3, 0.7]
+find choice_vec=[?, ?, ?, ?, ?]  &lt;--  you're trying to find this out</p>
+<p>if coinA was used to generate the 5th idx: cpA^7 * (1-cpA)^7 = 0.6^7 * (1-0.6)^7 = 0.00179
+if coinB was used to generate the 5th idx: cpB^7 * (1-cpB)^7 = 0.82^7 * (1-0.18)^7 = 0.00145</p>
+<p>coinA has the greater chance of being for the 5th idx: (0.00179 &gt; 0.00145)
+repeat the steps for the other idxs</p>
+<p>the above calculations are "conditional probabilities" -- Pr(data_i|cp)</p>
+<ol>
+<li>calculate number of heads: h = flips_per_ratio * heads_ratios[5]</li>
+<li>calculate number of heads: t = flips_per_ratio * (1 - heads_ratios[5])</li>
+<li>Pr(data_i|cp) = cp^h * (1-cp)^t</li>
+</ol>
+<p>[HOW DOES IT RELATE TO <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">LLOYD'S ALGORITHM</a>?]</p>
+<p>how does the full algorithm work?
+pick random cpA and cpB (coin probabilities)
+iterate centers to <a href="#BM_(cluster)%2Fi">cluster</a>s + <a href="#BM_(cluster)%2Fi">cluster</a>s to centers until you converge on a set of centers</p>
+<p>this is essentially <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a>:
+cpA and cpB -- prob of coinA and coinB to produce heads = THESE ARE THE CENTERS
+the <em>outcome</em> of each 10 flip round (heads ratio)       = THESE ARE THE POINTS
+which coin was used per 10 flip round (coinA or coinB)  = THESE ARE THE <a href="#BM_(cluster)%2Fi">CLUSTER</a> ASSIGNMENTS</p>
+<p>The only difference <em>up until this point</em> is the CENTERS TO <a href="#BM_(cluster)%2Fi">CLUSTER</a>S. In the original <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a>, it assigns points to the nearest <a href="#BM_(cluster)%2Fi">cluster</a>. In this variant (up until this point), it's comparing conditional probabilities to determine which <a href="#BM_(cluster)%2Fi">cluster</a> to assign to.</p>
+<p>[CENTERS TO <a href="#BM_(cluster)%2Fi">CLUSTER</a>S modification -- CALLED E-STEP (expectation step)]</p>
+<p>However, it doesn't make sense to definitively assign a <a href="#BM_(cluster)%2Fi">cluster</a> in this variant (it's a <a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a> algorithm). Think of it it terms of coin flips: if Pr(data_i|cpA) is roughly equal to Pr(data_i|cpB), which coin should get picked? Instead of choosing one outright, derive a "confidence" value for each one (also called responsibility). The responsibility values are the confidence level for each coin (should sum to 1). To calculate responsibility...</p>
+<p>responsibility of A: Pr(data_i|cpA) / (Pr(data_i|cpA) + Pr(data_i|cpB))
+responsibility of B: Pr(data_i|cpB) / (Pr(data_i|cpA) + Pr(data_i|cpB))</p>
+<p>In terms of generic <a href="#BM_(cluster)%2Fi">cluster</a>ing, this becomes the responsibility values (confidence) of a point to each centers. The set of all responsibility values across all data point is called a responsibility profile (SEE STEPIK 8.12).</p>
+<p>However, the way a responsibility profile that's generated for coin flipping is different than that with generic points. The book recommends a physics algorithm that thinks of centers as stars and points as planets, where closer a center is to a point, the more of a "pull" it should have on that point (THIS DOESNT MAKE ANY SENSE AS ITS THE CENTERS THAT MOVE, NOT THE POINTS). This is what defines the responsibility matrix.</p>
+<p>[<a href="#BM_(cluster)%2Fi">CLUSTER</a>S TO CENTER modification -- CALLED M-STEP (maximization step)]</p>
+<p>Recall how to find cpA and cpB (prob that coinA will produce heads / prob that coinB will produce heads):
+cpA = dot_product(choice_vec, heads_ratios) / dot_product(choice_vec, 1)
+= (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
+= (0.4 + 0.3) / 2
+= 0.35
+cpB = dot_product((1-choice_vec), heads_ratios) / dot_product((1-choice_vec), 1)
+= (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
+= (0.9 + 0.8 + 0.7) / 3
+= 0.8</p>
+<p>cpA and cpB were the analogy for centers. But, since there's a responsibility profile instead of hard assignments. Instead of putting in hard choices (choice_vec), use the responsibility profile...</p>
+<pre><code>cpA = dot_product(resp_profileA, heads_ratios) / dot_product(resp_profileA, 1)
+cpB = dot_product(resp_profileN, heads_ratios) / dot_product(resp_profileB, 1)
+</code></pre>
+<p>This works for coin flipping, but it doesn't work for</p>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
 <a name="H_Soft%20Hierarchial%20Clustering"></a><h3>Soft Hierarchial Clustering</h3>
-<p>THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.)</p>
-<p>Soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Build out a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a>. Each internal node is a <a href="#BM_(cluster)%2Fi">cluster</a>. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that <a href="#BM_(cluster)%2Fi">cluster</a>? This makes sense because <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> produces <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s). If it were a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are members of <a href="#BM_(cluster)%2Fi">cluster</a> X. But, because it's unrooted, technically any leaf node in the graph could be a member of <a href="#BM_(cluster)%2Fi">cluster</a> X.</p>
+<p>THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.</p>
+<p>Soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Build out a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a>. Each internal node is a <a href="#BM_(cluster)%2Fi">cluster</a>. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that <a href="#BM_(cluster)%2Fi">cluster</a>? This makes sense because <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> produces <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s). If it were a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s of <a href="#BM_(cluster)%2Fi">cluster</a> X. But, because it's unrooted, technically any leaf node in the graph could be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of <a href="#BM_(cluster)%2Fi">cluster</a> X.</p>
 <p>This seems like it'd be very useful. It's easy to understand (if you understand <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> / <a href="#BM_(additive%20phylogeny)%2Fi">additive phylogeny</a>)</p>
+<p><s>How to get from distances to probabilities? Try this: distance of 0 (self) is 1.0 probability and distance to farthest leaf node is 0.0 probability. To get the probability of a leaf node being a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>, divide its distance by the distance of the farthest leaf node... 1.0 - (d / farthest_d)</s> Maybe farthest_d isn't correct? should it be the sum of all leaf node dists for that internal node?</p>
+<p>So what's the way to find the best high-level <a href="#BM_(cluster)%2Fi">cluster</a>s? Maybe find the internal node with the most uniform probabilities (e.g all leaf nodes have ~0.05 probability of being a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>) -- each edge protruding out from that leaf node is a <a href="#BM_(cluster)%2Fi">cluster</a></p>
 <a name="H_CAST%20Clustering"></a><h3>CAST Clustering</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
@@ -17707,7 +17806,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p>Another idea is to take the generated <a href="#BM_(tree)%2Fi">tree</a> and convert it back into <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a>. If the data isn't junk, the <a href="#BM_(distance%20metric)%2Fi">distance metric</a> isn't junk, and the data is <a href="#BM_(cluster)%2Fi">cluster</a>able on that <a href="#BM_(distance%20metric)%2Fi">distance metric</a>, the generated <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> should match closely to the input <a href="#BM_(distance%20metric)%2Fi">distance metric</a>. The tool can warn the user if it doesn't.</p>
 </li>
 <li>
-<p>Soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Build out a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a>. Each internal node is a <a href="#BM_(cluster)%2Fi">cluster</a>. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that <a href="#BM_(cluster)%2Fi">cluster</a>? This makes sense because <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> produces <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s). If it were a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are members of <a href="#BM_(cluster)%2Fi">cluster</a> X. But, because it's unrooted, technically any leaf node in the graph could be a member of <a href="#BM_(cluster)%2Fi">cluster</a> X.</p>
+<p>Soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Build out a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a>. Each internal node is a <a href="#BM_(cluster)%2Fi">cluster</a>. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that <a href="#BM_(cluster)%2Fi">cluster</a>? This makes sense because <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> produces <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s). If it were a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s of <a href="#BM_(cluster)%2Fi">cluster</a> X. But, because it's unrooted, technically any leaf node in the graph could be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of <a href="#BM_(cluster)%2Fi">cluster</a> X.</p>
 <p>This relates to the idea above (<a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing explorer) -- You can identify "interesting <a href="#BM_(cluster)%2Fi">cluster</a>s" using this (e.g. a small group tightly <a href="#BM_(cluster)%2Fi">cluster</a>ed together) and return it to the user for inspection.</p>
 </li>
 <li>
@@ -21230,7 +21329,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(cluster)%2Fi"></a><strong>clustering</strong> - Grouping together a set of objects such that objects within the same group are more similar to each other than objects in other groups. Each group is referred to as a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
 </li>
 <li>
-<p><a name="BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where a point, called a center, defines <a href="#BM_(cluster)%2Fi">cluster</a> membership. k different centers are chosen (one for each <a href="#BM_(cluster)%2Fi">cluster</a>), and the points closest to each center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) make up members of that <a href="#BM_(cluster)%2Fi">cluster</a>. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to member distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.</p>
+<p><a name="BM_(membership%7Cmember)_CLUSTER%2Fi"></a><strong>member</strong> - An object assigned to a <a href="#BM_(cluster)%2Fi">cluster</a> is said to be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of that <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+</li>
+<li>
+<p><a name="BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi"></a><strong>k-centers clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where a point, called a center, defines <a href="#BM_(cluster)%2Fi">cluster</a> membership. k different centers are chosen (one for each <a href="#BM_(cluster)%2Fi">cluster</a>), and the points closest to each center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) make up <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s of that <a href="#BM_(cluster)%2Fi">cluster</a>. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.</p>
 <p>In terms of a scoring function, the score being minimized is ...</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mn>2</mn></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mi>n</mi></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">score = max(d(P_1, C), d(P_2, C), ..., d(P_n, C))
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div><ul>
@@ -21269,7 +21371,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_52c67bd6a373b1ba175fc4205574ee9cfc99b6fb.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi"></a><strong>k-means clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where a point, called a center, defines <a href="#BM_(cluster)%2Fi">cluster</a> membership. k different centers are chosen (one for each <a href="#BM_(cluster)%2Fi">cluster</a>), and the points closest to each center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) make up members of that <a href="#BM_(cluster)%2Fi">cluster</a>. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to member distances, the formula below is the minimum it could possibly be out of all possible choices for centers.</p>
+<p><a name="BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi"></a><strong>k-means clustering</strong> - A form of <a href="#BM_(cluster)%2Fi">cluster</a>ing where a point, called a center, defines <a href="#BM_(cluster)%2Fi">cluster</a> membership. k different centers are chosen (one for each <a href="#BM_(cluster)%2Fi">cluster</a>), and the points closest to each center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) make up <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s of that <a href="#BM_(cluster)%2Fi">cluster</a>. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> distances, the formula below is the minimum it could possibly be out of all possible choices for centers.</p>
 <p>The formula below is referred to as <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>.</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>C</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mrow><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">score = \frac{\sum_{i=1}^{n} {d(P_i, C)^2}}{n}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.189818em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5038179999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897100000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><ul>
@@ -21308,7 +21410,18 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(center%20of%20gravity)%2Fi"></a><strong>center of gravity</strong> - In terms of <a href="#BM_(cluster)%2Fi">cluster</a>ing using <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>, the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> for a set of points is the average of each individual dimension / coordinates.</p>
+<p><a name="BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi"></a><strong>Lloyd's algorithm</strong> - A heuristic for determining centers in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing. The algorithm begins by choosing k arbitrary points from the points being <a href="#BM_(cluster)%2Fi">cluster</a>ed as the initial centers, then ...</p>
+<ol>
+<li>
+<p>derives <a href="#BM_(cluster)%2Fi">cluster</a>s from centers: Each point is assigned to its nearest center (ties broken arbitrarily).</p>
+</li>
+<li>
+<p>derives centers from <a href="#BM_(cluster)%2Fi">cluster</a>s: Each center is updated to be the "center of gravity" of its points.</p>
+<p>The center of gravity for a set of points is the average of each individual coordinate. For example, for the 2D points (0,5), (1,3), and (2,2), the center of gravity is (1, 3.3333). The ...</p>
+<ul>
+<li>first coordinate is calculated as <code>0+1+2/3 = 1</code>.</li>
+<li>second coordinate is calculated as <code>5+3+2/3 = 3.3333</code>.</li>
+</ul>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
    center = []
    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
@@ -21316,19 +21429,9 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
      center.append(val)
    <span class="hljs-keyword">return</span> center
 </code></pre>
-<p>For example, for the 2D points (0,5), (1,3), and (2,2), the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> is (1, 3.3333). The coordinate / dimension for ...</p>
-<ul>
-<li>x is calculated as <code>0+1+2/3 = 1</code>.</li>
-<li>y is calculated as <code>5+3+2/3 = 3.3333</code>.</li>
-</ul>
 </li>
-<li>
-<p><a name="BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi"></a><strong>Lloyd's algorithm</strong> - A heuristic for determining centers in <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing. The algorithm begins by choosing centers by arbitrarily selecting k points from the points being <a href="#BM_(cluster)%2Fi">cluster</a>ed, then iteratively...</p>
-<ol>
-<li>assigns each point to its nearest center (ties broken arbitrarily),</li>
-<li>calculates a new set of centers by calculating the <a href="#BM_(center%20of%20gravity)%2Fi">center of gravity</a> from the points in each.</li>
 </ol>
-<p>The algorithm stops once the new centers are the same as the centers from the previous iteration (stops converging).</p>
+<p>The above two steps loop repeatedly until the new centers are the same as the centers from the previous iteration (stops converging).</p>
 <p>Since this algorithm is a heuristic, it doesn't always converge to a good solution. The algorithm typically runs multiple times, where the run producing centers with the lowest <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> is accepted. An enhancement to the algorithm, called <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a>, increases the chances of converging to a good solution by <em>probabilistically</em> selecting initial centers that are far from each other:</p>
 <ol>
 <li>The 1st center is chosen from the list of points at random.</li>
@@ -21359,11 +21462,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(hard%20clustering%7Csoft%20clustering)%2Fi"></a><strong>hard clustering / soft clustering</strong> - In the context of <a href="#BM_(cluster)%2Fi">cluster</a>ing, ...</p>
 <ul>
 <li>
-<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a> algorithms assign each data point to a set of probabilities, where each probability is how likely it is for that data point to be assigned to a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a> algorithms assign each object to a set of probabilities, where each probability is how likely it is for that object to be assigned to a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
 <p><img src="svgbob_a9ecf872b60c1d4716510c88c16191c37ea93595.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">hard clustering</a> algorithms assign each data point to exactly one <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+<p><a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">hard clustering</a> algorithms assign each object to exactly one <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
 <p><img src="svgbob_59de88c1a6509780a865b5dee966022210b55bd7.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
