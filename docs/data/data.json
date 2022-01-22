@@ -10,6 +10,15 @@
             }
         },
         {
+            "name": "C++",
+            "notesUrl": "data/learn/Cpp/output/output.html",
+            "source": {
+                "type": "book",
+                "isbn": "978-1593278885",
+                "url": "https://ccc.codes/"
+            }
+        },
+        {
             "name": "Prealgebra",
             "notesUrl": "data/learn/Math/output/output.html",
             "source": {
