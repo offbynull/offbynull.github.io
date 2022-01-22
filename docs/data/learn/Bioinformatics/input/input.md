@@ -12424,7 +12424,7 @@ Similar to k-centers, solving k-means for any non-trivial input isn't possible b
 
  2. converts clusters to centers.
 
-    The clusters from step 1 are turned into new centers. Each component of a center becomes the average of that dimension across cluster member_CLUSTERs, referred to as the center of gravity.
+    The clusters from step 1 are turned into new centers. Each component of a center becomes the average of that component across cluster member_CLUSTERs, referred to as the center of gravity.
 
     ```{output}
     ch8_code/src/clustering/KMeans_Lloyds.py
@@ -12635,7 +12635,7 @@ The goal is to choose centers such that, out of all possible cluster centers, yo
 ```{note}
 There's some ambiguity here on what the function being minimized / maximized is and how probabilities are derived. It seems like squared error distortion isn't involved here at all, so how is this related in anyway to k-means? My understanding is that squared error distortion is what makes k-means.
 
-It seems like this is called soft k-means because the high-level steps of the algorithm for this are similar to the Lloyd's algorithm heuristic. That's where the similarity ends (as far as I can tell). So maybe it should be called soft lloyd's algorithm instead?
+It seems like this is called soft k-means because the high-level steps of the algorithm for this are similar to the Lloyd's algorithm heuristic. That's where the similarity ends (as far as I can tell). So maybe it should be called soft lloyd's algorithm instead? It looks like the generic name for this is called the [Expectation-maximization algorithm](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm).
 ```
 
 **WHY**: Soft clustering is a way to suss out ambiguous points. For example, a point that sits exactly between two obvious clusters will be just as likely be a member_CLUSTER of each...
@@ -12653,31 +12653,136 @@ It seems like this is called soft k-means because the high-level steps of the al
 
 **ALGORITHM**:
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+This algorithm is similar to the Lloyd's algorithm heuristic used for k-means clustering. It begins by randomly picking k points to set as the centers and iteratively refines those centers. At each step, the algorithm ...
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+ 1. converts centers to clusters (referred to as E-step),
+ 2. converts clusters to centers (referred to as M-step).
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+The major difference between Llyod's algorithm and this algorithm is that this algorithm produces *probabilities of cluster membership_CLUSTER assignments*. In contrast, Lloyd's algorithm produces *definitive cluster membership_CLUSTER assignments*. The steps being iterated are essentially the same steps as in Lloyd's algorithm, except they've been modified to work with assignment probabilities instead of definitive assignments.
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+__STEP 1: CENTERS TO CLUSTERS (E-STEP)__
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+Recall that with Lloyd's algorithm, this step assigns each data point to exactly one center (whichever center is closest). With this algorithm, each data point is assigned a set of probabilities that define how likely it is to be assigned to each center, referred to as confidence values (and sometimes responsibility values).
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+```{svgbob}
+* "Plus signs denote centers. Middle point is just as likely"
+  "to belong to each center (equal confidence for each)."
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+     ●                                                          ●       
+"A=0.9,B=0.1"                                              "A=0.1,B=0.9"
+                                                                        
+     +  ●                           ●                       ●   +   
+   "A=0.9,B=0.1"               "A=0.5,B=0.5"           "A=0.1,B=0.9"
+                                                                        
+     ●                                                          ●       
+"A=0.9,B=0.1"                                              "A=0.1,B=0.9"
+```
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+The general concept behind assigning confidence values is that the closer a center is to a data point, the more affinity it has to that data point (higher confidence for closer points). This concept can be implemented in multiple different ways: raw distance comparisons, Newtonian inverse-square law of gravitation, partition function from statistical physics, etc..
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+The partition function is the preferred implementation.
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+```{kt}
+confidence(P, C_i) = \frac{
+  e^{-\beta \cdot d(P, C_i)}
+}{
+  \sum_{t=1}^{n}{e^{-\beta \cdot d(P, C_t)}}
+}
+```
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+* P is a point.
+* C is a set of centers.
+* Ci is the center for which the confidence is being calculated.
+* n is the number of centers in C.
+* e is the base for natural logarithms (~2.72).
+* b is a user-defined parameter that defines how loose / definitive confidences are (ranges from 0 to 1).
+* d() calculates the euclidean distance.
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+```{output}
+ch8_code/src/clustering/KMeans_SoftLloyds.py
+python
+# MARKDOWN_PARTITION_FUNC\s*\n([\s\S]+)\n\s*# MARKDOWN_PARTITION_FUNC\s*[\n$]
+no_preamble
+```
 
-TODO: IMPLEMENT THE CODE. Begin by saying that this is the lloyd's algorithm with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.
+```{note}
+The Pevzner book gives the analogy that centers are stars and points are planets. The closer a planet is to a star, the stronger that star's gravitational pull should be. This gravitational pull is the "confidence" -- a stronger pull means a stronger confidence. The analogy falls a bit flat because, in this case, it's the stars (centers) that are being pulled in to the planets (points) -- normally it's the other way around (planets get pulled into stars).
+
+I have no idea how the partition function actually works or know anything about statistical physics. The book also listed the formula for Newtonian inverse-square law of gravitation but mentioned that the partition function works better in practice. I think a simpler / more understandable metric may be used instead of either of these. The core thing it needs to do is assign a greater confidence to points that are closer than to those that are farther, where that confidence is between 0 and 1. Maybe some kind of re-worked / inverted version of squared error distortion would work here.
+```
+
+__STEP 2: CLUSTERS TO CENTERS (M-STEP)__
+
+Recall that with Lloyd's algorithm, this step generates new centers for clusters by calculating the center of gravity across the member_CLUSTERs of each cluster: Each component of a center becomes the average of that component across cluster member_CLUSTERs.
+
+```{output}
+ch8_code/src/clustering/KMeans_Lloyds.py
+python
+# MARKDOWN_CENTER_OF_GRAVITY\s*\n([\s\S]+)\n\s*# MARKDOWN_CENTER_OF_GRAVITY
+no_preamble
+```
+
+This algorithm performs a similar center of gravity calculation. The difference is that, since there are no definitive cluster member_CLUSTERs here, all data points are included in the center of gravity calculation. But, each data point is appropriately scaled by its confidence value for the cluster whose center is being calculated.
+
+```{output}
+ch8_code/src/clustering/KMeans_SoftLloyds.py
+python
+# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY\s*\n([\s\S]+)\n\s*# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY\s*[\n$]
+no_preamble
+```
+
+````{note}
+Think about what's happening here. With standard Lloyd's algorithm, you're averaging out a component for a center. For example, the points 5, 4, and 3 are calculated as ...
+
+```
+(5 + 4 + 3) / (1 + 1 + 1)
+(5 + 4 + 3) / 3
+12 / 3
+4
+```
+
+With this algorithm, you're doing the same thing except weighting them by their confidence values. For example, if the points above had the confidence values 0.9, 0.8, 0.95 respectively, they're calculated as ...
+
+```
+((5 * 0.9) + (4 * 0.8) + (3 * 0.95)) / (0.9 + 0.8 + 0.95)
+(4.5 + 3.2 + 2.85) / 2.65
+10.55 / 2.65
+3.98
+```
+
+The Lloyd's algorithm center of gravity calculation is just this algorithm's center of gravity calculation with all 1 confidence values ...
+
+```
+((5 * 1) + (4 * 1) + (3 * 1)) / (1 + 1 + 1)
+(5 + 4 + 3) / (1 + 1 + 1)
+(5 + 4 + 3) / 3
+12 / 3
+4
+```
+````
+
+__FULL ALGORITHM__
+
+The hope with this algorithm is that, at each iteration, enough true cluster member_CLUSTERs have appropriately high confidence values (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other via the k-means++ initializer.
+
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+
+TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
 
 
 

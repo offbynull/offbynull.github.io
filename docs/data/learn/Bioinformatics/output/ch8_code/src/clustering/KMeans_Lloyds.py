@@ -2,19 +2,18 @@ from __future__ import annotations
 
 import itertools
 import random
-from collections import defaultdict
 from math import dist
 from pathlib import Path
 from statistics import mean
 from sys import stdin
-from typing import Sequence, Optional, Callable
+from typing import Optional, Callable
 
 import matplotlib.pyplot as plt
 import yaml
 
 
 def plot_2d(
-        clusters: dict[tuple[float], list[Sequence[float]]],
+        clusters: dict[tuple[float], list[tuple[float]]],
         output_path: Optional[Path]
 ) -> None:
     plt.close() # reset
@@ -53,7 +52,7 @@ def plot_2d(
 
 
 def plot_3d(
-        clusters: dict[tuple[float], list[Sequence[float]]],
+        clusters: dict[tuple[float], list[tuple[float]]],
         output_path: Optional[Path]
 ) -> None:
     plt.close() # reset
@@ -137,16 +136,16 @@ def center_of_gravity(data_pts, dim):
 # MARKDOWN
 def k_means_lloyds(
         k: int,
-        vectors: list[Sequence[float]],
-        centers_init: list[Sequence[float]],
+        vectors: list[tuple[float]],
+        centers_init: list[tuple[float]],
         dims: int,
         iteration_callback: Callable[  # callback func to invoke on each iteration
             [
-                dict[tuple[float], list[Sequence[float]]]
+                dict[tuple[float], list[tuple[float]]]
             ],
             None
         ] | None = None
-) -> dict[tuple[float], list[Sequence[float]]]:
+) -> dict[tuple[float], list[tuple[float]]]:
     old_centers = []
     centers = centers_init[:]
     while centers != old_centers:
@@ -245,7 +244,7 @@ def main():
 # MARKDOWN_KMEANS_PP_INITIALIZER
 def k_means_PP_initializer(
         k: int,
-        vectors: list[Sequence[float]],
+        vectors: list[tuple[float]],
 ):
     centers = [random.choice(vectors)]
     while len(centers) < k:
@@ -271,7 +270,7 @@ def main_WITH_k_means_PP_initializer():
     try:
         data = yaml.safe_load(stdin)
         k = data[0]
-        vectors = data[1]
+        vectors = [v for v in data[1]]
         dims = max(len(v) for v in vectors)
         print(f'Given {k=} and {vectors=}...')
         print()

@@ -3,7 +3,7 @@ from __future__ import annotations
 import itertools
 import random
 from collections import defaultdict
-from math import dist
+from math import dist, nan, e
 from pathlib import Path
 from statistics import mean
 from sys import stdin
@@ -110,63 +110,132 @@ def plot_3d(
 
 
 
+def dot_product(a, b):
+    return sum(e_a * e_b for e_a, e_b in zip(a, b))
 
 
+# MARKDOWN_PARTITION_FUNC
+def partition_function(
+        point: tuple[float],
+        center_pts: list[tuple[float]],
+        stiffness: float
+):
+    confidences = {}
+    total_pf = 0
+    for c_pt in center_pts:
+        total_pf += e ** (-stiffness * dist(point, c_pt))
+    for c_pt in center_pts:
+        pf = e ** (-stiffness * dist(point, c_pt))
+        confidences[point] = pf / total_pf
+    return confidences
+# MARKDOWN_PARTITION_FUNC
 
 
+#   cpA and cpB -- prob of coinA and coinB to produce heads = THESE ARE THE CENTERS
+#   the _outcome_ of each 10 flip round (heads ratio)       = THESE ARE THE POINTS
+#   which coin was used per 10 flip round (coinA or coinB)  = THESE ARE THE CLUSTER ASSIGNMENTS
+
+# E-step: centers to "soft" clusters
+# ----------------------------------
+# For each data point, estimate the confidence level that it belongs to each of the "centers". The algorithm below is
+# the "partition function" from statistical physics. These confidence levels are sometimes also referred to as a
+# "responsibility matrix" or "hidden matrix".
+def e_step(
+        data_pts: list[tuple[float]],
+        center_pts: list[tuple[float]],
+        stiffness: float
+) -> dict[
+    tuple[float],              # center point
+    dict[tuple[float], float]  # data point -> confidence
+]:
+    membership_confidence = {c_pt: {} for c_pt in center_pts}
+    for d_pt in data_pts:
+        total_pf = 0
+        for c_pt in center_pts:
+            total_pf += e ** (-stiffness * dist(d_pt, c_pt))
+        for c_pt in center_pts:
+            pf = e ** (-stiffness * dist(d_pt, c_pt))
+            membership_confidence[c_pt][d_pt] = pf / total_pf
+    return membership_confidence
 
 
-# centers to "soft" clusters
-def e_step(data_pt, center_pts):
-    FILL ME IN
-    FILL ME IN
-    FILL ME IN
+# M-step: "soft" clusters to centers
+# ----------------------------------
+# Calculate a new set of centers from the "confidence levels" derived in the E-step.
+def m_step(
+        membership_confidence: dict[tuple[float], dict[tuple[float], float]],
+        dims: int
+) -> list[tuple[float]]:
+    centers = []
+    for ct_pt in membership_confidence:
+        new_ct_pt = weighted_center_of_gravity(
+            membership_confidence[ct_pt],
+            dims
+        )
+        centers.append(new_ct_pt)
+    return centers
 
 
-# "soft" clusters to centers
-def m_step(data_pts, responsibility_matrix):
-    FILL ME IN
-    FILL ME IN
-    FILL ME IN
+# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY
+def weighted_center_of_gravity(
+        confidence_set: dict[tuple[float], float],
+        dims: int
+) -> tuple[float]:
+    center_pt: list[float] = []
+    for i in range(dims):
+        pt_coordinates = [pt[i] for pt in confidence_set.keys()]
+        pt_confidences = confidence_set.values()
+        total_confidences = sum(pt_confidences)
+        ct_coordinate = dot_product(pt_coordinates, pt_confidences) / total_confidences
+        center_pt.append(ct_coordinate)
+    return tuple(center_pt)
+# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY
 
+x = weighted_center_of_gravity(
+    {
+        (1,): 0.2,
+        (4,): 1,
+        (5,): 1
+    },
+    1
+)
+print(f'{x}')
 
-def weighted_center_of_gravity(data_pts, dim):
-    FILL ME IN
-    FILL ME IN
-    FILL ME IN
+IterationCallback = Callable[  # callback func to invoke on each iteration
+    [
+        dict[tuple[float], list[tuple[tuple[float], float]]]
+    ],
+    None
+]
 
 
 # MARKDOWN
 def k_means_soft_lloyds(
         k: int,
-        vectors: list[Sequence[float]],
-        centers_init: list[Sequence[float]],
+        points: list[tuple[float]],
+        centers_init: list[tuple[float]],
         dims: int,
-        iteration_callback: Callable[  # callback func to invoke on each iteration
-            [
-                dict[tuple[float], list[Sequence[float]]]
-            ],
-            None
-        ] | None = None
-) -> dict[tuple[float], list[Sequence[float]]]:
+        stiffness: float = 0.5,
+        iteration_callback: IterationCallback | None = None
+) -> dict[
+        tuple[float],  # center
+        dict[          # dict of (point -> confidence_level) for center
+            tuple[float],
+            float
+        ]
+]:
     old_centers = []
     centers = centers_init[:]
+    mapping = {}
     while centers != old_centers:
-        mapping = {tuple(ct_pt): [] for ct_pt in centers}
         # centers to clusters
-        for pt in vectors:
-            ct_pt, _ = find_closest_center(pt, centers)
-            ct_pt = tuple(ct_pt)
-            mapping[ct_pt].append(pt)
+        membership_confidence = e_step(points, centers, stiffness)
         # clusters to centers
-        old_centers = centers
-        centers = []
-        for pts in mapping.values():
-            new_ct_pt = center_of_gravity(pts, dims)
-            new_ct_pt = tuple(new_ct_pt)
-            centers.append(new_ct_pt)
+        centers = m_step(membership_confidence, dims)
         # notify of current iteration's cluster
-        iteration_callback(mapping)
+        mapping = {ct: list(zip(points, membership_confidence[ct])) for ct in centers}
+        if iteration_callback is not None:
+            iteration_callback(mapping)
     return mapping
 # MARKDOWN
 

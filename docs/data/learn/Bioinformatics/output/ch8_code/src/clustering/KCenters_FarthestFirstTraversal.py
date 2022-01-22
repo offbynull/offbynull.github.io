@@ -2,18 +2,17 @@ from __future__ import annotations
 
 import itertools
 import random
-from collections import defaultdict
 from math import dist
 from pathlib import Path
 from sys import stdin
-from typing import Sequence, Optional, Callable
+from typing import Optional, Callable
 
 import matplotlib.pyplot as plt
 import yaml
 
 
 def plot_2d(
-        clusters: dict[tuple[float], list[Sequence[float]]],
+        clusters: dict[tuple[float], list[tuple[float]]],
         output_path: Optional[Path]
 ) -> None:
     plt.close() # reset
@@ -52,7 +51,7 @@ def plot_2d(
 
 
 def plot_3d(
-        clusters: dict[tuple[float], list[Sequence[float]]],
+        clusters: dict[tuple[float], list[tuple[float]]],
         output_path: Optional[Path]
 ) -> None:
     plt.close() # reset
@@ -125,9 +124,9 @@ def find_closest_center(data_pt, center_pts):
 
 
 def centers_to_clusters(
-        centers: list[Sequence[float]],
-        vectors: list[Sequence[float]]
-) -> dict[tuple[float], list[Sequence[float]]]:
+        centers: list[tuple[float]],
+        vectors: list[tuple[float]]
+) -> dict[tuple[float], list[tuple[float]]]:
     mapping = {tuple(ct_pt): [] for ct_pt in centers}
     for pt in vectors:
         ct_pt, _ = find_closest_center(pt, centers)
@@ -138,15 +137,15 @@ def centers_to_clusters(
 
 def k_centers_farthest_first_traversal(
         k: int,
-        vectors: list[Sequence[float]],
+        vectors: list[tuple[float]],
         dims: int,
         iteration_callback: Callable[  # callback func to invoke on each iteration
             [
-                dict[tuple[float], list[Sequence[float]]]
+                dict[tuple[float], list[tuple[float]]]
             ],
             None
         ] | None = None
-) -> dict[tuple[float], list[Sequence[float]]]:
+) -> dict[tuple[float], list[tuple[float]]]:
     # choose an initial center
     centers = [random.choice(vectors)]
     # notify of cluster for first iteration
@@ -175,7 +174,7 @@ def main():
     try:
         data = yaml.safe_load(stdin)
         k = data[0]
-        vectors = data[1]
+        vectors = [tuple(v) for v in data[1]]
         dims = max(len(v) for v in vectors)
         print(f'Given {k=} and {vectors=}...')
         print()

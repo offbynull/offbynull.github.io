@@ -16657,7 +16657,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>picks the point with the farthest <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a> and sets it as the new center.</li>
 </ol>
 <p>The algorithm initially primes the list of centers with a randomly chosen point and stops executing once it has k points.</p>
-<p><a href="ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py">ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py</a> (lines 119 to 169):</p>
+<p><a href="ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py">ch8_code/src/clustering/KCenters_FarthestFirstTraversal.py</a> (lines 118 to 168):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_closest_center</span>(<span class="hljs-params">data_pt, center_pts</span>):
     center_pt = <span class="hljs-built_in">min</span>(
         center_pts,
@@ -16667,9 +16667,9 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">centers_to_clusters</span>(<span class="hljs-params">
-        centers: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
-        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]
-</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]:
+        centers: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]]
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]]]:
     mapping = {<span class="hljs-built_in">tuple</span>(ct_pt): [] <span class="hljs-keyword">for</span> ct_pt <span class="hljs-keyword">in</span> centers}
     <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> vectors:
         ct_pt, _ = find_closest_center(pt, centers)
@@ -16680,15 +16680,15 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">k_centers_farthest_first_traversal</span>(<span class="hljs-params">
         k: <span class="hljs-built_in">int</span>,
-        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
         dims: <span class="hljs-built_in">int</span>,
         iteration_callback: <span class="hljs-type">Callable</span>[  <span class="hljs-comment"># callback func to invoke on each iteration</span>
             [
-                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]
+                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]]]
             ],
             <span class="hljs-literal">None</span>
         ] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
-</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]:
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]]]:
     <span class="hljs-comment"># choose an initial center</span>
     centers = [random.choice(vectors)]
     <span class="hljs-comment"># notify of cluster for first iteration</span>
@@ -16711,32 +16711,32 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
-<p>Given k=3 and vectors=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]...</p>
+<p>Given k=3 and vectors=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]...</p>
 <p>The farthest first travel heuristic produced the clusters at each iteration ...</p>
 <ul>
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1], [9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
+<li>cluster center (4, 3)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_45994bd456462545adc7ae201dc0ab94_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_64da3a951e0567b5c2938a712ccb696b_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4], [7, 2], [7.5, 3], [8, 1]]</li>
-<li>cluster center (10, 7)=[[9, 2], [8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
+<li>cluster center (4, 3)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
+<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_45994bd456462545adc7ae201dc0ab94_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_64da3a951e0567b5c2938a712ccb696b_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
 <ul>
-<li>cluster center (4, 5)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
-<li>cluster center (10, 7)=[[8, 7], [8.5, 8], [9, 6], [10, 7]]</li>
-<li>cluster center (8, 1)=[[7, 2], [7.5, 3], [8, 1], [9, 2]]</li>
+<li>cluster center (4, 3)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 2)=[(7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
 </ul>
-<p><img src="ch8_45994bd456462545adc7ae201dc0ab94_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_64da3a951e0567b5c2938a712ccb696b_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16810,7 +16810,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </li>
 <li>
 <p>converts <a href="#BM_(cluster)%2Fi">cluster</a>s to centers.</p>
-<p>The <a href="#BM_(cluster)%2Fi">cluster</a>s from step 1 are turned into new centers. Each component of a center becomes the average of that dimension across <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s, referred to as the center of gravity.</p>
+<p>The <a href="#BM_(cluster)%2Fi">cluster</a>s from step 1 are turned into new centers. Each component of a center becomes the average of that component across <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s, referred to as the center of gravity.</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
     center = []
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
@@ -16821,19 +16821,19 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </li>
 </ol>
 <p>The algorithm will converge to stable centers, at which point it stops iterating.</p>
-<p><a href="ch8_code/src/clustering/KMeans_Lloyds.py">ch8_code/src/clustering/KMeans_Lloyds.py</a> (lines 138 to 169):</p>
+<p><a href="ch8_code/src/clustering/KMeans_Lloyds.py">ch8_code/src/clustering/KMeans_Lloyds.py</a> (lines 137 to 168):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">k_means_lloyds</span>(<span class="hljs-params">
         k: <span class="hljs-built_in">int</span>,
-        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
-        centers_init: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
+        centers_init: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
         dims: <span class="hljs-built_in">int</span>,
         iteration_callback: <span class="hljs-type">Callable</span>[  <span class="hljs-comment"># callback func to invoke on each iteration</span>
             [
-                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]
+                <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]]]
             ],
             <span class="hljs-literal">None</span>
         ] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
-</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]]]:
+</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]]]:
     old_centers = []
     centers = centers_init[:]
     <span class="hljs-keyword">while</span> centers != old_centers:
@@ -16866,7 +16866,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (2, 4)=[[2, 4], [4.5, 4]]</li>
 <li>cluster center (2.5, 6)=[[2.5, 6], [4, 5], [17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 </ul>
-<p><img src="ch8_784c1e3ba1125a476a6bf2caadfaa543_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_d199fd5adaf0338cfe7b5aa3dfe6675e_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16875,7 +16875,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.25, 4)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
 <li>cluster center (13.0, 9.833333333333334)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 </ul>
-<p><img src="ch8_784c1e3ba1125a476a6bf2caadfaa543_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_d199fd5adaf0338cfe7b5aa3dfe6675e_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -16884,7 +16884,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
 <li>cluster center (17.875, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 </ul>
-<p><img src="ch8_784c1e3ba1125a476a6bf2caadfaa543_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_d199fd5adaf0338cfe7b5aa3dfe6675e_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16903,10 +16903,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>...</li>
 </ol>
 <p>The probability of selecting a point as the next center is proportional to its squared distance to the existing centers.</p>
-<p><a href="ch8_code/src/clustering/KMeans_Lloyds.py">ch8_code/src/clustering/KMeans_Lloyds.py</a> (lines 246 to 264):</p>
+<p><a href="ch8_code/src/clustering/KMeans_Lloyds.py">ch8_code/src/clustering/KMeans_Lloyds.py</a> (lines 245 to 263):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">k_means_PP_initializer</span>(<span class="hljs-params">
         k: <span class="hljs-built_in">int</span>,
-        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>]],
+        vectors: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
 </span>):
     centers = [random.choice(vectors)]
     <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(centers) &lt; k:
@@ -16932,20 +16932,29 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (2.5, 6)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
-<li>cluster center (17.5, 13)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
-<li>cluster center (20, -7)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
+<li>cluster center (2, 4)=[[2, 2], [2, 4], [2.5, 6]]</li>
+<li>cluster center (4, 3)=[[3.5, 2], [4, 3], [4, 5], [4.5, 4], [17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
+<li>cluster center (19, -6)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
 </ul>
-<p><img src="ch8_b2aab62a88f08f75a8089f137bf5e737_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_81d4a119ae8e643db83fad1f509ed498_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
+<ul>
+<li>cluster center (2.1666666666666665, 4)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
+<li>cluster center (10.9375, 7.75)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
+<li>cluster center (18.875, -7)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
+</ul>
+<p><img src="ch8_81d4a119ae8e643db83fad1f509ed498_plot1.svg" alt="k-centers 2D plot"></p>
+</li>
+<li>
+<p>Iteration 2</p>
 <ul>
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[[2, 2], [2, 4], [2.5, 6], [3.5, 2], [4, 3], [4, 5], [4.5, 4]]</li>
 <li>cluster center (17.875, 12)=[[17, 12], [17.5, 13], [18, 11], [19, 12]]</li>
 <li>cluster center (18.875, -7)=[[18, -7], [18.5, -8], [19, -6], [20, -7]]</li>
 </ul>
-<p><img src="ch8_b2aab62a88f08f75a8089f137bf5e737_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_81d4a119ae8e643db83fad1f509ed498_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16973,24 +16982,111 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>There's some ambiguity here on what the function being minimized / maximized is and how probabilities are derived. It seems like <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> isn't involved here at all, so how is this related in anyway to <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>? My understanding is that <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> is what makes <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>.</p>
-<p>It seems like this is called soft <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> because the high-level steps of the algorithm for this are similar to the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> heuristic. That's where the similarity ends (as far as I can tell). So maybe it should be called soft <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> instead?</p>
+<p>It seems like this is called soft <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> because the high-level steps of the algorithm for this are similar to the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> heuristic. That's where the similarity ends (as far as I can tell). So maybe it should be called soft <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> instead? It looks like the generic name for this is called the <a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation-maximization algorithm</a>.</p>
 </div>
 <p><strong>WHY</strong>: <a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">Soft clustering</a> is a way to suss out ambiguous points. For example, a point that sits exactly between two obvious <a href="#BM_(cluster)%2Fi">cluster</a>s will be just as likely be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of each...</p>
 <p><img src="svgbob_7707372b418f31d9cd50f377775622b0d1bcaf8f.svg" alt="Kroki diagram output"></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
-<p>TODO: IMPLEMENT THE CODE. Begin by saying that this is the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a> with modifications. Specifically call out the e-step and m-step and mention expectation maximization. Specifically call out responsibility / confidence matrix. Specifically call out the "weighted center of gravity". Show implementation, THEN talk about the coin flipping example in the book.</p>
+<p>This algorithm is similar to the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> heuristic used for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing. It begins by randomly picking k points to set as the centers and iteratively refines those centers. At each step, the algorithm ...</p>
+<ol>
+<li>converts centers to <a href="#BM_(cluster)%2Fi">cluster</a>s (referred to as E-step),</li>
+<li>converts <a href="#BM_(cluster)%2Fi">cluster</a>s to centers (referred to as M-step).</li>
+</ol>
+<p>The major difference between Llyod's algorithm and this algorithm is that this algorithm produces <em>probabilities of <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">membership</a> assignments</em>. In contrast, <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> produces <em>definitive <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">membership</a> assignments</em>. The steps being iterated are essentially the same steps as in <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a>, except they've been modified to work with assignment probabilities instead of definitive assignments.</p>
+<p><strong>STEP 1: CENTERS TO <a href="#BM_(cluster)%2Fi">CLUSTER</a>S (E-STEP)</strong></p>
+<p>Recall that with <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a>, this step assigns each data point to exactly one center (whichever center is closest). With this algorithm, each data point is assigned a set of probabilities that define how likely it is to be assigned to each center, referred to as confidence values (and sometimes responsibility values).</p>
+<p><img src="svgbob_f277c4569e3369cf5bed532a71762eab82bcb449.svg" alt="Kroki diagram output"></p>
+<p>The general concept behind assigning confidence values is that the closer a center is to a data point, the more affinity it has to that data point (higher confidence for closer points). This concept can be implemented in multiple different ways: raw distance comparisons, Newtonian inverse-square law of gravitation, partition function from statistical physics, etc..</p>
+<p>The partition function is the preferred implementation.</p>
+<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>c</mi><mi>o</mi><mi>n</mi><mi>f</mi><mi>i</mi><mi>d</mi><mi>e</mi><mi>n</mi><mi>c</mi><mi>e</mi><mo stretchy="false">(</mo><mi>P</mi><mo separator="true">,</mo><msub><mi>C</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mfrac><msup><mi>e</mi><mrow><mo>−</mo><mi>β</mi><mo>⋅</mo><mi>d</mi><mo stretchy="false">(</mo><mi>P</mi><mo separator="true">,</mo><msub><mi>C</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></msup><mrow><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi>e</mi><mrow><mo>−</mo><mi>β</mi><mo>⋅</mo><mi>d</mi><mo stretchy="false">(</mo><mi>P</mi><mo separator="true">,</mo><msub><mi>C</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">confidence(P, C_i) = \frac{
+  e^{-\beta \cdot d(P, C_i)}
+}{
+  \sum_{t=1}^{n}{e^{-\beta \cdot d(P, C_t)}}
+}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">c</span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.56871em;vertical-align:-1.0037099999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.565em;"><span style="top:-2.2960000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.814em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.05278em;">β</span><span class="mbin mtight">⋅</span><span class="mord mathnormal mtight">d</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mpunct mtight">,</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.29634285714285713em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8879999999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.05278em;">β</span><span class="mbin mtight">⋅</span><span class="mord mathnormal mtight">d</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mpunct mtight">,</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3280857142857143em;"><span style="top:-2.357em;margin-left:-0.07153em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.0037099999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div><ul>
+<li>P is a point.</li>
+<li>C is a set of centers.</li>
+<li>Ci is the center for which the confidence is being calculated.</li>
+<li>n is the number of centers in C.</li>
+<li>e is the base for natural logarithms (~2.72).</li>
+<li>b is a user-defined parameter that defines how loose / definitive confidences are (ranges from 0 to 1).</li>
+<li>d() calculates the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_function</span>(<span class="hljs-params">
+        point: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>],
+        center_pts: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
+        stiffness: <span class="hljs-built_in">float</span>
+</span>):
+    confidences = {}
+    total_pf = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> c_pt <span class="hljs-keyword">in</span> center_pts:
+        total_pf += e ** (-stiffness * dist(point, c_pt))
+    <span class="hljs-keyword">for</span> c_pt <span class="hljs-keyword">in</span> center_pts:
+        pf = e ** (-stiffness * dist(point, c_pt))
+        confidences[point] = pf / total_pf
+    <span class="hljs-keyword">return</span> confidences
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book gives the analogy that centers are stars and points are planets. The closer a planet is to a star, the stronger that star's gravitational pull should be. This gravitational pull is the "confidence" -- a stronger pull means a stronger confidence. The analogy falls a bit flat because, in this case, it's the stars (centers) that are being pulled in to the planets (points) -- normally it's the other way around (planets get pulled into stars).</p>
+<p>I have no idea how the partition function actually works or know anything about statistical physics. The book also listed the formula for Newtonian inverse-square law of gravitation but mentioned that the partition function works better in practice. I think a simpler / more understandable metric may be used instead of either of these. The core thing it needs to do is assign a greater confidence to points that are closer than to those that are farther, where that confidence is between 0 and 1. Maybe some kind of re-worked / inverted version of <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> would work here.</p>
+</div>
+<p><strong>STEP 2: <a href="#BM_(cluster)%2Fi">CLUSTER</a>S TO CENTERS (M-STEP)</strong></p>
+<p>Recall that with <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a>, this step generates new centers for <a href="#BM_(cluster)%2Fi">cluster</a>s by calculating the center of gravity across the <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s of each <a href="#BM_(cluster)%2Fi">cluster</a>: Each component of a center becomes the average of that component across <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">center_of_gravity</span>(<span class="hljs-params">data_pts, dim</span>):
+    center = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dim):
+        val = mean(pt[i] <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> data_pts)
+        center.append(val)
+    <span class="hljs-keyword">return</span> center
+</code></pre>
+<p>This algorithm performs a similar center of gravity calculation. The difference is that, since there are no definitive <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s here, all data points are included in the center of gravity calculation. But, each data point is appropriately scaled by its confidence value for the <a href="#BM_(cluster)%2Fi">cluster</a> whose center is being calculated.</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">weighted_center_of_gravity</span>(<span class="hljs-params">
+        confidence_set: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>], <span class="hljs-built_in">float</span>],
+        dims: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]:
+    center_pt: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">float</span>] = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims):
+        pt_coordinates = [pt[i] <span class="hljs-keyword">for</span> pt <span class="hljs-keyword">in</span> confidence_set.keys()]
+        pt_confidences = confidence_set.values()
+        total_confidences = <span class="hljs-built_in">sum</span>(pt_confidences)
+        ct_coordinate = dot_product(pt_coordinates, pt_confidences) / total_confidences
+        center_pt.append(ct_coordinate)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">tuple</span>(center_pt)
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Think about what's happening here. With standard <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a>, you're averaging out a component for a center. For example, the points 5, 4, and 3 are calculated as ...</p>
+<pre><code>(5 + 4 + 3) / (1 + 1 + 1)
+(5 + 4 + 3) / 3
+12 / 3
+4
+</code></pre>
+<p>With this algorithm, you're doing the same thing except weighting them by their confidence values. For example, if the points above had the confidence values 0.9, 0.8, 0.95 respectively, they're calculated as ...</p>
+<pre><code>((5 * 0.9) + (4 * 0.8) + (3 * 0.95)) / (0.9 + 0.8 + 0.95)
+(4.5 + 3.2 + 2.85) / 2.65
+10.55 / 2.65
+3.98
+</code></pre>
+<p>The <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> center of gravity calculation is just this algorithm's center of gravity calculation with all 1 confidence values ...</p>
+<pre><code>((5 * 1) + (4 * 1) + (3 * 1)) / (1 + 1 + 1)
+(5 + 4 + 3) / (1 + 1 + 1)
+(5 + 4 + 3) / 3
+12 / 3
+4
+</code></pre>
+</div>
+<p><strong>FULL ALGORITHM</strong></p>
+<p>The hope with this algorithm is that, at each iteration, enough true <a href="#BM_(cluster)%2Fi">cluster</a> <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s have appropriately high confidence values (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by <em>probabilistically</em> selecting initial centers that are far from each other via the <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">k-means++ initializer</a>.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
+<p>TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.</p>
 <p>similar to <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">lloyd's algorithm</a></p>
 <ol>
 <li>centers to <a href="#BM_(cluster)%2Fi">cluster</a>s: assign each data point to a set of probabilities (not to nearest center)</li>
