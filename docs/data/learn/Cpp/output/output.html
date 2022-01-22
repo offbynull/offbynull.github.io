@@ -419,6 +419,12 @@ hello world
 </div>
 <a name="H_Core%20Language"></a><h1>Core Language</h1>
 <p><a name="BM_(Core%20Language)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Essentials)_TOPIC%2F">Essentials</a></li>
+</ul>
+</div>
 <p>The following subsection loosely details core C++ language features. It isn't comprehensive and some of the information may not be entirely correct / may be missing large portions.</p>
 <a name="H_Operators"></a><h2>Operators</h2>
 <p><a name="BM_(Core%20Language%5C%2FOperators)_TOPIC%2F"></a><strong></strong></p>
@@ -2892,19 +2898,19 @@ MyStruct c {b};               <span class="hljs-comment">// move a into c (gut i
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>There's ambiguity around when the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> generates default move/copy/<a href="#BM_(destructor)%2Fi">destructor</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s. It might be <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> specific. The book recommends that if you're using the defaults, always set them to <code>= default</code> (or do <code>= delete</code> to disallow them).</p>
-<p><a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> MyStruct {
-...</p>
-<pre><code>// copy
-MyStruct(MyStruct &amp;&amp;orig) = default;
-MyStruct&amp; operator=(MyStruct &amp;&amp;orig) = default;
-// move
-MyStruct(MyStruct &amp;&amp;orig) = default;
-MyStruct&amp; operator=(MyStruct &amp;&amp;orig) = default;
-// destructor
-~MyStruct() = default;
+<pre><code>class MyStruct {
+    ...
+
+    // copy
+    MyStruct(MyStruct &amp;&amp;orig) = default;
+    MyStruct&amp; operator=(MyStruct &amp;&amp;orig) = default;
+    // move
+    MyStruct(MyStruct &amp;&amp;orig) = default;
+    MyStruct&amp; operator=(MyStruct &amp;&amp;orig) = default;
+    // destructor
+    ~MyStruct() = default;
+}
 </code></pre>
-<p>}
-```</p>
 </div>
 <a name="H_Inheritance"></a><h3>Inheritance</h3>
 <p><a name="BM_(Core%20Language%5C%2FClasses%2FInheritance)_TOPIC%2F"></a><strong></strong></p>
@@ -3909,12 +3915,6 @@ T <span class="hljs-title">sum</span><span class="hljs-params">(T a, T b)</span>
 </code></pre>
 <a name="H_Unions"></a><h2>Unions</h2>
 <p><a name="BM_(Core%20Language%5C%2FUnions)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li>Core Language/<a href="#BM_(Essentials)_TOPIC%2F">Essentials</a></li>
-</ul>
-</div>
 <p>C++ <a href="#BM_(union)%2Fi">union</a>s are a set of variables that point to the same underlying memory. Each <a href="#BM_(union)%2Fi">union</a> takes up only as much memory as its largest <a href="#BM_%5Cb(member)%2Fi">member</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">union</span> <span class="hljs-title class_">MyUnion</span> {
    <span class="hljs-type">char</span> raw[<span class="hljs-number">100</span>];

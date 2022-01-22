@@ -2,7 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Core Language/Essentials_TOPIC
+ * Essentials_TOPIC
 
 </div>
 

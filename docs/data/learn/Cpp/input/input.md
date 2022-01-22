@@ -339,6 +339,10 @@ Conan changes ARE NOT automatically picked up. You need to re-run conan (from `.
 
 `{bm} /(Core Language)_TOPIC/`
 
+```{prereq}
+Essentials_TOPIC
+```
+
 The following subsection loosely details core C++ language features. It isn't comprehensive and some of the information may not be entirely correct / may be missing large portions.
 
 ## Operators
@@ -2561,6 +2565,7 @@ class MyStruct {
 ````{note}
 There's ambiguity around when the compiler generates default move/copy/destructor methods. It might be compiler specific. The book recommends that if you're using the defaults, always set them to `= default` (or do `= delete` to disallow them).
 
+```
 class MyStruct {
     ...
 
@@ -3713,10 +3718,6 @@ bool sum(bool a, bool b) {  // type removed after name: "sum<bool>" to just "sum
 ## Unions
 
 `{bm} /(Core Language\/Unions)_TOPIC/`
-
-```{prereq}
-Core Language/Essentials_TOPIC
-```
 
 C++ unions are a set of variables that point to the same underlying memory. Each union takes up only as much memory as its largest member.
 
