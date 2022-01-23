@@ -1,51 +1,54 @@
 from __future__ import annotations
 
 import itertools
-import random
 from collections import defaultdict
-from math import dist, nan, e
+from math import dist, e
 from pathlib import Path
-from statistics import mean
 from sys import stdin
-from typing import Sequence, Optional, Callable
+from typing import Optional, Callable
 
 import matplotlib.pyplot as plt
 import yaml
 
+from clustering.KMeans_Lloyds import k_means_PP_initializer
+
 
 def plot_2d(
-        clusters: dict[tuple[float], list[Sequence[float]]],
+        membership_confidences: dict[tuple[float], dict[tuple[float], float]],
         output_path: Optional[Path]
 ) -> None:
     plt.close() # reset
-    cm = plt.cm.get_cmap('hsv', len(clusters) + 1)
-    cluster_colors = {center: cm(i) for i, center in enumerate(clusters)}
     xs = []
     ys = []
-    colors = []
     markers = []
     sizes = []
-    for center in clusters:
-        xs.append(center[0])
-        ys.append(center[1])
-        colors.append('black')
+    point_labels = defaultdict(str)
+    center_labels = defaultdict(str)
+    for c_idx, c_pt in enumerate(membership_confidences):
+        xs.append(c_pt[0])
+        ys.append(c_pt[1])
         markers.append('x')
-        sizes.append(80)
-        color = cluster_colors[center]
-        for pt in clusters[center]:
+        sizes.append(160)
+        center_labels[c_pt] = f'{c_idx}'
+        for pt in membership_confidences[c_pt]:
             xs.append(pt[0])
             ys.append(pt[1])
-            colors.append(color)
             markers.append('o')
             sizes.append(40)
-    group_by_markers = itertools.groupby(zip(markers, colors, sizes, xs, ys), key=lambda x: x[0])
+            point_labels[pt] = f'{point_labels[pt]}\n{c_idx}={membership_confidences[c_pt][pt]:.2f}'
+    group_by_markers = itertools.groupby(zip(markers, sizes, xs, ys), key=lambda x: x[0])
     for marker, group in group_by_markers:
         group = list(group)
-        group_xs = [e[3] for e in group]
-        group_ys = [e[4] for e in group]
-        group_colors = [e[1] for e in group]
-        group_sizes = [e[2] for e in group]
-        plt.scatter(group_xs, group_ys, color=group_colors, marker=marker, s=group_sizes)
+        group_xs = [e[2] for e in group]
+        group_ys = [e[3] for e in group]
+        group_sizes = [e[1] for e in group]
+        plt.scatter(group_xs, group_ys, marker=marker, s=group_sizes)
+    for pt, text in list(point_labels.items()) + list(center_labels.items()):
+        plt.annotate(text,  # this is the text
+                     (pt[0], pt[1]),  # these are the coordinates to position the label
+                     textcoords="offset points",  # how to position the text
+                     xytext=(0, 10),  # distance from text to points (x,y)
+                     ha='center')
     if output_path is not None:
         plt.savefig(output_path)
     else:
@@ -53,44 +56,48 @@ def plot_2d(
 
 
 def plot_3d(
-        clusters: dict[tuple[float], list[Sequence[float]]],
+        membership_confidences: dict[tuple[float], dict[tuple[float], float]],
         output_path: Optional[Path]
 ) -> None:
     plt.close() # reset
-    cm = plt.cm.get_cmap('hsv', len(clusters) + 1)
-    cluster_colors = {center: cm(i) for i, center in enumerate(clusters)}
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     xs = []
     ys = []
     zs = []
-    colors = []
     markers = []
     sizes = []
-    for center in clusters:
-        xs.append(center[0])
-        ys.append(center[1])
-        zs.append(center[2])
-        colors.append('black')
+    point_labels = defaultdict(str)
+    center_labels = defaultdict(str)
+    for c_idx, c_pt in enumerate(membership_confidences):
+        xs.append(c_pt[0])
+        ys.append(c_pt[1])
+        zs.append(c_pt[2])
         markers.append('x')
-        sizes.append(80)
-        color = cluster_colors[center]
-        for pt in clusters[center]:
+        sizes.append(160)
+        center_labels[c_pt] = f'{c_idx}'
+        for pt in membership_confidences[c_pt]:
             xs.append(pt[0])
             ys.append(pt[1])
             zs.append(pt[2])
-            colors.append(color)
             sizes.append(40)
             markers.append('o')
-    group_by_markers = itertools.groupby(zip(markers, colors, sizes, xs, ys, zs), key=lambda x: x[0])
+            point_labels[pt] = f'{point_labels[pt]}\n{c_idx}={membership_confidences[c_pt][pt]:.2f}'
+    group_by_markers = itertools.groupby(zip(markers, sizes, xs, ys, zs), key=lambda x: x[0])
     for marker, group in group_by_markers:
         group = list(group)
-        group_xs = [e[3] for e in group]
-        group_ys = [e[4] for e in group]
-        group_zs = [e[5] for e in group]
-        group_colors = [e[1] for e in group]
-        group_sizes = [e[2] for e in group]
-        ax.scatter(group_xs, group_ys, group_zs, color=group_colors, marker=marker, s=group_sizes)
+        group_xs = [e[2] for e in group]
+        group_ys = [e[3] for e in group]
+        group_zs = [e[4] for e in group]
+        group_sizes = [e[1] for e in group]
+        ax.scatter(group_xs, group_ys, group_zs, marker=marker, s=group_sizes)
+    for pt, text in list(point_labels.items()) + list(center_labels.items()):
+        ax.text(pt[0], pt[1], pt[2],  # these are the coordinates to position the label
+                text,  # this is the text
+                # textcoords="offset points",  # how to position the text
+                # xyztext=(0, 10, 0),  # distance from text to points (x,y)
+                # ha='center'
+                )
     if output_path is not None:
         plt.savefig(output_path)
     else:
@@ -109,105 +116,88 @@ def plot_3d(
 
 
 
+MembershipConfidenceMap = dict[
+        tuple[float],  # center
+        dict[          # dict of (point -> confidence_level) for center
+            tuple[float],
+            float
+        ]
+]
 
-def dot_product(a, b):
-    return sum(e_a * e_b for e_a, e_b in zip(a, b))
 
-
-# MARKDOWN_PARTITION_FUNC
-def partition_function(
+# MARKDOWN_E_STEP
+# For each center, estimate the confidence of point belonging to that center using the partition
+# function from statistical physics.
+#
+# What is the partition function's stiffness parameter? You can thnk of stiffness as how willing
+# the partition function is to be polarizing. For example, if you set stiffness to 1.0, whichever
+# center the point teeters towards will have maximum confidence (1) while all other centers will
+# have no confidence (0).
+def confidence(
         point: tuple[float],
-        center_pts: list[tuple[float]],
+        centers: list[tuple[float]],
         stiffness: float
-):
+) -> dict[tuple[float], float]:
     confidences = {}
-    total_pf = 0
-    for c_pt in center_pts:
-        total_pf += e ** (-stiffness * dist(point, c_pt))
-    for c_pt in center_pts:
-        pf = e ** (-stiffness * dist(point, c_pt))
-        confidences[point] = pf / total_pf
-    return confidences
-# MARKDOWN_PARTITION_FUNC
+    total = 0
+    for c in centers:
+        total += e ** (-stiffness * dist(point, c))
+    for c in centers:
+        val = e ** (-stiffness * dist(point, c))
+        confidences[c] = val / total
+    return confidences  # center -> confidence value
 
 
-#   cpA and cpB -- prob of coinA and coinB to produce heads = THESE ARE THE CENTERS
-#   the _outcome_ of each 10 flip round (heads ratio)       = THESE ARE THE POINTS
-#   which coin was used per 10 flip round (coinA or coinB)  = THESE ARE THE CLUSTER ASSIGNMENTS
-
-# E-step: centers to "soft" clusters
-# ----------------------------------
-# For each data point, estimate the confidence level that it belongs to each of the "centers". The algorithm below is
-# the "partition function" from statistical physics. These confidence levels are sometimes also referred to as a
-# "responsibility matrix" or "hidden matrix".
+# E-STEP: For each data point, estimate the confidence level of it belonging to each of the
+# centers.
 def e_step(
-        data_pts: list[tuple[float]],
-        center_pts: list[tuple[float]],
+        points: list[tuple[float]],
+        centers: list[tuple[float]],
         stiffness: float
-) -> dict[
-    tuple[float],              # center point
-    dict[tuple[float], float]  # data point -> confidence
-]:
-    membership_confidence = {c_pt: {} for c_pt in center_pts}
-    for d_pt in data_pts:
-        total_pf = 0
-        for c_pt in center_pts:
-            total_pf += e ** (-stiffness * dist(d_pt, c_pt))
-        for c_pt in center_pts:
-            pf = e ** (-stiffness * dist(d_pt, c_pt))
-            membership_confidence[c_pt][d_pt] = pf / total_pf
-    return membership_confidence
+) -> MembershipConfidenceMap:
+    membership_confidence = {c: {} for c in centers}
+    for pt in points:
+        pt_confidences = confidence(pt, centers, stiffness)
+        for c, val in pt_confidences.items():
+            membership_confidence[c][pt] = val
+    return membership_confidence  # confidence per (center, point) pair
+# MARKDOWN_E_STEP
 
 
-# M-step: "soft" clusters to centers
-# ----------------------------------
-# Calculate a new set of centers from the "confidence levels" derived in the E-step.
-def m_step(
-        membership_confidence: dict[tuple[float], dict[tuple[float], float]],
-        dims: int
-) -> list[tuple[float]]:
-    centers = []
-    for ct_pt in membership_confidence:
-        new_ct_pt = weighted_center_of_gravity(
-            membership_confidence[ct_pt],
-            dims
-        )
-        centers.append(new_ct_pt)
-    return centers
-
-
-# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY
+# MARKDOWN_M_STEP
 def weighted_center_of_gravity(
         confidence_set: dict[tuple[float], float],
         dims: int
 ) -> tuple[float]:
-    center_pt: list[float] = []
+    center: list[float] = []
+    all_confidences = confidence_set.values()
+    all_confidences_summed = sum(all_confidences)
     for i in range(dims):
-        pt_coordinates = [pt[i] for pt in confidence_set.keys()]
-        pt_confidences = confidence_set.values()
-        total_confidences = sum(pt_confidences)
-        ct_coordinate = dot_product(pt_coordinates, pt_confidences) / total_confidences
-        center_pt.append(ct_coordinate)
-    return tuple(center_pt)
-# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY
+        val = 0.0
+        for pt, confidence in confidence_set.items():
+            val += pt[i] * confidence  # scale by confidence
+        val /= all_confidences_summed
+        center.append(val)
+    return tuple(center)
 
-x = weighted_center_of_gravity(
-    {
-        (1,): 0.2,
-        (4,): 1,
-        (5,): 1
-    },
-    1
-)
-print(f'{x}')
 
-IterationCallback = Callable[  # callback func to invoke on each iteration
-    [
-        dict[tuple[float], list[tuple[tuple[float], float]]]
-    ],
-    None
-]
+# M-STEP: Calculate a new set of centers from the "confidence levels" derived in the E-step.
+def m_step(
+        membership_confidences: MembershipConfidenceMap,
+        dims: int
+) -> list[tuple[float]]:
+    centers = []
+    for c in membership_confidences:
+        new_c = weighted_center_of_gravity(
+            membership_confidences[c],
+            dims
+        )
+        centers.append(new_c)
+    return centers
+# MARKDOWN_M_STEP
 
+
+IterationCallbackFunc = Callable[[MembershipConfidenceMap], bool]
 
 # MARKDOWN
 def k_means_soft_lloyds(
@@ -215,28 +205,18 @@ def k_means_soft_lloyds(
         points: list[tuple[float]],
         centers_init: list[tuple[float]],
         dims: int,
-        stiffness: float = 0.5,
-        iteration_callback: IterationCallback | None = None
-) -> dict[
-        tuple[float],  # center
-        dict[          # dict of (point -> confidence_level) for center
-            tuple[float],
-            float
-        ]
-]:
-    old_centers = []
+        stiffness: float,
+        iteration_callback: IterationCallbackFunc
+) -> MembershipConfidenceMap:
     centers = centers_init[:]
-    mapping = {}
-    while centers != old_centers:
-        # centers to clusters
-        membership_confidence = e_step(points, centers, stiffness)
-        # clusters to centers
-        centers = m_step(membership_confidence, dims)
-        # notify of current iteration's cluster
-        mapping = {ct: list(zip(points, membership_confidence[ct])) for ct in centers}
-        if iteration_callback is not None:
-            iteration_callback(mapping)
-    return mapping
+    while True:
+        membership_confidences = e_step(points, centers, stiffness)  # step1: centers to clusters (E-step)
+        centers = m_step(membership_confidences, dims)               # step2: clusters to centers (M-step)
+        # check to see if you can stop iterating ("converged" enough to stop)
+        continue_flag = iteration_callback(membership_confidences)
+        if not continue_flag:
+            break
+    return membership_confidences
 # MARKDOWN
 
 
@@ -244,163 +224,76 @@ def main():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
     try:
-        data = yaml.safe_load(stdin)
-        k = data[0]
-        vectors = data[1]
-        if len(data) > 2:
-            centers = data[2]
+        data_raw = stdin.read()
+        data: dict = yaml.safe_load(data_raw)
+        k = data['k']
+        vectors = [tuple(pt) for pt in data['points']]
+        stiffness = data['stiffness']
+        show_every = data['show_every']
+        stop_instructions = data['stop_instructions']
+        centers = data.get('centers', None)
+        if centers is not None:
+            centers = [tuple(c) for c in centers]
+            assert len(centers) == k, 'k must match number of centers'
         else:
-            centers = random.sample(vectors, k)
-        assert len(centers) == k, 'k must match number of centers'
+            centers = k_means_PP_initializer(k, vectors)
         dims = max(len(v) for v in vectors)
-        print(f'Given {k=} and {vectors=}...')
         print()
-        print(f'The llyod\'s algorithm heuristic produced the clusters at each iteration ...')
+        print(f'Executing soft llyod\'s algorithm heuristic using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
         print()
         unique_id_path = Path('/input/.__UNIQUE_INPUT_ID')
-        iteration = 0
-        def plot_iteration(clusters):
-            nonlocal iteration
+        def print_cluster(clusters):
             plot_path = None
             if unique_id_path.exists():
                 unique_id = unique_id_path.read_text()
                 plot_path = Path(f'/output/{unique_id}_plot{iteration}.svg')
-            print(f' * Iteration {iteration}')
-            print()
             for center in clusters:
-                print(f'    * cluster center {center}={clusters[center]}')
+                print(f'    * cluster center {center}={{{", ".join(f"{p}: {conf:.2f}" for p, conf in clusters[center].items())}}}')
             print()
             if dims == 2:
                 plot_2d(clusters, plot_path)
-                print(f'   ![k-centers 2D plot]({None if plot_path is None else plot_path.name})')
+                print(f'    ![k-centers 2D plot]({None if plot_path is None else plot_path.name})')
                 print()
             elif dims == 3:
                 plot_3d(clusters, plot_path)
-                print(f'   ![k-centers 3D plot]({None if plot_path is None else plot_path.name})')
+                print(f'    ![k-centers 3D plot]({None if plot_path is None else plot_path.name})')
                 print()
             else:
-                print(f"   Unable to plot iteration -- too many dimensions")
+                print(f"    Unable to plot iteration -- too many dimensions")
                 print()
-            iteration += 1
-        k_means_lloyds(k, vectors, centers, dims, plot_iteration)
-    finally:
-        print("</div>", end="\n\n")
-        print("`{bm-enable-all}`", end="\n\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# MARKDOWN_KMEANS_PP_INITIALIZER
-def k_means_PP_initializer(
-        k: int,
-        vectors: list[Sequence[float]],
-):
-    centers = [random.choice(vectors)]
-    while len(centers) < k:
-        choice_points = []
-        choice_weights = []
-        for v in vectors:
-            if v in centers:
-                continue
-            _, d = find_closest_center(v, centers)
-            choice_weights.append(d)
-            choice_points.append(v)
-        total = sum(choice_weights)
-        choice_weights = [w / total for w in choice_weights]
-        c_pt = random.choices(choice_points, weights=choice_weights, k=1).pop(0)
-        centers.append(c_pt)
-    return centers
-# MARKDOWN_KMEANS_PP_INITIALIZER
-
-
-def main_WITH_k_means_PP_initializer():
-    print("<div style=\"border:1px solid black;\">", end="\n\n")
-    print("`{bm-disable-all}`", end="\n\n")
-    try:
-        data = yaml.safe_load(stdin)
-        k = data[0]
-        vectors = data[1]
-        dims = max(len(v) for v in vectors)
-        print(f'Given {k=} and {vectors=}...')
-        print()
-        print(f'The llyod\'s algorithm heuristic produced the clusters at each iteration ...')
-        print()
-        unique_id_path = Path('/input/.__UNIQUE_INPUT_ID')
         iteration = 0
+        prev_clusters = None
         def plot_iteration(clusters):
             nonlocal iteration
-            plot_path = None
-            if unique_id_path.exists():
-                unique_id = unique_id_path.read_text()
-                plot_path = Path(f'/output/{unique_id}_plot{iteration}.svg')
-            print(f' * Iteration {iteration}')
-            print()
-            for center in clusters:
-                print(f'    * cluster center {center}={clusters[center]}')
-            print()
-            if dims == 2:
-                plot_2d(clusters, plot_path)
-                print(f'   ![k-centers 2D plot]({None if plot_path is None else plot_path.name})')
+            nonlocal prev_clusters
+            if iteration % show_every == 0:
+                print(f' * Iteration {iteration}')
                 print()
-            elif dims == 3:
-                plot_3d(clusters, plot_path)
-                print(f'   ![k-centers 3D plot]({None if plot_path is None else plot_path.name})')
+                print_cluster(clusters)
+            if stop_instructions['max_iterations'] <= iteration:
+                print(f'Stopping -- hit max iterations ({iteration=})')
                 print()
-            else:
-                print(f"   Unable to plot iteration -- too many dimensions")
-                print()
+                return False
+            if prev_clusters is not None:
+                largest_center_step_distance = max(dist(c_new, c_old) for c_new, c_old in zip(clusters, prev_clusters))
+                if stop_instructions['min_center_step_distance'] > largest_center_step_distance:
+                    print(f'Stopping -- center convergence step distance below threshold ({largest_center_step_distance=})')
+                    print()
+                    return False
             iteration += 1
-        k_means_lloyds(k, vectors, k_means_PP_initializer(k, vectors), dims, plot_iteration)
+            prev_clusters = clusters
+            return True
+        final_clusters = k_means_soft_lloyds(k, vectors, centers, dims, stiffness, plot_iteration)
+        print(" * FINAL RESULT:")
+        print()
+        print_cluster(final_clusters)
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

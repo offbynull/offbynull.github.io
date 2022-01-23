@@ -29,7 +29,7 @@ def plot_2d(
         ys.append(center[1])
         colors.append('black')
         markers.append('x')
-        sizes.append(80)
+        sizes.append(160)
         color = cluster_colors[center]
         for pt in clusters[center]:
             xs.append(pt[0])
@@ -72,7 +72,7 @@ def plot_3d(
         zs.append(center[2])
         colors.append('black')
         markers.append('x')
-        sizes.append(80)
+        sizes.append(160)
         color = cluster_colors[center]
         for pt in clusters[center]:
             xs.append(pt[0])
@@ -115,53 +115,57 @@ def plot_3d(
 
 
 
-def find_closest_center(data_pt, center_pts):
-    center_pt = min(
-        center_pts,
-        key=lambda cp: dist(data_pt, cp)
+# MARKDOWN_CLOSEST_CENTER
+def find_closest_center(
+        point: tuple[float],
+        centers: list[tuple[float]],
+) -> tuple[tuple[float], float]:
+    center = min(
+        centers,
+        key=lambda cp: dist(point, cp)
     )
-    return center_pt, dist(center_pt, data_pt)
+    return center, dist(center, point)
+# MARKDOWN_CLOSEST_CENTER
 
 
 # MARKDOWN_CENTER_OF_GRAVITY
-def center_of_gravity(data_pts, dim):
+def center_of_gravity(
+        points: list[tuple[float]],
+        dims: int
+) -> tuple[float]:
     center = []
-    for i in range(dim):
-        val = mean(pt[i] for pt in data_pts)
+    for i in range(dims):
+        val = mean(pt[i] for pt in points)
         center.append(val)
-    return center
+    return tuple(center)
 # MARKDOWN_CENTER_OF_GRAVITY
 
+
+MembershipAssignmentMap = dict[tuple[float], list[tuple[float]]]
+IterationCallbackFunc = Callable[[MembershipAssignmentMap], None]
 
 # MARKDOWN
 def k_means_lloyds(
         k: int,
-        vectors: list[tuple[float]],
+        points: list[tuple[float]],
         centers_init: list[tuple[float]],
         dims: int,
-        iteration_callback: Callable[  # callback func to invoke on each iteration
-            [
-                dict[tuple[float], list[tuple[float]]]
-            ],
-            None
-        ] | None = None
-) -> dict[tuple[float], list[tuple[float]]]:
+        iteration_callback: IterationCallbackFunc
+) -> MembershipAssignmentMap:
     old_centers = []
     centers = centers_init[:]
     while centers != old_centers:
-        mapping = {tuple(ct_pt): [] for ct_pt in centers}
+        mapping = {c: [] for c in centers}
         # centers to clusters
-        for pt in vectors:
-            ct_pt, _ = find_closest_center(pt, centers)
-            ct_pt = tuple(ct_pt)
-            mapping[ct_pt].append(pt)
+        for pt in points:
+            c, _ = find_closest_center(pt, centers)
+            mapping[c].append(pt)
         # clusters to centers
         old_centers = centers
         centers = []
         for pts in mapping.values():
-            new_ct_pt = center_of_gravity(pts, dims)
-            new_ct_pt = tuple(new_ct_pt)
-            centers.append(new_ct_pt)
+            new_c = center_of_gravity(pts, dims)
+            centers.append(new_c)
         # notify of current iteration's cluster
         iteration_callback(mapping)
     return mapping
@@ -174,11 +178,11 @@ def main():
     try:
         data = yaml.safe_load(stdin)
         k = data[0]
-        vectors = data[1]
+        vectors = [tuple(v) for v in data[1]]
         if len(data) > 2:
-            centers = data[2]
+            centers = [tuple(v) for v in data[2]]
         else:
-            centers = random.sample(vectors, k)
+            centers = tuple(random.sample(vectors, k))
         assert len(centers) == k, 'k must match number of centers'
         dims = max(len(v) for v in vectors)
         print(f'Given {k=} and {vectors=}...')
@@ -270,7 +274,7 @@ def main_WITH_k_means_PP_initializer():
     try:
         data = yaml.safe_load(stdin)
         k = data[0]
-        vectors = [v for v in data[1]]
+        vectors = [tuple(v) for v in data[1]]
         dims = max(len(v) for v in vectors)
         print(f'Given {k=} and {vectors=}...')
         print()

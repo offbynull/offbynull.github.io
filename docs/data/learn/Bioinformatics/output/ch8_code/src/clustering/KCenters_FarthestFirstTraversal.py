@@ -28,7 +28,7 @@ def plot_2d(
         ys.append(center[1])
         colors.append('black')
         markers.append('x')
-        sizes.append(80)
+        sizes.append(160)
         color = cluster_colors[center]
         for pt in clusters[center]:
             xs.append(pt[0])
@@ -71,7 +71,7 @@ def plot_3d(
         zs.append(center[2])
         colors.append('black')
         markers.append('x')
-        sizes.append(80)
+        sizes.append(160)
         color = cluster_colors[center]
         for pt in clusters[center]:
             xs.append(pt[0])
@@ -112,57 +112,56 @@ def plot_3d(
 
 
 
+MembershipAssignmentMap = dict[tuple[float], list[tuple[float]]]
+IterationCallbackFunc = Callable[[MembershipAssignmentMap], None]
 
 
 # MARKDOWN
-def find_closest_center(data_pt, center_pts):
-    center_pt = min(
-        center_pts,
-        key=lambda cp: dist(data_pt, cp)
+def find_closest_center(
+        point: tuple[float],
+        centers: list[tuple[float]],
+) -> tuple[tuple[float], float]:
+    center = min(
+        centers,
+        key=lambda cp: dist(point, cp)
     )
-    return center_pt, dist(center_pt, data_pt)
+    return center, dist(center, point)
 
 
 def centers_to_clusters(
         centers: list[tuple[float]],
-        vectors: list[tuple[float]]
-) -> dict[tuple[float], list[tuple[float]]]:
-    mapping = {tuple(ct_pt): [] for ct_pt in centers}
-    for pt in vectors:
-        ct_pt, _ = find_closest_center(pt, centers)
-        ct_pt = tuple(ct_pt)
-        mapping[ct_pt].append(pt)
+        points: list[tuple[float]]
+) -> MembershipAssignmentMap:
+    mapping = {c: [] for c in centers}
+    for pt in points:
+        c, _ = find_closest_center(pt, centers)
+        c = tuple(c)
+        mapping[c].append(pt)
     return mapping
 
 
 def k_centers_farthest_first_traversal(
         k: int,
-        vectors: list[tuple[float]],
+        points: list[tuple[float]],
         dims: int,
-        iteration_callback: Callable[  # callback func to invoke on each iteration
-            [
-                dict[tuple[float], list[tuple[float]]]
-            ],
-            None
-        ] | None = None
-) -> dict[tuple[float], list[tuple[float]]]:
+        iteration_callback: IterationCallbackFunc
+) -> MembershipAssignmentMap:
     # choose an initial center
-    centers = [random.choice(vectors)]
+    centers = [random.choice(points)]
     # notify of cluster for first iteration
-    mapping = centers_to_clusters(centers, vectors)
+    mapping = centers_to_clusters(centers, points)
     iteration_callback(mapping)
     # iterate
     while len(centers) < k:
         # get next center
         dists = {}
-        for pt in vectors:
+        for pt in points:
             _, d = find_closest_center(pt, centers)
-            pt = tuple(pt)
             dists[pt] = d
         farthest_closest_center_pt = max(dists, key=lambda x: dists[x])
         centers.append(farthest_closest_center_pt)
         # notify of the current iteration's cluster
-        mapping = centers_to_clusters(centers, vectors)
+        mapping = centers_to_clusters(centers, points)
         iteration_callback(mapping)
     return mapping
 # MARKDOWN

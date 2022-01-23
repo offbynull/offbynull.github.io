@@ -12422,6 +12422,13 @@ Similar to k-centers, solving k-means for any non-trivial input isn't possible b
  
     The point closest to a center becomes a member_CLUSTER of that cluster. Ties are broken arbitrarily.
 
+    ```{output}
+    ch8_code/src/clustering/KMeans_Lloyds.py
+    python
+    # MARKDOWN_CLOSEST_CENTER\s*\n([\s\S]+)\n\s*# MARKDOWN_CLOSEST_CENTER
+    no_preamble
+    ```
+
  2. converts clusters to centers.
 
     The clusters from step 1 are turned into new centers. Each component of a center becomes the average of that component across cluster member_CLUSTERs, referred to as the center of gravity.
@@ -12465,7 +12472,7 @@ I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner bo
 Also, if the centers haven't converged, the dragged center is guaranteed to decrease the squared error distortion when compared to the previous center. But, does that mean that a set of converged centers are optimal in terms of squared error distortion? I don't think so. Even if a cluster converged to all the correct member_CLUSTERs, could it be that the center can be slightly tweaked to get the squared error distortion down even more? Probably.
 ```
 
-The hope with the heuristic is that, at each iteration, enough true cluster member_CLUSTERs are captured (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other, referred to as k-means++ initializer.
+The hope with the heuristic is that, at each iteration, enough true cluster member_CLUSTERs are captured (step 1) to drag the center (step 2) closer to where it should be. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other, referred to as k-means++ initializer.
 
  1. The 1st center is chosen from the list of points at random.
  2. The 2nd center is chosen by selecting a point that's likely to be much farther away from center 1 than most other points.
@@ -12604,32 +12611,42 @@ Algorithms/Gene Expression/K-Means Clustering_TOPIC
 **WHAT**: Soft k-means clustering is the soft clustering variant of k-means. Where as the original k-means definitively assigns each point to a cluster (hard clustering), this variant of k-means assigns each point to how likely it is to be a member_CLUSTER of each cluster (soft clustering).
 
 ```{svgbob}
-     ●                                                          ●       
-"A=0.9,B=0.1"                                              "A=0.1,B=0.9"
-                                                                        
-        ●                                                   ●       
-   "A=0.9,B=0.1"                                       "A=0.1,B=0.9"
-                                                                        
-     ●                                                          ●       
-"A=0.9,B=0.1"                                              "A=0.1,B=0.9"
+       ●                                           ●       
+  "A=0.9,B=0.1"                               "A=0.1,B=0.9"
+                                                           
+          ●                                    ●       
+     "A=0.9,B=0.1"                        "A=0.1,B=0.9"
+                                                           
+       ●                                           ●       
+  "A=0.9,B=0.1"                               "A=0.1,B=0.9"
 ```
 
-The goal is to choose centers such that, out of all possible cluster centers, you're maximizing the likelihood of the points belonging to clusters (maximizing for definitiveness / minimizing for unsureness).
+The goal is to choose centers such that, out of all possible centers, you're maximizing the _likelihood_ of the points belonging to those centers (maximizing for definitiveness / minimizing for unsureness).
 
 ```{svgbob}
-* "plus sign denotes a center"
-
-.--------------------------------------------------------------------------.   .--------------------------------------------------------------------------.
-|                                "BAD CENTERS"                             |   |                               "GOOD CENTERS"                             |
-|      ●                                                          ●        |   |      ●                                                          ●        |
-| "A=0.5,B=0.5"                                              "A=0.5,B=0.5" |   | "A=0.9,B=0.1"                                              "A=0.1,B=0.9" |
-|                                                                          |   |                                                                          |
-|         ●                           +                       ●            |   |      +  ●                                                   ●   +        |
-|    "A=0.5,B=0.5"                                       "A=0.5,B=0.5"     |   |    "A=0.9,B=0.1"                                       "A=0.1,B=0.9"     |
-|                                     +                                    |   |                                                                          |
-|      ●                                                          ●        |   |      ●                                                          ●        |
-| "A=0.5,B=0.5"                                              "A=0.5,B=0.5" |   | "A=0.9,B=0.1"                                              "A=0.1,B=0.9" |
-'--------------------------------------------------------------------------'   '--------------------------------------------------------------------------'
+* "Plus sign denotes a center"
+.-----------------------------------------------------------.
+|                        "BAD CENTERS"                      |
+|      ●                                           ●        |
+| "A=0.5,B=0.5"                               "A=0.5,B=0.5" |
+|                                                           |
+|         ●                                    ●            |
+|    "A=0.5,B=0.5"           "++"         "A=0.5,B=0.5"     |
+|                                                           |
+|      ●                                           ●        |
+| "A=0.5,B=0.5"                               "A=0.5,B=0.5" |
+'-----------------------------------------------------------'
+.-----------------------------------------------------------.
+|                       "GOOD CENTERS"                      |
+|      ●                                           ●        |
+| "A=0.9,B=0.1"                               "A=0.1,B=0.9" |
+|                                                           |
+|      +  ●                                    ●   +        |
+|    "A=0.9,B=0.1"                        "A=0.1,B=0.9"     |
+|                                                           |
+|      ●                                           ●        |
+| "A=0.9,B=0.1"                               "A=0.1,B=0.9" |
+'-----------------------------------------------------------'
 ```
 
 ```{note}
@@ -12641,14 +12658,16 @@ It seems like this is called soft k-means because the high-level steps of the al
 **WHY**: Soft clustering is a way to suss out ambiguous points. For example, a point that sits exactly between two obvious clusters will be just as likely be a member_CLUSTER of each...
 
 ```{svgbob}
-     ●                     "ambiguous point"                    ●       
-"A=0.9,B=0.1"                       |                      "A=0.1,B=0.9"
+       ●              "ambiguous point"             ●       
+  "A=0.9,B=0.1"                |               "A=0.1,B=0.9"
+                               v                            
                                     v                                   
-        ●                           ●                       ●       
-   "A=0.9,B=0.1"               "A=0.5,B=0.5"           "A=0.1,B=0.9"
-                                                                        
-     ●                                                          ●       
-"A=0.9,B=0.1"                                              "A=0.1,B=0.9"
+                               v                            
+          ●                    ●                ●       
+     "A=0.9,B=0.1"        "A=0.5,B=0.5"    "A=0.1,B=0.9"
+                                                            
+       ●                                            ●       
+  "A=0.9,B=0.1"                                "A=0.1,B=0.9"
 ```
 
 **ALGORITHM**:
@@ -12658,11 +12677,49 @@ This algorithm is similar to the Lloyd's algorithm heuristic used for k-means cl
  1. converts centers to clusters (referred to as E-step),
  2. converts clusters to centers (referred to as M-step).
 
-The major difference between Llyod's algorithm and this algorithm is that this algorithm produces *probabilities of cluster membership_CLUSTER assignments*. In contrast, Lloyd's algorithm produces *definitive cluster membership_CLUSTER assignments*. The steps being iterated are essentially the same steps as in Lloyd's algorithm, except they've been modified to work with assignment probabilities instead of definitive assignments.
+The major difference between Llyod's algorithm and this algorithm is that this algorithm produces *probabilities of cluster membership_CLUSTER assignments*. In contrast, the original Lloyd's algorithm produces *definitive cluster membership_CLUSTER assignments*.
 
-__STEP 1: CENTERS TO CLUSTERS (E-STEP)__
 
-Recall that with Lloyd's algorithm, this step assigns each data point to exactly one center (whichever center is closest). With this algorithm, each data point is assigned a set of probabilities that define how likely it is to be assigned to each center, referred to as confidence values (and sometimes responsibility values).
+```{svgbob}
+* "Plus sign denotes a center"
+.------------------------------------------------------------.
+|               "ORIGINAL LLOYD'S ALGORITHM"                 |
+|      ●                                            ●        |
+|      A                                            B        |
+|                                                            |
+|      +  ●                                     ●   +        |
+|         A                                     B            |
+|                                                            |
+|      ●                                            ●        |
+|      A                                            B        |
+'------------------------------------------------------------'
+.------------------------------------------------------------.
+|                  "SOFT LLOYD'S ALGORITHM"                  |
+|      ●                                            ●        |
+| "A=0.9,B=0.1"                                "A=0.1,B=0.9" |
+|                                                            |
+|      +  ●                                     ●   +        |
+|    "A=0.9,B=0.1"                         "A=0.1,B=0.9"     |
+|                                                            |
+|      ●                                            ●        |
+| "A=0.9,B=0.1"                                "A=0.1,B=0.9" |
+'------------------------------------------------------------'
+```
+
+The steps being iterated here are essentially the same steps as in the original Lloyd's algorithm, except they've been modified to work with assignment probabilities instead of definitive assignments. As such, you can think of this as a soft Lloyd's algorithm (soft clustering version of Lloyd's algorithm).
+
+`{h}blue STEP 1: CENTERS TO CLUSTERS (E-STEP)`
+
+Recall that with the original Lloyd's algorithm, this step assigns each data point to exactly one center (whichever center is closest).
+    
+```{output}
+ch8_code/src/clustering/KMeans_Lloyds.py
+python
+# MARKDOWN_CLOSEST_CENTER\s*\n([\s\S]+)\n\s*# MARKDOWN_CLOSEST_CENTER
+no_preamble
+```
+
+With this algorithm, each data point is assigned a set of probabilities that define how likely it is to be assigned to each center, referred to as confidence values (and sometimes responsibility values).
 
 ```{svgbob}
 * "Plus signs denote centers. Middle point is just as likely"
@@ -12695,13 +12752,13 @@ confidence(P, C_i) = \frac{
 * Ci is the center for which the confidence is being calculated.
 * n is the number of centers in C.
 * e is the base for natural logarithms (~2.72).
-* b is a user-defined parameter that defines how loose / definitive confidences are (ranges from 0 to 1).
+* b is a user-defined parameter (ranges from 0 to 1) that defines how decisive confidences will be.
 * d() calculates the euclidean distance.
 
 ```{output}
 ch8_code/src/clustering/KMeans_SoftLloyds.py
 python
-# MARKDOWN_PARTITION_FUNC\s*\n([\s\S]+)\n\s*# MARKDOWN_PARTITION_FUNC\s*[\n$]
+# MARKDOWN_E_STEP\s*\n([\s\S]+)\n\s*# MARKDOWN_E_STEP\s*[\n$]
 no_preamble
 ```
 
@@ -12711,9 +12768,9 @@ The Pevzner book gives the analogy that centers are stars and points are planets
 I have no idea how the partition function actually works or know anything about statistical physics. The book also listed the formula for Newtonian inverse-square law of gravitation but mentioned that the partition function works better in practice. I think a simpler / more understandable metric may be used instead of either of these. The core thing it needs to do is assign a greater confidence to points that are closer than to those that are farther, where that confidence is between 0 and 1. Maybe some kind of re-worked / inverted version of squared error distortion would work here.
 ```
 
-__STEP 2: CLUSTERS TO CENTERS (M-STEP)__
+`{h}blue STEP 2: CLUSTERS TO CENTERS (M-STEP)`
 
-Recall that with Lloyd's algorithm, this step generates new centers for clusters by calculating the center of gravity across the member_CLUSTERs of each cluster: Each component of a center becomes the average of that component across cluster member_CLUSTERs.
+Recall that with the original Lloyd's algorithm, this step generates new centers for clusters by calculating the center of gravity across the member_CLUSTERs of each cluster: Each component of a new center becomes the average of that component across its cluster member_CLUSTERs.
 
 ```{output}
 ch8_code/src/clustering/KMeans_Lloyds.py
@@ -12722,17 +12779,17 @@ python
 no_preamble
 ```
 
-This algorithm performs a similar center of gravity calculation. The difference is that, since there are no definitive cluster member_CLUSTERs here, all data points are included in the center of gravity calculation. But, each data point is appropriately scaled by its confidence value for the cluster whose center is being calculated.
+This algorithm performs a similar center of gravity calculation. The difference is that, since there are no definitive cluster member_CLUSTERs here, all data points are included in the center of gravity calculation. However, each data point is appropriately scaled by its confidence value (0.0 to 1.0 -- also known as probability) before being added into the center of gravity.
 
 ```{output}
 ch8_code/src/clustering/KMeans_SoftLloyds.py
 python
-# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY\s*\n([\s\S]+)\n\s*# MARKDOWN_WEIGHTED_CENTER_OF_GRAVITY\s*[\n$]
+# MARKDOWN_M_STEP\s*\n([\s\S]+)\n\s*# MARKDOWN_M_STEP\s*[\n$]
 no_preamble
 ```
 
 ````{note}
-Think about what's happening here. With standard Lloyd's algorithm, you're averaging out a component for a center. For example, the points 5, 4, and 3 are calculated as ...
+Think about what's happening here. With the original Lloyd's algorithm, you're averaging. For example, the points 5, 4, and 3 are calculated as ...
 
 ```
 (5 + 4 + 3) / (1 + 1 + 1)
@@ -12741,7 +12798,7 @@ Think about what's happening here. With standard Lloyd's algorithm, you're avera
 4
 ```
 
-With this algorithm, you're doing the same thing except weighting them by their confidence values. For example, if the points above had the confidence values 0.9, 0.8, 0.95 respectively, they're calculated as ...
+With this algorithm, you're doing the same thing except weighting the points being averaged by their confidence values. For example, if the points above had the confidence values 0.9, 0.8, 0.95 respectively, they're calculated as ...
 
 ```
 ((5 * 0.9) + (4 * 0.8) + (3 * 0.95)) / (0.9 + 0.8 + 0.95)
@@ -12750,159 +12807,153 @@ With this algorithm, you're doing the same thing except weighting them by their 
 3.98
 ```
 
-The Lloyd's algorithm center of gravity calculation is just this algorithm's center of gravity calculation with all 1 confidence values ...
+The original Lloyd's algorithm center of gravity calculation is just this algorithm's center of gravity calculation with all 1 confidence values ...
 
 ```
 ((5 * 1) + (4 * 1) + (3 * 1)) / (1 + 1 + 1)
-(5 + 4 + 3) / (1 + 1 + 1)
+(5 + 4 + 3) / (1 + 1 + 1)   <-- same as 1st expression in original Lloyd's example above
 (5 + 4 + 3) / 3
 12 / 3
 4
 ```
 ````
 
-__FULL ALGORITHM__
+`{h}blue ITERATING STEP 1 AND STEP 2`
 
-The hope with this algorithm is that, at each iteration, enough true cluster member_CLUSTERs have appropriately high confidence values (step 1) to drag the new center (step 2) closer to the true center. One way to increase the odds that this heuristic converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other via the k-means++ initializer.
+Like with the original Lloyd's algorithm, this algorithm iterates over the two steps until the centers converge. The centers may start off by jumping around in wrong directions. The hope is that, as more iterations happen, eventually enough true cluster member_CLUSTERs gain appropriately high confidence values (step 1) to drag their center (step 2) closer to where it should be. One way to increase the odds that this algorithm converges on a good solution is the initial center selection: You can increase the chance of converging to a good solution by _probabilistically_ selecting initial centers that are far from each other via the k-means++ initializer (similar to the original Lloyd's algorithm).
 
+Due to various issues with the computations involved and floating point rounding error, this algorithm likely won't fully stabilize at a specific set of centers (it converges, but the centers will continue to shift around slightly at each iteration). The typical workaround is to stop after a certain number of iterations and / or stop if the centers only moved by a tiny distance.
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+```{note}
+The example run below has cherry-picked input to illustrate the "start off by jumping around in wrong directions" point described above. Note how center 0 jumps out towards the center but than gradually moves back near to where it originally started off at.
+```
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+```{output}
+ch8_code/src/clustering/KMeans_SoftLloyds.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+no_preamble
+```
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+```{ch8}
+clustering.KMeans_SoftLloyds
+{
+  k: 3,
+  points: [
+    [2,2], [2,4], [2.5,6], [3.5,2], [4,3], [4,5], [4.5,4],
+    [7,2], [7.5,3], [8,1], [9,2],
+    [8,7], [8.5,8], [9,6], [10,7]
+  ],
+  centers: [[8.5, 8], [9, 6], [7.5, 3]], # remove to assign centers using k-means++ initializer
+  stiffness: 0.75,                       # stiffness parameter for partition function
+  show_every: 1,
+  stop_instructions: {
+    min_center_step_distance: 0.3,
+    max_iterations: 50
+  }
+}
+```
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+````{note}
+I didn't cover it here, but the book dedicated a very large number of sections to introducing this algorithm using a "biased coin" flipping scenario. In the scenario, some guy has two coins, each with a different bias for turning up heads (coinA with biasA / coinB with biasB). At every 10 flip interval, he picks one of the coins at random (either keeps existing one or exchanges it) before using that coin to do another 10 flips.
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+Which coin he picks per 10 flip round and the coin biases are secret (you don't know them). The only information you have is the outcome of each 10 flip round. Your job is to guess the coin biases from observing those 10 flip rounds, not knowing which which of the two coins were used per round.
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+In this scenario ...
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+ * TRUE CENTERS = What biasA and biasB actually are.
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+   (e.g. coinA has a 0.7 bias to turn up heads / coinB has a 0.2 bias to turn up heads)
 
-TODO: FINISH THE IMPLEMENTATION. ADD LABELS TO THE DIAGRAMS PRODUCED. CLEAN UP THE CODE. CLEAN UP THE LANGUAGE ABOVE, CHANGE SECTION NAME TO EXPECTATION MAXIMIZATION (MAYBE). INCLUDE A NOTE ABOUT THE COIN FLIPPING EXAMPLE.
+ * ESTIMATED CENTERS = What you _estimate_ biasA and biasB are (not what they actually are).
 
+   (e.g. coinA has a 0.67 bias to turn up heads / coinB has a 0.23 bias to turn up heads)
 
+ * POINTS = Each 10 flip round's percentage that turned up heads.
 
+   (e.g. HHTHHTHHTT = 6 / 10 = 0.6)
 
-similar to lloyd's algorithm 
+ * CONFIDENCE VALUES = Each 10 flip round's confidence that biasA vs biasB was used (_estimated_ biases).
 
-1. centers to clusters: assign each data point to a set of probabilities (not to nearest center)
-2. clusters to centers: computer new centers as clusters center of gravity
+   (e.g. for round1, 0.1 probability that _estimated_ biasA was used vs 0.9 probability that _estimated_ biasB was used)
 
+In this scenario, the guy does 5 rounds of 10 coin flips (which coin he used per round is a secret). These rounds are your 1-dimensional POINTS ...
 
+```
+HTTTHTTHTH = 4 / 10 = 0.4
+HHHHTHHHHH = 9 / 10 = 0.9
+HTHHHHHTHH = 9 / 10 = 0.8
+HTTTTTHHTT = 3 / 10 = 0.3
+THHHTHHHTH = 7 / 10 = 0.7
+```
 
+You start of by picking two of these percentages as your guess for biasA and biasB (ESTIMATED CENTERS)...
 
+```
+biasA = 0.3, biasB = 0.8
+```
 
+From there, you're looping over the E-step and M-step...
 
-cp = i / n, where
-  i is num of heads
-  n is num of heads+tails
-  cp is the _probability of heads for that coin_
+ * E-step: For each 10 flip round (POINT) and estimated coin bias (ESTIMATED CENTER) pair, calculate the probability (CONFIDENCE VALUE) that that bias generated those 10 flips.
+ * M-step: Adjust your estimate for biasA and biasB (ESTIMATED CENTERS) based on those probabilities (CONFIDENCE VALUES).
+ 
+Note that you never actually know what the real coin biases (TRUE CENTERS) are, but you should get somewhere close given that ...
 
-coinA and coinB -- two coins, randomly switch or keep every 10 flips (without exposing the choice to you)
-at every 10 flips (1 round), you calculate the heads percentage: cp = i / n
-   cpA = probability of coin A to give heads
-   cpB = probability of coin B to give heads
+1. there are enough 10 flip rounds (POINTS),
+2. you make a decent starting guess for biasA and biasB (initial ESTIMATED CENTERS),
+3. and the metric you're using to derive coin usage probabilities (CONFIDENCE VALUES) make sense -- in this scenario it wasn't the partition function but the "conditional probability" that the 10 flip outcome was generated by a coin with the guessed bias.
 
+This scenario was difficult to wrap my head around because the explanations were obtuse and it doesn't make one key concept explicit: The heads average for a 10 flip round (POINT) is representative of the actual heads bias of the coin used (TRUE CENTER). For example, if the coin being used has an actual heads bias of 0.7 (TRUE CENTER of 0.7), most of its 10 flip rounds will have a heads percentage of around 0.7 (POINTS near 0.7). A few might not, but most will (e.g. there's a small chance that the 10 flips could come out to all tails).
 
-[CLUSTERS TO CENTER] -- you know which coin was used per 10 flip round (coinA or coinB)
-                     -- you know the _outcome_ of each 10 flip round (heads ratio)
-                     -- find cpA and cpB -- prob of coinA and coinB to produce heads
-say did that for 5x 10 flips:
-    HTTTHTTHTH=4/10=0.4
-    HHHHTHHHHH=9/10=0.9
-    HTHHHHHTHH=9/10=0.8
-    HTTTTTHHTT=3/10=0.3
-    THHHTHHHTH=7/10=0.7
-    heads_ratios = [0.4, 0.9, 0.8, 0.3, 0.7]
-the goal is to _estimate the cpA and cpB_ that produced every 10 flips above (remember the random switch/keep between coinA and coinB is hidden)
+If you think about it, this is exactly what's happening with clustering: The points in a cluster are representative of some ideal center point, and you're trying to find what that center point is.
 
-if you knew that idx coinA was used to generate idx0 and idx3, you could estimate ...
-    cpA = (0.4 + 0.3) / 2          or .. avg([0.4, 0.3])        = 0.35
-    cpB = (0.9 + 0.8 + 0.7) / 3    or .. avg([0.9, 0.8, 0.7])   = 0.8
+Other things that made the coin flipping example not good:
 
-if you treat the choices as a vector, where 1=coinA and 0=coinB, idx0 and idx3 for coinA would be represented as...
-    choice_vec=[1, 0, 0, 1, 0]
-then the calculation about could be written as ...
-    cpA = dot_product(choice_vec, heads_ratios) / dot_product(choice_vec, 1)
-        = (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
-        = (0.4 + 0.3) / 2
-        = 0.35
-    cpB = dot_product((1-choice_vec), heads_ratios) / dot_product((1-choice_vec), 1)
-        = (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
-        = (0.9 + 0.8 + 0.7) / 3
-        = 0.8
+ 1. There's absolutely a chance that the algorithm will veer towards guesses that are far off than true coin biases (an example of this happening would have been helpful).
+ 2. It should have somehow been emphasized that poor initial coin bias guesses or weak / little coin flip representations can screw you (an example of this happening would have been helpful).
+ 3. The mathy way in which things were described made everything incredibly obtuse: obtuse naming (e.g. "hidden matrix"), vector notation, dot product, formula representations, etc.. (better naming and more text representation would have made things easier to understand).
+ 4. Some mathy portions were just papered over (e.g. it was never explained in layman's terms what the partition function actually does -- does it mimic gravity?).
 
+Points 1 and 2 have similar analogs in Lloyd's algorithm. Lloyd's algorithm can give you bad centers + Lloyd's algorithm can screw you if you initial centers are bad / not enough points representative of actual clusters are available.
+````
 
-[CENTERS TO CLUSTERS] -- you know the _outcome_ of each 10 flip round (heads ratio)
-                      -- you know cpA and cpB -- prob of coinA and coinB to produce heads
-                      -- find which coin was used per 10 flip round (coinA or coinB)
-assume cpA=0.6 and cpB=0.82
-assume heads_ratios = [0.4, 0.9, 0.8, 0.3, 0.7]
-find choice_vec=[?, ?, ?, ?, ?]  <--  you're trying to find this out
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-if coinA was used to generate the 5th idx: cpA^7 * (1-cpA)^7 = 0.6^7 * (1-0.6)^7 = 0.00179
-if coinB was used to generate the 5th idx: cpB^7 * (1-cpB)^7 = 0.82^7 * (1-0.18)^7 = 0.00145
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-coinA has the greater chance of being for the 5th idx: (0.00179 > 0.00145)
-repeat the steps for the other idxs
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-the above calculations are "conditional probabilities" -- Pr(data_i|cp)
-  1. calculate number of heads: h = flips_per_ratio * heads_ratios\[5]
-  1. calculate number of heads: t = flips_per_ratio * (1 - heads_ratios\[5])
-  1. Pr(data_i|cp) = cp^h * (1-cp)^t
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-[HOW DOES IT RELATE TO LLOYD'S ALGORITHM?]
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-how does the full algorithm work?
-  pick random cpA and cpB (coin probabilities)
-  iterate centers to clusters + clusters to centers until you converge on a set of centers
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-this is essentially lloyd's algorithm:
-  cpA and cpB -- prob of coinA and coinB to produce heads = THESE ARE THE CENTERS
-  the _outcome_ of each 10 flip round (heads ratio)       = THESE ARE THE POINTS
-  which coin was used per 10 flip round (coinA or coinB)  = THESE ARE THE CLUSTER ASSIGNMENTS
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-The only difference _up until this point_ is the CENTERS TO CLUSTERS. In the original lloyd's algorithm, it assigns points to the nearest cluster. In this variant (up until this point), it's comparing conditional probabilities to determine which cluster to assign to.
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-  [CENTERS TO CLUSTERS modification -- CALLED E-STEP (expectation step)]
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-However, it doesn't make sense to definitively assign a cluster in this variant (it's a soft clustering algorithm). Think of it it terms of coin flips: if Pr(data_i|cpA) is roughly equal to Pr(data_i|cpB), which coin should get picked? Instead of choosing one outright, derive a "confidence" value for each one (also called responsibility). The responsibility values are the confidence level for each coin (should sum to 1). To calculate responsibility...
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-  responsibility of A: Pr(data_i|cpA) / (Pr(data_i|cpA) + Pr(data_i|cpB))
-  responsibility of B: Pr(data_i|cpB) / (Pr(data_i|cpA) + Pr(data_i|cpB))
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-In terms of generic clustering, this becomes the responsibility values (confidence) of a point to each centers. The set of all responsibility values across all data point is called a responsibility profile (SEE STEPIK 8.12).
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-However, the way a responsibility profile that's generated for coin flipping is different than that with generic points. The book recommends a physics algorithm that thinks of centers as stars and points as planets, where closer a center is to a point, the more of a "pull" it should have on that point (THIS DOESNT MAKE ANY SENSE AS ITS THE CENTERS THAT MOVE, NOT THE POINTS). This is what defines the responsibility matrix.
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
-
-
-  [CLUSTERS TO CENTER modification -- CALLED M-STEP (maximization step)]
-
-Recall how to find cpA and cpB (prob that coinA will produce heads / prob that coinB will produce heads):
-    cpA = dot_product(choice_vec, heads_ratios) / dot_product(choice_vec, 1)
-        = (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
-        = (0.4 + 0.3) / 2
-        = 0.35
-    cpB = dot_product((1-choice_vec), heads_ratios) / dot_product((1-choice_vec), 1)
-        = (1 * 0.4  +  0 * 0.9  +  0 * 0.8  +  1 * 0.3  +  0 * 0.7) / ( 1 * 1  +  0 * 1  +  0 * 1  +  1 * 1  +  0 * 1)
-        = (0.9 + 0.8 + 0.7) / 3
-        = 0.8
-
-cpA and cpB were the analogy for centers. But, since there's a responsibility profile instead of hard assignments. Instead of putting in hard choices (choice_vec), use the responsibility profile...
-
-    cpA = dot_product(resp_profileA, heads_ratios) / dot_product(resp_profileA, 1)
-    cpB = dot_product(resp_profileN, heads_ratios) / dot_product(resp_profileB, 1)
-
-This works for coin flipping, but it doesn't work for 
+TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
 
 ### Hierarchial Clustering
+
+TODO: describe using UPGMA -- rooted trees only. use neighbour joining for next section
+
 ### Soft Hierarchial Clustering
 
 THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.
