@@ -12661,8 +12661,6 @@ It seems like this is called soft k-means because the high-level steps of the al
        ●              "ambiguous point"             ●       
   "A=0.9,B=0.1"                |               "A=0.1,B=0.9"
                                v                            
-                                    v                                   
-                               v                            
           ●                    ●                ●       
      "A=0.9,B=0.1"        "A=0.5,B=0.5"    "A=0.1,B=0.9"
                                                             
