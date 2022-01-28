@@ -18,6 +18,14 @@ TODO: streams
 
 TODO: add terminology for declarations and definitions + add more example code into terminology
 
+TODO: std::visit and `overloaded { }` -- add in a section for these, then go back and fix the std::variant section (and any other sections that can make use of it like std::vector) to refer to it (MOVE THE PIECES OUT OF STD::VARIANT SECTION INTO THE STD::VISIT -- USE SEEALSO TO REFERENCE IT) -- https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17   /     https://dzone.com/articles/two-lines-of-code-and-three-c17-features-the-overl
+
+TODO: figure out C++20 date time functionality
+
+TODO: unnamed namespaces  (https://en.cppreference.com/w/cpp/language/namespace)
+
+TODO: std::formatter (INCLUDING the c++20 changes for std::format) https://en.cppreference.com/w/cpp/utility/format/formatter
+
 # How to Read
 
 This document is broken down into sections and sub-sections. To understand a specific section, you need to understand all of its parent sections as well as any prerequisites that it lists. For example, if section `Fruits/Apples/Granny Smith` has prerequisites `Vegetables/Peas` and `Fish` listed, you'll need to have read ...
@@ -301,15 +309,26 @@ Of the tools above, the best mixture I've found so far is to use ...
  2. Visual Studio Code as the editor (installable via snap -- `snap install --classic code`)
  3. CMake as the build system  (installable via apt -- `apt install cmake`)
  4. Conan as the dependency manager (install deb file from website)
- 5. C++ Extension Pack for vscode (install via extension section of vscode)
- 6. C-Mantic Extension for vscode (install via extension section of vscode)
+ 5. C++ extension pack for vscode (install via extension section of vscode)
+ 6. LLVM clangd extension for vscode (install via extension section of vscode)
+ 7. C-Mantic extension for vscode (install via extension section of vscode)
 
-There are basic guides / tutorials for each of these tools available online. With the C++ extensions (5 and 6), vscode (3) works similarly to a professional IDE. It will parse a CMake configuration (3) to figure out how the code should be built as well as to provide C++ intellisense / auto-complete / formatting / etc.. support. Conan (4) integrates with CMake, so intellisense and builds through vscode automatically include the libraries.
+There are basic guides / tutorials for each of these tools available online. With the C++ extensions (5, 6, and 7), vscode (3) works similar to a professional IDE. It will parse a CMake configuration (3) to figure out how the code should be built as well as to provide C++ intellisense / auto-complete / formatting / debugging / etc.. support. Conan (4) integrates with CMake, so intellisense and builds through vscode automatically include the libraries.
+
+````{note}
+Make sure to turn off the C++ extension's intellisense support or else it'll interfere with clangd's superior intellisense support. You can do this by adding the following to your `.vscode/settings.json file`...
+
+```json
+{
+    "C_Cpp.intelliSenseEngine": "Disabled",
+    "C_Cpp.autocomplete": "Disabled",  // So you don't get autocomplete from both extensions.
+    "C_Cpp.errorSquiggles": "Disabled", // So you don't get error squiggles from both extensions (clangd's seem to be more reliable anyway).
+}
+```
+````
 
 ```{note}
 Make sure that you don't have other C++ extensions installed. I'd initially installed a Makefile plugin into vscode that was tripping up the CMake plugin and breaking my intellisense.
-
-You can swap out "C++ Extension" in the C++ extension pack for the clangd extension. It'll work with the CMake plugin and provide intellisense / auto-complete / formatting / etc.. support using LLVM Clang's engine.
 ```
 
 Assuming you have all the software above installed, [`{bm-skip} this cookie cutter template`](my_cpp_template.tar.xz) can be used to set up a simple project structure that you can open directly in vscode. The template primes the project by ...
@@ -1460,6 +1479,12 @@ Named conversion functions are a set of (seemingly templated) functions to conve
    ```{note}
    Is this part of the standard? The book seems to give the code for `narrow_cast` and looking online it looks like people have their own implementations?
    ```
+
+```{seealso}
+Library Functions/Containers/Any_TOPIC (`any_cast` for an "any" container)
+Library Functions/Time/Timestamps/Clocks_TOPIC (`clock_cast` for converting times between different types of clocks)
+Library Functions/Time/Durations_TOPIC (`duration_cast` for converting between different types of durations)
+```
 
 #### C-style Casts
 
@@ -3181,6 +3206,10 @@ The general syntax of a lambda is as follows: `[captures] (parameters) modifiers
    auto f3 = [] (auto x, auto y) { return x + y; };            // generic params (compiler deduces types based on usage)
    ```
 
+   ```{seealso}
+   Core Language/Templates/Type Deduction_TOPIC (`decltype` may be used with `auto` parameter types)
+   ```
+
  * **modifiers** (optional) - Function modifiers.
 
    ```c++
@@ -3353,6 +3382,10 @@ The standard C++ library makes use of user-defined literals in various places, b
  * Complex numbers API (complex header): `std::complex<double> { (1.0 + 2.0i) * (3.0 + 4.0i) }`.
  * String API (string): `std::string str { "hello"s + "world"s }`.
 
+```{seealso}
+Library Functions/Time/Durations_TOPIC
+```
+
 ## Templates
 
 `{bm} /(Core Language\/Templates)_TOPIC/`
@@ -3451,6 +3484,8 @@ Normally, C++ code is split into two files: a header file that contains declarat
 Templates work differently from Java generics in that the C++ compiler generates a new code for each unique set of substitutions it sees used (template instantiation). Doing so produces more code than if there was only one copy, but also ensures any performance optimizations unique to that specific set of substitutions. Also, because each usage of a template may result in newly generated code, that usage typically needs access to both the declaration and definition. The simplest way to handle this is to put the entirety of the template (both definition and declaration) into a header, which gets included into the same file as the usage.
 
 ### Type Deduction
+
+`{bm} /(Core Language\/Templates\/Type Deduction)_TOPIC/`
 
 ```{prereq}
 Core Language/Classes/Functors_TOPIC
@@ -3740,8 +3775,8 @@ int x = x.num_in;
 int y = x.num_dbl;
 ```
 
-```
-Consider using std::variant instead of unions.
+```{seealso}
+Library Functions/Containers/Variant_TOPIC (consider using this instead of unions)
 ```
 
 ## Namespaces
@@ -5346,29 +5381,585 @@ boost::compressed_pair<int, EmptyClass> cp {5, EmptyClass{} };  // this one cons
 
 `{bm} /(Library Functions\/Containers\/Any)_TOPIC/`
 
-TODO: start from the any section of the book ch12
+An any class is a container that can hold on to an object of unknown type (a type that isn't known at compile-time).
 
-TODO: start from the any section of the book ch12
+```c++
+std::any container {};
+container.emplace<MyClass> { arg1, arg2 };
+auto v1 = std::any_cast<MyClass>(container); // ok
+auto v2 = std::any_cast<BadType>(container); // should throws std::bad_any_cast
+```
 
-TODO: start from the any section of the book ch12
+To place an object into the container, use `emplace()`. This _creates_ a new object and places it into the container, destroying the object previously held. The type of the object is passed in as a template parameter argument while the function arguments are used to initialize that object (e.g. passed directly to constructor). 
 
-TODO: start from the any section of the book ch12
+Accessing the object within the container is done via `std::any_cast()`. The function argument is the container itself and the template parameter argument is the type of  object _you think_ is being held. If the object is of a different type, the function throws `std::bad_any_cast` instead of returning the object.
 
-TODO: start from the any section of the book ch12
+```{note}
+The closest Java analog I could think of is the base class hierarchy where all Java objects have to derive from `java.lang.Object`. You can accept a type of `Java.lang.Object` and cast it at runtime to the correct type (or one of its ancestors). The C++ any class provides similar functionality to that.
+```
 
-TODO: start from the any section of the book ch12
-
-TODO: start from the any section of the book ch12
-
-TODO: start from the any section of the book ch12
-
-TODO: start from the any section of the book ch12
-
-TODO: start from the any section of the book ch12
+Boost also provides a version of this container, `boost::any`.
 
 ### Variant
 
 `{bm} /(Library Functions\/Containers\/Variant)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Any
+Library Functions/Containers/Tuple
+```
+
+A variant class is a type-restricted form of the `std::any`. Where as with the `std::any` you can hold on to an object of any type, with `std::variant` you can hold on to an object of one of several predefined types.
+
+```c++
+std::variant<int, float, MyClass> container {};  // may hold on to either int, float, or MyClass
+container.emplace<MyClass> { arg1, arg2 };
+auto v1 = std::get<MyClass>(container);     // ok
+auto v2 = std::get_if<MyClass>(container);  // ok
+auto v3 = std::get_if<int>(container);      // returns nullptr
+auto v4 = std::get<int>(container);         // throws std::bad_variant_exception
+auto which_type = container.index();    // returns 2
+```
+
+To determine which of the allowed types is currently held, use `index()`.
+
+To access data, use `std::get()` where the template parameter argument is the type you're interested in (similar to how data access is done in `std::tuple`). If the variant isn't holding an object of the type trying to be extracted, `std::get()` will throw `std::bad_variant_exception`. To avoid an exception, use `std::get_if()` -- it will return `nullptr` rather than throw an exception.
+
+Unlike `std::any`, `std::variant` cannot be left unset (it must hold on to an object). Initially, it creates and holds on to an object of the first type in its allowed types list. That means the first type in its allowed types list must be constructible with empty initializer arguments (e.g. default constructor). In the example above, the first allowed type is `int`, meaning that the variant starts off by holding on to an `int` created using an empty initializer (will have value of 0).
+
+The easiest way to work around this problem is to set the first type to `std::monostate`. This allows your variant to be unset. Trying to call `std::get()` on an unset variant throws `std::bad_variant_access`.
+
+```c++
+std::variant<std::monostate, int, float, MyClass> container {};  // may hold on to nothing, int, float, or MyClass
+auto which_type = container.index();     // returns 0
+auto v1 = std::get<MyClass>(container);  // throws std::bad_variant_access
+```
+
+If you have a set of single parameter functions with the same name (function overload), where those parameters contains all the types in a variant's allowed types list, you can use `std::visit()` to automatically pull out the object contained in the variant and call the appropriate function overload with that object as the argument.
+
+```c++
+std::variant<int, float> container {};  // may hold on to either int, float
+// call into a generic lambda / functor
+auto res1 = std::visit([](auto& x) { return 5 * x; }, container);
+// call into an overloaded free function (via a generic lambda / functor)
+auto res2 = std::visit([](auto &x) { return my_function(x); }, container);
+// call into a specific lambda / functor based on type currently being held
+std::visit(
+    overloaded {
+        [](int& x) { std::cout << "int" << x; },
+        [](float& x) { std::cout << "float" << x; },
+        [](auto &) { std::cout << "OTHER"; }
+    },
+    container
+);
+```
+
+Boost also provides a version of this container, `boost::variant`.
+
+```{seealso}
+Core Language/Unions_TOPIC (variants are similar to unions but type-safe)
+```
+
+## Time
+
+`{bm} /(Library FunctionsTime\/Time)_TOPIC/`
+
+Similar to Java's `java.time` package, the C++ standard library offers several classes that represent various time-based constructs. This includes timestamps, durations, calendar representations, timezones, and various helper functions.
+
+The subsections below document some common time-related classes and their usages.
+
+### Timestamps
+
+`{bm} /(Library FunctionsTime\/Time\/Timestamps)_TOPIC/`
+
+Time points are classes that represent some point in type. They're typically created by clocks, which are are classes that measure time. Each clock has a set of specifics:
+
+| Property     | Description                                                                             |
+|--------------|-----------------------------------------------------------------------------------------|
+| Epoch        | When does it start from? (e.g. since boot, app launch, Jan 1, 1970 00:00:00 UTC, etc..) |
+| Tick Period  | How often does it update? (e.g. once per millisecond)                                   |
+| Monotonicity | Could it go back in time? (e.g. time returned is before a previous time returned)       |
+| Leap Seconds | Does it include leap seconds?                                                           |
+
+```{note}
+Monotonicity is important. In certain cases the clock could go back in time (e.g. inaccurate clocks are a thing, leap seconds, updates from NTP server, etc..).
+```
+
+#### Clocks
+
+`{bm} /(Library Functions\/Time\/Timestamps\/Clocks)_TOPIC/`
+
+There are multiple types of clock. Each type of clock has the following set of important type traits that you can use to obtain key details about it:
+
+ * `T::period` - Reports tick period of the clock in seconds (`std::ratio`)
+ * `T::is_steady` - Reports monotonicity of the clock (`bool`).
+ * `T::now()` - Get the current time (`std::chrono::time_point`).
+
+```c++
+std::cout << "Ticks per Second: " << std::chrono::system_clock::period::den << std::endl;
+std::cout << "Monotonic:        " << std::chrono::system_clock::is_steady << std::endl;
+std::chrono::time_point<std::chrono::system_clock> time { std::chrono::system_clock::now() };
+```
+
+Note how the `std::chrono::time_point` type returned by the clock above is templated to the clock's type. The return type of a clock's `now()` typically won't be able to intermingle with one returned by another type of clock. To do that, you need to use `std::chrono::clock_cast<SRC, DST>()` first to convert it.
+
+```c++
+auto sys_pt { std::chrono::system_clock::now() };
+auto utc_pt { clock_cast<std::chrono::system_clock, std::chrono::utc_clock>(sys_pt) };
+```
+
+Common types of clock are listed below.
+
+ * `std::chrono::system_clock`
+ 
+   This clock is the system clock (e.g. wrist watch -- it tells you what time it is). Its epoch is whatever the epoch of the system's clock is (e.g. Jan 1, 1970 at midnight on most systems). Leap second inclusions are unspecified. 
+
+   ```c++
+   auto now { std::chrono::system_clock::now() };
+   ```
+
+ * `std::chrono::steady_clock`
+ 
+   This clock is used to measure time intervals (e.g. stop watch -- measure how long something takes). Its guaranteed to be monotonic, meaning each time you query it for the time it'll be greater than or equal to the result of your last query (e.g. `next_time >= prev_time`). Epoch is unspecified and leap second inclusions are unspecified.
+
+   ```c++
+   auto now { std::chrono::steady_clock::now() };
+   ```
+
+   ```{note}
+   Would it make sense to include leap seconds here if this is a "stop watch"? I don't think so, but nothing is mentioned about leap seconds when I look up the docs online.
+   ```
+
+ * `std::chrono::high_resolution_clock`
+ 
+   This clock is guaranteed to have the shortest possible tick period available (e.g. gaming, real-time systems, etc..). Its epoch and leap second inclusions are unspecified.
+
+   ```c++
+   auto now { std::chrono::high_resolution_clock::now() };
+   ```
+
+   ```{note}
+   Would it make sense to include leap seconds here if this is supposed to be used for high-precision timing? I don't think so, but nothing is mentioned about leap seconds when I look up the docs online.
+   ```
+
+ * `std::chrono::utc_clock` (Coordinated Universal Time)
+
+   This clock is guaranteed to have an epoch of Jan 1, 1970 at midnight UTC and includes leap seconds.
+
+   ```c++
+   auto now { std::chrono::utc_clock::now() };
+   auto ls_info { get_leap_second_info(now) };
+   std::cout << ls_info.elapsed;       // leap seconds elapsed since epoch until time_point
+   std::cout << ls_info.is_leap_second // did time_point fall on a leap second?
+   ```
+
+ * `std::chrono::tai_clock` (International Atomic Time)
+
+   This clock is guaranteed to have an epoch of Dec 31, 1957 at 23:59:50 UTC and _does not_ include leap seconds.
+
+   ```c++
+   auto now { std::chrono::tai_clock::now() };
+   ```
+
+   ```{note}
+   I'm not sure what this point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs atomic time?
+   ```
+
+ * `std::chrono::gps_clock` (Global Positioning System)
+
+   This clock is guaranteed to have an epoch of Jan 6, 1980 at midnight UTC and _does not_ include leap seconds.
+
+   ```c++
+   auto now { std::chrono::gps_clock::now() };
+   ```
+
+   ```{note}
+   I'm not sure what this point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs gps time? (e.g. GPS time is roughly ~38 microseconds faster per day)
+   ```
+
+ * `std::chrono::file_clock`
+
+   This clock is used for file times (alias for `std::filesystem::file_time_type::clock`).  Its epoch and leap second inclusions are unspecified.
+
+   ```c++
+   auto now { std::chrono::gps_clock::now() };
+   ```
+
+Boost has a similar set of clocks: `boost::chrono::system_clock`, `boost::chrono::steady_clock`, `boost::chrono::high_resolution_clock`, `boost::chrono::process_cpu_clock`, etc... But, Boost clocks can't intermingle with clocks from the C++ standard library (e.g. `clock_cast()` won't work).
+
+#### Conversions
+
+`{bm} /(Library Functions\/Time\/Timestamps\/Conversions)_TOPIC/`
+
+```{prereq}
+Library Functions/Time/Timestamps/Clocks_TOPIC
+Library Functions/Time/Date and Time_TOPIC
+```
+
+```{note}
+Timezone functionality doesn't seem to be implemented as of clang or GCC as of yet, meaning the code below that uses timezones fails to compile.
+```
+
+To convert a time point from the system clock to a date and time representation, use `std::chrono::floor()` to cut out the relevant durations before using them to create the date and time objects...
+
+```c++
+// SOURCE: https://stackoverflow.com/a/15958113
+using namespace std::chrono;
+
+auto tp = system_clock::now();
+auto tp_rounded = floor<days>(tp);
+year_month_day ymd { tp_rounded };
+hh_mm_ss time { floor<milliseconds>(tp - tp_rounded) };
+```
+
+The process is similar for converting a _zoned_ time point (time point associated with a timezone) ..
+
+```c++
+// SOURCE: https://stackoverflow.com/a/15958113
+using namespace std::chrono;
+
+auto tp = zoned_time{current_zone(), system_clock::now()}.get_local_time();
+auto tp_rounded = floor<days>(tp_rounded);
+year_month_day ymd {tp - tp_rounded};
+hh_mm_ss time {floor<milliseconds>(tp-dp)};
+```
+
+To go the other way around (date and time objects to time point), use the `std::chrono::local_days` / `std::chrono::sys_days` aliases (they alias `std::chrono::time_point`).
+
+```c++
+using namespace std::literals::chrono_literals;
+
+std::chrono::year_month_day date { January / 27d / 2022y };
+std::chrono::hh_mm_ss time { 8h + 30m + 45s };
+
+auto tp = std::chrono::local_days { date } + time;  // or use sys_days for system time
+```
+
+### Durations
+
+`{bm} /(Library Functions\/Time\/Durations)_TOPIC/`
+
+```{prereq}
+Library Functions/Time/Timestamps/Clocks_TOPIC
+```
+
+```{seealso}
+Core Language/Classes/User-defined Literals_TOPIC (variants are similar to unions but type-safe)
+```
+
+A duration is class that represents some amount of time.
+
+```c++
+// use helper functions
+auto hour { std::chrono::hours(1) };
+auto hour { std::chrono::minutes(60) };
+auto hour { std::chrono::seconds(3600) };
+auto hour { std::chrono::milliseconds(3600000) };
+auto hour { std::chrono::microseconds(3600000000) };
+auto hour { std::chrono::nanoseconds(3600000000000) };
+
+// use user-defined literals
+using namespace std::literals::chrono_literals; // import the literals
+auto hour { 1h };
+auto hour { 60m };
+auto hour { 3600s };
+auto hour { 3600000ms };
+auto hour { 3600000000us };
+auto hour { 3600000000000ns };
+```
+
+Subtracting two time points produces the duration in between them.
+
+```c++
+auto before_tp { std::chrono::steady_clock::now() };
+auto after_tp { std::chrono::steady_clock::now() };
+std::chrono::duration d { after_tp - before_tp };
+```
+
+Similarly, adding a duration to a time point moves it accordingly.
+
+```c++
+auto before_tp { std::chrono::steady_clock::now() };
+auto hour { std::chrono::hours(1) };
+auto after_tp { before_tp + hour };  // move up by 1 hr
+```
+
+A duration object has a tick period. For example, `std::chrono::hours(1)` and `std::chrono::minutes(60)` both represent exactly 1 hour (equality operator (==) returns true), but the former has a tick period of 1 hour and the latter has a tick period if 1 minute. To get the number of ticks in a duration, use `count()`.
+
+```c++
+// NOTE if you're calling a method of a user-defined literal, you need a space before the dot
+auto x {3600s .count()}; // x will be 3600
+auto y {1h .count()};    // y will be 1
+auto z {3600s == 1h};    // z will be true
+```
+
+```{note}
+I've read online that you shouldn't use `count()` unless absolutely necessary because it breaks a lot of the abstraction / encapsulation that the library does.
+```
+
+`std::chrono::duration_cast<DST>` may be used to convert one type of duration to another.
+
+```c++
+auto x { std::chrono::duration_cast<std::chrono::seconds>(1h) };
+auto y { std::chrono::duration_cast<std::chrono::hours>(3600s) };
+auto xTicks { x.count() }; // xTicks will be 3600
+auto yTicks { y.count() }; // xTicks will be 1
+auto z { std::chrono::duration_cast<std::chrono::hours>(3599s) };
+auto zTicks { z.count() }; // zTicks will be 0 (ROUNDS DOWN TO 0 -- not enough seconds for 1 hour)
+```
+
+### Date and Time
+
+`{bm} /(Library Functions\/Time\/Date and Time)_TOPIC/`
+
+```{prereq}
+Library Functions/Time/Timestamps/Clocks_TOPIC
+Library Functions/Time/Durations_TOPIC
+```
+
+Date and time functionality build on durations and time points by providing things like calendar representations, time of day representations (e.g. 12-hour vs 24-hour), timezone conversions, etc..
+
+Calendar classes represent some exact region (e.g. 5th, 1st, last, etc..) of a some specific calendar granularity (day, month, year, weekday).
+
+|                                        | Day | Day of Week | Month | Year | Example                       |
+|----------------------------------------|-----|-------------|-------|------|-------------------------------|
+| `std::chrono::day`                     |  X  |             |       |      | 31                            |
+| `std::chrono::weekday`                 |     |     X       |       |      | Tuesday                       |
+| `std::chrono::weekday_indexed`         |     |     X       |       |      | 3rd Tuesday of unknown month  |
+| `std::chrono::weekday_last`            |     |     X       |       |      | last weekday of unknown month |
+| `std::chrono::month`                   |     |             |   X   |      | January                       |
+| `std::chrono::month_day`               |  X  |             |   X   |      | December 25                   |
+| `std::chrono::month_day_last`          |  X  |             |   X   |      | last day of January           |
+| `std::chrono::month_weekday`           |     |     X       |   X   |      | 3rd Tuesday of January        |
+| `std::chrono::month_weekday_last`      |     |     X       |   X   |      | last weekday of January       |
+| `std::chrono::year`                    |     |             |       |  X   | 2022                          |
+| `std::chrono::year_month`              |     |             |   X   |  X   | January 2022                  |
+| `std::chrono::year_month_day`          |  X  |             |   X   |  X   | January 26, 2022              |
+| `std::chrono::year_month_day_last`     |  X  |             |   X   |  X   | last day of January 2022      |
+| `std::chrono::year_month_weekday`      |     |     X       |   X   |  X   | 3rd Tuesday of January        |
+| `std::chrono::year_month_weekday_last` |     |     X       |   X   |  X   | last weekday of January 2022  |
+
+```c++
+// create jan 27 2022 as year_month_day
+std::chrono::year y { 2022 };
+std::chrono::month m { 1 };
+std::chrono::day d { 27 };
+std::chrono::year_month_day today { y, m, d };
+```
+
+Adding or subtracting a duration to a calendar object adjusts it accordingly.
+
+```c++
+std::chrono::year_month_day today { y, m, d };
+
+using namespace std::literals::chrono_literals;
+today += 5d;  // add 5 days to today
+```
+
+If the calendar class captures a full date (e.g. `year_month_day`, `year_month_weekday`, etc..), it's convertible to a time point via `std::chrono::local_days` / `std::chrono::sys_days`.
+
+```c++
+std::chrono::year y { 2022 };
+std::chrono::month m { 1 };
+std::chrono::day d { 27 };
+std::chrono::year_month_day today { y, m, d };
+
+std::chrono::local_days today_tp { today };
+```
+
+```{note}
+Which should you use? I'm not sure the difference. `std::chrono::sys_days` is shorthand for `std::chrono::time_point<std::chrono::system_clock, std::chrono::days>`, which is the time point type for the system clock. `std::chrono::local_days` expands to the same thing but for the local clock. I'm not sure what local clock actually is. It wasn't listed as one of the clocks.
+```
+
+Similarly, a time point is convertible to a full date calendar class.
+
+```c++
+auto sys_tp { std::chrono::system_clock::now() };
+auto sys_tp_rounded { std::chrono::floor<std::chrono::days>(sys_tp) };  // round tp down to days
+std::chrono::year_month_day ymd{ sys_tp_rounded };
+```
+
+```{note}
+What type is `sys_tp_rounded`? It's `std::chrono::sys_days`, which is shorthand for `std::chrono::time_point<std::chrono::system_clock, std::chrono::days>`. The `std::chrono::year_month_day` constructor also accepts `std::chrono::local_days` -- I'm unsure which clock generates that (maybe utc clock?).
+```
+
+If two calendar objects both capture a full date but are of different types, you can still compare them by first converting them to time points.
+
+```c++
+// as year_month_day
+std::chrono::year y { 2022 };
+std::chrono::month m { 1 };
+std::chrono::day d { 27 };
+std::chrono::year_month_day today1 { y, m, d };
+// as year_month_weekday
+std::chrono::weekday thurs { 4 };
+std::chrono::weekday_indexed _4th_thurs { thurs, 4 };
+std::chrono::year_month_weekday today2 { y, m, _4th_thurs };
+// convert both to time point
+std::chrono::local_days today1_tp {today1};
+std::chrono::local_days today2_tp {today2};
+// compare -- they both represent the same date so they should be equal
+auto sameDay = today1_tp == today2_tp; // returns true
+```
+
+Calendar objects can be created more intuitively via a set of operator overloads, constants, and user-defined literals.
+
+```c++
+using namespace std::literals::chrono_literals;
+using namespace std::chrono;
+
+year_month_day today1 { January / 27d / 2022y };
+year_month_weekday today2 { 2022y / January / Thursday[4] };
+year_month_weekday_last today3 { 2022y / January / Thursday[last] };
+// all 3 of the above represent the same date
+```
+
+The `std::chrono::hh_mm_ss` class is a container for the time that's elapsed since midnight (also known as time of day).
+
+```c++
+auto tp { std::chrono::system_clock::now() };
+auto tp_rounded { std::chrono::floor<days>(tp) };
+std::chrono::year_month_day ymd{ tp_rounded };
+
+auto time_duration ( std::chrono::floor<milliseconds>(tp - tp_rounded) );
+std::chrono::hh_mm_ss time{ time_duration };
+// the variables below are of duration type
+auto h = time.hours();
+auto m = time.minutes();
+auto s = time.seconds();
+auto ms = time.subseconds();
+```
+
+Several time-related helper functions are provided to deal with 12-hour vs 24-hour time.
+
+```c++
+auto hour_of_day { time.hours() }; // using object from example above
+
+auto am { std::chrono::is_am(hour_of_day) };
+auto pm { std::chrono::is_pm(hour_of_day) };
+
+auto hour_of_day_12 { std::chrono::make_12(hour_of_day) };        // as 12-hour format
+auto hour_of_day_24 { std::chrono::make_12(hour_of_day_12, pm) }; // back to 24-hour format
+```
+
+```{note}
+Timezone functionality doesn't seem to be implemented as of clang or GCC as of yet, meaning the code below fails to compile. It does seem to be implemented in MSVC though.
+```
+
+Timezones are accessible through a timezone database.
+
+```c++
+const auto my_tzdb = std::chrono::get_tzdb(); // also get_tzdb_list()
+
+const std::chrono::time_zone* la_tz = my_tzdb.locate_zone("America/Los_Angeles");
+const std::chrono::time_zone* local_tz = my_tzdb.current_zone();
+```
+
+You can apply a timezone to a time point, then convert it to the appropriate date and time objects.
+
+```c++
+// From https://stackoverflow.com/a/15958113
+auto tp { std::chrono::system_clock::now() };
+auto ztp { std::chrono::zoned_time {local_tz, tp}.get_local_time() };
+auto ztp_rounded { std::chrono::floor<days>(ztp) };
+std::chrono::year_month_day ymd { tp_rounded };
+std::chrono::hh_mm_ss time { std::chrono::floor<milliseconds>(ztp - ztp_rounded) };
+```
+
+Similarly, you can construct a zoned time point from date and time details.
+
+```c++
+using namespace std::literals::chrono_literals;
+
+std::chrono::year_month_day date { January / 27d / 2022y };
+std::chrono::hh_mm_ss time { 8h + 30m + 45s };
+
+auto tp = std::chrono::local_days { date } + time;  // or use sys_days for system time
+```
+
+## Random Numbers
+
+`{bm} /(Library FunctionsTime\/Random Numbers)_TOPIC/`
+
+The C++ standard library provides random number generators out of the box. For ...
+
+ * non-cryptographic scenarios, use `std::mt19937_64`, an implementation of Mersenne Twister.
+ * cryptographic scenarios, use `std::random_device`, which tries to use an unpredictable hardware source (but may not).
+
+The classes are functors, where each invocation generates a random integral.
+
+```c++
+std::mt19937_64 mt_rand{ 12345 };  // seed value of 12345
+std::cout << mt_rand() << std::endl;
+
+std::random_device secure_rand {}; // doesn't take a seed
+std::cout << secure_rand() << std::endl;
+```
+
+To have a random number generator return a distribution other than a normal distribution, you can use one of the distribution wrappers.
+
+```c++
+std::mt19937_64 rng{ 12345 };
+std::uniform_int_distribution<int> uniform_dist{ 0, 10 };
+auto value = uniform_dist(rng);
+```
+
+ * `std::uniform_int_distribution`
+ * `std::uniform_real_distribution` (like the above but for floating point types)
+ * `std::normal_distribution` (a tweaked normal distribution)
+ * etc..
+
+Boost provides a set of distributions as well.
+
+```{note}
+Are there friendly wrappers here? What if I want the random number generator to give me a float, bool, or an alphanumeric string instead of an int?
+```
+
+## Numeric Limits
+
+`{bm} /(Library FunctionsTime\/Numeric Limits)_TOPIC/`
+
+Recall that C++'s numeric types are wishy-washy (e.g. there is no guarantee as to how large an `int` is, just that it must be greater than or equal to `short`). The `std::numeric_limits` class allows you to get compile-time information about a numeric type, such as signed-ness, min, max, etc..
+
+```c++
+auto a = std::numeric_limits<float>::is_integer;      // false
+auto b = std::numeric_limits<uint16_t>::is_integer;   // true
+auto c = std::numeric_limits<uint16_t>::has_infinity; // false
+```
+
+ * `std::numeric_limits<T>::is_signed` - if the type is signed
+ * `std::numeric_limits<T>::is_integer` - if the type is an integral
+ * `std::numeric_limits<T>::has_infinity` - if the type supports infinity (e.g. floats do)
+ * `std::numeric_limits<T>::has_quiet_NaN` - if the type can be set to not-a-number (e.g. IEEE floats can be set to not a number)
+ * `std::numeric_limits<T>::round_style` - rounding mode for a type
+ * `std::numeric_limits<T>::is_iec559` - if the type is an IEEE float.
+ * `std::numeric_limits<T>::lowest()` - maximum negative value.
+ * `std::numeric_limits<T>::max()` - maximum value.
+ * `std::numeric_limits<T>::min()` - smallest representable value (different from `::lowest()`).
+ * `std::numeric_limits<T>::quiet_NaN()` - get a not-a-number value.
+ * etc..
+
+Boost's Integer library also provides additional functionality for determining information about numerics (e.g. which one is the fastest for the platform you're on).
+
+## Numeric Conversions
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
+
+TODO: Boost Numeric Conversions section in chapter 12
 
 # Terminology
 

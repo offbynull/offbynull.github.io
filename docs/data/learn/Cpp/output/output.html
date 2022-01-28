@@ -145,6 +145,17 @@
 <li><a href="#H_Any">Any</a></li>
 <li><a href="#H_Variant">Variant</a></li>
 </ul>
+<li><a href="#H_Time">Time</a></li>
+<ul>
+<li><a href="#H_Timestamps">Timestamps</a></li>
+<ul>
+<li><a href="#H_Clocks">Clocks</a></li>
+<li><a href="#H_Conversions">Conversions</a></li>
+</ul>
+<li><a href="#H_Durations">Durations</a></li>
+<li><a href="#H_Date%20and%20Time">Date and Time</a></li>
+</ul>
+<li><a href="#H_Random%20Numbers">Random Numbers</a></li>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -158,6 +169,10 @@
 -- friend function to ostringstream</p>
 <p>TODO: streams</p>
 <p>TODO: add terminology for declarations and definitions + add more example code into terminology</p>
+<p>TODO: std::visit and <code>overloaded { }</code> -- add in a section for these, then go back and fix the std::variant section (and any other sections that can make use of it like std::vector) to refer to it (MOVE THE PIECES OUT OF STD::VARIANT SECTION INTO THE STD::VISIT -- USE SEEALSO TO <a href="#BM_(reference)%2Fi">REFERENCE</a> IT) -- https://dev.to/tmr232/that-<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ed-trick-<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing-<a href="#BM_(lambda)%2Fi">lambda</a>s-in-c17   /     https://dzone.com/articles/two-lines-of-code-and-three-c17-features-the-overl</p>
+<p>TODO: figure out C++20 date time functionality</p>
+<p>TODO: unnamed namespaces  (https://en.cpp<a href="#BM_(reference)%2Fi">reference</a>.com/w/cpp/language/namespace)</p>
+<p>TODO: std::formatter (INCLUDING the c++20 changes for std::format) https://en.cpp<a href="#BM_(reference)%2Fi">reference</a>.com/w/cpp/utility/format/formatter</p>
 <a name="H_How%20to%20Read"></a><h1>How to Read</h1>
 <p>This document is broken down into sections and sub-sections. To understand a specific section, you need to understand all of its parent sections as well as any prerequisites that it lists. For example, if section <code>Fruits/Apples/Granny Smith</code> has prerequisites <code>Vegetables/Peas</code> and <code>Fish</code> listed, you'll need to have read ...</p>
 <ul>
@@ -385,14 +400,24 @@ hello world
 <li>Visual Studio Code as the editor (installable via snap -- <code>snap install --classic code</code>)</li>
 <li>CMake as the build system  (installable via apt -- <code>apt install cmake</code>)</li>
 <li>Conan as the dependency manager (install deb file from website)</li>
-<li>C++ Extension Pack for vscode (install via extension section of vscode)</li>
-<li>C-Mantic Extension for vscode (install via extension section of vscode)</li>
+<li>C++ extension pack for vscode (install via extension section of vscode)</li>
+<li>LLVM clangd extension for vscode (install via extension section of vscode)</li>
+<li>C-Mantic extension for vscode (install via extension section of vscode)</li>
 </ol>
-<p>There are basic guides / tutorials for each of these tools available online. With the C++ extensions (5 and 6), vscode (3) works similarly to a professional IDE. It will parse a CMake configuration (3) to figure out how the code should be built as well as to provide C++ intellisense / auto-complete / formatting / etc.. support. Conan (4) integrates with CMake, so intellisense and builds through vscode automatically include the libraries.</p>
+<p>There are basic guides / tutorials for each of these tools available online. With the C++ extensions (5, 6, and 7), vscode (3) works similar to a professional IDE. It will parse a CMake configuration (3) to figure out how the code should be built as well as to provide C++ intellisense / auto-complete / formatting / debugging / etc.. support. Conan (4) integrates with CMake, so intellisense and builds through vscode automatically include the libraries.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Make sure to turn off the C++ extension's intellisense support or else it'll interfere with clangd's superior intellisense support. You can do this by adding the following to your <code>.vscode/settings.json file</code>...</p>
+<pre class="hljs"><code><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"C_Cpp.intelliSenseEngine"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Disabled"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"C_Cpp.autocomplete"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Disabled"</span><span class="hljs-punctuation">,</span>  <span class="hljs-comment">// So you don't get autocomplete from both extensions.</span>
+    <span class="hljs-attr">"C_Cpp.errorSquiggles"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Disabled"</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// So you don't get error squiggles from both extensions (clangd's seem to be more reliable anyway).</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+</div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Make sure that you don't have other C++ extensions installed. I'd initially installed a Makefile plugin into vscode that was tripping up the CMake plugin and breaking my intellisense.</p>
-<p>You can swap out "C++ Extension" in the C++ extension pack for the clangd extension. It'll work with the CMake plugin and provide intellisense / auto-complete / formatting / etc.. support using LLVM Clang's engine.</p>
 </div>
 <p>Assuming you have all the software above installed, <a href="my_cpp_template.tar.xz">this cookie cutter template</a> can be used to set up a simple project structure that you can open directly in vscode. The <a href="#BM_(template)%2Fi">template</a> primes the project by ...</p>
 <ol>
@@ -1999,6 +2024,14 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
 </div>
 </li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FAny)_TOPIC%2F">Library Functions/Containers/Any</a> (<code>any_cast</code> for an "any" container)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FTimestamps%2FClocks)_TOPIC%2F">Library Functions/Time/Timestamps/Clocks</a> (<code>clock_cast</code> for converting times between different types of clocks)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FDurations)_TOPIC%2F">Library Functions/Time/Durations</a> (<code>duration_cast</code> for converting between different types of durations)</li>
+</ul>
+</div>
 <a name="H_C-style%20Casts"></a><h4>C-style Casts</h4>
 <p><a name="BM_(Core%20Language%5C%2FVariables%2FExplicit%20Conversion%2FC-style%20Casts)_TOPIC%2F"></a><strong></strong></p>
 <p>C-style casts are similar to casts seen in Java. The type is bracketed before whatever is being evaluated.</p>
@@ -3431,6 +3464,12 @@ MyFunction f1{}
 <span class="hljs-keyword">auto</span> f2 = [] (<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y = <span class="hljs-number">99</span>) -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> x + y; };  <span class="hljs-comment">// default args</span>
 <span class="hljs-keyword">auto</span> f3 = [] (<span class="hljs-keyword">auto</span> x, <span class="hljs-keyword">auto</span> y) { <span class="hljs-keyword">return</span> x + y; };            <span class="hljs-comment">// generic params (compiler deduces types based on usage)</span>
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction)_TOPIC%2F">Core Language/Templates/Type Deduction</a> (<code>decltype</code> may be used with <code>auto</code> parameter types)</li>
+</ul>
+</div>
 </li>
 <li>
 <p><strong><a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s</strong> (optional) - Function <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s.</p>
@@ -3626,6 +3665,12 @@ Distance d { <span class="hljs-number">1.2</span>_km + <span class="hljs-number"
 <li>Complex numbers API (complex header): <code>std::complex&lt;double&gt; { (1.0 + 2.0i) * (3.0 + 4.0i) }</code>.</li>
 <li>String API (string): <code>std::string str { "hello"s + "world"s }</code>.</li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FDurations)_TOPIC%2F">Library Functions/Time/Durations</a></li>
+</ul>
+</div>
 <a name="H_Templates"></a><h2>Templates</h2>
 <p><a name="BM_(Core%20Language%5C%2FTemplates)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -3704,6 +3749,7 @@ MyClassPartialTemplate&lt;<span class="hljs-type">int</span>, <span class="hljs-
 <p>Normally, C++ code is split into two files: a header file that contains declarations (e.g. function signatures) and a C++ file that contains definitions (e.g. function signatures with their bodies). When accessing C++ code that isn't local, typically only the declarations of that non-local code need to be included. The <a href="#BM_(linker%7Cexecutable)%2Fi">linker</a> binds those non-local declarations to their definitions when it comes time to build the <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>.</p>
 <p><a href="#BM_(template)%2Fi">Template</a>s work differently from Java generics in that the C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> generates a new code for each unique set of substitutions it sees used (<a href="#BM_(template%20instantiation)%2Fi">template instantiation</a>). Doing so produces more code than if there was only one copy, but also ensures any performance optimizations unique to that specific set of substitutions. Also, because each usage of a <a href="#BM_(template)%2Fi">template</a> may result in newly generated code, that usage typically needs access to both the declaration and definition. The simplest way to handle this is to put the entirety of the <a href="#BM_(template)%2Fi">template</a> (both definition and declaration) into a header, which gets included into the same file as the usage.</p>
 <a name="H2_Type%20Deduction"></a><h3>Type Deduction</h3>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -3933,8 +3979,12 @@ MyUnion x;
 <span class="hljs-type">int</span> x = x.num_in;
 <span class="hljs-type">int</span> y = x.num_dbl;
 </code></pre>
-<pre><code>Consider using std::variant instead of unions.
-</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FVariant)_TOPIC%2F">Library Functions/Containers/Variant</a> (consider using this instead of <a href="#BM_(union)%2Fi">union</a>s)</li>
+</ul>
+</div>
 <a name="H_Namespaces"></a><h2>Namespaces</h2>
 <p><a name="BM_(Core%20Language%5C%2FNamespaces)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -5323,18 +5373,559 @@ boost::compressed_pair&lt;<span class="hljs-type">int</span>, EmptyClass&gt; cp 
 </code></pre>
 <a name="H_Any"></a><h3>Any</h3>
 <p><a name="BM_(Library%20Functions%5C%2FContainers%2FAny)_TOPIC%2F"></a><strong></strong></p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
-<p>TODO: start from the any section of the book ch12</p>
+<p>An any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a container that can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of unknown type (a type that isn't known at <a href="#BM_(compile-time)%2Fi">compile-time</a>).</p>
+<pre class="hljs"><code>std::any container {};
+container.emplace&lt;MyClass&gt; { arg1, arg2 };
+<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">any_cast</span>&lt;MyClass&gt;(container); <span class="hljs-comment">// ok</span>
+<span class="hljs-keyword">auto</span> v2 = std::<span class="hljs-built_in">any_cast</span>&lt;BadType&gt;(container); <span class="hljs-comment">// should throws std::bad_any_cast</span>
+</code></pre>
+<p>To place an <a href="#BM_(object%7Cinstance)%2Fi">object</a> into the container, use <code>emplace()</code>. This <em>creates</em> a new <a href="#BM_(object%7Cinstance)%2Fi">object</a> and places it into the container, destroying the <a href="#BM_(object%7Cinstance)%2Fi">object</a> previously held. The type of the <a href="#BM_(object%7Cinstance)%2Fi">object</a> is passed in as a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument while the function arguments are used to initialize that <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. passed directly to <a href="#BM_(constructor)%2Fi">constructor</a>).</p>
+<p>Accessing the <a href="#BM_(object%7Cinstance)%2Fi">object</a> within the container is done via <code>std::any_cast()</code>. The function argument is the container itself and the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument is the type of  <a href="#BM_(object%7Cinstance)%2Fi">object</a> <em>you think</em> is being held. If the <a href="#BM_(object%7Cinstance)%2Fi">object</a> is of a different type, the function throws <code>std::bad_any_cast</code> instead of returning the <a href="#BM_(object%7Cinstance)%2Fi">object</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The closest Java analog I could think of is the base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> hierarchy where all Java <a href="#BM_(object%7Cinstance)%2Fi">object</a>s have to derive from <code>java.lang.Object</code>. You can accept a type of <code>Java.lang.Object</code> and cast it at <a href="#BM_(runtime)%2Fi">runtime</a> to the correct type (or one of its ancestors). The C++ any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> provides similar functionality to that.</p>
+</div>
+<p>Boost also provides a version of this container, <code>boost::any</code>.</p>
 <a name="H_Variant"></a><h3>Variant</h3>
 <p><a name="BM_(Library%20Functions%5C%2FContainers%2FVariant)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li>Library Functions/Containers/Any</li>
+<li>Library Functions/Containers/Tuple</li>
+</ul>
+</div>
+<p>A variant <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a type-restricted form of the <code>std::any</code>. Where as with the <code>std::any</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of any type, with <code>std::variant</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of one of several predefined types.</p>
+<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; container {};  <span class="hljs-comment">// may hold on to either int, float, or MyClass</span>
+container.emplace&lt;MyClass&gt; { arg1, arg2 };
+<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(container);     <span class="hljs-comment">// ok</span>
+<span class="hljs-keyword">auto</span> v2 = std::<span class="hljs-built_in">get_if</span>&lt;MyClass&gt;(container);  <span class="hljs-comment">// ok</span>
+<span class="hljs-keyword">auto</span> v3 = std::<span class="hljs-built_in">get_if</span>&lt;<span class="hljs-type">int</span>&gt;(container);      <span class="hljs-comment">// returns nullptr</span>
+<span class="hljs-keyword">auto</span> v4 = std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-type">int</span>&gt;(container);         <span class="hljs-comment">// throws std::bad_variant_exception</span>
+<span class="hljs-keyword">auto</span> which_type = container.<span class="hljs-built_in">index</span>();    <span class="hljs-comment">// returns 2</span>
+</code></pre>
+<p>To determine which of the allowed types is currently held, use <code>index()</code>.</p>
+<p>To access data, use <code>std::get()</code> where the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument is the type you're interested in (similar to how data access is done in <code>std::tuple</code>). If the variant isn't holding an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the type trying to be extracted, <code>std::get()</code> will throw <code>std::bad_variant_exception</code>. To avoid an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>, use <code>std::get_if()</code> -- it will return <code>nullptr</code> rather than throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>.</p>
+<p>Unlike <code>std::any</code>, <code>std::variant</code> cannot be left unset (it must hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a>). Initially, it creates and holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the first type in its allowed types list. That means the first type in its allowed types list must be constructible with empty initializer arguments (e.g. default <a href="#BM_(constructor)%2Fi">constructor</a>). In the example above, the first allowed type is <code>int</code>, meaning that the variant starts off by holding on to an <code>int</code> created using an empty initializer (will have value of 0).</p>
+<p>The easiest way to work around this problem is to set the first type to <code>std::monostate</code>. This allows your variant to be unset. Trying to call <code>std::get()</code> on an unset variant throws <code>std::bad_variant_access</code>.</p>
+<pre class="hljs"><code>std::variant&lt;std::monostate, <span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; container {};  <span class="hljs-comment">// may hold on to nothing, int, float, or MyClass</span>
+<span class="hljs-keyword">auto</span> which_type = container.<span class="hljs-built_in">index</span>();     <span class="hljs-comment">// returns 0</span>
+<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(container);  <span class="hljs-comment">// throws std::bad_variant_access</span>
+</code></pre>
+<p>If you have a set of single parameter functions with the same name (<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>), where those parameters contains all the types in a variant's allowed types list, you can use <code>std::visit()</code> to automatically pull out the <a href="#BM_(object%7Cinstance)%2Fi">object</a> contained in the variant and call the appropriate <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a> with that <a href="#BM_(object%7Cinstance)%2Fi">object</a> as the argument.</p>
+<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; container {};  <span class="hljs-comment">// may hold on to either int, float</span>
+<span class="hljs-comment">// call into a generic lambda / functor</span>
+<span class="hljs-keyword">auto</span> res1 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span>&amp; x) { <span class="hljs-keyword">return</span> <span class="hljs-number">5</span> * x; }, container);
+<span class="hljs-comment">// call into an overloaded free function (via a generic lambda / functor)</span>
+<span class="hljs-keyword">auto</span> res2 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span> &amp;x) { <span class="hljs-keyword">return</span> <span class="hljs-built_in">my_function</span>(x); }, container);
+<span class="hljs-comment">// call into a specific lambda / functor based on type currently being held</span>
+std::<span class="hljs-built_in">visit</span>(
+    overloaded {
+        [](<span class="hljs-type">int</span>&amp; x) { std::cout &lt;&lt; <span class="hljs-string">"int"</span> &lt;&lt; x; },
+        [](<span class="hljs-type">float</span>&amp; x) { std::cout &lt;&lt; <span class="hljs-string">"float"</span> &lt;&lt; x; },
+        [](<span class="hljs-keyword">auto</span> &amp;) { std::cout &lt;&lt; <span class="hljs-string">"OTHER"</span>; }
+    },
+    container
+);
+</code></pre>
+<p>Boost also provides a version of this container, <code>boost::variant</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FUnions)_TOPIC%2F">Core Language/Unions</a> (variants are similar to <a href="#BM_(union)%2Fi">union</a>s but type-safe)</li>
+</ul>
+</div>
+<a name="H_Time"></a><h2>Time</h2>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FTime)_TOPIC%2F"></a><strong></strong></p>
+<p>Similar to Java's <code>java.time</code> package, the C++ standard library offers several <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that represent various time-based constructs. This includes timestamps, durations, calendar representations, timezones, and various helper functions.</p>
+<p>The subsections below document some common time-related <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and their usages.</p>
+<a name="H_Timestamps"></a><h3>Timestamps</h3>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FTime%2FTimestamps)_TOPIC%2F"></a><strong></strong></p>
+<p>Time points are <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that represent some point in type. They're typically created by clocks, which are are <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that measure time. Each clock has a set of specifics:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Epoch</td>
+<td>When does it start from? (e.g. since boot, app launch, Jan 1, 1970 00:00:00 UTC, etc..)</td>
+</tr>
+<tr>
+<td>Tick Period</td>
+<td>How often does it update? (e.g. once per millisecond)</td>
+</tr>
+<tr>
+<td>Monotonicity</td>
+<td>Could it go back in time? (e.g. time returned is before a previous time returned)</td>
+</tr>
+<tr>
+<td>Leap Seconds</td>
+<td>Does it include leap seconds?</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Monotonicity is important. In certain cases the clock could go back in time (e.g. inaccurate clocks are a thing, leap seconds, updates from NTP server, etc..).</p>
+</div>
+<a name="H_Clocks"></a><h4>Clocks</h4>
+<p><a name="BM_(Library%20Functions%5C%2FTime%2FTimestamps%2FClocks)_TOPIC%2F"></a><strong></strong></p>
+<p>There are multiple types of clock. Each type of clock has the following set of important type traits that you can use to obtain key details about it:</p>
+<ul>
+<li><code>T::period</code> - Reports tick period of the clock in seconds (<code>std::ratio</code>)</li>
+<li><code>T::is_steady</code> - Reports monotonicity of the clock (<code>bool</code>).</li>
+<li><code>T::now()</code> - Get the current time (<code>std::chrono::time_point</code>).</li>
+</ul>
+<pre class="hljs"><code>std::cout &lt;&lt; <span class="hljs-string">"Ticks per Second: "</span> &lt;&lt; std::chrono::system_clock::period::den &lt;&lt; std::endl;
+std::cout &lt;&lt; <span class="hljs-string">"Monotonic:        "</span> &lt;&lt; std::chrono::system_clock::is_steady &lt;&lt; std::endl;
+std::chrono::time_point&lt;std::chrono::system_clock&gt; time { std::chrono::system_clock::<span class="hljs-built_in">now</span>() };
+</code></pre>
+<p>Note how the <code>std::chrono::time_point</code> type returned by the clock above is <a href="#BM_(template)%2Fi">template</a>d to the clock's type. The return type of a clock's <code>now()</code> typically won't be able to intermingle with one returned by another type of clock. To do that, you need to use <code>std::chrono::clock_cast&lt;SRC, DST&gt;()</code> first to convert it.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> sys_pt { std::chrono::system_clock::<span class="hljs-built_in">now</span>() };
+<span class="hljs-keyword">auto</span> utc_pt { <span class="hljs-built_in">clock_cast</span>&lt;std::chrono::system_clock, std::chrono::utc_clock&gt;(sys_pt) };
+</code></pre>
+<p>Common types of clock are listed below.</p>
+<ul>
+<li>
+<p><code>std::chrono::system_clock</code></p>
+<p>This clock is the system clock (e.g. wrist watch -- it tells you what time it is). Its epoch is whatever the epoch of the system's clock is (e.g. Jan 1, 1970 at midnight on most systems). Leap second inclusions are unspecified.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> now { std::chrono::system_clock::<span class="hljs-built_in">now</span>() };
+</code></pre>
+</li>
+<li>
+<p><code>std::chrono::steady_clock</code></p>
+<p>This clock is used to measure time intervals (e.g. stop watch -- measure how long something takes). Its guaranteed to be monotonic, meaning each time you query it for the time it'll be greater than or equal to the result of your last query (e.g. <code>next_time &gt;= prev_time</code>). Epoch is unspecified and leap second inclusions are unspecified.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> now { std::chrono::steady_clock::<span class="hljs-built_in">now</span>() };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Would it make sense to include leap seconds here if this is a "stop watch"? I don't think so, but nothing is mentioned about leap seconds when I look up the docs online.</p>
+</div>
+</li>
+<li>
+<p><code>std::chrono::high_resolution_clock</code></p>
+<p>This clock is guaranteed to have the shortest possible tick period available (e.g. gaming, real-time systems, etc..). Its epoch and leap second inclusions are unspecified.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> now { std::chrono::high_resolution_clock::<span class="hljs-built_in">now</span>() };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Would it make sense to include leap seconds here if this is supposed to be used for high-precision timing? I don't think so, but nothing is mentioned about leap seconds when I look up the docs online.</p>
+</div>
+</li>
+<li>
+<p><code>std::chrono::utc_clock</code> (Coordinated Universal Time)</p>
+<p>This clock is guaranteed to have an epoch of Jan 1, 1970 at midnight UTC and includes leap seconds.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> now { std::chrono::utc_clock::<span class="hljs-built_in">now</span>() };
+<span class="hljs-keyword">auto</span> ls_info { <span class="hljs-built_in">get_leap_second_info</span>(now) };
+std::cout &lt;&lt; ls_info.elapsed;       <span class="hljs-comment">// leap seconds elapsed since epoch until time_point</span>
+std::cout &lt;&lt; ls_info.is_leap_second <span class="hljs-comment">// did time_point fall on a leap second?</span>
+</code></pre>
+</li>
+<li>
+<p><code>std::chrono::tai_clock</code> (International Atomic Time)</p>
+<p>This clock is guaranteed to have an epoch of Dec 31, 1957 at 23:59:50 UTC and <em>does not</em> include leap seconds.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> now { std::chrono::tai_clock::<span class="hljs-built_in">now</span>() };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I'm not sure what this point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs atomic time?</p>
+</div>
+</li>
+<li>
+<p><code>std::chrono::gps_clock</code> (Global Positioning System)</p>
+<p>This clock is guaranteed to have an epoch of Jan 6, 1980 at midnight UTC and <em>does not</em> include leap seconds.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> now { std::chrono::gps_clock::<span class="hljs-built_in">now</span>() };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I'm not sure what this point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs gps time? (e.g. GPS time is roughly ~38 microseconds faster per day)</p>
+</div>
+</li>
+<li>
+<p><code>std::chrono::file_clock</code></p>
+<p>This clock is used for file times (alias for <code>std::filesystem::file_time_type::clock</code>).  Its epoch and leap second inclusions are unspecified.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> now { std::chrono::gps_clock::<span class="hljs-built_in">now</span>() };
+</code></pre>
+</li>
+</ul>
+<p>Boost has a similar set of clocks: <code>boost::chrono::system_clock</code>, <code>boost::chrono::steady_clock</code>, <code>boost::chrono::high_resolution_clock</code>, <code>boost::chrono::process_cpu_clock</code>, etc... But, Boost clocks can't intermingle with clocks from the C++ standard library (e.g. <code>clock_cast()</code> won't work).</p>
+<a name="H_Conversions"></a><h4>Conversions</h4>
+<p><a name="BM_(Library%20Functions%5C%2FTime%2FTimestamps%2FConversions)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FTimestamps%2FClocks)_TOPIC%2F">Library Functions/Time/Timestamps/Clocks</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FDate%20and%20Time)_TOPIC%2F">Library Functions/Time/Date and Time</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Timezone functionality doesn't seem to be implemented as of clang or GCC as of yet, meaning the code below that uses timezones fails to compile.</p>
+</div>
+<p>To convert a time point from the system clock to a date and time representation, use <code>std::chrono::floor()</code> to cut out the relevant durations before using them to create the date and time <a href="#BM_(object%7Cinstance)%2Fi">object</a>s...</p>
+<pre class="hljs"><code><span class="hljs-comment">// SOURCE: https://stackoverflow.com/a/15958113</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::chrono;
+
+<span class="hljs-keyword">auto</span> tp = system_clock::<span class="hljs-built_in">now</span>();
+<span class="hljs-keyword">auto</span> tp_rounded = <span class="hljs-built_in">floor</span>&lt;days&gt;(tp);
+year_month_day ymd { tp_rounded };
+hh_mm_ss time { <span class="hljs-built_in">floor</span>&lt;milliseconds&gt;(tp - tp_rounded) };
+</code></pre>
+<p>The process is similar for converting a <em>zoned</em> time point (time point associated with a timezone) ..</p>
+<pre class="hljs"><code><span class="hljs-comment">// SOURCE: https://stackoverflow.com/a/15958113</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::chrono;
+
+<span class="hljs-keyword">auto</span> tp = zoned_time{<span class="hljs-built_in">current_zone</span>(), system_clock::<span class="hljs-built_in">now</span>()}.<span class="hljs-built_in">get_local_time</span>();
+<span class="hljs-keyword">auto</span> tp_rounded = <span class="hljs-built_in">floor</span>&lt;days&gt;(tp_rounded);
+year_month_day ymd {tp - tp_rounded};
+hh_mm_ss time {<span class="hljs-built_in">floor</span>&lt;milliseconds&gt;(tp-dp)};
+</code></pre>
+<p>To go the other way around (date and time <a href="#BM_(object%7Cinstance)%2Fi">object</a>s to time point), use the <code>std::chrono::local_days</code> / <code>std::chrono::sys_days</code> aliases (they alias <code>std::chrono::time_point</code>).</p>
+<pre class="hljs"><code><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::literals::chrono_literals;
+
+std::chrono::year_month_day date { January / <span class="hljs-number">27</span>d / <span class="hljs-number">2022</span>y };
+std::chrono::hh_mm_ss time { <span class="hljs-number">8</span>h + <span class="hljs-number">30</span>m + <span class="hljs-number">45</span>s };
+
+<span class="hljs-keyword">auto</span> tp = std::chrono::local_days { date } + time;  <span class="hljs-comment">// or use sys_days for system time</span>
+</code></pre>
+<a name="H_Durations"></a><h3>Durations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FTime%2FDurations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FTimestamps%2FClocks)_TOPIC%2F">Library Functions/Time/Timestamps/Clocks</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FUser-defined%20Literals)_TOPIC%2F">Core Language/Classes/User-defined Literals</a> (variants are similar to <a href="#BM_(union)%2Fi">union</a>s but type-safe)</li>
+</ul>
+</div>
+<p>A duration is <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that represents some amount of time.</p>
+<pre class="hljs"><code><span class="hljs-comment">// use helper functions</span>
+<span class="hljs-keyword">auto</span> hour { std::chrono::<span class="hljs-built_in">hours</span>(<span class="hljs-number">1</span>) };
+<span class="hljs-keyword">auto</span> hour { std::chrono::<span class="hljs-built_in">minutes</span>(<span class="hljs-number">60</span>) };
+<span class="hljs-keyword">auto</span> hour { std::chrono::<span class="hljs-built_in">seconds</span>(<span class="hljs-number">3600</span>) };
+<span class="hljs-keyword">auto</span> hour { std::chrono::<span class="hljs-built_in">milliseconds</span>(<span class="hljs-number">3600000</span>) };
+<span class="hljs-keyword">auto</span> hour { std::chrono::<span class="hljs-built_in">microseconds</span>(<span class="hljs-number">3600000000</span>) };
+<span class="hljs-keyword">auto</span> hour { std::chrono::<span class="hljs-built_in">nanoseconds</span>(<span class="hljs-number">3600000000000</span>) };
+
+<span class="hljs-comment">// use user-defined literals</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::literals::chrono_literals; <span class="hljs-comment">// import the literals</span>
+<span class="hljs-keyword">auto</span> hour { <span class="hljs-number">1</span>h };
+<span class="hljs-keyword">auto</span> hour { <span class="hljs-number">60</span>m };
+<span class="hljs-keyword">auto</span> hour { <span class="hljs-number">3600</span>s };
+<span class="hljs-keyword">auto</span> hour { <span class="hljs-number">3600000</span>ms };
+<span class="hljs-keyword">auto</span> hour { <span class="hljs-number">3600000000u</span>s };
+<span class="hljs-keyword">auto</span> hour { <span class="hljs-number">3600000000000</span>ns };
+</code></pre>
+<p>Subtracting two time points produces the duration in between them.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> before_tp { std::chrono::steady_clock::<span class="hljs-built_in">now</span>() };
+<span class="hljs-keyword">auto</span> after_tp { std::chrono::steady_clock::<span class="hljs-built_in">now</span>() };
+std::chrono::duration d { after_tp - before_tp };
+</code></pre>
+<p>Similarly, adding a duration to a time point moves it accordingly.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> before_tp { std::chrono::steady_clock::<span class="hljs-built_in">now</span>() };
+<span class="hljs-keyword">auto</span> hour { std::chrono::<span class="hljs-built_in">hours</span>(<span class="hljs-number">1</span>) };
+<span class="hljs-keyword">auto</span> after_tp { before_tp + hour };  <span class="hljs-comment">// move up by 1 hr</span>
+</code></pre>
+<p>A duration <a href="#BM_(object%7Cinstance)%2Fi">object</a> has a tick period. For example, <code>std::chrono::hours(1)</code> and <code>std::chrono::minutes(60)</code> both represent exactly 1 hour (equality operator (==) returns true), but the former has a tick period of 1 hour and the latter has a tick period if 1 minute. To get the number of ticks in a duration, use <code>count()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// NOTE if you're calling a method of a user-defined literal, you need a space before the dot</span>
+<span class="hljs-keyword">auto</span> x {<span class="hljs-number">3600</span>s .<span class="hljs-built_in">count</span>()}; <span class="hljs-comment">// x will be 3600</span>
+<span class="hljs-keyword">auto</span> y {<span class="hljs-number">1</span>h .<span class="hljs-built_in">count</span>()};    <span class="hljs-comment">// y will be 1</span>
+<span class="hljs-keyword">auto</span> z {<span class="hljs-number">3600</span>s == <span class="hljs-number">1</span>h};    <span class="hljs-comment">// z will be true</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I've read online that you shouldn't use <code>count()</code> unless absolutely necessary because it breaks a lot of the abstraction / encapsulation that the library does.</p>
+</div>
+<p><code>std::chrono::duration_cast&lt;DST&gt;</code> may be used to convert one type of duration to another.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> x { std::chrono::<span class="hljs-built_in">duration_cast</span>&lt;std::chrono::seconds&gt;(<span class="hljs-number">1</span>h) };
+<span class="hljs-keyword">auto</span> y { std::chrono::<span class="hljs-built_in">duration_cast</span>&lt;std::chrono::hours&gt;(<span class="hljs-number">3600</span>s) };
+<span class="hljs-keyword">auto</span> xTicks { x.<span class="hljs-built_in">count</span>() }; <span class="hljs-comment">// xTicks will be 3600</span>
+<span class="hljs-keyword">auto</span> yTicks { y.<span class="hljs-built_in">count</span>() }; <span class="hljs-comment">// xTicks will be 1</span>
+<span class="hljs-keyword">auto</span> z { std::chrono::<span class="hljs-built_in">duration_cast</span>&lt;std::chrono::hours&gt;(<span class="hljs-number">3599</span>s) };
+<span class="hljs-keyword">auto</span> zTicks { z.<span class="hljs-built_in">count</span>() }; <span class="hljs-comment">// zTicks will be 0 (ROUNDS DOWN TO 0 -- not enough seconds for 1 hour)</span>
+</code></pre>
+<a name="H_Date%20and%20Time"></a><h3>Date and Time</h3>
+<p><a name="BM_(Library%20Functions%5C%2FTime%2FDate%20and%20Time)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FTimestamps%2FClocks)_TOPIC%2F">Library Functions/Time/Timestamps/Clocks</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FTime%2FDurations)_TOPIC%2F">Library Functions/Time/Durations</a></li>
+</ul>
+</div>
+<p>Date and time functionality build on durations and time points by providing things like calendar representations, time of day representations (e.g. 12-hour vs 24-hour), timezone conversions, etc..</p>
+<p>Calendar <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es represent some exact region (e.g. 5th, 1st, last, etc..) of a some specific calendar granularity (day, month, year, weekday).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Day</th>
+<th>Day of Week</th>
+<th>Month</th>
+<th>Year</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::chrono::day</code></td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+<td>31</td>
+</tr>
+<tr>
+<td><code>std::chrono::weekday</code></td>
+<td></td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>Tuesday</td>
+</tr>
+<tr>
+<td><code>std::chrono::weekday_indexed</code></td>
+<td></td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>3rd Tuesday of unknown month</td>
+</tr>
+<tr>
+<td><code>std::chrono::weekday_last</code></td>
+<td></td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>last weekday of unknown month</td>
+</tr>
+<tr>
+<td><code>std::chrono::month</code></td>
+<td></td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>January</td>
+</tr>
+<tr>
+<td><code>std::chrono::month_day</code></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>December 25</td>
+</tr>
+<tr>
+<td><code>std::chrono::month_day_last</code></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>last day of January</td>
+</tr>
+<tr>
+<td><code>std::chrono::month_weekday</code></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>3rd Tuesday of January</td>
+</tr>
+<tr>
+<td><code>std::chrono::month_weekday_last</code></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>last weekday of January</td>
+</tr>
+<tr>
+<td><code>std::chrono::year</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td>X</td>
+<td>2022</td>
+</tr>
+<tr>
+<td><code>std::chrono::year_month</code></td>
+<td></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>January 2022</td>
+</tr>
+<tr>
+<td><code>std::chrono::year_month_day</code></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>January 26, 2022</td>
+</tr>
+<tr>
+<td><code>std::chrono::year_month_day_last</code></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>last day of January 2022</td>
+</tr>
+<tr>
+<td><code>std::chrono::year_month_weekday</code></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>3rd Tuesday of January</td>
+</tr>
+<tr>
+<td><code>std::chrono::year_month_weekday_last</code></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>last weekday of January 2022</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code><span class="hljs-comment">// create jan 27 2022 as year_month_day</span>
+std::chrono::year y { <span class="hljs-number">2022</span> };
+std::chrono::month m { <span class="hljs-number">1</span> };
+std::chrono::day d { <span class="hljs-number">27</span> };
+std::chrono::year_month_day today { y, m, d };
+</code></pre>
+<p>Adding or subtracting a duration to a calendar <a href="#BM_(object%7Cinstance)%2Fi">object</a> adjusts it accordingly.</p>
+<pre class="hljs"><code>std::chrono::year_month_day today { y, m, d };
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::literals::chrono_literals;
+today += <span class="hljs-number">5</span>d;  <span class="hljs-comment">// add 5 days to today</span>
+</code></pre>
+<p>If the calendar <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> captures a full date (e.g. <code>year_month_day</code>, <code>year_month_weekday</code>, etc..), it's convertible to a time point via <code>std::chrono::local_days</code> / <code>std::chrono::sys_days</code>.</p>
+<pre class="hljs"><code>std::chrono::year y { <span class="hljs-number">2022</span> };
+std::chrono::month m { <span class="hljs-number">1</span> };
+std::chrono::day d { <span class="hljs-number">27</span> };
+std::chrono::year_month_day today { y, m, d };
+
+std::chrono::local_days today_tp { today };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Which should you use? I'm not sure the difference. <code>std::chrono::sys_days</code> is shorthand for <code>std::chrono::time_point&lt;std::chrono::system_clock, std::chrono::days&gt;</code>, which is the time point type for the system clock. <code>std::chrono::local_days</code> expands to the same thing but for the local clock. I'm not sure what local clock actually is. It wasn't listed as one of the clocks.</p>
+</div>
+<p>Similarly, a time point is convertible to a full date calendar <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> sys_tp { std::chrono::system_clock::<span class="hljs-built_in">now</span>() };
+<span class="hljs-keyword">auto</span> sys_tp_rounded { std::chrono::<span class="hljs-built_in">floor</span>&lt;std::chrono::days&gt;(sys_tp) };  <span class="hljs-comment">// round tp down to days</span>
+std::chrono::year_month_day ymd{ sys_tp_rounded };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What type is <code>sys_tp_rounded</code>? It's <code>std::chrono::sys_days</code>, which is shorthand for <code>std::chrono::time_point&lt;std::chrono::system_clock, std::chrono::days&gt;</code>. The <code>std::chrono::year_month_day</code> <a href="#BM_(constructor)%2Fi">constructor</a> also accepts <code>std::chrono::local_days</code> -- I'm unsure which clock generates that (maybe utc clock?).</p>
+</div>
+<p>If two calendar <a href="#BM_(object%7Cinstance)%2Fi">object</a>s both capture a full date but are of different types, you can still compare them by first converting them to time points.</p>
+<pre class="hljs"><code><span class="hljs-comment">// as year_month_day</span>
+std::chrono::year y { <span class="hljs-number">2022</span> };
+std::chrono::month m { <span class="hljs-number">1</span> };
+std::chrono::day d { <span class="hljs-number">27</span> };
+std::chrono::year_month_day today1 { y, m, d };
+<span class="hljs-comment">// as year_month_weekday</span>
+std::chrono::weekday thurs { <span class="hljs-number">4</span> };
+std::chrono::weekday_indexed _4th_thurs { thurs, <span class="hljs-number">4</span> };
+std::chrono::year_month_weekday today2 { y, m, _4th_thurs };
+<span class="hljs-comment">// convert both to time point</span>
+std::chrono::local_days today1_tp {today1};
+std::chrono::local_days today2_tp {today2};
+<span class="hljs-comment">// compare -- they both represent the same date so they should be equal</span>
+<span class="hljs-keyword">auto</span> sameDay = today1_tp == today2_tp; <span class="hljs-comment">// returns true</span>
+</code></pre>
+<p>Calendar <a href="#BM_(object%7Cinstance)%2Fi">object</a>s can be created more intuitively via a set of <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>s, constants, and <a href="#BM_(user-defined%20literal)%2Fi">user-defined literal</a>s.</p>
+<pre class="hljs"><code><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::literals::chrono_literals;
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::chrono;
+
+year_month_day today1 { January / <span class="hljs-number">27</span>d / <span class="hljs-number">2022</span>y };
+year_month_weekday today2 { <span class="hljs-number">2022</span>y / January / Thursday[<span class="hljs-number">4</span>] };
+year_month_weekday_last today3 { <span class="hljs-number">2022</span>y / January / Thursday[last] };
+<span class="hljs-comment">// all 3 of the above represent the same date</span>
+</code></pre>
+<p>The <code>std::chrono::hh_mm_ss</code> <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a container for the time that's elapsed since midnight (also known as time of day).</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> tp { std::chrono::system_clock::<span class="hljs-built_in">now</span>() };
+<span class="hljs-keyword">auto</span> tp_rounded { std::chrono::<span class="hljs-built_in">floor</span>&lt;days&gt;(tp) };
+std::chrono::year_month_day ymd{ tp_rounded };
+
+<span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">time_duration</span> <span class="hljs-params">( std::chrono::floor&lt;milliseconds&gt;(tp - tp_rounded) )</span></span>;
+std::chrono::hh_mm_ss time{ time_duration };
+<span class="hljs-comment">// the variables below are of duration type</span>
+<span class="hljs-keyword">auto</span> h = time.<span class="hljs-built_in">hours</span>();
+<span class="hljs-keyword">auto</span> m = time.<span class="hljs-built_in">minutes</span>();
+<span class="hljs-keyword">auto</span> s = time.<span class="hljs-built_in">seconds</span>();
+<span class="hljs-keyword">auto</span> ms = time.<span class="hljs-built_in">subseconds</span>();
+</code></pre>
+<p>Several time-related helper functions are provided to deal with 12-hour vs 24-hour time.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> hour_of_day { time.<span class="hljs-built_in">hours</span>() }; <span class="hljs-comment">// using object from example above</span>
+
+<span class="hljs-keyword">auto</span> am { std::chrono::<span class="hljs-built_in">is_am</span>(hour_of_day) };
+<span class="hljs-keyword">auto</span> pm { std::chrono::<span class="hljs-built_in">is_pm</span>(hour_of_day) };
+
+<span class="hljs-keyword">auto</span> hour_of_day_12 { std::chrono::<span class="hljs-built_in">make_12</span>(hour_of_day) };        <span class="hljs-comment">// as 12-hour format</span>
+<span class="hljs-keyword">auto</span> hour_of_day_24 { std::chrono::<span class="hljs-built_in">make_12</span>(hour_of_day_12, pm) }; <span class="hljs-comment">// back to 24-hour format</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Timezone functionality doesn't seem to be implemented as of clang or GCC as of yet, meaning the code below fails to compile. It does seem to be implemented in MSVC though.</p>
+</div>
+<p>Timezones are accessible through a timezone database.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> my_tzdb = std::chrono::<span class="hljs-built_in">get_tzdb</span>(); <span class="hljs-comment">// also get_tzdb_list()</span>
+
+<span class="hljs-keyword">const</span> std::chrono::time_zone* la_tz = my_tzdb.<span class="hljs-built_in">locate_zone</span>(<span class="hljs-string">"America/Los_Angeles"</span>);
+<span class="hljs-keyword">const</span> std::chrono::time_zone* local_tz = my_tzdb.<span class="hljs-built_in">current_zone</span>();
+</code></pre>
+<p>You can apply a timezone to a time point, then convert it to the appropriate date and time <a href="#BM_(object%7Cinstance)%2Fi">object</a>s.</p>
+<pre class="hljs"><code><span class="hljs-comment">// From https://stackoverflow.com/a/15958113</span>
+<span class="hljs-keyword">auto</span> tp { std::chrono::system_clock::<span class="hljs-built_in">now</span>() };
+<span class="hljs-keyword">auto</span> ztp { std::chrono::zoned_time {local_tz, tp}.<span class="hljs-built_in">get_local_time</span>() };
+<span class="hljs-keyword">auto</span> ztp_rounded { std::chrono::<span class="hljs-built_in">floor</span>&lt;days&gt;(ztp) };
+std::chrono::year_month_day ymd { tp_rounded };
+std::chrono::hh_mm_ss time { std::chrono::<span class="hljs-built_in">floor</span>&lt;milliseconds&gt;(ztp - ztp_rounded) };
+</code></pre>
+<p>Similarly, you can construct a zoned time point from date and time details.</p>
+<pre class="hljs"><code><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::literals::chrono_literals;
+
+std::chrono::year_month_day date { January / <span class="hljs-number">27</span>d / <span class="hljs-number">2022</span>y };
+std::chrono::hh_mm_ss time { <span class="hljs-number">8</span>h + <span class="hljs-number">30</span>m + <span class="hljs-number">45</span>s };
+
+<span class="hljs-keyword">auto</span> tp = std::chrono::local_days { date } + time;  <span class="hljs-comment">// or use sys_days for system time</span>
+</code></pre>
+<a name="H_Random%20Numbers"></a><h2>Random Numbers</h2>
+<p>The C++ standard library provides random number generators out of the box. For ...</p>
+<ul>
+<li>non-cryptographic scenarios, use <code>std::mt19937_64</code>, an implementation of Mersenne Twister.</li>
+<li>cryptographic scenarios, use <code>std::random_device</code>.</li>
+</ul>
+<p>The <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s, where each invocation generates a random integral.</p>
+<pre class="hljs"><code>std::mt19937_64 mt_rand{ <span class="hljs-number">12345</span> };  <span class="hljs-comment">// seed value of 12345</span>
+std::cout &lt;&lt; <span class="hljs-built_in">mt_rand</span>() &lt;&lt; std::endl;
+
+std::random_device secure_rand {}; <span class="hljs-comment">// doesn't take a seed</span>
+std::cout &lt;&lt; <span class="hljs-built_in">secure_rand</span>() &lt;&lt; std::endl;
+</code></pre>
+<p>Both</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
