@@ -204,11 +204,11 @@ def main():
             print()
             if dims == 2:
                 plot_2d(clusters, plot_path)
-                print(f'   ![k-centers 2D plot]({None if plot_path is None else plot_path.name})')
+                print(f'   ![k-means 2D plot]({None if plot_path is None else plot_path.name})')
                 print()
             elif dims == 3:
                 plot_3d(clusters, plot_path)
-                print(f'   ![k-centers 3D plot]({None if plot_path is None else plot_path.name})')
+                print(f'   ![k-means 3D plot]({None if plot_path is None else plot_path.name})')
                 print()
             else:
                 print(f"   Unable to plot iteration -- too many dimensions")
@@ -295,11 +295,11 @@ def main_WITH_k_means_PP_initializer():
             print()
             if dims == 2:
                 plot_2d(clusters, plot_path)
-                print(f'   ![k-centers 2D plot]({None if plot_path is None else plot_path.name})')
+                print(f'   ![k-means 2D plot]({None if plot_path is None else plot_path.name})')
                 print()
             elif dims == 3:
                 plot_3d(clusters, plot_path)
-                print(f'   ![k-centers 3D plot]({None if plot_path is None else plot_path.name})')
+                print(f'   ![k-means 3D plot]({None if plot_path is None else plot_path.name})')
                 print()
             else:
                 print(f"   Unable to plot iteration -- too many dimensions")

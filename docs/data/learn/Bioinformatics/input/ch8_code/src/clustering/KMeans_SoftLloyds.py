@@ -155,13 +155,100 @@ def e_step(
         centers: list[tuple[float]],
         stiffness: float
 ) -> MembershipConfidenceMap:
-    membership_confidence = {c: {} for c in centers}
+    membership_confidences = {c: {} for c in centers}
     for pt in points:
         pt_confidences = confidence(pt, centers, stiffness)
         for c, val in pt_confidences.items():
-            membership_confidence[c][pt] = val
-    return membership_confidence  # confidence per (center, point) pair
+            membership_confidences[c][pt] = val
+    return membership_confidences  # confidence per (center, point) pair
 # MARKDOWN_E_STEP
+
+
+def main_e_step():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = stdin.read()
+        data: dict = yaml.safe_load(data_raw)
+        points = [tuple(pt) for pt in data['points']]
+        centers = [tuple(pt) for pt in data['centers']]
+        stiffness = data['stiffness']
+        dims = max(len(v) for v in points)
+        print()
+        print(f'Given the following points and centers (and stiffness parameter)...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        points_membership_confidence = e_step(points, centers, stiffness)
+        print(', ... e-step determined that the confidence of point...')
+        print()
+        for pt in points:
+            confidence_set = {ct: points_membership_confidence[ct][pt] for ct in centers}
+            confidence_str = ' vs '.join(f'{ct}={conf:.3f} ' for ct, conf in confidence_set.items())
+            print(f' * {pt} being assigned to center {confidence_str}')
+        print()
+        unique_id_path = Path('/input/.__UNIQUE_INPUT_ID')
+        plot_path = None
+        if unique_id_path.exists():
+            unique_id = unique_id_path.read_text()
+            plot_path = Path(f'/output/{unique_id}_plot.svg')
+        print()
+        if dims == 2:
+            plot_2d(points_membership_confidence, plot_path)
+            print(f'![e-step 2D plot]({None if plot_path is None else plot_path.name})')
+            print()
+        elif dims == 3:
+            plot_3d(points_membership_confidence, plot_path)
+            print(f'![e-step 3D plot]({None if plot_path is None else plot_path.name})')
+            print()
+        else:
+            print(f"Unable to plot iteration -- too many dimensions")
+            print()
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # MARKDOWN_M_STEP
@@ -195,6 +282,88 @@ def m_step(
         centers.append(new_c)
     return centers
 # MARKDOWN_M_STEP
+
+
+def main_m_step():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = stdin.read()
+        data: dict = yaml.safe_load(data_raw)
+        membership_confidences = {tuple(e[0]): {tuple(p): conf for p, conf in e[1:]} for e in data['membership_confidences']}
+        dims = max(len(c) for c in membership_confidences)
+        print()
+        print(f'Given the following membership confidences (center -> (point, confidence))...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        unique_id_path = Path('/input/.__UNIQUE_INPUT_ID')
+        plot_path = None
+        if unique_id_path.exists():
+            unique_id = unique_id_path.read_text()
+            plot_path = Path(f'/output/{unique_id}_plot_BEFORE.svg')
+        print()
+        if dims == 2:
+            plot_2d(membership_confidences, plot_path)
+            print(f'![m-step 2D plot]({None if plot_path is None else plot_path.name})')
+            print()
+        elif dims == 3:
+            plot_3d(membership_confidences, plot_path)
+            print(f'![m-step 3D plot]({None if plot_path is None else plot_path.name})')
+            print()
+        else:
+            print(f"Unable to plot iteration -- too many dimensions")
+            print()
+        print()
+        new_centers = m_step(membership_confidences, dims)
+        print(f', ... m-step determined that the new centers should be ...')
+        print()
+        for c in new_centers:
+            print(f' * ({", ".join(f"{coord:.2f}" for coord in c)})')
+        print()
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 IterationCallbackFunc = Callable[[MembershipConfidenceMap], bool]
@@ -256,11 +425,11 @@ def main():
             print()
             if dims == 2:
                 plot_2d(clusters, plot_path)
-                print(f'    ![k-centers 2D plot]({None if plot_path is None else plot_path.name})')
+                print(f'    ![soft k-means 2D plot]({None if plot_path is None else plot_path.name})')
                 print()
             elif dims == 3:
                 plot_3d(clusters, plot_path)
-                print(f'    ![k-centers 3D plot]({None if plot_path is None else plot_path.name})')
+                print(f'    ![soft k-means 3D plot]({None if plot_path is None else plot_path.name})')
                 print()
             else:
                 print(f"    Unable to plot iteration -- too many dimensions")

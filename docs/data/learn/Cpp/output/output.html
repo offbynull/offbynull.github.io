@@ -156,6 +156,8 @@
 <li><a href="#H_Date%20and%20Time">Date and Time</a></li>
 </ul>
 <li><a href="#H_Random%20Numbers">Random Numbers</a></li>
+<li><a href="#H_Numeric%20Limits">Numeric Limits</a></li>
+<li><a href="#H_Numeric%20Conversions">Numeric Conversions</a></li>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -5904,10 +5906,11 @@ std::chrono::hh_mm_ss time { <span class="hljs-number">8</span>h + <span class="
 <span class="hljs-keyword">auto</span> tp = std::chrono::local_days { date } + time;  <span class="hljs-comment">// or use sys_days for system time</span>
 </code></pre>
 <a name="H_Random%20Numbers"></a><h2>Random Numbers</h2>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FRandom%20Numbers)_TOPIC%2F"></a><strong></strong></p>
 <p>The C++ standard library provides random number generators out of the box. For ...</p>
 <ul>
 <li>non-cryptographic scenarios, use <code>std::mt19937_64</code>, an implementation of Mersenne Twister.</li>
-<li>cryptographic scenarios, use <code>std::random_device</code>.</li>
+<li>cryptographic scenarios, use <code>std::random_device</code>, which tries to use an unpredictable hardware source (but may not).</li>
 </ul>
 <p>The <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s, where each invocation generates a random integral.</p>
 <pre class="hljs"><code>std::mt19937_64 mt_rand{ <span class="hljs-number">12345</span> };  <span class="hljs-comment">// seed value of 12345</span>
@@ -5916,16 +5919,53 @@ std::cout &lt;&lt; <span class="hljs-built_in">mt_rand</span>() &lt;&lt; std::en
 std::random_device secure_rand {}; <span class="hljs-comment">// doesn't take a seed</span>
 std::cout &lt;&lt; <span class="hljs-built_in">secure_rand</span>() &lt;&lt; std::endl;
 </code></pre>
-<p>Both</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
-<p>TODO: START FROM CHAPTER 12 NUMERICS SECTION</p>
+<p>To have a random number generator return a distribution other than a normal distribution, you can use one of the distribution wrappers.</p>
+<pre class="hljs"><code>std::mt19937_64 rng{ <span class="hljs-number">12345</span> };
+std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_dist{ <span class="hljs-number">0</span>, <span class="hljs-number">10</span> };
+<span class="hljs-keyword">auto</span> value = <span class="hljs-built_in">uniform_dist</span>(rng);
+</code></pre>
+<ul>
+<li><code>std::uniform_int_distribution</code></li>
+<li><code>std::uniform_real_distribution</code> (like the above but for floating point types)</li>
+<li><code>std::normal_distribution</code> (a tweaked normal distribution)</li>
+<li>etc..</li>
+</ul>
+<p>Boost provides a set of distributions as well.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Are there friendly wrappers here? What if I want the random number generator to give me a float, bool, or an alphanumeric string instead of an int?</p>
+</div>
+<a name="H_Numeric%20Limits"></a><h2>Numeric Limits</h2>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FNumeric%20Limits)_TOPIC%2F"></a><strong></strong></p>
+<p>Recall that C++'s numeric types are wishy-washy (e.g. there is no guarantee as to how large an <code>int</code> is, just that it must be greater than or equal to <code>short</code>). The <code>std::numeric_limits</code> <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> allows you to get <a href="#BM_(compile-time)%2Fi">compile-time</a> information about a numeric type, such as signed-ness, min, max, etc..</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> a = std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::is_integer;      <span class="hljs-comment">// false</span>
+<span class="hljs-keyword">auto</span> b = std::numeric_limits&lt;<span class="hljs-type">uint16_t</span>&gt;::is_integer;   <span class="hljs-comment">// true</span>
+<span class="hljs-keyword">auto</span> c = std::numeric_limits&lt;<span class="hljs-type">uint16_t</span>&gt;::has_infinity; <span class="hljs-comment">// false</span>
+</code></pre>
+<ul>
+<li><code>std::numeric_limits&lt;T&gt;::is_signed</code> - if the type is signed</li>
+<li><code>std::numeric_limits&lt;T&gt;::is_integer</code> - if the type is an integral</li>
+<li><code>std::numeric_limits&lt;T&gt;::has_infinity</code> - if the type supports infinity (e.g. floats do)</li>
+<li><code>std::numeric_limits&lt;T&gt;::has_quiet_NaN</code> - if the type can be set to not-a-number (e.g. IEEE floats can be set to not a number)</li>
+<li><code>std::numeric_limits&lt;T&gt;::round_style</code> - rounding mode for a type</li>
+<li><code>std::numeric_limits&lt;T&gt;::is_iec559</code> - if the type is an IEEE float.</li>
+<li><code>std::numeric_limits&lt;T&gt;::lowest()</code> - maximum negative value.</li>
+<li><code>std::numeric_limits&lt;T&gt;::max()</code> - maximum value.</li>
+<li><code>std::numeric_limits&lt;T&gt;::min()</code> - smallest representable value (different from <code>::lowest()</code>).</li>
+<li><code>std::numeric_limits&lt;T&gt;::quiet_NaN()</code> - get a not-a-numbe<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">r value</a>.</li>
+<li>etc..</li>
+</ul>
+<p>Boost's Integer library also provides additional functionality for determining information about numerics (e.g. which one is the fastest for the platform you're on).</p>
+<a name="H_Numeric%20Conversions"></a><h2>Numeric Conversions</h2>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<p>TODO: Boost Numeric Conversions section in chapter 12</p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>

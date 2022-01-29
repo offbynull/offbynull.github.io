@@ -12760,6 +12760,19 @@ python
 no_preamble
 ```
 
+```{ch8}
+clustering.KMeans_SoftLloyds main_e_step
+{
+  points: [
+    [1,0], [0,1], [0,-1],
+    [9,0], [10,1], [10,-1],
+    [5,0]
+  ],
+  centers: [[0, 0], [10, 0]],
+  stiffness: 0.5
+}
+```
+
 ```{note}
 The Pevzner book gives the analogy that centers are stars and points are planets. The closer a planet is to a star, the stronger that star's gravitational pull should be. This gravitational pull is the "confidence" -- a stronger pull means a stronger confidence. The analogy falls a bit flat because, in this case, it's the stars (centers) that are being pulled in to the planets (points) -- normally it's the other way around (planets get pulled into stars).
 
@@ -12784,6 +12797,24 @@ ch8_code/src/clustering/KMeans_SoftLloyds.py
 python
 # MARKDOWN_M_STEP\s*\n([\s\S]+)\n\s*# MARKDOWN_M_STEP\s*[\n$]
 no_preamble
+```
+
+```{ch8}
+clustering.KMeans_SoftLloyds main_m_step
+{
+  membership_confidences: [
+    [   # center followed by (point, confidence) pairs
+        [-1, 0],
+        [[1,1], 0.9],  [[2,2], 0.8],  [[3,3], 0.7],
+        [[9,1], 0.03], [[8,2], 0.02], [[7,3], 0.01],
+    ],
+    [   # center followed by (point, confidence) pairs
+        [11, 0],
+        [[1,1], 0.03], [[2,2], 0.02], [[3,3], 0.01],
+        [[9,1], 0.9],  [[8,2], 0.8],  [[7,3], 0.7],
+    ]
+  ]
+}
 ```
 
 ````{note}
