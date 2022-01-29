@@ -16577,6 +16577,15 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>Their pearson similarity is 0.9999999999999999</p>
 </div>
 <p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What do you do on division by 0? Division by 0 means that the point pairings boil down to a  single point. There is no single line that "fits" through just 1 point (there are an infinite number of lines).</p>
+<p><img src="svgbob_67d4623730e1848c3d68118b9ac7dd6253626a54.svg" alt="Kroki diagram output"></p>
+<p>So what's the correct action to take in this situation? Assuming that both vectors consist of a single value repeating n times (can there be any other cases where this happens?), then maybe what you should do is set it as maximally correlated (1.0)? If you think about it in terms of the "pattern matching" component plots discussion, each vector's "component plot is a straight line.</p>
+<p><img src="svgbob_b7b62429dc8b8f4d4fc4d40979d9fed905ad3698.svg" alt="Kroki diagram output"></p>
+<p>It could just as well be interpreted as having no correlation (-1.0) because a mirror of a straight line (across the x-axis, as discussed above) is just the same straight line?</p>
+<p>I don't know what the correct thing to do here is. My instinct is to mark it as maximum correlation (1.0) but I'm almost certain that that'd be wrong. The Internet isn't providing many answers -- they all say its either undefined or context dependent.</p>
+</div>
 <a name="H_K-Centers%20Clustering"></a><h3>K-Centers Clustering</h3>
 <p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FK-Centers%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -16714,26 +16723,26 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (4, 5)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 2)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_2025e7729f2ceaf3d05904dbd618162e_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_f225a74d3df4978e5384c6d27c0aeaab_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (4, 5)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1)]</li>
-<li>cluster center (10, 7)=[(9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 2)=[(7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (2.5, 6)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 </ul>
-<p><img src="ch8_2025e7729f2ceaf3d05904dbd618162e_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_f225a74d3df4978e5384c6d27c0aeaab_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
 <ul>
-<li>cluster center (4, 5)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
-<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
-<li>cluster center (8, 1)=[(7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
+<li>cluster center (9, 2)=[(7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
+<li>cluster center (2.5, 6)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (8.5, 8)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_2025e7729f2ceaf3d05904dbd618162e_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_f225a74d3df4978e5384c6d27c0aeaab_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16749,7 +16758,8 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FK-Centers%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/K-Centers Clustering</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">K-means</a> is <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> except the scoring function is different. Recall that the scoring function for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is ...</p>
+<p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
+<p><a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">K-means</a> is <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> except the scoring function is different. Recall that the scoring function (what's trying to be minimized) for <a href="#BM_(k-centers%3F%20clustering%7C%5Cd%2B-centers%3F%20clustering%7Ck-centers%3F%7C%5Cd%2B-centers%3F)%2Fi">k-centers</a> is ...</p>
 <div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mn>2</mn></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mi>d</mi><mo stretchy="false">(</mo><msub><mi>P</mi><mi>n</mi></msub><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">score = max(d(P_1, C), d(P_2, C), ..., d(P_n, C))
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">c</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></div><p>... where ...</p>
 <ul>
@@ -16869,7 +16879,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (2, 4)=[(2, 4), (4.5, 4)]</li>
 <li>cluster center (2.5, 6)=[(2.5, 6), (4, 5), (17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_b7fd191b36e6d15b46b23e124ad24614_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_dccc19b1d3be302c09780b3ba300fe8e_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16878,7 +16888,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.25, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (13.0, 9.833333333333334)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_b7fd191b36e6d15b46b23e124ad24614_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_dccc19b1d3be302c09780b3ba300fe8e_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -16887,7 +16897,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_b7fd191b36e6d15b46b23e124ad24614_plot2.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_dccc19b1d3be302c09780b3ba300fe8e_plot2.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16935,20 +16945,20 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (2, 2)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
-<li>cluster center (18, 11)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
-<li>cluster center (18.5, -8)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
+<li>cluster center (17, 12)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
+<li>cluster center (18, -7)=[(18, -7), (18.5, -8)]</li>
+<li>cluster center (19, -6)=[(19, -6), (20, -7)]</li>
 </ul>
-<p><img src="ch8_64d682f4192348164dacb4358b0b89a2_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_7287b8ed5ecb628bd80cd2fd073dcb7f_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (3.2142857142857144, 3.7142857142857144)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
-<li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
-<li>cluster center (18.875, -7)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
+<li>cluster center (8.545454545454545, 6.7272727272727275)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
+<li>cluster center (18.25, -7.5)=[(18, -7), (18.5, -8)]</li>
+<li>cluster center (19.5, -6.5)=[(19, -6), (20, -7)]</li>
 </ul>
-<p><img src="ch8_64d682f4192348164dacb4358b0b89a2_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_7287b8ed5ecb628bd80cd2fd073dcb7f_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17079,7 +17089,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>(10, -1) being assigned to center (0, 0)=0.011  vs (10, 0)=0.989</li>
 <li>(5, 0) being assigned to center (0, 0)=0.500  vs (10, 0)=0.500</li>
 </ul>
-<p><img src="ch8_b6db18832872f9e6b5bba0ffea27155a_plot.svg" alt="e-step 2D plot"></p>
+<p><img src="ch8_5216bd19093f810ee74819d66f78fea8_plot.svg" alt="e-step 2D plot"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -17149,7 +17159,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 }
 
 </code></pre>
-<p><img src="ch8_220f7600143389795c30d8cfdc6ad422_plot_BEFORE.svg" alt="m-step 2D plot"></p>
+<p><img src="ch8_c0c32805217853cac2f44c81c379725d_plot_BEFORE.svg" alt="m-step 2D plot"></p>
 <p>, ... m-step determined that the new centers should be ...</p>
 <ul>
 <li>(2.07, 1.91)</li>
@@ -17232,7 +17242,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (9, 6)={(2, 2): 0.13, (2, 4): 0.19, (2.5, 6): 0.26, (3.5, 2): 0.11, (4, 3): 0.14, (4, 5): 0.25, (4.5, 4): 0.19, (7, 2): 0.07, (7.5, 3): 0.07, (8, 1): 0.09, (9, 2): 0.16, (8, 7): 0.42, (8.5, 8): 0.17, (9, 6): 0.77, (10, 7): 0.55}</li>
 <li>cluster center (7.5, 3)={(2, 2): 0.80, (2, 4): 0.67, (2.5, 6): 0.44, (3.5, 2): 0.84, (4, 3): 0.79, (4, 5): 0.55, (4.5, 4): 0.70, (7, 2): 0.91, (7.5, 3): 0.91, (8, 1): 0.89, (9, 2): 0.81, (8, 7): 0.06, (8.5, 8): 0.02, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot0.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot0.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -17241,7 +17251,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.8663318021726365, 5.257945568356075)={(2, 2): 0.13, (2, 4): 0.20, (2.5, 6): 0.31, (3.5, 2): 0.11, (4, 3): 0.13, (4, 5): 0.31, (4.5, 4): 0.23, (7, 2): 0.24, (7.5, 3): 0.39, (8, 1): 0.27, (9, 2): 0.39, (8, 7): 0.35, (8.5, 8): 0.34, (9, 6): 0.44, (10, 7): 0.40}</li>
 <li>cluster center (5.264471661631823, 2.923413768720758)={(2, 2): 0.80, (2, 4): 0.65, (2.5, 6): 0.38, (3.5, 2): 0.83, (4, 3): 0.79, (4, 5): 0.44, (4.5, 4): 0.63, (7, 2): 0.64, (7.5, 3): 0.42, (8, 1): 0.60, (9, 2): 0.40, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot1.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot1.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -17250,7 +17260,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.741608864023925, 4.551421603185921)={(2, 2): 0.13, (2, 4): 0.18, (2.5, 6): 0.28, (3.5, 2): 0.13, (4, 3): 0.13, (4, 5): 0.30, (4.5, 4): 0.24, (7, 2): 0.39, (7.5, 3): 0.50, (8, 1): 0.40, (9, 2): 0.47, (8, 7): 0.29, (8.5, 8): 0.29, (9, 6): 0.33, (10, 7): 0.32}</li>
 <li>cluster center (4.773471699369535, 3.030734436505203)={(2, 2): 0.80, (2, 4): 0.71, (2.5, 6): 0.49, (3.5, 2): 0.81, (4, 3): 0.80, (4, 5): 0.49, (4.5, 4): 0.63, (7, 2): 0.42, (7.5, 3): 0.24, (8, 1): 0.39, (9, 2): 0.23, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.05, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot2.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot2.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 3</p>
@@ -17259,7 +17269,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.729274262743777, 4.099448158350826)={(2, 2): 0.12, (2, 4): 0.14, (2.5, 6): 0.22, (3.5, 2): 0.14, (4, 3): 0.12, (4, 5): 0.26, (4.5, 4): 0.23, (7, 2): 0.53, (7.5, 3): 0.59, (8, 1): 0.52, (9, 2): 0.53, (8, 7): 0.23, (8.5, 8): 0.23, (9, 6): 0.25, (10, 7): 0.24}</li>
 <li>cluster center (4.313755045634259, 3.2452822439819693)={(2, 2): 0.83, (2, 4): 0.79, (2.5, 6): 0.61, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.59, (4.5, 4): 0.68, (7, 2): 0.28, (7.5, 3): 0.15, (8, 1): 0.25, (9, 2): 0.14, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.04, (10, 7): 0.04}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot3.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot3.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 4</p>
@@ -17268,7 +17278,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.803089239304466, 3.687644371627943)={(2, 2): 0.11, (2, 4): 0.11, (2.5, 6): 0.17, (3.5, 2): 0.15, (4, 3): 0.13, (4, 5): 0.21, (4.5, 4): 0.22, (7, 2): 0.66, (7.5, 3): 0.69, (8, 1): 0.64, (9, 2): 0.60, (8, 7): 0.17, (8.5, 8): 0.17, (9, 6): 0.18, (10, 7): 0.17}</li>
 <li>cluster center (3.9471447451182877, 3.426611200033247)={(2, 2): 0.86, (2, 4): 0.85, (2.5, 6): 0.72, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.67, (4.5, 4): 0.70, (7, 2): 0.19, (7.5, 3): 0.10, (8, 1): 0.17, (9, 2): 0.09, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.03, (10, 7): 0.03}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot4.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot4.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 5</p>
@@ -17277,7 +17287,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.881645528580001, 3.2695060621654113)={(2, 2): 0.11, (2, 4): 0.08, (2.5, 6): 0.13, (3.5, 2): 0.17, (4, 3): 0.15, (4, 5): 0.18, (4.5, 4): 0.22, (7, 2): 0.77, (7.5, 3): 0.78, (8, 1): 0.75, (9, 2): 0.69, (8, 7): 0.12, (8.5, 8): 0.11, (9, 6): 0.12, (10, 7): 0.12}</li>
 <li>cluster center (3.6995743512272283, 3.54538379313345)={(2, 2): 0.87, (2, 4): 0.89, (2.5, 6): 0.79, (3.5, 2): 0.80, (4, 3): 0.82, (4, 5): 0.73, (4.5, 4): 0.71, (7, 2): 0.13, (7.5, 3): 0.07, (8, 1): 0.12, (9, 2): 0.07, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot5.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot5.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 6</p>
@@ -17286,7 +17296,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.936559803808235, 2.9208106871604094)={(2, 2): 0.11, (2, 4): 0.07, (2.5, 6): 0.10, (3.5, 2): 0.18, (4, 3): 0.16, (4, 5): 0.15, (4.5, 4): 0.21, (7, 2): 0.84, (7.5, 3): 0.82, (8, 1): 0.82, (9, 2): 0.76, (8, 7): 0.08, (8.5, 8): 0.07, (9, 6): 0.09, (10, 7): 0.08}</li>
 <li>cluster center (3.5470929502708515, 3.6171959293531435)={(2, 2): 0.88, (2, 4): 0.91, (2.5, 6): 0.83, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.77, (4.5, 4): 0.73, (7, 2): 0.10, (7.5, 3): 0.06, (8, 1): 0.09, (9, 2): 0.06, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot6.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot6.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 7</p>
@@ -17295,7 +17305,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 <p>Stopping -- center convergence step distance below threshold (largest_center_step_distance=0.23741733972468515)</p>
@@ -17307,7 +17317,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_35fc6a7a44fbfe5813677666bf0ba8c6_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_fda9489333947cb189dfce329ca2261c_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17367,24 +17377,138 @@ THHHTHHHTH = 7 / 10 = 0.7
 </ol>
 <p>Points 1 and 2 have similar analogs in <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a>. <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> can give you bad centers + <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> can screw you if you initial centers are bad / not enough points representative of actual <a href="#BM_(cluster)%2Fi">cluster</a>s are available.</p>
 </div>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
-<p>TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO <a href="#BM_(hierarchial%20cluster)%2Fi">HIERARCHIAL CLUSTER</a>ING</p>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
-<p>TODO: describe using <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> -- <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>s only. use <a href="#BM_(neighbour)%2Fi">neighbour</a> joining for next section</p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FHierarchial%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FManhattan%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Manhattan Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Cosine Similarity Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FPearson%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Pearson Similarity Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree/UPGMA Algorithm</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: Given a list of n-dimensional vectors, convert those vectors into a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and build an <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> using <a href="#BM_(unweighted%20pair%20group%20method%20with%20arithmetic%20mean%7CUPGMA)%2Fi">UPGMA</a> (or any other <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> generation algorithm that generates a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>). Each internal node represents a sub-<a href="#BM_(cluster)%2Fi">cluster</a>, and sub-<a href="#BM_(cluster)%2Fi">cluster</a>s combine to form larger sub-<a href="#BM_(cluster)%2Fi">cluster</a>s (a hierarchy of <a href="#BM_(cluster)%2Fi">cluster</a>s).</p>
+<p><img src="svgbob_b604d58881339ffba3909b76c110ae5c76e792ed.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: In <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>, the goal is to take a <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> and use it to generate a <a href="#BM_(tree)%2Fi">tree</a> that represents shared ancestry (<a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>). Each shared ancestor is represented as an internal node, and nodes that have the same parent node are <em>more similar to each other than to any other nodes in the <a href="#BM_(tree)%2Fi">tree</a></em>. In the example <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> below, nodes A4 and A2 share their parent node, meaning they share more with each other than any other node in the <a href="#BM_(tree)%2Fi">tree</a> (are more similar to each other than any other node in the <a href="#BM_(tree)%2Fi">tree</a>).</p>
+<p><img src="svgbob_e749289d368aa0374c8cc4da1b2cbb4d328bd494.svg" alt="Kroki diagram output"></p>
+<p>In <a href="#BM_(cluster)%2Fi">cluster</a>ing, the goal is to group items in such a way that items in the same group are <em>more similar to each other than items in other groups</em> (<a href="#BM_(good%20clustering%20principle)%2Fi">good clustering principle</a>). In the example below, A3 has been placed into its own group because it isn't occupying the same general vicinity as the other items.</p>
+<p><img src="svgbob_16d3ff284470b152a66917b766e371ffa3f593d4.svg" alt="Kroki diagram output"></p>
+<p>If you squint a bit, <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> and <a href="#BM_(cluster)%2Fi">cluster</a>ing are essentially doing the same thing:</p>
+<ul>
+<li><a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">Phylogeny</a>: nodes that have the same parent node are <em>more similar to each other than to any other nodes in the <a href="#BM_(tree)%2Fi">tree</a></em>.</li>
+<li><a href="#BM_(cluster)%2Fi">Cluster</a>ing: items in the same group are <em>more similar to each other than items in other groups</em>.</li>
+</ul>
+<p>A <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> (that's also a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>) is essentially a form of recursive <a href="#BM_(cluster)%2Fi">cluster</a>ing / <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing. Each internal node represents a sub-<a href="#BM_(cluster)%2Fi">cluster</a>, and sub-<a href="#BM_(cluster)%2Fi">cluster</a>s combine to form larger sub-<a href="#BM_(cluster)%2Fi">cluster</a>s.</p>
+<p><img src="svgbob_e568dfc6cf55dbb41bfcf559b3758e10f75b42e8.svg" alt="Kroki diagram output"></p>
+<p><strong>ALGORITHM</strong>:</p>
+<p><a href="ch8_code/src/clustering/HierarchialClustering_UPGMA.py">ch8_code/src/clustering/HierarchialClustering_UPGMA.py</a> (lines 49 to 65):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">hierarchial_clustering_upgma</span>(<span class="hljs-params">
+        vectors: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
+        dims: <span class="hljs-built_in">int</span>,
+        distance_metric: DistanceMetric
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[DistanceMatrix, Graph]:
+    <span class="hljs-comment"># Generate a distance matrix from the vectors</span>
+    dists = {}
+    <span class="hljs-keyword">for</span> (k1, v1), (k2, v2) <span class="hljs-keyword">in</span> product(vectors.items(), repeat=<span class="hljs-number">2</span>):
+        <span class="hljs-keyword">if</span> k1 == k2:
+            <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># skip -- will default to 0</span>
+        dists[k1, k2] = distance_metric(v1, v2, dims)
+    dist_mat = DistanceMatrix(dists)
+    <span class="hljs-comment"># Run UPGMA on the distance matrix</span>
+    tree, _ = upgma(dist_mat.copy())
+    <span class="hljs-comment"># Return</span>
+    <span class="hljs-keyword">return</span> dist_mat, tree
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Executing UPGMA clustering using the following settings...</p>
+<pre><code>{
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  vectors: {
+    VEC1: [5,6,5],
+    VEC2: [5,7,5],
+    VEC3: [30,31,30],
+    VEC4: [29,30,31],
+    VEC5: [31,30,31],
+    VEC6: [15,14,14]
+  }
+}
+
+</code></pre>
+<p>The following distance matrix was produced ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>VEC1</th>
+<th>VEC2</th>
+<th>VEC3</th>
+<th>VEC4</th>
+<th>VEC5</th>
+<th>VEC6</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>VEC1</td>
+<td>0.00</td>
+<td>1.00</td>
+<td>43.30</td>
+<td>42.76</td>
+<td>43.91</td>
+<td>15.65</td>
+</tr>
+<tr>
+<td>VEC2</td>
+<td>1.00</td>
+<td>0.00</td>
+<td>42.73</td>
+<td>42.20</td>
+<td>43.37</td>
+<td>15.17</td>
+</tr>
+<tr>
+<td>VEC3</td>
+<td>43.30</td>
+<td>42.73</td>
+<td>0.00</td>
+<td>1.73</td>
+<td>1.73</td>
+<td>27.75</td>
+</tr>
+<tr>
+<td>VEC4</td>
+<td>42.76</td>
+<td>42.20</td>
+<td>1.73</td>
+<td>0.00</td>
+<td>2.00</td>
+<td>27.22</td>
+</tr>
+<tr>
+<td>VEC5</td>
+<td>43.91</td>
+<td>43.37</td>
+<td>1.73</td>
+<td>2.00</td>
+<td>0.00</td>
+<td>28.30</td>
+</tr>
+<tr>
+<td>VEC6</td>
+<td>15.65</td>
+<td>15.17</td>
+<td>27.75</td>
+<td>27.22</td>
+<td>28.30</td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+<p>The following UPGMA generated tree was produced ...</p>
+<p><img src="dot_07d3f9473a348ecb337368b0ed528cc9.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
 <a name="H_Soft%20Hierarchial%20Clustering"></a><h3>Soft Hierarchial Clustering</h3>
 <p>THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.</p>
 <p>Soft <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>ing - Build out a <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> <a href="#BM_(tree)%2Fi">tree</a>. Each internal node is a <a href="#BM_(cluster)%2Fi">cluster</a>. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that <a href="#BM_(cluster)%2Fi">cluster</a>? This makes sense because <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> produces <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s (<a href="#BM_(simple%20tree)%2Fi">simple tree</a>s). If it were a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a>, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s of <a href="#BM_(cluster)%2Fi">cluster</a> X. But, because it's unrooted, technically any leaf node in the graph could be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of <a href="#BM_(cluster)%2Fi">cluster</a> X.</p>
@@ -21949,7 +22073,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </li>
 <li>
 <p><a name="BM_(hierarchial%20cluster)%2Fi"></a><strong>hierarchial cluster</strong> - A form of tiered <a href="#BM_(cluster)%2Fi">cluster</a>ing where <a href="#BM_(cluster)%2Fi">cluster</a>s are represented as a <a href="#BM_(tree)%2Fi">tree</a>. Each node represents a <a href="#BM_(cluster)%2Fi">cluster</a> (leaf nodes being a <a href="#BM_(cluster)%2Fi">cluster</a> of size 1), where the <a href="#BM_(cluster)%2Fi">cluster</a>s represented by a parent node is the combination of the <a href="#BM_(cluster)%2Fi">cluster</a>s represented by its children.</p>
-<p><img src="svgbob_f007a8eb3073e01e8c6a0486dbddd83959b0a388.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_238058b9ed61fe867a16e2ee4c8854111e20582a.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p><a href="#BM_(hierarchial%20cluster)%2Fi">Hierarchial cluster</a>ing has its roots in <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. The <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> to build <a href="#BM_(cluster)%2Fi">cluster</a>s is massages into a <a href="#BM_(distance%20metric)%2Fi">distance metric</a>, which is then used to form a <a href="#BM_(tree)%2Fi">tree</a> that represents the <a href="#BM_(cluster)%2Fi">cluster</a>s.</p>
@@ -21964,6 +22088,15 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>larger (less similar trajectory), the cosine would get closer to -1.</li>
 </ul>
 <p>The formula may be modified to become a <a href="#BM_(distance%20metric)%2Fi">distance metric</a> as follows: <code>1 - cosine_similarity(x, y)</code>. Where as the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a> varies between -1 and 1, the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine distance</a> varies between 0 (totally similar) and 2 (totally dissimilar).</p>
+</li>
+<li>
+<p><a name="BM_(dendrogram)%2Fi"></a><strong>dendrogram</strong> - A diagram of a <a href="#BM_(tree)%2Fi">tree</a>. The term is most often used in the context of heirarchial <a href="#BM_(cluster)%2Fi">cluster</a>ing, where the <a href="#BM_(tree)%2Fi">tree</a> that makes up the hierarchy of <a href="#BM_(cluster)%2Fi">cluster</a>s is referred to as a <a href="#BM_(dendrogram)%2Fi">dendrogram</a>.</p>
+<p><img src="svgbob_a475538fb2c51584ff27ec3a0225b8017824a0b9.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It's tough to get a handle on what the requirements are, if any, to call a <a href="#BM_(tree)%2Fi">tree</a> a <a href="#BM_(dendrogram)%2Fi">dendrogram</a>: Is it restricted to 2 children per internal node (or can there be more)? Do the edges extending from an internal node have to be of equal weight (e.g. equidistant)? Does the <a href="#BM_(tree)%2Fi">tree</a> have to be <a href="#BM_(ultrametric%20tree%7Cultrametric)%2Fi">ultrametric</a>? Does it have to be a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> (or can it be an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>)?</p>
+<p>It seems like you can call any <a href="#BM_(tree)%2Fi">tree</a>, even <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>s, a <a href="#BM_(dendrogram)%2Fi">dendrogram</a>. This seems like a gate keeping term. "Draw the <a href="#BM_(tree)%2Fi">tree</a> thta makes up the <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>" vs "Draw the <a href="#BM_(dendrogram)%2Fi">dendrogram</a> that makes up the <a href="#BM_(hierarchial%20cluster)%2Fi">hierarchial cluster</a>".</p>
+</div>
 </li>
 </ul>
 <p>

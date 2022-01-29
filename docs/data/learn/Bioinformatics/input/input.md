@@ -12110,6 +12110,59 @@ metrics.PearsonSimilarity
 ]
 ```
 
+````{note}
+What do you do on division by 0? Division by 0 means that the point pairings boil down to a  single point. There is no single line that "fits" through just 1 point (there are an infinite number of lines).
+
+```{svgbob}
+"* r is the proximity quantity described above."
+
+"vector A = (5, 5, 5, 5)"
+"vector B = (7, 7, 7, 7)"
+                                           
+                                           
+  15|                                        
+    |                                        
+  13|                                        
+    |                                        
+  11|                                        
+    |                                        
+   9|                                        
+B   |                                        
+   7|           ●
+    |  
+   5|  
+    |                                        
+   3|                                        
+    |                                        
+   1|                                        
+    |                                        
+    +----------------------------------      
+        1   3   5   7   9   11  13  15       
+                      A
+```
+
+So what's the correct action to take in this situation? Assuming that both vectors consist of a single value repeating n times (can there be any other cases where this happens?), then maybe what you should do is set it as maximally correlated (1.0)? If you think about it in terms of the "pattern matching" component plots discussion, each vector's "component plot is a straight line.
+
+```{svgbob}
+"plot of (5,5,5,5)'s"     "plot of (7,7,7,7)'s"   
+"components by index"     "components by index"
+                                               
+                                               
+ v  9|                    v  9|              
+ a  7|                    a  7| *-*-*-*             
+ l  5| *-*-*-*            l  5| 
+ u  3|                    u  3|               
+ e  1|                    e  1|               
+     +---------               +---------      
+       0 1 2 3                  0 1 2 3       
+        index                    index        
+```
+
+It could just as well be interpreted as having no correlation (-1.0) because a mirror of a straight line (across the x-axis, as discussed above) is just the same straight line?
+
+I don't know what the correct thing to do here is. My instinct is to mark it as maximum correlation (1.0) but I'm almost certain that that'd be wrong. The Internet isn't providing many answers -- they all say its either undefined or context dependent.
+````
+
 ### K-Centers Clustering
 
 `{bm} /(Algorithms\/Gene Expression\/K-Centers Clustering)_TOPIC/`
@@ -12267,7 +12320,9 @@ Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
 Algorithms/Gene Expression/K-Centers Clustering_TOPIC
 ```
 
-**WHAT**: K-means is k-centers except the scoring function is different. Recall that the scoring function for k-centers is ...
+**WHAT**: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a cluster.
+
+K-means is k-centers except the scoring function is different. Recall that the scoring function (what's trying to be minimized) for k-centers is ...
 
 ```{kt}
 score = max(d(P_1, C), d(P_2, C), ..., d(P_n, C))
@@ -12947,41 +13002,125 @@ Other things that made the coin flipping example not good:
 Points 1 and 2 have similar analogs in Lloyd's algorithm. Lloyd's algorithm can give you bad centers + Lloyd's algorithm can screw you if you initial centers are bad / not enough points representative of actual clusters are available.
 ````
 
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
-TODO: GO OVER NOTE BLOCK ABOVE, THEN CONTINUE TO HIERARCHIAL CLUSTERING
-
 ### Hierarchial Clustering
 
-TODO: describe using UPGMA -- rooted trees only. use neighbour joining for next section
+`{bm} /(Algorithms\/Gene Expression\/Hierarchial Clustering)_TOPIC/`
+
+```{prereq}
+Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
+Algorithms/Gene Expression/Manhattan Distance Metric_TOPIC
+Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
+Algorithms/Gene Expression/Pearson Similarity Metric_TOPIC
+Algorithms/Phylogeny/Distance Matrix to Tree/UPGMA Algorithm_TOPIC
+```
+
+**WHAT**: Given a list of n-dimensional vectors, convert those vectors into a distance matrix and build an phylogenetic tree using UPGMA (or any other phylogenetic tree generation algorithm that generates a rooted tree). Each internal node represents a sub-cluster, and sub-clusters combine to form larger sub-clusters (a hierarchy of clusters).
+
+```{svgbob}
+                                                                                     "HIERARCHY OF CLUSTERS"
+
+                                                                          .--------------------------------------------------.
+                                                                          |                                                  |
+                                                                          |  .--------------------------------------------.  |
+                                                                          |  |                            .------------.  |  |
+                                                                          |  | .--------------------.     |            |  |  |
+                 "PHYLOGENETIC TREE (ROOTED)"                             |  | |     .------------. |     |       g7   |  |  |
+                                                                          |  | | g9  |         g1 | |     |            |  |  |
+                                                                          |  | |     | .------.   | |     | .-----.    |  |  |
+                              |                                           |  | |     | | g2   |   | |     | | g6  |    |  |  |
+                  .-----------*-----------.                               |  | |     | |   g4 |   | |     | | g10 |    |  |  |
+                  |                       |                               |  | |     | '------'   | |     | '-----'    |  |  |
+      .-----------*----------.            |                               |  | |     '------------' |     '------------'  |  |
+      |                      |            |                               |  | |                    |                     |  |
+.-----*-----.                |            |                               |  | '--------------------'                     |  |
+|           |                |            |                               |  '--------------------------------------------'  |
+|       .---*---.       .----*---.    .---*---.                           |                                                  |
+|       |       |       |        |    |       |                           |                                                  |
+|    .--*--.    |    .--*--.     |    |    .--*--.                        |                                                  |
+|    |     |    |    |     |     |    |    |     |                        |                                                  |
+g9   g4    g2   g1   g6    g10   g7   g8   g5    g3                       |                                                  |
+                                                                          |          .--------------.                        |
+                                                                          |          |  .--------.  |                        |
+                                                                          |          |  | g5  g3 |  |                        |
+                                                                          |          |  '--------'  |                        |
+                                                                          |          |              |                        |
+                                                                          |          |     g8       |                        |
+                                                                          |          '--------------'                        |
+                                                                          |                                                  |
+                                                                          '--------------------------------------------------'
+```
+
+**WHY**: In phylogeny, the goal is to take a distance matrix and use it to generate a tree that represents shared ancestry (phylogenetic tree). Each shared ancestor is represented as an internal node, and nodes that have the same parent node are _more similar to each other than to any other nodes in the tree_. In the example phylogenetic tree below, nodes A4 and A2 share their parent node, meaning they share more with each other than any other node in the tree (are more similar to each other than any other node in the tree).
+
+```{svgbob}
+      |           
+.-----*-----.     
+|           |     
+|       .---*---. 
+|       |       | 
+|    .--*--.    | 
+|    |     |    | 
+A3   A4    A2   A1
+```
+
+In clustering, the goal is to group items in such a way that items in the same group are _more similar to each other than items in other groups_ (good clustering principle). In the example below, A3 has been placed into its own group because it isn't occupying the same general vicinity as the other items.
+
+```{svgbob}
+  CLUSTER1   
+   .----.              CLUSTER2
+   | A3 |           .-----------.
+   '----'           |      A1   |
+                    |           |
+                    |  A2       |
+                    |    A4     |
+                    |           |
+                    '-----------'
+```
+
+If you squint a bit, phylogeny and clustering are essentially doing the same thing:
+
+* Phylogeny: nodes that have the same parent node are _more similar to each other than to any other nodes in the tree_.
+* Clustering: items in the same group are _more similar to each other than items in other groups_.
+
+A phylogenetic tree (that's also a rooted tree) is essentially a form of recursive clustering / hierarchial clustering. Each internal node represents a sub-cluster, and sub-clusters combine to form larger sub-clusters.
+
+```{svgbob}
+"REPRESENTATION AS TREE"               "REPRESENTATION AS HIERARCHY OF CLUSTER"   
+    
+          |                              .--------------------------------.
+    .-----*-----.                        | .----.                         |
+    |           |                        | | A3 |           .-----------. |
+    |       .---*---.                    | '----'           |      A1   | |
+    |       |       |                    |                  |.------.   | |
+    |    .--*--.    |                    |                  || A2   |   | |
+    |    |     |    |                    |                  ||   A4 |   | |
+    A3   A4    A2   A1                   |                  |'------'   | |
+                                         |                  '-----------' |
+                                         '--------------------------------'
+```
+
+**ALGORITHM**:
+
+```{output}
+ch8_code/src/clustering/HierarchialClustering_UPGMA.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch8}
+clustering.HierarchialClustering_UPGMA
+{
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  vectors: {
+    VEC1: [5,6,5],
+    VEC2: [5,7,5],
+    VEC3: [30,31,30],
+    VEC4: [29,30,31],
+    VEC5: [31,30,31],
+    VEC6: [15,14,14]
+  }
+}
+```
 
 ### Soft Hierarchial Clustering
 
@@ -17703,31 +17842,18 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
  * `{bm} hierarchial cluster` - A form of tiered clustering where clusters are represented as a tree. Each node represents a cluster (leaf nodes being a cluster of size 1), where the clusters represented by a parent node is the combination of the clusters represented by its children.
 
    ```{svgbob}
-                .- g3
-                |
-              .-*
-              | |   
-     .--------* '- g5
-     |        |
-     |        '--- g8
-     |        
-    -*   .-------- g7
-     |   |
-     | .-* .------ g1
-     | | | |
-     | | '-*
-     | |   |        
-     '-*   '------ g6
-       |
-       |   .------ g1
-       |   |
-       | .-* .---- g2
-       | | | |
-       '-* '-*      
-         |   |
-         |   '---- g4
-         |
-         '-------- g9 
+                                 |
+                     .-----------*-----------.
+                     |                       |
+         .-----------*----------.            |
+         |                      |            |
+   .-----*-----.                |            |
+   |           |                |            |
+   |       .---*---.       .----*---.    .---*---.
+   |       |       |       |        |    |       |
+   |    .--*--.    |    .--*--.     |    |    .--*--.
+   |    |     |    |    |     |     |    |    |     |  
+   g9   g4    g2   g1   g6    g10   g7   g8   g5    g3
    ```
 
    ```{note}
@@ -17757,6 +17883,27 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    * larger (less similar trajectory), the cosine would get closer to -1.
 
    The formula may be modified to become a distance metric as follows: `1 - cosine_similarity(x, y)`. Where as the cosine similarity varies between -1 and 1, the cosine distance varies between 0 (totally similar) and 2 (totally dissimilar).
+
+ * `{bm} dendrogram` - A diagram of a tree. The term is most often used in the context of heirarchial clustering, where the tree that makes up the hierarchy of clusters is referred to as a dendrogram.
+
+   ```{svgbob}
+         |           
+   .-----*-----.     
+   |           |     
+   |       .---*---. 
+   |       |       | 
+   |    .--*--.    | 
+   |    |     |    | 
+   g9   g4    g2   g1
+   ```
+
+   ```{note}
+   It's tough to get a handle on what the requirements are, if any, to call a tree a dendrogram: Is it restricted to 2 children per internal node (or can there be more)? Do the edges extending from an internal node have to be of equal weight (e.g. equidistant)? Does the tree have to be ultrametric? Does it have to be a rooted tree (or can it be an unrooted tree)?
+
+   It seems like you can call any tree, even unrooted trees, a dendrogram. This seems like a gate keeping term. "Draw the tree thta makes up the hierarchial cluster" vs "Draw the dendrogram that makes up the hierarchial cluster".
+   ```
+
+
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

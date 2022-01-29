@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TypeVar, Generic, Iterator, Optional
 
 # Adapted from the graph class I built to solve chapter 3 problems (genome assembly)
+from graph import DirectedGraph
 
 N = TypeVar('N')
 ND = TypeVar('ND')
@@ -138,6 +139,26 @@ class Graph(Generic[N, ND, E, ED]):
         graph._node_data = self._node_data.copy()
         graph._edges = self._edges.copy()
         return graph
+
+    def to_directed_graph(self: Graph, root: N) -> DirectedGraph.Graph[N, ND, E, ED]:
+        ret = DirectedGraph.Graph()
+        for n in self.get_nodes():
+            ret.insert_node(n, self.get_node_data(n))
+        n_list = [root]
+        n_walked = []
+        while len(n_list) > 0:
+            n_parent = n_list.pop()
+            n_walked.append(n_parent)
+            for e in self.get_outputs(n_parent):
+                n1, n2, e_weight = self.get_edge(e)
+                n_outputs = {n1, n2}
+                n_outputs.remove(n_parent)
+                n_child = n_outputs.pop()
+                if n_child in n_walked:
+                    continue
+                ret.insert_edge(e, n_parent, n_child, e_weight)
+                n_list.append(n_child)
+        return ret
 
     def __len__(self: Graph) -> int:
         return len(self._node_outbound)
