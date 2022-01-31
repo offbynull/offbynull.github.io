@@ -12809,14 +12809,14 @@ confidence(P, C_i) = \frac{
 * d() calculates the euclidean distance.
 
 ```{output}
-ch8_code/src/clustering/KMeans_SoftLloyds.py
+ch8_code/src/clustering/Soft_KMeans_Lloyds.py
 python
 # MARKDOWN_E_STEP\s*\n([\s\S]+)\n\s*# MARKDOWN_E_STEP\s*[\n$]
 no_preamble
 ```
 
 ```{ch8}
-clustering.KMeans_SoftLloyds main_e_step
+clustering.Soft_KMeans_Lloyds main_e_step
 {
   points: [
     [1,0], [0,1], [0,-1],
@@ -12848,14 +12848,14 @@ no_preamble
 This algorithm performs a similar center of gravity calculation. The difference is that, since there are no definitive cluster member_CLUSTERs here, all data points are included in the center of gravity calculation. However, each data point is appropriately scaled by its confidence value (0.0 to 1.0 -- also known as probability) before being added into the center of gravity.
 
 ```{output}
-ch8_code/src/clustering/KMeans_SoftLloyds.py
+ch8_code/src/clustering/Soft_KMeans_Lloyds.py
 python
 # MARKDOWN_M_STEP\s*\n([\s\S]+)\n\s*# MARKDOWN_M_STEP\s*[\n$]
 no_preamble
 ```
 
 ```{ch8}
-clustering.KMeans_SoftLloyds main_m_step
+clustering.Soft_KMeans_Lloyds main_m_step
 {
   membership_confidences: [
     [   # center followed by (point, confidence) pairs
@@ -12913,14 +12913,14 @@ The example run below has cherry-picked input to illustrate the "start off by ju
 ```
 
 ```{output}
-ch8_code/src/clustering/KMeans_SoftLloyds.py
+ch8_code/src/clustering/Soft_KMeans_Lloyds.py
 python
 # MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
 no_preamble
 ```
 
 ```{ch8}
-clustering.KMeans_SoftLloyds
+clustering.Soft_KMeans_Lloyds
 {
   k: 3,
   points: [
@@ -13014,7 +13014,7 @@ Algorithms/Gene Expression/Pearson Similarity Metric_TOPIC
 Algorithms/Phylogeny/Distance Matrix to Tree/UPGMA Algorithm_TOPIC
 ```
 
-**WHAT**: Given a list of n-dimensional vectors, convert those vectors into a distance matrix and build an phylogenetic tree using UPGMA (or any other phylogenetic tree generation algorithm that generates a rooted tree). Each internal node represents a sub-cluster, and sub-clusters combine to form larger sub-clusters (a hierarchy of clusters).
+**WHAT**: Given a list of n-dimensional vectors, convert those vectors into a distance matrix and build a phylogenetic tree (must be a rooted tree). Each internal node represents a sub-cluster, and sub-clusters combine to form larger sub-clusters (a hierarchy of clusters).
 
 ```{svgbob}
                                                                                      "HIERARCHY OF CLUSTERS"
@@ -13101,6 +13101,8 @@ A phylogenetic tree (that's also a rooted tree) is essentially a form of recursi
 
 **ALGORITHM**:
 
+This algorithm uses UPGMA, but you can swap that out for any other phylogenetic tree generation algorithm so long as it generates a rooted tree.
+
 ```{output}
 ch8_code/src/clustering/HierarchialClustering_UPGMA.py
 python
@@ -13124,15 +13126,174 @@ clustering.HierarchialClustering_UPGMA
 
 ### Soft Hierarchial Clustering
 
-THIS IS NOT FROM THE BOOK, BUT I REASONED ABOUT THIS MYSELF. IMPLEMENT IT AND WRITE ABOUT IT HERE.
+`{bm} /(Algorithms\/Gene Expression\/Soft Hierarchial Clustering)_TOPIC/`
 
-Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_CLUSTERs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_CLUSTER of cluster X.
+```{prereq}
+Algorithms/Gene Expression/Hierarchial Clustering_TOPIC
+Algorithms/Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm_TOPIC
+```
 
-This seems like it'd be very useful. It's easy to understand (if you understand neighbour joining phylogeny / additive phylogeny)
+```{note}
+This isn't from the Pevzner book. I reasoned about it myself and implemented it here. My thought process might not be entirely correct.
+```
 
-~~How to get from distances to probabilities? Try this: distance of 0 (self) is 1.0 probability and distance to farthest leaf node is 0.0 probability. To get the probability of a leaf node being a member_CLUSTER, divide its distance by the distance of the farthest leaf node... 1.0 - (d / farthest_d)~~ Maybe farthest_d isn't correct? should it be the sum of all leaf node dists for that internal node?
+**WHAT**: In normal hierarchial clustering, a rooted tree represents a hierarchy of clusters. Internal nodes represent sub-clusters, where those sub-clusters combine together to form larger sub-clusters.
 
-So what's the way to find the best high-level clusters? Maybe find the internal node with the most uniform probabilities (e.g all leaf nodes have ~0.05 probability of being a member_CLUSTER) -- each edge protruding out from that leaf node is a cluster
+```{svgbob}
+"REPRESENTATION AS TREE"               "REPRESENTATION AS HIERARCHY OF CLUSTER"   
+    
+          |                              .--------------------------------.
+    .-----*-----.                        | .----.                         |
+    |           |                        | | A3 |           .-----------. |
+    |       .---*---.                    | '----'           |      A1   | |
+    |       |       |                    |                  |.------.   | |
+    |    .--*--.    |                    |                  || A2   |   | |
+    |    |     |    |                    |                  ||   A4 |   | |
+    A3   A4    A2   A1                   |                  |'------'   | |
+                                         |                  '-----------' |
+                                         '--------------------------------'
+```
+
+In this soft clustering variant of hierarchial clustering, an unrooted tree is used instead. An internal node in an unrooted tree doesn't have a parent or children, it only has neighbours. If there is some kind of a parent-child relationship, that information isn't represented in the unrooted tree (e.g. the tree doesn't tell you which branch goes to the parent vs which branches go to children).
+
+```{svgbob}
+                 A3
+A2              /
+  \            /  
+   \          /
+    *--------*
+   /          \  
+ A4            \
+                A1  
+```
+
+Rather than thinking of an unrooted tree's internal nodes as sub-clusters that combine together, it's more appropriate to think of them as points of commonality. An internal node captures the shared features of its neighbours and represents the degree_NORM of similarity between it and its neighbours via the the distances to those neighbours. A very close neighbour is very similar while a farther away neighbour is not as similar.
+
+In the example above, the internal node that connects A2 and A4 has three neighbours: A2, A4, and the other internal node in the tree. Of those three neighbours, it's most similar to A4 (closest) and least similar to the other internal node (farthest).
+
+**WHY**: Traditional soft clustering has a _distinct set of clusters_ where each item has a probability of being a member_CLUSTER of one of those clusters. The set of membership_CLUSTER probabilities for each _item_ should sum to 1.
+
+|        | Cluster 1 | Cluster 2 | Sum     |
+|--------|-----------|-----------|---------|
+| Item 1 | 0.25      | 0.75      | **1.0** |
+| Item 2 | 0.7       | 0.3       | **1.0** |
+| Item 3 | 0.8       | 0.2       | **1.0** |
+| Item 4 | 0.1       | 0.9       | **1.0** |
+
+In this scenario, that doesn't make sense because there are no distinct clusters. As described above, it's more appropriate to think of internal nodes as points of commonality rather than as clusters. Points of commonality can feed into each other (internal node can have other internal nodes as neighbours). As such, rather than each item having a probability of being a member_CLUSTER of a cluster, each point of commonality has a probability of having an item as its member_CLUSTER (based on how close an item is to it). The set of membership_CLUSTER probabilities for each point of commonality should sum to 1.
+
+|                 | Item 1 | Item 2 | Item 3 | Item 4 | Sum     |
+|-----------------|--------|--------|--------|--------|---------|
+| Internal Node 1 | 0.4    | 0.3    | 0.2    | 0.1    | **1.0** |
+| Internal Node 2 | 0.1    | 0.1    | 0.1    | 0.7    | **1.0** |
+
+**ALGORITHM**:
+
+To determine the set of membership_CLUSTER probabilities for an internal node of the unrooted tree, the algorithm first compiles the distances from that internal node to each leaf node. Those distances are then converted to a set of probabilities using a formula known as inverse distance weighting ...
+
+```{kt}
+probability =
+\frac{
+  1 / D_j
+}{
+  1 / \sum_{i=1}^n{D_i}
+}
+```
+
+... where ...
+
+ * D is the set of distances for the internal node
+ * n is the number of distances in D.
+ * Dj is the distance for which the probability is being computed.
+
+```{output}
+ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py
+python
+# MARKDOWN_PROBABILITY\s*\n([\s\S]+)\n\s*# MARKDOWN_PROBABILITY\s*[\n$]
+```
+
+```{note}
+I'm thinking that the probability isn't what you want here. Instead what you want is likely just the distances themselves or the distances normalized between 0 and 1: `{kt} \frac{D_j}{\sum_{i=1}^n{D_i}}`. Those will allow you figure out more interesting things about the clustering. For example, if a set of leaf nodes are all roughly the equidistant to the same internal node and that distance is greater than some threshold, they're likely things you should be interested in.
+```
+
+Neighbour joining phylogeny is used to generate the unrooted tree (simple tree), but the algorithm could just as well take any rooted tree and convert it to an unrooted tree. Neighbour joining phylogeny is the most appropriate phylogeny algorithm because it reliably reconstructs the unique simple tree for an additive distance matrix / approximates a simple tree for a non-additive distance matrix.
+
+````{note}
+Recall that neighbour joining phylogeny doesn't reconstruct a rooted tree because distance matrices don't capture hierarchy information. Also recall that edges broken up by a node (internal nodes of degree_GRAPH 2) also aren't reconstructed because distance matrices don't capture that information either. If the original tree that the distance matrix is for was a rooted tree but the root node only had two children, that node won't show up at all in the reconstructed tree (simple tree).
+
+```{svgbob}
+ORIGINAL           RECONSTRUCTED
+
+   R (root)             2
+1 / \ 1              A-----B
+ /   \
+A     B
+```
+
+In the example above, the root node had degree_GRAPH of 2, meaning it won't appear in reconstructed simple tree. Even if it did, the reconstruction would be unrooted tree -- the node would be there but nothing would identify it as the root.
+````
+
+```{output}
+ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch8}
+clustering.Soft_HierarchialClustering_NeighbourJoining
+{
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  vectors: {
+    VEC1: [5,6,5],
+    VEC2: [5,7,5],
+    VEC3: [30,31,30],
+    VEC4: [29,30,31],
+    VEC5: [31,30,31],
+    VEC6: [15,14,14]
+  }
+}
+```
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
+TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+
 
 ### CAST Clustering
 

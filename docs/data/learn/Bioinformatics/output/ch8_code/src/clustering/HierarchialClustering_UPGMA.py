@@ -108,7 +108,7 @@ def main():
         print('</tbody>')
         print('</table>')
         print()
-        print(f'The following UPGMA generated tree was produced ...')
+        print(f'The following UPGMA tree was produced ...')
         print()
         print('```{dot}')
         print(f'{to_dot(tree)}')
