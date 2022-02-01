@@ -5877,11 +5877,19 @@ std::chrono::hh_mm_ss time { 8h + 30m + 45s };
 auto tp = std::chrono::local_days { date } + time;  // or use sys_days for system time
 ```
 
-## Random Numbers
+## Numbers
 
-`{bm} /(Library FunctionsTime\/Random Numbers)_TOPIC/`
+`{bm} /(Library FunctionsTime\/Numbers)_TOPIC/`
 
-The C++ standard library provides random number generators out of the box. For ...
+Both the C++ standard library and third-party libraries (e.g. Boost) provide several pieces of functionality that make working with numbers easier: Math constants and functions, random number generation, bounds-checked numeric type casting, etc..
+
+The subsections below document some common number-related classes and their usages.
+
+### Random Numbers
+
+`{bm} /(Library FunctionsTime\/Numbers\/Random Numbers)_TOPIC/`
+
+There are several options for random number generation. For ...
 
  * non-cryptographic scenarios, use `std::mt19937_64`, an implementation of Mersenne Twister.
  * cryptographic scenarios, use `std::random_device`, which tries to use an unpredictable hardware source (but may not).
@@ -5915,9 +5923,9 @@ Boost provides a set of distributions as well.
 Are there friendly wrappers here? What if I want the random number generator to give me a float, bool, or an alphanumeric string instead of an int?
 ```
 
-## Numeric Limits
+### Numeric Type Information
 
-`{bm} /(Library FunctionsTime\/Numeric Limits)_TOPIC/`
+`{bm} /(Library FunctionsTime\/Numbers\/Numeric Type Information)_TOPIC/`
 
 Recall that C++'s numeric types are wishy-washy (e.g. there is no guarantee as to how large an `int` is, just that it must be greater than or equal to `short`). The `std::numeric_limits` class allows you to get compile-time information about a numeric type, such as signed-ness, min, max, etc..
 
@@ -5941,25 +5949,100 @@ auto c = std::numeric_limits<uint16_t>::has_infinity; // false
 
 Boost's Integer library also provides additional functionality for determining information about numerics (e.g. which one is the fastest for the platform you're on).
 
-## Numeric Conversions
+### Numeric Type Casting
 
-TODO: Boost Numeric Conversions section in chapter 12
+`{bm} /(Library FunctionsTime\/Numbers\/Numeric Type Casting)_TOPIC/`
 
-TODO: Boost Numeric Conversions section in chapter 12
+```{seealso}
+(Core Language/Variables/Explicit Conversion/Named Conversions_TOPIC (refresher)
+```
 
-TODO: Boost Numeric Conversions section in chapter 12
+Typically, the named conversion function `static_cast` is used for converting from one numeric type to another (e.g. `double` to `int`). In most cases, `static_cast` is fine to use, however  certain scenarios require a more customizable form of conversion (e.g. don't allow overflow). More customizable forms of numeric conversions are possible via the class `boost::numeric::converter`.
 
-TODO: Boost Numeric Conversions section in chapter 12
+To use `boost::numeric::converter`, two template parameters are required:
 
-TODO: Boost Numeric Conversions section in chapter 12
+ 1. `T` - (REQUIRED) output numeric type for the conversion.
+ 1. `S` - (REQUIRED) input numeric type for the conversion.
 
-TODO: Boost Numeric Conversions section in chapter 12
+Either use its `convert()` function or invoke the class directly (it's a functor) to perform a conversion.
 
-TODO: Boost Numeric Conversions section in chapter 12
+```c++
+int x { boost::numeric::converter<int, double>::convert(1.234) };
+int y { boost::numeric::converter<int, double>(1.234) };  // same thing as above
+```
 
-TODO: Boost Numeric Conversions section in chapter 12
+Several other optional template parameters control how the numeric conversion happens. For example, what to do on overflow (e.g. throw exception), how to round a float (e.g. round down), etc.. The most important thing to remember is that the default overflow configuration is to throw an exception -- either `boost::numeric::positive_overflow` or `boost::numeric::negative_overflow`.
 
-TODO: Boost Numeric Conversions section in chapter 12
+```{note}
+See [here](https://www.boost.org/doc/libs/1_33_1/libs/numeric/conversion/doc/converter.html) for all template parameters.
+```
+
+If the default conversion options are desirable, then an analog to `static_cast` called `boost::numeric_cast` may be used instead of `boost::numeric::converter`.
+
+```c++
+int z { boost::numeric_cast<int>(1.234) };  // same thing as the examples above
+```
+
+### Math
+
+`{bm} /(Library FunctionsTime\/Numbers\/Math)_TOPIC/`
+
+Several common math functions are provided directly within the C++ standard library.
+
+| Function(s)                                          | Description                                                                                                         |
+|------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `abs(x)`                                             | absolute value                                                                                                      |
+| `max(x) min(x)`                                      | minimum/maximum of two values                                                                                       |
+| `isfinite(x) isinf(x)`                               | check if finite / infinite (e.g. floating point infinite)                                                           |
+| `pow(x,y)`                                           | power of (x to the power of y)                                                                                      |
+| `sqrt(x)`                                            | square root                                                                                                         |
+| `cbrt(x)`                                            | cube root                                                                                                           |
+| `sin(x) cos(x) tan(x) asin(x) acos(x) atan(x)`       | trigonometry functions                                                                                              |
+| `sinh(x) cosh(x) tanh(x) asinh(x) acosh(x) atanh(x)` | hyperbolic functions                                                                                                |
+| `ceil(x) floor(x) round(x)`                          | rounding function                                                                                                   |
+| `div(x, y)`                                          | divides and gives both the quotient AND remainder                                                                   |
+| `fmod(x, y)`                                         | modulo for floating point                                                                                           |
+| `remainder(x, y)`                                    | signed remainder of x div y ([different from modulo for non-positive values](https://stackoverflow.com/a/13683709)) |
+| `log(x) log10(x) log2(x)`                            | logarithm functions                                                                                                 |
+
+Boost provides several math constants through `boost::math::double_constants`.
+
+| Constant | Description                  |
+|----------|------------------------------|
+| `pi`     | archimedes's constant        |
+| `e`      | euler's constant             |
+| `degree` | number of radians per degree |
+| `radian` | number of degrees per radian |
+
+```{note}
+The functions / constants listed above the useful ones. There are more.
+```
+
+In addition, there's support for complex numbers via `std::complex`, which implements various common complex number operations via operator overloading and free functions functions.
+
+```c++
+std::complex<double> a{1.0, 33.71};
+auto aReal { std::real(a) };      // get real part
+auto aImaginary { std::imag(a)} ; // get imaginary part
+```
+
+```{note}
+This seems like such a niche thing that I don't think it's worth fleshing it out.
+```
+
+TODO: START FROM CHAPTER 13 CONTAINERS
+
+TODO: START FROM CHAPTER 13 CONTAINERS
+
+TODO: START FROM CHAPTER 13 CONTAINERS
+
+TODO: START FROM CHAPTER 13 CONTAINERS
+
+TODO: START FROM CHAPTER 13 CONTAINERS
+
+TODO: START FROM CHAPTER 13 CONTAINERS
+
+TODO: START FROM CHAPTER 13 CONTAINERS
 
 # Terminology
 

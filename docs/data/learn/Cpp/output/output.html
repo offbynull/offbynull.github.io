@@ -155,9 +155,13 @@
 <li><a href="#H_Durations">Durations</a></li>
 <li><a href="#H_Date%20and%20Time">Date and Time</a></li>
 </ul>
+<li><a href="#H_Numbers">Numbers</a></li>
+<ul>
 <li><a href="#H_Random%20Numbers">Random Numbers</a></li>
-<li><a href="#H_Numeric%20Limits">Numeric Limits</a></li>
-<li><a href="#H_Numeric%20Conversions">Numeric Conversions</a></li>
+<li><a href="#H_Numeric%20Type%20Information">Numeric Type Information</a></li>
+<li><a href="#H_Numeric%20Type%20Casting">Numeric Type Casting</a></li>
+<li><a href="#H_Math">Math</a></li>
+</ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -5905,9 +5909,13 @@ std::chrono::hh_mm_ss time { <span class="hljs-number">8</span>h + <span class="
 
 <span class="hljs-keyword">auto</span> tp = std::chrono::local_days { date } + time;  <span class="hljs-comment">// or use sys_days for system time</span>
 </code></pre>
-<a name="H_Random%20Numbers"></a><h2>Random Numbers</h2>
-<p><a name="BM_(Library%20FunctionsTime%5C%2FRandom%20Numbers)_TOPIC%2F"></a><strong></strong></p>
-<p>The C++ standard library provides random number generators out of the box. For ...</p>
+<a name="H_Numbers"></a><h2>Numbers</h2>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers)_TOPIC%2F"></a><strong></strong></p>
+<p>Both the C++ standard library and third-party libraries (e.g. Boost) provide several pieces of functionality that make working with numbers easier: Math constants and functions, random number generation, bounds-checked numeric type casting, etc..</p>
+<p>The subsections below document some common number-related <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and their usages.</p>
+<a name="H_Random%20Numbers"></a><h3>Random Numbers</h3>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers%2FRandom%20Numbers)_TOPIC%2F"></a><strong></strong></p>
+<p>There are several options for random number generation. For ...</p>
 <ul>
 <li>non-cryptographic scenarios, use <code>std::mt19937_64</code>, an implementation of Mersenne Twister.</li>
 <li>cryptographic scenarios, use <code>std::random_device</code>, which tries to use an unpredictable hardware source (but may not).</li>
@@ -5935,8 +5943,8 @@ std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Are there friendly wrappers here? What if I want the random number generator to give me a float, bool, or an alphanumeric string instead of an int?</p>
 </div>
-<a name="H_Numeric%20Limits"></a><h2>Numeric Limits</h2>
-<p><a name="BM_(Library%20FunctionsTime%5C%2FNumeric%20Limits)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Numeric%20Type%20Information"></a><h3>Numeric Type Information</h3>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers%2FNumeric%20Type%20Information)_TOPIC%2F"></a><strong></strong></p>
 <p>Recall that C++'s numeric types are wishy-washy (e.g. there is no guarantee as to how large an <code>int</code> is, just that it must be greater than or equal to <code>short</code>). The <code>std::numeric_limits</code> <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> allows you to get <a href="#BM_(compile-time)%2Fi">compile-time</a> information about a numeric type, such as signed-ness, min, max, etc..</p>
 <pre class="hljs"><code><span class="hljs-keyword">auto</span> a = std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::is_integer;      <span class="hljs-comment">// false</span>
 <span class="hljs-keyword">auto</span> b = std::numeric_limits&lt;<span class="hljs-type">uint16_t</span>&gt;::is_integer;   <span class="hljs-comment">// true</span>
@@ -5956,16 +5964,144 @@ std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_
 <li>etc..</li>
 </ul>
 <p>Boost's Integer library also provides additional functionality for determining information about numerics (e.g. which one is the fastest for the platform you're on).</p>
-<a name="H_Numeric%20Conversions"></a><h2>Numeric Conversions</h2>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
-<p>TODO: Boost Numeric Conversions section in chapter 12</p>
+<a name="H_Numeric%20Type%20Casting"></a><h3>Numeric Type Casting</h3>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers%2FNumeric%20Type%20Casting)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li>(<a href="#BM_(Core%20Language%5C%2FVariables%2FExplicit%20Conversion%2FNamed%20Conversions)_TOPIC%2F">Core Language/Variables/Explicit Conversion/Named Conversions</a> (refresher)</li>
+</ul>
+</div>
+<p>Typically, the <a href="#BM_(named%20conversion%20function%7Cnamed%20conversion%7Cconst%5B_%5Cs%5Dcast%7Cstatic%5B_%5Cs%5Dcast%7Creinterpret%5B_%5Cs%5Dcast%7Cnarrow%5B_%5Cs%5Dcast)%2Fi">named conversion function</a> <code>static_cast</code> is used for converting from one numeric type to another (e.g. <code>double</code> to <code>int</code>). In most cases, <code>static_cast</code> is fine to use, however  certain scenarios require a more customizable form of conversion (e.g. don't allow overflow). More customizable forms of numeric conversions are possible via the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> <code>boost::numeric::converter</code>.</p>
+<p>To use <code>boost::numeric::converter</code>, two <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s are required:</p>
+<ol>
+<li><code>T</code> - (REQUIRED) output numeric type for the conversion.</li>
+<li><code>S</code> - (REQUIRED) input numeric type for the conversion.</li>
+</ol>
+<p>Either use its <code>convert()</code> function or invoke the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> directly (it's a <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>) to perform a conversion.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> x { boost::numeric::converter&lt;<span class="hljs-type">int</span>, <span class="hljs-type">double</span>&gt;::<span class="hljs-built_in">convert</span>(<span class="hljs-number">1.234</span>) };
+<span class="hljs-type">int</span> y { boost::numeric::<span class="hljs-built_in">converter</span>&lt;<span class="hljs-type">int</span>, <span class="hljs-type">double</span>&gt;(<span class="hljs-number">1.234</span>) };  <span class="hljs-comment">// same thing as above</span>
+</code></pre>
+<p>Several other optional <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s control how the numeric conversion happens. For example, what to do on overflow (e.g. throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>), how to round a float (e.g. round down), etc.. The most important thing to remember is that the default overflow configuration is to throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> -- either <code>boost::numeric::positive_overflow</code> or <code>boost::numeric::negative_overflow</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <a href="https://www.boost.org/doc/libs/1_33_1/libs/numeric/conversion/doc/converter.html">here</a> for all <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s.</p>
+</div>
+<p>If the default conversion options are desirable, then an analog to <code>static_cast</code> called <code>boost::numeric_cast</code> may be used instead of <code>boost::numeric::converter</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> z { boost::<span class="hljs-built_in">numeric_cast</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">1.234</span>) };  <span class="hljs-comment">// same thing as the examples above</span>
+</code></pre>
+<a name="H_Math"></a><h3>Math</h3>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers%2FMath)_TOPIC%2F"></a><strong></strong></p>
+<p>Several common math functions are provided directly within the C++ standard library.</p>
+<table>
+<thead>
+<tr>
+<th>Function(s)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>abs(x)</code></td>
+<td>absolute value</td>
+</tr>
+<tr>
+<td><code>max(x) min(x)</code></td>
+<td>minimum/maximum of two values</td>
+</tr>
+<tr>
+<td><code>isfinite(x) isinf(x)</code></td>
+<td>check if finite / infinite (e.g. floating point infinite)</td>
+</tr>
+<tr>
+<td><code>pow(x,y)</code></td>
+<td>power of (x to the power of y)</td>
+</tr>
+<tr>
+<td><code>sqrt(x)</code></td>
+<td>square root</td>
+</tr>
+<tr>
+<td><code>cbrt(x)</code></td>
+<td>cube root</td>
+</tr>
+<tr>
+<td><code>sin(x) cos(x) tan(x) asin(x) acos(x) atan(x)</code></td>
+<td>trigonometry functions</td>
+</tr>
+<tr>
+<td><code>sinh(x) cosh(x) tanh(x) asinh(x) acosh(x) atanh(x)</code></td>
+<td>hyperbolic functions</td>
+</tr>
+<tr>
+<td><code>ceil(x) floor(x) round(x)</code></td>
+<td>rounding function</td>
+</tr>
+<tr>
+<td><code>div(x, y)</code></td>
+<td>divides and gives both the quotient AND remainder</td>
+</tr>
+<tr>
+<td><code>fmod(x, y)</code></td>
+<td>modulo for floating point</td>
+</tr>
+<tr>
+<td><code>remainder(x, y)</code></td>
+<td>signed remainder of x div y (<a href="https://stackoverflow.com/a/13683709">different from modulo for non-positive values</a>)</td>
+</tr>
+<tr>
+<td><code>log(x) log10(x) log2(x)</code></td>
+<td>logarithm functions</td>
+</tr>
+</tbody>
+</table>
+<p>Boost provides several math constants through <code>boost::math::double_constants</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pi</code></td>
+<td>archimedes's constant</td>
+</tr>
+<tr>
+<td><code>e</code></td>
+<td>euler's constant</td>
+</tr>
+<tr>
+<td><code>degree</code></td>
+<td>number of radians per degree</td>
+</tr>
+<tr>
+<td><code>radian</code></td>
+<td>number of degrees per radian</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The functions / constants listed above the useful ones. There are more.</p>
+</div>
+<p>In addition, there's support for complex numbers via <code>std::complex</code>, which implements various common complex number operations via <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>ing and <a href="#BM_(free%20function%7Cnon-member%20function)%2Fi">free function</a>s functions.</p>
+<pre class="hljs"><code>std::complex&lt;<span class="hljs-type">double</span>&gt; a{<span class="hljs-number">1.0</span>, <span class="hljs-number">33.71</span>};
+<span class="hljs-keyword">auto</span> aReal { std::<span class="hljs-built_in">real</span>(a) };      <span class="hljs-comment">// get real part</span>
+<span class="hljs-keyword">auto</span> aImaginary { std::<span class="hljs-built_in">imag</span>(a)} ; <span class="hljs-comment">// get imaginary part</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This seems like such a niche thing that I don't think it's worth fleshing it out.</p>
+</div>
+<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
+<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
+<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
+<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
+<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
+<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
+<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
