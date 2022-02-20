@@ -13189,7 +13189,7 @@ In this scenario, that doesn't make sense because there are no distinct clusters
 
 **ALGORITHM**:
 
-To determine the set of membership_CLUSTER probabilities for an internal node of the unrooted tree, the algorithm first compiles the distances from that internal node to each leaf node. Those distances are then converted to a set of probabilities using a formula known as inverse distance weighting ...
+To determine the set of membership_CLUSTER probabilities for an internal node of the unrooted tree, the algorithm first gathers the distances from that internal node to each leaf node. Those distances are then converted to a set of probabilities using a formula known as inverse distance weighting ...
 
 ```{kt}
 probability =
@@ -13203,7 +13203,7 @@ probability =
 ... where ...
 
  * D is the set of distances for the internal node
- * n is the number of distances in D.
+ * n is D's count.
  * Dj is the distance for which the probability is being computed.
 
 ```{output}
@@ -13222,7 +13222,7 @@ Neighbour joining phylogeny is used to generate the unrooted tree (simple tree),
 Recall that neighbour joining phylogeny doesn't reconstruct a rooted tree because distance matrices don't capture hierarchy information. Also recall that edges broken up by a node (internal nodes of degree_GRAPH 2) also aren't reconstructed because distance matrices don't capture that information either. If the original tree that the distance matrix is for was a rooted tree but the root node only had two children, that node won't show up at all in the reconstructed tree (simple tree).
 
 ```{svgbob}
-ORIGINAL           RECONSTRUCTED
+ORIGINAL           RECONSTRUCTED   
 
    R (root)             2
 1 / \ 1              A-----B
@@ -13254,48 +13254,74 @@ clustering.Soft_HierarchialClustering_NeighbourJoining
 }
 ```
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+### Similarity Graph Clustering
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+`{bm} /(Algorithms\/Gene Expression\/Similarity Graph Clustering)_TOPIC/`
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+```{prereq}
+Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
+Algorithms/Gene Expression/Manhattan Distance Metric_TOPIC
+Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
+Algorithms/Gene Expression/Pearson Similarity Metric_TOPIC
+```
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+**WHAT**: Given a list of n-dimensional vectors, convert those vectors into a similarity matrix and build a graph where nodes represents genes and an edge connects a pair of nodes only if their similarity between the genes they represent exceeds some threshold. This type of graph is called a similarity graph.
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+**WHY**: Recall the definition of the good clustering principle: Items within the same cluster should be more similar to each other than items in other clusters. If the vectors being clustered aren't noisy and the similarity metric used is appropriate for the type of data the vectors represent (it captures clusters), some threshold value should exist where the graph formed only consists of cliques (clique graph).
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+For example, consider the following similarity matrix...
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+|   | A | B | C | D | E | F | G |
+|---|---|---|---|---|---|---|---|
+| A | 9 | 8 | 9 | 1 | 0 | 1 | 1 |
+| B | 8 | 9 | 9 | 1 | 1 | 0 | 2 |
+| C | 9 | 9 | 8 | 2 | 1 | 1 | 1 |
+| D | 1 | 1 | 2 | 9 | 8 | 9 | 9 |
+| E | 0 | 1 | 1 | 8 | 8 | 8 | 9 |
+| F | 1 | 0 | 1 | 9 | 8 | 9 | 9 |
+| G | 1 | 2 | 1 | 9 | 9 | 9 | 8 |
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+Choosing a threshold of 7 will generate the following clique graph...
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+```{svgbob}
+G---E
+|\ /|
+| X |
+|/ \|
+D---F   C
+       / \
+      A---B
+```
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+Since real-world data is typically noisy and / or the similarity metric being used might not perfectly capture clusters, similarity graphs are often comprised of corrupted cliques. These corrupted cliques are corrected using heuristic algorithms. The algorithm presented in this section is one such algorithm.
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+```{svgbob}
+"CORRUPTED CLIQUES"       "CORRECTED"
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+    G---E                 G---E      
+    |\ /|\                |\ /|      
+    | X | \               | X |      
+    |/ \|  \              |/ \|      
+    D   F   C             D---F   C  
+           / \                   / \ 
+          A   B                 A---B
+```
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+**ALGORITHM**:
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+TODO: IMPLEMENT ME
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+TODO: IMPLEMENT ME
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+TODO: IMPLEMENT ME
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+TODO: IMPLEMENT ME
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+TODO: IMPLEMENT ME
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
+TODO: IMPLEMENT ME
 
-TODO: GO OVER LANGUAGE ABOVE BEFORE MOVING ON TO CAST CLUSTERING
-
-
-### CAST Clustering
+TODO: IMPLEMENT ME
 
 # Stories
 
@@ -18103,6 +18129,8 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 `{bm-error} Did you mean neighbour joining matrix?/(neighbouring join matrix|neighbouring joining matrix|neighbouring-join matrix|neighbouring-joining matrix)/i`
 
 `{bm-error} Did you mean co-regulate? (needs a dash)/(coregulate)/i`
+
+`{bm-error} Did you mean noisy?/(noisey)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`

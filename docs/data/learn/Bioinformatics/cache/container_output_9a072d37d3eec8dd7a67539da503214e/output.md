@@ -5,7 +5,7 @@
 Recall that neighbour joining phylogeny doesn't reconstruct a rooted tree because distance matrices don't capture hierarchy information. Also recall that edges broken up by a node (internal nodes of degree_GRAPH 2) also aren't reconstructed because distance matrices don't capture that information either. If the original tree that the distance matrix is for was a rooted tree but the root node only had two children, that node won't show up at all in the reconstructed tree (simple tree).
 
 ```{svgbob}
-ORIGINAL           RECONSTRUCTED
+ORIGINAL           RECONSTRUCTED   
 
    R (root)             2
 1 / \ 1              A-----B
