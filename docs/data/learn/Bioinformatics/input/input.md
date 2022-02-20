@@ -13265,63 +13265,170 @@ Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
 Algorithms/Gene Expression/Pearson Similarity Metric_TOPIC
 ```
 
-**WHAT**: Given a list of n-dimensional vectors, convert those vectors into a similarity matrix and build a graph where nodes represents genes and an edge connects a pair of nodes only if their similarity between the genes they represent exceeds some threshold. This type of graph is called a similarity graph.
+**WHAT**: Given a list of n-dimensional vectors, convert those vectors into a similarity matrix and build a graph where nodes represents vectors and an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold. This type of graph is called a similarity graph.
 
 **WHY**: Recall the definition of the good clustering principle: Items within the same cluster should be more similar to each other than items in other clusters. If the vectors being clustered aren't noisy and the similarity metric used is appropriate for the type of data the vectors represent (it captures clusters), some threshold value should exist where the graph formed only consists of cliques (clique graph).
 
 For example, consider the following similarity matrix...
 
-|   | A | B | C | D | E | F | G |
+|   | a | b | c | d | e | f | g |
 |---|---|---|---|---|---|---|---|
-| A | 9 | 8 | 9 | 1 | 0 | 1 | 1 |
-| B | 8 | 9 | 9 | 1 | 1 | 0 | 2 |
-| C | 9 | 9 | 8 | 2 | 1 | 1 | 1 |
-| D | 1 | 1 | 2 | 9 | 8 | 9 | 9 |
-| E | 0 | 1 | 1 | 8 | 8 | 8 | 9 |
-| F | 1 | 0 | 1 | 9 | 8 | 9 | 9 |
-| G | 1 | 2 | 1 | 9 | 9 | 9 | 8 |
+| a | 9 | 8 | 9 | 1 | 0 | 1 | 1 |
+| b | 8 | 9 | 9 | 1 | 1 | 0 | 2 |
+| c | 9 | 9 | 8 | 2 | 1 | 1 | 1 |
+| d | 1 | 1 | 2 | 9 | 8 | 9 | 9 |
+| e | 0 | 1 | 1 | 8 | 8 | 8 | 9 |
+| f | 1 | 0 | 1 | 9 | 8 | 9 | 9 |
+| g | 1 | 2 | 1 | 9 | 9 | 9 | 8 |
 
 Choosing a threshold of 7 will generate the following clique graph...
 
 ```{svgbob}
-G---E
+g---e
 |\ /|
 | X |
 |/ \|
-D---F   C
+d---f   c
        / \
-      A---B
+      a---b
 ```
 
-Since real-world data is typically noisy and / or the similarity metric being used might not perfectly capture clusters, similarity graphs are often comprised of corrupted cliques. These corrupted cliques are corrected using heuristic algorithms. The algorithm presented in this section is one such algorithm.
+When working with real-world data, similarity graphs often end up with corrupted cliques. The reason this happens is that real-world data is typically noisy and / or the similarity metrics being used might not perfectly capture clusters.
+
+```{svgbob}
+e---g     
+|\ /|\    
+| X | \   
+|/ \|  \  
+d   f   c 
+       / \
+      a   b
+
+* "Previous graph but cliques are corrupted."
+```
+
+These corrupted cliques may be fixed using heuristic algorithms. The algorithm for this section is one such algorithm.
+
+**ALGORITHM**:
+
+As described above, a similarity graph represents vectors as nodes where an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold.
+
+```{output}
+ch8_code/src/clustering/SimilarityGraph_CAST.py
+python
+# MARKDOWN_SIM_GRAPH\s*\n([\s\S]+)\n\s*# MARKDOWN_SIM_GRAPH\s*[\n$]
+```
+
+```{ch8}
+clustering.SimilarityGraph_CAST main_similarity_graph
+{
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  vectors: {
+    VEC1: [5,6,5],
+    VEC2: [5,7,5],
+    VEC3: [30,31,30],
+    VEC4: [29,30,31],
+    VEC5: [31,30,31],
+    VEC6: [15,14,14]
+  },
+  threshold: -10
+}
+```
+
+If the resulting similarity graph isn't a clique graph but is close to being one (corrupted cliques), a heuristic algorithm called cluster affinity search technique (CAST) may be used to turn it into a clique graph.
 
 ```{svgbob}
 "CORRUPTED CLIQUES"       "CORRECTED"
 
-    G---E                 G---E      
+    e---g                 g---e      
     |\ /|\                |\ /|      
     | X | \               | X |      
     |/ \|  \              |/ \|      
-    D   F   C             D---F   C  
+    d   f   c             d---f   c  
            / \                   / \ 
-          A   B                 A---B
+          a   b                 a---b 
 ```
 
-**ALGORITHM**:
+Given a node and an existing cluster, CAST calculates the average similarity between that node and the member_CLUSTERs of that cluster to determine how similar that node is to that cluster...
 
-TODO: IMPLEMENT ME
+```{output}
+ch8_code/src/clustering/SimilarityGraph_CAST.py
+python
+# MARKDOWN_SIMILARITY_TO_CLUSTER\s*\n([\s\S]+)\n\s*# MARKDOWN_SIMILARITY_TO_CLUSTER\s*[\n$]
+no_preamble
+```
 
-TODO: IMPLEMENT ME
+CAST uses the above similarity averaging to iteratively "adjust" that cluster by both choosing a node to include and a node to exclude. The node with the ...
 
-TODO: IMPLEMENT ME
+1. closest similarity that isn't a member_CLUSTER is added _if it exceeds the similarity graph threshold_.
+1. farthest similarity that is a member_CLUSTER is removed _if it doesn't exceed the similarity graph threshold_.
 
-TODO: IMPLEMENT ME
+```{output}
+ch8_code/src/clustering/SimilarityGraph_CAST.py
+python
+# MARKDOWN_ADJUST\s*\n([\s\S]+)\n\s*# MARKDOWN_ADJUST\s*[\n$]
+no_preamble
+```
 
-TODO: IMPLEMENT ME
+```{note}
+Removal is testing a node from _within_ the cluster itself. That is, the removal node for which the average similarity is being calculated has the similarity to itself included in the averaging.
+```
 
-TODO: IMPLEMENT ME
+CAST primes a cluster by picking the node with the highest degree_GRAPH. The above adjustment is then repeatedly applied to the cluster until there's an iteration where the cluster remains unchanged (no addition and no removal), at which point the cluster is said to be a consistent cluster. The nodes for a consistent cluster are removed from the similarity graph and the entire process repeats.
 
-TODO: IMPLEMENT ME
+This happens until the similarity graph is emptied.
+
+```{output}
+ch8_code/src/clustering/SimilarityGraph_CAST.py
+python
+# MARKDOWN_CAST\s*\n([\s\S]+)\n\s*# MARKDOWN_CAST\s*[\n$]
+```
+
+```{ch8}
+clustering.SimilarityGraph_CAST main_cast
+{
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  vectors: {
+    VEC1: [5,6,5],
+    VEC2: [5,7,5],
+    VEC3: [30,31,30],
+    VEC4: [29,30,31],
+    VEC5: [31,30,31],
+    VEC6: [15,14,14]
+  },
+  threshold: -15.2
+}
+```
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
+
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY
 
 # Stories
 
@@ -17976,30 +18083,33 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 
  * `{bm} similarity graph` - A transformation of a similarity matrix into a graph, where the entities that make up the similarity matrix are represented as nodes and edges between nodes are only made if the similarity exceeds a certain threshold.
 
-   The similarity graph below was generated using the accompanying similarity matrix and threshold of 0.45.
+   The similarity graph below was generated using the accompanying similarity matrix and threshold of 7.
 
-   |           | Snake | Lizard | Bird | Crocodile |
-   |-----------|-------|--------|------|-----------|
-   | Snake     |  1.0  |  0.8   | 0.4  |    0.6    |
-   | Lizard    |  0.8  |  1.0   | 0.4  |    0.6    |
-   | Bird      |  0.4  |  0.4   | 1.0  |    0.5    |
-   | Crocodile |  0.6  |  0.6   | 0.5  |    1.0    |
+   |   | a | b | c | d | e | f | g |
+   |---|---|---|---|---|---|---|---|
+   | a | 9 | 8 | 9 | 1 | 0 | 1 | 1 |
+   | b | 8 | 9 | 9 | 1 | 1 | 0 | 2 |
+   | c | 9 | 9 | 8 | 2 | 1 | 1 | 1 |
+   | d | 1 | 1 | 2 | 9 | 8 | 9 | 9 |
+   | e | 0 | 1 | 1 | 8 | 8 | 8 | 9 |
+   | f | 1 | 0 | 1 | 9 | 8 | 9 | 9 |
+   | g | 1 | 2 | 1 | 9 | 9 | 9 | 8 |
 
    ```{svgbob}
-   "Only similarities of > 0.45 have an edge."
+   "Only similarities of > 7 have an edge."
 
-           Lizard
-             *
-            / \
-           /   \
-    Snake *-----* Crocodile
-               /
-              /
-             *
-            Bird
+   g---e
+   |\ /|
+   | X |
+   |/ \|
+   d---f   c
+          / \
+         a---b
    ```
 
-   Similarity graphs are used for clustering (e.g. gene expression vectors). Assuming clusters exist and the similarity metric captures them, there should be some threshold where the edges produced in the similarity graph form cliques or corrupted cliques (a set of nodes that would form a clique if it weren't for a few extra edges and/or missing edges).
+   Similarity graphs are used for clustering (e.g. gene expression vectors). Assuming clusters exist and the similarity metric used captures them, there should be some threshold where the edges produced in the similarity graph form cliques as in the example above.
+   
+   Since real-world data often has complications (e.g. noisy) / the similarity metric used may have complications, it could be that corrupted cliques are formed instead. Heuristic algorithms are often use to correct corrupted cliques.
 
  * `{bm} clique` - A set of nodes in a graph where every possible node pairing has an edge.
 
@@ -18010,6 +18120,20 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    |/ \|
    *---*
    ``` 
+
+ * `{bm} corrupted clique` - A set of nodes and edges in a graph that almost form a clique. Some edges may be missing or extranous.
+
+   ```{svgbob}
+   "CORRUPTED CLIQUES"            "CLIQUES"
+   
+       *---*                     *---*      
+       |\ /|\                    |\ /|      
+       | X | \                   | X |      
+       |/ \|  \                  |/ \|      
+       *   *   *                 *---*   *
+              / \                       / \ 
+             *   *                     *---*
+   ```
 
  * `{bm} clique graph` - A graph consisting only of cliques.
 

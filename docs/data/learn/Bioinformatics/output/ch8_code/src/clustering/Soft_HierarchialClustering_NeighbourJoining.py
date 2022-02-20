@@ -84,13 +84,13 @@ def leaf_probabilities(
 # MARKDOWN_PROBABILITY
 
 
-DistanceMetric = Callable[[tuple[float], tuple[float], int], float]
+DistanceMetric = Callable[[tuple[float, ...], tuple[float, ...], int], float]
 ProbabilityMap = dict[str, dict[str, float]]
 
 
 # MARKDOWN
 def soft_hierarchial_clustering_neighbour_joining(
-        vectors: dict[str, tuple[float]],
+        vectors: dict[str, tuple[float, ...]],
         dims: int,
         distance_metric: DistanceMetric,
         gen_node_id: Callable[[], str],

@@ -16097,12 +16097,20 @@ c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
 M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.302709em;"><span></span></span></span></span></span></span></span></span>, where v and w are two n dimensional points.</p>
-<p><a href="ch8_code/src/metrics/EuclideanDistance.py">ch8_code/src/metrics/EuclideanDistance.py</a> (lines 9 to 14):</p>
+<p><a href="ch8_code/src/metrics/EuclideanDistance.py">ch8_code/src/metrics/EuclideanDistance.py</a> (lines 9 to 22):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">euclidean_distance</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
     x = <span class="hljs-number">0.0</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims):
         x += (w[i] - v[i]) ** <span class="hljs-number">2</span>
     <span class="hljs-keyword">return</span> sqrt(x)
+
+
+<span class="hljs-comment"># Unsure if this is a good idea, but it I guess it technically meets the definition</span>
+<span class="hljs-comment"># of a similarity metric: the more similar something is, the "greater" the value it</span>
+<span class="hljs-comment"># produces. But, in this case the maximum similarity is 0. Anything less similar is</span>
+<span class="hljs-comment"># negative ("lesser" than 0).</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">euclidean_similarity</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
+    <span class="hljs-keyword">return</span> -euclidean_distance(v, w, dims)
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -16161,12 +16169,20 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </ul>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm sums the absolute differences between the elements at each index: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mrow><mi mathvariant="normal">∣</mi><msub><mi>v</mi><mi>i</mi></msub><mo>−</mo><msub><mi>w</mi><mi>i</mi></msub><mi mathvariant="normal">∣</mi></mrow></mrow><annotation encoding="application/x-tex">\sum_{i=1}^n{|v_i - w_i|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span></span>, where v and w are two n dimensional points. The absolute differences are used because a distance can't be negative.</p>
-<p><a href="ch8_code/src/metrics/ManhattanDistance.py">ch8_code/src/metrics/ManhattanDistance.py</a> (lines 9 to 14):</p>
+<p><a href="ch8_code/src/metrics/ManhattanDistance.py">ch8_code/src/metrics/ManhattanDistance.py</a> (lines 9 to 22):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">manhattan_distance</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
     x = <span class="hljs-number">0.0</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(dims):
         x += <span class="hljs-built_in">abs</span>(w[i] - v[i])
     <span class="hljs-keyword">return</span> x
+
+
+<span class="hljs-comment"># Unsure if this is a good idea, but it I guess it technically meets the definition</span>
+<span class="hljs-comment"># of a similarity metric: the more similar something is, the "greater" the value it</span>
+<span class="hljs-comment"># produces. But, in this case the maximum similarity is 0. Anything less similar is</span>
+<span class="hljs-comment"># negative ("lesser" than 0).</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">manhattan_similarity</span>(<span class="hljs-params">v: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], w: <span class="hljs-type">Sequence</span>[<span class="hljs-built_in">float</span>], dims: <span class="hljs-built_in">int</span></span>):
+    <span class="hljs-keyword">return</span> -manhattan_distance(v, w, dims)
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -16723,26 +16739,26 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (7.5, 3)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_817fbc61ca3bfacd8c0e505bb59bbf56_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_5177051d3128d6b770527e3111f07225_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (7.5, 3)=[(3.5, 2), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
-<li>cluster center (2.5, 6)=[(2, 2), (2, 4), (2.5, 6), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
+<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_817fbc61ca3bfacd8c0e505bb59bbf56_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_5177051d3128d6b770527e3111f07225_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
 <ul>
-<li>cluster center (7.5, 3)=[(3.5, 2), (7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
-<li>cluster center (2.5, 6)=[(2, 2), (2, 4), (2.5, 6), (4, 3), (4, 5), (4.5, 4)]</li>
-<li>cluster center (8.5, 8)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 2)=[(7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
 </ul>
-<p><img src="ch8_817fbc61ca3bfacd8c0e505bb59bbf56_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_5177051d3128d6b770527e3111f07225_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16879,7 +16895,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (2, 4)=[(2, 4), (4.5, 4)]</li>
 <li>cluster center (2.5, 6)=[(2.5, 6), (4, 5), (17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_f86a1c5778ed886c9600494c91ebf6aa_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_bdf201c46e8a6420d14ccf1e420055da_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16888,7 +16904,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.25, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (13.0, 9.833333333333334)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_f86a1c5778ed886c9600494c91ebf6aa_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_bdf201c46e8a6420d14ccf1e420055da_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -16897,7 +16913,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_f86a1c5778ed886c9600494c91ebf6aa_plot2.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_bdf201c46e8a6420d14ccf1e420055da_plot2.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16945,20 +16961,20 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
+<li>cluster center (4, 3)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (20, -7)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
-<li>cluster center (4, 5)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (17.5, 13)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_480aa00feb2ee8281c51345a4710fe4c_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_32199af7c3a727de6cb6038889bb3865_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (18.875, -7)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (18.875, -7)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
 <li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_480aa00feb2ee8281c51345a4710fe4c_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_32199af7c3a727de6cb6038889bb3865_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17089,7 +17105,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>(10, -1) being assigned to center (0, 0)=0.011  vs (10, 0)=0.989</li>
 <li>(5, 0) being assigned to center (0, 0)=0.500  vs (10, 0)=0.500</li>
 </ul>
-<p><img src="ch8_fd2dda66714080152f052031475cc77b_plot.svg" alt="e-step 2D plot"></p>
+<p><img src="ch8_da2225766dfaa29dff76c6dd75640d5c_plot.svg" alt="e-step 2D plot"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -17159,7 +17175,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 }
 
 </code></pre>
-<p><img src="ch8_f0784c6b5408bde2b126c48b5ae5f697_plot_BEFORE.svg" alt="m-step 2D plot"></p>
+<p><img src="ch8_37b9415018e8bc068d6c47dcfcbd6a7e_plot_BEFORE.svg" alt="m-step 2D plot"></p>
 <p>, ... m-step determined that the new centers should be ...</p>
 <ul>
 <li>(2.07, 1.91)</li>
@@ -17242,7 +17258,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (9, 6)={(2, 2): 0.13, (2, 4): 0.19, (2.5, 6): 0.26, (3.5, 2): 0.11, (4, 3): 0.14, (4, 5): 0.25, (4.5, 4): 0.19, (7, 2): 0.07, (7.5, 3): 0.07, (8, 1): 0.09, (9, 2): 0.16, (8, 7): 0.42, (8.5, 8): 0.17, (9, 6): 0.77, (10, 7): 0.55}</li>
 <li>cluster center (7.5, 3)={(2, 2): 0.80, (2, 4): 0.67, (2.5, 6): 0.44, (3.5, 2): 0.84, (4, 3): 0.79, (4, 5): 0.55, (4.5, 4): 0.70, (7, 2): 0.91, (7.5, 3): 0.91, (8, 1): 0.89, (9, 2): 0.81, (8, 7): 0.06, (8.5, 8): 0.02, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot0.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot0.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -17251,7 +17267,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.8663318021726365, 5.257945568356075)={(2, 2): 0.13, (2, 4): 0.20, (2.5, 6): 0.31, (3.5, 2): 0.11, (4, 3): 0.13, (4, 5): 0.31, (4.5, 4): 0.23, (7, 2): 0.24, (7.5, 3): 0.39, (8, 1): 0.27, (9, 2): 0.39, (8, 7): 0.35, (8.5, 8): 0.34, (9, 6): 0.44, (10, 7): 0.40}</li>
 <li>cluster center (5.264471661631823, 2.923413768720758)={(2, 2): 0.80, (2, 4): 0.65, (2.5, 6): 0.38, (3.5, 2): 0.83, (4, 3): 0.79, (4, 5): 0.44, (4.5, 4): 0.63, (7, 2): 0.64, (7.5, 3): 0.42, (8, 1): 0.60, (9, 2): 0.40, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot1.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot1.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -17260,7 +17276,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.741608864023925, 4.551421603185921)={(2, 2): 0.13, (2, 4): 0.18, (2.5, 6): 0.28, (3.5, 2): 0.13, (4, 3): 0.13, (4, 5): 0.30, (4.5, 4): 0.24, (7, 2): 0.39, (7.5, 3): 0.50, (8, 1): 0.40, (9, 2): 0.47, (8, 7): 0.29, (8.5, 8): 0.29, (9, 6): 0.33, (10, 7): 0.32}</li>
 <li>cluster center (4.773471699369535, 3.030734436505203)={(2, 2): 0.80, (2, 4): 0.71, (2.5, 6): 0.49, (3.5, 2): 0.81, (4, 3): 0.80, (4, 5): 0.49, (4.5, 4): 0.63, (7, 2): 0.42, (7.5, 3): 0.24, (8, 1): 0.39, (9, 2): 0.23, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.05, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot2.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot2.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 3</p>
@@ -17269,7 +17285,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.729274262743777, 4.099448158350826)={(2, 2): 0.12, (2, 4): 0.14, (2.5, 6): 0.22, (3.5, 2): 0.14, (4, 3): 0.12, (4, 5): 0.26, (4.5, 4): 0.23, (7, 2): 0.53, (7.5, 3): 0.59, (8, 1): 0.52, (9, 2): 0.53, (8, 7): 0.23, (8.5, 8): 0.23, (9, 6): 0.25, (10, 7): 0.24}</li>
 <li>cluster center (4.313755045634259, 3.2452822439819693)={(2, 2): 0.83, (2, 4): 0.79, (2.5, 6): 0.61, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.59, (4.5, 4): 0.68, (7, 2): 0.28, (7.5, 3): 0.15, (8, 1): 0.25, (9, 2): 0.14, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.04, (10, 7): 0.04}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot3.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot3.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 4</p>
@@ -17278,7 +17294,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.803089239304466, 3.687644371627943)={(2, 2): 0.11, (2, 4): 0.11, (2.5, 6): 0.17, (3.5, 2): 0.15, (4, 3): 0.13, (4, 5): 0.21, (4.5, 4): 0.22, (7, 2): 0.66, (7.5, 3): 0.69, (8, 1): 0.64, (9, 2): 0.60, (8, 7): 0.17, (8.5, 8): 0.17, (9, 6): 0.18, (10, 7): 0.17}</li>
 <li>cluster center (3.9471447451182877, 3.426611200033247)={(2, 2): 0.86, (2, 4): 0.85, (2.5, 6): 0.72, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.67, (4.5, 4): 0.70, (7, 2): 0.19, (7.5, 3): 0.10, (8, 1): 0.17, (9, 2): 0.09, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.03, (10, 7): 0.03}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot4.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot4.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 5</p>
@@ -17287,7 +17303,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.881645528580001, 3.2695060621654113)={(2, 2): 0.11, (2, 4): 0.08, (2.5, 6): 0.13, (3.5, 2): 0.17, (4, 3): 0.15, (4, 5): 0.18, (4.5, 4): 0.22, (7, 2): 0.77, (7.5, 3): 0.78, (8, 1): 0.75, (9, 2): 0.69, (8, 7): 0.12, (8.5, 8): 0.11, (9, 6): 0.12, (10, 7): 0.12}</li>
 <li>cluster center (3.6995743512272283, 3.54538379313345)={(2, 2): 0.87, (2, 4): 0.89, (2.5, 6): 0.79, (3.5, 2): 0.80, (4, 3): 0.82, (4, 5): 0.73, (4.5, 4): 0.71, (7, 2): 0.13, (7.5, 3): 0.07, (8, 1): 0.12, (9, 2): 0.07, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot5.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot5.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 6</p>
@@ -17296,7 +17312,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.936559803808235, 2.9208106871604094)={(2, 2): 0.11, (2, 4): 0.07, (2.5, 6): 0.10, (3.5, 2): 0.18, (4, 3): 0.16, (4, 5): 0.15, (4.5, 4): 0.21, (7, 2): 0.84, (7.5, 3): 0.82, (8, 1): 0.82, (9, 2): 0.76, (8, 7): 0.08, (8.5, 8): 0.07, (9, 6): 0.09, (10, 7): 0.08}</li>
 <li>cluster center (3.5470929502708515, 3.6171959293531435)={(2, 2): 0.88, (2, 4): 0.91, (2.5, 6): 0.83, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.77, (4.5, 4): 0.73, (7, 2): 0.10, (7.5, 3): 0.06, (8, 1): 0.09, (9, 2): 0.06, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot6.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot6.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 7</p>
@@ -17305,7 +17321,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 <p>Stopping -- center convergence step distance below threshold (largest_center_step_distance=0.23741733972468515)</p>
@@ -17317,7 +17333,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_f136c0f63cf13bb4a939db4dded4879e_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_7d78ce4c14c13198f50961b8f2292228_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17507,7 +17523,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following UPGMA tree was produced ...</p>
-<p><img src="dot_07d42d86e45da79a2866ce7797310d14.svg" alt="Dot diagram"></p>
+<p><img src="dot_fb25679236a689215758d84ba4d9a53e.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Soft%20Hierarchial%20Clustering"></a><h3>Soft Hierarchial Clustering</h3>
@@ -17642,7 +17658,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 </div>
 <p><a href="ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py">ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py</a> (lines 92 to 115):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">soft_hierarchial_clustering_neighbour_joining</span>(<span class="hljs-params">
-        vectors: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>]],
+        vectors: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, ...]],
         dims: <span class="hljs-built_in">int</span>,
         distance_metric: DistanceMetric,
         gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>],
@@ -17750,12 +17766,12 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following neighbour joining phylogeny tree was produced ...</p>
-<p><img src="dot_c62597538adc5d0f39f2dcb7f9958b11.svg" alt="Dot diagram"></p>
+<p><img src="dot_98a30b83f2b10a7fcfdd76b60786c129.svg" alt="Dot diagram"></p>
 <p>The following leaf node membership probabilities were produced (per internal node) ...</p>
 <ul>
 <li>N4 = VEC1=0.01,VEC2=0.01,VEC3=0.25,VEC4=0.54,VEC5=0.18,VEC6=0.01</li>
-<li>N2 = VEC1=0.00,VEC2=0.00,VEC3=0.00,VEC4=0.00,VEC5=0.00,VEC6=0.99</li>
 <li>N3 = VEC1=0.01,VEC2=0.01,VEC3=0.43,VEC4=0.28,VEC5=0.26,VEC6=0.01</li>
+<li>N2 = VEC1=0.00,VEC2=0.00,VEC3=0.00,VEC4=0.00,VEC5=0.00,VEC6=0.99</li>
 <li>N1 = VEC1=0.23,VEC2=0.75,VEC3=0.00,VEC4=0.00,VEC5=0.00,VEC6=0.01</li>
 </ul>
 </div>
@@ -17771,25 +17787,25 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FPearson%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Pearson Similarity Metric</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: Given a list of n-dimensional vectors, convert those vectors into a <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> and build a graph where nodes represents <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> and an edge connects a pair of nodes only if their similarity between the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> they represent exceeds some threshold. This type of graph is called a <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>.</p>
+<p><strong>WHAT</strong>: Given a list of n-dimensional vectors, convert those vectors into a <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> and build a graph where nodes represents vectors and an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold. This type of graph is called a <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>.</p>
 <p><strong>WHY</strong>: Recall the definition of the <a href="#BM_(good%20clustering%20principle)%2Fi">good clustering principle</a>: Items within the same <a href="#BM_(cluster)%2Fi">cluster</a> should be more similar to each other than items in other <a href="#BM_(cluster)%2Fi">cluster</a>s. If the vectors being <a href="#BM_(cluster)%2Fi">cluster</a>ed aren't noisy and the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> used is appropriate for the type of data the vectors represent (it captures <a href="#BM_(cluster)%2Fi">cluster</a>s), some threshold value should exist where the graph formed only consists of <a href="#BM_(clique)%2Fi">clique</a>s (<a href="#BM_(clique%20graph)%2Fi">clique graph</a>).</p>
 <p>For example, consider the following <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a>...</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>D</th>
-<th>E</th>
-<th>F</th>
-<th>G</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+<th>e</th>
+<th>f</th>
+<th>g</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>A</td>
+<td>a</td>
 <td>9</td>
 <td>8</td>
 <td>9</td>
@@ -17799,7 +17815,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <td>1</td>
 </tr>
 <tr>
-<td>B</td>
+<td>b</td>
 <td>8</td>
 <td>9</td>
 <td>9</td>
@@ -17809,7 +17825,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <td>2</td>
 </tr>
 <tr>
-<td>C</td>
+<td>c</td>
 <td>9</td>
 <td>9</td>
 <td>8</td>
@@ -17819,7 +17835,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <td>1</td>
 </tr>
 <tr>
-<td>D</td>
+<td>d</td>
 <td>1</td>
 <td>1</td>
 <td>2</td>
@@ -17829,7 +17845,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <td>9</td>
 </tr>
 <tr>
-<td>E</td>
+<td>e</td>
 <td>0</td>
 <td>1</td>
 <td>1</td>
@@ -17839,7 +17855,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <td>9</td>
 </tr>
 <tr>
-<td>F</td>
+<td>f</td>
 <td>1</td>
 <td>0</td>
 <td>1</td>
@@ -17849,7 +17865,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <td>9</td>
 </tr>
 <tr>
-<td>G</td>
+<td>g</td>
 <td>1</td>
 <td>2</td>
 <td>1</td>
@@ -17861,17 +17877,305 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>Choosing a threshold of 7 will generate the following <a href="#BM_(clique%20graph)%2Fi">clique graph</a>...</p>
-<p><img src="svgbob_e31b96615353edf2c7bb4e1cdb99ee164163c72b.svg" alt="Kroki diagram output"></p>
-<p>Since real-world data is typically noisy and / or the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> being used might not perfectly capture <a href="#BM_(cluster)%2Fi">cluster</a>s, <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>s are often comprised of corrupted <a href="#BM_(clique)%2Fi">clique</a>s. These corrupted <a href="#BM_(clique)%2Fi">clique</a>s are corrected using heuristic algorithms. The algorithm presented in this section is one such algorithm.</p>
-<p><img src="svgbob_9dc855058cb4faa19033d673c0e2752a73d3d4aa.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_5a2b1b7b413b42d049899b30e1549eceb5dc4b39.svg" alt="Kroki diagram output"></p>
+<p>When working with real-world data, <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>s often end up with <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s. The reason this happens is that real-world data is typically noisy and / or the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a>s being used might not perfectly capture <a href="#BM_(cluster)%2Fi">cluster</a>s.</p>
+<p><img src="svgbob_4f7f72995796cca92f2a5c7dc607b5fa067ff30d.svg" alt="Kroki diagram output"></p>
+<p>These <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s may be fixed using heuristic algorithms. The algorithm for this section is one such algorithm.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
-<p>TODO: IMPLEMENT ME</p>
+<p>As described above, a <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> represents vectors as nodes where an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold.</p>
+<p><a href="ch8_code/src/clustering/SimilarityGraph_CAST.py">ch8_code/src/clustering/SimilarityGraph_CAST.py</a> (lines 47 to 74):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">similarity_graph</span>(<span class="hljs-params">
+        vectors: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, ...]],
+        dims: <span class="hljs-built_in">int</span>,
+        similarity_metric: SimilarityMetric,
+        threshold: <span class="hljs-built_in">float</span>,
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[Graph, SimilarityMatrix]:
+    <span class="hljs-comment"># Generate similarity matrix from the vectors</span>
+    dists = {}
+    <span class="hljs-keyword">for</span> (k1, v1), (k2, v2) <span class="hljs-keyword">in</span> product(vectors.items(), repeat=<span class="hljs-number">2</span>):
+        dists[k1, k2] = similarity_metric(v1, v2, dims)
+    sim_mat = SimilarityMatrix(dists)
+    <span class="hljs-comment"># Generate similarity graph</span>
+    nodes = sim_mat.leaf_ids()
+    sim_graph = Graph()
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nodes:
+        sim_graph.insert_node(n)
+    <span class="hljs-keyword">for</span> n1, n2 <span class="hljs-keyword">in</span> product(nodes, repeat=<span class="hljs-number">2</span>):
+        <span class="hljs-keyword">if</span> n1 == n2:
+            <span class="hljs-keyword">continue</span>
+        e = <span class="hljs-string">f'E<span class="hljs-subst">{<span class="hljs-built_in">sorted</span>([n1, n2])}</span>'</span>
+        <span class="hljs-keyword">if</span> sim_graph.has_edge(e):
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> sim_mat[n1, n2] &lt; threshold:
+            <span class="hljs-keyword">continue</span>
+        sim_graph.insert_edge(e, n1, n2)
+    <span class="hljs-comment"># Return</span>
+    <span class="hljs-keyword">return</span> sim_graph, sim_mat
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building similarity graph using the following settings...</p>
+<pre><code>{
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  vectors: {
+    VEC1: [5,6,5],
+    VEC2: [5,7,5],
+    VEC3: [30,31,30],
+    VEC4: [29,30,31],
+    VEC5: [31,30,31],
+    VEC6: [15,14,14]
+  },
+  threshold: -10
+}
+
+</code></pre>
+<p>The following similarity matrix was produced ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>VEC1</th>
+<th>VEC2</th>
+<th>VEC3</th>
+<th>VEC4</th>
+<th>VEC5</th>
+<th>VEC6</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>VEC1</td>
+<td>-0.00</td>
+<td>-1.00</td>
+<td>-43.30</td>
+<td>-42.76</td>
+<td>-43.91</td>
+<td>-15.65</td>
+</tr>
+<tr>
+<td>VEC2</td>
+<td>-1.00</td>
+<td>-0.00</td>
+<td>-42.73</td>
+<td>-42.20</td>
+<td>-43.37</td>
+<td>-15.17</td>
+</tr>
+<tr>
+<td>VEC3</td>
+<td>-43.30</td>
+<td>-42.73</td>
+<td>-0.00</td>
+<td>-1.73</td>
+<td>-1.73</td>
+<td>-27.75</td>
+</tr>
+<tr>
+<td>VEC4</td>
+<td>-42.76</td>
+<td>-42.20</td>
+<td>-1.73</td>
+<td>-0.00</td>
+<td>-2.00</td>
+<td>-27.22</td>
+</tr>
+<tr>
+<td>VEC5</td>
+<td>-43.91</td>
+<td>-43.37</td>
+<td>-1.73</td>
+<td>-2.00</td>
+<td>-0.00</td>
+<td>-28.30</td>
+</tr>
+<tr>
+<td>VEC6</td>
+<td>-15.65</td>
+<td>-15.17</td>
+<td>-27.75</td>
+<td>-27.22</td>
+<td>-28.30</td>
+<td>-0.00</td>
+</tr>
+</tbody>
+</table>
+<p>The following similarity graph was produced ...</p>
+<p><img src="dot_e6c789d2a1057ac090f35637c5338876.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>If the resulting <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> isn't a <a href="#BM_(clique%20graph)%2Fi">clique graph</a> but is close to being one (<a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s), a heuristic algorithm called <a href="#BM_(cluster)%2Fi">cluster</a> affinity search technique (CAST) may be used to turn it into a <a href="#BM_(clique%20graph)%2Fi">clique graph</a>.</p>
+<p><img src="svgbob_418b2a2d09c925cbceed979c51b7c242b2480f2e.svg" alt="Kroki diagram output"></p>
+<p>Given a node and an existing <a href="#BM_(cluster)%2Fi">cluster</a>, CAST calculates the average similarity between that node and the <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s of that <a href="#BM_(cluster)%2Fi">cluster</a> to determine how similar that node is to that <a href="#BM_(cluster)%2Fi">cluster</a>...</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">similarity_to_cluster</span>(<span class="hljs-params">
+        n: <span class="hljs-built_in">str</span>,
+        cluster: <span class="hljs-built_in">set</span>[<span class="hljs-built_in">str</span>],
+        sim_mat: SimilarityMatrix
+</span>) -&gt; <span class="hljs-built_in">float</span>:
+    <span class="hljs-keyword">return</span> mean(sim_mat[n, n_c] <span class="hljs-keyword">for</span> n_c <span class="hljs-keyword">in</span> cluster)
+</code></pre>
+<p>CAST uses the above similarity averaging to iteratively "adjust" that <a href="#BM_(cluster)%2Fi">cluster</a> by both choosing a node to include and a node to exclude. The node with the ...</p>
+<ol>
+<li>closest similarity that isn't a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> is added <em>if it exceeds the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> threshold</em>.</li>
+<li>farthest similarity that is a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> is removed <em>if it doesn't exceed the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> threshold</em>.</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">adjust_cluster</span>(<span class="hljs-params">
+        sim_graph: Graph,
+        sim_mat: SimilarityMatrix,
+        cluster: <span class="hljs-built_in">set</span>[<span class="hljs-built_in">str</span>],
+        threshold: <span class="hljs-built_in">float</span>
+</span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-comment"># Add closest NOT in cluster</span>
+    outside_cluster = <span class="hljs-built_in">set</span>(n <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> sim_graph.get_nodes() <span class="hljs-keyword">if</span> n <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> cluster)
+    closest = <span class="hljs-built_in">max</span>(
+        ((similarity_to_cluster(n, cluster, sim_mat), n) <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> outside_cluster),
+        default=<span class="hljs-literal">None</span>
+    )
+    add_closest = closest <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> closest[<span class="hljs-number">0</span>] &gt; threshold
+    <span class="hljs-keyword">if</span> add_closest:
+        cluster.add(closest[<span class="hljs-number">1</span>])
+    <span class="hljs-comment"># Remove farthest in cluster</span>
+    farthest = <span class="hljs-built_in">min</span>(
+        ((similarity_to_cluster(n, cluster, sim_mat), n) <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> cluster),
+        default=<span class="hljs-literal">None</span>
+    )
+    remove_farthest = farthest <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> farthest[<span class="hljs-number">0</span>] &lt;= threshold
+    <span class="hljs-keyword">if</span> remove_farthest:
+        cluster.remove(farthest[<span class="hljs-number">1</span>])
+    <span class="hljs-comment"># Return true if cluster didn't change (consistent cluster)</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> add_closest <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> remove_farthest
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Removal is testing a node from <em>within</em> the <a href="#BM_(cluster)%2Fi">cluster</a> itself. That is, the removal node for which the average similarity is being calculated has the similarity to itself included in the averaging.</p>
+</div>
+<p>CAST primes a <a href="#BM_(cluster)%2Fi">cluster</a> by picking the node with the highest <a href="#BM_(degree)_GRAPH%2Fi">degree</a>. The above adjustment is then repeatedly applied to the <a href="#BM_(cluster)%2Fi">cluster</a> until there's an iteration where the <a href="#BM_(cluster)%2Fi">cluster</a> remains unchanged (no addition and no removal), at which point the <a href="#BM_(cluster)%2Fi">cluster</a> is said to be a consistent <a href="#BM_(cluster)%2Fi">cluster</a>. The nodes for a consistent <a href="#BM_(cluster)%2Fi">cluster</a> are removed from the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> and the entire process repeats.</p>
+<p>This happens until the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> is emptied.</p>
+<p><a href="ch8_code/src/clustering/SimilarityGraph_CAST.py">ch8_code/src/clustering/SimilarityGraph_CAST.py</a> (lines 180 to 200):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cast</span>(<span class="hljs-params">
+        sim_graph: Graph,
+        sim_mat: SimilarityMatrix,
+        threshold: <span class="hljs-built_in">float</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">set</span>[<span class="hljs-built_in">str</span>]]:
+    <span class="hljs-comment"># Copy similarity graph because it will get modified by this algorithm</span>
+    g = sim_graph.copy()
+    <span class="hljs-comment"># Pull out corrupted cliques and attempt to correct them</span>
+    clusters = []
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(g) &gt; <span class="hljs-number">0</span>:
+        _, start_n = <span class="hljs-built_in">max</span>((g.get_degree(n), n) <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> g.get_nodes())  <span class="hljs-comment"># highest degree node</span>
+        c = {start_n}
+        consistent = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> consistent:
+            consistent = adjust_cluster(g, sim_mat, c, threshold)
+        clusters.append(c)
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> c:
+            <span class="hljs-keyword">if</span> g.has_node(n):
+                g.delete_node(n)
+    <span class="hljs-keyword">return</span> clusters
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building similarity graph and executing cluster affinity search technique (CAST) using the following settings...</p>
+<pre><code>{
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  vectors: {
+    VEC1: [5,6,5],
+    VEC2: [5,7,5],
+    VEC3: [30,31,30],
+    VEC4: [29,30,31],
+    VEC5: [31,30,31],
+    VEC6: [15,14,14]
+  },
+  threshold: -15.2
+}
+
+</code></pre>
+<p>The following similarity matrix was produced ...</p>
+<table>
+<thead><tr>
+<th></th>
+<th>VEC1</th>
+<th>VEC2</th>
+<th>VEC3</th>
+<th>VEC4</th>
+<th>VEC5</th>
+<th>VEC6</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>VEC1</td>
+<td>-0.00</td>
+<td>-1.00</td>
+<td>-43.30</td>
+<td>-42.76</td>
+<td>-43.91</td>
+<td>-15.65</td>
+</tr>
+<tr>
+<td>VEC2</td>
+<td>-1.00</td>
+<td>-0.00</td>
+<td>-42.73</td>
+<td>-42.20</td>
+<td>-43.37</td>
+<td>-15.17</td>
+</tr>
+<tr>
+<td>VEC3</td>
+<td>-43.30</td>
+<td>-42.73</td>
+<td>-0.00</td>
+<td>-1.73</td>
+<td>-1.73</td>
+<td>-27.75</td>
+</tr>
+<tr>
+<td>VEC4</td>
+<td>-42.76</td>
+<td>-42.20</td>
+<td>-1.73</td>
+<td>-0.00</td>
+<td>-2.00</td>
+<td>-27.22</td>
+</tr>
+<tr>
+<td>VEC5</td>
+<td>-43.91</td>
+<td>-43.37</td>
+<td>-1.73</td>
+<td>-2.00</td>
+<td>-0.00</td>
+<td>-28.30</td>
+</tr>
+<tr>
+<td>VEC6</td>
+<td>-15.65</td>
+<td>-15.17</td>
+<td>-27.75</td>
+<td>-27.22</td>
+<td>-28.30</td>
+<td>-0.00</td>
+</tr>
+</tbody>
+</table>
+<p>The following <em>original</em> similarity graph was produced ...</p>
+<p><img src="dot_282f8252bacf16bbde426b413aabc318.svg" alt="Dot diagram"></p>
+<p>The following <em>corrected</em> similarity graph was produced ...</p>
+<p><img src="dot_7ec42cdd55929d299af200c0edb2f7b5.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
+<p>TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, DO THE FINAL ASSIGNMENT, THEN COME UP WITH A STORY</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -22371,54 +22675,104 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </li>
 <li>
 <p><a name="BM_(similarity%20graph)%2Fi"></a><strong>similarity graph</strong> - A transformation of a <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> into a graph, where the entities that make up the <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> are represented as nodes and edges between nodes are only made if the similarity exceeds a certain threshold.</p>
-<p>The <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> below was generated using the accompanying <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> and threshold of 0.45.</p>
+<p>The <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> below was generated using the accompanying <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a> and threshold of 7.</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>Snake</th>
-<th>Lizard</th>
-<th>Bird</th>
-<th>Crocodile</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+<th>e</th>
+<th>f</th>
+<th>g</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Snake</td>
-<td>1.0</td>
-<td>0.8</td>
-<td>0.4</td>
-<td>0.6</td>
+<td>a</td>
+<td>9</td>
+<td>8</td>
+<td>9</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
 </tr>
 <tr>
-<td>Lizard</td>
-<td>0.8</td>
-<td>1.0</td>
-<td>0.4</td>
-<td>0.6</td>
+<td>b</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
 </tr>
 <tr>
-<td>Bird</td>
-<td>0.4</td>
-<td>0.4</td>
-<td>1.0</td>
-<td>0.5</td>
+<td>c</td>
+<td>9</td>
+<td>9</td>
+<td>8</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
 </tr>
 <tr>
-<td>Crocodile</td>
-<td>0.6</td>
-<td>0.6</td>
-<td>0.5</td>
-<td>1.0</td>
+<td>d</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>e</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td>f</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>9</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>g</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>8</td>
 </tr>
 </tbody>
 </table>
-<p><img src="svgbob_9d808e8cab6e4c6130daf068aabd299ef244ef53.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(similarity%20graph)%2Fi">Similarity graph</a>s are used for <a href="#BM_(cluster)%2Fi">cluster</a>ing (e.g. <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s). Assuming <a href="#BM_(cluster)%2Fi">cluster</a>s exist and the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> captures them, there should be some threshold where the edges produced in the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> form <a href="#BM_(clique)%2Fi">clique</a>s or corrupted <a href="#BM_(clique)%2Fi">clique</a>s (a set of nodes that would form a <a href="#BM_(clique)%2Fi">clique</a> if it weren't for a few extra edges and/or missing edges).</p>
+<p><img src="svgbob_735293a6de7bf4348ff0eebf1cb2effc798a8442.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(similarity%20graph)%2Fi">Similarity graph</a>s are used for <a href="#BM_(cluster)%2Fi">cluster</a>ing (e.g. <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s). Assuming <a href="#BM_(cluster)%2Fi">cluster</a>s exist and the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> used captures them, there should be some threshold where the edges produced in the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> form <a href="#BM_(clique)%2Fi">clique</a>s as in the example above.</p>
+<p>Since real-world data often has complications (e.g. noisy) / the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> used may have complications, it could be that <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s are formed instead. Heuristic algorithms are often use to correct <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(clique)%2Fi"></a><strong>clique</strong> - A set of nodes in a graph where every possible node pairing has an edge.</p>
 <p><img src="svgbob_331f1a046e4a700b7f330a8c4875cfa3415603f4.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a name="BM_(corrupted%20clique)%2Fi"></a><strong>corrupted clique</strong> - A set of nodes and edges in a graph that almost form a <a href="#BM_(clique)%2Fi">clique</a>. Some edges may be missing or extranous.</p>
+<p><img src="svgbob_1d3c188bbffe008440c73e574c9c7c3218955c96.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(clique%20graph)%2Fi"></a><strong>clique graph</strong> - A graph consisting only of <a href="#BM_(clique)%2Fi">clique</a>s.</p>
