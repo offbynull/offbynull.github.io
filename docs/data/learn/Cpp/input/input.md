@@ -5284,19 +5284,19 @@ Where as a shared pointer keeps a count of how many copies of itself are live (r
 The book mentions that this is useful in cases where the OS or framework requires some cleanup operation once the last instance of some type goes away (e.g. the old school Windows component object model).
 ```
 
-## Containers
+## Utility Wrappers
 
-`{bm} /(Library Functions\/Containers)_TOPIC/`
+`{bm} /(Library Functions\/Utility Wrappers)_TOPIC/`
 
-Containers are classes that wrap one or more other objects, such as collections (e.g. lists and maps). These wrappers either provide some type of extra functionality or provide abstractions that make code easier to handle and reason about.
+There are utility classes that wrap one or more other objects, such as optionals or tuples. They either provide some type of extra functionality or provide abstractions that make code easier to handle and reason about.
 
-The subsections below document some common container classes and their usages.
+The subsections below document some common wrappers classes and their usages.
 
 ### Optional
 
-`{bm} /(Library Functions\/Containers\/Optional)_TOPIC/`
+`{bm} /(Library Functions\/Utility Wrappers\/Optional)_TOPIC/`
 
-An optional class is a container that either holds on to an object or is empty (similar to Java or Python's optional class).
+An optional class is a wrapper that either holds on to an object or is empty (similar to Java or Python's optional class).
 
 ```c++
 std::optional<int> take(int x) {
@@ -5330,7 +5330,7 @@ The typical usecase for tribool is for operations that take a long time to compl
 
 ### Tuple
 
-`{bm} /(Library Functions\/Containers\/Tuple)_TOPIC/`
+`{bm} /(Library Functions\/Utility Wrappers\/Tuple)_TOPIC/`
 
 A tuple class is a templated class that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at compile-time, and any code accessing those elements must know which element its accessing at compile-time.
 
@@ -5379,46 +5379,46 @@ boost::compressed_pair<int, EmptyClass> cp {5, EmptyClass{} };  // this one cons
 
 ### Any
 
-`{bm} /(Library Functions\/Containers\/Any)_TOPIC/`
+`{bm} /(Library Functions\/Utility Wrappers\/Any)_TOPIC/`
 
-An any class is a container that can hold on to an object of unknown type (a type that isn't known at compile-time).
+An any class is a wrapper that can hold on to an object of unknown type (a type that isn't known at compile-time).
 
 ```c++
-std::any container {};
-container.emplace<MyClass> { arg1, arg2 };
-auto v1 = std::any_cast<MyClass>(container); // ok
-auto v2 = std::any_cast<BadType>(container); // should throws std::bad_any_cast
+std::any wrapper {};
+wrapper.emplace<MyClass> { arg1, arg2 };
+auto v1 = std::any_cast<MyClass>(wrapper); // ok
+auto v2 = std::any_cast<BadType>(wrapper); // should throws std::bad_any_cast
 ```
 
-To place an object into the container, use `emplace()`. This _creates_ a new object and places it into the container, destroying the object previously held. The type of the object is passed in as a template parameter argument while the function arguments are used to initialize that object (e.g. passed directly to constructor). 
+To place an object into the wrapper, use `emplace()`. This _creates_ a new object and places it into the wrapper, destroying the object previously held. The type of the object is passed in as a template parameter argument while the function arguments are used to initialize that object (e.g. passed directly to constructor). 
 
-Accessing the object within the container is done via `std::any_cast()`. The function argument is the container itself and the template parameter argument is the type of  object _you think_ is being held. If the object is of a different type, the function throws `std::bad_any_cast` instead of returning the object.
+Accessing the object within the wrapper is done via `std::any_cast()`. The function argument is the wrapper itself and the template parameter argument is the type of  object _you think_ is being held. If the object is of a different type, the function throws `std::bad_any_cast` instead of returning the object.
 
 ```{note}
 The closest Java analog I could think of is the base class hierarchy where all Java objects have to derive from `java.lang.Object`. You can accept a type of `Java.lang.Object` and cast it at runtime to the correct type (or one of its ancestors). The C++ any class provides similar functionality to that.
 ```
 
-Boost also provides a version of this container, `boost::any`.
+Boost also provides a version of this wrapper, `boost::any`.
 
 ### Variant
 
-`{bm} /(Library Functions\/Containers\/Variant)_TOPIC/`
+`{bm} /(Library Functions\/Utility Wrappers\/Variant)_TOPIC/`
 
 ```{prereq}
-Library Functions/Containers/Any
-Library Functions/Containers/Tuple
+Library Functions/Utility Wrappers/Any
+Library Functions/Utility Wrappers/Tuple
 ```
 
 A variant class is a type-restricted form of the `std::any`. Where as with the `std::any` you can hold on to an object of any type, with `std::variant` you can hold on to an object of one of several predefined types.
 
 ```c++
-std::variant<int, float, MyClass> container {};  // may hold on to either int, float, or MyClass
-container.emplace<MyClass> { arg1, arg2 };
-auto v1 = std::get<MyClass>(container);     // ok
-auto v2 = std::get_if<MyClass>(container);  // ok
-auto v3 = std::get_if<int>(container);      // returns nullptr
-auto v4 = std::get<int>(container);         // throws std::bad_variant_exception
-auto which_type = container.index();    // returns 2
+std::variant<int, float, MyClass> wrapper {};  // may hold on to either int, float, or MyClass
+wrapper.emplace<MyClass> { arg1, arg2 };
+auto v1 = std::get<MyClass>(wrapper);     // ok
+auto v2 = std::get_if<MyClass>(wrapper);  // ok
+auto v3 = std::get_if<int>(wrapper);      // returns nullptr
+auto v4 = std::get<int>(wrapper);         // throws std::bad_variant_exception
+auto which_type = wrapper.index();    // returns 2
 ```
 
 To determine which of the allowed types is currently held, use `index()`.
@@ -5430,19 +5430,19 @@ Unlike `std::any`, `std::variant` cannot be left unset (it must hold on to an ob
 The easiest way to work around this problem is to set the first type to `std::monostate`. This allows your variant to be unset. Trying to call `std::get()` on an unset variant throws `std::bad_variant_access`.
 
 ```c++
-std::variant<std::monostate, int, float, MyClass> container {};  // may hold on to nothing, int, float, or MyClass
-auto which_type = container.index();     // returns 0
-auto v1 = std::get<MyClass>(container);  // throws std::bad_variant_access
+std::variant<std::monostate, int, float, MyClass> wrapper {};  // may hold on to nothing, int, float, or MyClass
+auto which_type = wrapper.index();     // returns 0
+auto v1 = std::get<MyClass>(wrapper);  // throws std::bad_variant_access
 ```
 
 If you have a set of single parameter functions with the same name (function overload), where those parameters contains all the types in a variant's allowed types list, you can use `std::visit()` to automatically pull out the object contained in the variant and call the appropriate function overload with that object as the argument.
 
 ```c++
-std::variant<int, float> container {};  // may hold on to either int, float
+std::variant<int, float> wrapper {};  // may hold on to either int, float
 // call into a generic lambda / functor
-auto res1 = std::visit([](auto& x) { return 5 * x; }, container);
+auto res1 = std::visit([](auto& x) { return 5 * x; }, wrapper);
 // call into an overloaded free function (via a generic lambda / functor)
-auto res2 = std::visit([](auto &x) { return my_function(x); }, container);
+auto res2 = std::visit([](auto &x) { return my_function(x); }, wrapper);
 // call into a specific lambda / functor based on type currently being held
 std::visit(
     overloaded {
@@ -5450,15 +5450,187 @@ std::visit(
         [](float& x) { std::cout << "float" << x; },
         [](auto &) { std::cout << "OTHER"; }
     },
-    container
+    wrapper
 );
 ```
 
-Boost also provides a version of this container, `boost::variant`.
+Boost also provides a version of this wrapper, `boost::variant`.
 
 ```{seealso}
 Core Language/Unions_TOPIC (variants are similar to unions but type-safe)
 ```
+
+## Containers
+
+`{bm} /(Library Functions\/Containers)_TOPIC/`
+
+```{prereq}
+Library Functions/Allocators_TOPIC
+```
+
+C++'s equivalent of Java collections are commonly referred to as containers. C++ containers come in 3 major types:
+
+ * Sequence containers - Objects organized in a sequence, where they're (at least) accessible from one end to the other.
+   
+   | C++ Container       | Java Nearest equivalent                                      | Random Access | Variable Length |
+   |---------------------|--------------------------------------------------------------|---------------|-----------------|
+   | `std::array`        | standard Java array                                          | yes           | no              |
+   | `std::vector`       | `ArrayList`                                                  | yes           | yes             |
+   | `std::deque`        | `Deque` (an interface -- the C++ class is an implementation) | no            | yes             |
+   | `std::forward_list` | `LinkedList` (singly-linked list)                            | no            | yes             |
+   | `std::list`         | `LinkedList` (doubly-linked list)                            | no            | yes             |
+
+   ```{note}
+   The "Random Access" column specifies if the container has a method / operator overload to get or set data at a random index in the sequence.
+
+   The "Variable Length" column specifies if the container can grow (add objects) / shrink (remove objects).
+   ```
+ 
+ * Associative containers - Objects organized by key and potentially a value (keys sorted, requiring a comparison function).
+ 
+   | C++ Container   | Nearest Java equivalent                |
+   |-----------------|----------------------------------------|
+   | `std::set`      | `TreeSet`                              |
+   | `std::map`      | `TreeMap`                              |
+   | `std::multiset` | `TreeBag` (Apache Commons Collections) |
+   | `std::multimap` | `TreeMultimap` (Guava)                 |
+
+ * Unordered associative containers - Objects organized by key and potentially a value (keys unsorted).
+
+   | C++ Container             | Nearest Java equivalent                               |
+   |---------------------------|-------------------------------------------------------|
+   | `std::unordered_set`      | `HashSet`                                             |
+   | `std::unordered_map`      | `HashMap`                                             |
+   | `std::unordered_multiset` | `HashBag` (Apache Commons Collections)                |
+   | `std::unordered_multimap` | `ArrayListValuedHashMap` (Apache Commons Collections) |
+
+```{seealso}
+Core Language/Control Flow/For Loop_TOPIC (for-each loop refresher)
+Core Language/Iterators_TOPIC (refresher)
+```
+
+Containers support iterators via their `begin()` and `end()` functions. Looping over a container using a for-each loop calls those functions, but the order in which containers are iterated over depends on the container. For example ...
+
+ * `std::vector` maintains insertion order.
+ * `std::map` iterates in sort order.
+ * `std::unordered_map` iterators in some unknown order (unordered).
+
+```c++
+std::vector<MyObject> container { /* items here */ };
+for (MyObject &obj : container) {
+    // do something with value here
+}
+```
+
+Most (not all) containers allow using user-supplied allocators via template parameter argument.
+
+```c++
+std::vector<MyObject, CustomAllocator> container { };
+```
+
+The subsections below detail some of the containers mentioned above. Other major libraries provide more specialized containers (boost, abseil, etc..), but those containers aren't detailed here.
+
+### Array
+
+```{prereq}
+Library Functions/Utility Wrappers/Tuple_TOPIC (refresher on `std::get()`)
+```
+
+`std::array` is a container that's more-or-less a wrapper around a normal C++ array. Like normal C++ arrays, it ...
+
+ * is fixed-size, meaning it can't automatically grow or shrink,
+ * allows reads and writes to random positions using its subscript operator.
+
+One caveat to this container is that it _does not_ allocate a dynamic object array. That means, just like normal C++ arrays created on the stack, the number of elements must be known at compile-time.
+
+```c++
+int my_arr1[55] {};              // int array of size 55
+std::array<int, 55> my_arr2 {};  // std::array of ints, with size 55
+
+for (auto &obj : my_arr2) {
+    // do something with value here
+}
+```
+
+```{note}
+The copy semantics of `std::array` are different from most other containers. If the type its holding on to isn't a pointer or reference, each element will be fully copied over (vs a reference or pointer to that element) because in the background `std::array<MyHugeObject, 10> x` is equivalent to `MyHugeObject x[10]` vs `MyHugeObject *x[10]`. This is probably not what you want most of the time -- most other containers will copy references to the objects (SPECULATION -- VERIFY). It likely also means that it'll be an expensive operation.
+
+Depending on the move semantics of the type it's holding on to, moving may also be expensive.
+```
+
+`std::array` provides two ways of reading a random element, using the subscript ([]) and `at()`, the main difference being that the latter has bounds checking. Alternatively, the `std::get()` function may be used to read a random element so long as the index being read is known at compile-time (does bounds checking at compile-time).
+
+```c++
+int w { my_arr2[20] };
+int x { my_arr2.at(20) };
+int y { my_arr2.at(1000) };  // throws std::out_of_range
+int z { std::get<20>(my_arr2) };
+```
+
+In addition, the functions `front()` and `back()` read the first and last elements respectively.
+
+```c++
+// NOTE: undefined behaviour of len is 0
+int a { my_arr2.front() };
+int b { my_arr2.back() };
+```
+
+To gain access to the underlying array being wrapped, use `data()`.
+
+```c++
+int * backing_arr = my_arr2.data();
+// NOTE: each below are equivalent to the above, but the one above should be preferred
+//       because the ones below will have undefined behaviour if array length is 0.
+int * backing_arr = &my_arr2[0];
+int * backing_arr = &my_arr2.at(0);
+int * backing_arr = &my_arr2.front();
+```
+
+TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+
+TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+
+TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+
+TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+
+TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+
+TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+
+
+### Vector
+
+### Deque
+
+### List
+
+### Set
+
+### Map
+
+### Multiset
+
+### Multimap
+
+TODO: CREATE SUBSECTIONS
+
+TODO: CREATE SUBSECTIONS
+
+TODO: CREATE SUBSECTIONS
+
+TODO: CREATE SUBSECTIONS
+
+TODO: CREATE SUBSECTIONS
+
+## Container Adaptors
+
+TODO: FILL ME IN NEXT INCLUDE std::span
+TODO: FILL ME IN NEXT INCLUDE std::span
+TODO: FILL ME IN NEXT INCLUDE std::span
+TODO: FILL ME IN NEXT INCLUDE std::span
+TODO: FILL ME IN NEXT INCLUDE std::span
+TODO: FILL ME IN NEXT INCLUDE std::span
 
 ## Time
 
@@ -6029,20 +6201,6 @@ auto aImaginary { std::imag(a)} ; // get imaginary part
 ```{note}
 This seems like such a niche thing that I don't think it's worth fleshing it out.
 ```
-
-TODO: START FROM CHAPTER 13 CONTAINERS
-
-TODO: START FROM CHAPTER 13 CONTAINERS
-
-TODO: START FROM CHAPTER 13 CONTAINERS
-
-TODO: START FROM CHAPTER 13 CONTAINERS
-
-TODO: START FROM CHAPTER 13 CONTAINERS
-
-TODO: START FROM CHAPTER 13 CONTAINERS
-
-TODO: START FROM CHAPTER 13 CONTAINERS
 
 # Terminology
 
