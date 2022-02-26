@@ -11451,7 +11451,7 @@ When a gene encodes for ...
  * a protein, that gene is transcribed to mRNA which in turn is translated to that protein.
  * functional RNA, that gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
 
-A snapshot of all RNA transcripts within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. Both the RNA transcript sequences and the counts of those sequences (number of instances) are captured. Given that an RNA transcript is simply a transcribed "copy" of the DNA it came from (it identifies the gene), a snapshot indirectly shows the amount of gene expression taking place for each gene at the time that snapshot was taken.
+A snapshot of all RNA transcripts within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. Both the RNA sequences and the counts of those transcripts (number of instances) are captured. Given that an RNA transcript is simply a transcribed "copy" of the DNA it came from (it identifies the gene), a snapshot indirectly shows the amount of gene expression taking place for each gene at the time that snapshot was taken.
 
 |               | Count |
 |---------------|-------|
@@ -11460,7 +11460,7 @@ A snapshot of all RNA transcripts within a cell at a given point in time, called
 | Gene / RNA C  |  110  |
 | ...           |  ...  |
 
-Biologists typically capture multiple snapshots to help identify which genes are influenced by / responsible for some change. The counts from each snapshot are placed together to form a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector. Gene expression matrices typically come in two forms:
+Differential expression analysis is the process of capturing multiple snapshots to help identify which genes are influenced by / responsible for some change. The counts from each snapshot are placed together to form a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector. Gene expression matrices typically come in two forms:
 
  * A time-course gene expression matrix captures snapshots at different points in time. For example, the following gene expression matrix captures snapshots at regular intervals to help identify which genes are effected by a drug. Notice that the gene expression vector for B lowers after the drug is administered while C's elevates ...
 
@@ -11538,30 +11538,19 @@ Biologists typically capture multiple snapshots to help identify which genes are
    |          | patient1 (cancer) | patient2 (cancer) | patient3 (non-cancer) | ... |
    |----------|-------------------|-------------------|-----------------------|-----|
    | Gene A   | 100               | 100               | 100                   | ... |
-   | Gene B   | 100               |  70               | 50                    | ... |
+   | Gene B   | 100               | 110               | 50                    | ... |
    | Gene C   | 100               | 110               | 140                   | ... |
    | ...      | ...               | ...               | ...                   | ... |
 
-   The goal is to find the relationship between genes and the condition in question. For example, ...
-    
-    * find genes influenced by / responsible for the condition.
-    * find patterns in which those genes fluctuate in relation to the varying degrees of the condition (e.g. the condition could have varying degrees instead of true/false).
-    * find patterns in which those genes fluctuate in relation to each other.
-    * etc...
+   The goal is to find the relationship between genes and the conditions in question. The idea is that a set of genes are likely influenced by / responsible for the condition, where those genes have different gene expression patterns depending on the condition. In the example above, gene B has double the gene expression when cancerous.
    
-   One typical scenario for this type of analysis is to devise a test for the condition in question. The test determines / estimates if the organism being tested has the condition (e.g. cancer vs non-cancer). In a sense, the data is already clustered by the condition of each snapshot, but there's likely too many genes and too much variability in their expressions to relaiably make a test from the the genes aren't clustered for relevance, influence, or responsibility.
-
-   FIX PARAGRAPH ABOVE
-
-   FIX PARAGRAPH ABOVE
-
-   FIX PARAGRAPH ABOVE
-
-   FIX PARAGRAPH ABOVE
-
-   FIX PARAGRAPH ABOVE
+   One typical scenario for this type of analysis is to devise a test for some condition that isn't immediately visible: Snapshots are taken for each possibility (e.g. leukemia vs non-leukemia cells) and the appropriate genes along with their gene expression patterns are identified (e.g. maybe 15 out of 5000 genes are related to leukemia). Then, a new never before seen snapshot can be tested by comparing the gene expression levels of those genes.
    
-   
+   Whereas with time-course gene expression the primary form of analysis is clustering, the analysis for conditional gene expression is more loose: it may or may not involve clustering in addition to other statistical analyses.
+
+```{note}
+This section mostly details clustering algorithms with time-course gene expression matrix examples.
+```
 
 Real-world gene expression matrices are often much more complex than the examples shown above. Specifically, ...
 
@@ -11572,17 +11561,17 @@ Real-world gene expression matrices are often much more complex than the example
 Prior to clustering, RNA sequencing outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, to limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones, which is often the ones biologists are interested in.
 
 ```{svgbob}
-     "no log"             "log"
-|                   |
-|   *               |              
-|  / \              |           
-| .   .             |
-| |   |             |
-| |   |             |
-| |   | *   *       |   *
-| |   |/ \ / \      |  / \          
-| *   *   *   *     | *   *-*-*-*-*   
-+--------------     +--------------
+   "no log"             "log"
+                    
+  |                               
+  |                            
+  |                 
+  |                 
+  |                 
+  |   |   |            |
+| | | | | | |          |           
+| | | | | | |        | | | | | | |   
++-+-+-+-+-+-+        +-+-+-+-+-+-+
 ```
 
 ```{note}
@@ -18227,6 +18216,30 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    It seems like you can call any tree, even unrooted trees, a dendrogram. This seems like a gate keeping term. "Draw the tree thta makes up the hierarchial cluster" vs "Draw the dendrogram that makes up the hierarchial cluster".
    ```
 
+ * `{bm} differential gene expression/(differential expression|differential gene expression)/i` - Given a set of transcriptome snapshots, where each snapshot is for the same species but in a different state, differential gene expression analyzes transcript abundances across the transcriptomes to see ...
+ 
+   1. which genes are responsible for / influenced by the state,
+   2. what the pattern of gene expression change is in those genes (transcript abundances).
+
+   For example, differential expression analysis may be used to compare cancerous and non-cancerous blood cells to identify which genes are responsible for the cancer and their gene expression levels.
+
+   |          | patient1 (cancer) | patient2 (cancer) | patient3 (non-cancer) | ... |
+   |----------|-------------------|-------------------|-----------------------|-----|
+   | Gene A   | 100               | 100               | 100                   | ... |
+   | Gene B   | 100               | 110               | 50                    | ... |
+   | Gene C   | 100               | 110               | 140                   | ... |
+   | ...      | ...               | ...               | ...                   | ... |
+
+   In the example above, gene B has roughly double the expression when cancerous.
+
+   ```{note}
+   Recall that genes are transcribed from DNA to mRNA, then translated to a protein. A transcript in a transcriptome is essentially to a gene currently undergoing the process of gene expression.
+   ```
+
+   ```{note}
+   I suspect the term transcript abundance is used instead of transcript count because often times the counts are processed / normalized into some other form in an effort to de-noise / de-bias (RNA sequencing is a noisy process).
+   ```
+ 
 
 
 `{bm-ignore} \b(read)_NORM/i`
