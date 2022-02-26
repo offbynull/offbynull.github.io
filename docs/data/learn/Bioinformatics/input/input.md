@@ -11448,8 +11448,8 @@ DNA   -+
 
 When a gene encodes for ...
 
- * a protein, the gene is transcribed to mRNA which in turn is translated to that protein.
- * functional RNA, the gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
+ * a protein, that gene is transcribed to mRNA which in turn is translated to that protein.
+ * functional RNA, that gene is transcribed to a type of RNA that isn't mRNA (only mRNA is translated to a protein).
 
 A snapshot of all RNA transcripts within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. Both the RNA transcript sequences and the counts of those sequences (number of instances) are captured. Given that an RNA transcript is simply a transcribed "copy" of the DNA it came from (it identifies the gene), a snapshot indirectly shows the amount of gene expression taking place for each gene at the time that snapshot was taken.
 
@@ -11460,85 +11460,110 @@ A snapshot of all RNA transcripts within a cell at a given point in time, called
 | Gene / RNA C  |  110  |
 | ...           |  ...  |
 
-Biologists typically capture multiple snapshots to help identify which genes are influenced by or responsible for some change. The counts from each snapshot are placed together to form a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector. For example, the following gene expression matrix captures snapshots at regular intervals to help identify which genes are effected by a drug. Notice that the gene expression vector for B lowers after the drug is administered while C's elevates ...
+Biologists typically capture multiple snapshots to help identify which genes are influenced by / responsible for some change. The counts from each snapshot are placed together to form a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector. Gene expression matrices typically come in two forms:
 
-|          | 1hr before drug given | 0hr before/after drug given | 1hr after drug given | ... |
-|----------|-----------------------|-----------------------------|----------------------|-----|
-| Gene A   | 100                   | 100                         | 100                  | ... |
-| Gene B   | 100                   |  70                         | 50                   | ... |
-| Gene C   | 100                   | 110                         | 140                  | ... |
-| ...      | ...                   | ...                         | ...                  | ... |
+ * A time-course gene expression matrix captures snapshots at different points in time. For example, the following gene expression matrix captures snapshots at regular intervals to help identify which genes are effected by a drug. Notice that the gene expression vector for B lowers after the drug is administered while C's elevates ...
 
-If a gene expression vector elevates/lowers across the set of snapshots, it may indicate that the gene is either responsible for or influenced by what happened.
+   |          | 1hr before drug given | 0hr before/after drug given | 1hr after drug given | ... |
+   |----------|-----------------------|-----------------------------|----------------------|-----|
+   | Gene A   | 100                   | 100                         | 100                  | ... |
+   | Gene B   | 100                   |  70                         | 50                   | ... |
+   | Gene C   | 100                   | 110                         | 140                  | ... |
+   | ...      | ...                   | ...                         | ...                  | ... |
 
-```{svgbob}
-         "GENE X"                              "GENE Y"                             "GENE Z"      
-|                                    |                                    |                       
-|  *----*                            |                 *                  |                       
-|        \                           |                /                   |                        
-|         \                          |               /                    |                       
-|          *---*                     |          *---*                     |  *---*---*---*---*        
-|               \                    |         /                          |                       
-|                \                   |        /                           |                       
-|                 *                  |  *----*                            |                       
-|                                    |                                    |                       
-+-----------------------             +-----------------------             +-----------------------
-```
+   If a gene expression vector elevates/lowers across the set of snapshots, it may indicate that the gene is either responsible for or influenced by what happened.
 
-Similarly, if two or more gene expression vectors elevate/lower in a similar pattern, it could mean that the genes they represent either perform similar functions or are co-regulated (e.g. each gene is influenced by the same transcription factor).
+   ```{svgbob}
+            "GENE X"                              "GENE Y"                             "GENE Z"      
+   |                                    |                                    |                       
+   |  *----*                            |                 *                  |                       
+   |        \                           |                /                   |                        
+   |         \                          |               /                    |                       
+   |          *---*                     |          *---*                     |  *---*---*---*---*        
+   |               \                    |         /                          |                       
+   |                \                   |        /                           |                       
+   |                 *                  |  *----*                            |                       
+   |                                    |                                    |                       
+   +-----------------------             +-----------------------             +-----------------------
+   ```
 
-```{svgbob}
-     "GENES W and X"                  "GENES U and T"    
-|                                |                       
-|  *----*                        |  *             
-|  *----*\                       |  *\            
-|        \\                      |   \\           
-|         \*---*                 |    \*        
-|          *---*\                |     *\       
-|               \\               |      \\      
-|                \*              |       \*---*----*
-|                 *              |        *---*----*  
-+-----------------------         +-----------------------
-```
+   Similarly, if two or more gene expression vectors elevate/lower in a similar pattern, it could mean that the genes they represent either perform similar functions or are co-regulated (e.g. each gene is influenced by the same transcription factor).
 
-In addition to the interval-based gene expression matrices described above, it's also common for gene expression matrices to state-based. State-based gene expression matrices combine snapshots from multiple organisms of the same species in different states. For example, there exists some set of genes that are transcribed more / less when comparing a ...
+   ```{svgbob}
+        "GENES W and X"                  "GENES U and T"    
+   |                                |                       
+   |  *----*                        |  *             
+   |  *----*\                       |  *\            
+   |        \\                      |   \\           
+   |         \*---*                 |    \*        
+   |          *---*\                |     *\       
+   |               \\               |      \\      
+   |                \*              |       \*---*----*
+   |                 *              |        *---*----*  
+   +-----------------------         +-----------------------
+   ```
 
- * cancerous blood cell vs non-cancerous blood cell.
- * rose cell that's bloomed vs rose cell that's un-bloomed.
- * bacteria cell when flagella is moving vs bacteria cell when flagella is still.
- * mouse cell that's inflamed vs mouse cell that's un-inflamed.
+   With time-course gene expression matrices, biologists typically determine which genes _may_ be related to a change by grouping together similar gene expression vectors. The goal is for the gene expression vectors in each group to be more similar to each other than to those in other groups. The process of grouping items together in this way is called clustering, and each group formed by the process is called a cluster. For example, the gene expression matrix below clearly forms two clusters if the similarity metric is the euclidean distance between points...
 
-|          | blood cancer patient1 | blood cancer patient2 | cancer-free patient3 | ... |
-|----------|-----------------------|-----------------------|----------------------|-----|
-| Gene A   | 100                   | 100                   | 100                  | ... |
-| Gene B   | 100                   |  70                   | 50                   | ... |
-| Gene C   | 100                   | 110                   | 140                  | ... |
-| ...      | ...                   | ...                   | ...                  | ... |
+   |        | 1hr before | 1hr after |
+   |--------|------------|-----------|
+   | Gene A |     5      |     1     |
+   | Gene B |     20     |     1     |
+   | Gene C |     24     |     4     |
+   | Gene D |     1      |     2     |
+   | Gene E |     3      |     4     |
+   | Gene F |     22     |     4     |
 
-Biologists determine which genes _may_ be related to a change by grouping together similar gene expression vectors. The goal is for the gene expression vectors in each group to be more similar to each other than to those in other groups. The process of grouping items together in this way is called clustering, and each group formed by the process is called a cluster. For example, the gene expression matrix below clearly forms two clusters if the similarity metric is the euclidean distance between points...
+   ```{svgbob}
+    cluster1         cluster2
+   |
+   |   E                F C
+   |D  A              B        
+   +---------------------------
+   ```
 
-|        | 1hr before | 1hr after |
-|--------|------------|-----------|
-| Gene A |     5      |     1     |
-| Gene B |     20     |     1     |
-| Gene C |     24     |     4     |
-| Gene D |     1      |     2     |
-| Gene E |     3      |     4     |
-| Gene F |     22     |     4     |
+   ```{note}
+   The goal described above is referred to as the good clustering principle.
+   ```
 
-```{svgbob}
- cluster1         cluster2
-|
-|   E                F C
-|D  A              B        
-+---------------------------
-```
+   In the above example, cluster 1 reveals genes that weren't impacted while cluster 2 reveals genes that had their expression drastically lowered.
 
-```{note}
-The goal described above is referred to as the good clustering principle.
-```
+ * A conditional gene expression matrix captures snapshots in different states / conditions. For example, there exists some set of genes that are transcribed more / less when comparing a ...
 
-In the above example, cluster 1 reveals genes that weren't impacted while cluster 2 reveals genes that had their expression drastically lowered. Real-world gene expression matrices are often much more complex. Specifically, ...
+    * cancerous blood cell vs non-cancerous blood cell.
+    * rose cell that's bloomed vs rose cell that's un-bloomed.
+    * bacteria cell when flagella is moving vs bacteria cell when flagella is still.
+    * mouse cell that's inflamed vs mouse cell that's un-inflamed.
+
+   |          | patient1 (cancer) | patient2 (cancer) | patient3 (non-cancer) | ... |
+   |----------|-------------------|-------------------|-----------------------|-----|
+   | Gene A   | 100               | 100               | 100                   | ... |
+   | Gene B   | 100               |  70               | 50                    | ... |
+   | Gene C   | 100               | 110               | 140                   | ... |
+   | ...      | ...               | ...               | ...                   | ... |
+
+   The goal is to find the relationship between genes and the condition in question. For example, ...
+    
+    * find genes influenced by / responsible for the condition.
+    * find patterns in which those genes fluctuate in relation to the varying degrees of the condition (e.g. the condition could have varying degrees instead of true/false).
+    * find patterns in which those genes fluctuate in relation to each other.
+    * etc...
+   
+   One typical scenario for this type of analysis is to devise a test for the condition in question. The test determines / estimates if the organism being tested has the condition (e.g. cancer vs non-cancer). In a sense, the data is already clustered by the condition of each snapshot, but there's likely too many genes and too much variability in their expressions to relaiably make a test from the the genes aren't clustered for relevance, influence, or responsibility.
+
+   FIX PARAGRAPH ABOVE
+
+   FIX PARAGRAPH ABOVE
+
+   FIX PARAGRAPH ABOVE
+
+   FIX PARAGRAPH ABOVE
+
+   FIX PARAGRAPH ABOVE
+   
+   
+
+Real-world gene expression matrices are often much more complex than the examples shown above. Specifically, ...
 
  1. there are often more than two columns to a gene expression matrix (more than two dimensions), meaning that the clustering becomes non-trivial.
  2. RNA sequencing is an inherently a biased / noisy process, meaning that certain RNA transcript counts elevating or lowering could be bad data.
@@ -13400,35 +13425,23 @@ clustering.SimilarityGraph_CAST main_cast
 }
 ```
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
-
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
-
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
-
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
-
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
-
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
-
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND DURATION-BASED GENE EXPRESSION MATRIX
+TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
 
 # Stories
 
