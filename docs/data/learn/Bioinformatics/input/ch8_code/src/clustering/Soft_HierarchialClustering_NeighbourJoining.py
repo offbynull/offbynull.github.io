@@ -15,7 +15,7 @@ from metrics.ManhattanDistance import manhattan_distance
 from metrics.PearsonSimilarity import pearson_distance
 
 
-def to_dot(g: Graph) -> str:
+def to_dot(g: Graph, edge_scale=1.0) -> str:
     ret = 'graph G {\n'
     ret += ' layout=neato\n'
     ret += ' node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]\n'
@@ -25,7 +25,7 @@ def to_dot(g: Graph) -> str:
         ret += f'{n}\n'
     for e in sorted(g.get_edges()):
         n1, n2, weight = g.get_edge(e)
-        ret += f'{n1} -- {n2} [label="{weight:.2f}", len={weight:.2f}]\n'
+        ret += f'{n1} -- {n2} [label="{weight:.2f}", len={(weight * edge_scale):.2f}]\n'
     ret += '}'
     return ret
 
