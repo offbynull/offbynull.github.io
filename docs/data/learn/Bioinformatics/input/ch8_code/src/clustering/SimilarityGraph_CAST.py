@@ -137,17 +137,15 @@ def main_similarity_graph():
 
 
 
-# MARKDOWN_SIMILARITY_TO_CLUSTER
+# MARKDOWN_ADJUST
 def similarity_to_cluster(
         n: str,
         cluster: set[str],
         sim_mat: SimilarityMatrix
 ) -> float:
     return mean(sim_mat[n, n_c] for n_c in cluster)
-# MARKDOWN_SIMILARITY_TO_CLUSTER
 
 
-# MARKDOWN_ADJUST
 def adjust_cluster(
         sim_graph: Graph,
         sim_mat: SimilarityMatrix,

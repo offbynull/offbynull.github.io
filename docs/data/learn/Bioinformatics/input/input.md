@@ -13279,7 +13279,12 @@ Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
 Algorithms/Gene Expression/Pearson Similarity Metric_TOPIC
 ```
 
-**WHAT**: Given a list of n-dimensional vectors, convert those vectors into a similarity matrix and build a graph where nodes represents vectors and an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold. This type of graph is called a similarity graph.
+**WHAT**: Given a list of n-dimensional vectors, ...
+
+1. convert those vectors into a similarity matrix
+2. build a graph where nodes represents vectors and an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold.
+
+This type of graph is called a similarity graph.
 
 **WHY**: Recall the definition of the good clustering principle: Items within the same cluster should be more similar to each other than items in other clusters. If the vectors being clustered aren't noisy and the similarity metric used is appropriate for the type of data the vectors represent (it captures clusters), some threshold value should exist where the graph formed only consists of cliques (clique graph).
 
@@ -13349,33 +13354,43 @@ clustering.SimilarityGraph_CAST main_similarity_graph
 }
 ```
 
-If the resulting similarity graph isn't a clique graph but is close to being one (corrupted cliques), a heuristic algorithm called cluster affinity search technique (CAST) may be used to turn it into a clique graph.
-
+If the resulting similarity graph isn't a clique graph but is close to being one (corrupted cliques), a heuristic algorithm called cluster affinity search technique (CAST) can correct it. At it's core, the algorithm attempts to re-create each corrupted clique in its corrected form by iteratively finding the ...
+ 
+1. closest node not in the clique/cluster and including it _if it exceeds the similarity graph threshold_.
+2. farthest node within the clique/cluster and removing it _if it doesn't exceed the similarity graph threshold_.
+   
 ```{svgbob}
-"CORRUPTED CLIQUES"       "CORRECTED"
+"original:"
 
-    e---g                 g---e      
-    |\ /|\                |\ /|      
-    | X | \               | X |      
-    |/ \|  \              |/ \|      
-    d   f   c             d---f   c  
-           / \                   / \ 
-          a   b                 a---b 
+  a---d
+ /|\  |
+t | \ |
+  |  \|
+  b---c
+ 
+
+
+"step1:"            "step2:"            "step3:"
+"prime with a"      "add t"             "add b, remove t"
+
+  a                   a                   a
+                     /                    |
+                    t                     |
+                                          |
+                                          b
+
+
+"step4:"            "step4:"            "step5:   (done)"
+"add c"             "add d"             "nothing to add/remove"
+                    
+  a                   a---d               a---d
+  |\                  |\ /|               |\ /|
+  | \                 | X |               | X |
+  |  \                |/ \|               |/ \|
+  b---c               b---c               b---c
 ```
 
-Given a node and an existing cluster, CAST calculates the average similarity between that node and the member_CLUSTERs of that cluster to determine how similar that node is to that cluster...
-
-```{output}
-ch8_code/src/clustering/SimilarityGraph_CAST.py
-python
-# MARKDOWN_SIMILARITY_TO_CLUSTER\s*\n([\s\S]+)\n\s*# MARKDOWN_SIMILARITY_TO_CLUSTER\s*[\n$]
-no_preamble
-```
-
-CAST uses the above similarity averaging to iteratively "adjust" that cluster by both choosing a node to include and a node to exclude. The node with the ...
-
-1. closest similarity that isn't a member_CLUSTER is added _if it exceeds the similarity graph threshold_.
-1. farthest similarity that is a member_CLUSTER is removed _if it doesn't exceed the similarity graph threshold_.
+How close or far a gene is from the clique/cluster is defined as the average similarity between that node and all nodes in the clique/cluster
 
 ```{output}
 ch8_code/src/clustering/SimilarityGraph_CAST.py
@@ -13388,9 +13403,13 @@ no_preamble
 Removal is testing a node from _within_ the cluster itself. That is, the removal node for which the average similarity is being calculated has the similarity to itself included in the averaging.
 ```
 
-CAST primes a cluster by picking the node with the highest degree_GRAPH. The above adjustment is then repeatedly applied to the cluster until there's an iteration where the cluster remains unchanged (no addition and no removal), at which point the cluster is said to be a consistent cluster. The nodes for a consistent cluster are removed from the similarity graph and the entire process repeats.
+While the similarity graph has nodes, the algorithm picks the node with the highest degree_GRAPH from the similairty graph to prime a clique/cluster. It then loops the add and remove process described above until there's an iteration where nothing changes. At that point, that cluster/clique is said to be consistent and its nodes are removed from the original similarity graph. 
 
-This happens until the similarity graph is emptied.
+```{note}
+What's the significance of picking the node with the highest degree_GRAPH as the starting point? It was never explained, but I suspect it's a heuristic of some kind. Something like, the node with the highest degree_GRAPH is assumed to have most of its edges to other nodes in the same clique and as such it's the most "representative" member_CLUSTER of the cluster that clique represents.
+
+Something like that.
+```
 
 ```{output}
 ch8_code/src/clustering/SimilarityGraph_CAST.py
@@ -13414,23 +13433,33 @@ clustering.SimilarityGraph_CAST main_cast
 }
 ```
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
-TODO: PROOFREAD TEXT ABOVE, ADD TERMINOLOGY FOR CAST, COME UP WITH A STORY, REWRITE TOP-LEVEL GENE EXPRESSION SECTION: CONDITIONAL-BASED AND TIMECOURSE-BASED GENE EXPRESSION MATRIX AND MAKE NOTE THAT ITS CALLED DIFFERENTIAL GENE EXPRESSION ANALYSIS / DIFFERENTIAL ANALYSIS / DIFFERENTIAL GENE EXPRESSION.
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
+
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
+
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
+
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
+
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
+
+TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
 # Stories
 
@@ -18113,6 +18142,16 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
    
    Since real-world data often has complications (e.g. noisy) / the similarity metric used may have complications, it could be that corrupted cliques are formed instead. Heuristic algorithms are often use to correct corrupted cliques.
 
+   ```{svgbob}
+   *---*      
+   |\ /|\     
+   | X | \    
+   |/ \|  \   
+   *   *   *  
+          / \ 
+         *   *
+   ```
+
  * `{bm} clique` - A set of nodes in a graph where every possible node pairing has an edge.
 
    ```{svgbob}
@@ -18149,6 +18188,60 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
             |/ \|
             *---*
    ``` 
+
+ * `{bm} cluster affinity search technique` `{bm} /(CAST)/` - A heuristic algorithm that corrects the corrupted cliques in a similarity graph.
+ 
+    ```{svgbob}
+   "CORRUPTED CLIQUES"            "CLIQUES"
+   
+       *---*                     *---*      
+       |\ /|\                    |\ /|      
+       | X | \                   | X |      
+       |/ \|  \                  |/ \|      
+       *   *   *                 *---*   *
+              / \                       / \ 
+             *   *                     *---*
+   ```
+   
+   The algorithm attempts to re-create each corrupted clique in its corrected form by iteratively finding the ...
+ 
+   1. closest node not in the clique/cluster and including it _if it exceeds the similarity graph threshold_.
+   2. farthest node within the clique/cluster and removing it _if it doesn't exceed the similarity graph threshold_.
+   
+   How close or far a gene is from the clique/cluster is defined as the average similarity between that node and all nodes in the clique/cluster.
+
+   While the similarity graph has nodes, the algorithm picks the node with the highest degree_GRAPH from the similairty graph to prime a clique/cluster. It then loops the add and remove process described above until there's an iteration where nothing changes. At that point, that cluster/clique is said to be consistent and its nodes are removed from the original similarity graph. 
+
+   ```{svgbob}
+   "original:"
+
+     a---d
+    /|\  |
+   t | \ |
+     |  \|
+     b---c
+    
+   
+
+   "step1:"            "step2:"            "step3:"
+   "prime with a"      "add t"             "add b, remove t"
+
+     a                   a                   a
+                        /                    |
+                       t                     |
+                                             |
+                                             b
+
+
+   "step4:"            "step4:"            "step5:   (done)"
+   "add c"             "add d"             "nothing to add/remove"
+                       
+     a                   a---d               a---d
+     |\                  |\ /|               |\ /|
+     | \                 | X |               | X |
+     |  \                |/ \|               |/ \|
+     b---c               b---c               b---c
+   ```
 
  * `{bm} RNA sequencing` `{bm} /(RNA-Seq)/` - A technique which uses next-generation sequencing to reveal the presence and quantity of RNA in a biological sample at some given moment.
 
