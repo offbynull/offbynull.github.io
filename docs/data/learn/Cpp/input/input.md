@@ -5532,9 +5532,7 @@ The subsections below detail some of the containers mentioned above. Other major
 
 ### Array
 
-```{prereq}
-Library Functions/Utility Wrappers/Tuple_TOPIC (refresher on `std::get()`)
-```
+`{bm} /(Library Functions\/Containers\/Array)_TOPIC/`
 
 `std::array` is a container that's more-or-less a wrapper around a normal C++ array. Like normal C++ arrays, it ...
 
@@ -5552,13 +5550,14 @@ for (auto &obj : my_arr2) {
 }
 ```
 
-```{note}
-The copy semantics of `std::array` are different from most other containers. If the type its holding on to isn't a pointer or reference, each element will be fully copied over (vs a reference or pointer to that element) because in the background `std::array<MyHugeObject, 10> x` is equivalent to `MyHugeObject x[10]` vs `MyHugeObject *x[10]`. This is probably not what you want most of the time -- most other containers will copy references to the objects (SPECULATION -- VERIFY). It likely also means that it'll be an expensive operation.
+`std::array` provides copy semantics and move semantics. However, because the underlying array is a local object, both moving and copying end up recreating the that underlying array. This means that copying and moving may potentially be expensive.
 
-Depending on the move semantics of the type it's holding on to, moving may also be expensive.
+```c++
+std::array<int, 55> &&rref { std::move(my_arr2) }; // get rvalue reference
+std::array<int, 55> my_arr3 {rref};                // move into c (gut it into c) via the move constructor
 ```
 
-`std::array` provides two ways of reading a random element, using the subscript ([]) and `at()`, the main difference being that the latter has bounds checking. Alternatively, the `std::get()` function may be used to read a random element so long as the index being read is known at compile-time (does bounds checking at compile-time).
+To read elements, use the subscript operator ([]) or `at()`. The main difference between the two is that the latter has bounds checking. Alternatively, the `std::get()` function may be used to read a random element so long as the index being read is known at compile-time (does bounds checking at compile-time).
 
 ```c++
 int w { my_arr2[20] };
@@ -5567,12 +5566,32 @@ int y { my_arr2.at(1000) };  // throws std::out_of_range
 int z { std::get<20>(my_arr2) };
 ```
 
+```{seealso}
+Library Functions/Utility Wrappers/Tuple_TOPIC (refresher on `std::get()`)
+```
+
 In addition, the functions `front()` and `back()` read the first and last elements respectively.
 
 ```c++
 // NOTE: undefined behaviour of len is 0
 int a { my_arr2.front() };
 int b { my_arr2.back() };
+```
+
+To write elements, use the subscript operator ([]).
+
+```c++
+my_arr[20] = 5;
+```
+
+To get the size, use `size()`.
+
+```c++
+int len { my_arr2.size() };
+```
+
+```{note}
+`size()` and `max_size()` are equivalent for `std::array`, but not for other containers that can grow / shrunk.
 ```
 
 To gain access to the underlying array being wrapped, use `data()`.
@@ -5586,22 +5605,178 @@ int * backing_arr = &my_arr2.at(0);
 int * backing_arr = &my_arr2.front();
 ```
 
-TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+To iterate over the elements, use `being()` and `end()`.
 
-TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : my_arr2) {
+    // do something with value here
+}
+```
 
-TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
+```{note}
+There's also ..
 
-TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
-
-TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
-
-TODO: CONTINUE FROM PARAGRAPH JUST ABOVE "A crash course in iterators" HEADING
-
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
 
 ### Vector
 
+`{bm} /(Library Functions\/Containers\/Vector)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Array_TOPIC
+Library Functions/Allocators_TOPIC
+```
+
+`std::vector` is a container that holds on to its elements sequentially and contiguously in memory (array), but it can dynamically size itself (e.g. expand the internal array if not enough room is available to add a new element). It has most of the same functions as `std::array`, in addition to some others.
+
+To create an `std::vector` primed with a sequence of values known as compile-time, use typical braced initialization.
+
+```c++
+std::vector<int> my_vec1 { 5, 5, 5, 5, 5, 5, 5, 5 };
+```
+
+To create an `std::vector` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+
+```c++
+std::vector<int> my_vec2 (8, 5); // equivalent to initializing to above (8 copies of 5)
+std::vector<int> my_vec3 (c)  // copy another container
+std::vector<int> my_vec4 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
+```
+
+```{note}
+The rules for initialization are complex. In this case, there's a constructor that takes in an `std::initializer_list`. That means braced initialization / brace-plus-equals initialization will in most cases call that constructor, where that initializer list get populated with whatever is in the braces. To avoid that, the easiest thing you can do is fall back to using the legacy way of calling constructors (parenthesis).
+```
+
+`std::vector` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::vector` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
+
+```c++
+std::vector<int> &&rref { std::move(my_vec1) }; // get rvalue reference
+std::vector<int> my_vec5 {rref};                // move into c (gut it into c) via the move constructor
+```
+
+Similarly, because `std::vector`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
+
+```c++
+CustomAllocator allocator {}
+std::vector<int, CustomAllocator> my_vec6 (allocator);
+```
+
+Reading elements is done through a similar set of functions as the ones with `std::array`.
+
+```c++
+int w { my_vec1[5] };
+int x { my_vec1.at(5) };
+int y { my_vec1.at(1000) };  // throws std::out_of_range
+// NOTE: undefined behaviour of len is 0
+int a { my_vec1.front() };
+int b { my_vec1.back() };
+```
+
+Writing elements can be done in several ways:
+
+ * `assign()` will replace _all_ elements with the ones supplied.
+ * `insert()` will insert an element just behind some iterator position (object copied / moved).
+ * `emplace()` will insert an element just behind some iterator _by creating it directly_ (no copying / moving).
+ * `push_back()` will append an element (copy semantics)
+ * `emplace_back()` will append an element _by creating it directly_ (no copying / moving).
+
+```{note}
+`emplace()` / `emplace_back()` don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use template parameter packs to forward arguments for object creation (e.g. constructor arguments, initializer list, etc..).
+```
+
+```c++
+my_vec1.assign({1, 2, 3, 4, 5});
+auto it1 = my_vec1.begin() + 3;
+my_vec1.insert(it1, 77); // WARNING: it1 invalid after this call
+auto it2 = my_vec1.begin() + 3;
+my_vec1.emplace(it2, 77); // WARNING: it2 invalid after this call
+my_vec1.push_back(123);
+my_vec1.emplace_back(123);
+```
+
+```{seealso}
+Library Functions/Utility Wrappers/Any (also has an `emplace()` function)
+Library Functions/Utility Wrappers/Variant (also has an `emplace()` function)
+```
+
+The number of elements may be accessed via `size()`. In addition, `empty()` may be a way to test for a size of 0.
+
+```c++
+auto is_empty1 { my_vec1.size() == 0 };
+auto is_empty2 { my_vec1.empty() };
+```
+
+Internally, `std::vector` grows in chunks. For example, if the underlying array has a size of 5 and all of those 5 elements are occupied, when you add in a 6th element the underlying array resizes to have a capacity larger than 6 (e.g. 10). This way, you can continue adding in a few more elements without another resize happening right away (more efficient).
+
+To get the current capacity, use `capacity()`.
+
+```c++
+float usage { my_vec1.size() / my_vec2.capacity() };
+```
+
+If you ...
+
+ * know the capacity you want ahead of time, use `reserve()`.
+ * want to shrink the capacity to match the number of elements stored, use `shrink_to_fit()`.
+
+```c++
+my_vec1.reserve(1000);
+my_vec1.shrink_to_fit();
+```
+
+To delete all elements, use `clear()`.
+
+```c++
+my_vec1.clear();
+```
+
+Similar to `std::array`, you can access the underlying array for an `std::vector`. Be aware that this array may become as soon as you start performing operations on the owning `std::vector` (e.g. it gets recreated due to growth).
+
+To gain access to the underlying array being wrapped, use `data()`.
+
+```c++
+int * backing_arr = my_vec1.data();
+// NOTE: each below are equivalent to the above, but the one above should be preferred
+//       because the ones below will have undefined behaviour if array length is 0.
+int * backing_arr = &my_vec1[0];
+int * backing_arr = &my_vec1.at(0);
+int * backing_arr = &my_vec1.front();
+```
+
+To iterate over the elements, use `being()` and `end()`.
+
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : my_vec1) {
+    // do something with value here
+}
+```
+
+```{note}
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
+
 ### Deque
+
+TODO: start at deque section
+
+TODO: start at deque section
+
+TODO: start at deque section
+
+TODO: start at deque section
+
+TODO: start at deque section
+
+TODO: start at deque section
 
 ### List
 
