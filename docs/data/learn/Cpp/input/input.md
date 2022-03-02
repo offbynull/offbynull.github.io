@@ -5557,31 +5557,35 @@ std::array<int, 55> &&rref { std::move(my_arr2) }; // get rvalue reference
 std::array<int, 55> my_arr3 {rref};                // move into c (gut it into c) via the move constructor
 ```
 
-To read elements, use the subscript operator ([]) or `at()`. The main difference between the two is that the latter has bounds checking. Alternatively, the `std::get()` function may be used to read a random element so long as the index being read is known at compile-time (does bounds checking at compile-time).
+To read elements, use the subscript operator ([]) or `at()`. The main difference between the two is that the latter has bounds checking. Alternatively, ...
+
+ * `front()` may be used as shorthand to get the first element.
+ * `back()` may be used as shorthand to get the last element.
+ * `std::get()` may be used to read a random element so long as the index being read is known at compile-time (does bounds checking at compile-time).
 
 ```c++
 int w { my_arr2[20] };
 int x { my_arr2.at(20) };
 int y { my_arr2.at(1000) };  // throws std::out_of_range
 int z { std::get<20>(my_arr2) };
+int a { my_arr2.front() };  // WARNING: undefined behaviour of len is 0
+int b { my_arr2.back() };  // WARNING: undefined behaviour of len is 0
 ```
 
 ```{seealso}
 Library Functions/Utility Wrappers/Tuple_TOPIC (refresher on `std::get()`)
 ```
 
-In addition, the functions `front()` and `back()` read the first and last elements respectively.
+To replace elements, use any of the same functions used for reading elements except `std::get()`. They return a reference, which means assigning something to them will assign into the container.
 
 ```c++
-// NOTE: undefined behaviour of len is 0
-int a { my_arr2.front() };
-int b { my_arr2.back() };
-```
+my_arr2[20] = 123;
+my_arr2.at(20) = 123;
+my_arr2.front() = 123;
+my_arr2.back() = 123;
 
-To write elements, use the subscript operator ([]).
-
-```c++
-my_arr[20] = 5;
+auto & ref = my_arr(20);
+ref = 123;
 ```
 
 To get the size, use `size()`.
@@ -5665,31 +5669,37 @@ CustomAllocator allocator {}
 std::vector<int, CustomAllocator> my_vec6 (allocator);
 ```
 
-Reading elements is done through a similar set of functions as the ones with `std::array`.
+To read elements, the same read functions for `std::array` are available here.
 
 ```c++
 int w { my_vec1[5] };
 int x { my_vec1.at(5) };
 int y { my_vec1.at(1000) };  // throws std::out_of_range
-// NOTE: undefined behaviour of len is 0
-int a { my_vec1.front() };
-int b { my_vec1.back() };
+int a { my_vec1.front() };  // WARNING: undefined behaviour of len is 0
+int b { my_vec1.back() };  // WARNING: undefined behaviour of len is 0
 ```
 
-Writing elements can be done in several ways:
+```{note}
+Does `std::get()` work here as well? I don't think so because this is an dynamic array.
+```
 
- * `assign()` will replace _all_ elements with the ones supplied.
+To replace elements, the same write functions for `std::array` are available here. Those functions are the same functions used for reading elements. They return a reference, which means assigning something to them will assign into the container.
+
+```c++
+my_vec1[20] = 123;
+my_vec1.at(20) = 123;
+my_vec1.front() = 123;
+my_vec1.back() = 123;
+```
+
+To add elements, the following functions are available:
+
  * `insert()` will insert an element just behind some iterator position (object copied / moved).
  * `emplace()` will insert an element just behind some iterator _by creating it directly_ (no copying / moving).
  * `push_back()` will append an element (copy semantics)
  * `emplace_back()` will append an element _by creating it directly_ (no copying / moving).
 
-```{note}
-`emplace()` / `emplace_back()` don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use template parameter packs to forward arguments for object creation (e.g. constructor arguments, initializer list, etc..).
-```
-
 ```c++
-my_vec1.assign({1, 2, 3, 4, 5});
 auto it1 = my_vec1.begin() + 3;
 my_vec1.insert(it1, 77); // WARNING: it1 invalid after this call
 auto it2 = my_vec1.begin() + 3;
@@ -5698,12 +5708,47 @@ my_vec1.push_back(123);
 my_vec1.emplace_back(123);
 ```
 
-```{seealso}
-Library Functions/Utility Wrappers/Any (also has an `emplace()` function)
-Library Functions/Utility Wrappers/Variant (also has an `emplace()` function)
+```{note}
+`emplace()` / `emplace_back()` don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use template parameter packs to forward arguments for object creation (e.g. constructor arguments, initializer list, etc..).
 ```
 
-The number of elements may be accessed via `size()`. In addition, `empty()` may be a way to test for a size of 0.
+```{seealso}
+Library Functions/Utility Wrappers/Any_TOPIC (also has an `emplace()` function)
+Library Functions/Utility Wrappers/Variant_TOPIC (also has an `emplace()` function)
+```
+
+To delete either a single element or a range of elements, use `erase()` and pass into it either an iterator at some position or an iterator range.
+
+```c++
+auto it1 {my_vec1.begin() + 3};
+my_vec1.erase(it1); // WARNING: it1 invalid after this call
+
+auto it2 {my_vec1.begin()};
+auto it3 {my_vec1.begin() + 10};
+my_vec1.erase(it2, it3); // WARNING: it2/it3 invalid after this call
+```
+
+To delete the last element, use `pop_back()`. It's similar to `back()` (returns element) but it removes the element as well.
+
+```c++
+int c { my_vec1.pop_back() }; // REMOVES the last 
+```
+
+To delete all elements, use `clear()`.
+
+```c++
+my_vec1.clear();
+```
+
+To delete all elements and re-assign to a list of new elements, use `assign()`.
+
+```c++
+my_vec1.assign(5, 10); // 5 copies of 10
+my_vec1.assign({5,5,5,5,5}); // 5 copies of 10
+my_vec1.assign(c.begin(), c.begin() + 5); // starting 5 elements of another container
+```
+
+To get the number of elements, the same functions for `std::array` are available here.
 
 ```c++
 auto is_empty1 { my_vec1.size() == 0 };
@@ -5728,13 +5773,7 @@ my_vec1.reserve(1000);
 my_vec1.shrink_to_fit();
 ```
 
-To delete all elements, use `clear()`.
-
-```c++
-my_vec1.clear();
-```
-
-Similar to `std::array`, you can access the underlying array for an `std::vector`. Be aware that this array may become as soon as you start performing operations on the owning `std::vector` (e.g. it gets recreated due to growth).
+Similar to `std::array`, you can access the underlying array for an `std::vector`. However, the returned array may become invalid as soon as you start performing operations on the owning `std::vector` (e.g. it may get recreated due to shrinkage/growth).
 
 To gain access to the underlying array being wrapped, use `data()`.
 
@@ -5766,19 +5805,285 @@ There's also ..
 
 ### Deque
 
-TODO: start at deque section
+`{bm} /(Library Functions\/Containers\/Deque)_TOPIC/`
 
-TODO: start at deque section
+```{prereq}
+Library Functions/Containers/Vector_TOPIC
+Library Functions/Allocators_TOPIC
+```
 
-TODO: start at deque section
+`std::deque` is a container that holds on to its elements sequentially but not contiguously in memory (not an array). It can dynamically size itself (e.g. expand the internal array if not enough room is available to add a new element) just like `std::vector` and it supports most of the same function as `std::vector`. The most prominent functions it _doesn't_ support:
 
-TODO: start at deque section
+ * `data()` because there is no underlying array with this container.
+ * `capacity()`.
+ * `reserve()`.
 
-TODO: start at deque section
+Because of the internal data structure used by this container, the added functions above are efficient.
 
-TODO: start at deque section
+To create an `std::deque` primed with a sequence of values known as compile-time, use typical braced initialization.
+
+```c++
+std::deque<int> d1 { 5, 5, 5, 5, 5, 5, 5, 5 };
+```
+
+To create an `std::deque` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+
+```c++
+std::deque<int> d2 (8, 5); // equivalent to initializing to above (8 copies of 5)
+std::deque<int> d3 (c)  // copy another container
+std::deque<int> d4 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
+```
+
+`std::deque` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::deque` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
+
+```c++
+std::deque<int> &&rref { std::move(d1) }; // get rvalue reference
+std::deque<int> d5 {rref};                // move into c (gut it into c) via the move constructor
+```
+
+Similarly, because `std::deque`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
+
+```c++
+CustomAllocator allocator {}
+std::deque<int, CustomAllocator> d6 (allocator);
+```
+
+To read elements, the same read functions for `std::vector` are available here.
+
+```c++
+int w { d1[5] };
+int x { d1.at(5) };
+int y { d1.at(1000) };  // throws std::out_of_range
+int a { d1.front() };  // WARNING: undefined behaviour of len is 0
+int b { d1.back() };  // WARNING: undefined behaviour of len is 0
+```
+
+To replace elements, the same write functions for `std::vector` are available here. Those functions are the same functions used for reading elements. They return a reference, which means assigning something to them will assign into the container.
+
+```c++
+d1[20] = 123;
+d1.at(20) = 123;
+d1.front() = 123;
+d1.back() = 123;
+```
+
+To add elements, the same add functions for `std::vector` are available here in addition to...
+
+ * `emplace_front()` - similar to `emplace_back()` but adds to the front.
+ * `push_front()` - similar to `push_back()` but adds to the front.
+
+```c++
+auto it1 = d1.begin() + 3;
+d1.insert(it1, 77); // WARNING: it1 invalid after this call
+auto it2 = d1.begin() + 3;
+d1.emplace(it2, 77); // WARNING: it2 invalid after this call
+d1.push_back(123);
+d1.push_front(123); // similar to push_back, but adds to front
+d1.emplace_back(123);
+d1.emplace_front(123); // similar to emplace_back, but adds to front
+```
+
+```{note}
+Recall that "emplace" functions don't copy or move. They're templated functions. You pass in object initialization arguments directly into the functions and it uses a template parameter pack to forward those arguments for object creation directly within the function (e.g. constructor arguments, initializer list, etc..).
+```
+
+To delete elements, the same delete functions for `std::vector` are available here in addition to ...
+
+ * `pop_front()` - similar to  `pop_back()` but removes from the front.
+
+```c++
+// DELETE at ifx
+auto it1 {d1.begin() + 3};
+d1.erase(it1); // WARNING: it1 invalid after this call
+// DELETE between idx range
+auto it2 {d1.begin()};
+auto it3 {d1.begin() + 10};
+d1.erase(it2, it3); // WARNING: it2/it3 invalid after this call
+// DELETE front or back
+int c { d1.pop_back() };
+int d { d1.pop_front() }; // similar to pop_back, but removed from the FRONT
+// DELETE all
+d1.clear();
+// DELETE all and RE-ASSIGN
+d1.assign(5, 10); // 5 copies of 10
+d1.assign({5,5,5,5,5}); // 5 copies of 10
+d1.assign(c.begin(), c.begin() + 5); // starting 5 elements of another container
+```
+
+To get the number of elements, the same functions for `std::vector` are available here.
+
+```c++
+auto is_empty1 { d1.size() == 0 };
+auto is_empty2 { d1.empty() };
+```
+
+To release unused memory that's been reserved by the container, use `shrink_to_fit()`. The `capacity()` and `reserve()` functions found in `std::vector` are not present in this container.
+
+
+To iterate over the elements, use `being()` and `end()`.
+
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : d1) {
+    // do something with value here
+}
+```
+
+```{note}
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
 
 ### List
+
+`{bm} /(Library Functions\/Containers\/List)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Deque_TOPIC
+Library Functions/Allocators_TOPIC
+```
+
+`std::list` is a container that holds on to its elements sequentially. It's implemented as a doubly-linked list, meaning its size is dynamic but it isn't stored contiguously in memory (not an array).
+
+`std::list` supports a similar set of functions as `std::deque` except for the fact that random element access isn't allowed (the functions for it don't exist -- random access is inefficient with linked lists). You can only access elements by walking either forward or backward. In addition, it provides several built-in helper functions such as sorting and de-duplication.
+
+```{note}
+List of helper functions is documented near the end.
+```
+
+```{note}
+There's also `std::forward_list` which is a singly-linked list. It's functionality is very similar to this class, but since it only supports walking forward, some of the functions listed here are missing.
+```
+
+To create a `std::list` primed with a sequence of values known as compile-time, use typical braced initialization.
+
+```c++
+std::list<int> l1 { 5, 5, 5, 5, 5, 5, 5, 5 };
+```
+
+To create a `std::list` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+
+```c++
+std::list<int> l2 (8, 5); // equivalent to initializing to above (8 copies of 5)
+std::list<int> l3 (c)  // copy another container
+std::list<int> l4 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
+```
+
+`std::list` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::list` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
+
+```c++
+std::list<int> &&rref { std::move(l1) }; // get rvalue reference
+std::list<int> l5 {rref};                // move into c (gut it into c) via the move constructor
+```
+
+Similarly, because `std::list`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
+
+```c++
+CustomAllocator allocator {}
+std::list<int, CustomAllocator> l6 (allocator);
+```
+
+To read elements, use the iterator functions `begin()` and / or `end()` to walk the sequence. Alternatively, the `front()` and `back()` functions give direct access to the first and last elements respectively.
+
+```c++
+// WARNING: undefined behaviour of len is < 3
+auto it = l1.begin();
+int a { *it };
+it++;
+int b { *it };
+it++;
+int c { *it };
+
+int d { l1.front() }; // WARNING: undefined behaviour of len is 0
+int e { l1.back() };  // WARNING: undefined behaviour of len is 0
+```
+
+To replace elements, the same iterator functions `begin()` and / or `end()` need to be used to walk the sequence to the point of replacement.
+
+```c++
+// WARNING: undefined behaviour of len is < 3
+auto it = l1.begin() + 2;
+*it = 55;
+```
+
+To add elements, the same add functions for `std::deque` are available here.
+
+```c++
+auto it1 = l1.begin() + 3;
+l1.insert(it1, 77);
+auto it2 = l1.begin() + 3;
+l1.emplace(it2, 77);
+l1.push_back(123);
+l1.push_front(123);
+l1.emplace_back(123);
+l1.emplace_front(123);
+```
+
+```{note}
+I'm getting conflicting information about if an iterator is invalid after a write. Right now I'm leaning towards NOT invalid.
+```
+
+```{note}
+Recall that "emplace" functions don't copy or move. They're templated functions. You pass in object initialization arguments directly into the functions and it uses a template parameter pack to forward those arguments for object creation directly within the function (e.g. constructor arguments, initializer list, etc..).
+```
+
+To delete elements, the same delete functions for `std::deque` are available here.
+
+```c++
+// DELETE at idx
+auto it1 {l1.begin() + 3};
+d1.erase(it1); // WARNING: it1 invalid after this call
+// DELETE between idx range
+auto it2 {l1.begin()};
+auto it3 {l1.begin() + 10};
+l1.erase(it2, it3); // WARNING: it2/it3 invalid after this call
+// DELETE front or back
+int c { l1.pop_back() };
+int d { l1.pop_front() }; // similar to pop_back, but removed from the FRONT
+// DELETE all
+l1.clear();
+// DELETE all and RE-ASSIGN
+l1.assign(5, 10); // 5 copies of 10
+l1.assign({5,5,5,5,5}); // 5 copies of 10
+l1.assign(c.begin(), c.begin() + 5); // starting 5 elements of another container
+```
+
+To get the number of elements, the same functions for `std::deque` are available here.
+
+```c++
+auto is_empty1 { l1.size() == 0 };
+auto is_empty2 { l1.empty() };
+```
+
+To iterate over the elements, use `being()` and `end()`.
+
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : dl) {
+    // do something with value here
+}
+```
+
+```{note}
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
+
+`std::list` has several helper functions built-in.
+
+ * `merge()` combines two sorted `std::list`s into a single sorted `std::list` and empty them.
+ * `splice()` transfers a range of elements from one `std::list` to another.
+ * `remove()` searches for and removes all matching element in a `std::list`.
+ * `remove_if()` removes all elements in a `std::list` that matches some predicate.
+ * `reverse()` reverses an `std::list` (in-place reversal).
+ * `sort()` sorts an `std::list` based on a comparator (in-place sort).
+ * `unique()` removes consecutive duplicate elements.
 
 ### Set
 
@@ -5788,24 +6093,19 @@ TODO: start at deque section
 
 ### Multimap
 
-TODO: CREATE SUBSECTIONS
-
-TODO: CREATE SUBSECTIONS
-
-TODO: CREATE SUBSECTIONS
-
-TODO: CREATE SUBSECTIONS
-
-TODO: CREATE SUBSECTIONS
+### Bitset
 
 ## Container Adaptors
 
-TODO: FILL ME IN NEXT INCLUDE std::span
-TODO: FILL ME IN NEXT INCLUDE std::span
-TODO: FILL ME IN NEXT INCLUDE std::span
-TODO: FILL ME IN NEXT INCLUDE std::span
-TODO: FILL ME IN NEXT INCLUDE std::span
-TODO: FILL ME IN NEXT INCLUDE std::span
+START HERE: stack, queue, priority queue
+
+START HERE: stack, queue, priority queue
+
+START HERE: stack, queue, priority queue
+
+START HERE: stack, queue, priority queue
+
+START HERE: stack, queue, priority queue
 
 ## Time
 
