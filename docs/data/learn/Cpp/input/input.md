@@ -6087,6 +6087,16 @@ There's also ..
 
 ### Set
 
+TODO: start here
+
+TODO: start here
+
+TODO: start here
+
+TODO: start here
+
+TODO: start here
+
 ### Map
 
 ### Multiset
@@ -6095,17 +6105,310 @@ There's also ..
 
 ### Bitset
 
-## Container Adaptors
+```{prereq}
+Library Functions/Containers/Array_TOPIC
+```
 
-START HERE: stack, queue, priority queue
+`{bm} /(Library Functions\/Containers\/Bitset)_TOPIC/`
 
-START HERE: stack, queue, priority queue
+`std::bitset` is a pseudo-container wraps a fixed-size sequence of bits. It's similar to an `std::array<bool, N>` or `bool [N]`, but optimized for space and provides a functions more appropriate for working with bits.
 
-START HERE: stack, queue, priority queue
+To create a `std::bitset` from an integral type, set the number of bits to capture as the type parameter. The constructor can optionally take in the integral value to initialize to (if not present, all sets initialized to 0).
 
-START HERE: stack, queue, priority queue
+```c++
+std::bitset<4> b1 {};  // 4 bits, 0000
+std::bitset<4> b2 {0b1011}; // 4 bits, 1011
+```
 
-START HERE: stack, queue, priority queue
+```{seealso}
+Core Language/Variables/Core Types/Integral_TOPIC (refresher on 0b prefix for integral literals specified as binary)
+```
+
+To create a `std::bitset` that's potentially larger than the largest available integral type, pass in an `std::string` of ones and zeros. Alternatively, you can use a custom character for the both ones and zeros by passing those characters into the constructor.
+
+```c++
+std::string str3 { "1011" };
+std::bitset<4> b3 { str3 };
+std::string str4 { "TFTT" };
+std::bitset<4> b4 { str4, 0, str4.size(), 'T', 'F' };
+```
+
+```{note}
+When working with `std::bitset`'s functions, bits are represented as a bool type. The value false is for 0 / true is for 1.
+```
+
+Operator overloads are available for all bit-wise operators and their assignment operator equivalents.
+
+```c++
+auto b5 { b1 & b2 };  //AND
+auto b6 { b1 | b2 };  // OR
+auto b7 { b1 ^ b2 };  // XOR
+auto b8 { ~b1 }; // NOT
+auto b9 { b1 << 2 };  // shift-left
+auto b10 { b1 >> 2 };  // shift-right
+b1 &= b2;
+b1 |= b2;
+b1 ^= b2;
+b1 <<= 2;
+b1 >>= 2;
+```
+
+```{note}
+I'm assuming if you're going to be using bit-wise operators, the `set::bitset`s must be of the same size.
+```
+
+To read an individual bit as a bool, use either the subscript operator ([]) or `test()`. The difference is that `test()` provides bounds checking.
+
+```c++
+bool a = b1[1];
+bool b = b1.test(1);
+bool c = b1.test(999);  // throws std::out_of_range
+```
+
+To replace an individual bit as a bool, use either the subscript operator ([]) or `set()`. The difference is that `set()` provides bounds checking.
+
+```c++
+b1[1] = true;
+b1.set(1, true)
+b1.set(999, true)  // throws std::out_of_range
+```
+
+To set a single bit to 0, use `reset()`.
+
+```c++
+b1.reset(1);
+```
+
+To set all bits to 1, use `set()` without any arguments. Similarly, to set all bits to 0, use `reset()` without any arguments.
+
+```c++
+b1.set();  // sets all bits to true
+b1.reset();  // sets all bits to false
+```
+
+To flip a single bit, use `flip()`. Don't specify an argument to flip all bits.
+
+```c++
+b1.flip(1);
+b1.flip(); // flips all bits
+```
+
+To get the number of times 1 occurs in the sequence, use `count()`.
+
+```c++
+int d { b1.count() };
+```
+
+To test the sequence if ...
+
+ * all bits are set to 1, use `all()`.
+ * all bits are set to 0, use `none()`.
+ * at least a single bit is set to 1, use `any()`.
+
+```c++
+bool e { b1.all() };
+bool f { b1.none() };
+bool g { b1.any() };
+```
+
+To get the size, use `size()`.
+
+```c++
+int len { b1.size() };
+```
+
+## Container Adapters
+
+`{bm} /(Library Functions\/Container Adapters)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers_TOPIC
+```
+
+Container adapters are light-weight wrappers around sequential containers that expose them in a simplified way that matches a common data structure. For example, an `std::vector` can be wrapped such that it's exposed as a queue. The caller of the queue doesn't have to know what type of sequential container is backing that queue.
+
+The type of sequential container usable by a container adaptor depends on the functions it has. For example, some container adaptors require both `front()` and `back()` functions to be supported by the sequential container type.
+
+### Stack
+
+`{bm} /(Library Functions\/Container Adapters\/Stack)_TOPIC/`
+
+`std::stack` wraps a sequential container as if it were a stack abstract data type: 
+
+ * The only way to write is to append.
+ * The only element that can be read / removed is the last one.
+
+To create a `std::stack`, pass in a reference to the sequential container to wrap: `std::vector`, `std::deque`, or `std::list`. The container will either be copied or moved depending on whether the container reference is an normal reference or an rvalue reference. Alternatively, if you pass in no reference at all, an empty container of the type specified will get used.
+
+```c++
+// create by copying
+std::vector<int> c1 { 5, 5, 5, 5, 5, 5, 5, 5 };
+std::stack<int, decltype(c1)> s1 { c1 };
+// create by moving
+std::deque<int> c2 { 5, 5, 5, 5, 5, 5, 5, 5 };
+std::stack<int, decltype(c2)> s2 { std::move(c2) };
+// create into brand new
+std::stack<int, std::list<int>> s3 {};
+std::queue<int> q4 {};  // equivalent to using std::deque<int> as the backing type
+```
+
+```{seealso}
+Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
+Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
+```
+
+To add an item, use `push()`. Internally, this invokes the wrapped container's `push_back()` function.
+
+```c++
+s3.push(1);
+s3.push(2);
+s3.push(3);
+```
+
+To read the most recently added item, use `top()`. Internally, this invokes the wrapped container's `back()` function.
+
+```c++
+int a { s3.top() };
+```
+
+To remove the most recently added item, use `pop()`. Internally, this invokes the wrapped container's `pop_back()` function.
+
+```c++
+// NOTE: also returns the element removed
+s3.pop();
+s3.pop();
+s3.pop();
+```
+
+To get the size, use `size()`. Internally, this invokes the wrapped container function with the same name.
+
+```c++
+auto is_empty { s3.size() == 0 };
+```
+
+### Queue
+
+`{bm} /(Library Functions\/Container Adapters\/Queue)_TOPIC/`
+
+`std::queue` wraps a sequential container as if it were a queue abstract data type: 
+
+ * The only way to write is to append.
+ * The only element that can be read / removed is the head.
+
+To create a `std::queue`, pass in a reference to the sequential container to wrap: `std::deque` or `std::list`. The container will either be copied or moved depending on whether the container reference is an normal reference or an rvalue reference. Alternatively, if you pass in no reference at all, an empty container of the type specified will get used.
+
+```c++
+// create by copying
+std::deque<int> c1 { 5, 5, 5, 5, 5, 5, 5, 5 };
+std::queue<int, decltype(c1)> q1 { c1 };
+// create by moving
+std::deque<int> c2 { 5, 5, 5, 5, 5, 5, 5, 5 };
+std::queue<int, decltype(c2)> q2 { std::move(c2) };
+// create into brand new
+std::queue<int, std::list<int>> q3 {};
+std::queue<int> q4 {};  // equivalent to using std::deque<int> as the backing type
+```
+
+```{seealso}
+Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
+Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
+```
+
+To add an item, use `push()`. Internally, this invokes the wrapped container's `push_back()` function.
+
+```c++
+q3.push(1);
+q3.push(2);
+q3.push(3);
+```
+
+To read the most recently added item, use either `front()` or `back()`. Internally, these invoke the wrapped container functions with the same name.
+
+```c++
+int a { q3.front() };
+int b { q3.back() };
+```
+
+To remove the most recently added item, use `pop()`. Internally, this invokes the wrapped container's `pop_front()` function.
+
+```c++
+// NOTE: also returns the element removed
+q3.pop();
+q3.pop();
+q3.pop();
+```
+
+To get the size, use `size()`. Internally, this invokes the wrapped container function with the same name.
+
+```c++
+auto is_empty { q3.size() == 0 };
+```
+
+### Priority Queue
+
+`{bm} /(Library Functions\/Container Adapters\/Priority Queue)_TOPIC/`
+
+`std::priority_queue` wraps a sequential container as if it were a priority queue abstract data type: Regardless of what order elements are added in, the only element that can be read / removed is the element with the highest priority (priority is defined by a comparator).
+
+To create a `std::priority_queue`, pass in a reference to the sequential container to wrap: `std::vector`, `std::deque`, or `std::list`. The container will either be copied or moved depending on whether the container reference is an normal reference or an rvalue reference. Alternatively, if you pass in no reference at all, an empty container of the type specified will get used.
+
+```c++
+// create by copying
+std::vector<int> c1 { 5, 5, 5, 5, 5, 5, 5, 5 };
+std::priority_queue<int, decltype(c1)> q1 { c1 };
+// create by moving
+std::deque<int> c2 { 5, 5, 5, 5, 5, 5, 5, 5 };
+std::priority_queue<int, decltype(c2)> q2 { std::move(c2) };
+// create into brand new
+std::priority_queue<int, std::list<int>> q3 {};
+std::priority_queue<int> q4 {};  // equivalent to using std::vector<int> as the backing type
+```
+
+```{seealso}
+Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
+Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
+```
+
+In the above examples the default comparator of `std::less` is used, which uses the less than operator (<) to compare two objects for priority. To define a custom comparator, pass in that comparator's type as the 3rd type parameter argument and pass it into the constructor.
+
+```c++
+auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < rhs; };
+std::priority_queue<int, std::deque<int>, decltype(comparator)> q5 { comparator };
+std::priority_queue<int, std::deque<int>, decltype(std::greater<int>)> q6 { std::greater<int> };
+```
+
+```{seealso}
+Core Language/Classes/Lambdas)_TOPIC (lambda referesher)
+```
+
+To add an item, use `push()`.
+
+```c++
+q1.push(10);
+q1.push(100);
+q1.push(-5);
+```
+
+To read the most high priority element, use `top()`.
+
+```c++
+int a { q1.top() };
+```
+
+To remove the most high priority element, use `pop()`.
+
+```c++
+// NOTE: also returns the element removed
+q1.pop();
+q1.pop();
+q1.pop();
+```
+
+To get the size, use `size()`.
+
+```c++
+auto is_empty { s3.size() == 0 };
+```
 
 ## Time
 
