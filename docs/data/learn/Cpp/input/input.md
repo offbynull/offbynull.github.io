@@ -1481,7 +1481,7 @@ Named conversion functions are a set of (seemingly templated) functions to conve
    ```
 
 ```{seealso}
-Library Functions/Containers/Any_TOPIC (`any_cast` for an "any" container)
+Library Functions/Utility Wrappers/Any_TOPIC (`any_cast` for an "any" container)
 Library Functions/Time/Timestamps/Clocks_TOPIC (`clock_cast` for converting times between different types of clocks)
 Library Functions/Time/Durations_TOPIC (`duration_cast` for converting between different types of durations)
 ```
@@ -3776,7 +3776,7 @@ int y = x.num_dbl;
 ```
 
 ```{seealso}
-Library Functions/Containers/Variant_TOPIC (consider using this instead of unions)
+Library Functions/Utility Wrappers/Variant_TOPIC (consider using this instead of unions)
 ```
 
 ## Namespaces
@@ -5472,19 +5472,13 @@ C++'s equivalent of Java collections are commonly referred to as containers. C++
 
  * Sequence containers - Objects organized in a sequence, where they're (at least) accessible from one end to the other.
    
-   | C++ Container       | Java Nearest equivalent                                      | Random Access | Variable Length |
-   |---------------------|--------------------------------------------------------------|---------------|-----------------|
-   | `std::array`        | standard Java array                                          | yes           | no              |
-   | `std::vector`       | `ArrayList`                                                  | yes           | yes             |
-   | `std::deque`        | `Deque` (an interface -- the C++ class is an implementation) | no            | yes             |
-   | `std::forward_list` | `LinkedList` (singly-linked list)                            | no            | yes             |
-   | `std::list`         | `LinkedList` (doubly-linked list)                            | no            | yes             |
-
-   ```{note}
-   The "Random Access" column specifies if the container has a method / operator overload to get or set data at a random index in the sequence.
-
-   The "Variable Length" column specifies if the container can grow (add objects) / shrink (remove objects).
-   ```
+   | C++ Container       | Java Nearest equivalent                                      |
+   |---------------------|--------------------------------------------------------------|
+   | `std::array`        | standard Java array                                          |
+   | `std::vector`       | `ArrayList`                                                  |
+   | `std::deque`        | `Deque` (an interface -- the C++ class is an implementation) |
+   | `std::list`         | `LinkedList` (doubly-linked list)                            |
+   | `std::forward_list` | `LinkedList` (singly-linked list)                            |
  
  * Associative containers - Objects organized by key and potentially a value (keys sorted, requiring a comparison function).
  
@@ -5530,9 +5524,17 @@ std::vector<MyObject, CustomAllocator> container { };
 
 The subsections below detail some of the containers mentioned above. Other major libraries provide more specialized containers (boost, abseil, etc..), but those containers aren't detailed here.
 
-### Array
+### Sequential
 
-`{bm} /(Library Functions\/Containers\/Array)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Sequential)_TOPIC/`
+
+Sequential containers organize objects as a sequence, where they're (at least) accessible from one end to the other. The container may or may not be dynamically sized (grow vs shrink) and underlying data structures used by sequential containers aren't the same.
+
+The subsections below detail the various sequential containers that are provided by the C++ standard library.
+
+#### Array
+
+`{bm} /(Library Functions\/Containers\/Sequential\/Array)_TOPIC/`
 
 `std::array` is a container that's more-or-less a wrapper around a normal C++ array. Like normal C++ arrays, it ...
 
@@ -5626,12 +5628,12 @@ There's also ..
  * `crbegin()` / `crend()` which is a mixture of the above two.
 ```
 
-### Vector
+#### Vector
 
-`{bm} /(Library Functions\/Containers\/Vector)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Sequential\/Vector)_TOPIC/`
 
 ```{prereq}
-Library Functions/Containers/Array_TOPIC
+Library Functions/Containers/Sequential/Array_TOPIC
 Library Functions/Allocators_TOPIC
 ```
 
@@ -5665,7 +5667,7 @@ std::vector<int> my_vec5 {rref};                // move into c (gut it into c) v
 Similarly, because `std::vector`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
 
 ```c++
-CustomAllocator allocator {}
+CustomAllocator allocator {};
 std::vector<int, CustomAllocator> my_vec6 (allocator);
 ```
 
@@ -5803,13 +5805,12 @@ There's also ..
  * `crbegin()` / `crend()` which is a mixture of the above two.
 ```
 
-### Deque
+#### Deque
 
-`{bm} /(Library Functions\/Containers\/Deque)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Sequential\/Deque)_TOPIC/`
 
 ```{prereq}
-Library Functions/Containers/Vector_TOPIC
-Library Functions/Allocators_TOPIC
+Library Functions/Containers/Sequential/Vector_TOPIC
 ```
 
 `std::deque` is a container that holds on to its elements sequentially but not contiguously in memory (not an array). It can dynamically size itself (e.g. expand the internal array if not enough room is available to add a new element) just like `std::vector` and it supports most of the same function as `std::vector`. The most prominent functions it _doesn't_ support:
@@ -5844,7 +5845,7 @@ std::deque<int> d5 {rref};                // move into c (gut it into c) via the
 Similarly, because `std::deque`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
 
 ```c++
-CustomAllocator allocator {}
+CustomAllocator allocator {};
 std::deque<int, CustomAllocator> d6 (allocator);
 ```
 
@@ -5937,13 +5938,12 @@ There's also ..
  * `crbegin()` / `crend()` which is a mixture of the above two.
 ```
 
-### List
+#### List
 
-`{bm} /(Library Functions\/Containers\/List)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Sequential\/List)_TOPIC/`
 
 ```{prereq}
-Library Functions/Containers/Deque_TOPIC
-Library Functions/Allocators_TOPIC
+Library Functions/Containers/Sequential/Deque_TOPIC
 ```
 
 `std::list` is a container that holds on to its elements sequentially. It's implemented as a doubly-linked list, meaning its size is dynamic but it isn't stored contiguously in memory (not an array).
@@ -5982,7 +5982,7 @@ std::list<int> l5 {rref};                // move into c (gut it into c) via the 
 Similarly, because `std::list`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
 
 ```c++
-CustomAllocator allocator {}
+CustomAllocator allocator {};
 std::list<int, CustomAllocator> l6 (allocator);
 ```
 
@@ -6062,7 +6062,7 @@ To iterate over the elements, use `being()` and `end()`.
 
 ```c++
 // RECALL: for-each loop will implicitly call begin() and end()
-for (auto &obj : dl) {
+for (auto &obj : l1) {
     // do something with value here
 }
 ```
@@ -6085,137 +6085,665 @@ There's also ..
  * `sort()` sorts an `std::list` based on a comparator (in-place sort).
  * `unique()` removes consecutive duplicate elements.
 
-### Set
+### Ordered Associative
 
-TODO: start here
+`{bm} /(Library Functions\/Containers\/Ordered Associative)_TOPIC/`
 
-TODO: start here
+Ordered associative containers organize objects by key and potentially a value. Keys are sorted into a specific order, meaning that a comparison function is required. The underlying data structure used by ordered associative containers is a red-black tree.
 
-TODO: start here
-
-TODO: start here
-
-TODO: start here
-
-### Map
-
-### Multiset
-
-### Multimap
-
-### Bitset
-
-```{prereq}
-Library Functions/Containers/Array_TOPIC
+```{note}
+Unsure if the spec defines if they should be implemented as red-black trees, but from what I've read that's how they're implemented.
 ```
 
-`{bm} /(Library Functions\/Containers\/Bitset)_TOPIC/`
+The subsections below detail the various ordered associative containers that are provided by the C++ standard library.
 
-`std::bitset` is a pseudo-container wraps a fixed-size sequence of bits. It's similar to an `std::array<bool, N>` or `bool [N]`, but optimized for space and provides a functions more appropriate for working with bits.
+#### Set
 
-To create a `std::bitset` from an integral type, set the number of bits to capture as the type parameter. The constructor can optionally take in the integral value to initialize to (if not present, all sets initialized to 0).
+`{bm} /(Library Functions\/Containers\/Ordered Associative\/Set)_TOPIC/`
+
+```{prereq}
+Library Functions/Allocators_TOPIC
+```
+
+`std::set` is a container that holds on to _unique_ elements in sorted order, where that order is defined by a comparator.
+
+To create a `std::set` primed with a sequence of values known as compile-time, use typical braced initialization. Since only unique values are allowed, duplicates will be ignored. By default, the comparator `std::less` is used which uses the less than operator (<) to compare two objects for priority.
 
 ```c++
-std::bitset<4> b1 {};  // 4 bits, 0000
-std::bitset<4> b2 {0b1011}; // 4 bits, 1011
+std::set<int> s1 { 1, 1, 2, 3, 4, 5 };
+```
+
+To create a `std::set` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+
+```c++
+std::set<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
+
+// CUSTOM COMPARATOR
+auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < rhs; };
+std::set<int, decltype(comparator)> s3 ({ 1, 1, 2, 3, 4, 5 }, comparator);
+std::set<int, decltype(std::greater)> s4 ({ 1, 1, 2, 3, 4, 5 }, std::greater);
+```
+
+`std::set` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::set` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
+
+```c++
+std::set<int> &&rref { std::move(s1) }; // get rvalue reference
+std::set<int> s5 {rref};                // move into c (gut it into c) via the move constructor
+```
+
+Similarly, because `std::set`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
+
+```c++
+CustomAllocator allocator {};
+std::set<int, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
+```
+
+To check an element exists, the following functions are available:
+
+ * `find()` return an iterator primed at the position of the found element (returns `end()` iterator position if not found).
+ * `contains()` returns bool (true if it exists, false otherwise).
+ * `count()` returns integer (1 if it exists, 0 otherwise).
+
+```c++
+bool found { s1.find(3) != s1.end() };
+bool found { s1.contains(3) };
+bool found { s1.count(3) == 1 };
+```
+
+To find the first element that is greater than or equal (>=) to some value, use `lower_bound()`. Similarly, to find the first element that's greater than (>) some value, use `upper_bound()`.
+
+```c++
+auto it1 { s1.lower_bound(4) }; // get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)
+auto it2 { s1.upper_bound(4) }; // get iterator to elem just after 4 (could be s1.end() if no such elem)
+```
+
+To add an element, the following functions are available:
+
+ * `insert()` either copies or moves into the container (depending on if the reference passed in is a rvalue reference).
+ * `emplace()` adds an element _by creating it directly_ (no copying / moving).
+ * `emplace_hint()` like the above but also takes in an iterator primed to some position as a hint.
+
+```c++
+s1.insert(6);
+s1.emplace(6);
+s1.emplace_hint(s1.begin(), 6);  // iterator should be near to where the value is
+```
+
+```{note}
+`emplace()` / `emplace_hint()` don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use template parameter packs to forward arguments for object creation (e.g. constructor arguments, initializer list, etc..).
 ```
 
 ```{seealso}
-Core Language/Variables/Core Types/Integral_TOPIC (refresher on 0b prefix for integral literals specified as binary)
+Library Functions/Utility Wrappers/Any_TOPIC (also has an `emplace()` function)
+Library Functions/Utility Wrappers/Variant_TOPIC (also has an `emplace()` function)
 ```
 
-To create a `std::bitset` that's potentially larger than the largest available integral type, pass in an `std::string` of ones and zeros. Alternatively, you can use a custom character for the both ones and zeros by passing those characters into the constructor.
+To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the element while `erase()` won't.
 
 ```c++
-std::string str3 { "1011" };
-std::bitset<4> b3 { str3 };
-std::string str4 { "TFTT" };
-std::bitset<4> b4 { str4, 0, str4.size(), 'T', 'F' };
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+
+// DELETE between idx range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
+```
+
+To delete all elements, use `clear()`.
+
+```c++
+s1.clear();
+```
+
+To get the number of elements, use `size()`. Similarly, use `empty()` to check if empty.
+
+```c++
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+```
+
+To iterate over the elements, use `being()` and `end()`.
+
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : s1) {
+    // do something with value here
+}
 ```
 
 ```{note}
-When working with `std::bitset`'s functions, bits are represented as a bool type. The value false is for 0 / true is for 1.
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
 ```
 
-Operator overloads are available for all bit-wise operators and their assignment operator equivalents.
+#### Multiset
+
+`{bm} /(Library Functions\/Containers\/Ordered Associative\/Multiset)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Ordered Associative/Set_TOPIC
+```
+
+`std::multiset` is a container that, like a `std::set`, holds on to elements in sorted order where that order is defined by a comparator. Unlike `std::set`, it can hold on to multiple instances of the same element (elements aren't unique). Rather than using the equality operator (==) to find duplicates, `std::multiset` uses the sorting comparator: two objects a and b are considered equivalent if neither compares less than the other: `!comp(a, b) && !comp(b, a)`.
+
+```{note}
+Definition is from cppreference.
+```
+
+To create a `std::multiset`, the same `std::set` constructors apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.
 
 ```c++
-auto b5 { b1 & b2 };  //AND
-auto b6 { b1 | b2 };  // OR
-auto b7 { b1 ^ b2 };  // XOR
-auto b8 { ~b1 }; // NOT
-auto b9 { b1 << 2 };  // shift-left
-auto b10 { b1 >> 2 };  // shift-right
-b1 &= b2;
-b1 |= b2;
-b1 ^= b2;
-b1 <<= 2;
-b1 >>= 2;
+// prime
+std::multiset<int> s1 { 1, 1, 2, 3, 4, 5 };  // DUPLICATES RETAINED
+// copy range
+std::multiset<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
+// custom comparator
+auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < rhs; };
+std::multiset<int, decltype(comparator)> s3 ({ 1, 1, 2, 3, 4, 5 }, comparator);
+std::multiset<int, decltype(std::greater)> s4 ({ 1, 1, 2, 3, 4, 5 }, std::greater);
+// copy/move
+std::multiset<int> &&rref { std::move(s1) }; // get rvalue reference
+std::multiset<int> s5 {rref};                // move into c (gut it into c) via the move constructor
+// custom allocator
+CustomAllocator allocator {};
+std::multiset<int, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
+```
+
+Functions are more or less the same as their `std::set` counterparts. The only major difference is that `count()` returns the number of instances for an element.are available.
+
+```c++
+// find
+bool found { s1.find(1) != s1.end() };
+bool found { s1.contains(1) };
+// get number of instances
+bool is_two_instances { s1.count(1) == 2 };
+// get lower/upper bound
+auto it1 { s1.lower_bound(4) }; // get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)
+auto it2 { s1.upper_bound(4) }; // get iterator to elem just after 4 (could be s1.end() if no such elem)
+// add
+s1.insert(6);
+s1.emplace(6);
+s1.emplace_hint(s1.begin(), 6);  // iterator should be near to where the value is
+// remove
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+// remove range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
+// remove all
+s1.clear();
+// get size
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+// iterate
+for (auto &obj : s1) {  // RECALL: for-each loop will implicitly call begin() and end()
+    // do something with value here
+}
 ```
 
 ```{note}
-I'm assuming if you're going to be using bit-wise operators, the `set::bitset`s must be of the same size.
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
 ```
 
-To read an individual bit as a bool, use either the subscript operator ([]) or `test()`. The difference is that `test()` provides bounds checking.
+#### Map
+
+`{bm} /(Library Functions\/Containers\/Ordered Associative\/Map)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Ordered Associative/Set_TOPIC
+```
+
+`std::map` is a container similar to `std::set`, with the major difference being that each element in a `std::map` has a secondary value associated with it: key to value. Only the key is used for ordering, uniqueness, and lookup. The value just tags along.
+
+To create a `std::map`, the same `std::set` constructors apply. The only major differences are that ...
+
+ 1. the type of the value needs to be specified as as the second template parameter.
+ 2. if initializing to a list of key-value pairs, each element of the initializer list must be `std::pair<K,V>` (`K` is key type, `V` is value type).
 
 ```c++
-bool a = b1[1];
-bool b = b1.test(1);
-bool c = b1.test(999);  // throws std::out_of_range
+// prime
+std::map<int. float> s1 {
+    { 1, 99.0f },
+    { 1, -99.0f },  // WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined
+    { 2, -100.0f },
+    { 4, 123.0f },
+    { 5, 4.0f }
+};
+// copy range
+std::map<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 key-value pairs from another container
+// custom comparator
+auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < rhs; };
+std::map<int, float, decltype(comparator)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, comparator);
+std::map<int, float, decltype(std::greater)> s4 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, std::greater);
+// copy/move
+std::map<int, float> &&rref { std::move(s1) }; // get rvalue reference
+std::map<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+// custom allocator
+CustomAllocator allocator {};
+std::map<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
 ```
 
-To replace an individual bit as a bool, use either the subscript operator ([]) or `set()`. The difference is that `set()` provides bounds checking.
+
+To check an element exists, the following functions are available:
+
+ * `find()` return an iterator primed at the position of the found element (returns `end()` iterator position if not found).
+ * `contains()` returns bool (true if it exists, false otherwise).
+ * `count()` returns integer (0 is false, 1 is true).
 
 ```c++
-b1[1] = true;
-b1.set(1, true)
-b1.set(999, true)  // throws std::out_of_range
+bool found { s1.find(3) != s1.end() };
+bool found { s1.contains(3) };
+bool found { s1.count(3) == 1 };
 ```
 
-To set a single bit to 0, use `reset()`.
+Dereferencing an iterator will give back both the key and value as a `std::pair<K,V>`.
 
 ```c++
-b1.reset(1);
+auto it { s1.find(3) };
+std::pair<int, float> found_pair { *it };
 ```
 
-To set all bits to 1, use `set()` without any arguments. Similarly, to set all bits to 0, use `reset()` without any arguments.
+To find the first key-value pair where the key is greater than or equal (>=) to some other key, use `lower_bound()`. Similarly, to find the first key-value pair where the key is greater than (>) some other key, use `upper_bound()`.
 
 ```c++
-b1.set();  // sets all bits to true
-b1.reset();  // sets all bits to false
+auto it1 { s1.lower_bound(4) }; // get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)
+auto it2 { s1.upper_bound(4) }; // get iterator to elem just after 4 (could be s1.end() if no such elem)
 ```
 
-To flip a single bit, use `flip()`. Don't specify an argument to flip all bits.
+To add a key-value pair (not _replace_ an existing value), the following functions are available:
+
+ * `insert()` either copies or moves into the container (depending on if the reference passed in is a rvalue reference).
+ * `emplace()` adds an element _by creating it directly_ (no copying / moving).
+ * `try_emplace()` like `emplace()` but has special move semantics (does not move template parameter pack rvalue arguments if insertion doesn't happen -- see docs for more info).
+ * `emplace_hint()` like `emplace()` but also takes in an iterator primed to some position as a hint.
 
 ```c++
-b1.flip(1);
-b1.flip(); // flips all bits
+// NOTE: Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)
+s1.insert(6, 122.0f);
+s1.emplace(6, 122.0f);
+s1.emplace_try(6, 122.0f);
+s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
 ```
 
-To get the number of times 1 occurs in the sequence, use `count()`.
+To replace a value for an already existing key, `insert_or_assign()` either copies or moves into the container (depending on if the reference passed in is a rvalue reference), replacing it if already exists.
 
 ```c++
-int d { b1.count() };
+// NOTE: returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)
+s1.insert_or_assign(6, 122.0f);
 ```
 
-To test the sequence if ...
-
- * all bits are set to 1, use `all()`.
- * all bits are set to 0, use `none()`.
- * at least a single bit is set to 1, use `any()`.
+To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the key-value while `erase()` won't.
 
 ```c++
-bool e { b1.all() };
-bool f { b1.none() };
-bool g { b1.any() };
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+
+// DELETE between idx range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
 ```
 
-To get the size, use `size()`.
+To delete all elements, use `clear()`.
 
 ```c++
-int len { b1.size() };
+s1.clear();
 ```
+
+To get the number of elements, use `size()`. Similarly, use `empty()` to check if empty.
+
+```c++
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+```
+
+To iterate over the elements, use `being()` and `end()`.
+
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : s1) {
+    // do something with value here
+}
+```
+
+```{note}
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
+
+#### Multimap
+
+`{bm} /(Library Functions\/Containers\/Ordered Associative\/Multimap)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Ordered Associative/Multiset_TOPIC
+Library Functions/Containers/Ordered Associative/Map_TOPIC
+```
+
+`std::multimap` is a container that's a combination of `std::multiset` and `std::map`. That is, it's a `std::map` but it allows for many key-value pairs with the same key (keys aren't unique). Similar to `std::multiset`, `std::multimap` uses the sorting comparator to find duplicates: two objects a and b are considered equivalent if neither compares less than the other: `!comp(a, b) && !comp(b, a)`.
+
+```{note}
+Definition is from cppreference.
+```
+
+To create a `std::multimap`, the same `std::map` constructors apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.
+
+```c++
+// prime
+std::multimap<int. float> s1 {
+    { 1, 99.0f },
+    { 1, -99.0f },  // NOTE: this is the 2nd instance of the key 1, both key-value pairs are kept
+    { 2, -100.0f },
+    { 4, 123.0f },
+    { 5, 4.0f }
+};
+// copy range
+std::multimap<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 key-value pairs from another container
+// custom comparator
+auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < rhs; };
+std::multimap<int, float, decltype(comparator)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, comparator);
+std::multimap<int, float, decltype(std::greater)> s4 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, std::greater);
+// copy/move
+std::multimap<int, float> &&rref { std::move(s1) }; // get rvalue reference
+std::multimap<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+// custom allocator
+CustomAllocator allocator {};
+std::multimap<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
+```
+
+Functions are more or less the same as their `std::map` counterparts. The only major difference are that...
+
+ 1. `count()` returns the number of instances for an element.are available
+ 2. `insert_or_assign()` is removed because it doesn't make sense to have it (you can have duplicate keys).
+ 3. `try_emplace()` is removed because it doesn't make sense to have it (you can have duplicate keys).
+
+```c++
+// find
+bool found { s1.find(3) != s1.end() };
+bool found { s1.contains(3) };
+// get
+auto it { s1.find(3) };  // WARNING: if there's multiple instances of key, any of them could be returned here
+std::pair<int, float> found_pair { *it };
+// get number of instances
+bool is_two_instances { s1.count(1) == 2 };
+// get lower/upper bound
+auto it1 { s1.lower_bound(4) }; // get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)
+auto it2 { s1.upper_bound(4) }; // get iterator to elem just after 4 (could be s1.end() if no such elem)
+// add
+s1.insert(6, 122.0f);
+s1.emplace(6, 122.0f);
+s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
+// remove
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+// remove range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
+// remove all
+s1.clear();
+// get size
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+// iterate
+for (auto &obj : s1) {
+    // do something with value here
+}
+```
+
+```{note}
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
+
+### Unordered Associative
+
+`{bm} /(Library Functions\/Containers\/Unordered Associative)_TOPIC/`
+
+Unordered associative containers organize objects by key and potentially a value. Keys are stored in an unordered fashion. The underlying data structure used by unordered associative containers is a hash table.
+
+```{note}
+Unsure if the spec defines if they should be implemented as red-black trees, but from what I've read that's how they're implemented.
+```
+
+The subsections below detail the various unordered associative containers that are provided by the C++ standard library.
+
+#### Set
+
+`{bm} /(Library Functions\/Containers\/Unordered Associative\/Set)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Ordered Associative/Set_TOPIC
+Library Functions/Allocators_TOPIC
+```
+
+`std::unordered_set` is a container that's similar to `std::set`. It holds on to unique elements but does so _unordered_ (where as `std::set` has some sort order). It's implemented as a hash table, so rather than having to specify a comparator, you're required to specify a hash function.
+
+Several pre-existing hash functions are provided by the C++ standard library via `std::hash<T>` (`T` being the type in question). If the user doesn't supply a hash function directly, the default is to use `std::hash<T>` with the element type substituted in (compilation will fail if no `std::hash<T>` implementation for that element type exists). For example, `std::hash<int>` exists for integers and gets automatically plugged in when the element type of the container is `int`.
+
+In addition to a hash function, a `std::unordered_set` may have a custom equivalence function. By default, `std::equal_to<T>` is used if none is supplied by the user, which use the equality operator (==).
+
+To create a `std::unordered_set` primed with a sequence of values known as compile-time, use typical braced initialization. Since only unique values are allowed, duplicates will be ignored. 
+
+```c++
+std::unordered_set<int> s1 { 1, 1, 2, 3, 4, 5 };
+```
+
+To create a `std::unordered_set` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+
+```c++
+std::unordered_set<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
+```
+
+To create a `std::unordered_set` with a custom hash function, that custom hash function can be implemented in one of two ways: 
+
+ * a function-like object that takes a single parameter of element type and returns the hash code as a `size_t`.
+ * a template specialization `std::hash<T>` for the element type (assuming one wasn't already supplied by the C++ standard library).
+
+```c++
+// function-like object
+auto hasher = [] (const int & val) -> size_t { return static_cast<size_t>(val); };
+std::unordered_set<int, decltype(hasher)> s3 ({ 1, 1, 2, 3, 4, 5 }, hasher);
+```
+
+```{note}
+I think (not sure) if you create a `std::hash<T>` implementation for the element type, the `std::unordered_set` should automatically pick it without having to specify the template parameter + directly passing it in as an argument (as done above). It should work so long as the implementation is visible (e.g. whatever file its in has been `#include`-ed) when the container is created.
+```
+
+`std::unordered_set` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::unordered_set` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
+
+```c++
+std::unordered_set<int> &&rref { std::move(s1) }; // get rvalue reference
+std::unordered_set<int> s4 {rref};                // move into c (gut it into c) via the move constructor
+```
+
+Similarly, because `std::unordered_set`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
+
+```c++
+CustomAllocator allocator {};
+std::unordered_set<int, decltype(std::hash<int>), decltype(std::equal_to<int>), CustomAllocator> s5 (allocator);
+```
+
+```{note}
+Similar to a Java `HashMap`, a `std::unordered_set` has concept_NORMs such as bucket count and load factor. It'll automatically add more buckets and rehash once the load factor reaches some point, all of which is tunable if you deem the performance of the defaults as not good. Alternatively, you can always trigger a rehash manually.
+
+Those features aren't discussed here.
+```
+
+`std::unordered_set` supports most of the same functions as `std::set` except for those that have to do with sorted ordering. For example, `lower_bound()` and `upper_bound()` are missing because here because the elements here aren't ordered.
+
+To check if a set contains an element, the following functions are available:
+
+ * `find()` return an iterator primed at the position of the found element (returns `end()` iterator position if not found).
+ * `contains()` returns bool (true if it exists, false otherwise).
+ * `count()` returns integer (1 if it exists, 0 otherwise).
+
+```c++
+bool found { s1.find(3) != s1.end() };
+bool found { s1.contains(3) };
+bool found { s1.count(3) == 1 };
+```
+
+To add an element, the following functions are available:
+
+ * `insert()` either copies or moves a value into the container (depending on if the reference passed in is a rvalue reference).
+ * `emplace()` adds an element _by creating it directly_ (no copying / moving).
+ * `emplace_hint()` like the above but also takes in an iterator primed to some position as a hint.
+
+```c++
+s1.insert(6);
+s1.emplace(6);
+s1.emplace_hint(6, s1.begin());
+```
+
+```{note}
+`emplace()` / `emplace_hint()` don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use template parameter packs to forward arguments for object creation (e.g. constructor arguments, initializer list, etc..).
+```
+
+```{seealso}
+Library Functions/Utility Wrappers/Any_TOPIC (also has an `emplace()` function)
+Library Functions/Utility Wrappers/Variant_TOPIC (also has an `emplace()` function)
+```
+
+To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the element while `erase()` won't.
+
+```c++
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+
+// DELETE between idx range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
+```
+
+To delete all elements, use `clear()`.
+
+```c++
+s1.clear();
+```
+
+To get the number of elements, use `size()`. Similarly, use `empty()` to check if empty.
+
+```c++
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+```
+
+To iterate over the elements, use `being()` and `end()`.
+
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : s1) {
+    // do something with value here
+}
+```
+
+```{note}
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
+
+#### Multiset
+
+`{bm} /(Library Functions\/Containers\/Unordered Associative\/Multiset)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Unordered Associative/Set_TOPIC
+```
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+#### Map
+
+`{bm} /(Library Functions\/Containers\/Unordered Associative\/Map)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Unordered Associative/Set_TOPIC
+```
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+#### Multimap
+
+`{bm} /(Library Functions\/Containers\/Unordered Associative\/Multimap)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers/Unordered Associative/Multiset_TOPIC
+Library Functions/Containers/Unordered Associative/Map_TOPIC
+```
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
+
+todo: fill me in
 
 ## Container Adapters
 
@@ -6239,6 +6767,10 @@ The type of sequential container usable by a container adaptor depends on the fu
  * The only element that can be read / removed is the last one.
 
 To create a `std::stack`, pass in a reference to the sequential container to wrap: `std::vector`, `std::deque`, or `std::list`. The container will either be copied or moved depending on whether the container reference is an normal reference or an rvalue reference. Alternatively, if you pass in no reference at all, an empty container of the type specified will get used.
+
+```{note}
+The sequential container can technically be any class, so long as it supports the expected type traits (e.g. it's expected to have a function called `push_back()` that has a single parameter of type ...).
+```
 
 ```c++
 // create by copying
@@ -6297,6 +6829,10 @@ auto is_empty { s3.size() == 0 };
 
 To create a `std::queue`, pass in a reference to the sequential container to wrap: `std::deque` or `std::list`. The container will either be copied or moved depending on whether the container reference is an normal reference or an rvalue reference. Alternatively, if you pass in no reference at all, an empty container of the type specified will get used.
 
+```{note}
+The sequential container can technically be any class, so long as it supports the expected type traits (e.g. it's expected to have a function called `push_back()` that has a single parameter of type ...).
+```
+
 ```c++
 // create by copying
 std::deque<int> c1 { 5, 5, 5, 5, 5, 5, 5, 5 };
@@ -6350,6 +6886,10 @@ auto is_empty { q3.size() == 0 };
 
 `std::priority_queue` wraps a sequential container as if it were a priority queue abstract data type: Regardless of what order elements are added in, the only element that can be read / removed is the element with the highest priority (priority is defined by a comparator).
 
+```{note}
+The sequential container can technically be any class, so long as it supports the expected type traits (e.g. it's expected to have a function called `push_back()` that has a single parameter of type ...).
+```
+
 To create a `std::priority_queue`, pass in a reference to the sequential container to wrap: `std::vector`, `std::deque`, or `std::list`. The container will either be copied or moved depending on whether the container reference is an normal reference or an rvalue reference. Alternatively, if you pass in no reference at all, an empty container of the type specified will get used.
 
 ```c++
@@ -6369,7 +6909,7 @@ Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
 Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
 ```
 
-In the above examples the default comparator of `std::less` is used, which uses the less than operator (<) to compare two objects for priority. To define a custom comparator, pass in that comparator's type as the 3rd type parameter argument and pass it into the constructor.
+In the above examples the default comparator of `std::less` is used, which uses the less than operator (<) to compare two objects for priority. To define a custom comparator, pass in that comparator's type as the 3rd template parameter argument and pass it into the constructor.
 
 ```c++
 auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < rhs; };
@@ -6378,7 +6918,7 @@ std::priority_queue<int, std::deque<int>, decltype(std::greater<int>)> q6 { std:
 ```
 
 ```{seealso}
-Core Language/Classes/Lambdas)_TOPIC (lambda referesher)
+Core Language/Classes/Lambdas_TOPIC (lambda refresher)
 ```
 
 To add an item, use `push()`.
@@ -6749,7 +7289,7 @@ std::chrono::year_month_weekday today2 { y, m, _4th_thurs };
 std::chrono::local_days today1_tp {today1};
 std::chrono::local_days today2_tp {today2};
 // compare -- they both represent the same date so they should be equal
-auto sameDay = today1_tp == today2_tp; // returns true
+auto sameDay { today1_tp == today2_tp }; // returns true
 ```
 
 Calendar objects can be created more intuitively via a set of operator overloads, constants, and user-defined literals.
@@ -6774,10 +7314,10 @@ std::chrono::year_month_day ymd{ tp_rounded };
 auto time_duration ( std::chrono::floor<milliseconds>(tp - tp_rounded) );
 std::chrono::hh_mm_ss time{ time_duration };
 // the variables below are of duration type
-auto h = time.hours();
-auto m = time.minutes();
-auto s = time.seconds();
-auto ms = time.subseconds();
+auto h { time.hours() };
+auto m { time.minutes() };
+auto s { time.seconds() };
+auto ms { time.subseconds() };
 ```
 
 Several time-related helper functions are provided to deal with 12-hour vs 24-hour time.
@@ -6801,8 +7341,8 @@ Timezones are accessible through a timezone database.
 ```c++
 const auto my_tzdb = std::chrono::get_tzdb(); // also get_tzdb_list()
 
-const std::chrono::time_zone* la_tz = my_tzdb.locate_zone("America/Los_Angeles");
-const std::chrono::time_zone* local_tz = my_tzdb.current_zone();
+const std::chrono::time_zone* la_tz { my_tzdb.locate_zone("America/Los_Angeles") };
+const std::chrono::time_zone* local_tz { my_tzdb.current_zone() };
 ```
 
 You can apply a timezone to a time point, then convert it to the appropriate date and time objects.
@@ -6824,7 +7364,7 @@ using namespace std::literals::chrono_literals;
 std::chrono::year_month_day date { January / 27d / 2022y };
 std::chrono::hh_mm_ss time { 8h + 30m + 45s };
 
-auto tp = std::chrono::local_days { date } + time;  // or use sys_days for system time
+auto tp { std::chrono::local_days { date } + time };  // or use sys_days for system time
 ```
 
 ## Numbers
@@ -6859,7 +7399,7 @@ To have a random number generator return a distribution other than a normal dist
 ```c++
 std::mt19937_64 rng{ 12345 };
 std::uniform_int_distribution<int> uniform_dist{ 0, 10 };
-auto value = uniform_dist(rng);
+auto value { uniform_dist(rng) };
 ```
 
  * `std::uniform_int_distribution`
@@ -6880,9 +7420,9 @@ Are there friendly wrappers here? What if I want the random number generator to 
 Recall that C++'s numeric types are wishy-washy (e.g. there is no guarantee as to how large an `int` is, just that it must be greater than or equal to `short`). The `std::numeric_limits` class allows you to get compile-time information about a numeric type, such as signed-ness, min, max, etc..
 
 ```c++
-auto a = std::numeric_limits<float>::is_integer;      // false
-auto b = std::numeric_limits<uint16_t>::is_integer;   // true
-auto c = std::numeric_limits<uint16_t>::has_infinity; // false
+auto a { std::numeric_limits<float>::is_integer };      // false
+auto b { std::numeric_limits<uint16_t>::is_integer };   // true
+auto c { std::numeric_limits<uint16_t>::has_infinity }; // false
 ```
 
  * `std::numeric_limits<T>::is_signed` - if the type is signed
@@ -6980,9 +7520,123 @@ auto aImaginary { std::imag(a)} ; // get imaginary part
 This seems like such a niche thing that I don't think it's worth fleshing it out.
 ```
 
+## Bitset
+
+```{prereq}
+Library Functions/Containers/Sequential/Array_TOPIC
+```
+
+`{bm} /(Library Functions\/Bitset)_TOPIC/`
+
+`std::bitset` is a pseudo-container that wraps a fixed-size sequence of bits. It's similar to an `std::array<bool, N>` or `bool [N]`, but optimized for space and provides functions more appropriate for working with bits.
+
+To create a `std::bitset` from an integral type, set the number of bits to capture as the template parameter. The constructor can optionally take in the integral value to initialize to (if not present, all sets initialized to 0).
+
+```c++
+std::bitset<4> b1 {};  // 4 bits, 0000
+std::bitset<4> b2 {0b1011}; // 4 bits, 1011
+```
+
+```{seealso}
+Core Language/Variables/Core Types/Integral_TOPIC (refresher on 0b prefix for integral literals specified as binary)
+```
+
+To create a `std::bitset` that's potentially larger than the largest available integral type, pass in an `std::string` of ones and zeros. Alternatively, you can use a custom character for the both ones and zeros by passing those characters into the constructor.
+
+```c++
+std::string str3 { "1011" };
+std::bitset<4> b3 { str3 };
+std::string str4 { "TFTT" };
+std::bitset<4> b4 { str4, 0, str4.size(), 'T', 'F' };
+```
+
+```{note}
+When working with `std::bitset`'s functions, bits are represented as a bool type. The value false is for 0 / true is for 1.
+```
+
+Operator overloads are available for all bit-wise operators and their assignment operator equivalents.
+
+```c++
+auto b5 { b1 & b2 };  //AND
+auto b6 { b1 | b2 };  // OR
+auto b7 { b1 ^ b2 };  // XOR
+auto b8 { ~b1 }; // NOT
+auto b9 { b1 << 2 };  // shift-left
+auto b10 { b1 >> 2 };  // shift-right
+b1 &= b2;
+b1 |= b2;
+b1 ^= b2;
+b1 <<= 2;
+b1 >>= 2;
+```
+
+```{note}
+I'm assuming if you're going to be using bit-wise operators, the `set::bitset`s must be of the same size.
+```
+
+To read an individual bit as a bool, use either the subscript operator ([]) or `test()`. The difference is that `test()` provides bounds checking.
+
+```c++
+bool a = b1[1];
+bool b = b1.test(1);
+bool c = b1.test(999);  // throws std::out_of_range
+```
+
+To replace an individual bit as a bool, use either the subscript operator ([]) or `set()`. The difference is that `set()` provides bounds checking.
+
+```c++
+b1[1] = true;
+b1.set(1, true)
+b1.set(999, true)  // throws std::out_of_range
+```
+
+To set a single bit to 0, use `reset()`.
+
+```c++
+b1.reset(1);
+```
+
+To set all bits to 1, use `set()` without any arguments. Similarly, to set all bits to 0, use `reset()` without any arguments.
+
+```c++
+b1.set();  // sets all bits to true
+b1.reset();  // sets all bits to false
+```
+
+To flip a single bit, use `flip()`. Don't specify an argument to flip all bits.
+
+```c++
+b1.flip(1);
+b1.flip(); // flips all bits
+```
+
+To get the number of times 1 occurs in the sequence, use `count()`.
+
+```c++
+int d { b1.count() };
+```
+
+To test the sequence if ...
+
+ * all bits are set to 1, use `all()`.
+ * all bits are set to 0, use `none()`.
+ * at least a single bit is set to 1, use `any()`.
+
+```c++
+bool e { b1.all() };
+bool f { b1.none() };
+bool g { b1.any() };
+```
+
+To get the size, use `size()`.
+
+```c++
+int len { b1.size() };
+```
+
 # Terminology
 
- * `{bm} processor/(preprocessor|translation unit)/i` - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a translation unit.
+ * `{bm} preprocessor/(preprocessor|translation unit)/i` - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a translation unit.
 
    ```{note}
    See compilation section.

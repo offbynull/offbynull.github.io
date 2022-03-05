@@ -138,12 +138,42 @@
 <li><a href="#H_Weak%20Pointer">Weak Pointer</a></li>
 <li><a href="#H_Intrusive%20Pointer">Intrusive Pointer</a></li>
 </ul>
-<li><a href="#H_Containers">Containers</a></li>
+<li><a href="#H_Utility%20Wrappers">Utility Wrappers</a></li>
 <ul>
 <li><a href="#H_Optional">Optional</a></li>
 <li><a href="#H_Tuple">Tuple</a></li>
 <li><a href="#H_Any">Any</a></li>
 <li><a href="#H_Variant">Variant</a></li>
+</ul>
+<li><a href="#H_Containers">Containers</a></li>
+<ul>
+<li><a href="#H_Sequential">Sequential</a></li>
+<ul>
+<li><a href="#H_Array">Array</a></li>
+<li><a href="#H_Vector">Vector</a></li>
+<li><a href="#H_Deque">Deque</a></li>
+<li><a href="#H_List">List</a></li>
+</ul>
+<li><a href="#H_Ordered%20Associative">Ordered Associative</a></li>
+<ul>
+<li><a href="#H_Set">Set</a></li>
+<li><a href="#H_Multiset">Multiset</a></li>
+<li><a href="#H_Map">Map</a></li>
+<li><a href="#H_Multimap">Multimap</a></li>
+</ul>
+<li><a href="#H_Unordered%20Associative">Unordered Associative</a></li>
+<ul>
+<li><a href="#H1_Set">Set</a></li>
+<li><a href="#H1_Multiset">Multiset</a></li>
+<li><a href="#H1_Map">Map</a></li>
+<li><a href="#H1_Multimap">Multimap</a></li>
+</ul>
+</ul>
+<li><a href="#H_Container%20Adapters">Container Adapters</a></li>
+<ul>
+<li><a href="#H_Stack">Stack</a></li>
+<li><a href="#H_Queue">Queue</a></li>
+<li><a href="#H_Priority%20Queue">Priority Queue</a></li>
 </ul>
 <li><a href="#H_Time">Time</a></li>
 <ul>
@@ -162,6 +192,7 @@
 <li><a href="#H_Numeric%20Type%20Casting">Numeric Type Casting</a></li>
 <li><a href="#H_Math">Math</a></li>
 </ul>
+<li><a href="#H_Bitset">Bitset</a></li>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -2033,7 +2064,7 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FAny)_TOPIC%2F">Library Functions/Containers/Any</a> (<code>any_cast</code> for an "any" container)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FAny)_TOPIC%2F">Library Functions/Utility Wrappers/Any</a> (<code>any_cast</code> for an "any" container)</li>
 <li><a href="#BM_(Library%20Functions%5C%2FTime%2FTimestamps%2FClocks)_TOPIC%2F">Library Functions/Time/Timestamps/Clocks</a> (<code>clock_cast</code> for converting times between different types of clocks)</li>
 <li><a href="#BM_(Library%20Functions%5C%2FTime%2FDurations)_TOPIC%2F">Library Functions/Time/Durations</a> (<code>duration_cast</code> for converting between different types of durations)</li>
 </ul>
@@ -3988,7 +4019,7 @@ MyUnion x;
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FVariant)_TOPIC%2F">Library Functions/Containers/Variant</a> (consider using this instead of <a href="#BM_(union)%2Fi">union</a>s)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FVariant)_TOPIC%2F">Library Functions/Utility Wrappers/Variant</a> (consider using this instead of <a href="#BM_(union)%2Fi">union</a>s)</li>
 </ul>
 </div>
 <a name="H_Namespaces"></a><h2>Namespaces</h2>
@@ -5311,13 +5342,13 @@ boost::intrusive_ptr&lt;<span class="hljs-type">int</span>&gt; a { <span class="
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The book mentions that this is useful in cases where the OS or framework requires some cleanup operation once the last <a href="#BM_(object%7Cinstance)%2Fi">instance</a> of some type goes away (e.g. the old school Windows component <a href="#BM_(object%7Cinstance)%2Fi">object</a> model).</p>
 </div>
-<a name="H_Containers"></a><h2>Containers</h2>
-<p><a name="BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F"></a><strong></strong></p>
-<p>Containers are <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that wrap one or more other <a href="#BM_(object%7Cinstance)%2Fi">object</a>s, such as collections (e.g. lists and maps). These wrappers either provide some type of extra functionality or provide abstractions that make code easier to handle and reason about.</p>
-<p>The subsections below document some common container <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and their usages.</p>
+<a name="H_Utility%20Wrappers"></a><h2>Utility Wrappers</h2>
+<p><a name="BM_(Library%20Functions%5C%2FUtility%20Wrappers)_TOPIC%2F"></a><strong></strong></p>
+<p>There are utility <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that wrap one or more other <a href="#BM_(object%7Cinstance)%2Fi">object</a>s, such as optionals or tuples. They either provide some type of extra functionality or provide abstractions that make code easier to handle and reason about.</p>
+<p>The subsections below document some common wrappers <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and their usages.</p>
 <a name="H_Optional"></a><h3>Optional</h3>
-<p><a name="BM_(Library%20Functions%5C%2FContainers%2FOptional)_TOPIC%2F"></a><strong></strong></p>
-<p>An optional <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a container that either holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> or is empty (similar to Java or Python's optional <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).</p>
+<p><a name="BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FOptional)_TOPIC%2F"></a><strong></strong></p>
+<p>An optional <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a wrapper that either holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> or is empty (similar to Java or Python's optional <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).</p>
 <pre class="hljs"><code><span class="hljs-function">std::optional&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">take</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
     <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">return</span> std::<span class="hljs-literal">nullopt</span>;  <span class="hljs-comment">// nullopt = empty optional</span>
@@ -5344,7 +5375,7 @@ boost::intrusive_ptr&lt;<span class="hljs-type">int</span>&gt; a { <span class="
 </code></pre>
 <p>The typical usecase for tribool is for operations that take a long time to complete. A tribool may be set as indeterminate while the operation is running, then be set to true (success) or false (failure) once the operation completes.</p>
 <a name="H_Tuple"></a><h3>Tuple</h3>
-<p><a name="BM_(Library%20Functions%5C%2FContainers%2FTuple)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FTuple)_TOPIC%2F"></a><strong></strong></p>
 <p>A tuple <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at <a href="#BM_(compile-time)%2Fi">compile-time</a>, and any code accessing those elements must know which element its accessing at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</p>
 <pre class="hljs"><code>std::tuple&lt;<span class="hljs-type">int</span>, <span class="hljs-type">long</span>, MyClass&gt; my_tuple{ <span class="hljs-number">1</span>, <span class="hljs-number">500L</span>, MyClass{} };
 <span class="hljs-keyword">auto</span>&amp; x { std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(my_tuple) };
@@ -5378,52 +5409,52 @@ std::pair&lt;<span class="hljs-type">int</span>, EmptyClass&gt; p {<span class="
 boost::compressed_pair&lt;<span class="hljs-type">int</span>, EmptyClass&gt; cp {<span class="hljs-number">5</span>, EmptyClass{} };  <span class="hljs-comment">// this one consumes less memory</span>
 </code></pre>
 <a name="H_Any"></a><h3>Any</h3>
-<p><a name="BM_(Library%20Functions%5C%2FContainers%2FAny)_TOPIC%2F"></a><strong></strong></p>
-<p>An any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a container that can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of unknown type (a type that isn't known at <a href="#BM_(compile-time)%2Fi">compile-time</a>).</p>
-<pre class="hljs"><code>std::any container {};
-container.emplace&lt;MyClass&gt; { arg1, arg2 };
-<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">any_cast</span>&lt;MyClass&gt;(container); <span class="hljs-comment">// ok</span>
-<span class="hljs-keyword">auto</span> v2 = std::<span class="hljs-built_in">any_cast</span>&lt;BadType&gt;(container); <span class="hljs-comment">// should throws std::bad_any_cast</span>
+<p><a name="BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FAny)_TOPIC%2F"></a><strong></strong></p>
+<p>An any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a wrapper that can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of unknown type (a type that isn't known at <a href="#BM_(compile-time)%2Fi">compile-time</a>).</p>
+<pre class="hljs"><code>std::any wrapper {};
+wrapper.emplace&lt;MyClass&gt; { arg1, arg2 };
+<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">any_cast</span>&lt;MyClass&gt;(wrapper); <span class="hljs-comment">// ok</span>
+<span class="hljs-keyword">auto</span> v2 = std::<span class="hljs-built_in">any_cast</span>&lt;BadType&gt;(wrapper); <span class="hljs-comment">// should throws std::bad_any_cast</span>
 </code></pre>
-<p>To place an <a href="#BM_(object%7Cinstance)%2Fi">object</a> into the container, use <code>emplace()</code>. This <em>creates</em> a new <a href="#BM_(object%7Cinstance)%2Fi">object</a> and places it into the container, destroying the <a href="#BM_(object%7Cinstance)%2Fi">object</a> previously held. The type of the <a href="#BM_(object%7Cinstance)%2Fi">object</a> is passed in as a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument while the function arguments are used to initialize that <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. passed directly to <a href="#BM_(constructor)%2Fi">constructor</a>).</p>
-<p>Accessing the <a href="#BM_(object%7Cinstance)%2Fi">object</a> within the container is done via <code>std::any_cast()</code>. The function argument is the container itself and the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument is the type of  <a href="#BM_(object%7Cinstance)%2Fi">object</a> <em>you think</em> is being held. If the <a href="#BM_(object%7Cinstance)%2Fi">object</a> is of a different type, the function throws <code>std::bad_any_cast</code> instead of returning the <a href="#BM_(object%7Cinstance)%2Fi">object</a>.</p>
+<p>To place an <a href="#BM_(object%7Cinstance)%2Fi">object</a> into the wrapper, use <code>emplace()</code>. This <em>creates</em> a new <a href="#BM_(object%7Cinstance)%2Fi">object</a> and places it into the wrapper, destroying the <a href="#BM_(object%7Cinstance)%2Fi">object</a> previously held. The type of the <a href="#BM_(object%7Cinstance)%2Fi">object</a> is passed in as a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument while the function arguments are used to initialize that <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. passed directly to <a href="#BM_(constructor)%2Fi">constructor</a>).</p>
+<p>Accessing the <a href="#BM_(object%7Cinstance)%2Fi">object</a> within the wrapper is done via <code>std::any_cast()</code>. The function argument is the wrapper itself and the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument is the type of  <a href="#BM_(object%7Cinstance)%2Fi">object</a> <em>you think</em> is being held. If the <a href="#BM_(object%7Cinstance)%2Fi">object</a> is of a different type, the function throws <code>std::bad_any_cast</code> instead of returning the <a href="#BM_(object%7Cinstance)%2Fi">object</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The closest Java analog I could think of is the base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> hierarchy where all Java <a href="#BM_(object%7Cinstance)%2Fi">object</a>s have to derive from <code>java.lang.Object</code>. You can accept a type of <code>Java.lang.Object</code> and cast it at <a href="#BM_(runtime)%2Fi">runtime</a> to the correct type (or one of its ancestors). The C++ any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> provides similar functionality to that.</p>
 </div>
-<p>Boost also provides a version of this container, <code>boost::any</code>.</p>
+<p>Boost also provides a version of this wrapper, <code>boost::any</code>.</p>
 <a name="H_Variant"></a><h3>Variant</h3>
-<p><a name="BM_(Library%20Functions%5C%2FContainers%2FVariant)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FVariant)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li>Library Functions/Containers/Any</li>
-<li>Library Functions/Containers/Tuple</li>
+<li>Library Functions/Utility Wrappers/Any</li>
+<li>Library Functions/Utility Wrappers/Tuple</li>
 </ul>
 </div>
 <p>A variant <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a type-restricted form of the <code>std::any</code>. Where as with the <code>std::any</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of any type, with <code>std::variant</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of one of several predefined types.</p>
-<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; container {};  <span class="hljs-comment">// may hold on to either int, float, or MyClass</span>
-container.emplace&lt;MyClass&gt; { arg1, arg2 };
-<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(container);     <span class="hljs-comment">// ok</span>
-<span class="hljs-keyword">auto</span> v2 = std::<span class="hljs-built_in">get_if</span>&lt;MyClass&gt;(container);  <span class="hljs-comment">// ok</span>
-<span class="hljs-keyword">auto</span> v3 = std::<span class="hljs-built_in">get_if</span>&lt;<span class="hljs-type">int</span>&gt;(container);      <span class="hljs-comment">// returns nullptr</span>
-<span class="hljs-keyword">auto</span> v4 = std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-type">int</span>&gt;(container);         <span class="hljs-comment">// throws std::bad_variant_exception</span>
-<span class="hljs-keyword">auto</span> which_type = container.<span class="hljs-built_in">index</span>();    <span class="hljs-comment">// returns 2</span>
+<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; wrapper {};  <span class="hljs-comment">// may hold on to either int, float, or MyClass</span>
+wrapper.emplace&lt;MyClass&gt; { arg1, arg2 };
+<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(wrapper);     <span class="hljs-comment">// ok</span>
+<span class="hljs-keyword">auto</span> v2 = std::<span class="hljs-built_in">get_if</span>&lt;MyClass&gt;(wrapper);  <span class="hljs-comment">// ok</span>
+<span class="hljs-keyword">auto</span> v3 = std::<span class="hljs-built_in">get_if</span>&lt;<span class="hljs-type">int</span>&gt;(wrapper);      <span class="hljs-comment">// returns nullptr</span>
+<span class="hljs-keyword">auto</span> v4 = std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-type">int</span>&gt;(wrapper);         <span class="hljs-comment">// throws std::bad_variant_exception</span>
+<span class="hljs-keyword">auto</span> which_type = wrapper.<span class="hljs-built_in">index</span>();    <span class="hljs-comment">// returns 2</span>
 </code></pre>
 <p>To determine which of the allowed types is currently held, use <code>index()</code>.</p>
 <p>To access data, use <code>std::get()</code> where the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument is the type you're interested in (similar to how data access is done in <code>std::tuple</code>). If the variant isn't holding an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the type trying to be extracted, <code>std::get()</code> will throw <code>std::bad_variant_exception</code>. To avoid an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>, use <code>std::get_if()</code> -- it will return <code>nullptr</code> rather than throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>.</p>
 <p>Unlike <code>std::any</code>, <code>std::variant</code> cannot be left unset (it must hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a>). Initially, it creates and holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the first type in its allowed types list. That means the first type in its allowed types list must be constructible with empty initializer arguments (e.g. default <a href="#BM_(constructor)%2Fi">constructor</a>). In the example above, the first allowed type is <code>int</code>, meaning that the variant starts off by holding on to an <code>int</code> created using an empty initializer (will have value of 0).</p>
 <p>The easiest way to work around this problem is to set the first type to <code>std::monostate</code>. This allows your variant to be unset. Trying to call <code>std::get()</code> on an unset variant throws <code>std::bad_variant_access</code>.</p>
-<pre class="hljs"><code>std::variant&lt;std::monostate, <span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; container {};  <span class="hljs-comment">// may hold on to nothing, int, float, or MyClass</span>
-<span class="hljs-keyword">auto</span> which_type = container.<span class="hljs-built_in">index</span>();     <span class="hljs-comment">// returns 0</span>
-<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(container);  <span class="hljs-comment">// throws std::bad_variant_access</span>
+<pre class="hljs"><code>std::variant&lt;std::monostate, <span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; wrapper {};  <span class="hljs-comment">// may hold on to nothing, int, float, or MyClass</span>
+<span class="hljs-keyword">auto</span> which_type = wrapper.<span class="hljs-built_in">index</span>();     <span class="hljs-comment">// returns 0</span>
+<span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(wrapper);  <span class="hljs-comment">// throws std::bad_variant_access</span>
 </code></pre>
 <p>If you have a set of single parameter functions with the same name (<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>), where those parameters contains all the types in a variant's allowed types list, you can use <code>std::visit()</code> to automatically pull out the <a href="#BM_(object%7Cinstance)%2Fi">object</a> contained in the variant and call the appropriate <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a> with that <a href="#BM_(object%7Cinstance)%2Fi">object</a> as the argument.</p>
-<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; container {};  <span class="hljs-comment">// may hold on to either int, float</span>
+<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; wrapper {};  <span class="hljs-comment">// may hold on to either int, float</span>
 <span class="hljs-comment">// call into a generic lambda / functor</span>
-<span class="hljs-keyword">auto</span> res1 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span>&amp; x) { <span class="hljs-keyword">return</span> <span class="hljs-number">5</span> * x; }, container);
+<span class="hljs-keyword">auto</span> res1 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span>&amp; x) { <span class="hljs-keyword">return</span> <span class="hljs-number">5</span> * x; }, wrapper);
 <span class="hljs-comment">// call into an overloaded free function (via a generic lambda / functor)</span>
-<span class="hljs-keyword">auto</span> res2 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span> &amp;x) { <span class="hljs-keyword">return</span> <span class="hljs-built_in">my_function</span>(x); }, container);
+<span class="hljs-keyword">auto</span> res2 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span> &amp;x) { <span class="hljs-keyword">return</span> <span class="hljs-built_in">my_function</span>(x); }, wrapper);
 <span class="hljs-comment">// call into a specific lambda / functor based on type currently being held</span>
 std::<span class="hljs-built_in">visit</span>(
     overloaded {
@@ -5431,16 +5462,1255 @@ std::<span class="hljs-built_in">visit</span>(
         [](<span class="hljs-type">float</span>&amp; x) { std::cout &lt;&lt; <span class="hljs-string">"float"</span> &lt;&lt; x; },
         [](<span class="hljs-keyword">auto</span> &amp;) { std::cout &lt;&lt; <span class="hljs-string">"OTHER"</span>; }
     },
-    container
+    wrapper
 );
 </code></pre>
-<p>Boost also provides a version of this container, <code>boost::variant</code>.</p>
+<p>Boost also provides a version of this wrapper, <code>boost::variant</code>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(Core%20Language%5C%2FUnions)_TOPIC%2F">Core Language/Unions</a> (variants are similar to <a href="#BM_(union)%2Fi">union</a>s but type-safe)</li>
 </ul>
 </div>
+<a name="H_Containers"></a><h2>Containers</h2>
+<p><a name="BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FAllocators)_TOPIC%2F">Library Functions/Allocators</a></li>
+</ul>
+</div>
+<p>C++'s equivalent of Java collections are commonly referred to as containers. C++ containers come in 3 major types:</p>
+<ul>
+<li>
+<p>Sequence containers - <a href="#BM_(object%7Cinstance)%2Fi">Object</a>s organized in a sequence, where they're (at least) accessible from one end to the other.</p>
+<table>
+<thead>
+<tr>
+<th>C++ Container</th>
+<th>Java Nearest equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::array</code></td>
+<td>standard Java array</td>
+</tr>
+<tr>
+<td><code>std::vector</code></td>
+<td><code>ArrayList</code></td>
+</tr>
+<tr>
+<td><code>std::deque</code></td>
+<td><code>Deque</code> (an interface -- the C++ <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is an implementation)</td>
+</tr>
+<tr>
+<td><code>std::list</code></td>
+<td><code>LinkedList</code> (doubly-linked list)</td>
+</tr>
+<tr>
+<td><code>std::forward_list</code></td>
+<td><code>LinkedList</code> (singly-linked list)</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a href="#BM_(associativity%7Cassociative)%2Fi">Associative</a> containers - <a href="#BM_(object%7Cinstance)%2Fi">Object</a>s organized by key and potentially a value (keys sorted, requiring a comparison function).</p>
+<table>
+<thead>
+<tr>
+<th>C++ Container</th>
+<th>Nearest Java equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::set</code></td>
+<td><code>TreeSet</code></td>
+</tr>
+<tr>
+<td><code>std::map</code></td>
+<td><code>TreeMap</code></td>
+</tr>
+<tr>
+<td><code>std::multiset</code></td>
+<td><code>TreeBag</code> (Apache Commons Collections)</td>
+</tr>
+<tr>
+<td><code>std::multimap</code></td>
+<td><code>TreeMultimap</code> (Guava)</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers - <a href="#BM_(object%7Cinstance)%2Fi">Object</a>s organized by key and potentially a value (keys unsorted).</p>
+<table>
+<thead>
+<tr>
+<th>C++ Container</th>
+<th>Nearest Java equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::unordered_set</code></td>
+<td><code>HashSet</code></td>
+</tr>
+<tr>
+<td><code>std::unordered_map</code></td>
+<td><code>HashMap</code></td>
+</tr>
+<tr>
+<td><code>std::unordered_multiset</code></td>
+<td><code>HashBag</code> (Apache Commons Collections)</td>
+</tr>
+<tr>
+<td><code>std::unordered_multimap</code></td>
+<td><code>ArrayListValuedHashMap</code> (Apache Commons Collections)</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FControl%20Flow%2FFor%20Loop)_TOPIC%2F">Core Language/Control Flow/For Loop</a> (for-each loop refresher)</li>
+<li><a href="#BM_(Core%20Language%5C%2FIterators)_TOPIC%2F">Core Language/Iterators</a> (refresher)</li>
+</ul>
+</div>
+<p>Containers support <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s via their <code>begin()</code> and <code>end()</code> functions. Looping over a container using a for-each loop calls those functions, but the order in which containers are iterated over depends on the container. For example ...</p>
+<ul>
+<li><code>std::vector</code> maintains insertion order.</li>
+<li><code>std::map</code> iterates in sort order.</li>
+<li><code>std::unordered_map</code> <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s in some unknown order (unordered).</li>
+</ul>
+<pre class="hljs"><code>std::vector&lt;MyObject&gt; container { <span class="hljs-comment">/* items here */</span> };
+<span class="hljs-keyword">for</span> (MyObject &amp;obj : container) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<p>Most (not all) containers allow using user-supplied allocators via <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument.</p>
+<pre class="hljs"><code>std::vector&lt;MyObject, CustomAllocator&gt; container { };
+</code></pre>
+<p>The subsections below detail some of the containers mentioned above. Other major libraries provide more specialized containers (boost, abseil, etc..), but those containers aren't detailed here.</p>
+<a name="H_Sequential"></a><h3>Sequential</h3>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FSequential)_TOPIC%2F"></a><strong></strong></p>
+<p>Sequential containers organize <a href="#BM_(object%7Cinstance)%2Fi">object</a>s as a sequence, where they're (at least) accessible from one end to the other. The container may or may not be dynamically sized (grow vs shrink) and underlying data structures used by sequential containers aren't the same.</p>
+<p>The subsections below detail the various sequential containers that are provided by the C++ standard library.</p>
+<a name="H_Array"></a><h4>Array</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FSequential%2FArray)_TOPIC%2F"></a><strong></strong></p>
+<p><code>std::array</code> is a container that's more-or-less a wrapper around a normal C++ array. Like normal C++ arrays, it ...</p>
+<ul>
+<li>is fixed-size, meaning it can't automatically grow or shrink,</li>
+<li>allows reads and writes to random positions using its subscript operator.</li>
+</ul>
+<p>One caveat to this container is that it <em>does not</em> <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a> a <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a> array. That means, just like normal C++ arrays created on the stack, the number of elements must be known at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> my_arr1[<span class="hljs-number">55</span>] {};              <span class="hljs-comment">// int array of size 55</span>
+std::array&lt;<span class="hljs-type">int</span>, 55&gt; my_arr2 {};  <span class="hljs-comment">// std::array of ints, with size 55</span>
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : my_arr2) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<p><code>std::array</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. However, because the underlying array is a local <a href="#BM_(object%7Cinstance)%2Fi">object</a>, both moving and copying end up recreating the that underlying array. This means that copying and moving may potentially be expensive.</p>
+<pre class="hljs"><code>std::array&lt;<span class="hljs-type">int</span>, 55&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(my_arr2) }; <span class="hljs-comment">// get rvalue reference</span>
+std::array&lt;<span class="hljs-type">int</span>, 55&gt; my_arr3 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+</code></pre>
+<p>To read elements, use the subscript operator ([]) or <code>at()</code>. The main difference between the two is that the latter has bounds checking. Alternatively, ...</p>
+<ul>
+<li><code>front()</code> may be used as shorthand to get the first element.</li>
+<li><code>back()</code> may be used as shorthand to get the last element.</li>
+<li><code>std::get()</code> may be used to read a random element so long as the index being read is known at <a href="#BM_(compile-time)%2Fi">compile-time</a> (does bounds checking at <a href="#BM_(compile-time)%2Fi">compile-time</a>).</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-type">int</span> w { my_arr2[<span class="hljs-number">20</span>] };
+<span class="hljs-type">int</span> x { my_arr2.<span class="hljs-built_in">at</span>(<span class="hljs-number">20</span>) };
+<span class="hljs-type">int</span> y { my_arr2.<span class="hljs-built_in">at</span>(<span class="hljs-number">1000</span>) };  <span class="hljs-comment">// throws std::out_of_range</span>
+<span class="hljs-type">int</span> z { std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">20</span>&gt;(my_arr2) };
+<span class="hljs-type">int</span> a { my_arr2.<span class="hljs-built_in">front</span>() };  <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+<span class="hljs-type">int</span> b { my_arr2.<span class="hljs-built_in">back</span>() };  <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FTuple)_TOPIC%2F">Library Functions/Utility Wrappers/Tuple</a> (refresher on <code>std::get()</code>)</li>
+</ul>
+</div>
+<p>To replace elements, use any of the same functions used for reading elements except <code>std::get()</code>. They return a <a href="#BM_(reference)%2Fi">reference</a>, which means assigning something to them will assign into the container.</p>
+<pre class="hljs"><code>my_arr2[<span class="hljs-number">20</span>] = <span class="hljs-number">123</span>;
+my_arr2.<span class="hljs-built_in">at</span>(<span class="hljs-number">20</span>) = <span class="hljs-number">123</span>;
+my_arr2.<span class="hljs-built_in">front</span>() = <span class="hljs-number">123</span>;
+my_arr2.<span class="hljs-built_in">back</span>() = <span class="hljs-number">123</span>;
+
+<span class="hljs-keyword">auto</span> &amp; ref = <span class="hljs-built_in">my_arr</span>(<span class="hljs-number">20</span>);
+ref = <span class="hljs-number">123</span>;
+</code></pre>
+<p>To get the size, use <code>size()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> len { my_arr2.<span class="hljs-built_in">size</span>() };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>size()</code> and <code>max_size()</code> are equivalent for <code>std::array</code>, but not for other containers that can grow / shrunk.</p>
+</div>
+<p>To gain access to the underlying array being wrapped, use <code>data()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> * backing_arr = my_arr2.<span class="hljs-built_in">data</span>();
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> each below are equivalent to the above, but the one above should be preferred</span>
+<span class="hljs-comment">//       because the ones below will have undefined behaviour if array length is 0.</span>
+<span class="hljs-type">int</span> * backing_arr = &amp;my_arr2[<span class="hljs-number">0</span>];
+<span class="hljs-type">int</span> * backing_arr = &amp;my_arr2.<span class="hljs-built_in">at</span>(<span class="hljs-number">0</span>);
+<span class="hljs-type">int</span> * backing_arr = &amp;my_arr2.<span class="hljs-built_in">front</span>();
+</code></pre>
+<p>To iterate over the elements, use <code>being()</code> and <code>end()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : my_arr2) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H_Vector"></a><h4>Vector</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FSequential%2FVector)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FSequential%2FArray)_TOPIC%2F">Library Functions/Containers/Sequential/Array</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FAllocators)_TOPIC%2F">Library Functions/Allocators</a></li>
+</ul>
+</div>
+<p><code>std::vector</code> is a container that holds on to its elements sequentially and contiguously in memory (array), but it can dynamically size itself (e.g. expand the internal array if not enough room is available to add a new element). It has most of the same functions as <code>std::array</code>, in addition to some others.</p>
+<p>To create an <code>std::vector</code> primed with a sequence of values known as <a href="#BM_(compile-time)%2Fi">compile-time</a>, use typical <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>.</p>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; my_vec1 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+</code></pre>
+<p>To create an <code>std::vector</code> without priming it directly to a sequence of values, you can't use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a>. You must to use parenthesis.</p>
+<pre class="hljs"><code><span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">my_vec2</span> <span class="hljs-params">(<span class="hljs-number">8</span>, <span class="hljs-number">5</span>)</span></span>; <span class="hljs-comment">// equivalent to initializing to above (8 copies of 5)</span>
+<span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">my_vec3</span> <span class="hljs-params">(c)</span>  <span class="hljs-comment">// copy another container</span>
+std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">my_vec4</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
+</span></code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The rules for initialization are complex. In this case, there's a <a href="#BM_(constructor)%2Fi">constructor</a> that takes in an <code>std::initializer_list</code>. That means <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> / <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a> will in most cases call that <a href="#BM_(constructor)%2Fi">constructor</a>, where that initializer list get populated with whatever is in the braces. To avoid that, the easiest thing you can do is fall back to using the legacy way of calling <a href="#BM_(constructor)%2Fi">constructor</a>s (parenthesis).</p>
+</div>
+<p><code>std::vector</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::vector</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(my_vec1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::vector&lt;<span class="hljs-type">int</span>&gt; my_vec5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+</code></pre>
+<p>Similarly, because <code>std::vector</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
+<pre class="hljs"><code>CustomAllocator allocator {};
+<span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>, CustomAllocator&gt; <span class="hljs-title">my_vec6</span> <span class="hljs-params">(allocator)</span></span>;
+</code></pre>
+<p>To read elements, the same read functions for <code>std::array</code> are available here.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> w { my_vec1[<span class="hljs-number">5</span>] };
+<span class="hljs-type">int</span> x { my_vec1.<span class="hljs-built_in">at</span>(<span class="hljs-number">5</span>) };
+<span class="hljs-type">int</span> y { my_vec1.<span class="hljs-built_in">at</span>(<span class="hljs-number">1000</span>) };  <span class="hljs-comment">// throws std::out_of_range</span>
+<span class="hljs-type">int</span> a { my_vec1.<span class="hljs-built_in">front</span>() };  <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+<span class="hljs-type">int</span> b { my_vec1.<span class="hljs-built_in">back</span>() };  <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Does <code>std::get()</code> work here as well? I don't think so because this is an <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic array</a>.</p>
+</div>
+<p>To replace elements, the same write functions for <code>std::array</code> are available here. Those functions are the same functions used for reading elements. They return a <a href="#BM_(reference)%2Fi">reference</a>, which means assigning something to them will assign into the container.</p>
+<pre class="hljs"><code>my_vec1[<span class="hljs-number">20</span>] = <span class="hljs-number">123</span>;
+my_vec1.<span class="hljs-built_in">at</span>(<span class="hljs-number">20</span>) = <span class="hljs-number">123</span>;
+my_vec1.<span class="hljs-built_in">front</span>() = <span class="hljs-number">123</span>;
+my_vec1.<span class="hljs-built_in">back</span>() = <span class="hljs-number">123</span>;
+</code></pre>
+<p>To add elements, the following functions are available:</p>
+<ul>
+<li><code>insert()</code> will insert an element just behind some <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position (<a href="#BM_(object%7Cinstance)%2Fi">object</a> copied / moved).</li>
+<li><code>emplace()</code> will insert an element just behind some <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> <em>by creating it directly</em> (no copying / moving).</li>
+<li><code>push_back()</code> will append an element (<a href="#BM_(copy%20semantics)%2Fi">copy semantics</a>)</li>
+<li><code>emplace_back()</code> will append an element <em>by creating it directly</em> (no copying / moving).</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 = my_vec1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>;
+my_vec1.<span class="hljs-built_in">insert</span>(it1, <span class="hljs-number">77</span>); <span class="hljs-comment">// WARNING: it1 invalid after this call</span>
+<span class="hljs-keyword">auto</span> it2 = my_vec1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>;
+my_vec1.<span class="hljs-built_in">emplace</span>(it2, <span class="hljs-number">77</span>); <span class="hljs-comment">// WARNING: it2 invalid after this call</span>
+my_vec1.<span class="hljs-built_in">push_back</span>(<span class="hljs-number">123</span>);
+my_vec1.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-number">123</span>);
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>emplace()</code> / <code>emplace_back()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(template%20parameter)%2Fi">template parameter</a> packs to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FAny)_TOPIC%2F">Library Functions/Utility Wrappers/Any</a> (also has an <code>emplace()</code> function)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FVariant)_TOPIC%2F">Library Functions/Utility Wrappers/Variant</a> (also has an <code>emplace()</code> function)</li>
+</ul>
+</div>
+<p>To delete either a single element or a range of elements, use <code>erase()</code> and pass into it either an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> at some position or an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> range.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 {my_vec1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>};
+my_vec1.<span class="hljs-built_in">erase</span>(it1); <span class="hljs-comment">// WARNING: it1 invalid after this call</span>
+
+<span class="hljs-keyword">auto</span> it2 {my_vec1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it3 {my_vec1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+my_vec1.<span class="hljs-built_in">erase</span>(it2, it3); <span class="hljs-comment">// WARNING: it2/it3 invalid after this call</span>
+</code></pre>
+<p>To delete the last element, use <code>pop_back()</code>. It's similar to <code>back()</code> (returns element) but it removes the element as well.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> c { my_vec1.<span class="hljs-built_in">pop_back</span>() }; <span class="hljs-comment">// REMOVES the last </span>
+</code></pre>
+<p>To delete all elements, use <code>clear()</code>.</p>
+<pre class="hljs"><code>my_vec1.<span class="hljs-built_in">clear</span>();
+</code></pre>
+<p>To delete all elements and re-assign to a list of new elements, use <code>assign()</code>.</p>
+<pre class="hljs"><code>my_vec1.<span class="hljs-built_in">assign</span>(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">// 5 copies of 10</span>
+my_vec1.<span class="hljs-built_in">assign</span>({<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>}); <span class="hljs-comment">// 5 copies of 10</span>
+my_vec1.<span class="hljs-built_in">assign</span>(c.<span class="hljs-built_in">begin</span>(), c.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>); <span class="hljs-comment">// starting 5 elements of another container</span>
+</code></pre>
+<p>To get the number of elements, the same functions for <code>std::array</code> are available here.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty1 { my_vec1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { my_vec1.<span class="hljs-built_in">empty</span>() };
+</code></pre>
+<p>Internally, <code>std::vector</code> grows in chunks. For example, if the underlying array has a size of 5 and all of those 5 elements are occupied, when you add in a 6th element the underlying array resizes to have a capacity larger than 6 (e.g. 10). This way, you can continue adding in a few more elements without another resize happening right away (more efficient).</p>
+<p>To get the current capacity, use <code>capacity()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">float</span> usage { my_vec1.<span class="hljs-built_in">size</span>() / my_vec2.<span class="hljs-built_in">capacity</span>() };
+</code></pre>
+<p>If you ...</p>
+<ul>
+<li>know the capacity you want ahead of time, use <code>reserve()</code>.</li>
+<li>want to shrink the capacity to match the number of elements stored, use <code>shrink_to_fit()</code>.</li>
+</ul>
+<pre class="hljs"><code>my_vec1.<span class="hljs-built_in">reserve</span>(<span class="hljs-number">1000</span>);
+my_vec1.<span class="hljs-built_in">shrink_to_fit</span>();
+</code></pre>
+<p>Similar to <code>std::array</code>, you can access the underlying array for an <code>std::vector</code>. However, the returned array may become invalid as soon as you start performing operations on the owning <code>std::vector</code> (e.g. it may get recreated due to shrinkage/growth).</p>
+<p>To gain access to the underlying array being wrapped, use <code>data()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> * backing_arr = my_vec1.<span class="hljs-built_in">data</span>();
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> each below are equivalent to the above, but the one above should be preferred</span>
+<span class="hljs-comment">//       because the ones below will have undefined behaviour if array length is 0.</span>
+<span class="hljs-type">int</span> * backing_arr = &amp;my_vec1[<span class="hljs-number">0</span>];
+<span class="hljs-type">int</span> * backing_arr = &amp;my_vec1.<span class="hljs-built_in">at</span>(<span class="hljs-number">0</span>);
+<span class="hljs-type">int</span> * backing_arr = &amp;my_vec1.<span class="hljs-built_in">front</span>();
+</code></pre>
+<p>To iterate over the elements, use <code>being()</code> and <code>end()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : my_vec1) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H_Deque"></a><h4>Deque</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FSequential%2FDeque)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FSequential%2FVector)_TOPIC%2F">Library Functions/Containers/Sequential/Vector</a></li>
+</ul>
+</div>
+<p><code>std::deque</code> is a container that holds on to its elements sequentially but not contiguously in memory (not an array). It can dynamically size itself (e.g. expand the internal array if not enough room is available to add a new element) just like <code>std::vector</code> and it supports most of the same function as <code>std::vector</code>. The most prominent functions it <em>doesn't</em> support:</p>
+<ul>
+<li><code>data()</code> because there is no underlying array with this container.</li>
+<li><code>capacity()</code>.</li>
+<li><code>reserve()</code>.</li>
+</ul>
+<p>Because of the internal data structure used by this container, the added functions above are efficient.</p>
+<p>To create an <code>std::deque</code> primed with a sequence of values known as <a href="#BM_(compile-time)%2Fi">compile-time</a>, use typical <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>.</p>
+<pre class="hljs"><code>std::deque&lt;<span class="hljs-type">int</span>&gt; d1 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+</code></pre>
+<p>To create an <code>std::deque</code> without priming it directly to a sequence of values, you can't use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a>. You must to use parenthesis.</p>
+<pre class="hljs"><code><span class="hljs-function">std::deque&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">d2</span> <span class="hljs-params">(<span class="hljs-number">8</span>, <span class="hljs-number">5</span>)</span></span>; <span class="hljs-comment">// equivalent to initializing to above (8 copies of 5)</span>
+<span class="hljs-function">std::deque&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">d3</span> <span class="hljs-params">(c)</span>  <span class="hljs-comment">// copy another container</span>
+std::deque&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">d4</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
+</span></code></pre>
+<p><code>std::deque</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::deque</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
+<pre class="hljs"><code>std::deque&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(d1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::deque&lt;<span class="hljs-type">int</span>&gt; d5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+</code></pre>
+<p>Similarly, because <code>std::deque</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
+<pre class="hljs"><code>CustomAllocator allocator {};
+<span class="hljs-function">std::deque&lt;<span class="hljs-type">int</span>, CustomAllocator&gt; <span class="hljs-title">d6</span> <span class="hljs-params">(allocator)</span></span>;
+</code></pre>
+<p>To read elements, the same read functions for <code>std::vector</code> are available here.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> w { d1[<span class="hljs-number">5</span>] };
+<span class="hljs-type">int</span> x { d1.<span class="hljs-built_in">at</span>(<span class="hljs-number">5</span>) };
+<span class="hljs-type">int</span> y { d1.<span class="hljs-built_in">at</span>(<span class="hljs-number">1000</span>) };  <span class="hljs-comment">// throws std::out_of_range</span>
+<span class="hljs-type">int</span> a { d1.<span class="hljs-built_in">front</span>() };  <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+<span class="hljs-type">int</span> b { d1.<span class="hljs-built_in">back</span>() };  <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+</code></pre>
+<p>To replace elements, the same write functions for <code>std::vector</code> are available here. Those functions are the same functions used for reading elements. They return a <a href="#BM_(reference)%2Fi">reference</a>, which means assigning something to them will assign into the container.</p>
+<pre class="hljs"><code>d1[<span class="hljs-number">20</span>] = <span class="hljs-number">123</span>;
+d1.<span class="hljs-built_in">at</span>(<span class="hljs-number">20</span>) = <span class="hljs-number">123</span>;
+d1.<span class="hljs-built_in">front</span>() = <span class="hljs-number">123</span>;
+d1.<span class="hljs-built_in">back</span>() = <span class="hljs-number">123</span>;
+</code></pre>
+<p>To add elements, the same add functions for <code>std::vector</code> are available here in addition to...</p>
+<ul>
+<li><code>emplace_front()</code> - similar to <code>emplace_back()</code> but adds to the front.</li>
+<li><code>push_front()</code> - similar to <code>push_back()</code> but adds to the front.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 = d1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>;
+d1.<span class="hljs-built_in">insert</span>(it1, <span class="hljs-number">77</span>); <span class="hljs-comment">// WARNING: it1 invalid after this call</span>
+<span class="hljs-keyword">auto</span> it2 = d1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>;
+d1.<span class="hljs-built_in">emplace</span>(it2, <span class="hljs-number">77</span>); <span class="hljs-comment">// WARNING: it2 invalid after this call</span>
+d1.<span class="hljs-built_in">push_back</span>(<span class="hljs-number">123</span>);
+d1.<span class="hljs-built_in">push_front</span>(<span class="hljs-number">123</span>); <span class="hljs-comment">// similar to push_back, but adds to front</span>
+d1.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-number">123</span>);
+d1.<span class="hljs-built_in">emplace_front</span>(<span class="hljs-number">123</span>); <span class="hljs-comment">// similar to emplace_back, but adds to front</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall that "emplace" functions don't copy or move. They're <a href="#BM_(template)%2Fi">template</a>d functions. You pass in <a href="#BM_(object%20initialization)%2Fi">object initialization</a> arguments directly into the functions and it uses a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> pack to forward those arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation directly within the function (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+</div>
+<p>To delete elements, the same delete functions for <code>std::vector</code> are available here in addition to ...</p>
+<ul>
+<li><code>pop_front()</code> - similar to  <code>pop_back()</code> but removes from the front.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-comment">// DELETE at ifx</span>
+<span class="hljs-keyword">auto</span> it1 {d1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>};
+d1.<span class="hljs-built_in">erase</span>(it1); <span class="hljs-comment">// WARNING: it1 invalid after this call</span>
+<span class="hljs-comment">// DELETE between idx range</span>
+<span class="hljs-keyword">auto</span> it2 {d1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it3 {d1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+d1.<span class="hljs-built_in">erase</span>(it2, it3); <span class="hljs-comment">// WARNING: it2/it3 invalid after this call</span>
+<span class="hljs-comment">// DELETE front or back</span>
+<span class="hljs-type">int</span> c { d1.<span class="hljs-built_in">pop_back</span>() };
+<span class="hljs-type">int</span> d { d1.<span class="hljs-built_in">pop_front</span>() }; <span class="hljs-comment">// similar to pop_back, but removed from the FRONT</span>
+<span class="hljs-comment">// DELETE all</span>
+d1.<span class="hljs-built_in">clear</span>();
+<span class="hljs-comment">// DELETE all and RE-ASSIGN</span>
+d1.<span class="hljs-built_in">assign</span>(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">// 5 copies of 10</span>
+d1.<span class="hljs-built_in">assign</span>({<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>}); <span class="hljs-comment">// 5 copies of 10</span>
+d1.<span class="hljs-built_in">assign</span>(c.<span class="hljs-built_in">begin</span>(), c.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>); <span class="hljs-comment">// starting 5 elements of another container</span>
+</code></pre>
+<p>To get the number of elements, the same functions for <code>std::vector</code> are available here.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty1 { d1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { d1.<span class="hljs-built_in">empty</span>() };
+</code></pre>
+<p>To release unused memory that's been reserved by the container, use <code>shrink_to_fit()</code>. The <code>capacity()</code> and <code>reserve()</code> functions found in <code>std::vector</code> are not present in this container.</p>
+<p>To iterate over the elements, use <code>being()</code> and <code>end()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : d1) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H_List"></a><h4>List</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FSequential%2FList)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FSequential%2FDeque)_TOPIC%2F">Library Functions/Containers/Sequential/Deque</a></li>
+</ul>
+</div>
+<p><code>std::list</code> is a container that holds on to its elements sequentially. It's implemented as a doubly-linked list, meaning its size is dynamic but it isn't stored contiguously in memory (not an array).</p>
+<p><code>std::list</code> supports a similar set of functions as <code>std::deque</code> except for the fact that random element access isn't allowed (the functions for it don't exist -- random access is inefficient with linked lists). You can only access elements by walking either forward or backward. In addition, it provides several built-in helper functions such as sorting and de-duplication.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>List of helper functions is documented near the end.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also <code>std::forward_list</code> which is a singly-linked list. It's functionality is very similar to this <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, but since it only supports walking forward, some of the functions listed here are missing.</p>
+</div>
+<p>To create a <code>std::list</code> primed with a sequence of values known as <a href="#BM_(compile-time)%2Fi">compile-time</a>, use typical <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>.</p>
+<pre class="hljs"><code>std::list&lt;<span class="hljs-type">int</span>&gt; l1 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+</code></pre>
+<p>To create a <code>std::list</code> without priming it directly to a sequence of values, you can't use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a>. You must to use parenthesis.</p>
+<pre class="hljs"><code><span class="hljs-function">std::list&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">l2</span> <span class="hljs-params">(<span class="hljs-number">8</span>, <span class="hljs-number">5</span>)</span></span>; <span class="hljs-comment">// equivalent to initializing to above (8 copies of 5)</span>
+<span class="hljs-function">std::list&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">l3</span> <span class="hljs-params">(c)</span>  <span class="hljs-comment">// copy another container</span>
+std::list&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">l4</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
+</span></code></pre>
+<p><code>std::list</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::list</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
+<pre class="hljs"><code>std::list&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(l1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::list&lt;<span class="hljs-type">int</span>&gt; l5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+</code></pre>
+<p>Similarly, because <code>std::list</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
+<pre class="hljs"><code>CustomAllocator allocator {};
+<span class="hljs-function">std::list&lt;<span class="hljs-type">int</span>, CustomAllocator&gt; <span class="hljs-title">l6</span> <span class="hljs-params">(allocator)</span></span>;
+</code></pre>
+<p>To read elements, use the <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> functions <code>begin()</code> and / or <code>end()</code> to walk the sequence. Alternatively, the <code>front()</code> and <code>back()</code> functions give direct access to the first and last elements respectively.</p>
+<pre class="hljs"><code><span class="hljs-comment">// WARNING: undefined behaviour of len is &lt; 3</span>
+<span class="hljs-keyword">auto</span> it = l1.<span class="hljs-built_in">begin</span>();
+<span class="hljs-type">int</span> a { *it };
+it++;
+<span class="hljs-type">int</span> b { *it };
+it++;
+<span class="hljs-type">int</span> c { *it };
+
+<span class="hljs-type">int</span> d { l1.<span class="hljs-built_in">front</span>() }; <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+<span class="hljs-type">int</span> e { l1.<span class="hljs-built_in">back</span>() };  <span class="hljs-comment">// WARNING: undefined behaviour of len is 0</span>
+</code></pre>
+<p>To replace elements, the same <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> functions <code>begin()</code> and / or <code>end()</code> need to be used to walk the sequence to the point of replacement.</p>
+<pre class="hljs"><code><span class="hljs-comment">// WARNING: undefined behaviour of len is &lt; 3</span>
+<span class="hljs-keyword">auto</span> it = l1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">2</span>;
+*it = <span class="hljs-number">55</span>;
+</code></pre>
+<p>To add elements, the same add functions for <code>std::deque</code> are available here.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 = l1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>;
+l1.<span class="hljs-built_in">insert</span>(it1, <span class="hljs-number">77</span>);
+<span class="hljs-keyword">auto</span> it2 = l1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>;
+l1.<span class="hljs-built_in">emplace</span>(it2, <span class="hljs-number">77</span>);
+l1.<span class="hljs-built_in">push_back</span>(<span class="hljs-number">123</span>);
+l1.<span class="hljs-built_in">push_front</span>(<span class="hljs-number">123</span>);
+l1.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-number">123</span>);
+l1.<span class="hljs-built_in">emplace_front</span>(<span class="hljs-number">123</span>);
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I'm getting conflicting information about if an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> is invalid after a write. Right now I'm leaning towards NOT invalid.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall that "emplace" functions don't copy or move. They're <a href="#BM_(template)%2Fi">template</a>d functions. You pass in <a href="#BM_(object%20initialization)%2Fi">object initialization</a> arguments directly into the functions and it uses a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> pack to forward those arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation directly within the function (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+</div>
+<p>To delete elements, the same delete functions for <code>std::deque</code> are available here.</p>
+<pre class="hljs"><code><span class="hljs-comment">// DELETE at idx</span>
+<span class="hljs-keyword">auto</span> it1 {l1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>};
+d1.<span class="hljs-built_in">erase</span>(it1); <span class="hljs-comment">// WARNING: it1 invalid after this call</span>
+<span class="hljs-comment">// DELETE between idx range</span>
+<span class="hljs-keyword">auto</span> it2 {l1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it3 {l1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+l1.<span class="hljs-built_in">erase</span>(it2, it3); <span class="hljs-comment">// WARNING: it2/it3 invalid after this call</span>
+<span class="hljs-comment">// DELETE front or back</span>
+<span class="hljs-type">int</span> c { l1.<span class="hljs-built_in">pop_back</span>() };
+<span class="hljs-type">int</span> d { l1.<span class="hljs-built_in">pop_front</span>() }; <span class="hljs-comment">// similar to pop_back, but removed from the FRONT</span>
+<span class="hljs-comment">// DELETE all</span>
+l1.<span class="hljs-built_in">clear</span>();
+<span class="hljs-comment">// DELETE all and RE-ASSIGN</span>
+l1.<span class="hljs-built_in">assign</span>(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">// 5 copies of 10</span>
+l1.<span class="hljs-built_in">assign</span>({<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>,<span class="hljs-number">5</span>}); <span class="hljs-comment">// 5 copies of 10</span>
+l1.<span class="hljs-built_in">assign</span>(c.<span class="hljs-built_in">begin</span>(), c.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>); <span class="hljs-comment">// starting 5 elements of another container</span>
+</code></pre>
+<p>To get the number of elements, the same functions for <code>std::deque</code> are available here.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty1 { l1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { l1.<span class="hljs-built_in">empty</span>() };
+</code></pre>
+<p>To iterate over the elements, use <code>being()</code> and <code>end()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : l1) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<p><code>std::list</code> has several helper functions built-in.</p>
+<ul>
+<li><code>merge()</code> combines two sorted <code>std::list</code>s into a single sorted <code>std::list</code> and empty them.</li>
+<li><code>splice()</code> transfers a range of elements from one <code>std::list</code> to another.</li>
+<li><code>remove()</code> searches for and removes all matching element in a <code>std::list</code>.</li>
+<li><code>remove_if()</code> removes all elements in a <code>std::list</code> that matches some predicate.</li>
+<li><code>reverse()</code> reverses an <code>std::list</code> (in-place reversal).</li>
+<li><code>sort()</code> sorts an <code>std::list</code> based on a comparator (in-place sort).</li>
+<li><code>unique()</code> removes consecutive duplicate elements.</li>
+</ul>
+<a name="H_Ordered%20Associative"></a><h3>Ordered Associative</h3>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative)_TOPIC%2F"></a><strong></strong></p>
+<p>Ordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers organize <a href="#BM_(object%7Cinstance)%2Fi">object</a>s by key and potentially a value. Keys are sorted into a specific order, meaning that a comparison function is required. The underlying data structure used by ordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers is a red-black tree.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Unsure if the spec defines if they should be implemented as red-black trees, but from what I've read that's how they're implemented.</p>
+</div>
+<p>The subsections below detail the various ordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers that are provided by the C++ standard library.</p>
+<a name="H_Set"></a><h4>Set</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FSet)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FAllocators)_TOPIC%2F">Library Functions/Allocators</a></li>
+</ul>
+</div>
+<p><code>std::set</code> is a container that holds on to <em>unique</em> elements in sorted order, where that order is defined by a comparator.</p>
+<p>To create a <code>std::set</code> primed with a sequence of values known as <a href="#BM_(compile-time)%2Fi">compile-time</a>, use typical <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>. Since only unique values are allowed, duplicates will be ignored. By default, the comparator <code>std::less</code> is used which uses the less than operator (&lt;) to compare two <a href="#BM_(object%7Cinstance)%2Fi">object</a>s for priority.</p>
+<pre class="hljs"><code>std::set&lt;<span class="hljs-type">int</span>&gt; s1 { <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> };
+</code></pre>
+<p>To create a <code>std::set</code> without priming it directly to a sequence of values, you can't use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a>. You must to use parenthesis.</p>
+<pre class="hljs"><code><span class="hljs-function">std::set&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">s2</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
+
+<span class="hljs-comment">// CUSTOM COMPARATOR</span>
+<span class="hljs-keyword">auto</span> comparator </span>= [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; lhs, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; rhs) -&gt; <span class="hljs-type">bool</span> { <span class="hljs-keyword">return</span> lhs &lt; rhs; };
+<span class="hljs-function">std::set&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(comparator)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, comparator)</span></span>;
+<span class="hljs-function">std::set&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, std::greater)</span></span>;
+</code></pre>
+<p><code>std::set</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::set</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
+<pre class="hljs"><code>std::set&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::set&lt;<span class="hljs-type">int</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+</code></pre>
+<p>Similarly, because <code>std::set</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
+<pre class="hljs"><code>CustomAllocator allocator {};
+<span class="hljs-function">std::set&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
+</code></pre>
+<p>To check an element exists, the following functions are available:</p>
+<ul>
+<li><code>find()</code> return an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed at the position of the found element (returns <code>end()</code> <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position if not found).</li>
+<li><code>contains()</code> returns bool (true if it exists, false otherwise).</li>
+<li><code>count()</code> returns integer (1 if it exists, 0 otherwise).</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">find</span>(<span class="hljs-number">3</span>) != s1.<span class="hljs-built_in">end</span>() };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">contains</span>(<span class="hljs-number">3</span>) };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">count</span>(<span class="hljs-number">3</span>) == <span class="hljs-number">1</span> };
+</code></pre>
+<p>To find the first element that is greater than or equal (&gt;=) to some value, use <code>lower_bound()</code>. Similarly, to find the first element that's greater than (&gt;) some value, use <code>upper_bound()</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">lower_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">upper_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem just after 4 (could be s1.end() if no such elem)</span>
+</code></pre>
+<p>To add an element, the following functions are available:</p>
+<ul>
+<li><code>insert()</code> either copies or moves into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is a <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>).</li>
+<li><code>emplace()</code> adds an element <em>by creating it directly</em> (no copying / moving).</li>
+<li><code>emplace_hint()</code> like the above but also takes in an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed to some position as a hint.</li>
+</ul>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>);
+s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>);
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>emplace()</code> / <code>emplace_hint()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(template%20parameter)%2Fi">template parameter</a> packs to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FAny)_TOPIC%2F">Library Functions/Utility Wrappers/Any</a> (also has an <code>emplace()</code> function)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FVariant)_TOPIC%2F">Library Functions/Utility Wrappers/Variant</a> (also has an <code>emplace()</code> function)</li>
+</ul>
+</div>
+<p>To delete an element at some specific <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position, use either <code>extract()</code> or <code>erase()</code>. The difference is that <code>extract()</code> will return the element while <code>erase()</code> won't.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
+<span class="hljs-type">int</span> res { s1.<span class="hljs-built_in">extract</span>(it1) };  <span class="hljs-comment">// WARNING: it1 invalid after this point</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">begin</span>() };
+s1.<span class="hljs-built_in">erase</span>(it2);  <span class="hljs-comment">// WARNING: it2 invalid after this point</span>
+
+<span class="hljs-comment">// DELETE between idx range</span>
+<span class="hljs-keyword">auto</span> it3 {s1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it4 {s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment">// WARNING: it3/it4 invalid after this call</span>
+</code></pre>
+<p>To delete all elements, use <code>clear()</code>.</p>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">clear</span>();
+</code></pre>
+<p>To get the number of elements, use <code>size()</code>. Similarly, use <code>empty()</code> to check if empty.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty1 { s1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { s1.<span class="hljs-built_in">empty</span>() };
+</code></pre>
+<p>To iterate over the elements, use <code>being()</code> and <code>end()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : s1) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H_Multiset"></a><h4>Multiset</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FMultiset)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FSet)_TOPIC%2F">Library Functions/Containers/Ordered Associative/Set</a></li>
+</ul>
+</div>
+<p><code>std::multiset</code> is a container that, like a <code>std::set</code>, holds on to elements in sorted order where that order is defined by a comparator. Unlike <code>std::set</code>, it can hold on to multiple <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s of the same element (elements aren't unique). Rather than using the equality operator (==) to find duplicates, <code>std::multiset</code> uses the sorting comparator: two <a href="#BM_(object%7Cinstance)%2Fi">object</a>s a and b are considered equivalent if neither compares less than the other: <code>!comp(a, b) &amp;&amp; !comp(b, a)</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Definition is from cpp<a href="#BM_(reference)%2Fi">reference</a>.</p>
+</div>
+<p>To create a <code>std::multiset</code>, the same <code>std::set</code> <a href="#BM_(constructor)%2Fi">constructor</a>s apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.</p>
+<pre class="hljs"><code><span class="hljs-comment">// prime</span>
+std::multiset&lt;<span class="hljs-type">int</span>&gt; s1 { <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> };  <span class="hljs-comment">// DUPLICATES RETAINED</span>
+<span class="hljs-comment">// copy range</span>
+<span class="hljs-function">std::multiset&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">s2</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
+<span class="hljs-comment">// custom comparator</span>
+<span class="hljs-keyword">auto</span> comparator </span>= [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; lhs, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; rhs) -&gt; <span class="hljs-type">bool</span> { <span class="hljs-keyword">return</span> lhs &lt; rhs; };
+<span class="hljs-function">std::multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(comparator)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, comparator)</span></span>;
+<span class="hljs-function">std::multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, std::greater)</span></span>;
+<span class="hljs-comment">// copy/move</span>
+std::multiset&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::multiset&lt;<span class="hljs-type">int</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<span class="hljs-comment">// custom allocator</span>
+CustomAllocator allocator {};
+<span class="hljs-function">std::multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
+</code></pre>
+<p>Functions are more or less the same as their <code>std::set</code> counterparts. The only major difference is that <code>count()</code> returns the number of <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s for an element.are available.</p>
+<pre class="hljs"><code><span class="hljs-comment">// find</span>
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">find</span>(<span class="hljs-number">1</span>) != s1.<span class="hljs-built_in">end</span>() };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">contains</span>(<span class="hljs-number">1</span>) };
+<span class="hljs-comment">// get number of instances</span>
+<span class="hljs-type">bool</span> is_two_instances { s1.<span class="hljs-built_in">count</span>(<span class="hljs-number">1</span>) == <span class="hljs-number">2</span> };
+<span class="hljs-comment">// get lower/upper bound</span>
+<span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">lower_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">upper_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem just after 4 (could be s1.end() if no such elem)</span>
+<span class="hljs-comment">// add</span>
+s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>);
+s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>);
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+<span class="hljs-comment">// remove</span>
+<span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
+<span class="hljs-type">int</span> res { s1.<span class="hljs-built_in">extract</span>(it1) };  <span class="hljs-comment">// WARNING: it1 invalid after this point</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">begin</span>() };
+s1.<span class="hljs-built_in">erase</span>(it2);  <span class="hljs-comment">// WARNING: it2 invalid after this point</span>
+<span class="hljs-comment">// remove range</span>
+<span class="hljs-keyword">auto</span> it3 {s1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it4 {s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment">// WARNING: it3/it4 invalid after this call</span>
+<span class="hljs-comment">// remove all</span>
+s1.<span class="hljs-built_in">clear</span>();
+<span class="hljs-comment">// get size</span>
+<span class="hljs-keyword">auto</span> is_empty1 { s1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { s1.<span class="hljs-built_in">empty</span>() };
+<span class="hljs-comment">// iterate</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : s1) {  <span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H_Map"></a><h4>Map</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FMap)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FSet)_TOPIC%2F">Library Functions/Containers/Ordered Associative/Set</a></li>
+</ul>
+</div>
+<p><code>std::map</code> is a container similar to <code>std::set</code>, with the major difference being that each element in a <code>std::map</code> has a secondary value associated with it: key to value. Only the key is used for ordering, uniqueness, and lookup. The value just tags along.</p>
+<p>To create a <code>std::map</code>, the same <code>std::set</code> <a href="#BM_(constructor)%2Fi">constructor</a>s apply. The only major differences are that ...</p>
+<ol>
+<li>the type of the value needs to be specified as as the second <a href="#BM_(template%20parameter)%2Fi">template parameter</a>.</li>
+<li>if initializing to a list of key-value pairs, each element of the initializer list must be <code>std::pair&lt;K,V&gt;</code> (<code>K</code> is key type, <code>V</code> is value type).</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-comment">// prime</span>
+std::map&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s1 {
+    { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
+    { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined</span>
+    { <span class="hljs-number">2</span>, <span class="hljs-number">-100.0f</span> },
+    { <span class="hljs-number">4</span>, <span class="hljs-number">123.0f</span> },
+    { <span class="hljs-number">5</span>, <span class="hljs-number">4.0f</span> }
+};
+<span class="hljs-comment">// copy range</span>
+<span class="hljs-function">std::map&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">s2</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 key-value pairs from another container</span>
+<span class="hljs-comment">// custom comparator</span>
+<span class="hljs-keyword">auto</span> comparator </span>= [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; lhs, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; rhs) -&gt; <span class="hljs-type">bool</span> { <span class="hljs-keyword">return</span> lhs &lt; rhs; };
+<span class="hljs-function">std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(comparator)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, comparator)</span></span>;
+<span class="hljs-function">std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, std::greater)</span></span>;
+<span class="hljs-comment">// copy/move</span>
+std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<span class="hljs-comment">// custom allocator</span>
+CustomAllocator allocator {};
+<span class="hljs-function">std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
+</code></pre>
+<p>To check an element exists, the following functions are available:</p>
+<ul>
+<li><code>find()</code> return an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed at the position of the found element (returns <code>end()</code> <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position if not found).</li>
+<li><code>contains()</code> returns bool (true if it exists, false otherwise).</li>
+<li><code>count()</code> returns integer (0 is false, 1 is true).</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">find</span>(<span class="hljs-number">3</span>) != s1.<span class="hljs-built_in">end</span>() };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">contains</span>(<span class="hljs-number">3</span>) };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">count</span>(<span class="hljs-number">3</span>) == <span class="hljs-number">1</span> };
+</code></pre>
+<p><a href="#BM_(dereference%7Cdereferencing)%2Fi">Dereferencing</a> an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> will give back both the key and value as a <code>std::pair&lt;K,V&gt;</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it { s1.<span class="hljs-built_in">find</span>(<span class="hljs-number">3</span>) };
+std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; found_pair { *it };
+</code></pre>
+<p>To find the first key-value pair where the key is greater than or equal (&gt;=) to some other key, use <code>lower_bound()</code>. Similarly, to find the first key-value pair where the key is greater than (&gt;) some other key, use <code>upper_bound()</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">lower_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">upper_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem just after 4 (could be s1.end() if no such elem)</span>
+</code></pre>
+<p>To add a key-value pair (not <em>replace</em> an existing value), the following functions are available:</p>
+<ul>
+<li><code>insert()</code> either copies or moves into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is a <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>).</li>
+<li><code>emplace()</code> adds an element <em>by creating it directly</em> (no copying / moving).</li>
+<li><code>try_emplace()</code> like <code>emplace()</code> but has special move semantics (does not move <a href="#BM_(template%20parameter)%2Fi">template parameter</a> pack <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a> arguments if insertion doesn't happen -- see docs for more info).</li>
+<li><code>emplace_hint()</code> like <code>emplace()</code> but also takes in an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed to some position as a hint.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)</span>
+s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace_try</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+</code></pre>
+<p>To replace a value for an already existing key, <code>insert_or_assign()</code> either copies or moves into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is a <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>), replacing it if already exists.</p>
+<pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)</span>
+s1.<span class="hljs-built_in">insert_or_assign</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+</code></pre>
+<p>To delete an element at some specific <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position, use either <code>extract()</code> or <code>erase()</code>. The difference is that <code>extract()</code> will return the key-value while <code>erase()</code> won't.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
+<span class="hljs-type">int</span> res { s1.<span class="hljs-built_in">extract</span>(it1) };  <span class="hljs-comment">// WARNING: it1 invalid after this point</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">begin</span>() };
+s1.<span class="hljs-built_in">erase</span>(it2);  <span class="hljs-comment">// WARNING: it2 invalid after this point</span>
+
+<span class="hljs-comment">// DELETE between idx range</span>
+<span class="hljs-keyword">auto</span> it3 {s1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it4 {s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment">// WARNING: it3/it4 invalid after this call</span>
+</code></pre>
+<p>To delete all elements, use <code>clear()</code>.</p>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">clear</span>();
+</code></pre>
+<p>To get the number of elements, use <code>size()</code>. Similarly, use <code>empty()</code> to check if empty.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty1 { s1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { s1.<span class="hljs-built_in">empty</span>() };
+</code></pre>
+<p>To iterate over the elements, use <code>being()</code> and <code>end()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : s1) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H_Multimap"></a><h4>Multimap</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FMultimap)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FMultiset)_TOPIC%2F">Library Functions/Containers/Ordered Associative/Multiset</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FMap)_TOPIC%2F">Library Functions/Containers/Ordered Associative/Map</a></li>
+</ul>
+</div>
+<p><code>std::multimap</code> is a container that's a combination of <code>std::multiset</code> and <code>std::map</code>. That is, it's a <code>std::map</code> but it allows for many key-value pairs with the same key (keys aren't unique). Similar to <code>std::multiset</code>, <code>std::multimap</code> uses the sorting comparator to find duplicates: two <a href="#BM_(object%7Cinstance)%2Fi">object</a>s a and b are considered equivalent if neither compares less than the other: <code>!comp(a, b) &amp;&amp; !comp(b, a)</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Definition is from cpp<a href="#BM_(reference)%2Fi">reference</a>.</p>
+</div>
+<p>To create a <code>std::multimap</code>, the same <code>std::map</code> <a href="#BM_(constructor)%2Fi">constructor</a>s apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.</p>
+<pre class="hljs"><code><span class="hljs-comment">// prime</span>
+std::multimap&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s1 {
+    { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
+    { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> this is the 2nd instance of the key 1, both key-value pairs are kept</span>
+    { <span class="hljs-number">2</span>, <span class="hljs-number">-100.0f</span> },
+    { <span class="hljs-number">4</span>, <span class="hljs-number">123.0f</span> },
+    { <span class="hljs-number">5</span>, <span class="hljs-number">4.0f</span> }
+};
+<span class="hljs-comment">// copy range</span>
+<span class="hljs-function">std::multimap&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">s2</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 key-value pairs from another container</span>
+<span class="hljs-comment">// custom comparator</span>
+<span class="hljs-keyword">auto</span> comparator </span>= [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; lhs, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; rhs) -&gt; <span class="hljs-type">bool</span> { <span class="hljs-keyword">return</span> lhs &lt; rhs; };
+<span class="hljs-function">std::multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(comparator)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, comparator)</span></span>;
+<span class="hljs-function">std::multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, std::greater)</span></span>;
+<span class="hljs-comment">// copy/move</span>
+std::multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<span class="hljs-comment">// custom allocator</span>
+CustomAllocator allocator {};
+<span class="hljs-function">std::multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
+</code></pre>
+<p>Functions are more or less the same as their <code>std::map</code> counterparts. The only major difference are that...</p>
+<ol>
+<li><code>count()</code> returns the number of <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s for an element.are available</li>
+<li><code>insert_or_assign()</code> is removed because it doesn't make sense to have it (you can have duplicate keys).</li>
+<li><code>try_emplace()</code> is removed because it doesn't make sense to have it (you can have duplicate keys).</li>
+</ol>
+<pre class="hljs"><code><span class="hljs-comment">// find</span>
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">find</span>(<span class="hljs-number">3</span>) != s1.<span class="hljs-built_in">end</span>() };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">contains</span>(<span class="hljs-number">3</span>) };
+<span class="hljs-comment">// get</span>
+<span class="hljs-keyword">auto</span> it { s1.<span class="hljs-built_in">find</span>(<span class="hljs-number">3</span>) };  <span class="hljs-comment">// WARNING: if there's multiple instances of key, any of them could be returned here</span>
+std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; found_pair { *it };
+<span class="hljs-comment">// get number of instances</span>
+<span class="hljs-type">bool</span> is_two_instances { s1.<span class="hljs-built_in">count</span>(<span class="hljs-number">1</span>) == <span class="hljs-number">2</span> };
+<span class="hljs-comment">// get lower/upper bound</span>
+<span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">lower_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem 4 if 4 exists, otherwise get iterator to the elem just after 4 (could be s1.end() if no such elem)</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">upper_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem just after 4 (could be s1.end() if no such elem)</span>
+<span class="hljs-comment">// add</span>
+s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+<span class="hljs-comment">// remove</span>
+<span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
+<span class="hljs-type">int</span> res { s1.<span class="hljs-built_in">extract</span>(it1) };  <span class="hljs-comment">// WARNING: it1 invalid after this point</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">begin</span>() };
+s1.<span class="hljs-built_in">erase</span>(it2);  <span class="hljs-comment">// WARNING: it2 invalid after this point</span>
+<span class="hljs-comment">// remove range</span>
+<span class="hljs-keyword">auto</span> it3 {s1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it4 {s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment">// WARNING: it3/it4 invalid after this call</span>
+<span class="hljs-comment">// remove all</span>
+s1.<span class="hljs-built_in">clear</span>();
+<span class="hljs-comment">// get size</span>
+<span class="hljs-keyword">auto</span> is_empty1 { s1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { s1.<span class="hljs-built_in">empty</span>() };
+<span class="hljs-comment">// iterate</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : s1) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H_Unordered%20Associative"></a><h3>Unordered Associative</h3>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative)_TOPIC%2F"></a><strong></strong></p>
+<p>Unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers organize <a href="#BM_(object%7Cinstance)%2Fi">object</a>s by key and potentially a value. Keys are stored in an unordered fashion. The underlying data structure used by unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers is a hash table.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Unsure if the spec defines if they should be implemented as red-black trees, but from what I've read that's how they're implemented.</p>
+</div>
+<p>The subsections below detail the various unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers that are provided by the C++ standard library.</p>
+<a name="H1_Set"></a><h4>Set</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FSet)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FOrdered%20Associative%2FSet)_TOPIC%2F">Library Functions/Containers/Ordered Associative/Set</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FAllocators)_TOPIC%2F">Library Functions/Allocators</a></li>
+</ul>
+</div>
+<p><code>std::unordered_set</code> is a container that's similar to <code>std::set</code>. It holds on to unique elements but does so <em>unordered</em> (where as <code>std::set</code> has some sort order). It's implemented as a hash table, so rather than having to specify a comparator, you're required to specify a hash function.</p>
+<p>Several pre-existing hash functions are provided by the C++ standard library via <code>std::hash&lt;T&gt;</code> (<code>T</code> being the type in question). If the user doesn't supply a hash function directly, the default is to use <code>std::hash&lt;T&gt;</code> with the element type substituted in (compilation will fail if no <code>std::hash&lt;T&gt;</code> implementation for that element type exists). For example, <code>std::hash&lt;int&gt;</code> exists for integers and gets automatically plugged in when the element type of the container is <code>int</code>.</p>
+<p>In addition to a hash function, a <code>std::unordered_set</code> may have a custom equivalence function. By default, <code>std::equal_to&lt;T&gt;</code> is used if none is supplied by the user, which use the equality operator (==).</p>
+<p>To create a <code>std::unordered_set</code> primed with a sequence of values known as <a href="#BM_(compile-time)%2Fi">compile-time</a>, use typical <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>. Since only unique values are allowed, duplicates will be ignored.</p>
+<pre class="hljs"><code>std::unordered_set&lt;<span class="hljs-type">int</span>&gt; s1 { <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> };
+</code></pre>
+<p>To create a <code>std::unordered_set</code> without priming it directly to a sequence of values, you can't use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a>. You must to use parenthesis.</p>
+<pre class="hljs"><code><span class="hljs-function">std::unordered_set&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">s2</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
+</span></code></pre>
+<p>To create a <code>std::unordered_set</code> with a custom hash function, that custom hash function can be implemented in one of two ways:</p>
+<ul>
+<li>a function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a> that takes a single parameter of element type and returns the hash code as a <code>size_t</code>.</li>
+<li>a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> <code>std::hash&lt;T&gt;</code> for the element type (assuming one wasn't already supplied by the C++ standard library).</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-comment">// function-like object</span>
+<span class="hljs-keyword">auto</span> hasher = [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; val) -&gt; <span class="hljs-type">size_t</span> { <span class="hljs-keyword">return</span> <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">size_t</span>&gt;(val); };
+<span class="hljs-function">std::unordered_set&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(hasher)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, hasher)</span></span>;
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I think (not sure) if you create a <code>std::hash&lt;T&gt;</code> implementation for the element type, the <code>std::unordered_set</code> should automatically pick it without having to specify the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> + directly passing it in as an argument (as done above). It should work so long as the implementation is visible (e.g. whatever file its in has been <code>#include</code>-ed) when the container is created.</p>
+</div>
+<p><code>std::unordered_set</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::unordered_set</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
+<pre class="hljs"><code>std::unordered_set&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
+std::unordered_set&lt;<span class="hljs-type">int</span>&gt; s4 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+</code></pre>
+<p>Similarly, because <code>std::unordered_set</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
+<pre class="hljs"><code>CustomAllocator allocator {};
+std::unordered_set&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(std::hash&lt;<span class="hljs-type">int</span>&gt;), <span class="hljs-keyword">decltype</span>(std::equal_to&lt;<span class="hljs-type">int</span>&gt;), CustomAllocator&gt; <span class="hljs-built_in">s5</span> (allocator);
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Similar to a Java <code>HashMap</code>, a <code>std::unordered_set</code> has concepts such as bucket count and load factor. It'll automatically add more buckets and rehash once the load factor reaches some point, all of which is tunable if you deem the performance of the defaults as not good. Alternatively, you can always trigger a rehash manually.</p>
+<p>Those features aren't discussed here.</p>
+</div>
+<p><code>std::unordered_set</code> supports most of the same functions as <code>std::set</code> except for those that have to do with sorted ordering. For example, <code>lower_bound()</code> and <code>upper_bound()</code> are missing because here because the elements here aren't ordered.</p>
+<p>To check if a set contains an element, the following functions are available:</p>
+<ul>
+<li><code>find()</code> return an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed at the position of the found element (returns <code>end()</code> <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position if not found).</li>
+<li><code>contains()</code> returns bool (true if it exists, false otherwise).</li>
+<li><code>count()</code> returns integer (1 if it exists, 0 otherwise).</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">find</span>(<span class="hljs-number">3</span>) != s1.<span class="hljs-built_in">end</span>() };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">contains</span>(<span class="hljs-number">3</span>) };
+<span class="hljs-type">bool</span> found { s1.<span class="hljs-built_in">count</span>(<span class="hljs-number">3</span>) == <span class="hljs-number">1</span> };
+</code></pre>
+<p>To add an element, the following functions are available:</p>
+<ul>
+<li><code>insert()</code> either copies or moves a value into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is a <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>).</li>
+<li><code>emplace()</code> adds an element <em>by creating it directly</em> (no copying / moving).</li>
+<li><code>emplace_hint()</code> like the above but also takes in an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed to some position as a hint.</li>
+</ul>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>);
+s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>);
+s1.<span class="hljs-built_in">emplace_hint</span>(<span class="hljs-number">6</span>, s1.<span class="hljs-built_in">begin</span>());
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>emplace()</code> / <code>emplace_hint()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(template%20parameter)%2Fi">template parameter</a> packs to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FAny)_TOPIC%2F">Library Functions/Utility Wrappers/Any</a> (also has an <code>emplace()</code> function)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FVariant)_TOPIC%2F">Library Functions/Utility Wrappers/Variant</a> (also has an <code>emplace()</code> function)</li>
+</ul>
+</div>
+<p>To delete an element at some specific <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position, use either <code>extract()</code> or <code>erase()</code>. The difference is that <code>extract()</code> will return the element while <code>erase()</code> won't.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
+<span class="hljs-type">int</span> res { s1.<span class="hljs-built_in">extract</span>(it1) };  <span class="hljs-comment">// WARNING: it1 invalid after this point</span>
+<span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">begin</span>() };
+s1.<span class="hljs-built_in">erase</span>(it2);  <span class="hljs-comment">// WARNING: it2 invalid after this point</span>
+
+<span class="hljs-comment">// DELETE between idx range</span>
+<span class="hljs-keyword">auto</span> it3 {s1.<span class="hljs-built_in">begin</span>()};
+<span class="hljs-keyword">auto</span> it4 {s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">10</span>};
+l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment">// WARNING: it3/it4 invalid after this call</span>
+</code></pre>
+<p>To delete all elements, use <code>clear()</code>.</p>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">clear</span>();
+</code></pre>
+<p>To get the number of elements, use <code>size()</code>. Similarly, use <code>empty()</code> to check if empty.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty1 { s1.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+<span class="hljs-keyword">auto</span> is_empty2 { s1.<span class="hljs-built_in">empty</span>() };
+</code></pre>
+<p>To iterate over the elements, use <code>being()</code> and <code>end()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// RECALL: for-each loop will implicitly call begin() and end()</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;obj : s1) {
+    <span class="hljs-comment">// do something with value here</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also ..</p>
+<ul>
+<li><code>cbegin()</code> / <code>cend()</code> which returns a constant <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> (can't change values?).</li>
+<li><code>rbegin()</code> / <code>rend()</code> which returns an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> that goes in reverse order.</li>
+<li><code>crbegin()</code> / <code>crend()</code> which is a mixture of the above two.</li>
+</ul>
+</div>
+<a name="H1_Multiset"></a><h4>Multiset</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FMultiset)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FSet)_TOPIC%2F">Library Functions/Containers/Unordered Associative/Set</a></li>
+</ul>
+</div>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<a name="H1_Map"></a><h4>Map</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FMap)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FSet)_TOPIC%2F">Library Functions/Containers/Unordered Associative/Set</a></li>
+</ul>
+</div>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<a name="H1_Multimap"></a><h4>Multimap</h4>
+<p><a name="BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FMultimap)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FMultiset)_TOPIC%2F">Library Functions/Containers/Unordered Associative/Multiset</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FMap)_TOPIC%2F">Library Functions/Containers/Unordered Associative/Map</a></li>
+</ul>
+</div>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<p>todo: fill me in</p>
+<a name="H_Container%20Adapters"></a><h2>Container Adapters</h2>
+<p><a name="BM_(Library%20Functions%5C%2FContainer%20Adapters)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F">Library Functions/Containers</a></li>
+</ul>
+</div>
+<p>Container adapters are light-weight wrappers around sequential containers that expose them in a simplified way that matches a common data structure. For example, an <code>std::vector</code> can be wrapped such that it's exposed as a queue. The caller of the queue doesn't have to know what type of sequential container is backing that queue.</p>
+<p>The type of sequential container usable by a container adaptor depends on the functions it has. For example, some container adaptors require both <code>front()</code> and <code>back()</code> functions to be supported by the sequential container type.</p>
+<a name="H_Stack"></a><h3>Stack</h3>
+<p><a name="BM_(Library%20Functions%5C%2FContainer%20Adapters%2FStack)_TOPIC%2F"></a><strong></strong></p>
+<p><code>std::stack</code> wraps a sequential container as if it were a stack abstract data type:</p>
+<ul>
+<li>The only way to write is to append.</li>
+<li>The only element that can be read / removed is the last one.</li>
+</ul>
+<p>To create a <code>std::stack</code>, pass in a <a href="#BM_(reference)%2Fi">reference</a> to the sequential container to wrap: <code>std::vector</code>, <code>std::deque</code>, or <code>std::list</code>. The container will either be copied or moved depending on whether the container <a href="#BM_(reference)%2Fi">reference</a> is an normal <a href="#BM_(reference)%2Fi">reference</a> or an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>. Alternatively, if you pass in no <a href="#BM_(reference)%2Fi">reference</a> at all, an empty container of the type specified will get used.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The sequential container can technically be any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, so long as it supports the expected type traits (e.g. it's expected to have a function called <code>push_back()</code> that has a single parameter of type ...).</p>
+</div>
+<pre class="hljs"><code><span class="hljs-comment">// create by copying</span>
+std::vector&lt;<span class="hljs-type">int</span>&gt; c1 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+std::stack&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(c1)&gt; s1 { c1 };
+<span class="hljs-comment">// create by moving</span>
+std::deque&lt;<span class="hljs-type">int</span>&gt; c2 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+std::stack&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(c2)&gt; s2 { std::<span class="hljs-built_in">move</span>(c2) };
+<span class="hljs-comment">// create into brand new</span>
+std::stack&lt;<span class="hljs-type">int</span>, std::list&lt;<span class="hljs-type">int</span>&gt;&gt; s3 {};
+std::queue&lt;<span class="hljs-type">int</span>&gt; q4 {};  <span class="hljs-comment">// equivalent to using std::deque&lt;int&gt; as the backing type</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FRvalue%20References)_TOPIC%2F">Core Language/Variables/Rvalue References</a> (refresher on <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s)</li>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FType%20Deduction)_TOPIC%2F">Core Language/Variables/Type Deduction</a> (refresher on decltype)</li>
+</ul>
+</div>
+<p>To add an item, use <code>push()</code>. Internally, this invokes the wrapped container's <code>push_back()</code> function.</p>
+<pre class="hljs"><code>s3.<span class="hljs-built_in">push</span>(<span class="hljs-number">1</span>);
+s3.<span class="hljs-built_in">push</span>(<span class="hljs-number">2</span>);
+s3.<span class="hljs-built_in">push</span>(<span class="hljs-number">3</span>);
+</code></pre>
+<p>To read the most recently added item, use <code>top()</code>. Internally, this invokes the wrapped container's <code>back()</code> function.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> a { s3.<span class="hljs-built_in">top</span>() };
+</code></pre>
+<p>To remove the most recently added item, use <code>pop()</code>. Internally, this invokes the wrapped container's <code>pop_back()</code> function.</p>
+<pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> also returns the element removed</span>
+s3.<span class="hljs-built_in">pop</span>();
+s3.<span class="hljs-built_in">pop</span>();
+s3.<span class="hljs-built_in">pop</span>();
+</code></pre>
+<p>To get the size, use <code>size()</code>. Internally, this invokes the wrapped container function with the same name.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty { s3.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+</code></pre>
+<a name="H_Queue"></a><h3>Queue</h3>
+<p><a name="BM_(Library%20Functions%5C%2FContainer%20Adapters%2FQueue)_TOPIC%2F"></a><strong></strong></p>
+<p><code>std::queue</code> wraps a sequential container as if it were a queue abstract data type:</p>
+<ul>
+<li>The only way to write is to append.</li>
+<li>The only element that can be read / removed is the head.</li>
+</ul>
+<p>To create a <code>std::queue</code>, pass in a <a href="#BM_(reference)%2Fi">reference</a> to the sequential container to wrap: <code>std::deque</code> or <code>std::list</code>. The container will either be copied or moved depending on whether the container <a href="#BM_(reference)%2Fi">reference</a> is an normal <a href="#BM_(reference)%2Fi">reference</a> or an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>. Alternatively, if you pass in no <a href="#BM_(reference)%2Fi">reference</a> at all, an empty container of the type specified will get used.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The sequential container can technically be any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, so long as it supports the expected type traits (e.g. it's expected to have a function called <code>push_back()</code> that has a single parameter of type ...).</p>
+</div>
+<pre class="hljs"><code><span class="hljs-comment">// create by copying</span>
+std::deque&lt;<span class="hljs-type">int</span>&gt; c1 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+std::queue&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(c1)&gt; q1 { c1 };
+<span class="hljs-comment">// create by moving</span>
+std::deque&lt;<span class="hljs-type">int</span>&gt; c2 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+std::queue&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(c2)&gt; q2 { std::<span class="hljs-built_in">move</span>(c2) };
+<span class="hljs-comment">// create into brand new</span>
+std::queue&lt;<span class="hljs-type">int</span>, std::list&lt;<span class="hljs-type">int</span>&gt;&gt; q3 {};
+std::queue&lt;<span class="hljs-type">int</span>&gt; q4 {};  <span class="hljs-comment">// equivalent to using std::deque&lt;int&gt; as the backing type</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FRvalue%20References)_TOPIC%2F">Core Language/Variables/Rvalue References</a> (refresher on <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s)</li>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FType%20Deduction)_TOPIC%2F">Core Language/Variables/Type Deduction</a> (refresher on decltype)</li>
+</ul>
+</div>
+<p>To add an item, use <code>push()</code>. Internally, this invokes the wrapped container's <code>push_back()</code> function.</p>
+<pre class="hljs"><code>q3.<span class="hljs-built_in">push</span>(<span class="hljs-number">1</span>);
+q3.<span class="hljs-built_in">push</span>(<span class="hljs-number">2</span>);
+q3.<span class="hljs-built_in">push</span>(<span class="hljs-number">3</span>);
+</code></pre>
+<p>To read the most recently added item, use either <code>front()</code> or <code>back()</code>. Internally, these invoke the wrapped container functions with the same name.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> a { q3.<span class="hljs-built_in">front</span>() };
+<span class="hljs-type">int</span> b { q3.<span class="hljs-built_in">back</span>() };
+</code></pre>
+<p>To remove the most recently added item, use <code>pop()</code>. Internally, this invokes the wrapped container's <code>pop_front()</code> function.</p>
+<pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> also returns the element removed</span>
+q3.<span class="hljs-built_in">pop</span>();
+q3.<span class="hljs-built_in">pop</span>();
+q3.<span class="hljs-built_in">pop</span>();
+</code></pre>
+<p>To get the size, use <code>size()</code>. Internally, this invokes the wrapped container function with the same name.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty { q3.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+</code></pre>
+<a name="H_Priority%20Queue"></a><h3>Priority Queue</h3>
+<p><a name="BM_(Library%20Functions%5C%2FContainer%20Adapters%2FPriority%20Queue)_TOPIC%2F"></a><strong></strong></p>
+<p><code>std::priority_queue</code> wraps a sequential container as if it were a priority queue abstract data type: Regardless of what order elements are added in, the only element that can be read / removed is the element with the highest priority (priority is defined by a comparator).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The sequential container can technically be any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, so long as it supports the expected type traits (e.g. it's expected to have a function called <code>push_back()</code> that has a single parameter of type ...).</p>
+</div>
+<p>To create a <code>std::priority_queue</code>, pass in a <a href="#BM_(reference)%2Fi">reference</a> to the sequential container to wrap: <code>std::vector</code>, <code>std::deque</code>, or <code>std::list</code>. The container will either be copied or moved depending on whether the container <a href="#BM_(reference)%2Fi">reference</a> is an normal <a href="#BM_(reference)%2Fi">reference</a> or an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>. Alternatively, if you pass in no <a href="#BM_(reference)%2Fi">reference</a> at all, an empty container of the type specified will get used.</p>
+<pre class="hljs"><code><span class="hljs-comment">// create by copying</span>
+std::vector&lt;<span class="hljs-type">int</span>&gt; c1 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+std::priority_queue&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(c1)&gt; q1 { c1 };
+<span class="hljs-comment">// create by moving</span>
+std::deque&lt;<span class="hljs-type">int</span>&gt; c2 { <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span> };
+std::priority_queue&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(c2)&gt; q2 { std::<span class="hljs-built_in">move</span>(c2) };
+<span class="hljs-comment">// create into brand new</span>
+std::priority_queue&lt;<span class="hljs-type">int</span>, std::list&lt;<span class="hljs-type">int</span>&gt;&gt; q3 {};
+std::priority_queue&lt;<span class="hljs-type">int</span>&gt; q4 {};  <span class="hljs-comment">// equivalent to using std::vector&lt;int&gt; as the backing type</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FRvalue%20References)_TOPIC%2F">Core Language/Variables/Rvalue References</a> (refresher on <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s)</li>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FType%20Deduction)_TOPIC%2F">Core Language/Variables/Type Deduction</a> (refresher on decltype)</li>
+</ul>
+</div>
+<p>In the above examples the default comparator of <code>std::less</code> is used, which uses the less than operator (&lt;) to compare two <a href="#BM_(object%7Cinstance)%2Fi">object</a>s for priority. To define a custom comparator, pass in that comparator's type as the 3rd <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument and pass it into the <a href="#BM_(constructor)%2Fi">constructor</a>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> comparator = [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; lhs, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; rhs) -&gt; <span class="hljs-type">bool</span> { <span class="hljs-keyword">return</span> lhs &lt; rhs; };
+std::priority_queue&lt;<span class="hljs-type">int</span>, std::deque&lt;<span class="hljs-type">int</span>&gt;, <span class="hljs-keyword">decltype</span>(comparator)&gt; q5 { comparator };
+std::priority_queue&lt;<span class="hljs-type">int</span>, std::deque&lt;<span class="hljs-type">int</span>&gt;, <span class="hljs-keyword">decltype</span>(std::greater&lt;<span class="hljs-type">int</span>&gt;)&gt; q6 { std::greater&lt;<span class="hljs-type">int</span>&gt; };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FLambdas)_TOPIC%2F">Core Language/Classes/Lambdas</a> (<a href="#BM_(lambda)%2Fi">lambda</a> refresher)</li>
+</ul>
+</div>
+<p>To add an item, use <code>push()</code>.</p>
+<pre class="hljs"><code>q1.<span class="hljs-built_in">push</span>(<span class="hljs-number">10</span>);
+q1.<span class="hljs-built_in">push</span>(<span class="hljs-number">100</span>);
+q1.<span class="hljs-built_in">push</span>(<span class="hljs-number">-5</span>);
+</code></pre>
+<p>To read the most high priority element, use <code>top()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> a { q1.<span class="hljs-built_in">top</span>() };
+</code></pre>
+<p>To remove the most high priority element, use <code>pop()</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> also returns the element removed</span>
+q1.<span class="hljs-built_in">pop</span>();
+q1.<span class="hljs-built_in">pop</span>();
+q1.<span class="hljs-built_in">pop</span>();
+</code></pre>
+<p>To get the size, use <code>size()</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> is_empty { s3.<span class="hljs-built_in">size</span>() == <span class="hljs-number">0</span> };
+</code></pre>
 <a name="H_Time"></a><h2>Time</h2>
 <p><a name="BM_(Library%20FunctionsTime%5C%2FTime)_TOPIC%2F"></a><strong></strong></p>
 <p>Similar to Java's <code>java.time</code> package, the C++ standard library offers several <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that represent various time-based constructs. This includes timestamps, durations, calendar representations, timezones, and various helper functions.</p>
@@ -5850,7 +7120,7 @@ std::chrono::year_month_weekday today2 { y, m, _4th_thurs };
 std::chrono::local_days today1_tp {today1};
 std::chrono::local_days today2_tp {today2};
 <span class="hljs-comment">// compare -- they both represent the same date so they should be equal</span>
-<span class="hljs-keyword">auto</span> sameDay = today1_tp == today2_tp; <span class="hljs-comment">// returns true</span>
+<span class="hljs-keyword">auto</span> sameDay { today1_tp == today2_tp }; <span class="hljs-comment">// returns true</span>
 </code></pre>
 <p>Calendar <a href="#BM_(object%7Cinstance)%2Fi">object</a>s can be created more intuitively via a set of <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>s, constants, and <a href="#BM_(user-defined%20literal)%2Fi">user-defined literal</a>s.</p>
 <pre class="hljs"><code><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std::literals::chrono_literals;
@@ -5869,10 +7139,10 @@ std::chrono::year_month_day ymd{ tp_rounded };
 <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">time_duration</span> <span class="hljs-params">( std::chrono::floor&lt;milliseconds&gt;(tp - tp_rounded) )</span></span>;
 std::chrono::hh_mm_ss time{ time_duration };
 <span class="hljs-comment">// the variables below are of duration type</span>
-<span class="hljs-keyword">auto</span> h = time.<span class="hljs-built_in">hours</span>();
-<span class="hljs-keyword">auto</span> m = time.<span class="hljs-built_in">minutes</span>();
-<span class="hljs-keyword">auto</span> s = time.<span class="hljs-built_in">seconds</span>();
-<span class="hljs-keyword">auto</span> ms = time.<span class="hljs-built_in">subseconds</span>();
+<span class="hljs-keyword">auto</span> h { time.<span class="hljs-built_in">hours</span>() };
+<span class="hljs-keyword">auto</span> m { time.<span class="hljs-built_in">minutes</span>() };
+<span class="hljs-keyword">auto</span> s { time.<span class="hljs-built_in">seconds</span>() };
+<span class="hljs-keyword">auto</span> ms { time.<span class="hljs-built_in">subseconds</span>() };
 </code></pre>
 <p>Several time-related helper functions are provided to deal with 12-hour vs 24-hour time.</p>
 <pre class="hljs"><code><span class="hljs-keyword">auto</span> hour_of_day { time.<span class="hljs-built_in">hours</span>() }; <span class="hljs-comment">// using object from example above</span>
@@ -5890,8 +7160,8 @@ std::chrono::hh_mm_ss time{ time_duration };
 <p>Timezones are accessible through a timezone database.</p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> my_tzdb = std::chrono::<span class="hljs-built_in">get_tzdb</span>(); <span class="hljs-comment">// also get_tzdb_list()</span>
 
-<span class="hljs-keyword">const</span> std::chrono::time_zone* la_tz = my_tzdb.<span class="hljs-built_in">locate_zone</span>(<span class="hljs-string">"America/Los_Angeles"</span>);
-<span class="hljs-keyword">const</span> std::chrono::time_zone* local_tz = my_tzdb.<span class="hljs-built_in">current_zone</span>();
+<span class="hljs-keyword">const</span> std::chrono::time_zone* la_tz { my_tzdb.<span class="hljs-built_in">locate_zone</span>(<span class="hljs-string">"America/Los_Angeles"</span>) };
+<span class="hljs-keyword">const</span> std::chrono::time_zone* local_tz { my_tzdb.<span class="hljs-built_in">current_zone</span>() };
 </code></pre>
 <p>You can apply a timezone to a time point, then convert it to the appropriate date and time <a href="#BM_(object%7Cinstance)%2Fi">object</a>s.</p>
 <pre class="hljs"><code><span class="hljs-comment">// From https://stackoverflow.com/a/15958113</span>
@@ -5907,7 +7177,7 @@ std::chrono::hh_mm_ss time { std::chrono::<span class="hljs-built_in">floor</spa
 std::chrono::year_month_day date { January / <span class="hljs-number">27</span>d / <span class="hljs-number">2022</span>y };
 std::chrono::hh_mm_ss time { <span class="hljs-number">8</span>h + <span class="hljs-number">30</span>m + <span class="hljs-number">45</span>s };
 
-<span class="hljs-keyword">auto</span> tp = std::chrono::local_days { date } + time;  <span class="hljs-comment">// or use sys_days for system time</span>
+<span class="hljs-keyword">auto</span> tp { std::chrono::local_days { date } + time };  <span class="hljs-comment">// or use sys_days for system time</span>
 </code></pre>
 <a name="H_Numbers"></a><h2>Numbers</h2>
 <p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers)_TOPIC%2F"></a><strong></strong></p>
@@ -5930,7 +7200,7 @@ std::cout &lt;&lt; <span class="hljs-built_in">secure_rand</span>() &lt;&lt; std
 <p>To have a random number generator return a distribution other than a normal distribution, you can use one of the distribution wrappers.</p>
 <pre class="hljs"><code>std::mt19937_64 rng{ <span class="hljs-number">12345</span> };
 std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_dist{ <span class="hljs-number">0</span>, <span class="hljs-number">10</span> };
-<span class="hljs-keyword">auto</span> value = <span class="hljs-built_in">uniform_dist</span>(rng);
+<span class="hljs-keyword">auto</span> value { <span class="hljs-built_in">uniform_dist</span>(rng) };
 </code></pre>
 <ul>
 <li><code>std::uniform_int_distribution</code></li>
@@ -5946,9 +7216,9 @@ std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_
 <a name="H_Numeric%20Type%20Information"></a><h3>Numeric Type Information</h3>
 <p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers%2FNumeric%20Type%20Information)_TOPIC%2F"></a><strong></strong></p>
 <p>Recall that C++'s numeric types are wishy-washy (e.g. there is no guarantee as to how large an <code>int</code> is, just that it must be greater than or equal to <code>short</code>). The <code>std::numeric_limits</code> <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> allows you to get <a href="#BM_(compile-time)%2Fi">compile-time</a> information about a numeric type, such as signed-ness, min, max, etc..</p>
-<pre class="hljs"><code><span class="hljs-keyword">auto</span> a = std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::is_integer;      <span class="hljs-comment">// false</span>
-<span class="hljs-keyword">auto</span> b = std::numeric_limits&lt;<span class="hljs-type">uint16_t</span>&gt;::is_integer;   <span class="hljs-comment">// true</span>
-<span class="hljs-keyword">auto</span> c = std::numeric_limits&lt;<span class="hljs-type">uint16_t</span>&gt;::has_infinity; <span class="hljs-comment">// false</span>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> a { std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::is_integer };      <span class="hljs-comment">// false</span>
+<span class="hljs-keyword">auto</span> b { std::numeric_limits&lt;<span class="hljs-type">uint16_t</span>&gt;::is_integer };   <span class="hljs-comment">// true</span>
+<span class="hljs-keyword">auto</span> c { std::numeric_limits&lt;<span class="hljs-type">uint16_t</span>&gt;::has_infinity }; <span class="hljs-comment">// false</span>
 </code></pre>
 <ul>
 <li><code>std::numeric_limits&lt;T&gt;::is_signed</code> - if the type is signed</li>
@@ -6095,17 +7365,93 @@ std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This seems like such a niche thing that I don't think it's worth fleshing it out.</p>
 </div>
-<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
-<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
-<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
-<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
-<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
-<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
-<p>TODO: START FROM CHAPTER 13 CONTAINERS</p>
+<a name="H_Bitset"></a><h2>Bitset</h2>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FSequential%2FArray)_TOPIC%2F">Library Functions/Containers/Sequential/Array</a></li>
+</ul>
+</div>
+<p><a name="BM_(Library%20Functions%5C%2FBitset)_TOPIC%2F"></a><strong></strong></p>
+<p><code>std::bitset</code> is a pseudo-container that wraps a fixed-size sequence of bits. It's similar to an <code>std::array&lt;bool, N&gt;</code> or <code>bool [N]</code>, but optimized for space and provides functions more appropriate for working with bits.</p>
+<p>To create a <code>std::bitset</code> from an integral type, set the number of bits to capture as the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>. The <a href="#BM_(constructor)%2Fi">constructor</a> can optionally take in the integra<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> to initialize to (if not present, all sets initialized to 0).</p>
+<pre class="hljs"><code>std::bitset&lt;4&gt; b1 {};  <span class="hljs-comment">// 4 bits, 0000</span>
+std::bitset&lt;4&gt; b2 {<span class="hljs-number">0b1011</span>}; <span class="hljs-comment">// 4 bits, 1011</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FCore%20Types%2FIntegral)_TOPIC%2F">Core Language/Variables/Core Types/Integral</a> (refresher on 0b prefix for integral literals specified as binary)</li>
+</ul>
+</div>
+<p>To create a <code>std::bitset</code> that's potentially larger than the largest available integral type, pass in an <code>std::string</code> of ones and zeros. Alternatively, you can use a custom character for the both ones and zeros by passing those characters into the <a href="#BM_(constructor)%2Fi">constructor</a>.</p>
+<pre class="hljs"><code>std::string str3 { <span class="hljs-string">"1011"</span> };
+std::bitset&lt;4&gt; b3 { str3 };
+std::string str4 { <span class="hljs-string">"TFTT"</span> };
+std::bitset&lt;4&gt; b4 { str4, <span class="hljs-number">0</span>, str4.<span class="hljs-built_in">size</span>(), <span class="hljs-string">'T'</span>, <span class="hljs-string">'F'</span> };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>When working with <code>std::bitset</code>'s functions, bits are represented as a bool type. The value false is for 0 / true is for 1.</p>
+</div>
+<p><a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">Operator overload</a>s are available for all bit-wise operators and their assignment operator equivalents.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> b5 { b1 &amp; b2 };  <span class="hljs-comment">//AND</span>
+<span class="hljs-keyword">auto</span> b6 { b1 | b2 };  <span class="hljs-comment">// OR</span>
+<span class="hljs-keyword">auto</span> b7 { b1 ^ b2 };  <span class="hljs-comment">// XOR</span>
+<span class="hljs-keyword">auto</span> b8 { ~b1 }; <span class="hljs-comment">// NOT</span>
+<span class="hljs-keyword">auto</span> b9 { b1 &lt;&lt; <span class="hljs-number">2</span> };  <span class="hljs-comment">// shift-left</span>
+<span class="hljs-keyword">auto</span> b10 { b1 &gt;&gt; <span class="hljs-number">2</span> };  <span class="hljs-comment">// shift-right</span>
+b1 &amp;= b2;
+b1 |= b2;
+b1 ^= b2;
+b1 &lt;&lt;= <span class="hljs-number">2</span>;
+b1 &gt;&gt;= <span class="hljs-number">2</span>;
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I'm assuming if you're going to be using bit-wise operators, the <code>set::bitset</code>s must be of the same size.</p>
+</div>
+<p>To read an individual bit as a bool, use either the subscript operator ([]) or <code>test()</code>. The difference is that <code>test()</code> provides bounds checking.</p>
+<pre class="hljs"><code><span class="hljs-type">bool</span> a = b1[<span class="hljs-number">1</span>];
+<span class="hljs-type">bool</span> b = b1.<span class="hljs-built_in">test</span>(<span class="hljs-number">1</span>);
+<span class="hljs-type">bool</span> c = b1.<span class="hljs-built_in">test</span>(<span class="hljs-number">999</span>);  <span class="hljs-comment">// throws std::out_of_range</span>
+</code></pre>
+<p>To replace an individual bit as a bool, use either the subscript operator ([]) or <code>set()</code>. The difference is that <code>set()</code> provides bounds checking.</p>
+<pre class="hljs"><code>b1[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+b1.<span class="hljs-built_in">set</span>(<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>)
+b1.<span class="hljs-built_in">set</span>(<span class="hljs-number">999</span>, <span class="hljs-literal">true</span>)  <span class="hljs-comment">// throws std::out_of_range</span>
+</code></pre>
+<p>To set a single bit to 0, use <code>reset()</code>.</p>
+<pre class="hljs"><code>b1.<span class="hljs-built_in">reset</span>(<span class="hljs-number">1</span>);
+</code></pre>
+<p>To set all bits to 1, use <code>set()</code> without any arguments. Similarly, to set all bits to 0, use <code>reset()</code> without any arguments.</p>
+<pre class="hljs"><code>b1.<span class="hljs-built_in">set</span>();  <span class="hljs-comment">// sets all bits to true</span>
+b1.<span class="hljs-built_in">reset</span>();  <span class="hljs-comment">// sets all bits to false</span>
+</code></pre>
+<p>To flip a single bit, use <code>flip()</code>. Don't specify an argument to flip all bits.</p>
+<pre class="hljs"><code>b1.<span class="hljs-built_in">flip</span>(<span class="hljs-number">1</span>);
+b1.<span class="hljs-built_in">flip</span>(); <span class="hljs-comment">// flips all bits</span>
+</code></pre>
+<p>To get the number of times 1 occurs in the sequence, use <code>count()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> d { b1.<span class="hljs-built_in">count</span>() };
+</code></pre>
+<p>To test the sequence if ...</p>
+<ul>
+<li>all bits are set to 1, use <code>all()</code>.</li>
+<li>all bits are set to 0, use <code>none()</code>.</li>
+<li>at least a single bit is set to 1, use <code>any()</code>.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-type">bool</span> e { b1.<span class="hljs-built_in">all</span>() };
+<span class="hljs-type">bool</span> f { b1.<span class="hljs-built_in">none</span>() };
+<span class="hljs-type">bool</span> g { b1.<span class="hljs-built_in">any</span>() };
+</code></pre>
+<p>To get the size, use <code>size()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> len { b1.<span class="hljs-built_in">size</span>() };
+</code></pre>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
-<p><a name="BM_(preprocessor%7Ctranslation%20unit)%2Fi"></a><strong>processor</strong> - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>.</p>
+<p><a name="BM_(preprocessor%7Ctranslation%20unit)%2Fi"></a><strong>preprocessor</strong> - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See compilation section.</p>
