@@ -11558,7 +11558,7 @@ Real-world gene expression matrices are often much more complex than the example
  2. RNA sequencing is an inherently a biased / noisy process, meaning that certain RNA transcript counts elevating or lowering could be bad data.
  3. RNA transcript counts can fluctuate due to normal cell operations (e.g. genes regulated by circadian clock), meaning that certain RNA transcript counts elevating or lowering doesn't necessarily mean that they're relevant. This especially becomes a problem in state-based gene expression matrices where variables can't be as tightly controlled (e.g. in the blood cancer example above,the samples include people at different stages of cancer, could have been taken at different times of day, etc..).
  
-Prior to clustering, RNA sequencing outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, to limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones, which is often the ones biologists are interested in.
+Prior to clustering, RNA sequencing outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, biologists often take the logarithm of the a count rather than the count itself. 
 
 ```{svgbob}
    "no log"             "log"
@@ -11575,6 +11575,8 @@ Prior to clustering, RNA sequencing outputs typically have to go through several
 ```
 
 ```{note}
+The Pevzner book says taking the logarithm is common. It never said why taking the logarithm is important. Some of the NCBI gene expression omnibus datasets that I've looked at also use logarithms while others use raw counts or "normalized counts".
+
 This section doesn't cover de-noising or de-biasing. It only covers clustering and common similarity / distance metrics for real-valued vectors (which are what gene expression vectors are). Note that clustering can be used with data types other than vectors. For example, you can cluster protein sequences where the similarity metric is the BLOSUM62 score.
 ```
 

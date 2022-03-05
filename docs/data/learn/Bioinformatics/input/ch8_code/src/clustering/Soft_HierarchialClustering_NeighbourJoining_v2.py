@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from itertools import product
 from sys import stdin
-from typing import Callable
+from typing import Callable, Iterable
 
 import yaml
 
 from ch7_copy.distance_matrix.DistanceMatrix import DistanceMatrix
 from ch7_copy.phylogeny.NeighbourJoiningPhylogeny import neighbour_joining_phylogeny
+from ch7_copy.phylogeny.TreeToAdditiveDistanceMatrix import find_path
 from graph.UndirectedGraph import Graph
 from metrics.CosineSimilarity import cosine_distance
 from metrics.EuclideanDistance import euclidean_distance
@@ -34,16 +35,23 @@ def to_dot(g: Graph, edge_scale=1.0) -> str:
 
 
 
-
-
-
 # MARKDOWN_LEAF_NODE_DISTANCES
-def get_leaf_distances(
+def get_leaf_distances_and_edges(
+        tree: Graph[str, None, str, float],
+        n_internal: str
+) -> dict[str, tuple[list[str], float]]:
+    ret = {}
+    _get_leaf_distances_and_edges(tree, n_internal, None, 0.0, [], ret)
+    return ret
+
+
+def _get_leaf_distances_and_edges(
         tree: Graph[str, None, str, float],
         n: str,
         from_n: str | None,
         from_dist: float,
-        dists: dict[str, float]
+        from_edges: list[str],
+        dists: dict[str, tuple[list[str], float]]
 ) -> None:
     # Find neighbours of n (that aren't from_n)
     n_neighbours = []
@@ -55,33 +63,40 @@ def get_leaf_distances(
         n_neighbours.append((n_other, e))
     # No neighbours? It's a leaf node -- set the dist and leave.
     if len(n_neighbours) == 0:
-        dists[n] = from_dist
+        dists[n] = (from_edges, from_dist)
         return
     # Otherwise, walk to each neighbour.
     for n_other, e in n_neighbours:
         e_dist = tree.get_edge_data(e)
-        get_leaf_distances(tree, n_other, n, from_dist + e_dist, dists)
+        _get_leaf_distances_and_edges(tree, n_other, n, from_dist + e_dist, from_edges + [e], dists)
 # MARKDOWN_LEAF_NODE_DISTANCES
 
 
-# MARKDOWN_PROBABILITY
-def leaf_probabilities(
+# MARKDOWN_OWNERSHIP_LIKELIHOOD
+def likelihood_of_ownership(
         tree: Graph[str, None, str, float],
-        n: str,
+        n_internal: str,
 ) -> dict[str, float]:
     # Get dists between n and each to leaf node
-    dists = {}
-    get_leaf_distances(tree, n, None, 0.0, dists)
-    # Calculate inverse distance weighting
-    #   See: https://stackoverflow.com/a/23524954
-    #   The link talks about a "stiffness" parameter similar to the stiffness parameter in the
-    #   partition function used for soft k-means clustering. In this case, you can make the
-    #   probabilities more decisive by taking the the distance to the power of X, where larger
-    #   X values give more decisive probabilities.
-    inverse_dists = {leaf: 1.0/d for leaf, d in dists.items()}
-    inverse_dists_total = sum(inverse_dists.values())
-    return {leaf: inv_dist / inverse_dists_total for leaf, inv_dist in inverse_dists.items()}
-# MARKDOWN_PROBABILITY
+    dists = get_leaf_distances_and_edges(tree, n_internal)
+    max_dist = max(d for d, _ in dists.values())
+    return {n_leaf: 1.0 - (d / max_dist) for n_leaf, (d, _) in dists.items()}
+# MARKDOWN_OWNERSHIP_LIKELIHOOD
+
+
+def dist_between(
+        tree: Graph[str, None, str, float],
+        from_n: str,
+        to_n: str
+):
+    path = find_path(tree, from_n, to_n)
+    return sum(tree.get_edge_data(e) for e in path)
+
+
+
+
+
+
 
 
 DistanceMetric = Callable[[tuple[float, ...], tuple[float, ...], int], float]
