@@ -16024,10 +16024,11 @@ n4_val = <span class="hljs-built_in">min</span>(
 <li><a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> is an inherently a biased / noisy process, meaning that certain <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a> counts elevating or lowering could be bad data.</li>
 <li><a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a> counts can fluctuate due to normal cell operations (e.g. <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> regulated by <a href="#BM_(circadian%20clock)%2Fi">circadian clock</a>), meaning that certain <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a> counts elevating or lowering doesn't necessarily mean that they're relevant. This especially becomes a problem in state-based <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression matrices</a> where variables can't be as tightly controlled (e.g. in the blood cancer example above,the samples include people at different stages of cancer, could have been taken at different times of day, etc..).</li>
 </ol>
-<p>Prior to <a href="#BM_(cluster)%2Fi">cluster</a>ing, <a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, to limit the impact of small fluctuations caused by either noisy data or normal cell operations, biologists often take the logarithm of the data. Doing so removes normal sized fluctuations but keeps drastic ones, which is often the ones biologists are interested in.</p>
+<p>Prior to <a href="#BM_(cluster)%2Fi">cluster</a>ing, <a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, biologists often take the logarithm of the a count rather than the count itself.</p>
 <p><img src="svgbob_32a19bab8c62e9f72dcbcb804da6b67d175a6d9f.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book says taking the logarithm is common. It never said why taking the logarithm is important. Some of the NCBI <a href="#BM_(gene%20expression)%2Fi">gene expression</a> omnibus datasets that I've looked at also use logarithms while others use raw counts or "normalized counts".</p>
 <p>This section doesn't cover de-noising or de-biasing. It only covers <a href="#BM_(cluster)%2Fi">cluster</a>ing and common similarity / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s for real-valued vectors (which are what <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s are). Note that <a href="#BM_(cluster)%2Fi">cluster</a>ing can be used with data types other than vectors. For example, you can <a href="#BM_(cluster)%2Fi">cluster</a> protein <a href="#BM_(sequence)%2Fi">sequence</a>s where the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> is the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 score.</p>
 </div>
 <a name="H_Euclidean%20Distance%20Metric"></a><h3>Euclidean Distance Metric</h3>
@@ -16754,26 +16755,26 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (2, 2)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 6)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_63bcbacbddb72e440752648fc843d058_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_0375e035d6bd6d79517c7750371cfeae_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (2, 2)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (8, 1)]</li>
-<li>cluster center (10, 7)=[(7.5, 3), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 6)=[(7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (2, 2)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 </ul>
-<p><img src="ch8_63bcbacbddb72e440752648fc843d058_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_0375e035d6bd6d79517c7750371cfeae_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
 <ul>
+<li>cluster center (9, 6)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 <li>cluster center (2, 2)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
-<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 <li>cluster center (8, 1)=[(7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
 </ul>
-<p><img src="ch8_63bcbacbddb72e440752648fc843d058_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_0375e035d6bd6d79517c7750371cfeae_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16910,7 +16911,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (2, 4)=[(2, 4), (4.5, 4)]</li>
 <li>cluster center (2.5, 6)=[(2.5, 6), (4, 5), (17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_60d1695216ee8763b430100c203ba4bc_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_f661a4c347f51def839d78b8b34e9ba3_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16919,7 +16920,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.25, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (13.0, 9.833333333333334)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_60d1695216ee8763b430100c203ba4bc_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_f661a4c347f51def839d78b8b34e9ba3_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -16928,7 +16929,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_60d1695216ee8763b430100c203ba4bc_plot2.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_f661a4c347f51def839d78b8b34e9ba3_plot2.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16976,11 +16977,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (2, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
-<li>cluster center (19, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
+<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (18, 11)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 <li>cluster center (18.5, -8)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
 </ul>
-<p><img src="ch8_35c7c2600d583d68de073d9c08cedb0e_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_24e0ff4c62f5f94f875906a3124c757f_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16989,7 +16990,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 <li>cluster center (18.875, -7)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
 </ul>
-<p><img src="ch8_35c7c2600d583d68de073d9c08cedb0e_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_24e0ff4c62f5f94f875906a3124c757f_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17120,7 +17121,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>(10, -1) being assigned to center (0, 0)=0.011  vs (10, 0)=0.989</li>
 <li>(5, 0) being assigned to center (0, 0)=0.500  vs (10, 0)=0.500</li>
 </ul>
-<p><img src="ch8_f8199ae4d8b2b568e130a5ba1f3525b9_plot.svg" alt="e-step 2D plot"></p>
+<p><img src="ch8_26f5a5315818bc08eaeb2a210b010339_plot.svg" alt="e-step 2D plot"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -17190,7 +17191,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 }
 
 </code></pre>
-<p><img src="ch8_d5a5f913deee249b99f047eecb96d285_plot_BEFORE.svg" alt="m-step 2D plot"></p>
+<p><img src="ch8_0ecbf6802887d7ba0644ad03c8ea6de4_plot_BEFORE.svg" alt="m-step 2D plot"></p>
 <p>, ... m-step determined that the new centers should be ...</p>
 <ul>
 <li>(2.07, 1.91)</li>
@@ -17273,7 +17274,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (9, 6)={(2, 2): 0.13, (2, 4): 0.19, (2.5, 6): 0.26, (3.5, 2): 0.11, (4, 3): 0.14, (4, 5): 0.25, (4.5, 4): 0.19, (7, 2): 0.07, (7.5, 3): 0.07, (8, 1): 0.09, (9, 2): 0.16, (8, 7): 0.42, (8.5, 8): 0.17, (9, 6): 0.77, (10, 7): 0.55}</li>
 <li>cluster center (7.5, 3)={(2, 2): 0.80, (2, 4): 0.67, (2.5, 6): 0.44, (3.5, 2): 0.84, (4, 3): 0.79, (4, 5): 0.55, (4.5, 4): 0.70, (7, 2): 0.91, (7.5, 3): 0.91, (8, 1): 0.89, (9, 2): 0.81, (8, 7): 0.06, (8.5, 8): 0.02, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot0.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot0.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -17282,7 +17283,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.8663318021726365, 5.257945568356075)={(2, 2): 0.13, (2, 4): 0.20, (2.5, 6): 0.31, (3.5, 2): 0.11, (4, 3): 0.13, (4, 5): 0.31, (4.5, 4): 0.23, (7, 2): 0.24, (7.5, 3): 0.39, (8, 1): 0.27, (9, 2): 0.39, (8, 7): 0.35, (8.5, 8): 0.34, (9, 6): 0.44, (10, 7): 0.40}</li>
 <li>cluster center (5.264471661631823, 2.923413768720758)={(2, 2): 0.80, (2, 4): 0.65, (2.5, 6): 0.38, (3.5, 2): 0.83, (4, 3): 0.79, (4, 5): 0.44, (4.5, 4): 0.63, (7, 2): 0.64, (7.5, 3): 0.42, (8, 1): 0.60, (9, 2): 0.40, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot1.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot1.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -17291,7 +17292,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.741608864023925, 4.551421603185921)={(2, 2): 0.13, (2, 4): 0.18, (2.5, 6): 0.28, (3.5, 2): 0.13, (4, 3): 0.13, (4, 5): 0.30, (4.5, 4): 0.24, (7, 2): 0.39, (7.5, 3): 0.50, (8, 1): 0.40, (9, 2): 0.47, (8, 7): 0.29, (8.5, 8): 0.29, (9, 6): 0.33, (10, 7): 0.32}</li>
 <li>cluster center (4.773471699369535, 3.030734436505203)={(2, 2): 0.80, (2, 4): 0.71, (2.5, 6): 0.49, (3.5, 2): 0.81, (4, 3): 0.80, (4, 5): 0.49, (4.5, 4): 0.63, (7, 2): 0.42, (7.5, 3): 0.24, (8, 1): 0.39, (9, 2): 0.23, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.05, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot2.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot2.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 3</p>
@@ -17300,7 +17301,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.729274262743777, 4.099448158350826)={(2, 2): 0.12, (2, 4): 0.14, (2.5, 6): 0.22, (3.5, 2): 0.14, (4, 3): 0.12, (4, 5): 0.26, (4.5, 4): 0.23, (7, 2): 0.53, (7.5, 3): 0.59, (8, 1): 0.52, (9, 2): 0.53, (8, 7): 0.23, (8.5, 8): 0.23, (9, 6): 0.25, (10, 7): 0.24}</li>
 <li>cluster center (4.313755045634259, 3.2452822439819693)={(2, 2): 0.83, (2, 4): 0.79, (2.5, 6): 0.61, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.59, (4.5, 4): 0.68, (7, 2): 0.28, (7.5, 3): 0.15, (8, 1): 0.25, (9, 2): 0.14, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.04, (10, 7): 0.04}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot3.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot3.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 4</p>
@@ -17309,7 +17310,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.803089239304466, 3.687644371627943)={(2, 2): 0.11, (2, 4): 0.11, (2.5, 6): 0.17, (3.5, 2): 0.15, (4, 3): 0.13, (4, 5): 0.21, (4.5, 4): 0.22, (7, 2): 0.66, (7.5, 3): 0.69, (8, 1): 0.64, (9, 2): 0.60, (8, 7): 0.17, (8.5, 8): 0.17, (9, 6): 0.18, (10, 7): 0.17}</li>
 <li>cluster center (3.9471447451182877, 3.426611200033247)={(2, 2): 0.86, (2, 4): 0.85, (2.5, 6): 0.72, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.67, (4.5, 4): 0.70, (7, 2): 0.19, (7.5, 3): 0.10, (8, 1): 0.17, (9, 2): 0.09, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.03, (10, 7): 0.03}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot4.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot4.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 5</p>
@@ -17318,7 +17319,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.881645528580001, 3.2695060621654113)={(2, 2): 0.11, (2, 4): 0.08, (2.5, 6): 0.13, (3.5, 2): 0.17, (4, 3): 0.15, (4, 5): 0.18, (4.5, 4): 0.22, (7, 2): 0.77, (7.5, 3): 0.78, (8, 1): 0.75, (9, 2): 0.69, (8, 7): 0.12, (8.5, 8): 0.11, (9, 6): 0.12, (10, 7): 0.12}</li>
 <li>cluster center (3.6995743512272283, 3.54538379313345)={(2, 2): 0.87, (2, 4): 0.89, (2.5, 6): 0.79, (3.5, 2): 0.80, (4, 3): 0.82, (4, 5): 0.73, (4.5, 4): 0.71, (7, 2): 0.13, (7.5, 3): 0.07, (8, 1): 0.12, (9, 2): 0.07, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot5.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot5.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 6</p>
@@ -17327,7 +17328,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.936559803808235, 2.9208106871604094)={(2, 2): 0.11, (2, 4): 0.07, (2.5, 6): 0.10, (3.5, 2): 0.18, (4, 3): 0.16, (4, 5): 0.15, (4.5, 4): 0.21, (7, 2): 0.84, (7.5, 3): 0.82, (8, 1): 0.82, (9, 2): 0.76, (8, 7): 0.08, (8.5, 8): 0.07, (9, 6): 0.09, (10, 7): 0.08}</li>
 <li>cluster center (3.5470929502708515, 3.6171959293531435)={(2, 2): 0.88, (2, 4): 0.91, (2.5, 6): 0.83, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.77, (4.5, 4): 0.73, (7, 2): 0.10, (7.5, 3): 0.06, (8, 1): 0.09, (9, 2): 0.06, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot6.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot6.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 7</p>
@@ -17336,7 +17337,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 <p>Stopping -- center convergence step distance below threshold (largest_center_step_distance=0.23741733972468515)</p>
@@ -17348,7 +17349,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_85adb95040aef75ef147923a58feda96_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_2795dbe3c0f3105a6e49722249fb8f86_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17538,7 +17539,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following UPGMA tree was produced ...</p>
-<p><img src="dot_7b75777c93fde44152d43ad161c5e6c3.svg" alt="Dot diagram"></p>
+<p><img src="dot_78573da3bde79fef25de37cc5cc51994.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Soft%20Hierarchial%20Clustering"></a><h3>Soft Hierarchial Clustering</h3>
@@ -17642,14 +17643,13 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li>n is D's count.</li>
 <li>Dj is the distance for which the probability is being computed.</li>
 </ul>
-<p><a href="ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py">ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py</a> (lines 68 to 84):</p>
+<p><a href="ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py">ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py</a> (lines 77 to 92):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">leaf_probabilities</span>(<span class="hljs-params">
         tree: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>],
         n: <span class="hljs-built_in">str</span>,
 </span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]:
     <span class="hljs-comment"># Get dists between n and each to leaf node</span>
-    dists = {}
-    get_leaf_distances(tree, n, <span class="hljs-literal">None</span>, <span class="hljs-number">0.0</span>, dists)
+    dists = get_leaf_distances(tree, n)
     <span class="hljs-comment"># Calculate inverse distance weighting</span>
     <span class="hljs-comment">#   See: https://stackoverflow.com/a/23524954</span>
     <span class="hljs-comment">#   The link talks about a "stiffness" parameter similar to the stiffness parameter in the</span>
@@ -17671,14 +17671,18 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><img src="svgbob_41d51d3bfe1ba3e6175b3918a9723a8b347a99e5.svg" alt="Kroki diagram output"></p>
 <p>In the example above, the root node had <a href="#BM_(degree)_GRAPH%2Fi">degree</a> of 2, meaning it won't appear in reconstructed <a href="#BM_(simple%20tree)%2Fi">simple tree</a>. Even if it did, the reconstruction would be <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> -- the node would be there but nothing would identify it as the root.</p>
 </div>
-<p><a href="ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py">ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py</a> (lines 92 to 115):</p>
+<p><a href="ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py">ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining.py</a> (lines 100 to 127):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">soft_hierarchial_clustering_neighbour_joining</span>(<span class="hljs-params">
         vectors: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">float</span>, ...]],
         dims: <span class="hljs-built_in">int</span>,
         distance_metric: DistanceMetric,
         gen_node_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>],
         gen_edge_id: <span class="hljs-type">Callable</span>[[], <span class="hljs-built_in">str</span>]
-</span>) -&gt; <span class="hljs-built_in">tuple</span>[DistanceMatrix, Graph, ProbabilityMap]:
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[
+    DistanceMatrix[<span class="hljs-built_in">str</span>],
+    Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>],
+    ProbabilityMap
+]:
     <span class="hljs-comment"># Generate a distance matrix from the vectors</span>
     dists = {}
     <span class="hljs-keyword">for</span> (k1, v1), (k2, v2) <span class="hljs-keyword">in</span> product(vectors.items(), repeat=<span class="hljs-number">2</span>):
@@ -17708,7 +17712,8 @@ THHHTHHHTH = 7 / 10 = 0.7
     VEC4: [29,30,31],
     VEC5: [31,30,31],
     VEC6: [15,14,14]
-  }
+  },
+  edge_scale: 0.3
 }
 
 </code></pre>
@@ -17781,7 +17786,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following neighbour joining phylogeny tree was produced ...</p>
-<p><img src="dot_fb9eca7e930b8a8adc0c9080a2a657cc.svg" alt="Dot diagram"></p>
+<p><img src="dot_f11ddb2a78ee13a077d4c007b73d0560.svg" alt="Dot diagram"></p>
 <p>The following leaf node membership probabilities were produced (per internal node) ...</p>
 <ul>
 <li>N4 = VEC1=0.01,VEC2=0.01,VEC3=0.25,VEC4=0.54,VEC5=0.18,VEC6=0.01</li>
@@ -17791,6 +17796,83 @@ THHHTHHHTH = 7 / 10 = 0.7
 </ul>
 </div>
 <p></p>
+<p>Instead of probabilities or normalized distances, another potentially useful metric is the distorted average of edge weights.</p>
+<div style="overflow: auto"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>d</mi><mi mathvariant="normal">_</mi><mi>a</mi><mi>v</mi><mi>g</mi><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><msub><mi>D</mi><mi>i</mi></msub><mfrac><mn>1</mn><mi>e</mi></mfrac></msup><msup><mo stretchy="false">)</mo><mi>e</mi></msup></mrow><annotation encoding="application/x-tex">d\_avg(D) = (\sum_{i=1}^{n}{{D_i}^{\frac{1}{e}}})^e
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathnormal">d</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mopen">(</span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.02725em;"><span style="top:-3.43623em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8443142857142858em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">e</span></span></span></span></span></span></span></span></span></span></span></span></div><ul>
+<li>D is list of all edge weights in the graph</li>
+<li>n is the elements in D</li>
+<li>e is some number &gt;= 1, typically set to 2 (higher means more resilient to outliers)</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-comment"># Distorted avg -- like avg, but reduces the influence of outliers. The larger e is, the</span>
+<span class="hljs-comment"># less influence the outlier will have.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">distorted_avg</span>(<span class="hljs-params">values: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">float</span>], e: <span class="hljs-built_in">float</span></span>) -&gt; <span class="hljs-built_in">float</span>:
+    count = <span class="hljs-built_in">len</span>(values)
+    <span class="hljs-keyword">return</span> (<span class="hljs-built_in">sum</span>(v ** (<span class="hljs-number">1</span> / e) <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> values) / count) ** e
+</code></pre>
+<p>The distorted average is a concept similar to <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> (<a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> optimization metric). It calculates the average, but lessens the influence of outliers. For example, given the inputs [3, 3, 3, 3, 3, 3, 3, 3, 15], the last element (15) is an outlier. The following table shows the distorted average for both outlier included and outlier removed with different values of e ...</p>
+<table>
+<thead>
+<tr>
+<th>e</th>
+<th>without 15</th>
+<th>with 15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>4.33</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>3.88</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>3.76</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>3.71</td>
+</tr>
+</tbody>
+</table>
+<p>Assuming the ...</p>
+<ol>
+<li>vectors being <a href="#BM_(cluster)%2Fi">cluster</a>ed have some type of "<a href="#BM_(cluster)%2Fi">cluster</a>-able" relationship to each other (not junk data),</li>
+<li><a href="#BM_(distance%20metric)%2Fi">distance metric</a> used is appropriate for capturing that "<a href="#BM_(cluster)%2Fi">cluster</a>-able" relationship</li>
+</ol>
+<p>..., the <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> generated by <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> should likely have some type of blossoming effect. The graph will have isolated areas of dense-ness (blossoming) that represent highly related vectors, where these isolated areas are <a href="#BM_(connected)%2Fi">connected</a> together by longer edges.</p>
+<p><img src="svgbob_31bc654750150d0388631472c69667d3be3e6f29.svg" alt="Kroki diagram output"></p>
+<p>On such a graph, calculating the distorted average across all edge weights should provide a fair estimate for the average edge weight across the blossoming regions. That's because the larger edges that connect those blossoming regions have less influence over the average (unless they're hugely disproportionate).</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
+<p>TODO: CONTINUE HERE, TALK ABOUT THE MERGING PROCESS AND POTENTIALLY SCALING THE DISTORTED AVG (which you did for practical problem), THEN DO THE PRACTICAL PROBLEM TEXT.</p>
 <a name="H_Similarity%20Graph%20Clustering"></a><h3>Similarity Graph Clustering</h3>
 <p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FSimilarity%20Graph%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -18018,7 +18100,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following similarity graph was produced ...</p>
-<p><img src="dot_2fc0dbb72da016650fd7dee446367df3.svg" alt="Dot diagram"></p>
+<p><img src="dot_ff41dd896fe0105909d03108f9f8bd3e.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If the resulting <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> isn't a <a href="#BM_(clique%20graph)%2Fi">clique graph</a> but is close to being one (<a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s), a heuristic algorithm called <a href="#BM_(cluster%20affinity%20search%20technique)%2Fi">cluster affinity search technique</a> (<a href="#BM_(CAST)%2F">CAST</a>) can correct it. At it's core, the algorithm attempts to re-create each <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a> in its corrected form by iteratively finding the ...</p>
@@ -18180,9 +18262,9 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following <em>original</em> similarity graph was produced ...</p>
-<p><img src="dot_41466f5e4b27714d3651a78253e9102f.svg" alt="Dot diagram"></p>
+<p><img src="dot_f6a35fa233982cc448c6fa29e1a96233.svg" alt="Dot diagram"></p>
 <p>The following <em>corrected</em> similarity graph was produced ...</p>
-<p><img src="dot_349907bacf598f97ddac3cb02a4ffb0c.svg" alt="Dot diagram"></p>
+<p><img src="dot_e6c789d2a1057ac090f35637c5338876.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>

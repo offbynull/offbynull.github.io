@@ -198,6 +198,17 @@ def cast(
 # MARKDOWN_CAST
 
 
+def clusters_to_similarity_graph(clusters: list[set[str]]) -> Graph:
+    sim_graph = Graph()
+    for c in clusters:
+        for n in c:
+            sim_graph.insert_node(n)
+        for n1, n2 in combinations(c, r=2):
+            e = f'E{sorted([n1, n2])}'
+            sim_graph.insert_edge(e, n1, n2)
+    return sim_graph
+
+
 def main_cast():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
@@ -222,13 +233,7 @@ def main_cast():
         }[metric]
         sim_graph, sim_mat = similarity_graph(vectors, dims, metric_func, threshold)
         clusters = cast(sim_graph, sim_mat, threshold)
-        sim_graph_fixed = Graph()
-        for c in clusters:
-            for n in c:
-                sim_graph_fixed.insert_node(n)
-            for n1, n2 in combinations(c, r=2):
-                e = f'E{sorted([n1, n2])}'
-                sim_graph_fixed.insert_edge(e, n1, n2)
+        sim_graph_fixed = clusters_to_similarity_graph(clusters)
         print('The following similarity matrix was produced ...')
         print()
         print('<table>')

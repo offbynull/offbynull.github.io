@@ -40,6 +40,15 @@ def to_dot(g: Graph, edge_scale=1.0) -> str:
 # MARKDOWN_LEAF_NODE_DISTANCES
 def get_leaf_distances(
         tree: Graph[str, None, str, float],
+        n: str
+) -> dict[str, float]:
+    dists = {}
+    _get_leaf_distances(tree, n, None, 0.0, dists)
+    return dists
+
+
+def _get_leaf_distances(
+        tree: Graph[str, None, str, float],
         n: str,
         from_n: str | None,
         from_dist: float,
@@ -60,7 +69,7 @@ def get_leaf_distances(
     # Otherwise, walk to each neighbour.
     for n_other, e in n_neighbours:
         e_dist = tree.get_edge_data(e)
-        get_leaf_distances(tree, n_other, n, from_dist + e_dist, dists)
+        _get_leaf_distances(tree, n_other, n, from_dist + e_dist, dists)
 # MARKDOWN_LEAF_NODE_DISTANCES
 
 
@@ -70,8 +79,7 @@ def leaf_probabilities(
         n: str,
 ) -> dict[str, float]:
     # Get dists between n and each to leaf node
-    dists = {}
-    get_leaf_distances(tree, n, None, 0.0, dists)
+    dists = get_leaf_distances(tree, n)
     # Calculate inverse distance weighting
     #   See: https://stackoverflow.com/a/23524954
     #   The link talks about a "stiffness" parameter similar to the stiffness parameter in the
@@ -95,7 +103,11 @@ def soft_hierarchial_clustering_neighbour_joining(
         distance_metric: DistanceMetric,
         gen_node_id: Callable[[], str],
         gen_edge_id: Callable[[], str]
-) -> tuple[DistanceMatrix, Graph, ProbabilityMap]:
+) -> tuple[
+    DistanceMatrix[str],
+    Graph[str, None, str, float],
+    ProbabilityMap
+]:
     # Generate a distance matrix from the vectors
     dists = {}
     for (k1, v1), (k2, v2) in product(vectors.items(), repeat=2):
@@ -126,6 +138,7 @@ def main():
         data: dict = yaml.safe_load(data_raw)
         vectors = {k: tuple(v) for k, v in data['vectors'].items()}
         metric = data['metric']
+        edge_scale = data.get('edge_scale', 1.0)
         dims = max(len(v) for v in vectors.values())
         print(f'Executing neighbour joining phylogeny **soft** clustering using the following settings...')
         print()
@@ -171,7 +184,7 @@ def main():
         print(f'The following neighbour joining phylogeny tree was produced ...')
         print()
         print('```{dot}')
-        print(f'{to_dot(tree)}')
+        print(f'{to_dot(tree, edge_scale)}')
         print('```')
         print()
         print(f'The following leaf node membership probabilities were produced (per internal node) ...')

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from copy import deepcopy
 from itertools import product
 from typing import Iterator, TypeVar, Generic
 
@@ -63,7 +62,7 @@ class SimilarityMatrix(Generic[ID]):
         return iter(self._keys)
 
     def copy(self) -> SimilarityMatrix:
-        return deepcopy(self)
+        return SimilarityMatrix(self._data)
 
     @property
     def n(self):
