@@ -59,8 +59,7 @@ dm, tree, clusters = soft_hierarchial_clustering_neighbour_joining(
     euclidean_distance,
     gen_node_id,
     gen_edge_id,
-    davg_exp=2.0,
-    davg_scale=5.0
+    dist_capture=(0.75, 0.85)
 )
 graphviz = to_dot_hierarch_clust(tree, clusters, edge_scale=3.0)
 print(graphviz)
@@ -68,18 +67,17 @@ for c in clusters:
     print(f'{len(c)=} -> {c}')
 print(f'CAPTURED NODE = {sum(len(c) for c in clusters)} / CAPTURED CLUSTERS={len(clusters)}')
 
-# for i in range(1, 11):
-#     davg_scale = i
-#     dm, tree, clusters = soft_hierarchial_clustering_neighbour_joining(
-#         gene_vectors,
-#         4,
-#         euclidean_distance,
-#         gen_node_id,
-#         gen_edge_id,
-#         2.0,
-#         davg_scale
-#     )
-#     print(f'AT DISTORTED AVG SCALE OF {davg_scale:.4f}, CAPTURED NODES={sum(len(c) for c in clusters)} / CAPTURED CLUSTERS={len(clusters)}')
+for i in range(0, 10):
+    dist_capture=(i*0.1, (i+1)*0.1)
+    dm, tree, clusters = soft_hierarchial_clustering_neighbour_joining(
+        gene_vectors,
+        4,
+        euclidean_distance,
+        gen_node_id,
+        gen_edge_id,
+        dist_capture
+    )
+    print(f'CAPTURE PERCENTAGE RANGE: {dist_capture}, CAPTURED NODES={sum(len(c) for c in clusters)} / CAPTURED CLUSTERS={len(clusters)}')
 
 
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import colorsys
 from itertools import product
 from random import random, Random
+from statistics import mean
 from sys import stdin
 from typing import Callable, Iterable
 
@@ -73,31 +74,17 @@ def to_dot(g: Graph, clusters: Clusters, edge_scale=1.0) -> str:
 
 
 
-# MARKDOWN_DISTORTED_AVG
-# Distorted avg -- like avg, but reduces the influence of outliers. The larger e is, the
-# less influence the outlier will have.
-def distorted_avg(values: list[float], e: float) -> float:
-    count = len(values)
-    return (sum(v ** (1 / e) for v in values) / count) ** e
-# MARKDOWN_DISTORTED_AVG
-
-
 # MARKDOWN_ESTIMATE_OWNERSHIP
 def estimate_ownership(
         tree: Graph[str, None, str, float],
-        dist_mat: DistanceMatrix[str],
-        davg_exp: float = 2.0,
-        davg_scale: float = 1.0
+        dist_capture: tuple[float, float]
 ) -> tuple[dict[str, str], dict[str, str]]:
-    # Calculate distorted average of edge weights/distances.
-    #   WARNING: Neighbour joining phylogeny sometimes produces edges with
-    #   miniscule or negative weights when the distance matrix isn't an
-    #   additive matrix. These should be de-noised before calling this
-    #   function (e.g. nodes at ends of miniscule/negative edges should be
-    #   merged) because they'll throw off this heuristic metric
+    # Calculate avg of some percentage of edge weights/distances.
     dists = [tree.get_edge_data(e) for e in tree.get_edges()]
-    davg_dist = distorted_avg(dists, davg_exp)
-    davg_dist_scaled = davg_dist * davg_scale
+    dists.sort()
+    dists_start_idx = int(dist_capture[0] * len(dists))
+    dists_end_idx = int(dist_capture[1] * len(dists) + 1)
+    dist_avg = mean(dists[dists_start_idx:dists_end_idx])
     # Assign leaf nodes to each internal node based on distance. That distance
     # is compared against the distorted average to determine assignment.
     #
@@ -108,7 +95,7 @@ def estimate_ownership(
     for n_i in internal_nodes:
         leaf_dists = get_leaf_distances(tree, n_i)
         for n_l, dist in leaf_dists.items():
-            if dist > davg_dist_scaled:
+            if dist > dist_avg:
                 continue
             internal_to_leaves.setdefault(n_i, set()).add(n_l)
             leaves_to_internal.setdefault(n_l, set()).add(n_i)
@@ -152,8 +139,7 @@ def soft_hierarchial_clustering_neighbour_joining(
         distance_metric: DistanceMetric,
         gen_node_id: Callable[[], str],
         gen_edge_id: Callable[[], str],
-        davg_exp: float = 2.0,
-        davg_scale: float = 1.0
+        dist_capture: tuple[float, float] = (0.4, 0.6)
 ) -> tuple[
     DistanceMatrix[str],
     Graph[str, None, str, float],
@@ -171,7 +157,7 @@ def soft_hierarchial_clustering_neighbour_joining(
     # Find clusters by estimating which internal node owns which leaf node (there may be multiple
     # estimated owners), then merge overlapping estimates.
     # then merging together overlapping owners.
-    internal_to_leaves, leaves_to_internal = estimate_ownership(tree, dist_mat, davg_exp=davg_exp, davg_scale=davg_scale)
+    internal_to_leaves, leaves_to_internal = estimate_ownership(tree, dist_capture)
     clusters = []
     while len(leaves_to_internal) > 0:
         n_leaf = next(iter(leaves_to_internal))
