@@ -97,7 +97,7 @@ ProbabilityMap = dict[str, dict[str, float]]
 
 
 # MARKDOWN
-def soft_hierarchial_clustering_neighbour_joining(
+def to_tree(
         vectors: dict[str, tuple[float, ...]],
         dims: int,
         distance_metric: DistanceMetric,
@@ -105,8 +105,7 @@ def soft_hierarchial_clustering_neighbour_joining(
         gen_edge_id: Callable[[], str]
 ) -> tuple[
     DistanceMatrix[str],
-    Graph[str, None, str, float],
-    ProbabilityMap
+    Graph[str, None, str, float]
 ]:
     # Generate a distance matrix from the vectors
     dists = {}
@@ -117,13 +116,19 @@ def soft_hierarchial_clustering_neighbour_joining(
     dist_mat = DistanceMatrix(dists)
     # Run neighbour joining phylogeny on the distance matrix
     tree = neighbour_joining_phylogeny(dist_mat, gen_node_id, gen_edge_id)
+    # Return
+    return dist_mat, tree
+
+
+def soft_hierarchial_clustering_neighbour_joining(
+        tree: Graph[str, None, str, float]
+) -> ProbabilityMap:
     # Compute leaf probabilities per internal node
     internal_nodes = [n for n in tree.get_nodes() if tree.get_degree(n) > 1]
     internal_node_probs = {}
     for n_i in internal_nodes:
         internal_node_probs[n_i] = leaf_probabilities(tree, n_i)
-    # Return
-    return dist_mat, tree, internal_node_probs
+    return internal_node_probs
 # MARKDOWN
 
 
@@ -162,7 +167,8 @@ def main():
             nonlocal _next_node_id
             _next_node_id += 1
             return f'N{_next_node_id}'
-        dist_mat, tree, probabilities = soft_hierarchial_clustering_neighbour_joining(vectors, dims, metric_func, gen_node_id, gen_edge_id)
+        dist_mat, tree = to_tree(vectors, dims, metric_func, gen_node_id, gen_edge_id)
+        probabilities = soft_hierarchial_clustering_neighbour_joining(tree)
         print('The following distance matrix was produced ...')
         print()
         print('<table>')

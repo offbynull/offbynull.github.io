@@ -1,22 +1,14 @@
 from __future__ import annotations
 
 import lzma
-import random
 import re
 import string
-from collections import defaultdict
-from itertools import product
-from math import sqrt
 from statistics import stdev
 
-from ch7_copy.distance_matrix.DistanceMatrix import DistanceMatrix
-from ch7_copy.phylogeny.TreeToAdditiveDistanceMatrix import find_path
-from clustering.SimilarityGraph_CAST import similarity_graph, to_dot, cast, clusters_to_similarity_graph
-from clustering.Soft_HierarchialClustering_NeighbourJoining_v2 import soft_hierarchial_clustering_neighbour_joining, \
-    to_dot as to_dot_hierarch_clust, get_leaf_distances
-from graph.UndirectedGraph import Graph
-from metrics.EuclideanDistance import euclidean_similarity, euclidean_distance
-from metrics.PearsonSimilarity import pearson_distance
+from clustering.Soft_HierarchialClustering_NeighbourJoining import to_tree
+from clustering.Soft_HierarchialClustering_NeighbourJoining_v2 import to_dot as to_dot_hierarch_clust, \
+    clustering_neighbour_joining, mean_dist_within_edge_range
+from metrics.EuclideanDistance import euclidean_distance
 
 with lzma.open('GDS6010.soft_no_replicates_single_control.xz') as f:
     dataset = f.read().decode('utf8')
@@ -53,33 +45,27 @@ def gen_node_id():
     global _next_node_id
     _next_node_id += 1
     return f'N{_next_node_id}'
-dm, tree, clusters = soft_hierarchial_clustering_neighbour_joining(
+dm, tree = to_tree(
     gene_vectors,
     4,
     euclidean_distance,
     gen_node_id,
     gen_edge_id,
-    davg_exp=2.0,
-    davg_scale=5.0
+
 )
+dist_capture = mean_dist_within_edge_range(tree, (0.9, 1.0))
+clusters = clustering_neighbour_joining(tree, dist_capture)
 graphviz = to_dot_hierarch_clust(tree, clusters, edge_scale=3.0)
 print(graphviz)
 for c in clusters:
     print(f'{len(c)=} -> {c}')
 print(f'CAPTURED NODE = {sum(len(c) for c in clusters)} / CAPTURED CLUSTERS={len(clusters)}')
 
-# for i in range(1, 11):
-#     davg_scale = i
-#     dm, tree, clusters = soft_hierarchial_clustering_neighbour_joining(
-#         gene_vectors,
-#         4,
-#         euclidean_distance,
-#         gen_node_id,
-#         gen_edge_id,
-#         2.0,
-#         davg_scale
-#     )
-#     print(f'AT DISTORTED AVG SCALE OF {davg_scale:.4f}, CAPTURED NODES={sum(len(c) for c in clusters)} / CAPTURED CLUSTERS={len(clusters)}')
+for i in range(0, 10):
+    span=i*0.1, (i+1)*0.1
+    dist_capture = mean_dist_within_edge_range(tree, span)
+    clusters = clustering_neighbour_joining(tree, dist_capture)
+    print(f'CAPTURE PERCENTAGE RANGE: {dist_capture}, CAPTURED NODES={sum(len(c) for c in clusters)} / CAPTURED CLUSTERS={len(clusters)}')
 
 
 

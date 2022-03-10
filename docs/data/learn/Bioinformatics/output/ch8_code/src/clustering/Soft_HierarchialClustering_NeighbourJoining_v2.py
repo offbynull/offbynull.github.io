@@ -3,6 +3,7 @@ from __future__ import annotations
 import colorsys
 from itertools import product
 from random import random, Random
+from statistics import mean
 from sys import stdin
 from typing import Callable, Iterable
 
@@ -11,7 +12,7 @@ import yaml
 from ch7_copy.distance_matrix.DistanceMatrix import DistanceMatrix
 from ch7_copy.phylogeny.NeighbourJoiningPhylogeny import neighbour_joining_phylogeny
 from ch7_copy.phylogeny.TreeToAdditiveDistanceMatrix import find_path
-from clustering.Soft_HierarchialClustering_NeighbourJoining import get_leaf_distances
+from clustering.Soft_HierarchialClustering_NeighbourJoining import get_leaf_distances, to_tree
 from graph.UndirectedGraph import Graph
 from metrics.CosineSimilarity import cosine_distance
 from metrics.EuclideanDistance import euclidean_distance
@@ -73,31 +74,11 @@ def to_dot(g: Graph, clusters: Clusters, edge_scale=1.0) -> str:
 
 
 
-# MARKDOWN_DISTORTED_AVG
-# Distorted avg -- like avg, but reduces the influence of outliers. The larger e is, the
-# less influence the outlier will have.
-def distorted_avg(values: list[float], e: float) -> float:
-    count = len(values)
-    return (sum(v ** (1 / e) for v in values) / count) ** e
-# MARKDOWN_DISTORTED_AVG
-
-
 # MARKDOWN_ESTIMATE_OWNERSHIP
 def estimate_ownership(
         tree: Graph[str, None, str, float],
-        dist_mat: DistanceMatrix[str],
-        davg_exp: float = 2.0,
-        davg_scale: float = 1.0
+        dist_capture: float
 ) -> tuple[dict[str, str], dict[str, str]]:
-    # Calculate distorted average of edge weights/distances.
-    #   WARNING: Neighbour joining phylogeny sometimes produces edges with
-    #   miniscule or negative weights when the distance matrix isn't an
-    #   additive matrix. These should be de-noised before calling this
-    #   function (e.g. nodes at ends of miniscule/negative edges should be
-    #   merged) because they'll throw off this heuristic metric
-    dists = [tree.get_edge_data(e) for e in tree.get_edges()]
-    davg_dist = distorted_avg(dists, davg_exp)
-    davg_dist_scaled = davg_dist * davg_scale
     # Assign leaf nodes to each internal node based on distance. That distance
     # is compared against the distorted average to determine assignment.
     #
@@ -108,7 +89,7 @@ def estimate_ownership(
     for n_i in internal_nodes:
         leaf_dists = get_leaf_distances(tree, n_i)
         for n_l, dist in leaf_dists.items():
-            if dist > davg_dist_scaled:
+            if dist > dist_capture:
                 continue
             internal_to_leaves.setdefault(n_i, set()).add(n_l)
             leaves_to_internal.setdefault(n_l, set()).add(n_i)
@@ -139,6 +120,20 @@ def merge_overlaps(
 
 
 
+# MARKDOWN_MEAN_RANGE
+def mean_dist_within_edge_range(
+        tree: Graph[str, None, str, float],
+        range: tuple[float, float] = (0.4, 0.6)
+) -> float:
+    dists = [tree.get_edge_data(e) for e in tree.get_edges()]
+    dists.sort()
+    dists_start_idx = int(range[0] * len(dists))
+    dists_end_idx = int(range[1] * len(dists) + 1)
+    dist_capture = mean(dists[dists_start_idx:dists_end_idx])
+    return dist_capture
+# MARKDOWN_MEAN_RANGE
+
+
 
 
 DistanceMetric = Callable[[tuple[float, ...], tuple[float, ...], int], float]
@@ -146,32 +141,13 @@ Clusters = list[set[str]]
 
 
 # MARKDOWN
-def soft_hierarchial_clustering_neighbour_joining(
-        vectors: dict[str, tuple[float, ...]],
-        dims: int,
-        distance_metric: DistanceMetric,
-        gen_node_id: Callable[[], str],
-        gen_edge_id: Callable[[], str],
-        davg_exp: float = 2.0,
-        davg_scale: float = 1.0
-) -> tuple[
-    DistanceMatrix[str],
-    Graph[str, None, str, float],
-    Clusters
-]:
-    # Generate a distance matrix from the vectors
-    dists = {}
-    for (k1, v1), (k2, v2) in product(vectors.items(), repeat=2):
-        if k1 == k2:
-            continue  # skip -- will default to 0
-        dists[k1, k2] = distance_metric(v1, v2, dims)
-    dist_mat = DistanceMatrix(dists)
-    # Run neighbour joining phylogeny on the distance matrix
-    tree = neighbour_joining_phylogeny(dist_mat, gen_node_id, gen_edge_id)
+def clustering_neighbour_joining(
+        tree: Graph[str, None, str, float],
+        dist_capture: float
+) -> Clusters:
     # Find clusters by estimating which internal node owns which leaf node (there may be multiple
     # estimated owners), then merge overlapping estimates.
-    # then merging together overlapping owners.
-    internal_to_leaves, leaves_to_internal = estimate_ownership(tree, dist_mat, davg_exp=davg_exp, davg_scale=davg_scale)
+    internal_to_leaves, leaves_to_internal = estimate_ownership(tree, dist_capture)
     clusters = []
     while len(leaves_to_internal) > 0:
         n_leaf = next(iter(leaves_to_internal))
@@ -182,8 +158,7 @@ def soft_hierarchial_clustering_neighbour_joining(
             del leaves_to_internal[n]
         if len(n_leaves) > 1:  # cluster of 1 is not a cluster
             clusters.append(n_leaves | n_internals)
-    # Return
-    return dist_mat, tree, clusters
+    return clusters
 # MARKDOWN
 
 
@@ -198,7 +173,8 @@ def main():
         data: dict = yaml.safe_load(data_raw)
         vectors = {k: tuple(v) for k, v in data['vectors'].items()}
         metric = data['metric']
-        edge_scale = data.get('edge_scale', default=1.0)
+        edge_scale = data.get('edge_scale', 1.0)
+        dist_capture = data.get('dist_capture')
         dims = max(len(v) for v in vectors.values())
         print(f'Executing neighbour joining phylogeny **soft** clustering using the following settings...')
         print()
@@ -222,7 +198,9 @@ def main():
             nonlocal _next_node_id
             _next_node_id += 1
             return f'N{_next_node_id}'
-        dist_mat, tree, clusters = soft_hierarchial_clustering_neighbour_joining(vectors, dims, metric_func, gen_node_id, gen_edge_id)
+        dist_mat, tree = to_tree(vectors, dims, metric_func, gen_node_id, gen_edge_id)
+        # dist_capture = mean_dist_within_edge_range(tree, (0.4, 0.6))
+        clusters = clustering_neighbour_joining(tree, dist_capture)
         print('The following distance matrix was produced ...')
         print()
         print('<table>')
