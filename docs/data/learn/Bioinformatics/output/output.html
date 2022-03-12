@@ -171,7 +171,7 @@
 <li><a href="#H_Nearest%20Neighbour%20Interchange%20Algorithm">Nearest Neighbour Interchange Algorithm</a></li>
 </ul>
 </ul>
-<li><a href="#H_Gene%20Expression">Gene Expression</a></li>
+<li><a href="#H_Gene%20Clustering">Gene Clustering</a></li>
 <ul>
 <li><a href="#H_Euclidean%20Distance%20Metric">Euclidean Distance Metric</a></li>
 <li><a href="#H_Manhattan%20Distance%20Metric">Manhattan Distance Metric</a></li>
@@ -209,6 +209,10 @@
 <ul>
 <li><a href="#H_Find%20Evolutionary%20Tree">Find Evolutionary Tree</a></li>
 <li><a href="#H_Find%20Ancestral%20Features">Find Ancestral Features</a></li>
+</ul>
+<li><a href="#H_Gene%20Expression%20Analysis">Gene Expression Analysis</a></li>
+<ul>
+<li><a href="#H_Cluster%20Genes">Cluster Genes</a></li>
 </ul>
 </ul>
 <li><a href="#H_Ideas">Ideas</a></li>
@@ -15826,8 +15830,8 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>After applying the nearest neighbour interchange heuristic, the tree updated to have a parismony score of 6.0 vs the original score of 9.0</p>
 </div>
 <p></p>
-<a name="H_Gene%20Expression"></a><h2>Gene Expression</h2>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Gene%20Clustering"></a><h2>Gene Clustering</h2>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <p><a href="#BM_(gene%20expression)%2Fi">Gene expression</a> is the biological process by which a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (segment of DNA) is synthesized into a <a href="#BM_(gene%20product)%2Fi">gene product</a> (e.g. protein).</p>
 <p><img src="svgbob_4c3340936a17e2840e08c6fbcd2b26b03b1c812b.svg" alt="Kroki diagram output"></p>
 <p>When a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>s for ...</p>
@@ -16032,7 +16036,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p>This section doesn't cover de-noising or de-biasing. It only covers <a href="#BM_(cluster)%2Fi">cluster</a>ing and common similarity / <a href="#BM_(distance%20metric)%2Fi">distance metric</a>s for real-valued vectors (which are what <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s are). Note that <a href="#BM_(cluster)%2Fi">cluster</a>ing can be used with data types other than vectors. For example, you can <a href="#BM_(cluster)%2Fi">cluster</a> protein <a href="#BM_(sequence)%2Fi">sequence</a>s where the <a href="#BM_(similarity%20metric)%2Fi">similarity metric</a> is the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 score.</p>
 </div>
 <a name="H_Euclidean%20Distance%20Metric"></a><h3>Euclidean Distance Metric</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FEuclidean%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the distance between those vectors if traveling directly from one to the other in a straight line, referred to as the <a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>.</p>
 <p><img src="svgbob_812b661882246e5c5673044d47b2a743122f1f75.svg" alt="Kroki diagram output"></p>
 <p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s. One way to think about it is that it checks to see how closely component plots of the vectors match up. For example, ...</p>
@@ -16139,7 +16143,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Manhattan%20Distance%20Metric"></a><h3>Manhattan Distance Metric</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FManhattan%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FManhattan%20Distance%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the distance between those vectors if traveling only via the axis of the coordinate system, referred to as the <a href="#BM_(manhattan%20distance%7Ctaxi%5B%5Cs%5C-%5D%3Fcab%20distance%7Ccity%5B%5Cs%5C-%5Dblock%20distance)%2Fi">manhattan distance</a>.</p>
 <p><img src="svgbob_19c8269cf6dc61112d64c53c1045bfe1e1f518e3.svg" alt="Kroki diagram output"></p>
 <p><strong>WHY</strong>: This is one of many common metrics used for <a href="#BM_(cluster)%2Fi">cluster</a>ing <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s.  One way to think about it is that it checks to see how closely component plots of the vectors match up. For example, ...</p>
@@ -16211,7 +16215,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Cosine%20Similarity%20Metric"></a><h3>Cosine Similarity Metric</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FCosine%20Similarity%20Metric)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FCosine%20Similarity%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Given two n-dimensional vectors, compute the cosine of the single between them, referred to as the <a href="#BM_(cosine%20similarity%7Ccosine%20distance)%2Fi">cosine similarity</a>.</p>
 <p><img src="svgbob_504c5b0c7c25a852e40496991ce6164fb25bfd05.svg" alt="Kroki diagram output"></p>
 <p>This metric only factors in the angles between vectors, not their magnitudes (lengths). For example, imagine the following 2-dimensional <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s ...</p>
@@ -16449,11 +16453,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p></p>
 <a name="H_Pearson%20Similarity%20Metric"></a><h3>Pearson Similarity Metric</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FPearson%20Similarity%20Metric)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FPearson%20Similarity%20Metric)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Cosine Similarity Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Cosine Similarity Metric</a></li>
 </ul>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -16619,11 +16623,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>I don't know what the correct thing to do here is. My instinct is to mark it as maximum correlation (1.0) but I'm almost certain that that'd be wrong. The Internet isn't providing many answers -- they all say its either undefined or context dependent.</p>
 </div>
 <a name="H_K-Centers%20Clustering"></a><h3>K-Centers Clustering</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FK-Centers%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FK-Centers%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Euclidean Distance Metric</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a <a href="#BM_(cluster)%2Fi">cluster</a>, where the points closest to that center (<a href="#BM_(euclidean%20distance)%2Fi">euclidean distance</a>) are that <a href="#BM_(cluster)%2Fi">cluster</a>'s <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a>s. The goal is to choose centers such that, out of all possible <a href="#BM_(cluster)%2Fi">cluster</a> center to <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.</p>
@@ -16755,26 +16759,26 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 2)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_64225efbb7ef216a535963f807dfb6bd_plot0.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_200301facb85eecbc36bc584203d746e_plot0.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
 <ul>
-<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4), (7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
-<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (9, 2)=[(7, 2), (7.5, 3), (8, 1), (9, 2), (8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
+<li>cluster center (2.5, 6)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 </ul>
-<p><img src="ch8_64225efbb7ef216a535963f807dfb6bd_plot1.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_200301facb85eecbc36bc584203d746e_plot1.svg" alt="k-centers 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
 <ul>
-<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
-<li>cluster center (10, 7)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 <li>cluster center (9, 2)=[(7, 2), (7.5, 3), (8, 1), (9, 2)]</li>
+<li>cluster center (2.5, 6)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (8.5, 8)=[(8, 7), (8.5, 8), (9, 6), (10, 7)]</li>
 </ul>
-<p><img src="ch8_64225efbb7ef216a535963f807dfb6bd_plot2.svg" alt="k-centers 2D plot"></p>
+<p><img src="ch8_200301facb85eecbc36bc584203d746e_plot2.svg" alt="k-centers 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16782,12 +16786,12 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>One problem that should be noted with this heuristic is that, when outliers are present, it'll likely place those outliers into their own <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
 <p><img src="svgbob_339254b3bba7afdccd5bbaa3b7bf6a4db8926346.svg" alt="Kroki diagram output"></p>
 <a name="H_K-Means%20Clustering"></a><h3>K-Means Clustering</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FK-Means%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FK-Means%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FK-Centers%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/K-Centers Clustering</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Euclidean Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FK-Centers%20Clustering)_TOPIC%2F">Algorithms/Gene Clustering/K-Centers Clustering</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a <a href="#BM_(cluster)%2Fi">cluster</a>.</p>
@@ -16911,7 +16915,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (2, 4)=[(2, 4), (4.5, 4)]</li>
 <li>cluster center (2.5, 6)=[(2.5, 6), (4, 5), (17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_bef0b231f6c508f733ce553b00782955_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_fcf1ea6c0edef0c9ed17d2e9d540a727_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16920,7 +16924,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.25, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (13.0, 9.833333333333334)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_bef0b231f6c508f733ce553b00782955_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_fcf1ea6c0edef0c9ed17d2e9d540a727_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -16929,7 +16933,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (3.2142857142857144, 3.7142857142857144)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_bef0b231f6c508f733ce553b00782955_plot2.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_fcf1ea6c0edef0c9ed17d2e9d540a727_plot2.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -16977,11 +16981,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p>Iteration 0</p>
 <ul>
-<li>cluster center (2, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
+<li>cluster center (4.5, 4)=[(2, 2), (2, 4), (2.5, 6), (3.5, 2), (4, 3), (4, 5), (4.5, 4)]</li>
 <li>cluster center (18.5, -8)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
-<li>cluster center (17.5, 13)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
+<li>cluster center (18, 11)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_e14b8b456cc910e3b306637cb0579ae4_plot0.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_9910dc9f3a601d077361f19f43fa73ff_plot0.svg" alt="k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -16990,7 +16994,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (18.875, -7)=[(18, -7), (18.5, -8), (19, -6), (20, -7)]</li>
 <li>cluster center (17.875, 12)=[(17, 12), (17.5, 13), (18, 11), (19, 12)]</li>
 </ul>
-<p><img src="ch8_e14b8b456cc910e3b306637cb0579ae4_plot1.svg" alt="k-means 2D plot"></p>
+<p><img src="ch8_9910dc9f3a601d077361f19f43fa73ff_plot1.svg" alt="k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17004,11 +17008,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 <p><img src="svgbob_5a95bee7c208bcd365a2c0338c8cf2d7900cdce7.svg" alt="Kroki diagram output"></p>
 <a name="H_Soft%20K-Means%20Clustering"></a><h3>Soft K-Means Clustering</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FSoft%20K-Means%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FSoft%20K-Means%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FK-Means%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/K-Means Clustering</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FK-Means%20Clustering)_TOPIC%2F">Algorithms/Gene Clustering/K-Means Clustering</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Soft <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing is the <a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a> variant of <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a>. Where as the original <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> definitively assigns each point to a <a href="#BM_(cluster)%2Fi">cluster</a> (<a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">hard clustering</a>), this variant of <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> assigns each point to how likely it is to be a <a href="#BM_(membership%7Cmember)_CLUSTER%2Fi">member</a> of each <a href="#BM_(cluster)%2Fi">cluster</a> (<a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a>).</p>
@@ -17121,7 +17125,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>(10, -1) being assigned to center (0, 0)=0.011  vs (10, 0)=0.989</li>
 <li>(5, 0) being assigned to center (0, 0)=0.500  vs (10, 0)=0.500</li>
 </ul>
-<p><img src="ch8_c8dcd747b9095680ffdd95d2fa8cfc4d_plot.svg" alt="e-step 2D plot"></p>
+<p><img src="ch8_6a58b9983fde876f5ae762900e682041_plot.svg" alt="e-step 2D plot"></p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -17191,7 +17195,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 }
 
 </code></pre>
-<p><img src="ch8_ced49ccf4644bf497a39c8f1aa9878e2_plot_BEFORE.svg" alt="m-step 2D plot"></p>
+<p><img src="ch8_245d80d2f5659387431e437d5e270a86_plot_BEFORE.svg" alt="m-step 2D plot"></p>
 <p>, ... m-step determined that the new centers should be ...</p>
 <ul>
 <li>(2.07, 1.91)</li>
@@ -17274,7 +17278,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (9, 6)={(2, 2): 0.13, (2, 4): 0.19, (2.5, 6): 0.26, (3.5, 2): 0.11, (4, 3): 0.14, (4, 5): 0.25, (4.5, 4): 0.19, (7, 2): 0.07, (7.5, 3): 0.07, (8, 1): 0.09, (9, 2): 0.16, (8, 7): 0.42, (8.5, 8): 0.17, (9, 6): 0.77, (10, 7): 0.55}</li>
 <li>cluster center (7.5, 3)={(2, 2): 0.80, (2, 4): 0.67, (2.5, 6): 0.44, (3.5, 2): 0.84, (4, 3): 0.79, (4, 5): 0.55, (4.5, 4): 0.70, (7, 2): 0.91, (7.5, 3): 0.91, (8, 1): 0.89, (9, 2): 0.81, (8, 7): 0.06, (8.5, 8): 0.02, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot0.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot0.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 1</p>
@@ -17283,7 +17287,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.8663318021726365, 5.257945568356075)={(2, 2): 0.13, (2, 4): 0.20, (2.5, 6): 0.31, (3.5, 2): 0.11, (4, 3): 0.13, (4, 5): 0.31, (4.5, 4): 0.23, (7, 2): 0.24, (7.5, 3): 0.39, (8, 1): 0.27, (9, 2): 0.39, (8, 7): 0.35, (8.5, 8): 0.34, (9, 6): 0.44, (10, 7): 0.40}</li>
 <li>cluster center (5.264471661631823, 2.923413768720758)={(2, 2): 0.80, (2, 4): 0.65, (2.5, 6): 0.38, (3.5, 2): 0.83, (4, 3): 0.79, (4, 5): 0.44, (4.5, 4): 0.63, (7, 2): 0.64, (7.5, 3): 0.42, (8, 1): 0.60, (9, 2): 0.40, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.06, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot1.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot1.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 2</p>
@@ -17292,7 +17296,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.741608864023925, 4.551421603185921)={(2, 2): 0.13, (2, 4): 0.18, (2.5, 6): 0.28, (3.5, 2): 0.13, (4, 3): 0.13, (4, 5): 0.30, (4.5, 4): 0.24, (7, 2): 0.39, (7.5, 3): 0.50, (8, 1): 0.40, (9, 2): 0.47, (8, 7): 0.29, (8.5, 8): 0.29, (9, 6): 0.33, (10, 7): 0.32}</li>
 <li>cluster center (4.773471699369535, 3.030734436505203)={(2, 2): 0.80, (2, 4): 0.71, (2.5, 6): 0.49, (3.5, 2): 0.81, (4, 3): 0.80, (4, 5): 0.49, (4.5, 4): 0.63, (7, 2): 0.42, (7.5, 3): 0.24, (8, 1): 0.39, (9, 2): 0.23, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.05, (10, 7): 0.05}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot2.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot2.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 3</p>
@@ -17301,7 +17305,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.729274262743777, 4.099448158350826)={(2, 2): 0.12, (2, 4): 0.14, (2.5, 6): 0.22, (3.5, 2): 0.14, (4, 3): 0.12, (4, 5): 0.26, (4.5, 4): 0.23, (7, 2): 0.53, (7.5, 3): 0.59, (8, 1): 0.52, (9, 2): 0.53, (8, 7): 0.23, (8.5, 8): 0.23, (9, 6): 0.25, (10, 7): 0.24}</li>
 <li>cluster center (4.313755045634259, 3.2452822439819693)={(2, 2): 0.83, (2, 4): 0.79, (2.5, 6): 0.61, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.59, (4.5, 4): 0.68, (7, 2): 0.28, (7.5, 3): 0.15, (8, 1): 0.25, (9, 2): 0.14, (8, 7): 0.05, (8.5, 8): 0.05, (9, 6): 0.04, (10, 7): 0.04}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot3.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot3.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 4</p>
@@ -17310,7 +17314,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.803089239304466, 3.687644371627943)={(2, 2): 0.11, (2, 4): 0.11, (2.5, 6): 0.17, (3.5, 2): 0.15, (4, 3): 0.13, (4, 5): 0.21, (4.5, 4): 0.22, (7, 2): 0.66, (7.5, 3): 0.69, (8, 1): 0.64, (9, 2): 0.60, (8, 7): 0.17, (8.5, 8): 0.17, (9, 6): 0.18, (10, 7): 0.17}</li>
 <li>cluster center (3.9471447451182877, 3.426611200033247)={(2, 2): 0.86, (2, 4): 0.85, (2.5, 6): 0.72, (3.5, 2): 0.81, (4, 3): 0.83, (4, 5): 0.67, (4.5, 4): 0.70, (7, 2): 0.19, (7.5, 3): 0.10, (8, 1): 0.17, (9, 2): 0.09, (8, 7): 0.04, (8.5, 8): 0.04, (9, 6): 0.03, (10, 7): 0.03}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot4.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot4.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 5</p>
@@ -17319,7 +17323,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.881645528580001, 3.2695060621654113)={(2, 2): 0.11, (2, 4): 0.08, (2.5, 6): 0.13, (3.5, 2): 0.17, (4, 3): 0.15, (4, 5): 0.18, (4.5, 4): 0.22, (7, 2): 0.77, (7.5, 3): 0.78, (8, 1): 0.75, (9, 2): 0.69, (8, 7): 0.12, (8.5, 8): 0.11, (9, 6): 0.12, (10, 7): 0.12}</li>
 <li>cluster center (3.6995743512272283, 3.54538379313345)={(2, 2): 0.87, (2, 4): 0.89, (2.5, 6): 0.79, (3.5, 2): 0.80, (4, 3): 0.82, (4, 5): 0.73, (4.5, 4): 0.71, (7, 2): 0.13, (7.5, 3): 0.07, (8, 1): 0.12, (9, 2): 0.07, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot5.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot5.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 6</p>
@@ -17328,7 +17332,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.936559803808235, 2.9208106871604094)={(2, 2): 0.11, (2, 4): 0.07, (2.5, 6): 0.10, (3.5, 2): 0.18, (4, 3): 0.16, (4, 5): 0.15, (4.5, 4): 0.21, (7, 2): 0.84, (7.5, 3): 0.82, (8, 1): 0.82, (9, 2): 0.76, (8, 7): 0.08, (8.5, 8): 0.07, (9, 6): 0.09, (10, 7): 0.08}</li>
 <li>cluster center (3.5470929502708515, 3.6171959293531435)={(2, 2): 0.88, (2, 4): 0.91, (2.5, 6): 0.83, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.77, (4.5, 4): 0.73, (7, 2): 0.10, (7.5, 3): 0.06, (8, 1): 0.09, (9, 2): 0.06, (8, 7): 0.03, (8.5, 8): 0.03, (9, 6): 0.02, (10, 7): 0.02}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot6.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot6.svg" alt="soft k-means 2D plot"></p>
 </li>
 <li>
 <p>Iteration 7</p>
@@ -17337,7 +17341,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 <p>Stopping -- center convergence step distance below threshold (largest_center_step_distance=0.23741733972468515)</p>
@@ -17349,7 +17353,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>cluster center (6.9781999785084095, 2.701391185190995)={(2, 2): 0.11, (2, 4): 0.06, (2.5, 6): 0.09, (3.5, 2): 0.19, (4, 3): 0.16, (4, 5): 0.14, (4.5, 4): 0.21, (7, 2): 0.87, (7.5, 3): 0.84, (8, 1): 0.86, (9, 2): 0.80, (8, 7): 0.06, (8.5, 8): 0.05, (9, 6): 0.08, (10, 7): 0.07}</li>
 <li>cluster center (3.4625169810561793, 3.6573047295613943)={(2, 2): 0.88, (2, 4): 0.92, (2.5, 6): 0.85, (3.5, 2): 0.79, (4, 3): 0.81, (4, 5): 0.79, (4.5, 4): 0.74, (7, 2): 0.08, (7.5, 3): 0.06, (8, 1): 0.07, (9, 2): 0.05, (8, 7): 0.02, (8.5, 8): 0.02, (9, 6): 0.02, (10, 7): 0.01}</li>
 </ul>
-<p><img src="ch8_f90e8c4b467dd6957ea065ec15a241ce_plot7.svg" alt="soft k-means 2D plot"></p>
+<p><img src="ch8_895aa09592facd7b924369d825609928_plot7.svg" alt="soft k-means 2D plot"></p>
 </li>
 </ul>
 </div>
@@ -17410,14 +17414,14 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>Points 1 and 2 have similar analogs in <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a>. <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> can give you bad centers + <a href="#BM_(lloyd%20algorithm%7Clloyd's%20algorithm%7Ck-means%3F%5C%2B%5C%2B%20initializer%7Ck-means%3F%5C%2B%5C%2B)%2Fi">Lloyd's algorithm</a> can screw you if you initial centers are bad / not enough points representative of actual <a href="#BM_(cluster)%2Fi">cluster</a>s are available.</p>
 </div>
 <a name="H_Hierarchial%20Clustering"></a><h3>Hierarchial Clustering</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FHierarchial%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FHierarchial%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FManhattan%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Manhattan Distance Metric</a></li>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Cosine Similarity Metric</a></li>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FPearson%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Pearson Similarity Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Euclidean Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FManhattan%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Manhattan Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Cosine Similarity Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FPearson%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Pearson Similarity Metric</a></li>
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FUPGMA%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree/UPGMA Algorithm</a></li>
 </ul>
 </div>
@@ -17539,15 +17543,15 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following UPGMA tree was produced ...</p>
-<p><img src="dot_12388bd70d6b7f671161bd810dca8714.svg" alt="Dot diagram"></p>
+<p><img src="dot_e0bc3f81adb329f7ed6358445d6ab381.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Soft%20Hierarchial%20Clustering"></a><h3>Soft Hierarchial Clustering</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FSoft%20Hierarchial%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FSoft%20Hierarchial%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FHierarchial%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/Hierarchial Clustering</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FHierarchial%20Clustering)_TOPIC%2F">Algorithms/Gene Clustering/Hierarchial Clustering</a></li>
 <li><a href="#BM_(Algorithms%5C%2FPhylogeny%2FDistance%20Matrix%20to%20Tree%2FNeighbour%20Joining%20Phylogeny%20Algorithm)_TOPIC%2F">Algorithms/Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm</a></li>
 </ul>
 </div>
@@ -17791,12 +17795,12 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following neighbour joining phylogeny tree was produced ...</p>
-<p><img src="dot_7e64baa19375feaf2afa1c8d8aaaced2.svg" alt="Dot diagram"></p>
+<p><img src="dot_a8768d871975444dc8a5124c267238b7.svg" alt="Dot diagram"></p>
 <p>The following leaf node membership probabilities were produced (per internal node) ...</p>
 <ul>
 <li>N4 = VEC1=0.01,VEC2=0.01,VEC3=0.25,VEC4=0.54,VEC5=0.18,VEC6=0.01</li>
-<li>N3 = VEC1=0.01,VEC2=0.01,VEC3=0.43,VEC4=0.28,VEC5=0.26,VEC6=0.01</li>
 <li>N2 = VEC1=0.00,VEC2=0.00,VEC3=0.00,VEC4=0.00,VEC5=0.00,VEC6=0.99</li>
+<li>N3 = VEC1=0.01,VEC2=0.01,VEC3=0.43,VEC4=0.28,VEC5=0.26,VEC6=0.01</li>
 <li>N1 = VEC1=0.23,VEC2=0.75,VEC3=0.00,VEC4=0.00,VEC5=0.00,VEC6=0.01</li>
 </ul>
 </div>
@@ -17860,7 +17864,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>Depending on how big the <a href="#BM_(tree)%2Fi">tree</a> is, it may be too expensive to try each edge weight. One workaround is to create buckets of averages. For example, split the sorted edge weights into 10 buckets and average each bucket. Try each of the 10 averages as the "ideal" edge weight.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The concept of an "ideal" edge weight is similar to the concept of a <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>'s threshold value (described in <a href="#BM_(Algorithms%5C%2FGene%20Expression%2FSimilarity%20Graph%20Clustering)_TOPIC%2F">Algorithms/Gene Expression/Similarity Graph Clustering</a>): Items within the same <a href="#BM_(cluster)%2Fi">cluster</a> should be closer together than items in different <a href="#BM_(cluster)%2Fi">cluster</a>s.</p>
+<p>The concept of an "ideal" edge weight is similar to the concept of a <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>'s threshold value (described in <a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FSimilarity%20Graph%20Clustering)_TOPIC%2F">Algorithms/Gene Clustering/Similarity Graph Clustering</a>): Items within the same <a href="#BM_(cluster)%2Fi">cluster</a> should be closer together than items in different <a href="#BM_(cluster)%2Fi">cluster</a>s.</p>
 </div>
 <p><a href="ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining_v2.py">ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining_v2.py</a> (lines 124 to 134):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mean_dist_within_edge_range</span>(<span class="hljs-params">
@@ -18031,23 +18035,23 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following neighbour joining phylogeny tree was produced ...</p>
-<p><img src="dot_f29ef0020180687dc6ad3a7e38a35844.svg" alt="Dot diagram"></p>
+<p><img src="dot_412b2100457ddd42b36f71d4fce2dae9.svg" alt="Dot diagram"></p>
 <p>The following clusters were estimated ...</p>
 <ul>
-<li>VEC4, VEC3, N4, VEC5, N3</li>
-<li>VEC2, VEC1, N1</li>
+<li>N4, N3, VEC5, VEC4, VEC3</li>
+<li>VEC1, N1, VEC2</li>
 </ul>
 </div>
 <p></p>
 <a name="H_Similarity%20Graph%20Clustering"></a><h3>Similarity Graph Clustering</h3>
-<p><a name="BM_(Algorithms%5C%2FGene%20Expression%2FSimilarity%20Graph%20Clustering)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FGene%20Clustering%2FSimilarity%20Graph%20Clustering)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Euclidean Distance Metric</a></li>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FManhattan%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Manhattan Distance Metric</a></li>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Cosine Similarity Metric</a></li>
-<li><a href="#BM_(Algorithms%5C%2FGene%20Expression%2FPearson%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Expression/Pearson Similarity Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FEuclidean%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Euclidean Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FManhattan%20Distance%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Manhattan Distance Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FCosine%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Cosine Similarity Metric</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FPearson%20Similarity%20Metric)_TOPIC%2F">Algorithms/Gene Clustering/Pearson Similarity Metric</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>: Given a list of n-dimensional vectors, ...</p>
@@ -18266,7 +18270,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following similarity graph was produced ...</p>
-<p><img src="dot_6e14ee340788f25d2540dad058e319c3.svg" alt="Dot diagram"></p>
+<p><img src="dot_93333820e9e0ff2e0ee3dd120e55777f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If the resulting <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> isn't a <a href="#BM_(clique%20graph)%2Fi">clique graph</a> but is close to being one (<a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s), a heuristic algorithm called <a href="#BM_(cluster%20affinity%20search%20technique)%2Fi">cluster affinity search technique</a> (<a href="#BM_(CAST)%2F">CAST</a>) can correct it. At it's core, the algorithm attempts to re-create each <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a> in its corrected form by iteratively finding the ...</p>
@@ -18428,25 +18432,11 @@ THHHTHHHTH = 7 / 10 = 0.7
 </tbody>
 </table>
 <p>The following <em>original</em> similarity graph was produced ...</p>
-<p><img src="dot_282f8252bacf16bbde426b413aabc318.svg" alt="Dot diagram"></p>
+<p><img src="dot_f12e66994b64fb241c1cb357eaa8fe14.svg" alt="Dot diagram"></p>
 <p>The following <em>corrected</em> similarity graph was produced ...</p>
-<p><img src="dot_89d424f7f0d81ea71c4caee99b43b22e.svg" alt="Dot diagram"></p>
+<p><img src="dot_93333820e9e0ff2e0ee3dd120e55777f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
-<p>TODO: PULL A TIME-COURSE <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">GENE EXPRESSION DATA</a> SET FROM THE NCBI OMBIBUS AND WRITE THE STORY</p>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -19139,6 +19129,252 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p>INDEL=-6.0</p>
 <p>The tree generated by neighbour joining phylogeny ALONG WITH INFERRED ANCESTRAL SEQUENCES is (distances measured using global alignment, edge lengths scaled to 0.1) ...</p>
 <p><img src="dot_efed26f7f13639f895adeed724a5c3a9.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<a name="H_Gene%20Expression%20Analysis"></a><h2>Gene Expression Analysis</h2>
+<p><a name="BM_(Stories%5C%2FGene%20Expression%20Analysis)_TOPIC%2F"></a><strong></strong></p>
+<p><a href="#BM_(gene%20expression)%2Fi">Gene expression</a> is the biological process by which a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (segment of DNA) is synthesized into a <a href="#BM_(gene%20product)%2Fi">gene product</a> (e.g. protein).</p>
+<p><img src="svgbob_4c3340936a17e2840e08c6fbcd2b26b03b1c812b.svg" alt="Kroki diagram output"></p>
+<p>As an organism changes state, its <a href="#BM_(gene%20expression)%2Fi">gene expression</a> levels change as well. For example, when a bacteria's flagella initially starts moving, a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> may have either an ...</p>
+<ul>
+<li>increased rate of <a href="#BM_(gene%20expression)%2Fi">gene expression</a>.</li>
+<li>decreased rate of <a href="#BM_(gene%20expression)%2Fi">gene expression</a>.</li>
+<li>unchanged rate of <a href="#BM_(gene%20expression)%2Fi">gene expression</a>.</li>
+</ul>
+<p>The subset of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> whose <a href="#BM_(gene%20expression)%2Fi">gene expression</a> either increase or decrease are somehow linked to initial flagella movement. It could be that a linked <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is either responsible for a byproduct of the flagella movement.</p>
+<p><img src="svgbob_6a48797c248be7b5ca86c79242b5627e5fff6cef.svg" alt="Kroki diagram output"></p>
+<p>The same idea extends to diseases and treatments. For example, a cancerous human blood cell may have a subset of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> where <a href="#BM_(gene%20expression)%2Fi">gene expression</a> is vastly different than its non-cancerous counterpart. Identifying the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> linked to human blood cancer could lead to ...</p>
+<ul>
+<li>screening (e.g. is <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for those <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> at their cancerous levels?)</li>
+<li>measuring treatment effectiveness (e.g. is the drug reducing <a href="#BM_(gene%20expression)%2Fi">gene expression</a> to its non-cancerous levels?)</li>
+<li>identifying preventative measures (e.g. mutation to a diseased allele more likely to occur if exposed to some chemical)</li>
+</ul>
+<p>The common way to measure <a href="#BM_(gene%20expression)%2Fi">gene expression</a> is to inspect the RNA within a cell. A snapshot of all <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a>s within a cell at a given point in time, called a <a href="#BM_(transcriptome)%2Fi">transcriptome</a>, can be captured using <a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> technology. Both the RNA <a href="#BM_(sequence)%2Fi">sequence</a>s and the counts of those <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">transcript</a>s (number of instances) are captured. Given that an <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">RNA transcript</a> is simply a <a href="#BM_(transcription%7Ctranscribed%7Ctranscribe)%2Fi">transcribed</a> "copy" of the DNA it came from (it identifies the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>), a snapshot indirectly shows the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> taking place for each <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> at the time that snapshot was taken.</p>
+<p><a href="#BM_(differential%20expression%7Cdifferential%20gene%20expression)%2Fi">Differential gene expression</a> analysis is the process of capturing and comparing multiple RNA snapshots for an organism in different states. The comparisons help identify which <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> are influenced by / responsible for the relevant state changes.</p>
+<p>There are two broad categories of <a href="#BM_(differential%20expression%7Cdifferential%20gene%20expression)%2Fi">differential gene expression</a> analysis: time-course and conditional. For some population, ...</p>
+<ul>
+<li>
+<p>time-course captures RNA snapshots at different points (e.g. apply drug to culture of cancerous blood cells, then measure <a href="#BM_(gene%20expression)%2Fi">gene expression</a> levels once per hour).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour 0</th>
+<th>hour 1</th>
+<th>hour 2</th>
+<th>...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> A</td>
+<td>100</td>
+<td>100</td>
+<td>100</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> B</td>
+<td>100</td>
+<td>70</td>
+<td>50</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> C</td>
+<td>100</td>
+<td>110</td>
+<td>140</td>
+<td>...</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>conditional captures RNA snapshots across different conditions (e.g. compare <a href="#BM_(gene%20expression)%2Fi">gene expression</a> levels across 50 blood cancer patients vs 50 cancer-free patients).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>patient1 (cancer)</th>
+<th>patient2 (cancer)</th>
+<th>patient3 (non-cancer)</th>
+<th>...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> X</td>
+<td>100</td>
+<td>100</td>
+<td>100</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> Y</td>
+<td>100</td>
+<td>110</td>
+<td>50</td>
+<td>...</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> Z</td>
+<td>100</td>
+<td>110</td>
+<td>140</td>
+<td>...</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The sub-section describes how to deal with time-courses. There is no sub-section describing how to deal with conditionals. The Pevzner book never went over it. But, the final challenge question did throw and conditional dataset at you and ask you to solve some problem. It seems that for conditional datasets, the key thing you need to do is filter out unrelated <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> before doing anything. For the challenge in the Pevzner book, I simply compared a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s average <a href="#BM_(gene%20expression)%2Fi">gene expression</a> between cancer vs non-cancer to determine if it was relevant (if the offset was large enough, I decided it was relevant).</p>
+</div>
+<a name="H_Cluster%20Genes"></a><h3>Cluster Genes</h3>
+<p><a name="BM_(Stories%5C%2FGene%20Expression%20Analysis%2FCluster%20Genes)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Stories%5C%2FTranscription%20Factors)_TOPIC%2F">Stories/Transcription Factors</a></li>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FSoft%20Hierarchial%20Clustering)_TOPIC%2F">Algorithms/Gene Clustering/Soft Hierarchial Clustering</a></li>
+</ul>
+</div>
+<p>A time-course experiment captures RNA snapshots at different points in time. For example, a biologist infects a cell culture with a pathogen, then measures <a href="#BM_(gene%20expression)%2Fi">gene expression</a> levels within that culture every hour.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hour 0</th>
+<th>hour 1</th>
+<th>hour 2</th>
+<th>hour 3</th>
+<th>hour 4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> X</td>
+<td>100</td>
+<td>100</td>
+<td>50</td>
+<td>50</td>
+<td>20</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> Y</td>
+<td>20</td>
+<td>50</td>
+<td>50</td>
+<td>100</td>
+<td>100</td>
+</tr>
+<tr>
+<td><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> Z</td>
+<td>50</td>
+<td>50</td>
+<td>50</td>
+<td>50</td>
+<td>50</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p><img src="svgbob_244463cf241f3165a435a9043e21e7e80fc58e80.svg" alt="Kroki diagram output"></p>
+<p>If two <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> have similar <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s, it could be that they're related in some way (e.g. regulated by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>). <a href="#BM_(cluster)%2Fi">Cluster</a>ing a set of <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> by their <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s helps identify these relationships. If done properly, <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> within the same <a href="#BM_(cluster)%2Fi">cluster</a> should have <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">gene expression vector</a>s that are more similar to each other than to those in other <a href="#BM_(cluster)%2Fi">cluster</a>s (<a href="#BM_(good%20clustering%20principle)%2Fi">good clustering principle</a>).</p>
+<p><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> <a href="#BM_(cluster)%2Fi">cluster</a>s can then be passed off to a biologist for further investigation (e.g. to confirm if they're actually influenced by the same <a href="#BM_(transcription%20factor)%2Fi">transcription factor</a>).</p>
+<p><img src="svgbob_7fe990231108b57361d81844080fe92f2afe6105.svg" alt="Kroki diagram output"></p>
+<p>The example below <a href="#BM_(cluster)%2Fi">cluster</a>s a time-course for astrocyte cells infected with H5N1 bird flu. The time-course measures <a href="#BM_(gene%20expression)%2Fi">gene expression</a> at 6, 12, and 24 hours into infection. The <a href="#BM_(cluster)%2Fi">cluster</a>ing process builds a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where a simple heuristic determines parts of the <a href="#BM_(tree)%2Fi">tree</a> that represent <a href="#BM_(cluster)%2Fi">cluster</a>s (e.g. regions of interest).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This dataset is from the NCBI <a href="#BM_(gene%20expression)%2Fi">gene expression</a> omnibus (GEO): <a href="https://www.ncbi.nlm.nih.gov/sites/GDSbrowser?acc=GDS6010">Influenza virus H5N1 infection of U251 astrocyte cell line: time course</a>. You may be able to use other datasets from the GEO with this same code -- use the <a href="https://www.ncbi.nlm.nih.gov/sites/GDSbrowser">GDS browser</a> if you want to find more.</p>
+<blockquote>
+<p>GDS6010</p>
+<p>Title: Influenza virus H5N1 infection of U251 astrocyte cell line: time course</p>
+<p>Summary: Analysis of U251 astrocyte cells infected with the influenza H5N1 virus for up to 24 hours. Results provide insight into the immune response of astrocytes to H5N1 infection.</p>
+<p>Organism: Homo sapiens</p>
+<p>Platform: GPL6480: Agilent-014850 Whole Human <a href="#BM_(genome)%2Fi">Genome</a> Microarray 4x44K G4112F (Probe Name version)</p>
+<p>Citation: Lin X, Wang R, Zhang J, Sun X et al. Insights into Human Astrocyte Response to H5N1 Infection by Microarray Analysis. Viruses 2015 May 22;7(5):2618-40. PMID: 26008703</p>
+<p>Reference Series: GSE66597</p>
+<p>Sample count: 18</p>
+<p>Value type: transformed count</p>
+<p>Series published: 2016/01/04</p>
+</blockquote>
+<p>There are too many <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> here for the <a href="#BM_(cluster)%2Fi">cluster</a>ing algorithm (Python is slow). As such, standard deviation is used to filter out <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> <a href="#BM_(gene%20expression%20matrix%7Cexpression%20matrix%7Cgene%20expression%20matrices%7Cexpression%20matrices%7Cgene%20expression%20data%7Cexpression%20data%7Cgene%20expression%20vector%7Cexpression%20vector)%2Fi">expression vector</a>s that don't dramatically change during the time-course. The experiment did come with a control group: a second population of the same cell line but uninfected. Maybe instead of standard deviation, a better filtering approach would be to only include <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> whose <a href="#BM_(gene%20expression)%2Fi">gene expression</a> pattern is vastly different between control group vs experimental group.</p>
+<p>The original data set was too large. I removed the replicates and only kept hour 24 of the control group.</p>
+</div>
+<div style="border:1px solid black;">
+<p></p>
+<p>Executing neighbour joining phylogeny <strong>soft</strong> clustering using the following settings...</p>
+<pre><code>{
+  filename: GDS6010.soft_no_replicates_single_control.xz,
+  gene_column: ID_REF,  # col name for gene ID
+  sample_columns: [
+    GSM1626001,  # col name for control @ 24 hrs (treat this as a measure of "before infection")
+    GSM1626004,  # col name for infection @ 6 hrs
+    GSM1626007,  # col name for infection @ 12 hrs
+    GSM1626010   # col name for infection @ 24 hrs
+  ],
+  std_dev_limit: 1.6,  # reject anything with std dev less than this
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  dist_capture: 0.5,
+  edge_scale: 3.0
+}
+
+</code></pre>
+<p>The following neighbour joining phylogeny tree was produced ...</p>
+<p><img src="dot_fea2ce161736b07f99bb8cc18380d534.svg" alt="Dot diagram"></p>
+<p>The following clusters were estimated ...</p>
+<ul>
+<li>A24P246591, N38, A23P133263, N32</li>
+<li>N167, N132, N150, A24P915675, N161, A23P122210, N169, N162, A23P127013, N187, A23P348992, A24P144337, N126, A24P924251, N194, N164, A24P911648, N134, N171, A24P58187, A24P392505, A32P234294, A24P215804, N153, A23P26314, N191, N155, A32P118481, A23P353316, A24P298604, N148, A32P233735, A23P144096, A24P101601, N183, N201, A32P34970, A24P400751, A23P390032, N199, N165, N181, N142, N200, N154, A24P170384, A24P237661, A23P306211, A24P350017, N146, A23P202361, N151, N138, N192, A23P501634, N141, N173, N193, N189, N166, N149, N185, N180, N176, A24P358337, A24P247536, A24P391574, A24P152855, A32P139302, N172, N186, A24P350160, N152, A24P66932, A24P201936, N182, A24P136161, N195, A24P25040, N198, A32P234202, A32P220152, N177, A32P20582, A24P941946, N160, A24P290188, N147, N139, N178, A32P112401, A24P281730, A32P4792, A23P10091, A32P94199, A32P224666, A23P401361, A24P761130, N188, N170, N174, A32P73452, N159, A24P298099, N190, A24P75543, A24P315474, N145, N163, N184, N196, N129, A24P884376, N197, N168, A32P230196, N157, A23P391443, N179, N175</li>
+<li>A23P397671, N39, N34, A32P12355, A32P203917, N33, N35, A23P133949, N41, N49, A24P738168, A24P927770, A24P476247, N43, N46, A23P385067, A24P937039, A24P922139, N42</li>
+<li>A24P119813, N73, A24P38722, N68, N70, N72, A24P344251, N66, A32P25243</li>
+<li>N78, N76, N71, A23P117873, N75, N74, A24P931030, A23P46070, A23P119448, A24P162393</li>
+<li>A24P289067, N86, N85, A23P384551, A23P69606, N82, A24P25437, N83, A32P206344, N84, N87, A24P922979, A24P923534</li>
+<li>A23P125278, A23P98622, A24P871687, N44, N52, N47</li>
+<li>A32P387648, N81, A24P112730</li>
+<li>N51, A24P925673, A32P207096, N54</li>
+<li>N40, A24P400180, A23P21990</li>
+<li>A23P416434, N122, N128, A24P837537, A24P220984, N125</li>
+<li>N140, N135, A24P67364, N131, A23P500844, A24P162211</li>
+<li>A24P109111, A24P59554, A32P82119, N96, N99, N101, A24P558750, N93, N92, A24P54863, N95, A32P26401, N102</li>
+<li>A32P186038, N112, N111, A24P917866, A24P711050, A24P812018, N110, N113</li>
+<li>A24P350771, A23P258633, N118, N116</li>
+<li>N2, A23P20814, A23P17663, N3, N4, A23P45871</li>
+<li>N144, N143, A24P914102, A32P211048</li>
+<li>N61, A23P13465, A23P328145, N53</li>
+<li>A32P332551, N56, A24P66780, A23P326700, A23P47904, N69, N64, N63, N65, A23P82567, A24P928156</li>
+<li>N98, A23P69768, A23P424727</li>
+<li>A23P64828, N20, N18, A23P4283, N19</li>
+<li>A32P396186, N156, A32P206561, N158</li>
+<li>N45, N50, A24P934145, A24P927304, A24P889237, N48, A23P101636</li>
+<li>A23P95417, N59, N55, A23P396934, A24P68088, N62, N60, A23P170050, A24P887239</li>
+<li>N89, A23P140475, A24P943866</li>
+<li>A32P15128, A24P316965, N25, N26, A24P343929</li>
+</ul>
 </div>
 <p></p>
 <a name="H_Ideas"></a><h1>Ideas</h1>

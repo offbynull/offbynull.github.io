@@ -11431,9 +11431,9 @@ i0
 [G, 1, 1, 1, 0]
 ```
 
-## Gene Expression
+## Gene Clustering
 
-`{bm} /(Algorithms\/Gene Expression)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering)_TOPIC/`
 
 Gene expression is the biological process by which a gene (segment of DNA) is synthesized into a gene product (e.g. protein).
 
@@ -11582,7 +11582,7 @@ This section doesn't cover de-noising or de-biasing. It only covers clustering a
 
 ### Euclidean Distance Metric
 
-`{bm} /(Algorithms\/Gene Expression\/Euclidean Distance Metric)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Euclidean Distance Metric)_TOPIC/`
 
 **WHAT**: Given two n-dimensional vectors, compute the distance between those vectors if traveling directly from one to the other in a straight line, referred to as the euclidean distance.
 
@@ -11646,7 +11646,7 @@ metrics.EuclideanDistance
 
 ### Manhattan Distance Metric
 
-`{bm} /(Algorithms\/Gene Expression\/Manhattan Distance Metric)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Manhattan Distance Metric)_TOPIC/`
 
 **WHAT**: Given two n-dimensional vectors, compute the distance between those vectors if traveling only via the axis of the coordinate system, referred to as the manhattan distance.
 
@@ -11706,7 +11706,7 @@ metrics.ManhattanDistance
 
 ### Cosine Similarity Metric
 
-`{bm} /(Algorithms\/Gene Expression\/Cosine Similarity Metric)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Cosine Similarity Metric)_TOPIC/`
 
 **WHAT**: Given two n-dimensional vectors, compute the cosine of the single between them, referred to as the cosine similarity.
 
@@ -11945,10 +11945,10 @@ metrics.CosineSimilarity
 
 ### Pearson Similarity Metric
 
-`{bm} /(Algorithms\/Gene Expression\/Pearson Similarity Metric)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Pearson Similarity Metric)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
+Algorithms/Gene Clustering/Cosine Similarity Metric_TOPIC
 ```
 
 ```{note}
@@ -12181,10 +12181,10 @@ I don't know what the correct thing to do here is. My instinct is to mark it as 
 
 ### K-Centers Clustering
 
-`{bm} /(Algorithms\/Gene Expression\/K-Centers Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/K-Centers Clustering)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
+Algorithms/Gene Clustering/Euclidean Distance Metric_TOPIC
 ```
 
 **WHAT**: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a cluster, where the points closest to that center (euclidean distance) are that cluster's member_CLUSTERs. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
@@ -12329,11 +12329,11 @@ One problem that should be noted with this heuristic is that, when outliers are 
 
 ### K-Means Clustering
 
-`{bm} /(Algorithms\/Gene Expression\/K-Means Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/K-Means Clustering)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
-Algorithms/Gene Expression/K-Centers Clustering_TOPIC
+Algorithms/Gene Clustering/Euclidean Distance Metric_TOPIC
+Algorithms/Gene Clustering/K-Centers Clustering_TOPIC
 ```
 
 **WHAT**: Given a list of n-dimensional points (vectors), choose a predefined number of points (k), called centers. Each center identifies a cluster.
@@ -12673,10 +12673,10 @@ The examples below are taken directly from the Pevzner book.
 
 ### Soft K-Means Clustering
 
-`{bm} /(Algorithms\/Gene Expression\/Soft K-Means Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Soft K-Means Clustering)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Expression/K-Means Clustering_TOPIC
+Algorithms/Gene Clustering/K-Means Clustering_TOPIC
 ```
 
 **WHAT**: Soft k-means clustering is the soft clustering variant of k-means. Where as the original k-means definitively assigns each point to a cluster (hard clustering), this variant of k-means assigns each point to how likely it is to be a member_CLUSTER of each cluster (soft clustering).
@@ -13020,13 +13020,13 @@ Points 1 and 2 have similar analogs in Lloyd's algorithm. Lloyd's algorithm can 
 
 ### Hierarchial Clustering
 
-`{bm} /(Algorithms\/Gene Expression\/Hierarchial Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Hierarchial Clustering)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
-Algorithms/Gene Expression/Manhattan Distance Metric_TOPIC
-Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
-Algorithms/Gene Expression/Pearson Similarity Metric_TOPIC
+Algorithms/Gene Clustering/Euclidean Distance Metric_TOPIC
+Algorithms/Gene Clustering/Manhattan Distance Metric_TOPIC
+Algorithms/Gene Clustering/Cosine Similarity Metric_TOPIC
+Algorithms/Gene Clustering/Pearson Similarity Metric_TOPIC
 Algorithms/Phylogeny/Distance Matrix to Tree/UPGMA Algorithm_TOPIC
 ```
 
@@ -13142,10 +13142,10 @@ clustering.HierarchialClustering_UPGMA
 
 ### Soft Hierarchial Clustering
 
-`{bm} /(Algorithms\/Gene Expression\/Soft Hierarchial Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Soft Hierarchial Clustering)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Expression/Hierarchial Clustering_TOPIC
+Algorithms/Gene Clustering/Hierarchial Clustering_TOPIC
 Algorithms/Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm_TOPIC
 ```
 
@@ -13345,7 +13345,7 @@ There is no definitive algorithm for calculating the "ideal" edge weight. One he
 Depending on how big the tree is, it may be too expensive to try each edge weight. One workaround is to create buckets of averages. For example, split the sorted edge weights into 10 buckets and average each bucket. Try each of the 10 averages as the "ideal" edge weight.
 
 ```{note}
-The concept of an "ideal" edge weight is similar to the concept of a similarity graph's threshold value (described in Algorithms/Gene Expression/Similarity Graph Clustering_TOPIC): Items within the same cluster should be closer together than items in different clusters.
+The concept of an "ideal" edge weight is similar to the concept of a similarity graph's threshold value (described in Algorithms/Gene Clustering/Similarity Graph Clustering_TOPIC): Items within the same cluster should be closer together than items in different clusters.
 ```
 
 ```{output}
@@ -13409,13 +13409,13 @@ clustering.Soft_HierarchialClustering_NeighbourJoining_v2
 
 ### Similarity Graph Clustering
 
-`{bm} /(Algorithms\/Gene Expression\/Similarity Graph Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Similarity Graph Clustering)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Expression/Euclidean Distance Metric_TOPIC
-Algorithms/Gene Expression/Manhattan Distance Metric_TOPIC
-Algorithms/Gene Expression/Cosine Similarity Metric_TOPIC
-Algorithms/Gene Expression/Pearson Similarity Metric_TOPIC
+Algorithms/Gene Clustering/Euclidean Distance Metric_TOPIC
+Algorithms/Gene Clustering/Manhattan Distance Metric_TOPIC
+Algorithms/Gene Clustering/Cosine Similarity Metric_TOPIC
+Algorithms/Gene Clustering/Pearson Similarity Metric_TOPIC
 ```
 
 **WHAT**: Given a list of n-dimensional vectors, ...
@@ -13571,34 +13571,6 @@ clustering.SimilarityGraph_CAST main_cast
   threshold: -15.2
 }
 ```
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
-
-TODO: PULL A TIME-COURSE GENE EXPRESSION DATA SET FROM THE NCBI OMBIBUS AND WRITE THE STORY
 
 # Stories
 
@@ -14666,6 +14638,171 @@ B -2 -1  5  5 -4  0  1 -1 -1 -4 -4 -1 -3 -4 -2  0 -1 -5 -3 -4  5 -4  0 -1
 J -2 -3 -4 -5 -2 -3 -4 -5 -4  3  3 -3  2  0 -4 -3 -1 -3 -2  2 -4  3 -3 -1
 Z -1  0  0  1 -4  4  5 -3  0 -4 -3  1 -1 -4 -2  0 -1 -3 -3 -3  0 -3  5 -1
 X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+```
+
+## Gene Expression Analysis
+
+`{bm} /(Stories\/Gene Expression Analysis)_TOPIC/`
+
+Gene expression is the biological process by which a gene (segment of DNA) is synthesized into a gene product (e.g. protein).
+
+```{svgbob}
+       .----------------> mRNA --------------> "protein"
+       | "transcribe"           "translate"    "(gene product)"
+DNA   -+
+(gene) |
+       '----------------> "functional RNA"
+         "transcribe"     "(gene product)"
+```
+
+As an organism changes state, its gene expression levels change as well. For example, when a bacteria's flagella initially starts moving, a gene may have either an ...
+
+ * increased rate of gene expression.
+ * decreased rate of gene expression.
+ * unchanged rate of gene expression.
+ 
+The subset of genes whose gene expression either increase or decrease are somehow linked to initial flagella movement. It could be that a linked gene is either responsible for a byproduct of the flagella movement.
+
+```{svgbob}
+'-.-'-.-'-.-'-.-'-. .-----------------------.
+                  '-+                       |
+'-.-'-.-'-.-'-.-'---+                       |
+                  .-+                       |
+'-.-'-.-'-.-'-.-'-' '-----------------------'
+
+"Flagella is a protruding strand / tail"
+```
+
+The same idea extends to diseases and treatments. For example, a cancerous human blood cell may have a subset of genes where gene expression is vastly different than its non-cancerous counterpart. Identifying the genes linked to human blood cancer could lead to ...
+
+ * screening (e.g. is gene expression for those genes at their cancerous levels?)
+ * measuring treatment effectiveness (e.g. is the drug reducing gene expression to its non-cancerous levels?)
+ * identifying preventative measures (e.g. mutation to a diseased allele more likely to occur if exposed to some chemical)
+
+The common way to measure gene expression is to inspect the RNA within a cell. A snapshot of all RNA transcripts within a cell at a given point in time, called a transcriptome, can be captured using RNA sequencing technology. Both the RNA sequences and the counts of those transcripts (number of instances) are captured. Given that an RNA transcript is simply a transcribed "copy" of the DNA it came from (it identifies the gene), a snapshot indirectly shows the amount of gene expression taking place for each gene at the time that snapshot was taken.
+
+Differential gene expression analysis is the process of capturing and comparing multiple RNA snapshots for an organism in different states. The comparisons help identify which genes are influenced by / responsible for the relevant state changes.
+
+There are two broad categories of differential gene expression analysis: time-course and conditional. For some population, ...
+
+ * time-course captures RNA snapshots at different points (e.g. apply drug to culture of cancerous blood cells, then measure gene expression levels once per hour).
+
+   |          | hour 0 | hour 1 | hour 2 | ... |
+   |----------|--------|--------|--------|-----|
+   | Gene A   | 100    | 100    | 100    | ... |
+   | Gene B   | 100    |  70    | 50     | ... |
+   | Gene C   | 100    | 110    | 140    | ... |
+   | ...      | ...    | ...    | ...    | ... |
+
+ * conditional captures RNA snapshots across different conditions (e.g. compare gene expression levels across 50 blood cancer patients vs 50 cancer-free patients).
+
+   |          | patient1 (cancer) | patient2 (cancer) | patient3 (non-cancer) | ... |
+   |----------|-------------------|-------------------|-----------------------|-----|
+   | Gene X   | 100               | 100               | 100                   | ... |
+   | Gene Y   | 100               | 110               | 50                    | ... |
+   | Gene Z   | 100               | 110               | 140                   | ... |
+   | ...      | ...               | ...               | ...                   | ... |
+
+```{note}
+The sub-section describes how to deal with time-courses. There is no sub-section describing how to deal with conditionals. The Pevzner book never went over it. But, the final challenge question did throw and conditional dataset at you and ask you to solve some problem. It seems that for conditional datasets, the key thing you need to do is filter out unrelated genes before doing anything. For the challenge in the Pevzner book, I simply compared a gene's average gene expression between cancer vs non-cancer to determine if it was relevant (if the offset was large enough, I decided it was relevant).
+```
+
+### Cluster Genes
+
+`{bm} /(Stories\/Gene Expression Analysis\/Cluster Genes)_TOPIC/`
+
+```{prereq}
+Stories/Transcription Factors_TOPIC
+Algorithms/Gene Clustering/Soft Hierarchial Clustering_TOPIC
+```
+
+A time-course experiment captures RNA snapshots at different points in time. For example, a biologist infects a cell culture with a pathogen, then measures gene expression levels within that culture every hour.
+
+|          | hour 0 | hour 1 | hour 2 | hour 3 | hour 4 |
+|----------|--------|--------|--------|--------|--------|
+| Gene X   | 100    | 100    | 50     | 50     | 20     |
+| Gene Y   | 20     | 50     | 50     | 100    | 100    |
+| Gene Z   | 50     | 50     | 50     | 50     | 50     |
+| ...      | ...    | ...    | ...    | ...    | ...    |
+
+```{svgbob}
+         "GENE X"                              "GENE Y"                             "GENE Z"      
+|                                    |                                    |                       
+|  *----*                            |                 *                  |                       
+|        \                           |                /                   |                        
+|         \                          |               /                    |                       
+|          *---*                     |          *---*                     |  *---*---*---*---*        
+|               \                    |         /                          |                       
+|                \                   |        /                           |                       
+|                 *                  |  *----*                            |                       
+|                                    |                                    |                       
++-----------------------             +-----------------------             +-----------------------
+```
+
+If two genes have similar gene expression vectors, it could be that they're related in some way (e.g. regulated by the same transcription factor). Clustering a set of genes by their gene expression vectors helps identify these relationships. If done properly, genes within the same cluster should have gene expression vectors that are more similar to each other than to those in other clusters (good clustering principle).
+
+Gene clusters can then be passed off to a biologist for further investigation (e.g. to confirm if they're actually influenced by the same transcription factor).
+
+```{svgbob}
+     "GENES W and X"                  "GENES U and T"    
+|                                |                       
+|  *----*                        |  *             
+|  *----*\                       |  *\            
+|        \\                      |   \\           
+|         \*---*                 |    \*        
+|          *---*\                |     *\       
+|               \\               |      \\      
+|                \*              |       \*---*----*
+|                 *              |        *---*----*  
++-----------------------         +-----------------------
+```
+
+The example below clusters a time-course for astrocyte cells infected with H5N1 bird flu. The time-course measures gene expression at 6, 12, and 24 hours into infection. The clustering process builds a phylogenetic tree, where a simple heuristic determines parts of the tree that represent clusters (e.g. regions of interest).
+
+```{note}
+This dataset is from the NCBI gene expression omnibus (GEO): [Influenza virus H5N1 infection of U251 astrocyte cell line: time course](https://www.ncbi.nlm.nih.gov/sites/GDSbrowser?acc=GDS6010). You may be able to use other datasets from the GEO with this same code -- use the [GDS browser](https://www.ncbi.nlm.nih.gov/sites/GDSbrowser) if you want to find more.
+
+> GDS6010
+>
+> Title: Influenza virus H5N1 infection of U251 astrocyte cell line: time course
+>
+> Summary: Analysis of U251 astrocyte cells infected with the influenza H5N1 virus for up to 24 hours. Results provide insight into the immune response of astrocytes to H5N1 infection.
+>
+> Organism: Homo sapiens
+>
+> Platform: GPL6480: Agilent-014850 Whole Human Genome Microarray 4x44K G4112F (Probe Name version)
+>
+> Citation: Lin X, Wang R, Zhang J, Sun X et al. Insights into Human Astrocyte Response to H5N1 Infection by Microarray Analysis. Viruses 2015 May 22;7(5):2618-40. PMID: 26008703
+>
+> Reference Series: GSE66597
+>
+> Sample count: 18
+>
+> Value type: transformed count
+>
+> Series published: 2016/01/04
+
+There are too many genes here for the clustering algorithm (Python is slow). As such, standard deviation is used to filter out genes expression vectors that don't dramatically change during the time-course. The experiment did come with a control group: a second population of the same cell line but uninfected. Maybe instead of standard deviation, a better filtering approach would be to only include genes whose gene expression pattern is vastly different between control group vs experimental group.
+
+The original data set was too large. I removed the replicates and only kept hour 24 of the control group.
+```
+
+```{ch8}
+PracticalGEODatasetClustering
+{
+  filename: GDS6010.soft_no_replicates_single_control.xz,
+  gene_column: ID_REF,  # col name for gene ID
+  sample_columns: [
+    GSM1626001,  # col name for control @ 24 hrs (treat this as a measure of "before infection")
+    GSM1626004,  # col name for infection @ 6 hrs
+    GSM1626007,  # col name for infection @ 12 hrs
+    GSM1626010   # col name for infection @ 24 hrs
+  ],
+  std_dev_limit: 1.6,  # reject anything with std dev less than this
+  metric: euclidean,  # OPTIONS: euclidean, manhattan, cosine, pearson
+  dist_capture: 0.5,
+  edge_scale: 3.0
+}
 ```
 
 # Ideas

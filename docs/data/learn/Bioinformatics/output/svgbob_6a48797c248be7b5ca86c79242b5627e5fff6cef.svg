@@ -1,0 +1,248 @@
+<svg class="bob" font-family="arial" font-size="14" height="112" width="360" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="112" width="360" x="0" y="0"/>
+<g>
+<line x1="8" x2="16" y1="8" y2="8"/>
+<path d="M 4 4 A 4 4 0 0 0 8 8"/>
+<path d="M 20 12 A 4 4 0 0 0 16 8"/>
+<path d="M 24 8 A 4 4 0 0 0 20 12"/>
+</g>
+<g>
+<line x1="8" x2="16" y1="40" y2="40"/>
+<path d="M 4 36 A 4 4 0 0 0 8 40"/>
+<path d="M 20 44 A 4 4 0 0 0 16 40"/>
+<path d="M 24 40 A 4 4 0 0 0 20 44"/>
+</g>
+<g>
+<line x1="8" x2="16" y1="72" y2="72"/>
+<path d="M 4 68 A 4 4 0 0 0 8 72"/>
+<path d="M 20 76 A 4 4 0 0 0 16 72"/>
+<path d="M 24 72 A 4 4 0 0 0 20 76"/>
+</g>
+<g>
+<line x1="24" x2="32" y1="8" y2="8"/>
+<path d="M 32 8 A 4 4 0 0 0 36 4"/>
+<path d="M 36 4 A 4 4 0 0 0 40 8"/>
+</g>
+<g>
+<line x1="24" x2="32" y1="40" y2="40"/>
+<path d="M 32 40 A 4 4 0 0 0 36 36"/>
+<path d="M 36 36 A 4 4 0 0 0 40 40"/>
+</g>
+<g>
+<line x1="24" x2="32" y1="72" y2="72"/>
+<path d="M 32 72 A 4 4 0 0 0 36 68"/>
+<path d="M 36 68 A 4 4 0 0 0 40 72"/>
+</g>
+<g>
+<line x1="40" x2="48" y1="8" y2="8"/>
+<path d="M 52 12 A 4 4 0 0 0 48 8"/>
+<path d="M 56 8 A 4 4 0 0 0 52 12"/>
+</g>
+<g>
+<line x1="40" x2="48" y1="40" y2="40"/>
+<path d="M 52 44 A 4 4 0 0 0 48 40"/>
+<path d="M 56 40 A 4 4 0 0 0 52 44"/>
+</g>
+<g>
+<line x1="40" x2="48" y1="72" y2="72"/>
+<path d="M 52 76 A 4 4 0 0 0 48 72"/>
+<path d="M 56 72 A 4 4 0 0 0 52 76"/>
+</g>
+<g>
+<line x1="56" x2="64" y1="8" y2="8"/>
+<path d="M 64 8 A 4 4 0 0 0 68 4"/>
+<path d="M 68 4 A 4 4 0 0 0 72 8"/>
+</g>
+<g>
+<line x1="56" x2="64" y1="40" y2="40"/>
+<path d="M 64 40 A 4 4 0 0 0 68 36"/>
+<path d="M 68 36 A 4 4 0 0 0 72 40"/>
+</g>
+<g>
+<line x1="56" x2="64" y1="72" y2="72"/>
+<path d="M 64 72 A 4 4 0 0 0 68 68"/>
+<path d="M 68 68 A 4 4 0 0 0 72 72"/>
+</g>
+<g>
+<line x1="72" x2="80" y1="8" y2="8"/>
+<path d="M 84 12 A 4 4 0 0 0 80 8"/>
+<path d="M 88 8 A 4 4 0 0 0 84 12"/>
+</g>
+<g>
+<line x1="72" x2="80" y1="40" y2="40"/>
+<path d="M 84 44 A 4 4 0 0 0 80 40"/>
+<path d="M 88 40 A 4 4 0 0 0 84 44"/>
+</g>
+<g>
+<line x1="72" x2="80" y1="72" y2="72"/>
+<path d="M 84 76 A 4 4 0 0 0 80 72"/>
+<path d="M 88 72 A 4 4 0 0 0 84 76"/>
+</g>
+<g>
+<line x1="88" x2="96" y1="8" y2="8"/>
+<path d="M 96 8 A 4 4 0 0 0 100 4"/>
+<path d="M 100 4 A 4 4 0 0 0 104 8"/>
+</g>
+<g>
+<line x1="88" x2="96" y1="40" y2="40"/>
+<path d="M 96 40 A 4 4 0 0 0 100 36"/>
+<path d="M 100 36 A 4 4 0 0 0 104 40"/>
+</g>
+<g>
+<line x1="88" x2="96" y1="72" y2="72"/>
+<path d="M 96 72 A 4 4 0 0 0 100 68"/>
+<path d="M 100 68 A 4 4 0 0 0 104 72"/>
+</g>
+<g>
+<line x1="104" x2="112" y1="8" y2="8"/>
+<path d="M 116 12 A 4 4 0 0 0 112 8"/>
+<path d="M 120 8 A 4 4 0 0 0 116 12"/>
+</g>
+<g>
+<line x1="104" x2="112" y1="40" y2="40"/>
+<path d="M 116 44 A 4 4 0 0 0 112 40"/>
+<path d="M 120 40 A 4 4 0 0 0 116 44"/>
+</g>
+<g>
+<line x1="104" x2="112" y1="72" y2="72"/>
+<path d="M 116 76 A 4 4 0 0 0 112 72"/>
+<path d="M 120 72 A 4 4 0 0 0 116 76"/>
+</g>
+<g>
+<line x1="120" x2="128" y1="8" y2="8"/>
+<path d="M 128 8 A 4 4 0 0 0 132 4"/>
+<path d="M 132 4 A 4 4 0 0 0 136 8"/>
+</g>
+<g>
+<line x1="120" x2="128" y1="40" y2="40"/>
+<path d="M 128 40 A 4 4 0 0 0 132 36"/>
+<path d="M 132 36 A 4 4 0 0 0 136 40"/>
+</g>
+<g>
+<line x1="120" x2="128" y1="72" y2="72"/>
+<path d="M 128 72 A 4 4 0 0 0 132 68"/>
+<path d="M 132 68 A 4 4 0 0 0 136 72"/>
+</g>
+<g>
+<line x1="136" x2="144" y1="8" y2="8"/>
+<path d="M 148 12 A 4 4 0 0 0 144 8"/>
+</g>
+<g>
+<line x1="136" x2="164" y1="40" y2="40"/>
+<line x1="164" x2="164" y1="24" y2="40"/>
+<line x1="164" x2="164" y1="40" y2="56"/>
+<line x1="164" x2="164" y1="56" y2="68"/>
+<path d="M 164 68 A 4 4 0 0 0 168 72"/>
+</g>
+<g>
+<line x1="136" x2="144" y1="72" y2="72"/>
+<path d="M 144 72 A 4 4 0 0 0 148 68"/>
+</g>
+<g>
+<line x1="148" x2="148" y1="12" y2="20"/>
+<path d="M 148 20 A 4 4 0 0 0 152 24"/>
+</g>
+<g>
+<line x1="148" x2="148" y1="60" y2="68"/>
+<path d="M 152 56 A 4 4 0 0 0 148 60"/>
+</g>
+<g>
+<line x1="152" x2="164" y1="24" y2="24"/>
+<line x1="164" x2="164" y1="12" y2="24"/>
+<path d="M 168 8 A 4 4 0 0 0 164 12"/>
+</g>
+<g>
+<line x1="152" x2="164" y1="56" y2="56"/>
+</g>
+<g>
+<line x1="168" x2="352" y1="8" y2="8"/>
+<path d="M 356 12 A 4 4 0 0 0 352 8"/>
+</g>
+<g>
+<line x1="168" x2="352" y1="72" y2="72"/>
+<path d="M 352 72 A 4 4 0 0 0 356 68"/>
+</g>
+<g>
+<line x1="356" x2="356" y1="12" y2="68"/>
+</g>
+<g>
+<text x="1" y="108">
+Flagella is a protruding strand / tail
+</text>
+</g>
+</svg>
