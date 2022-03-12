@@ -9,18 +9,11 @@ TODO: ch 9 at std::function / std::callable
 
 TODO: C++20 coroutines section needs to be fleshed out better (no good source for this)
 
-TODO: add section on equals/hashcode/tostring equivalents
-      -- operator== overload
-      -- std::hash template overload: https://en.cppreference.com/w/cpp/utility/hash
-      -- friend function to ostringstream
-
 TODO: streams
 
 TODO: add terminology for declarations and definitions + add more example code into terminology
 
 TODO: std::visit and `overloaded { }` -- add in a section for these, then go back and fix the std::variant section (and any other sections that can make use of it like std::vector) to refer to it (MOVE THE PIECES OUT OF STD::VARIANT SECTION INTO THE STD::VISIT -- USE SEEALSO TO REFERENCE IT) -- https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17   /     https://dzone.com/articles/two-lines-of-code-and-three-c17-features-the-overl
-
-TODO: figure out C++20 date time functionality
 
 TODO: unnamed namespaces  (https://en.cppreference.com/w/cpp/language/namespace)
 
@@ -3709,7 +3702,7 @@ T sum(T a, T b) {
     return a + b;
 }
 
-// template specialization for bool: bit-wise or
+// template specialization for bool: bitwise or
 template<>
 bool sum<bool>(bool a, bool b) {
     return a | b;
@@ -4943,7 +4936,7 @@ The subsections below detail important functionality across the many C++ librari
 
 `{bm} /(Library Functions\/Allocators)_TOPIC/`
 
-Allocators allow for customizing how objects are allocated and deallocated. Some library APIs allow you to provide a custom allocators rather than using the typical `new`/`new[]` and `delete`/`delete[]` operators. In certain scenarios where performance is important (e.g. gaming, simulations, high-frequency trading, etc..), custom allocators are often used. A custom allocator could increase performance by ...
+Allocators allow for customizing how objects are allocated and deallocated. Some library APIs allow you to provide a custom allocator rather than using the typical `new`/`new[]` and `delete`/`delete[]` operators. In certain scenarios where performance is important (e.g. gaming, simulations, high-frequency trading, etc..), custom allocators are often used. A custom allocator could increase performance by ...
 
 * using alternate data structures (e.g. finding free memory to assign to a new object is faster).
 * using an object pool (e.g. an object put back into the pool and taken out again may not need to be fully re-initialized).
@@ -4951,7 +4944,7 @@ Allocators allow for customizing how objects are allocated and deallocated. Some
 
 By default, libraries that support custom allocators will default to `std::allocator`, which just wraps the `new`/`new[]` and `delete`/`delete[]` operators.
 
-To implement a custom allocator, you need to create a templated classes with a single template parameter representing the type being allocated / deallocated. The class must have the following traits...
+To implement a custom allocator, you need to create a templated class with a single template parameter representing the type being allocated / deallocated. The class must have the following traits...
 
 1. a default constructor.
 2. a constructor to "rebind" another allocator (copy).
@@ -4994,7 +4987,7 @@ bool operator!=(const MyAllocator<T1>&, const MyAllocator<T2>&) { // 6 (why is t
 ```
 
 ```{note}
-I don't fully understand what the copy constructor and the operator overloads are for. The copy constructor seems to be for cases where you pass in an allocator to some container class (e.g. `vector`) but that container class needs to allocate more than just the type you're interested in. For example, the allocator may be for creating `int`s (e.g. template parameter `T` = `int`) but the container class you're storing those `int`s may have book keeping structures that it wraps each `int` in (e.g. each `int` is wrapped as a `Node` object which also contains some extra pointers). This copy constructor "repurposes" the allocator, allowing you to to pass in `MyAllocator<int>` but have it repurposed to `MyAllocator<SomeOtherTypeHere>`.
+I don't fully understand what the copy constructor and the operator overloads are for. The copy constructor seems to be for cases where you pass in an allocator to some container class (e.g. `vector`) but that container class needs to allocate more than just the type you're interested in. For example, the allocator may be for creating `int`s (e.g. template parameter `T` = `int`) but the container class you're storing those `int`s may have bookkeeping structures that it wraps each `int` in (e.g. each `int` is wrapped as a `Node` object which also contains some extra pointers). This copy constructor "repurposes" the allocator, allowing you to to pass in `MyAllocator<int>` but have it repurposed to `MyAllocator<SomeOtherTypeHere>`.
 
 But if you're copying the guts of one allocator into another but both keep on allocating and deallocating, won't they trip up over each other?
 
@@ -5064,7 +5057,7 @@ Library Functions/Smart Pointers/Scoped Pointer_TOPIC
 
 (moveable, non-copyable)
 
-A unique pointer supports all the same features a scoped pointer, except that it also supports moving: The ownership of the pointer that unique pointer has is transferrable to another unique pointer via move semantics (e.g. assignment operator move constructor). Like scoped pointer, a unique pointer doesn't support copying.
+A unique pointer supports all the same features as a scoped pointer, except that it also supports moving: The ownership of the pointer that unique pointer has is transferable to another unique pointer via move semantics (e.g. assignment operator move constructor). Like scoped pointer, a unique pointer doesn't support copying.
 
 ```c++
 if (x == 123L) {
@@ -5094,7 +5087,7 @@ std::unique_ptr<int> ptr { new int {5} };
 std::unique_ptr<int> ptr = std::make_unique<int>(5);  // make_unique automatically calls new
 ```
 
-Unique pointers don't support custom allocators: You pass the pointer you want to track directly into the constructor or create it via `std::make_unique()`. But, unique pointers do support taking in a function-like object (e.g. function, functor, lambda) to invoke instead of using `delete` / `delete[]` on the tracked pointer. This is useful in cases where the pointer being tracked ...
+Unique pointers don't support custom allocators: You pass the pointer you want to track directly into the constructor or create it via `std::make_unique()`. But, unique pointers do support taking in a function-like object (e.g. function, functor, lambda) to invoke instead of using `delete` / `delete[]` on the tracked pointer. This is useful in cases where the pointer is being tracked ...
    
  * wasn't created using `new` / `new[]` (e.g. `FILE *` created using `fopen()`).
  * needs to have deletion logged (e.g. print out whenever the object is deleted).
@@ -5133,7 +5126,7 @@ x -= *ptr2;
 ```
 
 ```{note}
-Theres a version of shared pointer in Boost and one in the C++ standard library. The Boost version is legacy.
+There's a version of shared pointer in Boost and one in the C++ standard library. The Boost version is legacy.
 ```
 
 The construction of shared pointers is similar to the construction of unique pointers. You can either call the constructor directly or you can use the templated function `std::make_shared()`. Where as `std::make_unique()` was a legacy creation mechanism for unique pointers, `std::make_shared()` is the preferred creation mechanism for shared pointers. That's because shared pointers require a "control block" that holds onto tracking information (e.g. reference counts), and using `std:make_shared()` allocates that control block along with the dynamic object in one single allocation (better performance: one allocation vs two allocations).
@@ -5160,7 +5153,7 @@ std::shared_ptr<int> ptr{ new int {5}, object_deleter, control_block_allocator }
 ```
 
 ```{note}
-There are no template parameter for the deleter or allocator. You just pass them in as the last two constructor arguments and it should just work. The book is saying that they were left out for "complicated reason".
+There are no template parameters for the deleter or allocator. You just pass them in as the last two constructor arguments and it should just work. The book is saying that they were left out for "complicated reason".
 ```
 
 It isn't possible to use a custom allocator with `std::make_shared()`. It forces the use of `new` / `new[]` and `delete` / `delete[]` for single combined allocation of the control block and the dynamic object. To perform a single combined allocation and use a custom allocator for that allocation, you need to use `std::allocate_shared()` instead.
@@ -5218,14 +5211,14 @@ If the shared pointer reference count has already reached 0 when `lock()` is inv
 std::weak_ptr<int> wp {};  // unset weak pointer
 {
     std::shared_ptr<int> sp { new int {5} };  // create a new shared pointer
-    wp = sp;                                  // assign the shared pointer ot the weak pointer
+    wp = sp;                                  // assign the shared pointer to the weak pointer
 } // scope ends, shared pointer destroyed (reference count drops from 1 to 0, meaning object is deleted)
 std::shared_ptr<int> sp { wp.lock() };
 bool isEmpty = (sp == std::nullptr); // isEmpty will be true
 ```
 
 ```{note}
-Theres a version of weak pointer in Boost and one in the C++ standard library. The Boost version is legacy. Each weak pointer version is tied to the shared pointer from its library. For example, if you're using the weak pointer in Boost, you need to use it with the shared pointer from Boost.
+There's a version of weak pointer in Boost and one in the C++ standard library. The Boost version is legacy. Each weak pointer version is tied to the shared pointer from its library. For example, if you're using the weak pointer in Boost, you need to use it with the shared pointer from Boost.
 ```
 
 The typical use-cases for weak pointers are ...
@@ -5313,7 +5306,7 @@ As shown in the example above, the typical usecase for optional is to have a fun
 Other strategies for reporting failure are throwing an error and returning an error code along with the object.
 ```
 
-In addition to the optional provided by the C++ standard library, Boost provides its ony version of optional `boost::optional` as well as provides a optional-like boolean type  called tribool: `boost::logic::tribool`. A tribool has a third state in addition to true and false, called indeterminate. Boolean operations where one of the operands is a boolean value and the other is indeterminate will always result in false (tribools convert to booleans via implicit conversion).
+In addition to the optional provided by the C++ standard library, Boost provides its own version of optional `boost::optional` as well as provides an optional-like boolean type called tribool: `boost::logic::tribool`. A tribool has a third state in addition to true and false, called indeterminate. Boolean operations where one of the operands is a boolean value and the other is indeterminate will always result in false (tribools convert to booleans via implicit conversion).
 
 ```{seealso}
 Core Language/Classes/Conversion Overloading_TOPIC (refresher -- tribool class implements implicit conversion semantics)
@@ -5332,7 +5325,7 @@ The typical usecase for tribool is for operations that take a long time to compl
 
 `{bm} /(Library Functions\/Utility Wrappers\/Tuple)_TOPIC/`
 
-A tuple class is a templated class that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at compile-time, and any code accessing those elements must know which element its accessing at compile-time.
+A tuple class is a templated class that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at compile-time, and any code accessing those elements must know which element it's accessing at compile-time.
 
 ```c++
 std::tuple<int, long, MyClass> my_tuple{ 1, 500L, MyClass{} };
@@ -5355,10 +5348,10 @@ auto& z { std::get<MyClass>(my_tuple) };
 ```
 
 ```{note}
-I guess the way to think about tuples is that they're short-hand for PODs. Declaring a tuple is like creating a custom POD where each element of the tuple is member variable of the POD.
+I guess the way to think about tuples is that they're short-hand for PODs. Declaring a tuple is like creating a custom POD where each element of the tuple is a member variable of the POD.
 ```
 
-Pairs are special case of tuples where they're restricted to exactly two elements. Accessing the elements in a pair is done through the `first` and `second` member variables.
+Pairs are special cases of tuples where they're restricted to exactly two elements. Accessing the elements in a pair is done through the `first` and `second` member variables.
 
 ```c++
 std::pair<int, long> my_pair{ 1, 500L };
@@ -5368,7 +5361,7 @@ auto& y {my_pair->second};
 auto& [x, y] = inimitable_duo;
 ```
 
-Boost also provides a version of pair, `boost::compressed_pair`, except that it's slightly more efficient when either template parameters points to an empty class.
+Boost also provides a version of pair, `boost::compressed_pair`, except that it's slightly more efficient when either of the template parameters points to an empty class.
 
 ```c++
 struct EmptyClass {};
@@ -5552,7 +5545,7 @@ for (auto &obj : my_arr2) {
 }
 ```
 
-`std::array` provides copy semantics and move semantics. However, because the underlying array is a local object, both moving and copying end up recreating the that underlying array. This means that copying and moving may potentially be expensive.
+`std::array` provides copy semantics and move semantics. However, because the underlying array is a local object, both moving and copying end up recreating that underlying array. This means that copying and moving may potentially be expensive.
 
 ```c++
 std::array<int, 55> &&rref { std::move(my_arr2) }; // get rvalue reference
@@ -5597,7 +5590,7 @@ int len { my_arr2.size() };
 ```
 
 ```{note}
-`size()` and `max_size()` are equivalent for `std::array`, but not for other containers that can grow / shrunk.
+`size()` and `max_size()` are equivalent for `std::array`, but not for other containers that can grow / shrink.
 ```
 
 To gain access to the underlying array being wrapped, use `data()`.
@@ -5645,7 +5638,7 @@ To create an `std::vector` primed with a sequence of values known as compile-tim
 std::vector<int> my_vec1 { 5, 5, 5, 5, 5, 5, 5, 5 };
 ```
 
-To create an `std::vector` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+To create an `std::vector` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
 std::vector<int> my_vec2 (8, 5); // equivalent to initializing to above (8 copies of 5)
@@ -5654,7 +5647,7 @@ std::vector<int> my_vec4 (c.begin(), c.begin() + 10)  // copy first 10 elems fro
 ```
 
 ```{note}
-The rules for initialization are complex. In this case, there's a constructor that takes in an `std::initializer_list`. That means braced initialization / brace-plus-equals initialization will in most cases call that constructor, where that initializer list get populated with whatever is in the braces. To avoid that, the easiest thing you can do is fall back to using the legacy way of calling constructors (parenthesis).
+The rules for initialization are complex. In this case, there's a constructor that takes in an `std::initializer_list`. That means braced initialization / brace-plus-equals initialization will in most cases call that constructor, where that initializer list gets populated with whatever is in the braces. To avoid that, the easiest thing you can do is fall back to using the legacy way of calling constructors (parenthesis).
 ```
 
 `std::vector` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::vector` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
@@ -5682,7 +5675,7 @@ int b { my_vec1.back() };  // WARNING: undefined behaviour of len is 0
 ```
 
 ```{note}
-Does `std::get()` work here as well? I don't think so because this is an dynamic array.
+Does `std::get()` work here as well? I don't think so because this is a dynamic array.
 ```
 
 To replace elements, the same write functions for `std::array` are available here. Those functions are the same functions used for reading elements. They return a reference, which means assigning something to them will assign into the container.
@@ -5827,7 +5820,7 @@ To create an `std::deque` primed with a sequence of values known as compile-time
 std::deque<int> d1 { 5, 5, 5, 5, 5, 5, 5, 5 };
 ```
 
-To create an `std::deque` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+To create an `std::deque` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
 std::deque<int> d2 (8, 5); // equivalent to initializing to above (8 copies of 5)
@@ -5964,7 +5957,7 @@ To create a `std::list` primed with a sequence of values known as compile-time, 
 std::list<int> l1 { 5, 5, 5, 5, 5, 5, 5, 5 };
 ```
 
-To create a `std::list` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+To create a `std::list` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
 std::list<int> l2 (8, 5); // equivalent to initializing to above (8 copies of 5)
@@ -6079,7 +6072,7 @@ There's also ..
 
  * `merge()` combines two sorted `std::list`s into a single sorted `std::list` and empty them.
  * `splice()` transfers a range of elements from one `std::list` to another.
- * `remove()` searches for and removes all matching element in a `std::list`.
+ * `remove()` searches for and removes all matching elements in a `std::list`.
  * `remove_if()` removes all elements in a `std::list` that matches some predicate.
  * `reverse()` reverses an `std::list` (in-place reversal).
  * `sort()` sorts an `std::list` based on a comparator (in-place sort).
@@ -6113,7 +6106,7 @@ To create a `std::set` primed with a sequence of values known as compile-time, u
 std::set<int> s1 { 1, 1, 2, 3, 4, 5 };
 ```
 
-To create a `std::set` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+To create a `std::set` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
 std::set<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
@@ -6159,7 +6152,7 @@ auto it2 { s1.upper_bound(4) }; // get iterator to elem just after 4 (could be s
 
 To add an element, the following functions are available:
 
- * `insert()` either copies or moves into the container (depending on if the reference passed in is a rvalue reference).
+ * `insert()` either copies or moves into the container (depending on if the reference passed in is an rvalue reference).
  * `emplace()` adds an element _by creating it directly_ (no copying / moving).
  * `emplace_hint()` like the above but also takes in an iterator primed to some position as a hint.
 
@@ -6255,7 +6248,7 @@ CustomAllocator allocator {};
 std::multiset<int, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
 ```
 
-Functions are more or less the same as their `std::set` counterparts. The only major difference is that `count()` returns the number of instances for an element.are available.
+Functions are more or less the same as those in `std::set`. The only major difference is that `count()` returns the number of instances for an element.
 
 ```c++
 // find
@@ -6310,7 +6303,7 @@ Library Functions/Containers/Ordered Associative/Set_TOPIC
 
 To create a `std::map`, the same `std::set` constructors apply. The only major differences are that ...
 
- 1. the type of the value needs to be specified as as the second template parameter.
+ 1. the type of the value needs to be specified as the second template parameter.
  2. if initializing to a list of key-value pairs, each element of the initializer list must be `std::pair<K,V>` (`K` is key type, `V` is value type).
 
 ```c++
@@ -6365,7 +6358,7 @@ auto it2 { s1.upper_bound(4) }; // get iterator to elem just after 4 (could be s
 
 To add a key-value pair (not _replace_ an existing value), the following functions are available:
 
- * `insert()` either copies or moves into the container (depending on if the reference passed in is a rvalue reference).
+ * `insert()` either copies or moves into the container (depending on if the reference passed in is an rvalue reference).
  * `emplace()` adds an element _by creating it directly_ (no copying / moving).
  * `try_emplace()` like `emplace()` but has special move semantics (does not move template parameter pack rvalue arguments if insertion doesn't happen -- see docs for more info).
  * `emplace_hint()` like `emplace()` but also takes in an iterator primed to some position as a hint.
@@ -6374,11 +6367,11 @@ To add a key-value pair (not _replace_ an existing value), the following functio
 // NOTE: Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)
 s1.insert(6, 122.0f);
 s1.emplace(6, 122.0f);
-s1.emplace_try(6, 122.0f);
+s1.try_emplace(6, 122.0f);
 s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
 ```
 
-To replace a value for an already existing key, `insert_or_assign()` either copies or moves into the container (depending on if the reference passed in is a rvalue reference), replacing it if already exists.
+To replace a value for an already existing key, `insert_or_assign()` either copies or moves into the container (depending on if the reference passed in is an rvalue reference), replacing it if it already exists.
 
 ```c++
 // NOTE: returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)
@@ -6448,7 +6441,7 @@ To create a `std::multimap`, the same `std::map` constructors apply. The only ma
 
 ```c++
 // prime
-std::multimap<int. float> s1 {
+std::unordered_multimap<int. float> s1 {
     { 1, 99.0f },
     { 1, -99.0f },  // NOTE: this is the 2nd instance of the key 1, both key-value pairs are kept
     { 2, -100.0f },
@@ -6456,17 +6449,17 @@ std::multimap<int. float> s1 {
     { 5, 4.0f }
 };
 // copy range
-std::multimap<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 key-value pairs from another container
+std::unordered_multimap<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 key-value pairs from another container
 // custom comparator
 auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < rhs; };
-std::multimap<int, float, decltype(comparator)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, comparator);
-std::multimap<int, float, decltype(std::greater)> s4 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, std::greater);
+std::unordered_multimap<int, float, decltype(comparator)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, comparator);
+std::unordered_multimap<int, float, decltype(std::greater)> s4 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, std::greater);
 // copy/move
-std::multimap<int, float> &&rref { std::move(s1) }; // get rvalue reference
-std::multimap<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+std::unordered_multimap<int, float> &&rref { std::move(s1) }; // get rvalue reference
+std::unordered_multimap<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
 // custom allocator
 CustomAllocator allocator {};
-std::multimap<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
+std::unordered_multimap<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
 ```
 
 Functions are more or less the same as their `std::map` counterparts. The only major difference are that...
@@ -6540,11 +6533,11 @@ Library Functions/Containers/Ordered Associative/Set_TOPIC
 Library Functions/Allocators_TOPIC
 ```
 
-`std::unordered_set` is a container that's similar to `std::set`. It holds on to unique elements but does so _unordered_ (where as `std::set` has some sort order). It's implemented as a hash table, so rather than having to specify a comparator, you're required to specify a hash function.
+`std::unordered_set` is a container that's similar to `std::set`. It holds on to unique elements but does so _unordered_ (whereas `std::set` has some sort order). It's implemented as a hash table, so rather than having to specify a comparator, you're required to specify a hash function.
 
 Several pre-existing hash functions are provided by the C++ standard library via `std::hash<T>` (`T` being the type in question). If the user doesn't supply a hash function directly, the default is to use `std::hash<T>` with the element type substituted in (compilation will fail if no `std::hash<T>` implementation for that element type exists). For example, `std::hash<int>` exists for integers and gets automatically plugged in when the element type of the container is `int`.
 
-In addition to a hash function, a `std::unordered_set` may have a custom equivalence function. By default, `std::equal_to<T>` is used if none is supplied by the user, which use the equality operator (==).
+In addition to a hash function, a `std::unordered_set` may have a custom equivalence function. By default, `std::equal_to<T>` is used if none is supplied by the user, which uses the equality operator (==).
 
 To create a `std::unordered_set` primed with a sequence of values known as compile-time, use typical braced initialization. Since only unique values are allowed, duplicates will be ignored. 
 
@@ -6552,7 +6545,7 @@ To create a `std::unordered_set` primed with a sequence of values known as compi
 std::unordered_set<int> s1 { 1, 1, 2, 3, 4, 5 };
 ```
 
-To create a `std::unordered_set` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must to use parenthesis.
+To create a `std::unordered_set` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
 std::unordered_set<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
@@ -6593,7 +6586,7 @@ Similar to a Java `HashMap`, a `std::unordered_set` has concept_NORMs such as bu
 Those features aren't discussed here.
 ```
 
-`std::unordered_set` supports most of the same functions as `std::set` except for those that have to do with sorted ordering. For example, `lower_bound()` and `upper_bound()` are missing because here because the elements here aren't ordered.
+`std::unordered_set` supports most of the same functions as `std::set` except for those that have to do with sorted ordering. For example, `lower_bound()` and `upper_bound()` are missing here because the elements here aren't ordered.
 
 To check if a set contains an element, the following functions are available:
 
@@ -6609,7 +6602,7 @@ bool found { s1.count(3) == 1 };
 
 To add an element, the following functions are available:
 
- * `insert()` either copies or moves a value into the container (depending on if the reference passed in is a rvalue reference).
+ * `insert()` either copies or moves a value into the container (depending on if the reference passed in is an rvalue reference).
  * `emplace()` adds an element _by creating it directly_ (no copying / moving).
  * `emplace_hint()` like the above but also takes in an iterator primed to some position as a hint.
 
@@ -6680,21 +6673,64 @@ There's also ..
 Library Functions/Containers/Unordered Associative/Set_TOPIC
 ```
 
-todo: fill me in
+`std::unordered_multiset` is a container that, like a `std::unordered_set`, holds on to unordered elements. Like `std::unordered_set`, it requires a hashing function and an equivalence function (same defaults are used if not supplied). Unlike `std::unordered_set`, it can hold on to multiple instances of the same element (elements aren't unique). 
 
-todo: fill me in
+To create a `std::unordered_multiset`, the same `std::unordered_set` constructors apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.
 
-todo: fill me in
+```c++
+// prime
+std::unordered_multiset<int> s1 { 1, 1, 2, 3, 4, 5 };  // DUPLICATED RETAINED
+// copy range
+std::unordered_multiset<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
+// custom hash function
+auto hasher = [] (const int & val) -> size_t { return static_cast<size_t>(val); };
+std::unordered_multiset<int, decltype(hasher)> s3 ({ 1, 1, 2, 3, 4, 5 }, hasher);
+// copy/move
+std::unordered_multiset<int> &&rref { std::move(s1) }; // get rvalue reference
+std::unordered_multiset<int> s4 {rref};                // move into c (gut it into c) via the move constructor
+CustomAllocator allocator {};
+std::unordered_multiset<int, decltype(std::hash<int>), decltype(std::equal_to<int>), CustomAllocator> s5 (allocator);
+```
 
-todo: fill me in
+Functions are more or less the same as those in `std::unordered_set`. The only major difference is that `count()` returns the number of instances for an element.
 
-todo: fill me in
+```c++
+// find
+bool found { s1.find(1) != s1.end() };
+bool found { s1.contains(1) };
+// get number of instances
+bool is_two_instances { s1.count(1) == 2 };
+// add
+s1.insert(6);
+s1.emplace(6);
+s1.emplace_hint(s1.begin(), 6);  // iterator should be near to where the value is
+// remove
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+// remove range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
+// remove all
+s1.clear();
+// get size
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+// iterate
+for (auto &obj : s1) {  // RECALL: for-each loop will implicitly call begin() and end()
+    // do something with value here
+}
+```
 
-todo: fill me in
+```{note}
+There's also ..
 
-todo: fill me in
-
-todo: fill me in
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
 
 #### Map
 
@@ -6704,21 +6740,119 @@ todo: fill me in
 Library Functions/Containers/Unordered Associative/Set_TOPIC
 ```
 
-todo: fill me in
+`std::unordered_map` is a container similar to `std::unordered_set`, with the major difference being that each element in a `std::unordered_map` has a secondary value associated with it: key to value. Only the key is used for uniqueness and lookup. The value just tags along.
 
-todo: fill me in
+To create a `std::unordered_map`, the same `std::unordered_set` constructors apply. The only major differences are that ...
 
-todo: fill me in
+ 1. the type of the value needs to be specified as the second template parameter.
+ 2. if initializing to a list of key-value pairs, each element of the initializer list must be `std::pair<K,V>` (`K` is key type, `V` is value type).
 
-todo: fill me in
+```c++
+// prime
+std::unordered_map<int. float> s1 {
+    { 1, 99.0f },
+    { 1, -99.0f },  // WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined
+    { 2, -100.0f },
+    { 4, 123.0f },
+    { 5, 4.0f }
+};
+// copy range
+std::unordered_map<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 key-value pairs from another container
+// custom hash function
+auto hasher = [] (const int & val) -> size_t { return static_cast<size_t>(val); };
+std::unordered_map<int, float, decltype(hasher)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, hasher);
+// copy/move
+std::unordered_map<int, float> &&rref { std::move(s1) }; // get rvalue reference
+std::unordered_map<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+// custom allocator
+CustomAllocator allocator {};
+std::unordered_map<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
+```
 
-todo: fill me in
+To check an element exists, the following functions are available:
 
-todo: fill me in
+ * `find()` return an iterator primed at the position of the found element (returns `end()` iterator position if not found).
+ * `contains()` returns bool (true if it exists, false otherwise).
+ * `count()` returns integer (0 is false, 1 is true).
 
-todo: fill me in
+```c++
+bool found { s1.find(3) != s1.end() };
+bool found { s1.contains(3) };
+bool found { s1.count(3) == 1 };
+```
 
-todo: fill me in
+Dereferencing an iterator will give back both the key and value as a `std::pair<K,V>`.
+
+```c++
+auto it { s1.find(3) };
+std::pair<int, float> found_pair { *it };
+```
+
+To add a key-value pair (not _replace_ an existing value), the following functions are available:
+
+ * `insert()` either copies or moves into the container (depending on if the reference passed in is an rvalue reference).
+ * `emplace()` adds an element _by creating it directly_ (no copying / moving).
+ * `try_emplace()` like `emplace()` but has special move semantics (does not move template parameter pack rvalue arguments if insertion doesn't happen -- see docs for more info).
+ * `emplace_hint()` like `emplace()` but also takes in an iterator primed to some position as a hint.
+
+```c++
+// NOTE: Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)
+s1.insert(6, 122.0f);
+s1.emplace(6, 122.0f);
+s1.try_emplace(6, 122.0f);
+s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
+```
+
+To replace a value for an already existing key, `insert_or_assign()` either copies or moves into the container (depending on if the reference passed in is an rvalue reference), replacing it if it already exists.
+
+```c++
+// NOTE: returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)
+s1.insert_or_assign(6, 122.0f);
+```
+
+To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the key-value while `erase()` won't.
+
+```c++
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+
+// DELETE between idx range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
+```
+
+To delete all elements, use `clear()`.
+
+```c++
+s1.clear();
+```
+
+To get the number of elements, use `size()`. Similarly, use `empty()` to check if empty.
+
+```c++
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+```
+
+To iterate over the elements, use `being()` and `end()`.
+
+```c++
+// RECALL: for-each loop will implicitly call begin() and end()
+for (auto &obj : s1) {
+    // do something with value here
+}
+```
+
+```{note}
+There's also ..
+
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
 
 #### Multimap
 
@@ -6729,21 +6863,78 @@ Library Functions/Containers/Unordered Associative/Multiset_TOPIC
 Library Functions/Containers/Unordered Associative/Map_TOPIC
 ```
 
-todo: fill me in
+`std::unordered_multimap` is a container that's a combination of `std::unordered_multiset` and `std::unordered_map`. That is, it's a `std::unordered_map` but it allows for many key-value pairs with the same key (keys aren't unique). Similar to `std::unordered_multiset`, `std::unordered_multimap` requires a hashing function and an equivalence function (same defaults are used if not supplied).
 
-todo: fill me in
+To create a `std::multimap`, the same `std::map` constructors apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.
 
-todo: fill me in
+```c++
+// prime
+std::unordered_multimap<int. float> s1 {
+    { 1, 99.0f },
+    { 1, -99.0f },  // NOTE: this is the 2nd instance of the key 1, both key-value pairs are kept
+    { 2, -100.0f },
+    { 4, 123.0f },
+    { 5, 4.0f }
+};
+// copy range
+std::unordered_multimap<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 key-value pairs from another container
+// custom comparator
+auto hasher = [] (const int & val) -> size_t { return static_cast<size_t>(val); };
+std::unordered_multimap<int, float, decltype(hasher)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, hasher);
+// copy/move
+std::unordered_multimap<int, float> &&rref { std::move(s1) }; // get rvalue reference
+std::unordered_multimap<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+// custom allocator
+CustomAllocator allocator {};
+std::unordered_multimap<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
+```
 
-todo: fill me in
+Functions are more or less the same as their `std::unordered_map` counterparts. The only major difference are that...
 
-todo: fill me in
+ 1. `count()` returns the number of instances for an element.are available
+ 2. `insert_or_assign()` is removed because it doesn't make sense to have it (you can have duplicate keys).
+ 3. `try_emplace()` is removed because it doesn't make sense to have it (you can have duplicate keys).
 
-todo: fill me in
+```c++
+// find
+bool found { s1.find(3) != s1.end() };
+bool found { s1.contains(3) };
+// get
+auto it { s1.find(3) };  // WARNING: if there's multiple instances of key, any of them could be returned here
+std::pair<int, float> found_pair { *it };
+// get number of instances
+bool is_two_instances { s1.count(1) == 2 };
+// add
+s1.insert(6, 122.0f);
+s1.emplace(6, 122.0f);
+s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
+// remove
+auto it1 { s1.begin() };
+int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
+auto it2 { s1.begin() };
+s1.erase(it2);  // WARNING: it2 invalid after this point
+// remove range
+auto it3 {s1.begin()};
+auto it4 {s1.begin() + 10};
+l1.erase(it3, it4); // WARNING: it3/it4 invalid after this call
+// remove all
+s1.clear();
+// get size
+auto is_empty1 { s1.size() == 0 };
+auto is_empty2 { s1.empty() };
+// iterate
+for (auto &obj : s1) {
+    // do something with value here
+}
+```
 
-todo: fill me in
+```{note}
+There's also ..
 
-todo: fill me in
+ * `cbegin()` / `cend()` which returns a constant iterator (can't change values?).
+ * `rbegin()` / `rend()` which returns an iterator that goes in reverse order.
+ * `crbegin()` / `crend()` which is a mixture of the above two.
+```
 
 ## Container Adapters
 
@@ -6950,9 +7141,179 @@ To get the size, use `size()`.
 auto is_empty { s3.size() == 0 };
 ```
 
+## Iterator Helpers
+
+`{bm} /(Library Functions\/Iterator Helpers)_TOPIC/`
+
+```{seealso}
+Core Language/Iterators_TOPIC (refresher)
+```
+
+When writing _generic_ code that makes use of iterators, directly using the iterator may lead to poor performance. For example, if you want an iterator to move up 100 spaces, you can't do `it += 100` because `it` may not be a random access iterator. The safest thing to do for generic code would be to perform `it++` 100 times, but that means you miss out any performance gains of doing `it += 100` if `it` were a random access iterator.
+
+Several helper functions exist to help with examples like the one above. These helper functions choose the most performant way of doing something based on the type traits of the iterator (e.g. if it's a bidirectional iterator vs a random access iterator).
+
+ * `std::advance()` - move forward / backward an iterator by some amount.
+
+   ```c++
+   std::advance(it, 100); // move forward 100 spaces
+   std::advance(it, -100); // move backward 100 spaces
+   ```
+
+ * `std::next()` - move forward by some amount.
+
+   ```c++
+   std::next(it); // move forward 1 space
+   std::next(it, 100); // move forward 100 spaces
+   ```
+
+ * `std::prev()` - move backward by some amount.
+
+   ```c++
+   std::prev(it); // move backward 1 space
+   std::prev(it, 100); // move backward 100 spaces
+   ```
+
+ * `std::distance()` - get distance between two iterators.
+
+   ```c++
+   auto d { std::distance(it1, it2) }; // it2 should be > than it1
+   ```
+
+ * `std::iter_swap()` - given two iterators, swap the elements at their current position.
+
+    ```c++
+    std::iter_swap(it1, it2);
+    // NOTE: it1 and it2 don't have to point to the same underlying container or
+    // underlying type -- as long as the types are assignable to each other, it'll work.
+    ```
+
+## Iterator Adapters
+
+`{bm} /(Library Functions\/Iterator Adapters)_TOPIC/`
+
+```{seealso}
+Core Language/Iterators_TOPIC (refresher)
+```
+
+Iterator adapters are light-weight wrappers that either simplify operations or provide some functionality under the type traits of an iterator. For example, an iterator exists that can wrap a container as an iterator, where writes to that iterator will translate to inserts into the container.
+
+### Insert
+
+`{bm} /(Library Functions\/Iterator Adapters\/Insert)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers_TOPIC
+```
+
+An iterator adaptor that wraps a container and exposes it as an output iterator, where writes are translated to inserts on the container. The  It comes in 3 flavours:
+
+ * `std::back_insert_iterator` - invokes the container's `push_back()` function.
+
+   ```c++
+   std::vector<int> container {};
+   std::back_insert_iterator it { container };
+   *it = 1;
+   it++;
+   *it = 2;
+   it++;
+   *it = 3;
+   ```
+
+ * `std::front_insert_iterator` - invokes the container's `push_front()` function.
+
+   ```c++
+   std::deque<int> container {};
+   std::front_insert_iterator it { container };
+   *it = 3;
+   it++;
+   *it = 2;
+   it++;
+   *it = 1;
+   ```
+
+ * `std::insert_iterator`- invokes the container's `insert()` function.
+
+   ```c++
+   std::deque<int> container { 1, 2, 3, 4, 5, 6, 7};
+   std::insert_iterator it { container, container.begin() + 2 }; // start inserting at 2 elements down
+   *it = 100;
+   it++;
+   *it = 101;
+   it++;
+   *it = 102;
+   ```
+
+```{note}
+According to the book, these adapters ignore the increment operator because it isn't required for what's being done (insertion function calls to the wrapped container). Ignored parts are there because type traits for output iterator require them to be there.
+```
+
+```{note}
+There are helper functions available for creating these. The function names are similar to the iterator adapter names: replace the `insert_iterator` part with `inserter` (e.g. `std::back_inserter()`).
+```
+
+### Move
+
+`{bm} /(Library Functions\/Iterator Adapters\/Move)_TOPIC/`
+
+```{seealso}
+Core Language/Classes/Copying_TOPIC (refresher)
+Core Language/Classes/Moving_TOPIC (refresher)
+```
+
+An iterator adaptor that wraps another iterator but modifies the dereferencing operator such that it returns an rvalue -- it forcefully moves the element. The typical use case for this is moving items from one container to another (as opposed to copying).
+
+```c++
+std::vector<MyMovableObject> container1 {};
+container1.emplace_back(1, "morning");
+container1.emplace_back(2, "midday");
+container1.emplace_back(3, "evening");
+// MOVE each item in container1 to container 2 (move semantics / move constructor)
+std::vector<MyMovableObject> container2(
+    std::move_iterator{ container1.begin() },
+    std::move_iterator{ container1.end() }
+);
+```
+
+```{note}
+There is a helper function for creating this: `std::make_move_iterator()`.
+```
+
+### Reverse
+
+`{bm} /(Library Functions\/Iterator Adapters\/Reverse)_TOPIC/`
+
+An iterator adaptor that wraps another iterator but exposes it in reverse order -- last element to first element.
+
+```c++
+std::vector<int> container1 { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+std::vector<MyMovableObject> container2(
+    std::reverse_iterator{ container1.end() },
+    std::reverse_iterator{ container1.begin() }
+);
+```
+
+One important thing to note is that the first iterator being wrapped _must not be_ before the 2nd iterator being wrapped. If it were, it'd be undefined behaviour. 
+
+```c++
+if (it2 > it1)
+std::vector<MyMovableObject> container2(  // THIS IS UNDEFINED BEHAVIOUR
+    std::reverse_iterator{ container1.begin() },
+    std::reverse_iterator{ container1.begin() + 2 }
+);
+```
+
+```{note}
+There is a helper function for creating this: `std::make_reverse_iterator()`.
+```
+
+```{note}
+Most collections expose `rbegin()` / `rend()` functions that automatically give back a reverse iterator.
+```
+
 ## Time
 
-`{bm} /(Library FunctionsTime\/Time)_TOPIC/`
+`{bm} /(Library Functions\/Time)_TOPIC/`
 
 Similar to Java's `java.time` package, the C++ standard library offers several classes that represent various time-based constructs. This includes timestamps, durations, calendar representations, timezones, and various helper functions.
 
@@ -6960,9 +7321,9 @@ The subsections below document some common time-related classes and their usages
 
 ### Timestamps
 
-`{bm} /(Library FunctionsTime\/Time\/Timestamps)_TOPIC/`
+`{bm} /(Library Functions\/Time\/Timestamps)_TOPIC/`
 
-Time points are classes that represent some point in type. They're typically created by clocks, which are are classes that measure time. Each clock has a set of specifics:
+Time points are classes that represent some point in type. They're typically created by clocks, which are classes that measure time. Each clock has a set of specifics:
 
 | Property     | Description                                                                             |
 |--------------|-----------------------------------------------------------------------------------------|
@@ -7010,14 +7371,14 @@ Common types of clock are listed below.
 
  * `std::chrono::steady_clock`
  
-   This clock is used to measure time intervals (e.g. stop watch -- measure how long something takes). Its guaranteed to be monotonic, meaning each time you query it for the time it'll be greater than or equal to the result of your last query (e.g. `next_time >= prev_time`). Epoch is unspecified and leap second inclusions are unspecified.
+   This clock is used to measure time intervals (e.g. stopwatch -- measure how long something takes). It's guaranteed to be monotonic, meaning each time you query it for the time it'll be greater than or equal to the result of your last query (e.g. `next_time >= prev_time`). Epoch is unspecified and leap second inclusions are unspecified.
 
    ```c++
    auto now { std::chrono::steady_clock::now() };
    ```
 
    ```{note}
-   Would it make sense to include leap seconds here if this is a "stop watch"? I don't think so, but nothing is mentioned about leap seconds when I look up the docs online.
+   Would it make sense to include leap seconds here if this is a "stopwatch"? I don't think so, but nothing is mentioned about leap seconds when I look up the docs online.
    ```
 
  * `std::chrono::high_resolution_clock`
@@ -7052,7 +7413,7 @@ Common types of clock are listed below.
    ```
 
    ```{note}
-   I'm not sure what this point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs atomic time?
+   I'm not sure what the point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs atomic time?
    ```
 
  * `std::chrono::gps_clock` (Global Positioning System)
@@ -7064,7 +7425,7 @@ Common types of clock are listed below.
    ```
 
    ```{note}
-   I'm not sure what this point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs gps time? (e.g. GPS time is roughly ~38 microseconds faster per day)
+   I'm not sure what the point of this clock is? Is it slowing down time / speeding up time based on the rate of "real" time vs gps time? (e.g. GPS time is roughly ~38 microseconds faster per day)
    ```
 
  * `std::chrono::file_clock`
@@ -7137,7 +7498,7 @@ Library Functions/Time/Timestamps/Clocks_TOPIC
 Core Language/Classes/User-defined Literals_TOPIC (variants are similar to unions but type-safe)
 ```
 
-A duration is class that represents some amount of time.
+A duration is a class that represents some amount of time.
 
 ```c++
 // use helper functions
@@ -7209,7 +7570,7 @@ Library Functions/Time/Durations_TOPIC
 
 Date and time functionality build on durations and time points by providing things like calendar representations, time of day representations (e.g. 12-hour vs 24-hour), timezone conversions, etc..
 
-Calendar classes represent some exact region (e.g. 5th, 1st, last, etc..) of a some specific calendar granularity (day, month, year, weekday).
+Calendar classes represent some exact region (e.g. 5th, 1st, last, etc..) of a specific calendar granularity (day, month, year, weekday).
 
 |                                        | Day | Day of Week | Month | Year | Example                       |
 |----------------------------------------|-----|-------------|-------|------|-------------------------------|
@@ -7258,7 +7619,7 @@ std::chrono::local_days today_tp { today };
 ```
 
 ```{note}
-Which should you use? I'm not sure the difference. `std::chrono::sys_days` is shorthand for `std::chrono::time_point<std::chrono::system_clock, std::chrono::days>`, which is the time point type for the system clock. `std::chrono::local_days` expands to the same thing but for the local clock. I'm not sure what local clock actually is. It wasn't listed as one of the clocks.
+Which should you use? I'm not sure of the difference. `std::chrono::sys_days` is shorthand for `std::chrono::time_point<std::chrono::system_clock, std::chrono::days>`, which is the time point type for the system clock. `std::chrono::local_days` expands to the same thing but for the local clock. I'm not sure what local clock actually is. It wasn't listed as one of the clocks.
 ```
 
 Similarly, a time point is convertible to a full date calendar class.
@@ -7508,7 +7869,7 @@ Boost provides several math constants through `boost::math::double_constants`.
 The functions / constants listed above the useful ones. There are more.
 ```
 
-In addition, there's support for complex numbers via `std::complex`, which implements various common complex number operations via operator overloading and free functions functions.
+In addition, there's support for complex numbers via `std::complex`, which implements various common complex number operations via operator overloading and free functions.
 
 ```c++
 std::complex<double> a{1.0, 33.71};
@@ -7520,13 +7881,13 @@ auto aImaginary { std::imag(a)} ; // get imaginary part
 This seems like such a niche thing that I don't think it's worth fleshing it out.
 ```
 
-## Bitset
+### Bitset
 
 ```{prereq}
 Library Functions/Containers/Sequential/Array_TOPIC
 ```
 
-`{bm} /(Library Functions\/Bitset)_TOPIC/`
+`{bm} /(Library Functions\/Numbers\/Bitset)_TOPIC/`
 
 `std::bitset` is a pseudo-container that wraps a fixed-size sequence of bits. It's similar to an `std::array<bool, N>` or `bool [N]`, but optimized for space and provides functions more appropriate for working with bits.
 
@@ -7554,7 +7915,7 @@ std::bitset<4> b4 { str4, 0, str4.size(), 'T', 'F' };
 When working with `std::bitset`'s functions, bits are represented as a bool type. The value false is for 0 / true is for 1.
 ```
 
-Operator overloads are available for all bit-wise operators and their assignment operator equivalents.
+Operator overloads are available for all bitwise operators and their assignment operator equivalents.
 
 ```c++
 auto b5 { b1 & b2 };  //AND
@@ -7571,7 +7932,7 @@ b1 >>= 2;
 ```
 
 ```{note}
-I'm assuming if you're going to be using bit-wise operators, the `set::bitset`s must be of the same size.
+I'm assuming if you're going to be using bitwise operators, the `set::bitset`s must be of the same size.
 ```
 
 To read an individual bit as a bool, use either the subscript operator ([]) or `test()`. The difference is that `test()` provides bounds checking.
@@ -7633,6 +7994,26 @@ To get the size, use `size()`.
 ```c++
 int len { b1.size() };
 ```
+
+## Strings
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+## Streams
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
 
 # Terminology
 
@@ -8099,7 +8480,7 @@ int len { b1.size() };
        return a + b;
    }
    
-   // template specialization for bool: bit-wise or
+   // template specialization for bool: bitwise or
    template<>
    bool sum<bool>(bool a, bool b) {
        return a | b;
