@@ -625,7 +625,7 @@
 <p><strong>WHY</strong>: When a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is found within a <a href="#BM_(sequence)%2Fi">sequence</a>, knowing the probability of that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> being found within an arbitrary <a href="#BM_(sequence)%2Fi">sequence</a> of the same length hints at the significance of the find. For example, if some <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">10-mer</a> has a 0.2 chance of appearing in an arbitrary <a href="#BM_(sequence)%2Fi">sequence</a> of length 50, that's too high of a chance to consider it a significant find -- 0.2 means 1 in 5 chance that the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">10-mer</a> just randomly happens to appear.</p>
 <a name="H_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm tries every possible combination of <a href="#BM_(sequence)%2Fi">sequence</a> to find the probability. It falls over once the length of the <a href="#BM_(sequence)%2Fi">sequence</a> extends into the double digits. It's intended to help conceptualize what's going on.</p>
+<p>This algorithm <a href="#BM_(trie)%2Fi">trie</a>s every possible combination of <a href="#BM_(sequence)%2Fi">sequence</a> to find the probability. It falls over once the length of the <a href="#BM_(sequence)%2Fi">sequence</a> extends into the double digits. It's intended to help conceptualize what's going on.</p>
 <p><a href="ch1_code/src/BruteforceProbabilityOfKmerInArbitrarySequence.py">ch1_code/src/BruteforceProbabilityOfKmerInArbitrarySequence.py</a> (lines 9 to 39):</p>
 <pre class="hljs"><code><span class="hljs-comment"># Of the X sequence combinations tried, Y had the k-mer. The probability is Y/X.</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">bruteforce_probability</span>(<span class="hljs-params">searchspace_len: <span class="hljs-built_in">int</span>, searchspace_symbol_count: <span class="hljs-built_in">int</span>, search_for: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>], min_occurrence: <span class="hljs-built_in">int</span></span>) -&gt; (<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>):
@@ -670,7 +670,7 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The explanation in the comments below are a bastardization of "1.13 Detour: Probabilities of Patterns in a String" in the Pevzner book...</p>
 </div>
-<p>This algorithm tries estimating the probability by ignoring the fact that the occurrences of a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> in a <a href="#BM_(sequence)%2Fi">sequence</a> may overlap. For example, searching for the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">2-mer</a> AA in the <a href="#BM_(sequence)%2Fi">sequence</a> AAAT yields 2 instances of AA:</p>
+<p>This algorithm <a href="#BM_(trie)%2Fi">trie</a>s estimating the probability by ignoring the fact that the occurrences of a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> in a <a href="#BM_(sequence)%2Fi">sequence</a> may overlap. For example, searching for the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">2-mer</a> AA in the <a href="#BM_(sequence)%2Fi">sequence</a> AAAT yields 2 instances of AA:</p>
 <ul>
 <li>[AA]AT</li>
 <li>A[AA]T</li>
@@ -3513,8 +3513,8 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <p>Each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the <a href="#BM_(sequence)%2Fi">sequence</a> of the <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
 <p>Special consideration needs to be given to the real-world practical problems with <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>. Specifically, the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> given back by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will very likely ...</p>
 <ul>
-<li>miss mass-to-charge ratios for some fragments of the intended molecule (missing entries).</li>
-<li>include mass-to-charge ratios for fragments of unintended molecules (faulty entries).</li>
+<li>miss mass-to-charge ratios for some fragments of the intended molecule (missing en<a href="#BM_(trie)%2Fi">trie</a>s).</li>
+<li>include mass-to-charge ratios for fragments of unintended molecules (faulty en<a href="#BM_(trie)%2Fi">trie</a>s).</li>
 <li>have noisy mass-to-charge ratios.</li>
 </ul>
 <p>The following table contains a list of <a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a>s with their masses and <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> mappings:</p>
@@ -5645,7 +5645,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This was the version of the algorithm used to solve chapter 4's final assignment (<a href="#BM_(sequence)%2Fi">sequence</a> a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for some unknown variant of Tyrocidine). Note how the parameters into <a href="#BM_(sequence)%2Fi">sequence</a>_<a href="#BM_(peptide)%2Fi">peptide</a> take an initial leaderboard. This initial leaderboard was primed with <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s from other Tyrocidine variants discusses in chapter 4. The problem wasn't solvable without these <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s. More information on this can be found in the Python file for the final assignment.</p>
-<p>Before coming up with the above solution, I came up with another heuristic that I tried: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
+<p>Before coming up with the above solution, I came up with another heuristic that I <a href="#BM_(trie)%2Fi">trie</a>d: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
 </div>
 <a name="H_Sequence%20Alignment"></a><h2>Sequence Alignment</h2>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment)_TOPIC%2F"></a><strong></strong></p>
@@ -15670,7 +15670,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><img src="dot_618f5a59247efef5120ce07be88aa291.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and tries all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
+<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and <a href="#BM_(trie)%2Fi">trie</a>s all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
 <p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 145 to 250):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nn_interchange</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, ED],
@@ -19395,7 +19395,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">Global alignment</a> that takes <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, <a href="#BM_(fission)%2Fi">fission</a>s, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s, copies, etc..</p>
 </li>
 <li>
-<p>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</p>
+<p>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a <a href="#BM_(trie)%2Fi">trie</a> / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</p>
 </li>
 <li>
 <p><a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">K-mer</a> <a href="#BM_(hierarchical%20cluster)%2Fi">hierarchical cluster</a>ing - <a href="#BM_(hierarchical%20cluster)%2Fi">Hierarchical cluster</a> together similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s using either <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>/<a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> [between one/zero vector of sub-<a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s] or <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance to form its <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> / <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a>. This is useful for when you're trying to identify which organism a <a href="#BM_(sequence)%2Fi">sequence</a> belongs to by searching for its <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a database. The <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that make up the database would be <a href="#BM_(cluster)%2Fi">cluster</a>ed, and <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that closely <a href="#BM_(cluster)%2Fi">cluster</a> together under a branch of the <a href="#BM_(hierarchical%20cluster)%2Fi">hierarchical cluster</a> <a href="#BM_(tree)%2Fi">tree</a> are those you'd be more cautious with -- the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may have matched but it could have actually been a corrupted form of one of the other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in the <a href="#BM_(cluster)%2Fi">cluster</a> (<a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>).</p>
@@ -19568,7 +19568,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </li>
 <li>
 <p><a name="BM_(regulatory%20gene)%2Fi"></a><strong>regulatory gene</strong> / <a name="BM_(regulatory%20protein)%2Fi"></a><strong>regulatory protein</strong> - The proteins <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by these <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> affect <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>. That is, a <a href="#BM_(regulatory%20protein)%2Fi">regulatory protein</a> can cause certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> to be expressed more (promote <a href="#BM_(gene%20expression)%2Fi">gene expression</a>) or less (repress <a href="#BM_(gene%20expression)%2Fi">gene expression</a>).</p>
-<p><a href="#BM_(regulatory%20gene)%2Fi">Regulatory gene</a>s are often controlled by external factors (e.g. sunlight, nutrients, temperature, etc..)</p>
+<p><a href="#BM_(regulatory%20gene)%2Fi">Regulatory gene</a>s are often controlled by external factors (e.g. sunlight, nu<a href="#BM_(trie)%2Fi">trie</a>nts, temperature, etc..)</p>
 </li>
 <li>
 <p><a name="BM_(feedback%20loop)%2Fi"></a><strong>feedback loop</strong> / <a name="BM_(negative%20feedback%20loop)%2Fi"></a><strong>negative feedback loop</strong> / <a name="BM_(positive%20feedback%20loop)%2Fi"></a><strong>positive feedback loop</strong> - A <a href="#BM_(feedback%20loop)%2Fi">feedback loop</a> is a system where the output (or some part of the output) is fed back into the system to either promote or repress further outputs.</p>
@@ -19678,7 +19678,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p>The idea is that once the experimental <a href="#BM_(cDNA)%2F">cDNA</a> is introduced to that region, it should bind to the control <a href="#BM_(cDNA)%2F">cDNA</a> that's been printed to form <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. The color emitted in a region should correspond to the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> that region represents. For example, if a region on the sheet is fully yellow, it means that the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is roughly equal (red mixed with green is yellow).</p>
 </li>
 <li>
-<p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that tries to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
+<p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that <a href="#BM_(trie)%2Fi">trie</a>s to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
 <p>For example, imagine a chess playing AI that had a strategy of trying to eliminate the other player's most valuable piece at each turn. It would be considered greedy because it only looks 1 move ahead before taking action. Normal chess AIs / players look many moves ahead before taking action. As such, the greedy AI may be fast but it would very likely lose most matches.</p>
 </li>
 <li>
@@ -23387,6 +23387,38 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>I suspect the term <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">transcript</a> abundance is used instead of <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">transcript</a> count because oftentimes the counts are processed / normalized into some other form in an effort to denoise / de-bias (<a href="#BM_(RNA%20sequencing)%2Fi">RNA sequencing</a> is a noisy process).</p>
 </div>
+</li>
+<li>
+<p><a name="BM_(Ohdo%20syndrome)%2Fi"></a><strong>Ohdo syndrome</strong> - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> resulting in a truncated protein (see <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s).</p>
+</li>
+<li>
+<p><a name="BM_(single%20nucleotide%20polymorphism)%2Fi"></a><strong>single nucleotide polymorphism</strong> <a name="BM_(SNP)%2F"></a><strong></strong> - A specific position in a DNA <a href="#BM_(sequence)%2Fi">sequence</a> that's known to vary between a set of nucleotides (e.g. it's usually A but there's a 10% chance it could be T). While a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...</p>
+<ul>
+<li>less than 1%, it's considered a <a href="#BM_(point%20mutation)%2Fi">point mutation</a>.</li>
+<li>at least 1%, it's considered a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>.</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(read%20mapping%7Cread%20mapped)%2Fi"></a><strong>read mapping</strong> - The alignment of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s, etc..) to some larger <a href="#BM_(sequence)%2Fi">sequence</a> of DNA (e.g. <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>).</p>
+</li>
+<li>
+<p><a name="BM_(reference%20genome%7Creference%20human%20genome)%2Fi"></a><strong>reference genome</strong> - A <a href="#BM_(genome)%2Fi">genome</a> <a href="#BM_(assembly%7Cassemble)%2Fi">assemble</a>d from multiple organisms of the same species, represented as the idealized <a href="#BM_(genome)%2Fi">genome</a> for that species. <a href="#BM_(sequencing%7Csequenced)%2Fi">Sequenced</a> DNA <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s / <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s of an organism are often <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapped</a> against the <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> for that organism's species, such that ...</p>
+<ul>
+<li>a clearer picture of the organism's <a href="#BM_(genome)%2Fi">genome</a> is produced.</li>
+<li><a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>s can be found.</li>
+</ul>
+<p><a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">Reference genome</a>s don't capture genomic nuances such as <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, areas of high mutation, or <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>s. For example, roughly 0.1% of an individual human's <a href="#BM_(genome)%2Fi">genome</a> can't be <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapped</a> to the human <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> (e.g. <a href="#BM_(major%20histocompatibility%20complex)%2Fi">major histocompatibility complex</a>).</p>
+<p>A new type of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>, called a <a href="#BM_(pan-genome%7Cpangenome)%2Fi">pan-genome</a>, attempts to capture such nuances.</p>
+</li>
+<li>
+<p><a name="BM_(pan-genome%7Cpangenome)%2Fi"></a><strong>pan-genome</strong> - A graph representing the relationships between a set of <a href="#BM_(genome)%2Fi">genome</a>s. <a href="#BM_(pan-genome%7Cpangenome)%2Fi">Pan-genome</a>s are intended to be a new form of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> where nuances like <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s are retained.</p>
+</li>
+<li>
+<p><a name="BM_(major%20histocompatibility%20complex)%2Fi"></a><strong>major histocompatibility complex</strong> - A region of DNA containing <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> linked to the immune system. The <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in this region are highly diverse, to the point that it's unlikely for two individuals to have the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in the exact same form.</p>
+</li>
+<li>
+<p><a name="BM_(trie)%2Fi"></a><strong>trie</strong> - A <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> representing a set of seqeunces as branching options. Each edge represents an element in the <a href="#BM_(sequence)%2Fi">sequence</a> and each node has a flag indicating if its the end of a <a href="#BM_(sequence)%2Fi">sequence</a>. For example, given the <a href="#BM_(sequence)%2Fi">sequence</a> of characters apple, apples, applejack, berry, and beechnut ...</p>
+<p><img src="svgbob_c0c644e4a19db49ce7efa0ae2df13ce8dafb7d18.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 <p>
