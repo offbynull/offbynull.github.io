@@ -159,7 +159,7 @@ Algorithms/K-mer/Find Locations_TOPIC
 
 **WHAT**: Given a k-mer, find where that k-mer clusters in some larger sequence. The search may potentially include the k-mer's variants (e.g. reverse complement).
 
-**WHY**: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific k-mer pattern to bind to, where that k-mer represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same k-mer pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.
+**WHY**: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific k-mer pattern to bind to, where that k-mer represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, oftentimes you'll find multiple copies of the same k-mer pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.
 
 For example, the DnaA box is a special k-mer pattern used by enzymes during DNA replication. Since DNA is known to mutate, the DnaA box can be found repeating multiple times in the region of DNA known as the replication origin. Finding the DnaA box clustered in a small region is a good indicator that you've found the replication origin.
 
@@ -192,7 +192,7 @@ Algorithms/K-mer/Hamming Distance Neighbourhood_TOPIC
 
 **WHAT**: Given a sequence, find clusters of unique k-mers within that sequence. In other words, for each unique k-mer that exists in the sequence, see if it clusters in the sequence. The search may potentially include variants of k-mer variants (e.g. reverse complements of the k-mers).
 
-**WHY**: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific k-mer pattern to bind to, where that k-mer represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same k-mer pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.
+**WHY**: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific k-mer pattern to bind to, where that k-mer represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, oftentimes you'll find multiple copies of the same k-mer pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.
 
 For example, the DnaA box is a special k-mer pattern used by enzymes during DNA replication. Since DNA is known to mutate, the DnaA box can be found repeating multiple times in the region of DNA known as the replication origin. Given that you don't know the k-mer pattern for the DnaA box but you do know the replication origin, you can scan through the replication origin for repeating k-mer patterns. If a pattern is found to heavily repeat, it's a good candidate that it's the k-mer pattern for the DnaA box.
 
@@ -226,7 +226,7 @@ Algorithms/K-mer/Find Repeating_TOPIC
  
  The search may potentially include variants of k-mer variants (e.g. reverse complements of the k-mers).
 
-**WHY**: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific k-mer pattern to bind to, where that k-mer represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, often times you'll find multiple copies of the same k-mer pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.
+**WHY**: An enzyme may need to bind to a specific region of DNA to begin doing its job. That is, it looks for a specific k-mer pattern to bind to, where that k-mer represents the beginning of some larger DNA region that it operates on. Since DNA is known to mutate, oftentimes you'll find multiple copies of the same k-mer pattern clustered together -- if one copy mutated to become unusable, the other copies are still around.
 
 For example, the DnaA box is a special k-mer pattern used by enzymes during DNA replication. Since DNA is known to mutate, the DnaA box can be found repeating multiple times in the region of DNA known as the replication origin. Given that you don't know the k-mer pattern for the DnaA box but you do know the replication origin, you can scan through the replication origin for repeating k-mer patterns. If a pattern is found to heavily repeat, it's a good candidate that it's the k-mer pattern for the DnaA box.
 
@@ -823,7 +823,7 @@ Algorithms/Motif/K-mer Match Probability_TOPIC
 
 **WHY**: A transcription factor is an enzyme that either increases or decreases a gene's transcription rate. It does so by binding to a specific part of the gene's upstream region called the transcription factor binding site. That transcription factor binding site consists of a k-mer that matches the motif expected by that transcription factor, called a regulatory motif. 
 
-A single transcription factor may operate on many different genes. Often times a scientist will identify a set of genes that are suspected to be regulated by a single transcription factor, but that scientist won't know ...
+A single transcription factor may operate on many different genes. Oftentimes a scientist will identify a set of genes that are suspected to be regulated by a single transcription factor, but that scientist won't know ...
 
 * what the regulatory motif is (the pattern expected by the enzyme).
 * where the transcription factor binding sites are (which k-mers the enzyme is targeting).
@@ -4523,7 +4523,7 @@ Algorithms/Sequence Alignment/Extended Gap Scoring_TOPIC
 
 **WHAT**: Given *more than* two sequences, perform sequence alignment and pull out the highest scoring alignment.
 
-**WHY**: Proteins that perform the same function but are distantly related are likely to have similar regions. The problem is that a 2-way sequence alignment may have a hard time identifying those similar regions, where as an n-way sequence alignment (n > 2) will likely reveal much more / more accurate regions.
+**WHY**: Proteins that perform the same function but are distantly related are likely to have similar regions. The problem is that a 2-way sequence alignment may have a hard time identifying those similar regions, whereas an n-way sequence alignment (n > 2) will likely reveal much more / more accurate regions.
 
 ```{note}
 Quote from Pevzner book: "Bioinformaticians sometimes say that pairwise alignment whispers and multiple alignment shouts."
@@ -11462,7 +11462,7 @@ A snapshot of all RNA transcripts within a cell at a given point in time, called
 
 Differential expression analysis is the process of capturing multiple snapshots to help identify which genes are influenced by / responsible for some change. The counts from each snapshot are placed together to form a matrix called a gene expression matrix, where each row in the matrix is called a gene expression vector. Gene expression matrices typically come in two forms:
 
- * A time-course gene expression matrix captures snapshots at different points in time. For example, the following gene expression matrix captures snapshots at regular intervals to help identify which genes are effected by a drug. Notice that the gene expression vector for B lowers after the drug is administered while C's elevates ...
+ * A time-course gene expression matrix captures snapshots at different points in time. For example, the following gene expression matrix captures snapshots at regular intervals to help identify which genes are affected by a drug. Notice that the gene expression vector for B lowers after the drug is administered while C's elevates ...
 
    |          | 1hr before drug given | 0hr before/after drug given | 1hr after drug given | ... |
    |----------|-----------------------|-----------------------------|----------------------|-----|
@@ -11531,7 +11531,7 @@ Differential expression analysis is the process of capturing multiple snapshots 
  * A conditional gene expression matrix captures snapshots in different states / conditions. For example, there exists some set of genes that are transcribed more / less when comparing a ...
 
     * cancerous blood cell vs non-cancerous blood cell.
-    * rose cell that's bloomed vs rose cell that's un-bloomed.
+    * rose cell that's bloomed vs rose cell that's unbloomed.
     * bacteria cell when flagella is moving vs bacteria cell when flagella is still.
     * mouse cell that's inflamed vs mouse cell that's un-inflamed.
 
@@ -11555,10 +11555,10 @@ This section mostly details clustering algorithms with time-course gene expressi
 Real-world gene expression matrices are often much more complex than the examples shown above. Specifically, ...
 
  1. there are often more than two columns to a gene expression matrix (more than two dimensions), meaning that the clustering becomes non-trivial.
- 2. RNA sequencing is an inherently a biased / noisy process, meaning that certain RNA transcript counts elevating or lowering could be bad data.
+ 2. RNA sequencing is an inherently biased / noisy process, meaning that certain RNA transcript counts elevating or lowering could be bad data.
  3. RNA transcript counts can fluctuate due to normal cell operations (e.g. genes regulated by circadian clock), meaning that certain RNA transcript counts elevating or lowering doesn't necessarily mean that they're relevant. This especially becomes a problem in state-based gene expression matrices where variables can't be as tightly controlled (e.g. in the blood cancer example above,the samples include people at different stages of cancer, could have been taken at different times of day, etc..).
  
-Prior to clustering, RNA sequencing outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, biologists often take the logarithm of the a count rather than the count itself. 
+Prior to clustering, RNA sequencing outputs typically have to go through several rounds of processing (cleanup / normalization) to limit the impact of the last two points above. For example, biologists often take the logarithm of a count rather than the count itself. 
 
 ```{svgbob}
    "no log"             "log"
@@ -11843,7 +11843,7 @@ The cosine of the angle between gene A's expression and gene B's expression is 1
  * (1, 5, 1, 5) and (0.5, 2.5, 0.5, 2.5) is 1.0 -- scaled 0.5x from first to second
 
 ````{note}
-Still confused? Scaling makes sense if you think of it in terms of angles. The vectors (5,5) vs (10,10) have the same angle. Any vector with the same angle is just a scaled version of the other -- each of it's components are scaled by the same constant...
+Still confused? Scaling makes sense if you think of it in terms of angles. The vectors (5,5) vs (10,10) have the same angle. Any vector with the same angle is just a scaled version of the other -- each of its components are scaled by the same constant...
 
 * (10,10) is (5,5) with each component scaled by 2.0x
 * (5,5) is (10,10) with each component scaled by 0.5x
@@ -11900,7 +11900,7 @@ All gene expression vectors follow the same pattern, notice that ...
 Even though the patterns are the same across all three gene expression vectors, cosine similarity gets thrown off in the presence of shifting.
 
 ```{note}
-If you're trying to determine if the the components of the gene expression vectors follow the same pattern regardless of scale, the lack of shift support seems to make this unusable. The gene expression vectors may follow a similarly scaled patterns but it seems likely that each pattern is at an arbitrary offset (shift). So then what's the point of this? Why did the book mention if for gene expression analysis?
+If you're trying to determine if the components of the gene expression vectors follow the same pattern regardless of scale, the lack of shift support seems to make this unusable. The gene expression vectors may follow similarly scaled patterns but it seems likely that each pattern is at an arbitrary offset (shift). So then what's the point of this? Why did the book mention it for gene expression analysis?
 
 Pearson similarity seems to factor in both scaling and shifting. Use that instead.
 ```
@@ -12080,7 +12080,7 @@ e  0|                             e  1|
 ```
 
 ````{note}
-If you're trying to determine if the the components of the gene expression vectors follow the same pattern regardless of scale OR offset, this is the similarity to use. They may have similar patterns even though they're scaled differently or offset differently. For example, both genes below may be influenced by the same transcription factor, but their base expression rates are different so the transcription factor influences their gene expression proportionally.
+If you're trying to determine if the components of the gene expression vectors follow the same pattern regardless of scale OR offset, this is the similarity to use. They may have similar patterns even though they're scaled differently or offset differently. For example, both genes below may be influenced by the same transcription factor, but their base expression rates are different so the transcription factor influences their gene expression proportionally.
 
 ```{svgbob}
 "gene A's expression"          "gene B's expression"
@@ -12107,7 +12107,7 @@ r_{AB} = \frac{\sum_{i=1}^n {(A_i - avg(A))(B_i - avg(B))}}{\sqrt{\sum_{i=1}^n {
 ```
 
 ```{note}
-Much like cosine similarity, I can't pinpoint what exactly it is that the formula is calculating / the reasoning behind the calculations. The only part I somewhat understand where it's getting the euclidean distance to the average of each vector.
+Much like cosine similarity, I can't pinpoint exactly what it is that the formula is calculating / the reasoning behind the calculations. The only part I somewhat understand is where it's getting the euclidean distance to the average of each vector.
 
 The rest of it I don't understand.
 ```
@@ -12157,7 +12157,7 @@ B   |
                       A
 ```
 
-So what's the correct action to take in this situation? Assuming that both vectors consist of a single value repeating n times (can there be any other cases where this happens?), then maybe what you should do is set it as maximally correlated (1.0)? If you think about it in terms of the "pattern matching" component plots discussion, each vector's "component plot is a straight line.
+So what's the correct action to take in this situation? Assuming that both vectors consist of a single value repeating n times (can there be any other cases where this happens?), then maybe what you should do is set it as maximally correlated (1.0)? If you think about it in terms of the "pattern matching" component plots discussion, each vector's component plot is a straight line.
 
 ```{svgbob}
 "plot of (5,5,5,5)'s"     "plot of (7,7,7,7)'s"   
@@ -12176,7 +12176,7 @@ So what's the correct action to take in this situation? Assuming that both vecto
 
 It could just as well be interpreted as having no correlation (-1.0) because a mirror of a straight line (across the x-axis, as discussed above) is just the same straight line?
 
-I don't know what the correct thing to do here is. My instinct is to mark it as maximum correlation (1.0) but I'm almost certain that that'd be wrong. The Internet isn't providing many answers -- they all say its either undefined or context dependent.
+I don't know what the correct thing to do here is. My instinct is to mark it as maximum correlation (1.0) but I'm almost certain that that'd be wrong. The Internet isn't providing many answers -- they all say it's either undefined or context dependent.
 ````
 
 ### K-Centers Clustering
@@ -12383,7 +12383,7 @@ def k_means_score(data_pts, center_pts):
 Compared to k-centers, cluster membership_NORM is still decided by the distance to its closest cluster (d in the formula above). It's the placement of centers that's different.
 
 ```{note}
-There's a version of k-centers / k-means for similarity metrics / distance metrics other than euclidean distance. It's called k-medods but I haven't have a chance to look at it yet and it wasn't covered by the book.
+There's a version of k-centers / k-means for similarity metrics / distance metrics other than euclidean distance. It's called k-medoids but I haven't had a chance to look at it yet and it wasn't covered by the book.
 
  * [link 1](https://stats.stackexchange.com/a/81496)
  * [link 2](https://stats.stackexchange.com/a/32942)
@@ -12407,7 +12407,7 @@ With that outlier, the k-centers has a center of 5, which is a drastic shift fro
 0   1   2   3   4   5   6   7   8   9   10
 ```
 
-K-means combats this shift by applying weighting: The idea is that the 4 real points should have a stronger influence on the center than the one outlier point, essentially dragging it back to towards them. Using k-means, the center is 2.6 ...
+K-means combats this shift by applying weighting: The idea is that the 4 real points should have a stronger influence on the center than the one outlier point, essentially dragging it back towards them. Using k-means, the center is 2.6 ...
 
 ```{svgbob}
           |                                "center: 2.6"
@@ -12538,7 +12538,7 @@ clustering.KMeans_Lloyds
 At each iteration, the cluster member_CLUSTERs captured (step 1) will drag the new center towards them (step 2). After so many iterations, each center will be at a point where further iterations won't capture a different set of member_CLUSTERs, meaning that the centers will stay where they're at (converged).
 
 ```{note}
-I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner book says. This isn't entirely true? I think it's possible to get into a situation where a tied point ping-pongs back and forth between clusters. So, maybe what actually needs to happen is you need to break ties consistently -- it doesn't matter how, just that its consistent (e.g. the center closest to origin + smallest angle from origin always wins the tied member_CLUSTER).
+I said "ties are broken arbitrarily" (step 1) because that's what the Pevzner book says. This isn't entirely true? I think it's possible to get into a situation where a tied point ping-pongs back and forth between clusters. So, maybe what actually needs to happen is you need to break ties consistently -- it doesn't matter how, just that it's consistent (e.g. the center closest to origin + smallest angle from origin always wins the tied member_CLUSTER).
 
 Also, if the centers haven't converged, the dragged center is guaranteed to decrease the squared error distortion when compared to the previous center. But, does that mean that a set of converged centers are optimal in terms of squared error distortion? I don't think so. Even if a cluster converged to all the correct member_CLUSTERs, could it be that the center can be slightly tweaked to get the squared error distortion down even more? Probably.
 ```
@@ -12570,9 +12570,9 @@ clustering.KMeans_Lloyds main_WITH_k_means_PP_initializer
 ]
 ```
 
-Even with k-means++ initializer, Lloyd's algorithm isn't guaranteed to always converge to a good solution. The typically workflow is to run it multiple times, where the run producing centers with the lowest squared error distortion is the one accepted.
+Even with k-means++ initializer, Lloyd's algorithm isn't guaranteed to always converge to a good solution. The typical workflow is to run it multiple times, where the run producing centers with the lowest squared error distortion is the one accepted.
 
-Futhermore, Lloyd's algorithm may fail to converge to a good solution when the clusters aren't globular and / or aren't of similar densities. Below are example clusters that are obvious to a human but problematic for the algorithm.
+Furthermore, Lloyd's algorithm may fail to converge to a good solution when the clusters aren't globular and / or aren't of similar densities. Below are example clusters that are obvious to a human but problematic for the algorithm.
 
 ```{note}
 The Pevzner book explicitly calls out Lloyd's algorithm for this, but I'm thinking this is more to do with the scoring function for k-means (what's trying to be minimized)? I think the same problem applies to the scoring function for k-centers and the furthest first traveled heuristic?
@@ -12679,7 +12679,7 @@ The examples below are taken directly from the Pevzner book.
 Algorithms/Gene Clustering/K-Means Clustering_TOPIC
 ```
 
-**WHAT**: Soft k-means clustering is the soft clustering variant of k-means. Where as the original k-means definitively assigns each point to a cluster (hard clustering), this variant of k-means assigns each point to how likely it is to be a member_CLUSTER of each cluster (soft clustering).
+**WHAT**: Soft k-means clustering is the soft clustering variant of k-means. Whereas the original k-means definitively assigns each point to a cluster (hard clustering), this variant of k-means assigns each point to how likely it is to be a member_CLUSTER of each cluster (soft clustering).
 
 ```{svgbob}
        ●                                           ●       
@@ -12721,12 +12721,12 @@ The goal is to choose centers such that, out of all possible centers, you're max
 ```
 
 ```{note}
-There's some ambiguity here on what the function being minimized / maximized is and how probabilities are derived. It seems like squared error distortion isn't involved here at all, so how is this related in anyway to k-means? My understanding is that squared error distortion is what makes k-means.
+There's some ambiguity here on what the function being minimized / maximized is and how probabilities are derived. It seems like squared error distortion isn't involved here at all, so how is this related in any way to k-means? My understanding is that squared error distortion is what makes k-means.
 
 It seems like this is called soft k-means because the high-level steps of the algorithm for this are similar to the Lloyd's algorithm heuristic. That's where the similarity ends (as far as I can tell). So maybe it should be called soft lloyd's algorithm instead? It looks like the generic name for this is called the [Expectation-maximization algorithm](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm).
 ```
 
-**WHY**: Soft clustering is a way to suss out ambiguous points. For example, a point that sits exactly between two obvious clusters will be just as likely be a member_CLUSTER of each...
+**WHY**: Soft clustering is a way to suss out ambiguous points. For example, a point that sits exactly between two obvious clusters will be just as likely to be a member_CLUSTER of each...
 
 ```{svgbob}
        ●              "ambiguous point"             ●       
@@ -12746,7 +12746,7 @@ This algorithm is similar to the Lloyd's algorithm heuristic used for k-means cl
  1. converts centers to clusters (referred to as E-step),
  2. converts clusters to centers (referred to as M-step).
 
-The major difference between Llyod's algorithm and this algorithm is that this algorithm produces *probabilities of cluster membership_CLUSTER assignments*. In contrast, the original Lloyd's algorithm produces *definitive cluster membership_CLUSTER assignments*.
+The major difference between Lloyd's algorithm and this algorithm is that this algorithm produces *probabilities of cluster membership_CLUSTER assignments*. In contrast, the original Lloyd's algorithm produces *definitive cluster membership_CLUSTER assignments*.
 
 
 ```{svgbob}
@@ -12845,7 +12845,7 @@ clustering.Soft_KMeans_Lloyds main_e_step
 ```
 
 ```{note}
-The Pevzner book gives the analogy that centers are stars and points are planets. The closer a planet is to a star, the stronger that star's gravitational pull should be. This gravitational pull is the "confidence" -- a stronger pull means a stronger confidence. The analogy falls a bit flat because, in this case, it's the stars (centers) that are being pulled in to the planets (points) -- normally it's the other way around (planets get pulled into stars).
+The Pevzner book gives the analogy that centers are stars and points are planets. The closer a planet is to a star, the stronger that star's gravitational pull should be. This gravitational pull is the "confidence" -- a stronger pull means a stronger confidence. The analogy falls a bit flat because, in this case, it's the stars (centers) that are being pulled into the planets (points) -- normally it's the other way around (planets get pulled into stars).
 
 I have no idea how the partition function actually works or know anything about statistical physics. The book also listed the formula for Newtonian inverse-square law of gravitation but mentioned that the partition function works better in practice. I think a simpler / more understandable metric may be used instead of either of these. The core thing it needs to do is assign a greater confidence to points that are closer than to those that are farther, where that confidence is between 0 and 1. Maybe some kind of re-worked / inverted version of squared error distortion would work here.
 ```
@@ -12925,7 +12925,7 @@ Like with the original Lloyd's algorithm, this algorithm iterates over the two s
 Due to various issues with the computations involved and floating point rounding error, this algorithm likely won't fully stabilize at a specific set of centers (it converges, but the centers will continue to shift around slightly at each iteration). The typical workaround is to stop after a certain number of iterations and / or stop if the centers only moved by a tiny distance.
 
 ```{note}
-The example run below has cherry-picked input to illustrate the "start off by jumping around in wrong directions" point described above. Note how center 0 jumps out towards the center but than gradually moves back near to where it originally started off at.
+The example run below has cherry-picked input to illustrate the "start off by jumping around in wrong directions" point described above. Note how center 0 jumps out towards the center but then gradually moves back near to where it originally started off at.
 ```
 
 ```{output}
@@ -12957,7 +12957,7 @@ clustering.Soft_KMeans_Lloyds
 ````{note}
 I didn't cover it here, but the book dedicated a very large number of sections to introducing this algorithm using a "biased coin" flipping scenario. In the scenario, some guy has two coins, each with a different bias for turning up heads (coinA with biasA / coinB with biasB). At every 10 flip interval, he picks one of the coins at random (either keeps existing one or exchanges it) before using that coin to do another 10 flips.
 
-Which coin he picks per 10 flip round and the coin biases are secret (you don't know them). The only information you have is the outcome of each 10 flip round. Your job is to guess the coin biases from observing those 10 flip rounds, not knowing which which of the two coins were used per round.
+Which coin he picks per 10 flip round and the coin biases are secret (you don't know them). The only information you have is the outcome of each 10 flip round. Your job is to guess the coin biases from observing those 10 flip rounds, not knowing which of the two coins were used per round.
 
 In this scenario ...
 
@@ -12987,7 +12987,7 @@ HTTTTTHHTT = 3 / 10 = 0.3
 THHHTHHHTH = 7 / 10 = 0.7
 ```
 
-You start of by picking two of these percentages as your guess for biasA and biasB (ESTIMATED CENTERS)...
+You start off by picking two of these percentages as your guess for biasA and biasB (ESTIMATED CENTERS)...
 
 ```
 biasA = 0.3, biasB = 0.8
@@ -13015,12 +13015,12 @@ Other things that made the coin flipping example not good:
  3. The mathy way in which things were described made everything incredibly obtuse: obtuse naming (e.g. "hidden matrix"), vector notation, dot product, formula representations, etc.. (better naming and more text representation would have made things easier to understand).
  4. Some mathy portions were just papered over (e.g. it was never explained in layman's terms what the partition function actually does -- does it mimic gravity?).
 
-Points 1 and 2 have similar analogs in Lloyd's algorithm. Lloyd's algorithm can give you bad centers + Lloyd's algorithm can screw you if you initial centers are bad / not enough points representative of actual clusters are available.
+Points 1 and 2 have similar analogs in Lloyd's algorithm. Lloyd's algorithm can give you bad centers + Lloyd's algorithm can screw you if your initial centers are bad / not enough points representative of actual clusters are available.
 ````
 
-### Hierarchial Clustering
+### Hierarchical Clustering     
 
-`{bm} /(Algorithms\/Gene Clustering\/Hierarchial Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Hierarchical Clustering)_TOPIC/`
 
 ```{prereq}
 Algorithms/Gene Clustering/Euclidean Distance Metric_TOPIC
@@ -13098,7 +13098,7 @@ If you squint a bit, phylogeny and clustering are essentially doing the same thi
 * Phylogeny: nodes that have the same parent node are _more similar to each other than to any other nodes in the tree_.
 * Clustering: items in the same group are _more similar to each other than items in other groups_.
 
-A phylogenetic tree (that's also a rooted tree) is essentially a form of recursive clustering / hierarchial clustering. Each internal node represents a sub-cluster, and sub-clusters combine to form larger sub-clusters.
+A phylogenetic tree (that's also a rooted tree) is essentially a form of recursive clustering / hierarchical clustering. Each internal node represents a sub-cluster, and sub-clusters combine to form larger sub-clusters.
 
 ```{svgbob}
 "REPRESENTATION AS TREE"               "REPRESENTATION AS HIERARCHY OF CLUSTER"   
@@ -13140,12 +13140,12 @@ clustering.HierarchialClustering_UPGMA
 }
 ```
 
-### Soft Hierarchial Clustering
+### Soft Hierarchical Clustering
 
-`{bm} /(Algorithms\/Gene Clustering\/Soft Hierarchial Clustering)_TOPIC/`
+`{bm} /(Algorithms\/Gene Clustering\/Soft Hierarchical Clustering)_TOPIC/`
 
 ```{prereq}
-Algorithms/Gene Clustering/Hierarchial Clustering_TOPIC
+Algorithms/Gene Clustering/Hierarchical Clustering_TOPIC
 Algorithms/Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorithm_TOPIC
 ```
 
@@ -13153,7 +13153,7 @@ Algorithms/Phylogeny/Distance Matrix to Tree/Neighbour Joining Phylogeny Algorit
 This isn't from the Pevzner book. I reasoned about it myself and implemented it here. My thought process might not be entirely correct.
 ```
 
-**WHAT**: In normal hierarchial clustering, a rooted tree represents a hierarchy of clusters. Internal nodes represent sub-clusters, where those sub-clusters combine together to form larger sub-clusters.
+**WHAT**: In normal Hierarchical clustering, a rooted tree represents a hierarchy of clusters. Internal nodes represent sub-clusters, where those sub-clusters combine together to form larger sub-clusters.
 
 ```{svgbob}
 "REPRESENTATION AS TREE"               "REPRESENTATION AS HIERARCHY OF CLUSTER"   
@@ -13170,7 +13170,7 @@ This isn't from the Pevzner book. I reasoned about it myself and implemented it 
                                          '--------------------------------'
 ```
 
-In this soft clustering variant of hierarchial clustering, an unrooted tree is used instead. An internal node in an unrooted tree doesn't have a parent or children, it only has neighbours. If there is some kind of a parent-child relationship, that information isn't represented in the unrooted tree (e.g. the tree doesn't tell you which branch goes to the parent vs which branches go to children).
+In this soft clustering variant of Hierarchical clustering, an unrooted tree is used instead. An internal node in an unrooted tree doesn't have a parent or children, it only has neighbours. If there is some kind of a parent-child relationship, that information isn't represented in the unrooted tree (e.g. the tree doesn't tell you which branch goes to the parent vs which branches go to children).
 
 ```{svgbob}
                  A3
@@ -13183,7 +13183,7 @@ A2              /
                 A1  
 ```
 
-Rather than thinking of an unrooted tree's internal nodes as sub-clusters that combine together, it's more appropriate to think of them as points of commonality. An internal node captures the shared features of its neighbours and represents the degree_NORM of similarity between it and its neighbours via the the distances to those neighbours. A very close neighbour is very similar while a farther away neighbour is not as similar.
+Rather than thinking of an unrooted tree's internal nodes as sub-clusters that combine together, it's more appropriate to think of them as points of commonality. An internal node captures the shared features of its neighbours and represents the degree_NORM of similarity between it and its neighbours via the distances to those neighbours. A very close neighbour is very similar while a farther away neighbour is not as similar.
 
 In the example above, the internal node that connects A2 and A4 has three neighbours: A2, A4, and the other internal node in the tree. Of those three neighbours, it's most similar to A4 (closest) and least similar to the other internal node (farthest).
 
@@ -13196,7 +13196,7 @@ In the example above, the internal node that connects A2 and A4 has three neighb
 | Item 3 | 0.8       | 0.2       | **1.0** |
 | Item 4 | 0.1       | 0.9       | **1.0** |
 
-In this scenario, that doesn't make sense because there are no distinct clusters. As described above, it's more appropriate to think of internal nodes as points of commonality rather than as clusters. Points of commonality can feed into each other (internal node can have other internal nodes as neighbours). As such, rather than each item having a probability of being a member_CLUSTER of a cluster, each point of commonality has a probability of having an item as its member_CLUSTER (based on how close an item is to it). The set of membership_CLUSTER probabilities for each point of commonality should sum to 1.
+In this scenario, that doesn't make sense because there are no distinct clusters. As described above, it's more appropriate to think of internal nodes as points of commonality rather than as clusters. Points of commonality can feed into each other (an internal node can have other internal nodes as neighbours). As such, rather than each item having a probability of being a member_CLUSTER of a cluster, each point of commonality has a probability of having an item as its member_CLUSTER (based on how close an item is to it). The set of membership_CLUSTER probabilities for each point of commonality should sum to 1.
 
 |                 | Item 1 | Item 2 | Item 3 | Item 4 | Sum     |
 |-----------------|--------|--------|--------|--------|---------|
@@ -13229,7 +13229,7 @@ python
 ```
 
 ```{note}
-I'm thinking that the probability isn't what you want here. Instead what you want is likely just the distances themselves or the distances normalized between 0 and 1: `{kt} \frac{D_j}{\sum_{i=1}^n{D_i}}`. Those will allow you figure out more interesting things about the clustering. For example, if a set of leaf nodes are all roughly the equidistant to the same internal node and that distance is greater than some threshold, they're likely things you should be interested in.
+I'm thinking that the probability isn't what you want here. Instead what you want is likely just the distances themselves or the distances normalized between 0 and 1: `{kt} \frac{D_j}{\sum_{i=1}^n{D_i}}`. Those will allow you to figure out more interesting things about the clustering. For example, if a set of leaf nodes are all roughly the equidistant to the same internal node and that distance is greater than some threshold, they're likely things you should be interested in.
 ```
 
 Neighbour joining phylogeny is used to generate the unrooted tree (simple tree), but the algorithm could just as well take any rooted tree and convert it to an unrooted tree. Neighbour joining phylogeny is the most appropriate phylogeny algorithm because it reliably reconstructs the unique simple tree for an additive distance matrix / approximates a simple tree for a non-additive distance matrix.
@@ -13246,7 +13246,7 @@ ORIGINAL           RECONSTRUCTED
 A     B
 ```
 
-In the example above, the root node had degree_GRAPH of 2, meaning it won't appear in reconstructed simple tree. Even if it did, the reconstruction would be unrooted tree -- the node would be there but nothing would identify it as the root.
+In the example above, the root node had degree_GRAPH of 2, meaning it won't appear in the reconstructed simple tree. Even if it did, the reconstruction would be an unrooted tree -- the node would be there but nothing would identify it as the root.
 ````
 
 ```{output}
@@ -13295,7 +13295,7 @@ Another potentially more useful metric is to estimate an ideal edge weight for t
    * *
 ```
 
-Since the leaf nodes within a blossom are a short distance from one another, they represent highly related vectors. As such, it's safe to assume that a blossom represents a cluster. Edges within a blossom are typically short (low weight), where as longer edges (high weight) are either used for connecting together blossoms or are limbs that represent outliers.
+Since the leaf nodes within a blossom are a short distance from one another, they represent highly related vectors. As such, it's safe to assume that a blossom represents a cluster. Edges within a blossom are typically short (low weight), whereas longer edges (high weight) are either used for connecting together blossoms or are limbs that represent outliers.
 
 In the example above and below, the three blossoming regions represent individual clusters and there's 1 outlier.
 
@@ -13332,7 +13332,7 @@ python
 # MARKDOWN_ESTIMATE_OWNERSHIP\s*\n([\s\S]+)\n\s*# MARKDOWN_ESTIMATE_OWNERSHIP\s*[\n$]
 ```
 
-Any internal node fan outs that touched a leaf node potentially identify some region of a blossom. If any of these "leaf node touching" fan outs overlap (walk over any of the same nodes), they're merged together. The final set of merged fan outs should capture the blossoms within a tree.
+Any internal node fan outs that touch a leaf node potentially identify some region of a blossom. If any of these "leaf node touching" fan outs overlap (walk over any of the same nodes), they're merged together. The final set of merged fan outs should capture the blossoms within a tree.
 
 ```{output}
 ch8_code/src/clustering/Soft_HierarchialClustering_NeighbourJoining_v2.py
@@ -13355,7 +13355,7 @@ python
 ```
 
 ````{note}
-I had also thought up this metric: distorted average. That's the name I gave it but the official name for this may be something difference.
+I had also thought up this metric: distorted average. That's the name I gave it but the official name for this may be something different.
 
 ```{kt}
 d\_avg(D) = (\sum_{i=1}^{n}{{D_i}^{\frac{1}{e}}})^e
@@ -13421,7 +13421,7 @@ Algorithms/Gene Clustering/Pearson Similarity Metric_TOPIC
 **WHAT**: Given a list of n-dimensional vectors, ...
 
 1. convert those vectors into a similarity matrix
-2. build a graph where nodes represents vectors and an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold.
+2. build a graph where nodes represent vectors and an edge connects a pair of nodes only if the similarity between the vectors they represent exceeds some threshold.
 
 This type of graph is called a similarity graph.
 
@@ -13493,7 +13493,7 @@ clustering.SimilarityGraph_CAST main_similarity_graph
 }
 ```
 
-If the resulting similarity graph isn't a clique graph but is close to being one (corrupted cliques), a heuristic algorithm called cluster affinity search technique (CAST) can correct it. At it's core, the algorithm attempts to re-create each corrupted clique in its corrected form by iteratively finding the ...
+If the resulting similarity graph isn't a clique graph but is close to being one (corrupted cliques), a heuristic algorithm called cluster affinity search technique (CAST) can correct it. At its core, the algorithm attempts to re-create each corrupted clique in its corrected form by iteratively finding the ...
  
 1. closest node not in the clique/cluster and including it _if it exceeds the similarity graph threshold_.
 2. farthest node within the clique/cluster and removing it _if it doesn't exceed the similarity graph threshold_.
@@ -13542,7 +13542,7 @@ no_preamble
 Removal is testing a node from _within_ the cluster itself. That is, the removal node for which the average similarity is being calculated has the similarity to itself included in the averaging.
 ```
 
-While the similarity graph has nodes, the algorithm picks the node with the highest degree_GRAPH from the similairty graph to prime a clique/cluster. It then loops the add and remove process described above until there's an iteration where nothing changes. At that point, that cluster/clique is said to be consistent and its nodes are removed from the original similarity graph. 
+While the similarity graph has nodes, the algorithm picks the node with the highest degree_GRAPH from the similarity graph to prime a clique/cluster. It then loops the add and remove process described above until there's an iteration where nothing changes. At that point, that cluster/clique is said to be consistent and its nodes are removed from the original similarity graph. 
 
 ```{note}
 What's the significance of picking the node with the highest degree_GRAPH as the starting point? It was never explained, but I suspect it's a heuristic of some kind. Something like, the node with the highest degree_GRAPH is assumed to have most of its edges to other nodes in the same clique and as such it's the most "representative" member_CLUSTER of the cluster that clique represents.
@@ -14673,7 +14673,7 @@ The subset of genes whose gene expression either increase or decrease are someho
 "Flagella is a protruding strand / tail"
 ```
 
-The same idea extends to diseases and treatments. For example, a cancerous human blood cell may have a subset of genes where gene expression is vastly different than its non-cancerous counterpart. Identifying the genes linked to human blood cancer could lead to ...
+The same idea extends to diseases and treatments. For example, a cancerous human blood cell may have a subset of genes where gene expression is vastly different from its non-cancerous counterpart. Identifying the genes linked to human blood cancer could lead to ...
 
  * screening (e.g. is gene expression for those genes at their cancerous levels?)
  * measuring treatment effectiveness (e.g. is the drug reducing gene expression to its non-cancerous levels?)
@@ -14704,7 +14704,7 @@ There are two broad categories of differential gene expression analysis: time-co
    | ...      | ...               | ...               | ...                   | ... |
 
 ```{note}
-The sub-section describes how to deal with time-courses. There is no sub-section describing how to deal with conditionals. The Pevzner book never went over it. But, the final challenge question did throw and conditional dataset at you and ask you to solve some problem. It seems that for conditional datasets, the key thing you need to do is filter out unrelated genes before doing anything. For the challenge in the Pevzner book, I simply compared a gene's average gene expression between cancer vs non-cancer to determine if it was relevant (if the offset was large enough, I decided it was relevant).
+The sub-section describes how to deal with time-courses. There is no sub-section describing how to deal with conditionals. The Pevzner book never went over it. But, the final challenge question did throw a conditional dataset at you and asked you to solve some problem. It seems that for conditional datasets, the key thing you need to do is filter out unrelated genes before doing anything. For the challenge in the Pevzner book, I simply compared a gene's average gene expression between cancer vs non-cancer to determine if it was relevant (if the offset was large enough, I decided it was relevant).
 ```
 
 ### Cluster Genes
@@ -14713,7 +14713,7 @@ The sub-section describes how to deal with time-courses. There is no sub-section
 
 ```{prereq}
 Stories/Transcription Factors_TOPIC
-Algorithms/Gene Clustering/Soft Hierarchial Clustering_TOPIC
+Algorithms/Gene Clustering/Soft Hierarchical Clustering_TOPIC
 ```
 
 A time-course experiment captures RNA snapshots at different points in time. For example, a biologist infects a cell culture with a pathogen, then measures gene expression levels within that culture every hour.
@@ -14782,7 +14782,7 @@ This dataset is from the NCBI gene expression omnibus (GEO): [Influenza virus H5
 >
 > Series published: 2016/01/04
 
-There are too many genes here for the clustering algorithm (Python is slow). As such, standard deviation is used to filter out genes expression vectors that don't dramatically change during the time-course. The experiment did come with a control group: a second population of the same cell line but uninfected. Maybe instead of standard deviation, a better filtering approach would be to only include genes whose gene expression pattern is vastly different between control group vs experimental group.
+There are too many genes here for the clustering algorithm (Python is slow). As such, standard deviation is used to filter out gene expression vectors that don't dramatically change during the time-course. The experiment did come with a control group: a second population of the same cell line but uninfected. Maybe instead of standard deviation, a better filtering approach would be to only include genes whose gene expression pattern is vastly different between control group vs experimental group.
 
 The original data set was too large. I removed the replicates and only kept hour 24 of the control group.
 ```
@@ -14819,21 +14819,21 @@ PracticalGEODatasetClustering
 
  * Organism lookup by k-mer - Two-tiered database containing k-mers. The first tier is an "inverse index" of k-mers that rarely appear across all organisms (unique or almost unique to the genome) exposed as either a trie / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all k-mers.
 
- * K-mer hierarchial clustering - Hierarchical cluster together similar k-mers using either pearson similarity/pearson distance [between one/zero vector of sub-k-mers] or sequence alignment distance to form its distance matrix / similarity matrix. This is useful for when you're trying to identify which organism a sequence belongs to by searching for its k-mers in a database. The k-mers that make up the database would be clustered, and k-mers that closely cluster together under a branch of the hierarchial cluster tree are those you'd be more cautious with -- the k-mer may have matched but it could have actually been a corrupted form of one of the other k-mers in the cluster (sequencing error).
+ * K-mer hierarchical clustering - Hierarchical cluster together similar k-mers using either pearson similarity/pearson distance [between one/zero vector of sub-k-mers] or sequence alignment distance to form its distance matrix / similarity matrix. This is useful for when you're trying to identify which organism a sequence belongs to by searching for its k-mers in a database. The k-mers that make up the database would be clustered, and k-mers that closely cluster together under a branch of the hierarchical cluster tree are those you'd be more cautious with -- the k-mer may have matched but it could have actually been a corrupted form of one of the other k-mers in the cluster (sequencing error).
 
    This logic also applies to spell checking. Words that cluster together closely are more likely to be mis-identified by a standard spellchecker, meaning individual clusters should have their own spell checking strategies? If you're going to do this with words, use a factor in QWERTY keyboard key distances into the similarity / distance matrix.
 
- * Hierarchial clustering explorer - Generate a neighbour joining phylogeny tree based on pearson distance of sequence alignment distance, then visualize the tree and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).
+ * Hierarchical clustering explorer - Generate a neighbour joining phylogeny tree based on pearson distance of sequence alignment distance, then visualize the tree and provide the user with "interesting" internal nodes (clusters). In this case, "interesting" would be any internal node where the distance to most leaf nodes is within some threshold / average / variance / etc... Also, maybe provide an "idealized" view of the clustered data for each internal node (e.g. average the vectors for the leaves to produce the vector for the internal node).
 
    Another idea is to take the generated tree and convert it back into distance matrix. If the data isn't junk, the distance metric isn't junk, and the data is clusterable on that distance metric, the generated distance matrix should match closely to the input distance metric. The tool can warn the user if it doesn't.
 
- * Soft hierarchial clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_CLUSTERs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_CLUSTER of cluster X.
+ * Soft hierarchical clustering - Build out a neighbour joining phylogeny tree. Each internal node is a cluster. The distance between that internal node to all leaf nodes can be used to define the probability that the leaf node belongs to that cluster? This makes sense because neighbour joining phylogeny produces unrooted trees (simple trees). If it were a rooted tree, you could say that internal node X leaf nodes A, B, and C -- meaning that A, B and C are member_CLUSTERs of cluster X. But, because it's unrooted, technically any leaf node in the graph could be a member_CLUSTER of cluster X.
    
-   This relates to the idea above (hierarchial clustering explorer) -- You can identify "interesting clusters" using this (e.g. a small group tightly clustered together) and return it to the user for inspection.
+   This relates to the idea above (hierarchical clustering explorer) -- You can identify "interesting clusters" using this (e.g. a small group tightly clustered together) and return it to the user for inspection.
 
- * Hierarchial clustering as a means of detecting outliers - Cluster data using neighbouring join phylogeny. How far is each leaf node to its parent internal node? Find any that are grossly over the average / squared error distortion / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or squared error distortion).
+ * Hierarchical clustering as a means of detecting outliers - Cluster data using neighbouring join phylogeny. How far is each leaf node to its parent internal node? Find any that are grossly over the average / squared error distortion / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or squared error distortion).
 
-   This relates to the idea above (soft hierarchial clustering) -- You may be able to identify outliers using soft hierarchial clustering using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).
+   This relates to the idea above (soft hierarchical clustering) -- You may be able to identify outliers using soft hierarchical clustering using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).
 
 # Terminology
 
@@ -15307,7 +15307,7 @@ PracticalGEODatasetClustering
    * Class I (retrotransposon) - Behaves similarly to copy-and-paste where the sequence is duplicated. DNA is transcribed to RNA, followed by that RNA being reverse transcribed back to DNA by an enzyme called reverse transcriptase.
    * Class II (DNA transposon) - Behaves similarly to cut-and-paste where the sequence is moved. DNA is physically cut out by an enzyme called transposases and placed back in at some other location.
   
-   Often times, transposons cause disease. For example, ...
+   Oftentimes, transposons cause disease. For example, ...
 
    * insertion of a transposon into a gene will likely disable that gene.
    * after a transposon leaves a gene, the gap likely won't be repaired correctly.
@@ -16998,7 +16998,7 @@ PracticalGEODatasetClustering
 
  * `{bm} translocation` - Changing location. For example, part of a chromosome may transfer to another chromosome (genome rearrangement).
 
- * `{bm} severe acute respiratory syndrome` `{bm} /(SARS)/` - A deadly coronavirus that emerged from China around early 2003.
+ * `{bm} severe acute respiratory syndrome` `{bm} /(SARS)/` - A deadly coronavirus that emerged from China around early 2003. The virus transmits itself through droplets that enter the air when someone with the disease coughs.
 
  * `{bm} coronavirus` `{bm} /(COVID|CoV)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).
  
@@ -17143,6 +17143,10 @@ PracticalGEODatasetClustering
    ```
 
    An unrooted tree may be turned into a rooted tree by choosing any non-leaf node (internal node) to be the root node.
+
+   ```{note{
+   If injecting a node is a possibility, you can also convert an unrooted tree to a rooted tree by injecting a root node along one of its edges.
+   ```
 
  * `{bm} rooted tree` - A tree with a root node...
 
@@ -18325,9 +18329,9 @@ PracticalGEODatasetClustering
    The notation for dot product is a central dot in between the two vector: `{kt} a \cdot b`.
 
    ```{note}
-   Central dot is also common place for standard multiplication.
+   Central dot is also commonplace for standard multiplication.
 
-   In geometry, the dot product of two vectors is used to get the angle between those vector.
+   In geometry, the dot product of two vectors is used to get the angle between those vectors.
    ```
 
  * `{bm} conditional probability` - The probability of an event occurring given that another event has already occurred.
@@ -18338,7 +18342,7 @@ PracticalGEODatasetClustering
     * independent events, Pr(B|A) is simply Pr(B).
     * dependent events, Pr(B|A) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).
 
- * `{bm} similarity metric` - A metric used to measure how similar a pair of entities are to each other. Where as a distance metric must start at 0 for total similarity and grows based on how different the entities are, a similarity metric has no requirements for bounds on similarity or dissimilarity. Examples of similarity metrics include ...
+ * `{bm} similarity metric` - A metric used to measure how similar a pair of entities are to each other. Whereas a distance metric must start at 0 for total similarity and grows based on how different the entities are, a similarity metric has no requirements for bounds on similarity or dissimilarity. Examples of similarity metrics include ...
 
    * pearson similarity for gene expression vectors.
    * cosine similarity for gene expression vectors.
@@ -18386,7 +18390,7 @@ PracticalGEODatasetClustering
    * 0 represents no correlation.
    * 1 represents a total positive correlation.
 
-   The formula may be modified to become a distance metric as follows: `1 - pearson_correlation(x, y)`. Where as the pearson correlation coefficient varies between -1 and 1, the pearson distance varies between 0 (totally similar) and 2 (totally dissimilar).
+   The formula may be modified to become a distance metric as follows: `1 - pearson_correlation(x, y)`. Whereas the pearson correlation coefficient varies between -1 and 1, the pearson distance varies between 0 (totally similar) and 2 (totally dissimilar).
 
  * `{bm} similarity graph` - A transformation of a similarity matrix into a graph, where the entities that make up the similarity matrix are represented as nodes and edges between nodes are only made if the similarity exceeds a certain threshold.
 
@@ -18416,7 +18420,7 @@ PracticalGEODatasetClustering
 
    Similarity graphs are used for clustering (e.g. gene expression vectors). Assuming clusters exist and the similarity metric used captures them, there should be some threshold where the edges produced in the similarity graph form cliques as in the example above.
    
-   Since real-world data often has complications (e.g. noisy) / the similarity metric used may have complications, it could be that corrupted cliques are formed instead. Heuristic algorithms are often use to correct corrupted cliques.
+   Since real-world data often has complications (e.g. noisy) / the similarity metric used may have complications, it could be that corrupted cliques are formed instead. Heuristic algorithms are often used to correct corrupted cliques.
 
    ```{svgbob}
    *---*      
@@ -18438,7 +18442,7 @@ PracticalGEODatasetClustering
    *---*
    ``` 
 
- * `{bm} corrupted clique` - A set of nodes and edges in a graph that almost form a clique. Some edges may be missing or extranous.
+ * `{bm} corrupted clique` - A set of nodes and edges in a graph that almost form a clique. Some edges may be missing or extraneous.
 
    ```{svgbob}
    "CORRUPTED CLIQUES"            "CLIQUES"
@@ -18486,7 +18490,7 @@ PracticalGEODatasetClustering
    
    How close or far a gene is from the clique/cluster is defined as the average similarity between that node and all nodes in the clique/cluster.
 
-   While the similarity graph has nodes, the algorithm picks the node with the highest degree_GRAPH from the similairty graph to prime a clique/cluster. It then loops the add and remove process described above until there's an iteration where nothing changes. At that point, that cluster/clique is said to be consistent and its nodes are removed from the original similarity graph. 
+   While the similarity graph has nodes, the algorithm picks the node with the highest degree_GRAPH from the similarity graph to prime a clique/cluster. It then loops the add and remove process described above until there's an iteration where nothing changes. At that point, that cluster/clique is said to be consistent and its nodes are removed from the original similarity graph. 
 
    ```{svgbob}
    "original:"
@@ -18521,7 +18525,7 @@ PracticalGEODatasetClustering
 
  * `{bm} RNA sequencing` `{bm} /(RNA-Seq)/` - A technique which uses next-generation sequencing to reveal the presence and quantity of RNA in a biological sample at some given moment.
 
- * `{bm} hierarchial cluster` - A form of tiered clustering where clusters are represented as a tree. Each node represents a cluster (leaf nodes being a cluster of size 1), where the clusters represented by a parent node is the combination of the clusters represented by its children.
+ * `{bm} hierarchical cluster` - A form of tiered clustering where clusters are represented as a tree. Each node represents a cluster (leaf nodes being a cluster of size 1), where the clusters represented by a parent node is the combination of the clusters represented by its children.
 
    ```{svgbob}
                                  |
@@ -18539,7 +18543,7 @@ PracticalGEODatasetClustering
    ```
 
    ```{note}
-   Hierarchial clustering has its roots in phylogeny. The similarity metric to build clusters is massages into a distance metric, which is then used to form a tree that represents the clusters.
+   Hierarchical clustering has its roots in phylogeny. The similarity metric to build clusters is massaged into a distance metric, which is then used to form a tree that represents the clusters.
    ```
 
  * `{bm} cosine similarity/(cosine similarity|cosine distance)/i` - A similarity metric that measures if two vectors grew/shrunk in a similar trajectories (similar angles).
@@ -18564,9 +18568,9 @@ PracticalGEODatasetClustering
    * smaller (more similar trajectory), the cosine would get closer to 1.
    * larger (less similar trajectory), the cosine would get closer to -1.
 
-   The formula may be modified to become a distance metric as follows: `1 - cosine_similarity(x, y)`. Where as the cosine similarity varies between -1 and 1, the cosine distance varies between 0 (totally similar) and 2 (totally dissimilar).
+   The formula may be modified to become a distance metric as follows: `1 - cosine_similarity(x, y)`. Whereas the cosine similarity varies between -1 and 1, the cosine distance varies between 0 (totally similar) and 2 (totally dissimilar).
 
- * `{bm} dendrogram` - A diagram of a tree. The term is most often used in the context of heirarchial clustering, where the tree that makes up the hierarchy of clusters is referred to as a dendrogram.
+ * `{bm} dendrogram` - A diagram of a tree. The term is most often used in the context of hierarchical clustering, where the tree that makes up the hierarchy of clusters is referred to as a dendrogram.
 
    ```{svgbob}
          |           
@@ -18582,7 +18586,7 @@ PracticalGEODatasetClustering
    ```{note}
    It's tough to get a handle on what the requirements are, if any, to call a tree a dendrogram: Is it restricted to 2 children per internal node (or can there be more)? Do the edges extending from an internal node have to be of equal weight (e.g. equidistant)? Does the tree have to be ultrametric? Does it have to be a rooted tree (or can it be an unrooted tree)?
 
-   It seems like you can call any tree, even unrooted trees, a dendrogram. This seems like a gate keeping term. "Draw the tree thta makes up the hierarchial cluster" vs "Draw the dendrogram that makes up the hierarchial cluster".
+   It seems like you can call any tree, even unrooted trees, a dendrogram. This seems like a gate keeping term. "Draw the tree that makes up the hierarchical cluster" vs "Draw the dendrogram that makes up the hierarchical cluster".
    ```
 
  * `{bm} differential gene expression/(differential expression|differential gene expression)/i` - Given a set of transcriptome snapshots, where each snapshot is for the same species but in a different state, differential gene expression analyzes transcript abundances across the transcriptomes to see ...
@@ -18602,11 +18606,11 @@ PracticalGEODatasetClustering
    In the example above, gene B has roughly double the expression when cancerous.
 
    ```{note}
-   Recall that genes are transcribed from DNA to mRNA, then translated to a protein. A transcript in a transcriptome is essentially to a gene currently undergoing the process of gene expression.
+   Recall that genes are transcribed from DNA to mRNA, then translated to a protein. A transcript in a transcriptome is essentially a gene currently undergoing the process of gene expression.
    ```
 
    ```{note}
-   I suspect the term transcript abundance is used instead of transcript count because often times the counts are processed / normalized into some other form in an effort to de-noise / de-bias (RNA sequencing is a noisy process).
+   I suspect the term transcript abundance is used instead of transcript count because oftentimes the counts are processed / normalized into some other form in an effort to denoise / de-bias (RNA sequencing is a noisy process).
    ```
  
 
@@ -18650,6 +18654,10 @@ PracticalGEODatasetClustering
 `{bm-error} Did you mean co-regulate? (needs a dash)/(coregulate)/i`
 
 `{bm-error} Did you mean noisy?/(noisey)/i`
+
+`{bm-error} Did you mean hierarchiCal? The spell checker messes it up sometimes./(hierarchial)/i`
+
+`{bm-error} Did you mean oftentimes (no space))?/(often times)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`
