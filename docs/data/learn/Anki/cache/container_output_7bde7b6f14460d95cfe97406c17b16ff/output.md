@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(unweighted pair group method with arithmetic mean)/i"></span>

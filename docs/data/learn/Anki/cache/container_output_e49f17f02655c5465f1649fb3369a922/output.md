@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(differential expression|differential gene expression)/i"></span>

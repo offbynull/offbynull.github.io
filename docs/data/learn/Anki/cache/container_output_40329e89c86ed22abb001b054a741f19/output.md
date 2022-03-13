@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(similarity matrix|similarity matrices)/i"></span>

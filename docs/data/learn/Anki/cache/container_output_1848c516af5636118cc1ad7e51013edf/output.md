@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i"></span>

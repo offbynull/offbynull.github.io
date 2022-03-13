@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="good clustering principle"></span>

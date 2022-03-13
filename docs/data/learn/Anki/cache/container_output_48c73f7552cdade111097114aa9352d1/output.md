@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(gene expression matrix|expression matrix|gene expression matrices|expression matrices|gene expression data|expression data|gene expression vector|expression vector)/i"></span>

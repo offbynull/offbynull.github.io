@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="similarity graph"></span>
