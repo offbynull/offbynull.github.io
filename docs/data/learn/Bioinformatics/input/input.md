@@ -18612,7 +18612,42 @@ PracticalGEODatasetClustering
    ```{note}
    I suspect the term transcript abundance is used instead of transcript count because oftentimes the counts are processed / normalized into some other form in an effort to denoise / de-bias (RNA sequencing is a noisy process).
    ```
+
+ * `{bm} Ohdo syndrome` - A rare disease causing intellectual disabilities and distinct facial feature. The disease is caused by a single nucleotide polymorphism resulting in a truncated protein (see codons).
+
+ * `{bm} single nucleotide polymorphism` `{bm} /(SNP)/` - A specific position in DNA known to hold one of many different nucleotides (e.g. it can hold A or T). While a single nucleotide polymorphism technically qualifies as change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Across the population, if the frequency of the change occurring is ...
+
+    * less than 1%, it's considered a point mutation.
+    * at least 1%, it's considered a single nucleotide polymorphism.
+
+ * `{bm} read mapping/(read mapping|read mapped)/i` - The alignment of DNA sequences (e.g. read_SEQs, contigs, etc..) to some larger sequence of DNA (e.g. reference genome).
+
+ * `{bm} reference genome/(reference genome|reference human genome)/i` - A genome assembled from multiple organisms of the same species, represented as the idealized genome for that species. Sequenced DNA fragment_SEQs / contigs of an organism are often read mapped against the reference genome for that organism's species, such that ...
+
+   * a clearer picture of the organism's genome is produced.
+   * single nucleotide polymorphisms can be found.
  
+   Reference genomes don't capture genomic nuances such as genome rearrangement, areas of high mutation, or single nucleotide polymorphisms. For example, roughly 0.1% of the an individual human's genome can't be read mapped to the reference genome (e.g. major histocompatibility complex).
+
+   A new type of reference genome, called a pan-genome, attempts to capture such nuances.
+
+ * `{bm} pan-genome/(pan-genome|pangenome)/i` - A graph representing the relationships between a set of genomes. Pan-genomes are intended to be a new form of reference genome where nuances like genome rearrangements are retained.
+
+ * `{bm} major histocompatibility complex` - A region of DNA containing a family of genes linked to the adapative immune system. The diversity of this region is high, to the point that it's unlikely for two individuals to have the exact same set of genes.
+ 
+ * `{bm} trie` - A rooted tree representing a set of seqeunces as branching options. Each edge represents an element in the sequence. For example, given the sequence of characters apple, apples, berry, and beechnut ...
+
+   ```{svgbob}
+     a   p   p   l   e  end
+   .-->*-->*-->*-->*-->*-->
+   |
+   *
+   | b   e   r   r   y  end
+   '-->*-->*-->*-->*-->*-->
+           |
+           | e   c   h   n   u   t  end
+           '-->*-->*-->*-->*-->*-->*-->*
+   ```
 
 
 `{bm-ignore} \b(read)_NORM/i`
