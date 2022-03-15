@@ -365,7 +365,7 @@ The following is a list of operators available in C++. Some operators are obviou
 
 __Bitwise Logical Operators__
 
-| Name                       | Example            | Note                                              |
+| name                       | example            | note                                              |
 |----------------------------|--------------------|---------------------------------------------------|
 | Bitwise AND         (`&`)  | `0b1011 & 0b0110`  |                                                   |
 | Bitwise OR          (`\|`) | `0b1011 \| 0b0110` |                                                   |
@@ -376,7 +376,7 @@ __Bitwise Logical Operators__
 
 __Boolean Logical Operators__
 
-| Name                 | Example           | Note |
+| name                 | example           | note |
 |----------------------|-------------------|------|
 | Logical AND (`&&`)   | `true && true`    |      |
 | Logical OR  (`\|\|`) | `true \|\| false` |      |
@@ -384,7 +384,7 @@ __Boolean Logical Operators__
 
 __Arithmetic Operators__
 
-| Name                   | Example | Note |
+| name                   | example | note |
 |------------------------|---------|------|
 | Unary Plus      (`+`)  | `+10`   |      |
 | Unary Minus     (`-`)  | `-10`   |      |
@@ -404,7 +404,7 @@ If confused, use type deduction via the `auto` keyword: `auto x {5 + y}`, then c
 
 __Assignment Operators__
 
-| Name                                   | Example        | Note                                                                                                                             |
+| name                                   | example        | note                                                                                                                             |
 |----------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------|
 | Assignment                     (`=`)   | `x = 5`        |                                                                                                                                  |
 | Assignment Bitwise AND         (`&=`)  | `x &= 0b0110`  |                                                                                                                                  |
@@ -437,7 +437,7 @@ You probably shouldn't do this because it gets confusing. Also, incrementing/dec
 
 __Comparison Operator__
 
-| Name                             | Example   | Note                                                                                    |
+| name                             | example   | note                                                                                    |
 |----------------------------------|-----------|-----------------------------------------------------------------------------------------|
 | Equal To                 (`==`)  | `5 == 7`  |                                                                                         |
 | Not Equal To             (`!=`)  | `5 != 7`  |                                                                                         |
@@ -461,7 +461,7 @@ if (n % 7 == 1) {
 
 __Member Access Operators__
 
-| Name                     | Example     | Note                                                                                       |
+| name                     | example     | note                                                                                       |
 |--------------------------|-------------|--------------------------------------------------------------------------------------------|
 | Subscript         (`[]`) | `x[0]`      |                                                                                            |
 | Indirection       (`*`)  | `*x`        | Doesn't conflict with arithmetic multiplication operator because this is a unary operator. |
@@ -473,7 +473,7 @@ These operators are used in scenarios that deal with accessing the members of an
 
 __Dynamic Object Operators__
 
-| Name                                | Example       | Note |
+| name                                | example       | note |
 |-------------------------------------|---------------|------|
 | Create Dynamic Object       (`new`) | `new int`     |      |
 | Create Dynamic Array      (`new[]`) | `new int[50]` |      |
@@ -486,7 +486,7 @@ If you already know about dynamic objects and arrays and constructors/destructor
 
 __Size Operator__
 
-| Name            | Example     | Note |
+| name            | example     | note |
 |-----------------|-------------|------|
 | Size (`sizeof`) | `sizeof x]` |      |
 
@@ -784,6 +784,7 @@ Individual characters all map to integer types, where literals are defined by wr
 | type       | bits | literal prefix | example | description                                                 |
 |------------|------|----------------|---------|-------------------------------------------------------------|
 | `char`     | >= 8 |                | `'T'`   | >= 8-bit wide character (smallest unit of memory -- 1 byte) |
+| `char8_t`  | 8    | `u8`           | `u8'T'` | 16-bit wide character (e.g. UTF-8)                          |
 | `char16_t` | 16   | `u`            | `u'T'`  | 16-bit wide character (e.g. UTF-16)                         |
 | `char32_t` | 32   | `U`            | `U'T'`  | 32-bit wide character (e.g. UTF-32)                         |
 | `wchar_t`  |      | `L`            | `L'T'`  | at least as wide as `char`                                  |
@@ -1382,7 +1383,7 @@ The most common types of implicit conversions are ...
 
 Depending on the operation performed or how an object is initialized, the results of an implicit conversion may do something specific to that platform and/or compiler implementation.
 
-| Source Type    | Destination Type | Behaviour                                                                                                                                         |
+| source type    | destination type | behaviour                                                                                                                                         |
 |----------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
 | Integer        | Floating Point   | Implementation-specific behaviour if can't fit in destination (speculation).                                                                      |
 | Floating Point | Integer          | Rounded to integer (speculation - how?), implementation-specific behaviour if can't fit in destination (speculation).                             |
@@ -3336,7 +3337,7 @@ Distance d { 1.2_km + 4.0_mi };
 
 As stated above, user-defined literals must wrap an existing built-in literal type.
 
-| Type                  | Definition                                                   |
+| type                  | definition                                                   |
 |-----------------------|--------------------------------------------------------------|
 | integral              | `return_type operator"" identifier (unsigned long long int)` |
 | floating point        | `return_type operator"" identifier (long double)`            | 
@@ -4082,7 +4083,7 @@ An attribute is applied by nesting it in double square brackets (e.g. `[[noretur
 
 Common attributes:
 
-| Attribute               | Description                                                                                                                     |
+| attribute               | description                                                                                                                     |
 |-------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | `[[deprecated("msg")]]` | Indicates that a function is deprecated. Message is optional.                                                                   |
 | `[[noreturn]]`          | Indicates that a function doesn't return.                                                                                       |
@@ -4489,7 +4490,7 @@ In total, 5 kinds of iterators are supported by C++. The kind of iterator descri
  * Bidirectional iterator, forward iterator with the ability to move back.
  * Random access iterator, bidirectional iterator with the ability to jump to different positions.
 
-|                                                               | Input | Output | Forward | Bidirectional | Random access |
+|                                                               | input | output | forward | bidirectional | random access |
 |---------------------------------------------------------------|-------|--------|---------|---------------|---------------|
 | `++it` and `it++` (move forward)                              |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
 | `--it` and `it--` (move backward)                             |       |    ✓   |    ✓    |      ✓        |       ✓       |
@@ -4730,7 +4731,7 @@ Inconsistencies comes in three different types:
 * Unspecified behaviour: Behaviour varies between implementations, where that behaviour is valid (e.g. no hard crash) but _not_ documented.
 * Undefined behaviour: Behaviour is unrestricted (e.g. maybe hard crash, bad computation, or expected computation) and not documented.
 
-|                                  | Valid | Documented |
+|                                  | valid | documented |
 |----------------------------------|-------|------------|
 | Implementation-defined behaviour | YES   | YES        |
 | Unspecified behaviour            | YES   | NO         |
@@ -5465,7 +5466,7 @@ C++'s equivalent of Java collections are commonly referred to as containers. C++
 
  * Sequence containers - Objects organized in a sequence, where they're (at least) accessible from one end to the other.
    
-   | C++ Container       | Java Nearest equivalent                                      |
+   | C++ container       | nearest Java equivalent                                      |
    |---------------------|--------------------------------------------------------------|
    | `std::array`        | standard Java array                                          |
    | `std::vector`       | `ArrayList`                                                  |
@@ -5475,7 +5476,7 @@ C++'s equivalent of Java collections are commonly referred to as containers. C++
  
  * Associative containers - Objects organized by key and potentially a value (keys sorted, requiring a comparison function).
  
-   | C++ Container   | Nearest Java equivalent                |
+   | C++ container   | nearest Java equivalent                |
    |-----------------|----------------------------------------|
    | `std::set`      | `TreeSet`                              |
    | `std::map`      | `TreeMap`                              |
@@ -5484,7 +5485,7 @@ C++'s equivalent of Java collections are commonly referred to as containers. C++
 
  * Unordered associative containers - Objects organized by key and potentially a value (keys unsorted).
 
-   | C++ Container             | Nearest Java equivalent                               |
+   | C++ container             | nearest Java equivalent                               |
    |---------------------------|-------------------------------------------------------|
    | `std::unordered_set`      | `HashSet`                                             |
    | `std::unordered_map`      | `HashMap`                                             |
@@ -7325,7 +7326,7 @@ The subsections below document some common time-related classes and their usages
 
 Time points are classes that represent some point in type. They're typically created by clocks, which are classes that measure time. Each clock has a set of specifics:
 
-| Property     | Description                                                                             |
+| property     | description                                                                             |
 |--------------|-----------------------------------------------------------------------------------------|
 | Epoch        | When does it start from? (e.g. since boot, app launch, Jan 1, 1970 00:00:00 UTC, etc..) |
 | Tick Period  | How often does it update? (e.g. once per millisecond)                                   |
@@ -7572,7 +7573,7 @@ Date and time functionality build on durations and time points by providing thin
 
 Calendar classes represent some exact region (e.g. 5th, 1st, last, etc..) of a specific calendar granularity (day, month, year, weekday).
 
-|                                        | Day | Day of Week | Month | Year | Example                       |
+|                                        | day | day of week | month | year | example                       |
 |----------------------------------------|-----|-------------|-------|------|-------------------------------|
 | `std::chrono::day`                     |  X  |             |       |      | 31                            |
 | `std::chrono::weekday`                 |     |     X       |       |      | Tuesday                       |
@@ -7840,7 +7841,7 @@ int z { boost::numeric_cast<int>(1.234) };  // same thing as the examples above
 
 Several common math functions are provided directly within the C++ standard library.
 
-| Function(s)                                          | Description                                                                                                         |
+| function(s)                                          | description                                                                                                         |
 |------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
 | `abs(x)`                                             | absolute value                                                                                                      |
 | `max(x) min(x)`                                      | minimum/maximum of two values                                                                                       |
@@ -7858,7 +7859,7 @@ Several common math functions are provided directly within the C++ standard libr
 
 Boost provides several math constants through `boost::math::double_constants`.
 
-| Constant | Description                  |
+| constant | description                  |
 |----------|------------------------------|
 | `pi`     | archimedes's constant        |
 | `e`      | euler's constant             |
@@ -7997,13 +7998,151 @@ int len { b1.size() };
 
 ## Strings
 
-TODO: fill me in
+`{bm} /(Library Functions\/Strings)_TOPIC/`
 
-TODO: fill me in
+```{prereq}
+Library Functions/Allocators_TOPIC
+Library Functions/Containers/Sequential/Vector_TOPIC
+```
 
-TODO: fill me in
+```{seealso}
+Core Language/Variables/Core Types/Character String_TOPIC (refresher on raw character strings)
+```
 
-TODO: fill me in
+`std::basic_string` is used as a wrapper for representing character strings. It's different from raw character strings in that strings are resizable and manipulatable similarly to how they are in other high-level languages (e.g. Java or Python).
+
+A `std::basic_string` supports all of the same functionality as a `std::vector` in addition to more. It takes 3 template parameters:
+
+ 1. `CharT` - type of character.
+ 2. `Traits` - type supporting a specific set of fields and methods for working with `CharT` (defaults to `std::char_traits<CharT>`).
+ 3. `Allocator` - type of custom allocator (defaults to `std::allocator<CharT>`).
+
+Several template specializations are provided out-of-the-box for `std::basic_string`, one for each character type. In almost all cases, you'll want to use these template specializations rather than than using `std::basic_string`. The most common case for using `std::basic_string` directly is the need for a custom allocator, which isn't possible with template specializations.
+
+| class            | character type |
+|------------------|----------------|
+| `std::string`    | `char`         |
+| `std::wstring`   | `wchar_t`      |
+| `std::u8string`  | `char8_t`      |
+| `std::u16string` | `char16_t`     |
+| `std::u32string` | `char32_t`     |
+
+```{note}
+The text and examples below use `std::string`, but they should work for the other template specializations as well. Make sure to use the correct literal for raw character string types (e.g. `u8"example"` for `char_8t`).
+```
+
+To create a `std::string` primed with a sequence of characters known as compile-time, use typical braced initialization. 
+
+```c++
+std::string s1 { 'h', 'e', 'l', 'l', 'o' };
+```
+
+To create a `std::string` without priming it directly to a sequence of characters, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
+
+```c++
+std::string s2("hello"); // create from null-terminated string
+std::string s3("hello", 2); // create from first 2 chars of null-terminated string
+std::string s4(10, 'a'); // create by repeating a 10 times
+std::string s5(s1);  // create by copying s1
+std::string s6(s1, 3);  // create by copying substring of s1 from index 3 until end
+std::string s7(s1, 3, 2);  // create by copying 2 char long substring of s1 starting at index 3
+std::string s8(s1.begin() + 3, s1.begin() + 5);  // create by copying substring of s1 from index 3 to 5
+std::string s9(std::move(s1)); // create by moving s1 into s5
+```
+
+To append to a string, use either the addition operator (+) the assignment addition operator (+=), `push_back()`, or `append()`.
+
+```c++
+std::string s10 { s1 + s2 };
+std::string s11 { s1 + "boop" };
+std::string s12 { s1 };
+s12 += s2;
+s12.push_back('x');  // single character only
+s12.append({ 'x', 'y', 'z' }); // append compile-time list
+s12.append("xyz"); // append null-terminated string
+s12.append(s1); // append s1
+s12.append(s1, 3, 2); // append 2 char substring of s1 starting at index 3
+s12.append(s1.begin() + 3, s1.begin() + 5);  // append substring of s1 from index 3 to 5
+s12.append(10, 'a'); // append a 10 times
+```
+
+To delete a specific position or range of a string, use either `pop_back()`, `clear()`, or `erase()`
+
+```c++
+s1.pop_back(); // remove element from end
+s1.clear(); // reset to empty string
+s1.erase(1, 3); // remove 3 characters starting from index 1
+s1.erase(s1.begin() + 1, s1.begin() + 5); // remove characters at index 1 to 5
+s1.erase(s1.begin() + 1); // remove character at index 1
+```
+
+TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+
+TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+
+TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+
+TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+
+TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+
+TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+
+TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+
+To get the number of characters in a `std::string`, use either `size()`, `length()`, or `empty()`.
+
+```c++
+bool empty { s1.empty() }; // check if empty
+auto len { s1.size() };
+auto len { s1.length() }; // equivalent to size()
+```
+
+To test if two strings have the exact same sequence of characters, use the equality operator (==) and inequality operator (!=).
+
+```c++
+bool equal { s1 == s2 };
+bool not_equal { s1 != s2 };
+```
+
+To test if a string is lexicographically less than the other, use the greater than operator (>) or less than operators (<).
+
+```c++
+bool less_than { s1 < s2 };
+bool greater_than { s1 > s2 };
+```
+
+```{note}
+Don't depend on this to sort alphabetically because it isn't portable. Lexicographically doesn't mean alphabetical, it just means that it compares by the symbol (character in this case). The comparisons depend on the encoding of the string. According to the book, for US-ASCII (most common), it means `A < Z < a < z`.
+```
+
+To access individual characters within a `std::string`, use either the subscript operator ([]), `at()`, `front()`, and `back()`. The behaviour of these functions is similar to their `std::vector` equivalents.
+
+```c++
+// WARNING: first() and last() have undefined behaviour if size is 0.
+char first_char { s1.first(); }
+char last_char { s1.last(); }
+
+// WARNING: at() does bounds checking while the subscript operator does not.
+char x { s1.at(2) };
+char w { s1[2] };
+char y { s1.at(1000) }; // throws std::out_of_range
+char z { s1[1000] };    // out of bounds -- undefined behaviour
+```
+
+To access individual characters within `std::string` via a random access iterator, use the typical `begin()` and `end()` functions (and their variants).
+
+ * `begin()` / `end()`
+ * `cbegin()` / `cend()` - returns characters as `const`
+ * `rbegin()` / `rend()` - returns characters in reverse
+ * `crbegin()` / `crend()` - returns characters in reverse and as `const`
+
+To access the underlying character data of a `std::string`, use either `data()` or `c_str()`. Both return a null-terminated string, but the latter is `const`.
+
+```c++
+char * data1 { s1.data() };
+const char * data2 { s1.c_str() };
+```
 
 ## Streams
 
