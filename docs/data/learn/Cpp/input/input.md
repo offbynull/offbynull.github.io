@@ -9,15 +9,11 @@ TODO: ch 9 at std::function / std::callable
 
 TODO: C++20 coroutines section needs to be fleshed out better (no good source for this)
 
-TODO: streams
-
 TODO: add terminology for declarations and definitions + add more example code into terminology
 
 TODO: std::visit and `overloaded { }` -- add in a section for these, then go back and fix the std::variant section (and any other sections that can make use of it like std::vector) to refer to it (MOVE THE PIECES OUT OF STD::VARIANT SECTION INTO THE STD::VISIT -- USE SEEALSO TO REFERENCE IT) -- https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17   /     https://dzone.com/articles/two-lines-of-code-and-three-c17-features-the-overl
 
 TODO: unnamed namespaces  (https://en.cppreference.com/w/cpp/language/namespace)
-
-TODO: std::formatter (INCLUDING the c++20 changes for std::format) https://en.cppreference.com/w/cpp/utility/format/formatter
 
 # How to Read
 
@@ -7835,6 +7831,51 @@ If the default conversion options are desirable, then an analog to `static_cast`
 int z { boost::numeric_cast<int>(1.234) };  // same thing as the examples above
 ```
 
+### Numeric String Conversion
+
+`{bm} /(Library FunctionsTime\/Numbers\/Numeric String Conversion)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/String_TOPIC
+Library Functions/Strings/String Formatter_TOPIC
+```
+
+The appropriate way to convert to string is `std::formatter`. For quick-and-dirty conversions of numeric built-in types to `std::string ` / `std::wstring`, use `std::to_string()` / `std::to_wstring()`. Other string types such as `std::u8string` aren't supported.
+
+```c++
+auto s { std::to_string(10) }; // int
+auto s { std::to_string(10U) }; // unsigned int 
+auto s { std::to_string(10L) }; // long
+auto s { std::to_string(10UL) }; // unsigned long
+auto s { std::to_string(10LL) }; // long long
+auto s { std::to_string(10ULL) }; // unsigned long long
+auto s { std::to_string(1.0f) }; // float
+auto s { std::to_string(1.0) }; // double
+auto s { std::to_string(1.0L) }; // long double
+```
+
+For quick-and-dirty conversions of `std::string` / `std::wstring` to built-in numeric types, use any of the `std::sto*()` functions. For integer types, it also takes in a base (defaults to base 10).
+
+```c++
+auto num { std::stoi(my_string) }; // int
+// THERE IS NO sto*() FOR unsigned int -- use stoul() and cast to an unsigned int
+auto num { std::stol(my_string) }; // long
+auto num { std::stoul(my_string) }; // unsigned long
+auto num { std::stoll(my_string) }; // long long
+auto num { std::stoull(my_string) }; // unsigned long long
+auto num { std::stof(my_string) }; // float
+auto num { std::stod(my_string) }; // double
+auto num { std::stold(my_string) }; // long double
+```
+
+```{note}
+There is no equivalent or overloads for string specializations like `std::u8string`? How is someone supposed to convert those? The answer seems to be to use a third-party library (ICU might provide some functionality for this). It seems as if the C++20 standard still doesn't have full support for text encoding. Third-party libraries are required.
+```
+
+```{note}
+`sto*()` functions also take in a pointer as a parameter, when finished, will be set to the pointer of the input string's `c_str()` just after the number. By default this parameter is set to `std::nullptr`, which means don't set it.
+```
+
 ### Math
 
 `{bm} /(Library FunctionsTime\/Numbers\/Math)_TOPIC/`
@@ -8000,16 +8041,28 @@ int len { b1.size() };
 
 `{bm} /(Library Functions\/Strings)_TOPIC/`
 
+In addition to null-terminated character strings (e.g. `const char * = "hello world"`), the C++ standard library provides a higher-level character string abstractions. These higher-level abstractions provide more type safety, protect against common problems like buffer overflows, and generally make working with strings easier.
+
+The subsections below document some common number-related classes and their usages.
+
+```{note}
+As of C++20, there is very little support for things like locale and character encodings. If you need need that type of functionality, check out the ICU library.
+```
+
+### String
+
+`{bm} /(Library Functions\/Strings\/String)_TOPIC/`
+
 ```{prereq}
 Library Functions/Allocators_TOPIC
 Library Functions/Containers/Sequential/Vector_TOPIC
 ```
 
 ```{seealso}
-Core Language/Variables/Core Types/Character String_TOPIC (refresher on raw character strings)
+Core Language/Variables/Core Types/Character String_TOPIC (refresher on C-style character strings)
 ```
 
-`std::basic_string` is used as a wrapper for representing character strings. It's different from raw character strings in that strings are resizable and manipulatable similarly to how they are in other high-level languages (e.g. Java or Python).
+`std::basic_string` is used as a wrapper for representing character strings. It's different from null-terminated character strings in that strings are resizable and manipulatable similarly to how they are in other high-level languages (e.g. Java or Python). Unlike other high-level languages, a C++ string _is not immutable_ (it's characters can change).
 
 A `std::basic_string` supports all of the same functionality as a `std::vector` in addition to more. It takes 3 template parameters:
 
@@ -8066,7 +8119,53 @@ s12.append(s1.begin() + 3, s1.begin() + 5);  // append substring of s1 from inde
 s12.append(10, 'a'); // append a 10 times
 ```
 
-To delete a specific position or range of a string, use either `pop_back()`, `clear()`, or `erase()`
+To insert at a specific position of a string, use `insert()`.
+
+```c++
+s1.insert(3, 5, 'X'); // insert X 5 times at index 3
+s1.insert(3, "xyz"); // insert "xyz" at index 3
+s1.insert(3, s2); // insert s2 at index 3
+s1.insert(s1.begin() + 3, 5, 'X'); // insert X 5 times at iterator position
+s1.insert(s1.begin() + 3, "xyz"); // insert "xyz" at iterator position
+s1.insert(s1.begin() + 3, s2); // insert s2 at iterator position
+```
+
+To see if a string has a specific prefix or suffix with a string, use `starts_with()` and `ends_with()`.
+
+```c++
+s1.starts_with('h');
+s1.starts_with("he");
+s1.ends_with(s2);
+```
+
+To see if a string contains a specific substring, use `contains()`.
+
+```c++
+auto found { s1.contains("ell") };
+auto found { s1.contains(s2) };
+```
+
+To find the position of a substring within a string, use `find()` or `rfind()`. The latter finds in reverse (from end to beginning). If the substring wasn't found, `std::string::npos` is returned.
+
+```c++
+// find
+auto pos1 { s1.find("llo") };  // find index within s1 going FORWARD from index 0, or npos if not found
+auto pos2 { s1.find("llo", 2) };  // find index within s1 going FORWARD from index 2, or npos if not found
+auto pos3 { s1.find('l', 2) };  // find index within s1 going FORWARD from index 2, or npos if not found
+// rfind
+auto pos4 { s1.rfind("llo") };  // find index within s1 going BACKWARD from last index, or npos if not found
+auto pos5 { s1.rfind("llo", 5) };  // find index within s1 going BACKWARD from index 5, or npos if not found
+auto pos6 { s1.rfind('l', 5) };  // find index within s1 going BACKWARD from index 5, or npos if not found
+```
+
+To get a substring of a string, use `substr()`.
+
+```c++
+std::string s13 { s1.substr(3, 2) }; // create by copying 2 char long substring of s1 starting at index 3
+std::string s14(s1, 3, 2);  // equivalent to the substr() above
+```
+
+To delete a specific position or range of a string, use either `pop_back()`, `clear()`, or `erase()`.
 
 ```c++
 s1.pop_back(); // remove element from end
@@ -8076,19 +8175,20 @@ s1.erase(s1.begin() + 1, s1.begin() + 5); // remove characters at index 1 to 5
 s1.erase(s1.begin() + 1); // remove character at index 1
 ```
 
-TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+To replace a part of the string, use `replace()`, which takes in some position / range and another string to replace it with.
 
-TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+```c++
+s1.replace(3, 2, "hello"); // replace 2 char substring of s1 starting at index 3 with hello
+s1.replace(3, 2, "hello", 3, 2); // replace 2 char substring of s1 starting at index 3 with 2 char substring at index 3 of "hello"
+s1.replace(3, 2, 10, 'a'); // replace 2 char substring of s1 starting at index 3 with a 10 times
+s1.replace(s1.begin() + 1, s1.begin() + 5, "hello"); // replace characters at index 1 to 5 with hello
+s1.replace(s1.begin() + 1, s1.begin() + 5, {'h', 'e', 'l', 'l', 'o'}); // replace characters at index 1 to 5 with hello
+s1.replace(s1.begin() + 1, s1.begin() + 5, 10, 'a'); // replace characters at index 1 to 5 with a 10 times
+```
 
-TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
-
-TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
-
-TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
-
-TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
-
-TODO: CONTINUE FROM REPLACING ELEMENT SECTION HERE
+```{note}
+Need more elaborate string algorithms? Check out Boost's string functions.
+```
 
 To get the number of characters in a `std::string`, use either `size()`, `length()`, or `empty()`.
 
@@ -8144,7 +8244,244 @@ char * data1 { s1.data() };
 const char * data2 { s1.c_str() };
 ```
 
+### String View
+
+`{bm} /(Library Functions\/Strings\/String View)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/String_TOPIC
+```
+
+`std::basic_string_view` is a wrapper around a `std::basic_string` that represents some range of characters within the string. Similar to `std::basic_string`, `std::basic_string_view` has several out-of-the-box template specializations for each character type.
+
+| class                 | character type |
+|-----------------------|----------------|
+| `std::string_view`    | `char`         |
+| `std::wstring_view`   | `wchar_t`      |
+| `std::u8string_view`  | `char8_t`      |
+| `std::u16string_view` | `char16_t`     |
+| `std::u32string_view` | `char32_t`     |
+
+`std::basic_string_view` works by holding on to the underlying string as a pointer, meaning that it's efficient but unsafe. Specifically, it has the _potential for a memory leak_: If the underlying string gets destroyed, the view pointing to it will be pointing at bad data.
+
+`std::basic_string_view` (and its specializations) support most of the same functions as `std::basic_string` (and its specializations).
+
+```{note}
+The text and examples below use `std::string_view`, but they should work for the other template specializations as well.
+```
+
+```c++
+std::string_view sv1 { s1, 4 };  // view of first 4 characters of s1
+std::string_view sv2 { s1 };  // view of s1
+std::string_view sv3 {};  // view of an empty string
+std::string_view sv4 { "hello" };  // view of the constant C-string hello
+```
+
+### Formatter
+
+`{bm} /(Library Functions\/Strings\/Formatter)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/String_TOPIC
+Library Functions/Strings/String View_TOPIC
+Library Functions/Time_TOPIC (briefly mentioned below)
+```
+
+```{note}
+This is from a C++ library called fmt which formats strings (similar to Python format strings). It's been included into the C++ standard library as of C++20, which is the version this section references.
+```
+
+`std::format` is a string formatting class that provides functionality very similar to Python's string formatting. Unlike older formatting systems like `sprintf()`, it's ...
+
+* type-safe in that doesn't require you to know the type of varargs beforehand.
+* safe in that it avoids buffer overflows by using C++ strings (`std::string`) rather than null-terminated character strings (`char *`).
+* extendable in that it's easy to support custom types for the formatter.
+
+```{note}
+Much of this functionality is also available in C++ IO streams, but this is vastly simpler to use.
+```
+
+```c++
+std::format("Hello {}, it's {} degrees outside.", "steven", 42);  // Hello steven, it's 42 degrees outside
+std::format("Here's a number: {0}. Here's that same number again: {0}.", 42); // Here's a number: 42. Here's that same number again: 42.
+std::format("{0:x>10} {0:x<10}", 42);  // xxxxxxxx42 42xxxxxxxx
+```
+
+The formatting of a parameter is controlled by what's inside of the curly brackets for that parameter. At a minimum, it's is empty (e.g. 1st example above). If it should target a specific argument, it needs to take in the index of that parameter (e.g. 2nd example above). Then, any output options for a specific parameter are specified by inserting a colon followed by those options (e.g. 3rd example above).
+
+Examples of the most common formatting options are provided below.
+
+* Padding and alignment
+
+  ```c++
+  std::format("{:10}", 42);   // "        42"
+  std::format("{:<10}", 42);  // "42        "
+  std::format("{:>10}", 42);  // "        42"
+  std::format("{:^10}", 42);  // "    42    "
+  std::format("{:x^10}", 42); // "xxxx42xxxx"
+  ```
+
+* Number signs (e.g. should plus sign be put on a positive integer)
+
+  ```c++
+  std::format("{0:},{0:+},{0:-},{0: }", 1);   // "1,+1,1, 1"
+  std::format("{0:},{0:+},{0:-},{0: }", -1);  // "-1,-1,-1,-1"
+  ```
+
+* Number precision (e.g. where to truncate floating point)
+
+  ```c++
+  std::format("{:.5f}", 3.14);      // "3.14000"
+  std::format("{:0>10.5f}", 3.14);  // "0003.14000"
+  ```
+
+* Numeric encoding (e.g. decimal, hex, octal)
+
+  ```c++
+  std::format("{:d}", 10);     // "10"
+  std::format("{:x}", 10);     // "a"
+  std::format("{:#x}", 10);    // "0xa"
+  std::format("{:#X}", 10);    // "0xA"
+  std::format("{:#04X}", 10);  // "0x0A"
+  std::format("{:o}", 10);     // "12"
+  std::format("{:#o}", 10);    // "012"
+  std::format("{:b}", 10);     // "1010"
+  std::format("{:#b}", 10);    // "0b1010"
+  ```
+
+`std::format` provides support for many common parameter types: numbers (e.g. integral and floating point), pointers, single characters, character strings (e.g. null-terminated strings, C++ strings, and C++ string views), dates, times, durations, timezones, etc.. To add support for a new type, that type needs a `std:formatter` template specialization (note the "er" at the end -- formatter, not format).
+
+The simplest approach to implement a template specialization for a custom type is to inherit from an existing template specialization. Formatting options are typically ignored in this case.
+
+```c++
+template <>
+struct std::formatter<Person> : std::formatter<std::string> {
+    auto format(Person s, format_context& ctx) {
+        return format_to(ctx.out(), "{} {}", s.firstName, s.lastName);
+    }
+};
+
+Person p { "steve", "smith" };
+std::format("Hello {}, the temperature today is {}!", p, 42);
+```
+
+To support formatting options, an extra function needs to be implemented (`parse()`) which sets member variables based on the options it sees.
+
+```c++
+// For a better example, see https://www.modernescpp.com/index.php/extend-std-format-in-c-20-for-user-defined-types
+template <>
+struct std::formatter<Person> {
+    int space_count;
+
+    auto parse(format_parse_context& ctx) {
+        std::string val {};
+        for (auto it { begin(ctx) }; it != end(ctx); ++it) {
+            char c { *it };
+            if (c == '}') {
+                space_count = std::stoi(val);
+                return it;
+            } else {
+                val += c;
+            }
+        }
+        return end(ctx);
+    }
+
+    auto format(Person s, format_context& ctx) {
+        std::string spacer(space_count, ' ');
+        return format_to(ctx.out(), "{}{}{}", s.firstName, spacer, s.lastName);
+    }
+};
+
+Person p { "steve", "smith" };
+std::format("Hello {:1}, the temperature today is {}!", p, 42);
+```
+
+### Regular Expressions
+
+`{bm} /(Library Functions\/Strings\/Regular Expressions)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/String_TOPIC
+```
+
+`std::basic_regex` is a templated class for regular expression functionality. Similar to `std::basic_string`, `std::basic_regex` has several out-of-the-box template specializations for specific character types (not all character types).
+
+| class           | character type |
+|-----------------|----------------|
+| `std::regex`    | `char`         |
+| `std::wregex`   | `wchar_t`      |
+
+```{note}
+What about other character types (e.g. `char8_t`)? Not supported because encoding support in C++ is not really there as of C++20. So what encoding is used here? Platform-specific maybe? or ASCII? It's probably stated somewhere but I have yet to find out what it is. On most major platforms, it's probably safe to assume that basic printable ASCII characters are there encoded as they would be in ASCII.
+```
+
+```{note}
+The text and examples below use `std::regex`, but they should work for the other template specializations as well.
+```
+
+```{seealso}
+Core Language/Variables/Core Types/Character String_TOPIC (refresher on raw string literals)
+```
+
+To create a `std::regex`, prime it with a specific regex pattern and optionally regex flags. Unless the pattern string is presented as an initializer list argument, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
+
+```c++
+std::regex pattern1 { '\\', 'd', '+' };  // initializer list of pattern.
+std::regex pattern2(R"|\d+|");
+std::regex pattern3(R"|\d+|", std::regex_constants::ECMAScript);  // equivalent to above
+std::regex pattern4(R"|\d+|", std::regex_constants::ECMAScript | std::regex_constants::icase);
+```
+
+To get the regex flags, use `flags()`. To get the number of groups (sub-expressions), use `mark_count()`.
+
+```c++
+auto flags { pattern1.flags() };
+auto group_count { pattern1.mark_count() };
+```
+
+To search a string for a pattern, use either `std::regex_match()` or `std::regex_search()`. Both have the same set of parameters, but the former requires the entire string to match the pattern while the latter searches the string for a substring that matches the pattern. Parameter number ...
+
+ 1. (required) is the string being searched.
+    * can be `std::string`.
+    * can be `const char *`.
+    * can be range between iterator positions.
+ 2. (optional) is a reference to `std::match_results` where match results go (templated class).
+    * if parameter 1 is of type `std::string`, use template specialization `std::smatch`.
+    * if parameter 1 is of type `std::wstring`, use template specialization `std::wmatch`.
+    * if parameter 1 is of type `const char *`, use template specialization `std::cmatch`.
+    * if parameter 1 is of type `const wchar_t *`, use template specialization `std::wcmatch`.
+ 3. (required) is the pattern to search for.
+ 4. (optional) is the match flags (optional -- this specifies matching behaviour such as how you should treat EOL)
+
+```{note}
+There are lots more specializations for parameter 2. See [here](https://en.cppreference.com/w/cpp/regex/match_results) for more information.
+```
+
+```c++
+std::string("hello steven");
+std::regex pattern5(R"|hello (.*+)|");
+std::smatch result;
+bool matched { std::regex_match(s1, result, pattern5, std::regex_constants::match_default) };
+// matched contains true if the pattern matched the string
+// result contains information about the match (e.g. what parts of the string matched which sub-expressions) -- see cppreference for more info
+```
+
+```{note}}
+If using `std::regex_search()`, you can continue searching the string by extracting the end position of the search from the match result and running the search again from that position.
+```
+
+To search a string for a pattern and replace it, use `std::replace()`. Similar to `std::regex_match()` and `std::regex_search()`, this also has a flag argument (same type and default) that defines how replacement happens (e.g. `$1` to replace with capture group 1).
+
+```c++
+std::regex pattern6(R"|hello (.*+)|");
+std::string res = std::regex_replace("hello steven", pattern6, "goodbye $1");
+// res should be "goodbye steven"
+```
+
 ## Streams
+
+`{bm} /(Library Functions\/Streams)_TOPIC/`
 
 TODO: fill me in
 
