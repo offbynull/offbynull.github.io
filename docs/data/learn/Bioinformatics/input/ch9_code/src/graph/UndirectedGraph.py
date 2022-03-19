@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TypeVar, Generic, Iterator, Optional
+from typing import TypeVar, Generic, Iterator, Optional, Callable
 
 # Adapted from the graph class I built to solve chapter 3 problems (genome assembly)
 from graph import DirectedGraph
@@ -106,6 +106,9 @@ class Graph(Generic[N, ND, E, ED]):
     def get_edge(self: Graph, edge: E) -> tuple[N, N, ED]:
         return self._edges[edge]
 
+    def get_leaf_nodes(self: Graph) -> Iterator[N]:
+        return (n for n in self.get_nodes() if self.get_degree(n) == 1)
+
     def get_nodes(self: Graph) -> Iterator[N]:
         return iter(self._node_outbound)
 
@@ -118,17 +121,81 @@ class Graph(Generic[N, ND, E, ED]):
     def has_edge(self: Graph, edge: E) -> bool:
         return edge in self._edges  # inbound and outbound are reflections of each other, so only check one
 
-    def get_outputs(self: Graph, node: N) -> Iterator[E]:
+    def get_outputs_full(
+            self: Graph,
+            node: N,
+            predicate: Callable[[E, ED | None], bool] | None = None
+    ) -> Iterator[tuple[E, N, N, ED | None]]:
         assert node in self._node_outbound  # if it's in outbound, it'll be in inbound as well
-        return iter(self._node_outbound[node])
+        graph = self
+        it = iter(self._node_outbound[node])
+        class DummyIter:
+            def __iter__(self):
+                return self
+            def __next__(self):
+                while True:
+                    e = next(it)
+                    if predicate is None:
+                        break
+                    if predicate(*((e,) + graph.get_edge(e))):
+                        break
+                from_node, to_node, edge_data = graph.get_edge(e)
+                return e, from_node, to_node, edge_data
+        return DummyIter()
 
-    def has_outputs(self: Graph, node: N) -> bool:
-        assert node in self._node_outbound  # if it's in outbound, it'll be in inbound as well
-        return next(self.get_outputs(node), None) is not None
+    def get_output_full(
+            self: Graph,
+            node: N,
+            predicate: Callable[[E, N, N, ED | None], bool] | None = None
+    ) -> tuple[E, N, N, ED | None] | None:
+        it = self.get_outputs_full(node, predicate)
+        ret = next(it, None)
+        after_ret = next(it, None)
+        if after_ret is not None:
+            raise ValueError('More than one edge exists')
+        return ret
 
-    def get_degree(self: Graph, node: N) -> int:
+    def get_outputs(
+            self: Graph,
+            node: N,
+            predicate: Callable[[E, ED | None], bool] | None = None
+    ) -> Iterator[E]:
         assert node in self._node_outbound  # if it's in outbound, it'll be in inbound as well
-        return len(self._node_outbound[node])
+        if predicate is None:
+            return iter(self._node_outbound[node])
+        else:
+            return (e for e in self._node_outbound[node] if predicate(*((e,) + self.get_edge(e))))
+
+    def get_output(
+            self: Graph,
+            node: N,
+            predicate: Callable[[E, N, N, ED | None], bool] | None = None
+    ) -> E | None:
+        it = self.get_outputs(node, predicate)
+        ret = next(it, None)
+        after_ret = next(it, None)
+        if after_ret is not None:
+            raise ValueError('More than one edge exists')
+        return ret
+
+    def has_outputs(
+            self: Graph,
+            node: N,
+            predicate: Callable[[E, ED | None], bool] | None = None
+    ) -> bool:
+        assert node in self._node_outbound  # if it's in outbound, it'll be in inbound as well
+        return next(self.get_outputs(node, predicate), None) is not None
+
+    def get_degree(
+            self: Graph,
+            node: N,
+            predicate: Callable[[E, ED | None], bool] | None = None
+    ) -> int:
+        assert node in self._node_outbound  # if it's in outbound, it'll be in inbound as well
+        if predicate is None:
+            return len(self._node_outbound[node])
+        else:
+            return sum(1 for e in self._node_outbound[node] if predicate(*((e,) + self.get_edge(e))))
 
     def copy(self: Graph) -> Graph[N, ND, E, ED]:
         copy_outbound = dict()
