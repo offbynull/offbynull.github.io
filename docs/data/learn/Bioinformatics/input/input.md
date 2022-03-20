@@ -18635,24 +18635,106 @@ PracticalGEODatasetClustering
 
  * `{bm} major histocompatibility complex` - A region of DNA containing genes linked to the immune system. The genes in this region are highly diverse, to the point that it's unlikely for two individuals to have the genes in the exact same form.
  
- * `{bm} trie` - A rooted tree representing a set of seqeunces as branching options. Each edge represents an element in the sequence and each node has a flag indicating if its the end of a sequence. For example, given the sequence of characters apple, apples, applejack, berry, and beechnut ...
+ * `{bm} trie` - A rooted tree representing a set of seqeunces as branching options. Each edge represents an element in the sequence.
 
    ```{svgbob}
-                         s 
-                       .-->*
-     a   p   p   l   e |
-   .-->o-->o-->o-->o-->*
-   |                   | j   a   c   k
-   o                   '-->o-->o-->o-->*
+   * "Trie for apples, applejack, berry, and beechnut"
+
+                         j   a   c   k
+                       .-->*-->*-->*-->*
+                       |
+     a   p   p   l   e | s
+   .-->*-->*-->*-->*-->*-->*
+   |                   
+   *                   
    | b   e   r   r   y  
-   '-->o-->o-->o-->o-->*
+   '-->*-->*-->*-->*-->*
            |
            | e   c   h   n   u   t  
-           '-->o-->o-->o-->o-->o-->*
-  
-   * "Filled node means node is at the end of a sequence."
+           '-->*-->*-->*-->*-->*-->*
    ```
 
+   To support sequences with overlapping sequences, a trie typically either includes a ...
+
+    * a flag on each node to indicate if its the end of a sequence.
+    * a special "end-of-sequence" to disambguate the end of a sequence.
+
+   ```{svgbob}
+   * "Trie for apple and apples"
+                         s   END 
+                       .-->*-->*
+                       |
+     a   p   p   l   e | END
+   *-->*-->*-->*-->*-->*-->*
+   ```
+
+ * `{bm} suffix trie` - A trie of all suffixes within a sequence.
+
+   ```{svgbob}
+   * "Suffix trie for banana"
+
+     b   a   n   a   n   a   END 
+   .-->*-->*-->*-->*-->*-->*-->*
+   |             n   a   END
+   |           .-->*-->*-->*
+   |     n   a | END
+   |   .-->*-->*-->*
+   | a | END
+   .-->*-->*
+   | END
+   *-->*
+   | n   a   END
+   '-->*-->*-->*
+           | n   a   END
+           '-->*-->*-->*
+   ```
+
+   Suffix trees are used to efficiently determine if a string contains a substring. The string is converted to a suffix trie, then the trie is searched from the root node to see if a specific substring exists.
+
+   ```{svgbob}
+   * "Search for nan in banana"
+     "(path for nan denoted by unfilled nodes)"
+
+     b   a   n   a   n   a   END 
+   .-->*-->*-->*-->*-->*-->*-->*
+   |             n   a   END
+   |           .-->*-->*-->*
+   |     n   a | END
+   |   .-->*-->*-->*
+   | a | END
+   .-->*-->*
+   | END
+   o-->*
+   | n   a   END
+   '-->o-->o-->*
+           | n   a   END
+           '-->o-->*-->*
+   ```
+
+ * `{bm} suffix tree` - A suffix trie where paths of nodes with indegree and outdegree of 1 are combined into a single edge. The elements at the edges being combined are concatenated together.
+
+   ```{svgbob}
+      "SUFFIX TRIE FOR banana"                         "SUFFIX TREE FOR banana"
+
+     b   a   n   a   n   a   END                            bananaEND 
+   .-->*-->*-->*-->*-->*-->*-->*                   .-------------------------->*
+   |             n   a   END                       |                naEND     
+   |           .-->*-->*-->*                       |           .---------->*    
+   |     n   a | END                               |       na  | END            
+   |   .-->*-->*-->*                               |   .------>*-->*            
+   | a | END                                       | a | END                    
+   .-->*-->*                                       .-->*-->*                    
+   | END                                           | END                        
+   *-->*                                           *-->*                        
+   | n   a   END                                   |   na    END                
+   '-->*-->*-->*                                   '------>*-->*                
+           | n   a   END                                   |   naEND        
+           '-->*-->*-->*                                   '---------->*        
+   ```
+
+   ```{note}
+   As a further optimization, rather than assigning each edge to a substring, assign it the position range of that substring within the larger string (start index and end index / start index and length). There may be more than 1 position range for each edge -- either store all of them or just store one (e.g. the one closest to the beginning of the string).
+   ```
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`

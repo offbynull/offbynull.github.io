@@ -41,6 +41,32 @@ class Graph(Generic[N, ND, E, ED]):
         assert node in self._node_outbound
         return self._node_data[node]
 
+    # Edges have no direction in an undirected graph. Because of this, you need to explicitly provide the destination
+    # node of each replacement edge (this is not the case for this same method in a directed graph). The function will
+    # ensure that the destination nodes are correct for the edge being replaced
+    def insert_node_between_edge(
+            self: Graph,
+            new_node: N,
+            new_node_data: ND | None,
+            existing_edge: E,
+            new_edge1: E,
+            new_edge1_destination: N,  # which of existing_edge's two ends should this node be for?
+            new_edge1_data: ED | None,
+            new_edge2: E,
+            new_edge2_destination: N,  # which of existing_edge's two ends should this node be for?
+            new_edge2_data: ED | None
+    ):
+        assert new_node not in self._node_outbound
+        assert existing_edge in self._edges
+        assert new_edge1 not in self._edges
+        assert new_edge2 not in self._edges
+        n1, n2, _ = self.get_edge(existing_edge)
+        assert sorted([n1, n2]) == sorted([new_edge1_destination, new_edge2_destination])
+        self.insert_node(new_node, new_node_data)
+        self.delete_edge(existing_edge)
+        self.insert_edge(new_edge1, new_edge1_destination, new_node, new_edge1_data)
+        self.insert_edge(new_edge2, new_edge2_destination, new_node, new_edge2_data)
+
     def insert_edge(
             self: Graph,
             edge: E,

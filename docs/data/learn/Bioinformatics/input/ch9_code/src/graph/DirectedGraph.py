@@ -44,6 +44,26 @@ class Graph(Generic[N, ND, E, ED]):
         assert node in self._node_outbound
         return self._node_data[node]
 
+    def insert_node_between_edge(
+            self: Graph,
+            new_node: N,
+            new_node_data: ND | None,
+            existing_edge: E,
+            from_edge: E,
+            from_edge_data: ED | None,
+            to_edge: E,
+            to_edge_data: ED | None
+    ):
+        assert new_node not in self._node_outbound
+        assert existing_edge in self._edges
+        assert from_edge not in self._edges
+        assert to_edge not in self._edges
+        node_from, node_to, _ = self.get_edge(existing_edge)
+        self.insert_node(new_node, new_node_data)
+        self.delete_edge(existing_edge)
+        self.insert_edge(from_edge, node_from, new_node, from_edge_data)
+        self.insert_edge(to_edge, new_node, node_to, to_edge_data)
+
     def insert_edge(
             self: Graph,
             edge: E,
