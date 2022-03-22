@@ -2,6 +2,6 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-See compilation section.
+`readsome()` is a little more dicey in that how it works is implementation specific.
 </div>
 

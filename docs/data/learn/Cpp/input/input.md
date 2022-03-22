@@ -3,18 +3,6 @@
 ```{toc}
 ```
 
-# TODOs
-
-TODO: ch 9 at std::function / std::callable
-
-TODO: C++20 coroutines section needs to be fleshed out better (no good source for this)
-
-TODO: add terminology for declarations and definitions + add more example code into terminology
-
-TODO: std::visit and `overloaded { }` -- add in a section for these, then go back and fix the std::variant section (and any other sections that can make use of it like std::vector) to refer to it (MOVE THE PIECES OUT OF STD::VARIANT SECTION INTO THE STD::VISIT -- USE SEEALSO TO REFERENCE IT) -- https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17   /     https://dzone.com/articles/two-lines-of-code-and-three-c17-features-the-overl
-
-TODO: unnamed namespaces  (https://en.cppreference.com/w/cpp/language/namespace)
-
 # How to Read
 
 This document is broken down into sections and sub-sections. To understand a specific section, you need to understand all of its parent sections as well as any prerequisites that it lists. For example, if section `Fruits/Apples/Granny Smith` has prerequisites `Vegetables/Peas` and `Fish` listed, you'll need to have read ...
@@ -1112,26 +1100,48 @@ int &&z { y }; // this isn't a thing -- fail
 ```{prereq}
 Core Language/Variables/References_TOPIC
 Core Language/Expression Categories_TOPIC
+Core Language/Templates_TOPIC
 ```
 
-An rvalue reference is similar to a reference except that it tells the compiler that it's working with an rvalue. Rvalue references are declared by adding two ampersands (&&) after the type rather than just one. It's initialized using the `std::move()` function within the utility header, which casts its input into an rvalue reference.
-
-Rvalue references are typically used for moving objects (not copying, but actually moving the guts of one object into another). This is typically done through something called a move constructor, which will be explained further on.
+An rvalue reference is similar to a reference except that it tells the compiler that it's working with an rvalue. Rvalue references are declared by adding two ampersands (&&) after the type rather than just one.
 
 ```c++
-MyObject a {};
-MyObject &&b { std::move(a) }; // get rvalue reference
-MyObject c {b};                // move a into c (gut it into c) via the move constructor
-// b is in an invalid state
+// Function return type is an rvalue reference
+MyObject && gimmie_an_rvalueref(int x) {
+    ...
+}
+```
+
+A variable of type rvalue reference is actually an lvalue to an rvalue reference. As such, passing a variable of type revalue reference as a function argument will treat it as if it were an lvalue.
+
+```{note}
+Confused? Recall from the expression categories section that, if it has a name (named variable or function), it's probably an lvalue.
+```
+
+```c++
+void my_func(MyObject & x) {
+    std::cout << "NO RREF";
+}
+void my_func(MyObject && xRref) {
+    std::cout << "YES RREF";
+}
+MyObject &&a { gimmie_an_rvalueref(42) }; // a has a name, meaning its an lvalue to an rvalue reference
+my_func(a);  // calls "NO RREF" version
+```
+
+If you need to pass a variable of type rvalue reference as a function argument, the typical approach is to either never store it as a variable or to use `std::forward` to ensure the object remains an rvalue reference.
+
+```c++
+my_func(gimmie_an_rvalueref(42));      // calls "YES RREF" version
+my_func(std::forward<MyObject &&>(b)); // calls "YES RREF" version
+// NOTE: you MUST specify the full type in std::forward's template parameter -- automatic type inference not supported
 ```
 
 ```{note}
-Once an object is moved, it's in an invalid state. The only two reliable operations you can perform on it is to either destroy or re-assign it to something else (assignments are discussed elsewhere).
+See [here](https://github.com/AnthonyCalandra/modern-cpp-features#forwarding-references).
 ```
 
-```{note}
-There's a piece here I don't fully understand about "forwarding references". See [here](https://github.com/AnthonyCalandra/modern-cpp-features#forwarding-references).
-```
+Rvalue references are typically used for moving objects (not copying, but actually moving the guts of one object into another). This is done through something called a move constructor, which is explained in another section.
 
 ```{seealso}
 Core Language/Classes/Moving_TOPIC
@@ -2552,9 +2562,12 @@ class MyStruct {
 }
 
 MyStruct a {};
-MyStruct &&b = std::move(a);  // get rvalue reference for a
-MyStruct c {b};               // move a into c (gut it into c) via the move constructor
-// b is in an invalid state
+MyStruct c { std::move(a) };  // std::move returns MyObject && type, which calls MyObject's move constructor
+// a is in an invalid state
+```
+
+```{note}
+Don't `std::move` into a variable and pass that variable to the constructor. The reason is that the variable will be treated as an lvalue (an lvalue to an rvalue reference), meaning that the copy constructor will get invoked instead of the move constructor.
 ```
 
 In the example above, the move constructor has `noexcept` set to indicate that it will never throw an exception. Move constructors that can throw exceptions are problematic for the compiler to use. If a move constructor throws an exception, the source object will likely enter into an inconsistent state, meaning the program will likely be in an inconsistent state. As such, if the compiler sees that the move constructor can throw an exception, it'll prefer to copy it instead.
@@ -3818,6 +3831,23 @@ using FirstLevel:MiddleLevel::LastLevel::MyStruct;
 MyStruct z{};
 ```
 
+A special type of namespace, called an unnamed namespace, limits the visibility of the code to the containing translation unit. That means you can't reference an unnamed namespace in some other translation unit: It behaves as if you gave the namespace a unique name and never referenced that namespace outside of the translation unit.
+
+```c++
+// A.h
+namespace {
+    void help() {
+        // ... code removed ...
+    }
+}
+
+// B.h
+#include "A.h"  // help() in A.h won't conflict with the help() here
+void help() {
+    // ... code removed ...
+}
+```
+
 ## Linker Behaviour
 
 `{bm} /(Core Language\/Linker Behaviour)_TOPIC/`
@@ -4384,13 +4414,12 @@ An xvalue is an expression which can have the address-of operator used on it but
 
 ```c++
 MyObject a {};
-MyObject &&b {std::move(a)};  // get rvalue reference
-MyObject c {b};               // move a into c (gut it into c) via the move constructor
-// b is in an invalid state
+MyObject c { std::move(a) };  // std::move returns MyObject && type, which calls MyObject's move constructor
+// a is in an invalid state
 ```
 
 ```{note}
-The example above is using features that haven't been introduced yet (std::move, rvalue references, move constructor). Just ignore it if you don't know those pieces yet. They're explained in other sections.
+The example above is using features that haven't been introduced yet (`std::move`, rvalue references, move constructor). Just ignore it if you don't know those pieces yet. They're explained in other sections.
 ```
 
 This is in contrast to lvalue expressions, which the address-of operator is usable on but _CANNOT be moved_. If the address-of operator works on it, regardless of if it's moveable (xvalue) or not (lvalue), it's called a glvalue.
@@ -5450,6 +5479,42 @@ Boost also provides a version of this wrapper, `boost::variant`.
 Core Language/Unions_TOPIC (variants are similar to unions but type-safe)
 ```
 
+### Function
+
+A function class is a standardized wrapper for function-like objects.
+
+```c++
+void print_num(int i)
+{
+    std::cout << i << '\n';
+}
+ 
+struct PrintNum {
+    void operator()(int i) const
+    {
+        std::cout << i << '\n';
+    }
+};
+
+
+std::function<void(int)> f1 = print_num;
+std::function<void(int)> f2 = PrintNum;
+```
+
+```{seealso}
+Core Language/Variables/Pointers/Function Pointer_TOPIC (refresher)
+Core Language/Classes/Functors_TOPIC (refresher)
+Core Language/Classes/Lambdas_TOPIC (refresher)
+```
+
+The typical use-case for `std::function` is to provide a function with a unified way to accept all function-like objects (e.g. functors and function pointers) as a parameter. The alternative would be to explicitly provide an overload for each function-like object type.
+
+```c++
+void call_func_with_42(std::function<void(int)> func) {
+    func(42);
+}
+```
+
 ## Containers
 
 `{bm} /(Library Functions\/Containers)_TOPIC/`
@@ -5545,8 +5610,7 @@ for (auto &obj : my_arr2) {
 `std::array` provides copy semantics and move semantics. However, because the underlying array is a local object, both moving and copying end up recreating that underlying array. This means that copying and moving may potentially be expensive.
 
 ```c++
-std::array<int, 55> &&rref { std::move(my_arr2) }; // get rvalue reference
-std::array<int, 55> my_arr3 {rref};                // move into c (gut it into c) via the move constructor
+std::array<int, 55> my_arr3 { std::move(my_arr2) };   // move my_arr2 into my_arr3
 ```
 
 To read elements, use the subscript operator ([]) or `at()`. The main difference between the two is that the latter has bounds checking. Alternatively, ...
@@ -5650,8 +5714,7 @@ The rules for initialization are complex. In this case, there's a constructor th
 `std::vector` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::vector` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
 
 ```c++
-std::vector<int> &&rref { std::move(my_vec1) }; // get rvalue reference
-std::vector<int> my_vec5 {rref};                // move into c (gut it into c) via the move constructor
+std::vector<int> my_vec5 { std::move(my_vec1) };   // move my_vec1 into my_vec5
 ```
 
 Similarly, because `std::vector`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
@@ -5828,8 +5891,7 @@ std::deque<int> d4 (c.begin(), c.begin() + 10)  // copy first 10 elems from anot
 `std::deque` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::deque` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
 
 ```c++
-std::deque<int> &&rref { std::move(d1) }; // get rvalue reference
-std::deque<int> d5 {rref};                // move into c (gut it into c) via the move constructor
+std::deque<int> d5 { std::move(d1) }; // move d1 into d5
 ```
 
 Similarly, because `std::deque`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
@@ -5965,8 +6027,7 @@ std::list<int> l4 (c.begin(), c.begin() + 10)  // copy first 10 elems from anoth
 `std::list` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::list` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
 
 ```c++
-std::list<int> &&rref { std::move(l1) }; // get rvalue reference
-std::list<int> l5 {rref};                // move into c (gut it into c) via the move constructor
+std::list<int> l5 { std::move(l1) }; // move l1 into l5
 ```
 
 Similarly, because `std::list`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
@@ -6117,8 +6178,7 @@ std::set<int, decltype(std::greater)> s4 ({ 1, 1, 2, 3, 4, 5 }, std::greater);
 `std::set` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::set` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
 
 ```c++
-std::set<int> &&rref { std::move(s1) }; // get rvalue reference
-std::set<int> s5 {rref};                // move into c (gut it into c) via the move constructor
+std::set<int> s5 { std::move(s1) }; // move s1 into s5
 ```
 
 Similarly, because `std::set`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
@@ -6238,8 +6298,7 @@ auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < r
 std::multiset<int, decltype(comparator)> s3 ({ 1, 1, 2, 3, 4, 5 }, comparator);
 std::multiset<int, decltype(std::greater)> s4 ({ 1, 1, 2, 3, 4, 5 }, std::greater);
 // copy/move
-std::multiset<int> &&rref { std::move(s1) }; // get rvalue reference
-std::multiset<int> s5 {rref};                // move into c (gut it into c) via the move constructor
+std::multiset<int> s5 { std::move(s1) };  // move s1 into s5
 // custom allocator
 CustomAllocator allocator {};
 std::multiset<int, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
@@ -6319,8 +6378,7 @@ auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < r
 std::map<int, float, decltype(comparator)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, comparator);
 std::map<int, float, decltype(std::greater)> s4 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, std::greater);
 // copy/move
-std::map<int, float> &&rref { std::move(s1) }; // get rvalue reference
-std::map<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+std::map<int, float> s5 { std::move(s1) }; // move s1 into s5
 // custom allocator
 CustomAllocator allocator {};
 std::map<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
@@ -6452,8 +6510,7 @@ auto comparator = [] (const int & lhs, const int & rhs) -> bool { return lhs < r
 std::unordered_multimap<int, float, decltype(comparator)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, comparator);
 std::unordered_multimap<int, float, decltype(std::greater)> s4 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, std::greater);
 // copy/move
-std::unordered_multimap<int, float> &&rref { std::move(s1) }; // get rvalue reference
-std::unordered_multimap<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+std::unordered_multimap<int, float> s5 { std::move(s1) }; // move s1 into s5
 // custom allocator
 CustomAllocator allocator {};
 std::unordered_multimap<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
@@ -6566,8 +6623,7 @@ I think (not sure) if you create a `std::hash<T>` implementation for the element
 `std::unordered_set` provides copy semantics and move semantics. Because elements are dynamic objects, moving one `std::unordered_set` into another is fast because it's simply passing off a pointer / reference. Copying can potentially be expensive.
 
 ```c++
-std::unordered_set<int> &&rref { std::move(s1) }; // get rvalue reference
-std::unordered_set<int> s4 {rref};                // move into c (gut it into c) via the move constructor
+std::unordered_set<int> s4 { std::move(s1) }; // move s1 into s4
 ```
 
 Similarly, because `std::unordered_set`'s elements are created as dynamic objects, you have the option of supplying a custom allocator.
@@ -6683,8 +6739,7 @@ std::unordered_multiset<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 el
 auto hasher = [] (const int & val) -> size_t { return static_cast<size_t>(val); };
 std::unordered_multiset<int, decltype(hasher)> s3 ({ 1, 1, 2, 3, 4, 5 }, hasher);
 // copy/move
-std::unordered_multiset<int> &&rref { std::move(s1) }; // get rvalue reference
-std::unordered_multiset<int> s4 {rref};                // move into c (gut it into c) via the move constructor
+std::unordered_multiset<int> s4 { std::move(s1) };  // move s1 into s4
 CustomAllocator allocator {};
 std::unordered_multiset<int, decltype(std::hash<int>), decltype(std::equal_to<int>), CustomAllocator> s5 (allocator);
 ```
@@ -6759,8 +6814,7 @@ std::unordered_map<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 key-val
 auto hasher = [] (const int & val) -> size_t { return static_cast<size_t>(val); };
 std::unordered_map<int, float, decltype(hasher)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, hasher);
 // copy/move
-std::unordered_map<int, float> &&rref { std::move(s1) }; // get rvalue reference
-std::unordered_map<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+std::unordered_map<int, float> s5 { std::move(s1) };  // move s1 into s5
 // custom allocator
 CustomAllocator allocator {};
 std::unordered_map<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
@@ -6879,8 +6933,7 @@ std::unordered_multimap<int> s2 (c.begin(), c.begin() + 10)  // copy first 10 ke
 auto hasher = [] (const int & val) -> size_t { return static_cast<size_t>(val); };
 std::unordered_multimap<int, float, decltype(hasher)> s3 ({ { 1, 99.0f }, { 2, 3.0f }, ... }, hasher);
 // copy/move
-std::unordered_multimap<int, float> &&rref { std::move(s1) }; // get rvalue reference
-std::unordered_multimap<int, float> s5 {rref};                // move into c (gut it into c) via the move constructor
+std::unordered_multimap<int, float> s5 { std::move(s1) }; // move s1 into s5
 // custom allocator
 CustomAllocator allocator {};
 std::unordered_multimap<int, float, decltype(std::less), CustomAllocator> s6 (std::less, allocator);
@@ -7837,7 +7890,7 @@ int z { boost::numeric_cast<int>(1.234) };  // same thing as the examples above
 
 ```{prereq}
 Library Functions/Strings/String_TOPIC
-Library Functions/Strings/String Formatter_TOPIC
+Library Functions/Strings/Formatter_TOPIC
 ```
 
 The appropriate way to convert to string is `std::formatter`. For quick-and-dirty conversions of numeric built-in types to `std::string ` / `std::wstring`, use `std::to_string()` / `std::to_wstring()`. Other string types such as `std::u8string` aren't supported.
@@ -8483,33 +8536,346 @@ std::string res = std::regex_replace("hello steven", pattern6, "goodbye $1");
 
 `{bm} /(Library Functions\/Streams)_TOPIC/`
 
-TODO: fill me in
+```{prereq}
+Library Functions/Containers/Sequential/Array_TOPIC
+```
 
-TODO: fill me in
+Similar to Java's `InputStream` and `OutputStream` interfaces (and surrounding utilities and packages), the C++ standard library offers several stream classes and interfaces. Similar to `std::basic_string`, a set of templated classes are provided for streams.
 
-TODO: fill me in
+ * `std::basic_ostream` is the equivalent of Java's `OutputStream`.
+ * `std::basic_istream` is the equivalent of Java's `InputStream`.
+ * `std::basic_iostream` is a combination of the above two.
 
-TODO: fill me in
+Each of the classes above requires two template parameters: element type of the stream (e.g. is it streaming `char`s, `int`s, a custom type, etc..) and a class that describes the element type's traits (e.g. similar to the `std::basic_string`'s character traits type). Template specializations are provided for some commonly used element types (e.g. `char` and `wchar_t`).
+
+| base stream type      | element type | specialized stream type |
+|-----------------------|--------------|-------------------------|
+| `std::basic_ostream`  | `char`       | `std::istream`          |
+| `std::basic_istream`  | `char`       | `std::ostream`          |
+| `std::basic_iostream` | `char`       | `std::iostream`         |
+| `std::basic_ostream`  | `wchar_t`    | `std::wistream`         |
+| `std::basic_istream`  | `wchar_t`    | `std::wostream`         |
+| `std::basic_iostream` | `wchar_t`    | `std::wiostream`        |
+
+You typically won't need to implement your own stream types. The C++ standard library provides stream implementations for common use-cases such as reading/writing to the console and files. The subsections below document these implementations, while the remainder of this section discusses the stream API.
+
+```{note}
+The rest of this section talks about the general functionality of streams using `std::cout` for an output stream / `std::cin` for an input stream. These are for writing to / reading from the console, which is documented further in one of the subsections. For now just assume they exist.
+```
+
+```{seealso}
+Core Language/Classes/Operator Overloading_TOPIC (refresher)
+```
+
+To read and write text, operator overloads are provided called formatted operations: The left-shift operator (<<) is for writing while the right-shift operator (>>) is for reading. Each operator overload takes in the type to write/read and returns a reference back to the stream itself, allowing for chaining.
+
+```c++
+std::cout << 5 << ' ' << "hello world";
+int x {};
+int y {};
+std::cin >> x >> y;
+```
+
+By default, the C++ standard library provides operator overloads for most built-in types (e.g. `int`, `long`, etc.. ) as well as some higher-level types within the C++ standard library strings (e.g. `std::string`, `std::complex`, etc..). To provide support for custom types, simply overload the operators for that type.
+
+```c++
+struct MyType {
+    int intValue;
+    long longValue;
+}
+std::ostream& operator<<(std::ostream& s, const MyType& val) {
+    return s << val.intValue << val.longValue;
+}
+std::istream& operator>>(std::istream& s, MyType& val) {
+    s >> val.intValue;
+    s >> val.longValue;
+    return s;
+}
+```
+
+Special objects called manipulators may be used to to modify how a stream interprets formatted operations.
+
+ * `std::ws` skips over all whitespace in the input.
+ * `std::flush` flushes any buffered output.
+ * `std::ends` writes a null byte (e.g. 0).
+ * `std::endl` writes a newline character and flushes.
+ * `std::boolalpha` tells the stream to write/read booleans as text rather than 0/1.
+ * `std::noboolalpha` tells the stream to write/read booleans as 0/1 rather than text.
+ * `std::oct` tells the stream to write/read integrals as octal.
+ * `std::dec` tells the stream to write/read integrals as decimal.
+ * `std::hex` tells the stream to write/read integrals as hexidecimal.
+ * `std::setprecision(p)` tells the stream to write/read floating point at a specific precision.
+ * `std::fixed` tells the stream to write/read floating point in fixed notation.
+ * `std::scientific` tells the stream to write/read floating point in scientific notation.
+
+```c++
+std::cin >> std::ws >> x;  // skip over whitespace and read into variable
+
+std::cout << "hello" << std::flush; // writes string and forces buffer to flush
+std::cout << "hello" << std::ends;  // writes string followed by null character
+std::cout << "hello" << std::endl;  // writes string followed by new-line character AND forces buffer to flush
+
+std::cout << std::boolalpha << true;   // writes true
+std::cout << std::noboolalpha << true; // writes 1
+std::cin >> std::boolalpha >> b_var;   // reads true/false into boolean variable
+std::cin >> std::noboolalpha >> b_var; // writes 0/1 into boolean variable
+
+std::cout << std::oct << 10 << st::dec << 10 << std::hex << 10;            // writes 10 as octal, decimal, and hex
+std::cin >> std::oct >> i_var1 >> st::dec >> i_var2 >> std::hex >> i_var3; // reads integral as octal, decimal, and hex
+
+std::cout << std::setprecision(2) << 3.14159; // writes 3.14
+std::cout << std::fixed << 0.1;               // writes 0.100000
+std::cout << std::scientific << 0.1;          // writes 1.000000e-01
+```
+
+```{seealso}
+Core Language/Variables/Implicit Conversion_TOPIC (refresher)
+```
+
+At any point, a stream may end or enter into a bad state. A set of member functions can be used to query the state.
+
+ * `good()` returns true if the stream is in a good state.
+ * `eof()` returns true if the stream has ended.
+ * `fail()` returns true if the last operation failed (but the stream may still be usable).
+ * `bad()` returns true if the stream is in an unrecoverable state.
+
+```{note}
+At any point, you can call `clear()` to reset the state to good. Why would you ever want to do this?
+```
+
+In addition, `exceptions()` can be used to make the stream throw an exception if it enters into one (or more) of the states listed above. 
+
+```c++
+std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
+```
+
+Streams provide an implicit type conversion for `bool` that gives back the result of `good()`, allowing for shorthand testing of the stream state.
+
+```c++
+// keep reading characters until the stream breaks or eof
+while (std::cin) {
+    char ch {};
+    std::cin >> ch;
+    process(ch);
+}
+```
+
+To read non-text data, a set of member functions referred to as unformatted operations are available.
+
+To read non-text data, use `get()`, `peek()`, `getline()`, `read()`, `readsome()`, and `ignore()`. `gcount()` may be used to determine exactly how many characters were read in one of these functions (e.g. may have terminated early because it hit end-of-file or a new-line character).
+
+```c++
+char ch {};
+std:array<char, 100> arr {};
+
+ch = std::cin.peek(); // read single character WITHOUT moving forward in  the stream
+ch = std::cin.get();  // read single character
+std::cin.get(ch);     // read single character
+std::cin.get(arr, 100);           // read 100 characters OR until \n (\n included in arr)
+std::cin.get(arr, 100, ';');      // read 100 characters OR until ;  (; included in arr)
+std::cin.getline(arr, 100);       // read 100 characters OR until \n (\n DISCARDED)
+std::cin.getline(arr, 100, ';');  // read 100 characters OR until ;  (; DISCARDED)
+std::cin.read(arr, 100);          // read 100 characters
+std::cin.readsome(arr, 100);      // read 100 characters or however many are "immediately available"
+std::cin.ignore();        // skip single char
+std::cin.ignore(5);       // skip 5 chars
+std::cin.ignore(5, '\n'); // skip up to 5 chars, stopping if \n is encountered (stops AFTER skipping \n)
+
+auto count { std::cin.gcount() };
+```
+
+```{note}
+`readsome()` is a little more dicey in that how it works is implementation specific.
+```
+
+To write non-text data, use `put()` and `write()`. For buffered streams, the buffer may be explicitly flushed by `flush()`.
+
+```c++
+std::cout.put('x');         // write single character
+std::cout.put("hello", 5);  // write 5 characters
+std::cout.flush();
+```
+
+To get and move the position of the underlying stream, use `tell*()` and `seek*()` respectively. The suffix depends on the type of stream:
+
+ * input streams use `tellg()` / `seekg()`
+ * output streams use `tellp()` / `seekp()`
+ * input output streams use `tell()` / `seek()`
+
+```c++
+// NOTE: not supported on all stream types
+auto pos { std::cin.tellg() };
+```
+
+### String
+
+`{bm} /(Library Functions\/Streams\/String)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/String_TOPIC
+Library Functions/Strings/String View_TOPIC
+```
+
+String streams are equivalent to Java's `ByteArrayInputStream` / `StringReader` and `ByteArrayOutputStream` / `StringWriter`. The underlying types for string streams are ...
+
+* `std::basic_istringstream` for input string stream.
+* `std::basic_ostringstream` for output string stream.
+* `std::basic_stringstream` for both input and output string stream.
+
+The above types are templated classes, where the template parameters specify element type, element traits, and a custom allocator. The following template specializations are provided out-of the box...
+
+| type                  | element type |
+|-----------------------|--------------|
+| `std::ostringstream`  | `char`       |
+| `std::wostringstream` | `wchar_t`    |
+| `std::istringstream`  | `char`       |
+| `std::wistringstream` | `wchar_t`    |
+| `std::stringstream`   | `char`       |
+| `std::wstringstream`  | `wchar_t`    |
+
+```{note}
+The text and examples below use `std::ostringstream` / `std::istringstream`, but they should work for the other template specializations as well. Make sure to use the correct literal for raw character string types (e.g. `u8"example"` for `char_8t`).
+```
+
+For output string streams, in addition to all of the normal output stream functionality, ...
+
+ * `str()` returns a copy of the internal buffer as a `std::string`.
+ * `view()` returns a view to the internal buffer as a `std::string_view`.
+
+```c++
+std::ostringstream out {};
+out << 3 << "hello!" << std::endl;
+std::string output { out.str() };
+std::string_view view { out.view() };
+```
+
+Input string streams have the same two methods, but they're hardly used because the main point of input string streams is to parse data out of the stream.
+
+```c++
+std::istringstream in { "1 9.555555" };
+int x;
+double y;
+in >> x >> y;
+```
+
+### File
+
+`{bm} /(Library Functions\/Streams\/File)_TOPIC/`
+
+File streams are equivalent to Java's `FileInputStream` and `FileOutputStream`. The underlying types for string stream are ...
+
+* `std::basic_ifstream` for input string streams.
+* `std::basic_ofstream` for output string streams.
+* `std::basic_fstream` for both input and output string stream.
+
+The above types are templated classes, where the template parameters specify element type, element traits, and a custom allocator. The following template specializations are provided out-of the box...
+
+| type             | element type |
+|------------------|--------------|
+| `std::ofstream`  | `char`       |
+| `std::wofstream` | `wchar_t`    |
+| `std::ifstream`  | `char`       |
+| `std::wifstream` | `wchar_t`    |
+| `std::fstream`   | `char`       |
+
+```{note}
+The text and examples below use `std::ofstream` / `std::ifstream`, but they should work for the other template specializations as well. Make sure to use the correct literal for raw character string types (e.g. `u8"example"` for `char_8t`).
+```
+
+To access a file, either pass that file's path to the constructor or to `open()` along with the set of file access flags. Those flags are ...
+
+ * `std::ios::in` - file must exist.
+ * `std::ios::out` - file created if it doesn't exist.
+ * `std::ios::app` - file created if it doesn't exist AND writes go to the end of the file.
+ * `std::ios::trunc` - file contents discarded.
+ * `std::ios::binary` - if set, no implicit text manipulations are performed on the file (e.g. replacing `\n` with `\r\n` or vice-versa).
+
+```c++
+std::fstream f1 { "/path/to/file.txt", std::ios::in | std::ios::trunc }; // file must exist AND truncate it
+std::fstream f2 {};
+f2.open("/path/to/file.txt", std::ios::in | std::ios::trunc); // same open operation as f1
+```
+
+To close a file, use `close()` or call the stream object's destructor by destroying it.
+
+```c++
+f1.close();
+```
+
+
+To check if the stream has a file open, use `is_open()`.
+
+```c++
+bool open { f1.is_open() };
+```
+
+To read and write, the standard stream mechanisms are available: formatted operations and unformatted operations.
+
+```c++
+// write
+f1 << 3 << "hello!" << std::endl; // write
+// read
+int x;
+double y;
+f1 >> x >> y;
+```
+
+To get and set the position, the standard stream mechanisms are available: `seek*()` and `tell*()`
+
+```c++
+f1.seek(500);
+auto pos { f1.tell() };
+```
+
+To handle IO errors, the standard stream mechanisms are available: `exceptions()` to throw exceptions or explicitly check flags (e.g. invoke `good()`).
+
+```c++
+f1.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
+```
+
+### Global
+
+`{bm} /(Library Functions\/Streams\/Global)_TOPIC/`
+
+For console access, global streams provides access to standard input, standard output, and standard error. Global streams are presented to the user as global variables.
+
+| channel        | element type | global variable |
+|----------------|--------------|-----------------|
+| standard in    | `char`       | `std::cin`      |
+| standard out   | `char`       | `std::cout`     |
+| standard error | `char`       | `std::cerr`     |
+| standard in    | `wchar_t`    | `std::wcin`     |
+| standard out   | `wchar_t`    | `std::wcout`    |
+| standard error | `wchar_t`    | `std::wcerr`    |
+
+```{note}
+The text and examples below use `std::cout` / `std::cin` / `std::cerr`, but they should work for the other template specializations as well. Make sure to use the correct literal for raw character string types (e.g. `u8"example"` for `char_8t`).
+```
+
+To read and write, the standard stream mechanisms are available: formatted operations and unformatted operations.
+
+```c++
+// write
+std::cout << 3 << "hello!" << std::endl; // write
+// read
+int x;
+double y;
+std::cin >> x >> y;
+```
+
+To handle IO errors, the standard stream mechanisms are available: `exceptions()` to throw exceptions or explicitly check flags (e.g. invoke `good()`).
+
+```c++
+std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
+```
 
 # Terminology
 
  * `{bm} preprocessor/(preprocessor|translation unit)/i` - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a translation unit.
 
-   ```{note}
-   See compilation section.
-   ```
-
  * `{bm} compiler/(compiler|object file|object code)/i` - A tool that takes in a translation unit to produce an intermediary format called an object file.
 
-   ```{note}
-   See compilation section.
-   ```
-
  * `{bm} linker/(linker|executable)/i` - A tool that takes multiple object files to produce an executable. Linkers are also responsible for finding libraries used by the program and integrating them into the executable.
-
-   ```{note}
-   See compilation section.
-   ```
 
  * `{bm} enumeration/(enumeration|enum)/i` - A user-defined type that can be set to one of a set of possibilities.
 
@@ -8590,7 +8956,7 @@ TODO: fill me in
 
  * `{bm} fundamental type/(fundamental type|built-in type)/i` - C++ type that's built into the compiler itself rather than being declared through code. Examples include `void`, `bool`, `int`, `char`, etc..
 
-* `{bm} user-defined type/(user[\s\-]defined type)/i` - A type that's defined by a user, typically derived from existing types. Examples include enumerations, classes, unions, etc..
+ * `{bm} user-defined type/(user[\s\-]defined type)/i` - A type that's defined by a user, typically derived from existing types. Examples include enumerations, classes, unions, etc..
 
  * `{bm} object initialization` - The process by which a C++ program initializes an object (e.g. an `int`, array of `int`s, object of a class type, etc..).
 
@@ -9242,6 +9608,10 @@ TODO: fill me in
    The symbol for the operator is an equal-sign sandwiched between angle brackets: `a <=> b`. This operator is sometimes called the spaceship operator because it's said that the symbol for the operator looks like a spaceship.
 
  * `{bm} smart pointer` - A class that wraps a pointer to a dynamically object. The class provides some level of automated pointer management / memory management through the use of move semantics, copy semantics, and RAII. 
+
+ * `{bm} namespace` - C++'s mechanism of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python.
+
+ * `{bm} unnamed namespace` - A special namespace that limits the visibility of the code to the containing translation unit, meaning that code can't be referenced at all outside of the translation unit.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`

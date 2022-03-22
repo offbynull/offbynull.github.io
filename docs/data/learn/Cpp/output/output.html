@@ -5,7 +5,6 @@
           <body class="markdown-body"><p></p>
 <div class="toc">
 <ul>
-<li><a href="#H_TODOs">TODOs</a></li>
 <li><a href="#H_How%20to%20Read">How to Read</a></li>
 <li><a href="#H_Essentials">Essentials</a></li>
 <ul>
@@ -144,6 +143,7 @@
 <li><a href="#H_Tuple">Tuple</a></li>
 <li><a href="#H_Any">Any</a></li>
 <li><a href="#H_Variant">Variant</a></li>
+<li><a href="#H_Function">Function</a></li>
 </ul>
 <li><a href="#H_Containers">Containers</a></li>
 <ul>
@@ -197,23 +197,27 @@
 <li><a href="#H_Random%20Numbers">Random Numbers</a></li>
 <li><a href="#H_Numeric%20Type%20Information">Numeric Type Information</a></li>
 <li><a href="#H_Numeric%20Type%20Casting">Numeric Type Casting</a></li>
+<li><a href="#H_Numeric%20String%20Conversion">Numeric String Conversion</a></li>
 <li><a href="#H_Math">Math</a></li>
 <li><a href="#H_Bitset">Bitset</a></li>
 </ul>
 <li><a href="#H_Strings">Strings</a></li>
+<ul>
+<li><a href="#H_String">String</a></li>
+<li><a href="#H_String%20View">String View</a></li>
+<li><a href="#H_Formatter">Formatter</a></li>
+<li><a href="#H_Regular%20Expressions">Regular Expressions</a></li>
+</ul>
 <li><a href="#H_Streams">Streams</a></li>
+<ul>
+<li><a href="#H1_String">String</a></li>
+<li><a href="#H_File">File</a></li>
+<li><a href="#H_Global">Global</a></li>
+</ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
-<a name="H_TODOs"></a><h1>TODOs</h1>
-<p>TODO: ch 9 at std::function / std::callable</p>
-<p>TODO: C++20 coroutines section needs to be fleshed out better (no good source for this)</p>
-<p>TODO: streams</p>
-<p>TODO: add terminology for declarations and definitions + add more example code into terminology</p>
-<p>TODO: std::visit and <code>overloaded { }</code> -- add in a section for these, then go back and fix the std::variant section (and any other sections that can make use of it like std::vector) to refer to it (MOVE THE PIECES OUT OF STD::VARIANT SECTION INTO THE STD::VISIT -- USE SEEALSO TO <a href="#BM_(reference)%2Fi">REFERENCE</a> IT) -- https://dev.to/tmr232/that-<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ed-trick-<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>ing-<a href="#BM_(lambda)%2Fi">lambda</a>s-in-c17   /     https://dzone.com/articles/two-lines-of-code-and-three-c17-features-the-overl</p>
-<p>TODO: unnamed namespaces  (https://en.cpp<a href="#BM_(reference)%2Fi">reference</a>.com/w/cpp/language/namespace)</p>
-<p>TODO: std::formatter (INCLUDING the c++20 changes for std::format) https://en.cpp<a href="#BM_(reference)%2Fi">reference</a>.com/w/cpp/utility/format/formatter</p>
 <a name="H_How%20to%20Read"></a><h1>How to Read</h1>
 <p>This document is broken down into sections and sub-sections. To understand a specific section, you need to understand all of its parent sections as well as any prerequisites that it lists. For example, if section <code>Fruits/Apples/Granny Smith</code> has prerequisites <code>Vegetables/Peas</code> and <code>Fish</code> listed, you'll need to have read ...</p>
 <ul>
@@ -499,9 +503,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -541,9 +545,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -568,9 +572,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -621,9 +625,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -710,9 +714,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -766,9 +770,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -804,9 +808,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -840,9 +844,9 @@ hello world
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Example</th>
-<th>Note</th>
+<th>name</th>
+<th>example</th>
+<th>note</th>
 </tr>
 </thead>
 <tbody>
@@ -1412,6 +1416,13 @@ hello world
 <td>&gt;= 8-bit wide character (smallest unit of memory -- 1 byte)</td>
 </tr>
 <tr>
+<td><code>char8_t</code></td>
+<td>8</td>
+<td><code>u8</code></td>
+<td><code>u8'T'</code></td>
+<td>16-bit wide character (e.g. UTF-8)</td>
+</tr>
+<tr>
 <td><code>char16_t</code></td>
 <td>16</td>
 <td><code>u</code></td>
@@ -1730,23 +1741,39 @@ y = <span class="hljs-number">15</span>;        <span class="hljs-comment">// y 
 <ul>
 <li><a href="#BM_(Core%20Language%5C%2FVariables%2FReferences)_TOPIC%2F">Core Language/Variables/References</a></li>
 <li><a href="#BM_(Core%20Language%5C%2FExpression%20Categories)_TOPIC%2F">Core Language/Expression Categories</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates)_TOPIC%2F">Core Language/Templates</a></li>
 </ul>
 </div>
-<p>An <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> is similar to a <a href="#BM_(reference)%2Fi">reference</a> except that it tells the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> that it's working with an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a>. <a href="#BM_(rvalue%20reference)%2Fi">Rvalue reference</a>s are declared by adding two ampersands (&amp;&amp;) after the type rather than just one. It's initialized using the <code>std::move()</code> function within the utility header, which casts its input into an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>.</p>
-<p><a href="#BM_(rvalue%20reference)%2Fi">Rvalue reference</a>s are typically used for moving <a href="#BM_(object%7Cinstance)%2Fi">object</a>s (not copying, but actually moving the guts of one <a href="#BM_(object%7Cinstance)%2Fi">object</a> into another). This is typically done through something called a <a href="#BM_(move%20constructor)%2Fi">move constructor</a>, which will be explained further on.</p>
-<pre class="hljs"><code>MyObject a {};
-MyObject &amp;&amp;b { std::<span class="hljs-built_in">move</span>(a) }; <span class="hljs-comment">// get rvalue reference</span>
-MyObject c {b};                <span class="hljs-comment">// move a into c (gut it into c) via the move constructor</span>
-<span class="hljs-comment">// b is in an invalid state</span>
+<p>An <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> is similar to a <a href="#BM_(reference)%2Fi">reference</a> except that it tells the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> that it's working with an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a>. <a href="#BM_(rvalue%20reference)%2Fi">Rvalue reference</a>s are declared by adding two ampersands (&amp;&amp;) after the type rather than just one.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Function return type is an rvalue reference</span>
+<span class="hljs-function">MyObject &amp;&amp; <span class="hljs-title">gimmie_an_rvalueref</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    ...
+}
+</code></pre>
+<p>A variable of type <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> is actually an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a> to an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>. As such, passing a variable of type revalue <a href="#BM_(reference)%2Fi">reference</a> as a function argument will treat it as if it were an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Confused? Recall from the expression categories section that, if it has a name (named variable or function), it's probably an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a>.</p>
+</div>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">my_func</span><span class="hljs-params">(MyObject &amp; x)</span> </span>{
+    std::cout &lt;&lt; <span class="hljs-string">"NO RREF"</span>;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">my_func</span><span class="hljs-params">(MyObject &amp;&amp; xRref)</span> </span>{
+    std::cout &lt;&lt; <span class="hljs-string">"YES RREF"</span>;
+}
+MyObject &amp;&amp;a { <span class="hljs-built_in">gimmie_an_rvalueref</span>(<span class="hljs-number">42</span>) }; <span class="hljs-comment">// a has a name, meaning its an lvalue to an rvalue reference</span>
+<span class="hljs-built_in">my_func</span>(a);  <span class="hljs-comment">// calls "NO RREF" version</span>
+</code></pre>
+<p>If you need to pass a variable of type <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> as a function argument, the typical approach is to either never store it as a variable or to use <code>std::forward</code> to ensure the <a href="#BM_(object%7Cinstance)%2Fi">object</a> remains an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>.</p>
+<pre class="hljs"><code><span class="hljs-built_in">my_func</span>(<span class="hljs-built_in">gimmie_an_rvalueref</span>(<span class="hljs-number">42</span>));      <span class="hljs-comment">// calls "YES RREF" version</span>
+<span class="hljs-built_in">my_func</span>(std::forward&lt;MyObject &amp;&amp;&gt;(b)); <span class="hljs-comment">// calls "YES RREF" version</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> you MUST specify the full type in std::forward's template parameter -- automatic type inference not supported</span>
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Once an <a href="#BM_(object%7Cinstance)%2Fi">object</a> is moved, it's in an invalid state. The only two reliable operations you can perform on it is to either destroy or re-assign it to something else (assignments are discussed elsewhere).</p>
+<p>See <a href="https://github.com/AnthonyCalandra/modern-cpp-features#forwarding-references">here</a>.</p>
 </div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There's a piece here I don't fully understand about "forwarding <a href="#BM_(reference)%2Fi">reference</a>s". See <a href="https://github.com/AnthonyCalandra/modern-cpp-features#forwarding-references">here</a>.</p>
-</div>
+<p><a href="#BM_(rvalue%20reference)%2Fi">Rvalue reference</a>s are typically used for moving <a href="#BM_(object%7Cinstance)%2Fi">object</a>s (not copying, but actually moving the guts of one <a href="#BM_(object%7Cinstance)%2Fi">object</a> into another). This is done through something called a <a href="#BM_(move%20constructor)%2Fi">move constructor</a>, which is explained in another section.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
@@ -1956,9 +1983,9 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
 <table>
 <thead>
 <tr>
-<th>Source Type</th>
-<th>Destination Type</th>
-<th>Behaviour</th>
+<th>source type</th>
+<th>destination type</th>
+<th>behaviour</th>
 </tr>
 </thead>
 <tbody>
@@ -2949,10 +2976,13 @@ MyStruct&amp; operator=(MyStruct &amp;&amp;orig) = default;
 }
 
 MyStruct a {};
-MyStruct &amp;&amp;b = std::<span class="hljs-built_in">move</span>(a);  <span class="hljs-comment">// get rvalue reference for a</span>
-MyStruct c {b};               <span class="hljs-comment">// move a into c (gut it into c) via the move constructor</span>
-<span class="hljs-comment">// b is in an invalid state</span>
+MyStruct c { std::<span class="hljs-built_in">move</span>(a) };  <span class="hljs-comment">// std::move returns MyObject &amp;&amp; type, which calls MyObject's move constructor</span>
+<span class="hljs-comment">// a is in an invalid state</span>
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Don't <code>std::move</code> into a variable and pass that variable to the <a href="#BM_(constructor)%2Fi">constructor</a>. The reason is that the variable will be treated as an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a> (an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a> to an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>), meaning that the <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a> will get invoked instead of the <a href="#BM_(move%20constructor)%2Fi">move constructor</a>.</p>
+</div>
 <p>In the example above, the <a href="#BM_(move%20constructor)%2Fi">move constructor</a> has <code>noexcept</code> set to indicate that it will never throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>. <a href="#BM_(move%20constructor)%2Fi">Move constructor</a>s that can throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s are problematic for the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to use. If a <a href="#BM_(move%20constructor)%2Fi">move constructor</a> throws an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>, the source <a href="#BM_(object%7Cinstance)%2Fi">object</a> will likely enter into an inconsistent state, meaning the program will likely be in an inconsistent state. As such, if the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> sees that the <a href="#BM_(move%20constructor)%2Fi">move constructor</a> can throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>, it'll prefer to copy it instead.</p>
 <p>Similarly to the <a href="#BM_(move%20constructor)%2Fi">move constructor</a>, <a href="#BM_(move%20assignment)%2Fi">move assignment</a> is a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a> invoked when the assignment operator is used, called an <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>. It has the same parameter list and it shouldn't throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s either (<code>noexcept</code>), the only difference is that it returns a <a href="#BM_(reference)%2Fi">reference</a> to itself at the end.</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStruct</span> {
@@ -3627,8 +3657,8 @@ Distance d { <span class="hljs-number">1.2</span>_km + <span class="hljs-number"
 <table>
 <thead>
 <tr>
-<th>Type</th>
-<th>Definition</th>
+<th>type</th>
+<th>definition</th>
 </tr>
 </thead>
 <tbody>
@@ -4034,7 +4064,7 @@ MyUnion x;
 <li><a href="#BM_(Core%20Language%5C%2FClasses)_TOPIC%2F">Core Language/Classes</a>: Just enough to know how to define and use one.</li>
 </ul>
 </div>
-<p>Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using <code>namespace</code> blocks.</p>
+<p><a href="#BM_(namespace)%2Fi">Namespace</a>s are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, <a href="#BM_(namespace)%2Fi">namespace</a>s don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using <code>namespace</code> blocks.</p>
 <pre class="hljs"><code><span class="hljs-keyword">namespace</span> FirstLevel {
     <span class="hljs-keyword">namespace</span> MiddleLevel {
         <span class="hljs-keyword">namespace</span> LastLevel {
@@ -4054,7 +4084,7 @@ MyUnion x;
     };
 }
 </code></pre>
-<p>To use the symbols within a namespace, either include them directly or bring all symbols within the namespace to the forefront via the <code>using</code> keyword (similar to Java's <code>import</code> or Python's <code>from</code> / <code>import</code>).</p>
+<p>To use the symbols within a <a href="#BM_(namespace)%2Fi">namespace</a>, either include them directly or bring all symbols within the <a href="#BM_(namespace)%2Fi">namespace</a> to the forefront via the <code>using</code> keyword (similar to Java's <code>import</code> or Python's <code>from</code> / <code>import</code>).</p>
 <pre class="hljs"><code><span class="hljs-comment">// Use namespace directly.</span>
 FirstLevel:MiddleLevel::LastLevel::MyStruct x{};
 
@@ -4065,6 +4095,20 @@ MyStruct y{};
 <span class="hljs-comment">// Bring a single symbol within a namespace to the forefront.</span>
 <span class="hljs-keyword">using</span> FirstLevel:MiddleLevel::LastLevel::MyStruct;
 MyStruct z{};
+</code></pre>
+<p>A special type of <a href="#BM_(namespace)%2Fi">namespace</a>, called an <a href="#BM_(unnamed%20namespace)%2Fi">unnamed namespace</a>, limits the visibility of the code to the containing <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>. That means you can't <a href="#BM_(reference)%2Fi">reference</a> an <a href="#BM_(unnamed%20namespace)%2Fi">unnamed namespace</a> in some other <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>: It behaves as if you gave the <a href="#BM_(namespace)%2Fi">namespace</a> a unique name and never <a href="#BM_(reference)%2Fi">reference</a>d that <a href="#BM_(namespace)%2Fi">namespace</a> outside of the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// A.h</span>
+<span class="hljs-keyword">namespace</span> {
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">help</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-comment">// ... code removed ...</span>
+    }
+}
+
+<span class="hljs-comment">// B.h</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">"A.h"</span>  <span class="hljs-comment">// help() in A.h won't conflict with the help() here</span></span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">help</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// ... code removed ...</span>
+}
 </code></pre>
 <a name="H_Linker%20Behaviour"></a><h2>Linker Behaviour</h2>
 <p><a name="BM_(Core%20Language%5C%2FLinker%20Behaviour)_TOPIC%2F"></a><strong></strong></p>
@@ -4262,8 +4306,8 @@ std::cout &lt;&lt; r &lt;&lt; <span class="hljs-string">" odd"</span>;
 <table>
 <thead>
 <tr>
-<th><a href="#BM_(attribute)%2Fi">Attribute</a></th>
-<th>Description</th>
+<th><a href="#BM_(attribute)%2Fi">attribute</a></th>
+<th>description</th>
 </tr>
 </thead>
 <tbody>
@@ -4505,13 +4549,12 @@ x = <span class="hljs-number">0</span>;  <span class="hljs-comment">// x is an l
 </div>
 <p>An <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">xvalue</a> is an expression which can have the <a href="#BM_(address%5B%5C-%5Cs%5Dof)%2Fi">address-of</a> operator used on it but also <em>can be moved</em>. The general idea with an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">xvalue</a> expression is that the <a href="#BM_(object%7Cinstance)%2Fi">object</a> it represents is nearing the end of its <a href="#BM_(lifetime)%2Fi">lifetime</a> and as such moving its guts is fine. There are a very limited number of cases where this happens or is required.</p>
 <pre class="hljs"><code>MyObject a {};
-MyObject &amp;&amp;b {std::<span class="hljs-built_in">move</span>(a)};  <span class="hljs-comment">// get rvalue reference</span>
-MyObject c {b};               <span class="hljs-comment">// move a into c (gut it into c) via the move constructor</span>
-<span class="hljs-comment">// b is in an invalid state</span>
+MyObject c { std::<span class="hljs-built_in">move</span>(a) };  <span class="hljs-comment">// std::move returns MyObject &amp;&amp; type, which calls MyObject's move constructor</span>
+<span class="hljs-comment">// a is in an invalid state</span>
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The example above is using features that haven't been introduced yet (std::move, <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s, <a href="#BM_(move%20constructor)%2Fi">move constructor</a>). Just ignore it if you don't know those pieces yet. They're explained in other sections.</p>
+<p>The example above is using features that haven't been introduced yet (<code>std::move</code>, <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s, <a href="#BM_(move%20constructor)%2Fi">move constructor</a>). Just ignore it if you don't know those pieces yet. They're explained in other sections.</p>
 </div>
 <p>This is in contrast to <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a> expressions, which the <a href="#BM_(address%5B%5C-%5Cs%5Dof)%2Fi">address-of</a> operator is usable on but <em>CANNOT be moved</em>. If the <a href="#BM_(address%5B%5C-%5Cs%5Dof)%2Fi">address-of</a> operator works on it, regardless of if it's moveable (<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">xvalue</a>) or not (<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a>), it's called a <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">glvalue</a>.</p>
 <p><img src="svgbob_2a2d0a00b43ce9677954ebe489b0081560222ce3.svg" alt="Kroki diagram output"></p>
@@ -4587,11 +4630,11 @@ MyObject c {b};               <span class="hljs-comment">// move a into c (gut i
 <thead>
 <tr>
 <th></th>
-<th>Input</th>
-<th>Output</th>
-<th>Forward</th>
-<th>Bidirectional</th>
-<th>Random access</th>
+<th>input</th>
+<th>output</th>
+<th>forward</th>
+<th>bidirectional</th>
+<th>random access</th>
 </tr>
 </thead>
 <tbody>
@@ -4880,8 +4923,8 @@ my_module:multiplication;
 <thead>
 <tr>
 <th></th>
-<th>Valid</th>
-<th>Documented</th>
+<th>valid</th>
+<th>documented</th>
 </tr>
 </thead>
 <tbody>
@@ -5064,7 +5107,7 @@ std:cout &lt;&lt; x; <span class="hljs-comment">// what's in x? </span>
 <li><a href="https://abseil.io/">Absiel</a> (Google)</li>
 <li><a href="https://github.com/facebook/folly">Folly</a> (Facebook)</li>
 </ul>
-<p>The subsections below detail important functionality across the many C++ libraries in existence. If the functionality being documented is for a third party library, it'll be signalled in some way (e.g. namespace / header files / comments used in sample code will make it apparent).</p>
+<p>The subsections below detail important functionality across the many C++ libraries in existence. If the functionality being documented is for a third party library, it'll be signalled in some way (e.g. <a href="#BM_(namespace)%2Fi">namespace</a> / header files / comments used in sample code will make it apparent).</p>
 <a name="H_Allocators"></a><h2>Allocators</h2>
 <p><a name="BM_(Library%20Functions%5C%2FAllocators)_TOPIC%2F"></a><strong></strong></p>
 <p>Allocators allow for customizing how <a href="#BM_(object%7Cinstance)%2Fi">object</a>s are <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d and <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d. Some library APIs allow you to provide a custom allocator rather than using the typical <code>new</code>/<code>new[]</code> and <code>delete</code>/<code>delete[]</code> operators. In certain scenarios where performance is important (e.g. gaming, simulations, high-frequency trading, etc..), custom allocators are often used. A custom allocator could increase performance by ...</p>
@@ -5476,6 +5519,37 @@ std::<span class="hljs-built_in">visit</span>(
 <li><a href="#BM_(Core%20Language%5C%2FUnions)_TOPIC%2F">Core Language/Unions</a> (variants are similar to <a href="#BM_(union)%2Fi">union</a>s but type-safe)</li>
 </ul>
 </div>
+<a name="H_Function"></a><h3>Function</h3>
+<p>A function <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a standardized wrapper for function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a>s.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print_num</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span>
+</span>{
+    std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">'\n'</span>;
+}
+ 
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">PrintNum</span> {
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> <span class="hljs-keyword">const</span>
+    </span>{
+        std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">'\n'</span>;
+    }
+};
+
+
+std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int</span>)&gt; f1 = print_num;
+std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int</span>)&gt; f2 = PrintNum;
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FPointers%2FFunction%20Pointer)_TOPIC%2F">Core Language/Variables/Pointers/Function Pointer</a> (refresher)</li>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FFunctors)_TOPIC%2F">Core Language/Classes/Functors</a> (refresher)</li>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FLambdas)_TOPIC%2F">Core Language/Classes/Lambdas</a> (refresher)</li>
+</ul>
+</div>
+<p>The typical use-case for <code>std::function</code> is to provide a function with a unified way to accept all function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a>s (e.g. <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s and <a href="#BM_(function%20pointer)%2Fi">function pointer</a>s) as a parameter. The alternative would be to explicitly provide an <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> for each function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a> type.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">call_func_with_42</span><span class="hljs-params">(std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int</span>)&gt; func)</span> </span>{
+    <span class="hljs-built_in">func</span>(<span class="hljs-number">42</span>);
+}
+</code></pre>
 <a name="H_Containers"></a><h2>Containers</h2>
 <p><a name="BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -5491,8 +5565,8 @@ std::<span class="hljs-built_in">visit</span>(
 <table>
 <thead>
 <tr>
-<th>C++ Container</th>
-<th>Java Nearest equivalent</th>
+<th>C++ container</th>
+<th>nearest Java equivalent</th>
 </tr>
 </thead>
 <tbody>
@@ -5524,8 +5598,8 @@ std::<span class="hljs-built_in">visit</span>(
 <table>
 <thead>
 <tr>
-<th>C++ Container</th>
-<th>Nearest Java equivalent</th>
+<th>C++ container</th>
+<th>nearest Java equivalent</th>
 </tr>
 </thead>
 <tbody>
@@ -5553,8 +5627,8 @@ std::<span class="hljs-built_in">visit</span>(
 <table>
 <thead>
 <tr>
-<th>C++ Container</th>
-<th>Nearest Java equivalent</th>
+<th>C++ container</th>
+<th>nearest Java equivalent</th>
 </tr>
 </thead>
 <tbody>
@@ -5620,8 +5694,7 @@ std::array&lt;<span class="hljs-type">int</span>, 55&gt; my_arr2 {};  <span clas
 }
 </code></pre>
 <p><code>std::array</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. However, because the underlying array is a local <a href="#BM_(object%7Cinstance)%2Fi">object</a>, both moving and copying end up recreating that underlying array. This means that copying and moving may potentially be expensive.</p>
-<pre class="hljs"><code>std::array&lt;<span class="hljs-type">int</span>, 55&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(my_arr2) }; <span class="hljs-comment">// get rvalue reference</span>
-std::array&lt;<span class="hljs-type">int</span>, 55&gt; my_arr3 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<pre class="hljs"><code>std::array&lt;<span class="hljs-type">int</span>, 55&gt; my_arr3 { std::<span class="hljs-built_in">move</span>(my_arr2) };   <span class="hljs-comment">// move my_arr2 into my_arr3</span>
 </code></pre>
 <p>To read elements, use the subscript operator ([]) or <code>at()</code>. The main difference between the two is that the latter has bounds checking. Alternatively, ...</p>
 <ul>
@@ -5704,8 +5777,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">m
 <p>The rules for initialization are complex. In this case, there's a <a href="#BM_(constructor)%2Fi">constructor</a> that takes in an <code>std::initializer_list</code>. That means <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> / <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a> will in most cases call that <a href="#BM_(constructor)%2Fi">constructor</a>, where that initializer list gets populated with whatever is in the braces. To avoid that, the easiest thing you can do is fall back to using the legacy way of calling <a href="#BM_(constructor)%2Fi">constructor</a>s (parenthesis).</p>
 </div>
 <p><code>std::vector</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::vector</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
-<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(my_vec1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::vector&lt;<span class="hljs-type">int</span>&gt; my_vec5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; my_vec5 { std::<span class="hljs-built_in">move</span>(my_vec1) };   <span class="hljs-comment">// move my_vec1 into my_vec5</span>
 </code></pre>
 <p>Similarly, because <code>std::vector</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
 <pre class="hljs"><code>CustomAllocator allocator {};
@@ -5836,8 +5908,7 @@ my_vec1.<span class="hljs-built_in">shrink_to_fit</span>();
 std::deque&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">d4</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
 </span></code></pre>
 <p><code>std::deque</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::deque</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
-<pre class="hljs"><code>std::deque&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(d1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::deque&lt;<span class="hljs-type">int</span>&gt; d5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<pre class="hljs"><code>std::deque&lt;<span class="hljs-type">int</span>&gt; d5 { std::<span class="hljs-built_in">move</span>(d1) }; <span class="hljs-comment">// move d1 into d5</span>
 </code></pre>
 <p>Similarly, because <code>std::deque</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
 <pre class="hljs"><code>CustomAllocator allocator {};
@@ -5942,8 +6013,7 @@ d1.<span class="hljs-built_in">assign</span>(c.<span class="hljs-built_in">begin
 std::list&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">l4</span> <span class="hljs-params">(c.begin(), c.begin() + <span class="hljs-number">10</span>)</span>  <span class="hljs-comment">// copy first 10 elems from another container</span>
 </span></code></pre>
 <p><code>std::list</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::list</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
-<pre class="hljs"><code>std::list&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(l1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::list&lt;<span class="hljs-type">int</span>&gt; l5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<pre class="hljs"><code>std::list&lt;<span class="hljs-type">int</span>&gt; l5 { std::<span class="hljs-built_in">move</span>(l1) }; <span class="hljs-comment">// move l1 into l5</span>
 </code></pre>
 <p>Similarly, because <code>std::list</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
 <pre class="hljs"><code>CustomAllocator allocator {};
@@ -6060,8 +6130,7 @@ l1.<span class="hljs-built_in">assign</span>(c.<span class="hljs-built_in">begin
 <span class="hljs-function">std::set&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, std::greater)</span></span>;
 </code></pre>
 <p><code>std::set</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::set</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
-<pre class="hljs"><code>std::set&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::set&lt;<span class="hljs-type">int</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<pre class="hljs"><code>std::set&lt;<span class="hljs-type">int</span>&gt; s5 { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// move s1 into s5</span>
 </code></pre>
 <p>Similarly, because <code>std::set</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
 <pre class="hljs"><code>CustomAllocator allocator {};
@@ -6158,8 +6227,7 @@ std::multiset&lt;<span class="hljs-type">int</span>&gt; s1 { <span class="hljs-n
 <span class="hljs-function">std::multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(comparator)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, comparator)</span></span>;
 <span class="hljs-function">std::multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, std::greater)</span></span>;
 <span class="hljs-comment">// copy/move</span>
-std::multiset&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::multiset&lt;<span class="hljs-type">int</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+std::multiset&lt;<span class="hljs-type">int</span>&gt; s5 { std::<span class="hljs-built_in">move</span>(s1) };  <span class="hljs-comment">// move s1 into s5</span>
 <span class="hljs-comment">// custom allocator</span>
 CustomAllocator allocator {};
 <span class="hljs-function">std::multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
@@ -6234,8 +6302,7 @@ std::map&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</s
 <span class="hljs-function">std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(comparator)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, comparator)</span></span>;
 <span class="hljs-function">std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, std::greater)</span></span>;
 <span class="hljs-comment">// copy/move</span>
-std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// move s1 into s5</span>
 <span class="hljs-comment">// custom allocator</span>
 CustomAllocator allocator {};
 <span class="hljs-function">std::map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
@@ -6338,8 +6405,7 @@ std::unordered_multimap&lt;<span class="hljs-type">int</span>. <span class="hljs
 <span class="hljs-function">std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(comparator)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, comparator)</span></span>;
 <span class="hljs-function">std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::greater)</span>&gt; <span class="hljs-title">s4</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, std::greater)</span></span>;
 <span class="hljs-comment">// copy/move</span>
-std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// move s1 into s5</span>
 <span class="hljs-comment">// custom allocator</span>
 CustomAllocator allocator {};
 <span class="hljs-function">std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
@@ -6433,8 +6499,7 @@ s1.<span class="hljs-built_in">clear</span>();
 <p>I think (not sure) if you create a <code>std::hash&lt;T&gt;</code> implementation for the element type, the <code>std::unordered_set</code> should automatically pick it without having to specify the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> + directly passing it in as an argument (as done above). It should work so long as the implementation is visible (e.g. whatever file its in has been <code>#include</code>-ed) when the container is created.</p>
 </div>
 <p><code>std::unordered_set</code> provides <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a> and move semantics. Because elements are <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, moving one <code>std::unordered_set</code> into another is fast because it's simply passing off a <a href="#BM_(pointer)%2Fi">pointer</a> / <a href="#BM_(reference)%2Fi">reference</a>. Copying can potentially be expensive.</p>
-<pre class="hljs"><code>std::unordered_set&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::unordered_set&lt;<span class="hljs-type">int</span>&gt; s4 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+<pre class="hljs"><code>std::unordered_set&lt;<span class="hljs-type">int</span>&gt; s4 { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// move s1 into s4</span>
 </code></pre>
 <p>Similarly, because <code>std::unordered_set</code>'s elements are created as <a href="#BM_(dynamic%20object%7Cdynamic%20array%7Cdynamically%20allocated%20object%7Cdynamically%20allocated%20array%7Cdynamic%20storage%20duration)%2Fi">dynamic object</a>s, you have the option of supplying a custom allocator.</p>
 <pre class="hljs"><code>CustomAllocator allocator {};
@@ -6528,8 +6593,7 @@ std::unordered_multiset&lt;<span class="hljs-type">int</span>&gt; s1 { <span cla
 <span class="hljs-keyword">auto</span> hasher </span>= [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; val) -&gt; <span class="hljs-type">size_t</span> { <span class="hljs-keyword">return</span> <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">size_t</span>&gt;(val); };
 <span class="hljs-function">std::unordered_multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(hasher)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> }, hasher)</span></span>;
 <span class="hljs-comment">// copy/move</span>
-std::unordered_multiset&lt;<span class="hljs-type">int</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::unordered_multiset&lt;<span class="hljs-type">int</span>&gt; s4 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+std::unordered_multiset&lt;<span class="hljs-type">int</span>&gt; s4 { std::<span class="hljs-built_in">move</span>(s1) };  <span class="hljs-comment">// move s1 into s4</span>
 CustomAllocator allocator {};
 std::unordered_multiset&lt;<span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(std::hash&lt;<span class="hljs-type">int</span>&gt;), <span class="hljs-keyword">decltype</span>(std::equal_to&lt;<span class="hljs-type">int</span>&gt;), CustomAllocator&gt; <span class="hljs-built_in">s5</span> (allocator);
 </code></pre>
@@ -6599,8 +6663,7 @@ std::unordered_map&lt;<span class="hljs-type">int</span>. <span class="hljs-type
 <span class="hljs-keyword">auto</span> hasher </span>= [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; val) -&gt; <span class="hljs-type">size_t</span> { <span class="hljs-keyword">return</span> <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">size_t</span>&gt;(val); };
 <span class="hljs-function">std::unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(hasher)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, hasher)</span></span>;
 <span class="hljs-comment">// copy/move</span>
-std::unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+std::unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 { std::<span class="hljs-built_in">move</span>(s1) };  <span class="hljs-comment">// move s1 into s5</span>
 <span class="hljs-comment">// custom allocator</span>
 CustomAllocator allocator {};
 <span class="hljs-function">std::unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
@@ -6694,8 +6757,7 @@ std::unordered_multimap&lt;<span class="hljs-type">int</span>. <span class="hljs
 <span class="hljs-keyword">auto</span> hasher </span>= [] (<span class="hljs-keyword">const</span> <span class="hljs-type">int</span> &amp; val) -&gt; <span class="hljs-type">size_t</span> { <span class="hljs-keyword">return</span> <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">size_t</span>&gt;(val); };
 <span class="hljs-function">std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(hasher)</span>&gt; <span class="hljs-title">s3</span> <span class="hljs-params">({ { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> }, { <span class="hljs-number">2</span>, <span class="hljs-number">3.0f</span> }, ... }, hasher)</span></span>;
 <span class="hljs-comment">// copy/move</span>
-std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; &amp;&amp;rref { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// get rvalue reference</span>
-std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 {rref};                <span class="hljs-comment">// move into c (gut it into c) via the move constructor</span>
+std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; s5 { std::<span class="hljs-built_in">move</span>(s1) }; <span class="hljs-comment">// move s1 into s5</span>
 <span class="hljs-comment">// custom allocator</span>
 CustomAllocator allocator {};
 <span class="hljs-function">std::unordered_multimap&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(std::less)</span>, CustomAllocator&gt; <span class="hljs-title">s6</span> <span class="hljs-params">(std::less, allocator)</span></span>;
@@ -7063,8 +7125,8 @@ container1.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-num
 <table>
 <thead>
 <tr>
-<th>Property</th>
-<th>Description</th>
+<th>property</th>
+<th>description</th>
 </tr>
 </thead>
 <tbody>
@@ -7285,11 +7347,11 @@ std::chrono::duration d { after_tp - before_tp };
 <thead>
 <tr>
 <th></th>
-<th>Day</th>
-<th>Day of Week</th>
-<th>Month</th>
-<th>Year</th>
-<th>Example</th>
+<th>day</th>
+<th>day of week</th>
+<th>month</th>
+<th>year</th>
+<th>example</th>
 </tr>
 </thead>
 <tbody>
@@ -7602,14 +7664,53 @@ std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_
 <p>If the default conversion options are desirable, then an analog to <code>static_cast</code> called <code>boost::numeric_cast</code> may be used instead of <code>boost::numeric::converter</code>.</p>
 <pre class="hljs"><code><span class="hljs-type">int</span> z { boost::<span class="hljs-built_in">numeric_cast</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">1.234</span>) };  <span class="hljs-comment">// same thing as the examples above</span>
 </code></pre>
+<a name="H_Numeric%20String%20Conversion"></a><h3>Numeric String Conversion</h3>
+<p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers%2FNumeric%20String%20Conversion)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString)_TOPIC%2F">Library Functions/Strings/String</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FFormatter)_TOPIC%2F">Library Functions/Strings/Formatter</a></li>
+</ul>
+</div>
+<p>The appropriate way to convert to string is <code>std::formatter</code>. For quick-and-dirty conversions of numeric <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">built-in type</a>s to <code>std::string </code> / <code>std::wstring</code>, use <code>std::to_string()</code> / <code>std::to_wstring()</code>. Other string types such as <code>std::u8string</code> aren't supported.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">10</span>) }; <span class="hljs-comment">// int</span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">10U</span>) }; <span class="hljs-comment">// unsigned int </span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">10L</span>) }; <span class="hljs-comment">// long</span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">10UL</span>) }; <span class="hljs-comment">// unsigned long</span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">10LL</span>) }; <span class="hljs-comment">// long long</span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">10ULL</span>) }; <span class="hljs-comment">// unsigned long long</span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">1.0f</span>) }; <span class="hljs-comment">// float</span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">1.0</span>) }; <span class="hljs-comment">// double</span>
+<span class="hljs-keyword">auto</span> s { std::<span class="hljs-built_in">to_string</span>(<span class="hljs-number">1.0L</span>) }; <span class="hljs-comment">// long double</span>
+</code></pre>
+<p>For quick-and-dirty conversions of <code>std::string</code> / <code>std::wstring</code> to built-in numeric types, use any of the <code>std::sto*()</code> functions. For integer types, it also takes in a base (defaults to base 10).</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stoi</span>(my_string) }; <span class="hljs-comment">// int</span>
+<span class="hljs-comment">// THERE IS NO sto*() FOR unsigned int -- use stoul() and cast to an unsigned int</span>
+<span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stol</span>(my_string) }; <span class="hljs-comment">// long</span>
+<span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stoul</span>(my_string) }; <span class="hljs-comment">// unsigned long</span>
+<span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stoll</span>(my_string) }; <span class="hljs-comment">// long long</span>
+<span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stoull</span>(my_string) }; <span class="hljs-comment">// unsigned long long</span>
+<span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stof</span>(my_string) }; <span class="hljs-comment">// float</span>
+<span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stod</span>(my_string) }; <span class="hljs-comment">// double</span>
+<span class="hljs-keyword">auto</span> num { std::<span class="hljs-built_in">stold</span>(my_string) }; <span class="hljs-comment">// long double</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There is no equivalent or <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s for string specializations like <code>std::u8string</code>? How is someone supposed to convert those? The answer seems to be to use a third-party library (ICU might provide some functionality for this). It seems as if the C++20 standard still doesn't have full support for text encoding. Third-party libraries are required.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>sto*()</code> functions also take in a <a href="#BM_(pointer)%2Fi">pointer</a> as a parameter, when finished, will be set to the <a href="#BM_(pointer)%2Fi">pointer</a> of the input string's <code>c_str()</code> just after the number. By default this parameter is set to <code>std::nullptr</code>, which means don't set it.</p>
+</div>
 <a name="H_Math"></a><h3>Math</h3>
 <p><a name="BM_(Library%20FunctionsTime%5C%2FNumbers%2FMath)_TOPIC%2F"></a><strong></strong></p>
 <p>Several common math functions are provided directly within the C++ standard library.</p>
 <table>
 <thead>
 <tr>
-<th>Function(s)</th>
-<th>Description</th>
+<th>function(s)</th>
+<th>description</th>
 </tr>
 </thead>
 <tbody>
@@ -7671,8 +7772,8 @@ std::uniform_int_distribution&lt;<span class="hljs-type">int</span>&gt; uniform_
 <table>
 <thead>
 <tr>
-<th>Constant</th>
-<th>Description</th>
+<th>constant</th>
+<th>description</th>
 </tr>
 </thead>
 <tbody>
@@ -7791,37 +7892,834 @@ b1.<span class="hljs-built_in">flip</span>(); <span class="hljs-comment">// flip
 <pre class="hljs"><code><span class="hljs-type">int</span> len { b1.<span class="hljs-built_in">size</span>() };
 </code></pre>
 <a name="H_Strings"></a><h2>Strings</h2>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
+<p><a name="BM_(Library%20Functions%5C%2FStrings)_TOPIC%2F"></a><strong></strong></p>
+<p>In addition to null-terminated character strings (e.g. <code>const char * = "hello world"</code>), the C++ standard library provides a higher-level character string abstractions. These higher-level abstractions provide more type safety, protect against common problems like buffer overflows, and generally make working with strings easier.</p>
+<p>The subsections below document some common number-related <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and their usages.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>As of C++20, there is very little support for things like locale and character encodings. If you need need that type of functionality, check out the ICU library.</p>
+</div>
+<a name="H_String"></a><h3>String</h3>
+<p><a name="BM_(Library%20Functions%5C%2FStrings%2FString)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FAllocators)_TOPIC%2F">Library Functions/Allocators</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FSequential%2FVector)_TOPIC%2F">Library Functions/Containers/Sequential/Vector</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FCore%20Types%2FCharacter%20String)_TOPIC%2F">Core Language/Variables/Core Types/Character String</a> (refresher on C-style character strings)</li>
+</ul>
+</div>
+<p><code>std::basic_string</code> is used as a wrapper for representing character strings. It's different from null-terminated character strings in that strings are resizable and manipulatable similarly to how they are in other high-level languages (e.g. Java or Python). Unlike other high-level languages, a C++ string <em>is not immutable</em> (it's characters can change).</p>
+<p>A <code>std::basic_string</code> supports all of the same functionality as a <code>std::vector</code> in addition to more. It takes 3 <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s:</p>
+<ol>
+<li><code>CharT</code> - type of character.</li>
+<li><code>Traits</code> - type supporting a specific set of <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s and <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s for working with <code>CharT</code> (defaults to <code>std::char_traits&lt;CharT&gt;</code>).</li>
+<li><code>Allocator</code> - type of custom allocator (defaults to <code>std::allocator&lt;CharT&gt;</code>).</li>
+</ol>
+<p>Several <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s are provided out-of-the-box for <code>std::basic_string</code>, one for each character type. In almost all cases, you'll want to use these <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s rather than than using <code>std::basic_string</code>. The most common case for using <code>std::basic_string</code> directly is the need for a custom allocator, which isn't possible with <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s.</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a></th>
+<th>character type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::string</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wstring</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+<tr>
+<td><code>std::u8string</code></td>
+<td><code>char8_t</code></td>
+</tr>
+<tr>
+<td><code>std::u16string</code></td>
+<td><code>char16_t</code></td>
+</tr>
+<tr>
+<td><code>std::u32string</code></td>
+<td><code>char32_t</code></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The text and examples below use <code>std::string</code>, but they should work for the other <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s as well. Make sure to use the correct literal for raw character string types (e.g. <code>u8"example"</code> for <code>char_8t</code>).</p>
+</div>
+<p>To create a <code>std::string</code> primed with a sequence of characters known as <a href="#BM_(compile-time)%2Fi">compile-time</a>, use typical <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>.</p>
+<pre class="hljs"><code>std::string s1 { <span class="hljs-string">'h'</span>, <span class="hljs-string">'e'</span>, <span class="hljs-string">'l'</span>, <span class="hljs-string">'l'</span>, <span class="hljs-string">'o'</span> };
+</code></pre>
+<p>To create a <code>std::string</code> without priming it directly to a sequence of characters, you can't use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a>. You must use parenthesis.</p>
+<pre class="hljs"><code><span class="hljs-function">std::string <span class="hljs-title">s2</span><span class="hljs-params">(<span class="hljs-string">"hello"</span>)</span></span>; <span class="hljs-comment">// create from null-terminated string</span>
+<span class="hljs-function">std::string <span class="hljs-title">s3</span><span class="hljs-params">(<span class="hljs-string">"hello"</span>, <span class="hljs-number">2</span>)</span></span>; <span class="hljs-comment">// create from first 2 chars of null-terminated string</span>
+<span class="hljs-function">std::string <span class="hljs-title">s4</span><span class="hljs-params">(<span class="hljs-number">10</span>, <span class="hljs-string">'a'</span>)</span></span>; <span class="hljs-comment">// create by repeating a 10 times</span>
+<span class="hljs-function">std::string <span class="hljs-title">s5</span><span class="hljs-params">(s1)</span></span>;  <span class="hljs-comment">// create by copying s1</span>
+<span class="hljs-function">std::string <span class="hljs-title">s6</span><span class="hljs-params">(s1, <span class="hljs-number">3</span>)</span></span>;  <span class="hljs-comment">// create by copying substring of s1 from index 3 until end</span>
+<span class="hljs-function">std::string <span class="hljs-title">s7</span><span class="hljs-params">(s1, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">// create by copying 2 char long substring of s1 starting at index 3</span>
+<span class="hljs-function">std::string <span class="hljs-title">s8</span><span class="hljs-params">(s1.begin() + <span class="hljs-number">3</span>, s1.begin() + <span class="hljs-number">5</span>)</span></span>;  <span class="hljs-comment">// create by copying substring of s1 from index 3 to 5</span>
+<span class="hljs-function">std::string <span class="hljs-title">s9</span><span class="hljs-params">(std::move(s1))</span></span>; <span class="hljs-comment">// create by moving s1 into s5</span>
+</code></pre>
+<p>To append to a string, use either the addition operator (+) the assignment addition operator (+=), <code>push_back()</code>, or <code>append()</code>.</p>
+<pre class="hljs"><code>std::string s10 { s1 + s2 };
+std::string s11 { s1 + <span class="hljs-string">"boop"</span> };
+std::string s12 { s1 };
+s12 += s2;
+s12.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">'x'</span>);  <span class="hljs-comment">// single character only</span>
+s12.<span class="hljs-built_in">append</span>({ <span class="hljs-string">'x'</span>, <span class="hljs-string">'y'</span>, <span class="hljs-string">'z'</span> }); <span class="hljs-comment">// append compile-time list</span>
+s12.<span class="hljs-built_in">append</span>(<span class="hljs-string">"xyz"</span>); <span class="hljs-comment">// append null-terminated string</span>
+s12.<span class="hljs-built_in">append</span>(s1); <span class="hljs-comment">// append s1</span>
+s12.<span class="hljs-built_in">append</span>(s1, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// append 2 char substring of s1 starting at index 3</span>
+s12.<span class="hljs-built_in">append</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>, s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>);  <span class="hljs-comment">// append substring of s1 from index 3 to 5</span>
+s12.<span class="hljs-built_in">append</span>(<span class="hljs-number">10</span>, <span class="hljs-string">'a'</span>); <span class="hljs-comment">// append a 10 times</span>
+</code></pre>
+<p>To insert at a specific position of a string, use <code>insert()</code>.</p>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'X'</span>); <span class="hljs-comment">// insert X 5 times at index 3</span>
+s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">3</span>, <span class="hljs-string">"xyz"</span>); <span class="hljs-comment">// insert "xyz" at index 3</span>
+s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">3</span>, s2); <span class="hljs-comment">// insert s2 at index 3</span>
+s1.<span class="hljs-built_in">insert</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'X'</span>); <span class="hljs-comment">// insert X 5 times at iterator position</span>
+s1.<span class="hljs-built_in">insert</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>, <span class="hljs-string">"xyz"</span>); <span class="hljs-comment">// insert "xyz" at iterator position</span>
+s1.<span class="hljs-built_in">insert</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">3</span>, s2); <span class="hljs-comment">// insert s2 at iterator position</span>
+</code></pre>
+<p>To see if a string has a specific prefix or suffix with a string, use <code>starts_with()</code> and <code>ends_with()</code>.</p>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">starts_with</span>(<span class="hljs-string">'h'</span>);
+s1.<span class="hljs-built_in">starts_with</span>(<span class="hljs-string">"he"</span>);
+s1.<span class="hljs-built_in">ends_with</span>(s2);
+</code></pre>
+<p>To see if a string contains a specific substring, use <code>contains()</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> found { s1.<span class="hljs-built_in">contains</span>(<span class="hljs-string">"ell"</span>) };
+<span class="hljs-keyword">auto</span> found { s1.<span class="hljs-built_in">contains</span>(s2) };
+</code></pre>
+<p>To find the position of a substring within a string, use <code>find()</code> or <code>rfind()</code>. The latter finds in reverse (from end to beginning). If the substring wasn't found, <code>std::string::npos</code> is returned.</p>
+<pre class="hljs"><code><span class="hljs-comment">// find</span>
+<span class="hljs-keyword">auto</span> pos1 { s1.<span class="hljs-built_in">find</span>(<span class="hljs-string">"llo"</span>) };  <span class="hljs-comment">// find index within s1 going FORWARD from index 0, or npos if not found</span>
+<span class="hljs-keyword">auto</span> pos2 { s1.<span class="hljs-built_in">find</span>(<span class="hljs-string">"llo"</span>, <span class="hljs-number">2</span>) };  <span class="hljs-comment">// find index within s1 going FORWARD from index 2, or npos if not found</span>
+<span class="hljs-keyword">auto</span> pos3 { s1.<span class="hljs-built_in">find</span>(<span class="hljs-string">'l'</span>, <span class="hljs-number">2</span>) };  <span class="hljs-comment">// find index within s1 going FORWARD from index 2, or npos if not found</span>
+<span class="hljs-comment">// rfind</span>
+<span class="hljs-keyword">auto</span> pos4 { s1.<span class="hljs-built_in">rfind</span>(<span class="hljs-string">"llo"</span>) };  <span class="hljs-comment">// find index within s1 going BACKWARD from last index, or npos if not found</span>
+<span class="hljs-keyword">auto</span> pos5 { s1.<span class="hljs-built_in">rfind</span>(<span class="hljs-string">"llo"</span>, <span class="hljs-number">5</span>) };  <span class="hljs-comment">// find index within s1 going BACKWARD from index 5, or npos if not found</span>
+<span class="hljs-keyword">auto</span> pos6 { s1.<span class="hljs-built_in">rfind</span>(<span class="hljs-string">'l'</span>, <span class="hljs-number">5</span>) };  <span class="hljs-comment">// find index within s1 going BACKWARD from index 5, or npos if not found</span>
+</code></pre>
+<p>To get a substring of a string, use <code>substr()</code>.</p>
+<pre class="hljs"><code>std::string s13 { s1.<span class="hljs-built_in">substr</span>(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>) }; <span class="hljs-comment">// create by copying 2 char long substring of s1 starting at index 3</span>
+<span class="hljs-function">std::string <span class="hljs-title">s14</span><span class="hljs-params">(s1, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">// equivalent to the substr() above</span>
+</code></pre>
+<p>To delete a specific position or range of a string, use either <code>pop_back()</code>, <code>clear()</code>, or <code>erase()</code>.</p>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">pop_back</span>(); <span class="hljs-comment">// remove element from end</span>
+s1.<span class="hljs-built_in">clear</span>(); <span class="hljs-comment">// reset to empty string</span>
+s1.<span class="hljs-built_in">erase</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// remove 3 characters starting from index 1</span>
+s1.<span class="hljs-built_in">erase</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">1</span>, s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>); <span class="hljs-comment">// remove characters at index 1 to 5</span>
+s1.<span class="hljs-built_in">erase</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">1</span>); <span class="hljs-comment">// remove character at index 1</span>
+</code></pre>
+<p>To replace a part of the string, use <code>replace()</code>, which takes in some position / range and another string to replace it with.</p>
+<pre class="hljs"><code>s1.<span class="hljs-built_in">replace</span>(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"hello"</span>); <span class="hljs-comment">// replace 2 char substring of s1 starting at index 3 with hello</span>
+s1.<span class="hljs-built_in">replace</span>(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"hello"</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// replace 2 char substring of s1 starting at index 3 with 2 char substring at index 3 of "hello"</span>
+s1.<span class="hljs-built_in">replace</span>(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">10</span>, <span class="hljs-string">'a'</span>); <span class="hljs-comment">// replace 2 char substring of s1 starting at index 3 with a 10 times</span>
+s1.<span class="hljs-built_in">replace</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">1</span>, s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>, <span class="hljs-string">"hello"</span>); <span class="hljs-comment">// replace characters at index 1 to 5 with hello</span>
+s1.<span class="hljs-built_in">replace</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">1</span>, s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>, {<span class="hljs-string">'h'</span>, <span class="hljs-string">'e'</span>, <span class="hljs-string">'l'</span>, <span class="hljs-string">'l'</span>, <span class="hljs-string">'o'</span>}); <span class="hljs-comment">// replace characters at index 1 to 5 with hello</span>
+s1.<span class="hljs-built_in">replace</span>(s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">1</span>, s1.<span class="hljs-built_in">begin</span>() + <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-string">'a'</span>); <span class="hljs-comment">// replace characters at index 1 to 5 with a 10 times</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Need more elaborate string algorithms? Check out Boost's string functions.</p>
+</div>
+<p>To get the number of characters in a <code>std::string</code>, use either <code>size()</code>, <code>length()</code>, or <code>empty()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">bool</span> empty { s1.<span class="hljs-built_in">empty</span>() }; <span class="hljs-comment">// check if empty</span>
+<span class="hljs-keyword">auto</span> len { s1.<span class="hljs-built_in">size</span>() };
+<span class="hljs-keyword">auto</span> len { s1.<span class="hljs-built_in">length</span>() }; <span class="hljs-comment">// equivalent to size()</span>
+</code></pre>
+<p>To test if two strings have the exact same sequence of characters, use the equality operator (==) and inequality operator (!=).</p>
+<pre class="hljs"><code><span class="hljs-type">bool</span> equal { s1 == s2 };
+<span class="hljs-type">bool</span> not_equal { s1 != s2 };
+</code></pre>
+<p>To test if a string is lexicographically less than the other, use the greater than operator (&gt;) or less than operators (&lt;).</p>
+<pre class="hljs"><code><span class="hljs-type">bool</span> less_than { s1 &lt; s2 };
+<span class="hljs-type">bool</span> greater_than { s1 &gt; s2 };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Don't depend on this to sort alphabetically because it isn't portable. Lexicographically doesn't mean alphabetical, it just means that it compares by the symbol (character in this case). The comparisons depend on the encoding of the string. According to the book, for US-ASCII (most common), it means <code>A &lt; Z &lt; a &lt; z</code>.</p>
+</div>
+<p>To access individual characters within a <code>std::string</code>, use either the subscript operator ([]), <code>at()</code>, <code>front()</code>, and <code>back()</code>. The behaviour of these functions is similar to their <code>std::vector</code> equivalents.</p>
+<pre class="hljs"><code><span class="hljs-comment">// WARNING: first() and last() have undefined behaviour if size is 0.</span>
+<span class="hljs-type">char</span> first_char { s1.<span class="hljs-built_in">first</span>(); }
+<span class="hljs-type">char</span> last_char { s1.<span class="hljs-built_in">last</span>(); }
+
+<span class="hljs-comment">// WARNING: at() does bounds checking while the subscript operator does not.</span>
+<span class="hljs-type">char</span> x { s1.<span class="hljs-built_in">at</span>(<span class="hljs-number">2</span>) };
+<span class="hljs-type">char</span> w { s1[<span class="hljs-number">2</span>] };
+<span class="hljs-type">char</span> y { s1.<span class="hljs-built_in">at</span>(<span class="hljs-number">1000</span>) }; <span class="hljs-comment">// throws std::out_of_range</span>
+<span class="hljs-type">char</span> z { s1[<span class="hljs-number">1000</span>] };    <span class="hljs-comment">// out of bounds -- undefined behaviour</span>
+</code></pre>
+<p>To access individual characters within <code>std::string</code> via a <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">random access iterator</a>, use the typical <code>begin()</code> and <code>end()</code> functions (and their variants).</p>
+<ul>
+<li><code>begin()</code> / <code>end()</code></li>
+<li><code>cbegin()</code> / <code>cend()</code> - returns characters as <code>const</code></li>
+<li><code>rbegin()</code> / <code>rend()</code> - returns characters in reverse</li>
+<li><code>crbegin()</code> / <code>crend()</code> - returns characters in reverse and as <code>const</code></li>
+</ul>
+<p>To access the underlying character data of a <code>std::string</code>, use either <code>data()</code> or <code>c_str()</code>. Both return a null-terminated string, but the latter is <code>const</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">char</span> * data1 { s1.<span class="hljs-built_in">data</span>() };
+<span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * data2 { s1.<span class="hljs-built_in">c_str</span>() };
+</code></pre>
+<a name="H_String%20View"></a><h3>String View</h3>
+<p><a name="BM_(Library%20Functions%5C%2FStrings%2FString%20View)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString)_TOPIC%2F">Library Functions/Strings/String</a></li>
+</ul>
+</div>
+<p><code>std::basic_string_view</code> is a wrapper around a <code>std::basic_string</code> that represents some range of characters within the string. Similar to <code>std::basic_string</code>, <code>std::basic_string_view</code> has several out-of-the-box <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s for each character type.</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a></th>
+<th>character type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::string_view</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wstring_view</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+<tr>
+<td><code>std::u8string_view</code></td>
+<td><code>char8_t</code></td>
+</tr>
+<tr>
+<td><code>std::u16string_view</code></td>
+<td><code>char16_t</code></td>
+</tr>
+<tr>
+<td><code>std::u32string_view</code></td>
+<td><code>char32_t</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>std::basic_string_view</code> works by holding on to the underlying string as a <a href="#BM_(pointer)%2Fi">pointer</a>, meaning that it's efficient but unsafe. Specifically, it has the <em>potential for a memory leak</em>: If the underlying string gets destroyed, the view pointing to it will be pointing at bad data.</p>
+<p><code>std::basic_string_view</code> (and its specializations) support most of the same functions as <code>std::basic_string</code> (and its specializations).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The text and examples below use <code>std::string_view</code>, but they should work for the other <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s as well.</p>
+</div>
+<pre class="hljs"><code>std::string_view sv1 { s1, <span class="hljs-number">4</span> };  <span class="hljs-comment">// view of first 4 characters of s1</span>
+std::string_view sv2 { s1 };  <span class="hljs-comment">// view of s1</span>
+std::string_view sv3 {};  <span class="hljs-comment">// view of an empty string</span>
+std::string_view sv4 { <span class="hljs-string">"hello"</span> };  <span class="hljs-comment">// view of the constant C-string hello</span>
+</code></pre>
+<a name="H_Formatter"></a><h3>Formatter</h3>
+<p><a name="BM_(Library%20Functions%5C%2FStrings%2FFormatter)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString)_TOPIC%2F">Library Functions/Strings/String</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString%20View)_TOPIC%2F">Library Functions/Strings/String View</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FTime)_TOPIC%2F">Library Functions/Time</a> (briefly mentioned below)</li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is from a C++ library called fmt which formats strings (similar to Python format strings). It's been included into the C++ standard library as of C++20, which is the version this section <a href="#BM_(reference)%2Fi">reference</a>s.</p>
+</div>
+<p><code>std::format</code> is a string formatting <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that provides functionality very similar to Python's string formatting. Unlike older formatting systems like <code>sprintf()</code>, it's ...</p>
+<ul>
+<li>type-safe in that doesn't require you to know the type of <a href="#BM_(variadic%7Cvararg)%2Fi">vararg</a>s beforehand.</li>
+<li>safe in that it avoids buffer overflows by using C++ strings (<code>std::string</code>) rather than null-terminated character strings (<code>char *</code>).</li>
+<li><a href="#BM_(extends%3F%7Csubclass)%2Fi">extend</a>able in that it's easy to support custom types for the formatter.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Much of this functionality is also available in C++ IO streams, but this is vastly simpler to use.</p>
+</div>
+<pre class="hljs"><code>std::format(<span class="hljs-string">"Hello {}, it's {} degrees outside."</span>, <span class="hljs-string">"steven"</span>, <span class="hljs-number">42</span>);  <span class="hljs-comment">// Hello steven, it's 42 degrees outside</span>
+std::format(<span class="hljs-string">"Here's a number: {0}. Here's that same number again: {0}."</span>, <span class="hljs-number">42</span>); <span class="hljs-comment">// Here's a number: 42. Here's that same number again: 42.</span>
+std::format(<span class="hljs-string">"{0:x&gt;10} {0:x&lt;10}"</span>, <span class="hljs-number">42</span>);  <span class="hljs-comment">// xxxxxxxx42 42xxxxxxxx</span>
+</code></pre>
+<p>The formatting of a parameter is controlled by what's inside of the curly brackets for that parameter. At a minimum, it's is empty (e.g. 1st example above). If it should target a specific argument, it needs to take in the index of that parameter (e.g. 2nd example above). Then, any output options for a specific parameter are specified by inserting a colon followed by those options (e.g. 3rd example above).</p>
+<p>Examples of the most common formatting options are provided below.</p>
+<ul>
+<li>
+<p>Padding and alignment</p>
+<pre class="hljs"><code>std::format(<span class="hljs-string">"{:10}"</span>, <span class="hljs-number">42</span>);   <span class="hljs-comment">// "        42"</span>
+std::format(<span class="hljs-string">"{:&lt;10}"</span>, <span class="hljs-number">42</span>);  <span class="hljs-comment">// "42        "</span>
+std::format(<span class="hljs-string">"{:&gt;10}"</span>, <span class="hljs-number">42</span>);  <span class="hljs-comment">// "        42"</span>
+std::format(<span class="hljs-string">"{:^10}"</span>, <span class="hljs-number">42</span>);  <span class="hljs-comment">// "    42    "</span>
+std::format(<span class="hljs-string">"{:x^10}"</span>, <span class="hljs-number">42</span>); <span class="hljs-comment">// "xxxx42xxxx"</span>
+</code></pre>
+</li>
+<li>
+<p>Number signs (e.g. should plus sign be put on a positive integer)</p>
+<pre class="hljs"><code>std::format(<span class="hljs-string">"{0:},{0:+},{0:-},{0: }"</span>, <span class="hljs-number">1</span>);   <span class="hljs-comment">// "1,+1,1, 1"</span>
+std::format(<span class="hljs-string">"{0:},{0:+},{0:-},{0: }"</span>, <span class="hljs-number">-1</span>);  <span class="hljs-comment">// "-1,-1,-1,-1"</span>
+</code></pre>
+</li>
+<li>
+<p>Number precision (e.g. where to truncate floating point)</p>
+<pre class="hljs"><code>std::format(<span class="hljs-string">"{:.5f}"</span>, <span class="hljs-number">3.14</span>);      <span class="hljs-comment">// "3.14000"</span>
+std::format(<span class="hljs-string">"{:0&gt;10.5f}"</span>, <span class="hljs-number">3.14</span>);  <span class="hljs-comment">// "0003.14000"</span>
+</code></pre>
+</li>
+<li>
+<p>Numeric encoding (e.g. decimal, hex, octal)</p>
+<pre class="hljs"><code>std::format(<span class="hljs-string">"{:d}"</span>, <span class="hljs-number">10</span>);     <span class="hljs-comment">// "10"</span>
+std::format(<span class="hljs-string">"{:x}"</span>, <span class="hljs-number">10</span>);     <span class="hljs-comment">// "a"</span>
+std::format(<span class="hljs-string">"{:#x}"</span>, <span class="hljs-number">10</span>);    <span class="hljs-comment">// "0xa"</span>
+std::format(<span class="hljs-string">"{:#X}"</span>, <span class="hljs-number">10</span>);    <span class="hljs-comment">// "0xA"</span>
+std::format(<span class="hljs-string">"{:#04X}"</span>, <span class="hljs-number">10</span>);  <span class="hljs-comment">// "0x0A"</span>
+std::format(<span class="hljs-string">"{:o}"</span>, <span class="hljs-number">10</span>);     <span class="hljs-comment">// "12"</span>
+std::format(<span class="hljs-string">"{:#o}"</span>, <span class="hljs-number">10</span>);    <span class="hljs-comment">// "012"</span>
+std::format(<span class="hljs-string">"{:b}"</span>, <span class="hljs-number">10</span>);     <span class="hljs-comment">// "1010"</span>
+std::format(<span class="hljs-string">"{:#b}"</span>, <span class="hljs-number">10</span>);    <span class="hljs-comment">// "0b1010"</span>
+</code></pre>
+</li>
+</ul>
+<p><code>std::format</code> provides support for many common parameter types: numbers (e.g. integral and floating point), <a href="#BM_(pointer)%2Fi">pointer</a>s, single characters, character strings (e.g. null-terminated strings, C++ strings, and C++ string views), dates, times, durations, timezones, etc.. To add support for a new type, that type needs a <code>std:formatter</code> <a href="#BM_(template%20specialization)%2Fi">template specialization</a> (note the "er" at the end -- formatter, not format).</p>
+<p>The simplest approach to implement a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> for a custom type is to inherit from an existing <a href="#BM_(template%20specialization)%2Fi">template specialization</a>. Formatting options are typically ignored in this case.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">std</span>::formatter&lt;Person&gt; : std::formatter&lt;std::string&gt; {
+    <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">format</span><span class="hljs-params">(Person s, format_context&amp; ctx)</span> </span>{
+        <span class="hljs-keyword">return</span> format_to(ctx.<span class="hljs-built_in">out</span>(), <span class="hljs-string">"{} {}"</span>, s.firstName, s.lastName);
+    }
+};
+
+Person p { <span class="hljs-string">"steve"</span>, <span class="hljs-string">"smith"</span> };
+std::format(<span class="hljs-string">"Hello {}, the temperature today is {}!"</span>, p, <span class="hljs-number">42</span>);
+</code></pre>
+<p>To support formatting options, an extra function needs to be implemented (<code>parse()</code>) which sets <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s based on the options it sees.</p>
+<pre class="hljs"><code><span class="hljs-comment">// For a better example, see https://www.modernescpp.com/index.php/extend-std-format-in-c-20-for-user-defined-types</span>
+<span class="hljs-keyword">template</span> &lt;&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">std</span>::formatter&lt;Person&gt; {
+    <span class="hljs-type">int</span> space_count;
+
+    <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">parse</span><span class="hljs-params">(format_parse_context&amp; ctx)</span> </span>{
+        std::string val {};
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> it { <span class="hljs-built_in">begin</span>(ctx) }; it != <span class="hljs-built_in">end</span>(ctx); ++it) {
+            <span class="hljs-type">char</span> c { *it };
+            <span class="hljs-keyword">if</span> (c == <span class="hljs-string">'}'</span>) {
+                space_count = std::<span class="hljs-built_in">stoi</span>(val);
+                <span class="hljs-keyword">return</span> it;
+            } <span class="hljs-keyword">else</span> {
+                val += c;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">end</span>(ctx);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">format</span><span class="hljs-params">(Person s, format_context&amp; ctx)</span> </span>{
+        <span class="hljs-function">std::string <span class="hljs-title">spacer</span><span class="hljs-params">(space_count, <span class="hljs-string">' '</span>)</span></span>;
+        <span class="hljs-keyword">return</span> format_to(ctx.<span class="hljs-built_in">out</span>(), <span class="hljs-string">"{}{}{}"</span>, s.firstName, spacer, s.lastName);
+    }
+};
+
+Person p { <span class="hljs-string">"steve"</span>, <span class="hljs-string">"smith"</span> };
+std::format(<span class="hljs-string">"Hello {:1}, the temperature today is {}!"</span>, p, <span class="hljs-number">42</span>);
+</code></pre>
+<a name="H_Regular%20Expressions"></a><h3>Regular Expressions</h3>
+<p><a name="BM_(Library%20Functions%5C%2FStrings%2FRegular%20Expressions)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString)_TOPIC%2F">Library Functions/Strings/String</a></li>
+</ul>
+</div>
+<p><code>std::basic_regex</code> is a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> for regular expression functionality. Similar to <code>std::basic_string</code>, <code>std::basic_regex</code> has several out-of-the-box <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s for specific character types (not all character types).</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a></th>
+<th>character type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::regex</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wregex</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What about other character types (e.g. <code>char8_t</code>)? Not supported because encoding support in C++ is not really there as of C++20. So what encoding is used here? Platform-specific maybe? or ASCII? It's probably stated somewhere but I have yet to find out what it is. On most major platforms, it's probably safe to assume that basic printable ASCII characters are there encoded as they would be in ASCII.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The text and examples below use <code>std::regex</code>, but they should work for the other <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s as well.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FCore%20Types%2FCharacter%20String)_TOPIC%2F">Core Language/Variables/Core Types/Character String</a> (refresher on raw string literals)</li>
+</ul>
+</div>
+<p>To create a <code>std::regex</code>, prime it with a specific regex pattern and optionally regex flags. Unless the pattern string is presented as an initializer list argument, you can't use <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> or <a href="#BM_(brace%5Bsd%5D%3F%5B%5C-%5Cs%5Dplus%5B%5C-%5Cs%5Dequals%3F%20initialization)%2Fi">brace-plus-equals initialization</a>. You must use parenthesis.</p>
+<pre class="hljs"><code>std::regex pattern1 { <span class="hljs-string">'\\'</span>, <span class="hljs-string">'d'</span>, <span class="hljs-string">'+'</span> };  <span class="hljs-comment">// initializer list of pattern.</span>
+<span class="hljs-function">std::regex <span class="hljs-title">pattern2</span><span class="hljs-params">(R<span class="hljs-string">"|\d+|"</span>)</span></span>;
+<span class="hljs-function">std::regex <span class="hljs-title">pattern3</span><span class="hljs-params">(R<span class="hljs-string">"|\d+|"</span>, std::regex_constants::ECMAScript)</span></span>;  <span class="hljs-comment">// equivalent to above</span>
+<span class="hljs-function">std::regex <span class="hljs-title">pattern4</span><span class="hljs-params">(R<span class="hljs-string">"|\d+|"</span>, std::regex_constants::ECMAScript | std::regex_constants::icase)</span></span>;
+</code></pre>
+<p>To get the regex flags, use <code>flags()</code>. To get the number of groups (sub-expressions), use <code>mark_count()</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> flags { pattern1.<span class="hljs-built_in">flags</span>() };
+<span class="hljs-keyword">auto</span> group_count { pattern1.<span class="hljs-built_in">mark_count</span>() };
+</code></pre>
+<p>To search a string for a pattern, use either <code>std::regex_match()</code> or <code>std::regex_search()</code>. Both have the same set of parameters, but the former requires the entire string to match the pattern while the latter searches the string for a substring that matches the pattern. Parameter number ...</p>
+<ol>
+<li>(required) is the string being searched.
+<ul>
+<li>can be <code>std::string</code>.</li>
+<li>can be <code>const char *</code>.</li>
+<li>can be range between <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> positions.</li>
+</ul>
+</li>
+<li>(optional) is a <a href="#BM_(reference)%2Fi">reference</a> to <code>std::match_results</code> where match results go (<a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).
+<ul>
+<li>if parameter 1 is of type <code>std::string</code>, use <a href="#BM_(template%20specialization)%2Fi">template specialization</a> <code>std::smatch</code>.</li>
+<li>if parameter 1 is of type <code>std::wstring</code>, use <a href="#BM_(template%20specialization)%2Fi">template specialization</a> <code>std::wmatch</code>.</li>
+<li>if parameter 1 is of type <code>const char *</code>, use <a href="#BM_(template%20specialization)%2Fi">template specialization</a> <code>std::cmatch</code>.</li>
+<li>if parameter 1 is of type <code>const wchar_t *</code>, use <a href="#BM_(template%20specialization)%2Fi">template specialization</a> <code>std::wcmatch</code>.</li>
+</ul>
+</li>
+<li>(required) is the pattern to search for.</li>
+<li>(optional) is the match flags (optional -- this specifies matching behaviour such as how you should treat EOL)</li>
+</ol>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are lots more specializations for parameter 2. See <a href="https://en.cppreference.com/w/cpp/regex/match_results">here</a> for more information.</p>
+</div>
+<pre class="hljs"><code>std::<span class="hljs-built_in">string</span>(<span class="hljs-string">"hello steven"</span>);
+<span class="hljs-function">std::regex <span class="hljs-title">pattern5</span><span class="hljs-params">(R<span class="hljs-string">"|hello (.*+)|"</span>)</span></span>;
+std::smatch result;
+<span class="hljs-type">bool</span> matched { std::<span class="hljs-built_in">regex_match</span>(s1, result, pattern5, std::regex_constants::match_default) };
+<span class="hljs-comment">// matched contains true if the pattern matched the string</span>
+<span class="hljs-comment">// result contains information about the match (e.g. what parts of the string matched which sub-expressions) -- see cppreference for more info</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If using <code>std::regex_search()</code>, you can continue searching the string by extracting the end position of the search from the match result and running the search again from that position.</p>
+</div>
+<p>To search a string for a pattern and replace it, use <code>std::replace()</code>. Similar to <code>std::regex_match()</code> and <code>std::regex_search()</code>, this also has a flag argument (same type and default) that defines how replacement happens (e.g. <code>$1</code> to replace with capture group 1).</p>
+<pre class="hljs"><code><span class="hljs-function">std::regex <span class="hljs-title">pattern6</span><span class="hljs-params">(R<span class="hljs-string">"|hello (.*+)|"</span>)</span></span>;
+std::string res = std::<span class="hljs-built_in">regex_replace</span>(<span class="hljs-string">"hello steven"</span>, pattern6, <span class="hljs-string">"goodbye $1"</span>);
+<span class="hljs-comment">// res should be "goodbye steven"</span>
+</code></pre>
 <a name="H_Streams"></a><h2>Streams</h2>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
-<p>TODO: fill me in</p>
+<p><a name="BM_(Library%20Functions%5C%2FStreams)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers%2FSequential%2FArray)_TOPIC%2F">Library Functions/Containers/Sequential/Array</a></li>
+</ul>
+</div>
+<p>Similar to Java's <code>InputStream</code> and <code>OutputStream</code> interfaces (and surrounding utilities and packages), the C++ standard library offers several stream <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and interfaces. Similar to <code>std::basic_string</code>, a set of <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are provided for streams.</p>
+<ul>
+<li><code>std::basic_ostream</code> is the equivalent of Java's <code>OutputStream</code>.</li>
+<li><code>std::basic_istream</code> is the equivalent of Java's <code>InputStream</code>.</li>
+<li><code>std::basic_iostream</code> is a combination of the above two.</li>
+</ul>
+<p>Each of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es above requires two <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s: element type of the stream (e.g. is it streaming <code>char</code>s, <code>int</code>s, a custom type, etc..) and a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that describes the element type's traits (e.g. similar to the <code>std::basic_string</code>'s character traits type). <a href="#BM_(template%20specialization)%2Fi">Template specialization</a>s are provided for some commonly used element types (e.g. <code>char</code> and <code>wchar_t</code>).</p>
+<table>
+<thead>
+<tr>
+<th>base stream type</th>
+<th>element type</th>
+<th>specialized stream type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::basic_ostream</code></td>
+<td><code>char</code></td>
+<td><code>std::istream</code></td>
+</tr>
+<tr>
+<td><code>std::basic_istream</code></td>
+<td><code>char</code></td>
+<td><code>std::ostream</code></td>
+</tr>
+<tr>
+<td><code>std::basic_iostream</code></td>
+<td><code>char</code></td>
+<td><code>std::iostream</code></td>
+</tr>
+<tr>
+<td><code>std::basic_ostream</code></td>
+<td><code>wchar_t</code></td>
+<td><code>std::wistream</code></td>
+</tr>
+<tr>
+<td><code>std::basic_istream</code></td>
+<td><code>wchar_t</code></td>
+<td><code>std::wostream</code></td>
+</tr>
+<tr>
+<td><code>std::basic_iostream</code></td>
+<td><code>wchar_t</code></td>
+<td><code>std::wiostream</code></td>
+</tr>
+</tbody>
+</table>
+<p>You typically won't need to implement your own stream types. The C++ standard library provides stream implementations for common use-cases such as reading/writing to the console and files. The subsections below document these implementations, while the remainder of this section discusses the stream API.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The rest of this section talks about the general functionality of streams using <code>std::cout</code> for an output stream / <code>std::cin</code> for an input stream. These are for writing to / reading from the console, which is documented further in one of the subsections. For now just assume they exist.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FOperator%20Overloading)_TOPIC%2F">Core Language/Classes/Operator Overloading</a> (refresher)</li>
+</ul>
+</div>
+<p>To read and write text, <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>s are provided called formatted operations: The left-shift operator (&lt;&lt;) is for writing while the right-shift operator (&gt;&gt;) is for reading. Each <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a> takes in the type to write/read and returns a <a href="#BM_(reference)%2Fi">reference</a> back to the stream itself, allowing for chaining.</p>
+<pre class="hljs"><code>std::cout &lt;&lt; <span class="hljs-number">5</span> &lt;&lt; <span class="hljs-string">' '</span> &lt;&lt; <span class="hljs-string">"hello world"</span>;
+<span class="hljs-type">int</span> x {};
+<span class="hljs-type">int</span> y {};
+std::cin &gt;&gt; x &gt;&gt; y;
+</code></pre>
+<p>By default, the C++ standard library provides <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>s for most <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">built-in type</a>s (e.g. <code>int</code>, <code>long</code>, etc.. ) as well as some higher-level types within the C++ standard library strings (e.g. <code>std::string</code>, <code>std::complex</code>, etc..). To provide support for custom types, simply <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> the operators for that type.</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyType</span> {
+    <span class="hljs-type">int</span> intValue;
+    <span class="hljs-type">long</span> longValue;
+}
+std::ostream&amp; <span class="hljs-keyword">operator</span>&lt;&lt;(std::ostream&amp; s, <span class="hljs-keyword">const</span> MyType&amp; val) {
+    <span class="hljs-keyword">return</span> s &lt;&lt; val.intValue &lt;&lt; val.longValue;
+}
+std::istream&amp; <span class="hljs-keyword">operator</span>&gt;&gt;(std::istream&amp; s, MyType&amp; val) {
+    s &gt;&gt; val.intValue;
+    s &gt;&gt; val.longValue;
+    <span class="hljs-keyword">return</span> s;
+}
+</code></pre>
+<p>Special <a href="#BM_(object%7Cinstance)%2Fi">object</a>s called manipulators may be used to to modify how a stream interprets formatted operations.</p>
+<ul>
+<li><code>std::ws</code> skips over all whitespace in the input.</li>
+<li><code>std::flush</code> flushes any buffered output.</li>
+<li><code>std::ends</code> writes a null byte (e.g. 0).</li>
+<li><code>std::endl</code> writes a newline character and flushes.</li>
+<li><code>std::boolalpha</code> tells the stream to write/read booleans as text rather than 0/1.</li>
+<li><code>std::noboolalpha</code> tells the stream to write/read booleans as 0/1 rather than text.</li>
+<li><code>std::oct</code> tells the stream to write/read integrals as octal.</li>
+<li><code>std::dec</code> tells the stream to write/read integrals as decimal.</li>
+<li><code>std::hex</code> tells the stream to write/read integrals as hexidecimal.</li>
+<li><code>std::setprecision(p)</code> tells the stream to write/read floating point at a specific precision.</li>
+<li><code>std::fixed</code> tells the stream to write/read floating point in fixed notation.</li>
+<li><code>std::scientific</code> tells the stream to write/read floating point in scientific notation.</li>
+</ul>
+<pre class="hljs"><code>std::cin &gt;&gt; std::ws &gt;&gt; x;  <span class="hljs-comment">// skip over whitespace and read into variable</span>
+
+std::cout &lt;&lt; <span class="hljs-string">"hello"</span> &lt;&lt; std::flush; <span class="hljs-comment">// writes string and forces buffer to flush</span>
+std::cout &lt;&lt; <span class="hljs-string">"hello"</span> &lt;&lt; std::ends;  <span class="hljs-comment">// writes string followed by null character</span>
+std::cout &lt;&lt; <span class="hljs-string">"hello"</span> &lt;&lt; std::endl;  <span class="hljs-comment">// writes string followed by new-line character AND forces buffer to flush</span>
+
+std::cout &lt;&lt; std::boolalpha &lt;&lt; <span class="hljs-literal">true</span>;   <span class="hljs-comment">// writes true</span>
+std::cout &lt;&lt; std::noboolalpha &lt;&lt; <span class="hljs-literal">true</span>; <span class="hljs-comment">// writes 1</span>
+std::cin &gt;&gt; std::boolalpha &gt;&gt; b_var;   <span class="hljs-comment">// reads true/false into boolean variable</span>
+std::cin &gt;&gt; std::noboolalpha &gt;&gt; b_var; <span class="hljs-comment">// writes 0/1 into boolean variable</span>
+
+std::cout &lt;&lt; std::oct &lt;&lt; <span class="hljs-number">10</span> &lt;&lt; st::dec &lt;&lt; <span class="hljs-number">10</span> &lt;&lt; std::hex &lt;&lt; <span class="hljs-number">10</span>;            <span class="hljs-comment">// writes 10 as octal, decimal, and hex</span>
+std::cin &gt;&gt; std::oct &gt;&gt; i_var1 &gt;&gt; st::dec &gt;&gt; i_var2 &gt;&gt; std::hex &gt;&gt; i_var3; <span class="hljs-comment">// reads integral as octal, decimal, and hex</span>
+
+std::cout &lt;&lt; std::<span class="hljs-built_in">setprecision</span>(<span class="hljs-number">2</span>) &lt;&lt; <span class="hljs-number">3.14159</span>; <span class="hljs-comment">// writes 3.14</span>
+std::cout &lt;&lt; std::fixed &lt;&lt; <span class="hljs-number">0.1</span>;               <span class="hljs-comment">// writes 0.100000</span>
+std::cout &lt;&lt; std::scientific &lt;&lt; <span class="hljs-number">0.1</span>;          <span class="hljs-comment">// writes 1.000000e-01</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FImplicit%20Conversion)_TOPIC%2F">Core Language/Variables/Implicit Conversion</a> (refresher)</li>
+</ul>
+</div>
+<p>At any point, a stream may end or enter into a bad state. A set of <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s can be used to query the state.</p>
+<ul>
+<li><code>good()</code> returns true if the stream is in a good state.</li>
+<li><code>eof()</code> returns true if the stream has ended.</li>
+<li><code>fail()</code> returns true if the last operation failed (but the stream may still be usable).</li>
+<li><code>bad()</code> returns true if the stream is in an unrecoverable state.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>At any point, you can call <code>clear()</code> to reset the state to good. Why would you ever want to do this?</p>
+</div>
+<p>In addition, <code>exceptions()</code> can be used to make the stream throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> if it enters into one (or more) of the states listed above.</p>
+<pre class="hljs"><code>std::cin.<span class="hljs-built_in">exceptions</span>(std::istream::badbit | std::istream::failbit); <span class="hljs-comment">// exception if bad/fail, but not good/eof</span>
+</code></pre>
+<p>Streams provide an <a href="#BM_(implicit%20type%20conversion)%2Fi">implicit type conversion</a> for <code>bool</code> that gives back the result of <code>good()</code>, allowing for shorthand testing of the stream state.</p>
+<pre class="hljs"><code><span class="hljs-comment">// keep reading characters until the stream breaks or eof</span>
+<span class="hljs-keyword">while</span> (std::cin) {
+    <span class="hljs-type">char</span> ch {};
+    std::cin &gt;&gt; ch;
+    <span class="hljs-built_in">process</span>(ch);
+}
+</code></pre>
+<p>To read non-text data, a set of <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s referred to as unformatted operations are available.</p>
+<p>To read non-text data, use <code>get()</code>, <code>peek()</code>, <code>getline()</code>, <code>read()</code>, <code>readsome()</code>, and <code>ignore()</code>. <code>gcount()</code> may be used to determine exactly how many characters were read in one of these functions (e.g. may have terminated early because it hit end-of-file or a new-line character).</p>
+<pre class="hljs"><code><span class="hljs-type">char</span> ch {};
+std:array&lt;<span class="hljs-type">char</span>, 100&gt; arr {};
+
+ch = std::cin.<span class="hljs-built_in">peek</span>(); <span class="hljs-comment">// read single character WITHOUT moving forward in  the stream</span>
+ch = std::cin.<span class="hljs-built_in">get</span>();  <span class="hljs-comment">// read single character</span>
+std::cin.<span class="hljs-built_in">get</span>(ch);     <span class="hljs-comment">// read single character</span>
+std::cin.<span class="hljs-built_in">get</span>(arr, <span class="hljs-number">100</span>);           <span class="hljs-comment">// read 100 characters OR until \n (\n included in arr)</span>
+std::cin.<span class="hljs-built_in">get</span>(arr, <span class="hljs-number">100</span>, <span class="hljs-string">';'</span>);      <span class="hljs-comment">// read 100 characters OR until ;  (; included in arr)</span>
+std::cin.<span class="hljs-built_in">getline</span>(arr, <span class="hljs-number">100</span>);       <span class="hljs-comment">// read 100 characters OR until \n (\n DISCARDED)</span>
+std::cin.<span class="hljs-built_in">getline</span>(arr, <span class="hljs-number">100</span>, <span class="hljs-string">';'</span>);  <span class="hljs-comment">// read 100 characters OR until ;  (; DISCARDED)</span>
+std::cin.<span class="hljs-built_in">read</span>(arr, <span class="hljs-number">100</span>);          <span class="hljs-comment">// read 100 characters</span>
+std::cin.<span class="hljs-built_in">readsome</span>(arr, <span class="hljs-number">100</span>);      <span class="hljs-comment">// read 100 characters or however many are "immediately available"</span>
+std::cin.<span class="hljs-built_in">ignore</span>();        <span class="hljs-comment">// skip single char</span>
+std::cin.<span class="hljs-built_in">ignore</span>(<span class="hljs-number">5</span>);       <span class="hljs-comment">// skip 5 chars</span>
+std::cin.<span class="hljs-built_in">ignore</span>(<span class="hljs-number">5</span>, <span class="hljs-string">'\n'</span>); <span class="hljs-comment">// skip up to 5 chars, stopping if \n is encountered (stops AFTER skipping \n)</span>
+
+<span class="hljs-keyword">auto</span> count { std::cin.<span class="hljs-built_in">gcount</span>() };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>readsome()</code> is a little more dicey in that how it works is implementation specific.</p>
+</div>
+<p>To write non-text data, use <code>put()</code> and <code>write()</code>. For buffered streams, the buffer may be explicitly flushed by <code>flush()</code>.</p>
+<pre class="hljs"><code>std::cout.<span class="hljs-built_in">put</span>(<span class="hljs-string">'x'</span>);         <span class="hljs-comment">// write single character</span>
+std::cout.<span class="hljs-built_in">put</span>(<span class="hljs-string">"hello"</span>, <span class="hljs-number">5</span>);  <span class="hljs-comment">// write 5 characters</span>
+std::cout.<span class="hljs-built_in">flush</span>();
+</code></pre>
+<p>To get and move the position of the underlying stream, use <code>tell*()</code> and <code>seek*()</code> respectively. The suffix depends on the type of stream:</p>
+<ul>
+<li>input streams use <code>tellg()</code> / <code>seekg()</code></li>
+<li>output streams use <code>tellp()</code> / <code>seekp()</code></li>
+<li>input output streams use <code>tell()</code> / <code>seek()</code></li>
+</ul>
+<pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> not supported on all stream types</span>
+<span class="hljs-keyword">auto</span> pos { std::cin.<span class="hljs-built_in">tellg</span>() };
+</code></pre>
+<a name="H1_String"></a><h3>String</h3>
+<p><a name="BM_(Library%20Functions%5C%2FStreams%2FString)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString)_TOPIC%2F">Library Functions/Strings/String</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString%20View)_TOPIC%2F">Library Functions/Strings/String View</a></li>
+</ul>
+</div>
+<p>String streams are equivalent to Java's <code>ByteArrayInputStream</code> / <code>StringReader</code> and <code>ByteArrayOutputStream</code> / <code>StringWriter</code>. The underlying types for string streams are ...</p>
+<ul>
+<li><code>std::basic_istringstream</code> for input string stream.</li>
+<li><code>std::basic_ostringstream</code> for output string stream.</li>
+<li><code>std::basic_stringstream</code> for both input and output string stream.</li>
+</ul>
+<p>The above types are <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es, where the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s specify element type, element traits, and a custom allocator. The following <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s are provided out-of the box...</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>element type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::ostringstream</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wostringstream</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+<tr>
+<td><code>std::istringstream</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wistringstream</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+<tr>
+<td><code>std::stringstream</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wstringstream</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The text and examples below use <code>std::ostringstream</code> / <code>std::istringstream</code>, but they should work for the other <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s as well. Make sure to use the correct literal for raw character string types (e.g. <code>u8"example"</code> for <code>char_8t</code>).</p>
+</div>
+<p>For output string streams, in addition to all of the normal output stream functionality, ...</p>
+<ul>
+<li><code>str()</code> returns a copy of the internal buffer as a <code>std::string</code>.</li>
+<li><code>view()</code> returns a view to the internal buffer as a <code>std::string_view</code>.</li>
+</ul>
+<pre class="hljs"><code>std::ostringstream out {};
+out &lt;&lt; <span class="hljs-number">3</span> &lt;&lt; <span class="hljs-string">"hello!"</span> &lt;&lt; std::endl;
+std::string output { out.<span class="hljs-built_in">str</span>() };
+std::string_view view { out.<span class="hljs-built_in">view</span>() };
+</code></pre>
+<p>Input string streams have the same two <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>s, but they're hardly used because the main point of input string streams is to parse data out of the stream.</p>
+<pre class="hljs"><code>std::istringstream in { <span class="hljs-string">"1 9.555555"</span> };
+<span class="hljs-type">int</span> x;
+<span class="hljs-type">double</span> y;
+in &gt;&gt; x &gt;&gt; y;
+</code></pre>
+<a name="H_File"></a><h3>File</h3>
+<p><a name="BM_(Library%20Functions%5C%2FStreams%2FFile)_TOPIC%2F"></a><strong></strong></p>
+<p>File streams are equivalent to Java's <code>FileInputStream</code> and <code>FileOutputStream</code>. The underlying types for string stream are ...</p>
+<ul>
+<li><code>std::basic_ifstream</code> for input string streams.</li>
+<li><code>std::basic_ofstream</code> for output string streams.</li>
+<li><code>std::basic_fstream</code> for both input and output string stream.</li>
+</ul>
+<p>The above types are <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es, where the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s specify element type, element traits, and a custom allocator. The following <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s are provided out-of the box...</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>element type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::ofstream</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wofstream</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+<tr>
+<td><code>std::ifstream</code></td>
+<td><code>char</code></td>
+</tr>
+<tr>
+<td><code>std::wifstream</code></td>
+<td><code>wchar_t</code></td>
+</tr>
+<tr>
+<td><code>std::fstream</code></td>
+<td><code>char</code></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The text and examples below use <code>std::ofstream</code> / <code>std::ifstream</code>, but they should work for the other <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s as well. Make sure to use the correct literal for raw character string types (e.g. <code>u8"example"</code> for <code>char_8t</code>).</p>
+</div>
+<p>To access a file, either pass that file's path to the <a href="#BM_(constructor)%2Fi">constructor</a> or to <code>open()</code> along with the set of file access flags. Those flags are ...</p>
+<ul>
+<li><code>std::ios::in</code> - file must exist.</li>
+<li><code>std::ios::out</code> - file created if it doesn't exist.</li>
+<li><code>std::ios::app</code> - file created if it doesn't exist AND writes go to the end of the file.</li>
+<li><code>std::ios::trunc</code> - file contents discarded.</li>
+<li><code>std::ios::binary</code> - if set, no implicit text manipulations are performed on the file (e.g. replacing <code>\n</code> with <code>\r\n</code> or vice-versa).</li>
+</ul>
+<pre class="hljs"><code>std::fstream f1 { <span class="hljs-string">"/path/to/file.txt"</span>, std::ios::in | std::ios::trunc }; <span class="hljs-comment">// file must exist AND truncate it</span>
+std::fstream f2 {};
+f2.<span class="hljs-built_in">open</span>(<span class="hljs-string">"/path/to/file.txt"</span>, std::ios::in | std::ios::trunc); <span class="hljs-comment">// same open operation as f1</span>
+</code></pre>
+<p>To close a file, use <code>close()</code> or call the stream <a href="#BM_(object%7Cinstance)%2Fi">object</a>'s <a href="#BM_(destructor)%2Fi">destructor</a> by destroying it.</p>
+<pre class="hljs"><code>f1.<span class="hljs-built_in">close</span>();
+</code></pre>
+<p>To check if the stream has a file open, use <code>is_open()</code>.</p>
+<pre class="hljs"><code><span class="hljs-type">bool</span> open { f1.<span class="hljs-built_in">is_open</span>() };
+</code></pre>
+<p>To read and write, the standard stream mechanisms are available: formatted operations and unformatted operations.</p>
+<pre class="hljs"><code><span class="hljs-comment">// write</span>
+f1 &lt;&lt; <span class="hljs-number">3</span> &lt;&lt; <span class="hljs-string">"hello!"</span> &lt;&lt; std::endl; <span class="hljs-comment">// write</span>
+<span class="hljs-comment">// read</span>
+<span class="hljs-type">int</span> x;
+<span class="hljs-type">double</span> y;
+f1 &gt;&gt; x &gt;&gt; y;
+</code></pre>
+<p>To get and set the position, the standard stream mechanisms are available: <code>seek*()</code> and <code>tell*()</code></p>
+<pre class="hljs"><code>f1.<span class="hljs-built_in">seek</span>(<span class="hljs-number">500</span>);
+<span class="hljs-keyword">auto</span> pos { f1.<span class="hljs-built_in">tell</span>() };
+</code></pre>
+<p>To handle IO errors, the standard stream mechanisms are available: <code>exceptions()</code> to throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s or explicitly check flags (e.g. invoke <code>good()</code>).</p>
+<pre class="hljs"><code>f1.<span class="hljs-built_in">exceptions</span>(std::istream::badbit | std::istream::failbit); <span class="hljs-comment">// exception if bad/fail, but not good/eof</span>
+</code></pre>
+<a name="H_Global"></a><h3>Global</h3>
+<p><a name="BM_(Library%20Functions%5C%2FStreams%2FGlobal)_TOPIC%2F"></a><strong></strong></p>
+<p>For console access, global streams provides access to standard input, standard output, and standard error. Global streams are presented to the user as global variables.</p>
+<table>
+<thead>
+<tr>
+<th>channel</th>
+<th>element type</th>
+<th>global variable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>standard in</td>
+<td><code>char</code></td>
+<td><code>std::cin</code></td>
+</tr>
+<tr>
+<td>standard out</td>
+<td><code>char</code></td>
+<td><code>std::cout</code></td>
+</tr>
+<tr>
+<td>standard error</td>
+<td><code>char</code></td>
+<td><code>std::cerr</code></td>
+</tr>
+<tr>
+<td>standard in</td>
+<td><code>wchar_t</code></td>
+<td><code>std::wcin</code></td>
+</tr>
+<tr>
+<td>standard out</td>
+<td><code>wchar_t</code></td>
+<td><code>std::wcout</code></td>
+</tr>
+<tr>
+<td>standard error</td>
+<td><code>wchar_t</code></td>
+<td><code>std::wcerr</code></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The text and examples below use <code>std::cout</code> / <code>std::cin</code> / <code>std::cerr</code>, but they should work for the other <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s as well. Make sure to use the correct literal for raw character string types (e.g. <code>u8"example"</code> for <code>char_8t</code>).</p>
+</div>
+<p>To read and write, the standard stream mechanisms are available: formatted operations and unformatted operations.</p>
+<pre class="hljs"><code><span class="hljs-comment">// write</span>
+std::cout &lt;&lt; <span class="hljs-number">3</span> &lt;&lt; <span class="hljs-string">"hello!"</span> &lt;&lt; std::endl; <span class="hljs-comment">// write</span>
+<span class="hljs-comment">// read</span>
+<span class="hljs-type">int</span> x;
+<span class="hljs-type">double</span> y;
+std::cin &gt;&gt; x &gt;&gt; y;
+</code></pre>
+<p>To handle IO errors, the standard stream mechanisms are available: <code>exceptions()</code> to throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s or explicitly check flags (e.g. invoke <code>good()</code>).</p>
+<pre class="hljs"><code>std::cin.<span class="hljs-built_in">exceptions</span>(std::istream::badbit | std::istream::failbit); <span class="hljs-comment">// exception if bad/fail, but not good/eof</span>
+</code></pre>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
 <p><a name="BM_(preprocessor%7Ctranslation%20unit)%2Fi"></a><strong>preprocessor</strong> - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See compilation section.</p>
-</div>
 </li>
 <li>
 <p><a name="BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi"></a><strong>compiler</strong> - A tool that takes in a <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a> to produce an intermediary format called an <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">object file</a>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See compilation section.</p>
-</div>
 </li>
 <li>
 <p><a name="BM_(linker%7Cexecutable)%2Fi"></a><strong>linker</strong> - A tool that takes multiple <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">object file</a>s to produce an <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>. <a href="#BM_(linker%7Cexecutable)%2Fi">Linker</a>s are also responsible for finding libraries used by the program and integrating them into the <a href="#BM_(linker%7Cexecutable)%2Fi">executable</a>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See compilation section.</p>
-</div>
 </li>
 <li>
 <p><a name="BM_(enumeration%7Cenum)%2Fi"></a><strong>enumeration</strong> - A <a href="#BM_(user%5B%5Cs%5C-%5Ddefined%20type)%2Fi">user-defined type</a> that can be set to one of a set of possibilities.</p>
@@ -8529,6 +9427,12 @@ T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</spa
 </li>
 <li>
 <p><a name="BM_(smart%20pointer)%2Fi"></a><strong>smart pointer</strong> - A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that wraps a <a href="#BM_(pointer)%2Fi">pointer</a> to a dynamically <a href="#BM_(object%7Cinstance)%2Fi">object</a>. The <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> provides some level of automated <a href="#BM_(pointer)%2Fi">pointer</a> management / memory management through the use of move semantics, <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a>, and <a href="#BM_(RAII%7CCADRe)%2F">RAII</a>.</p>
+</li>
+<li>
+<p><a name="BM_(namespace)%2Fi"></a><strong>namespace</strong> - C++'s mechanism of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python.</p>
+</li>
+<li>
+<p><a name="BM_(unnamed%20namespace)%2Fi"></a><strong>unnamed namespace</strong> - A special <a href="#BM_(namespace)%2Fi">namespace</a> that limits the visibility of the code to the containing <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>, meaning that code can't be <a href="#BM_(reference)%2Fi">reference</a>d at all outside of the <a href="#BM_(preprocessor%7Ctranslation%20unit)%2Fi">translation unit</a>.</p>
 </li>
 </ul>
 <p>

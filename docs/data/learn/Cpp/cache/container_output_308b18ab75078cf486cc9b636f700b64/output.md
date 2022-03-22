@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Core Language/Variables/References_TOPIC
- * Core Language/Expression Categories_TOPIC
+ * Library Functions/Strings/String_TOPIC
 
 </div>
 
