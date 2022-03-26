@@ -125,31 +125,28 @@ def common_prefix_len(s1: str, s2: str):
     return count
 
 
-def walk_as_long_as_purple(tree: Graph[int, str, int, EdgeData], n: int, prev_str: str):
+def walk_until_non_purple(tree: Graph[int, str, int, EdgeData], n: int, stop_color: str, prev_str: str):
     assert tree.get_node_data(n) == 'purple'
     for e in tree.get_outputs(n):
         e_data = tree.get_edge_data(e)
         next_n = tree.get_edge_to(e)
+        if tree.get_node_data(next_n) == stop_color:
+            yield prev_str, e_data.text
         if tree.get_node_data(next_n) != 'purple':
             continue
         next_str = prev_str + e_data.text
-        yield next_str
-        yield from walk_as_long_as_purple(tree, next_n, next_str)
+        yield from walk_until_non_purple(tree, next_n, stop_color, next_str)
 
 
-def longest_repeat(tree: Graph[int, str, int, EdgeData], end_markers: set[str]):
-    # Walk the tree depth-first -- everything up until a branch
+def shortest_non_repeat(tree: Graph[int, str, int, EdgeData], stop_color: str, end_markers: set[str]):
     root = tree.get_root_node()
     found = ''
-    for text in walk_as_long_as_purple(tree, root, ''):
-        # Strip off end marker if it exists?
-        found_end_markers = [m for m in end_markers if text.endswith(m)]
-        if found_end_markers:
-            assert len(found_end_markers) == 1
-            end_marker = found_end_markers.pop(0)
-            text = text[:-len(end_marker)]
-        # Keep it if it's the longest seen so far
-        if len(text) > len(found):
+    for purple_text, to_non_purple_text in walk_until_non_purple(tree, root, stop_color, ''):
+        next_ch = to_non_purple_text[0]
+        if next_ch in end_markers:
+            continue
+        text = purple_text + next_ch
+        if found == '' or len(text) < len(found):
             found = text
     return found
 
@@ -157,7 +154,7 @@ def longest_repeat(tree: Graph[int, str, int, EdgeData], end_markers: set[str]):
 def color_tree_leaves(tree: Graph[int, str, int, EdgeData], text1Len: int, text2Len: int):
     for n in set(tree.get_leaf_nodes()):
         _, _, _, ed = tree.get_input_full(n)
-        if len(ed.text) < text1Len:
+        if len(ed.text) <= text1Len:
             tree.update_node_data(n, 'blue')
         else:
             tree.update_node_data(n, 'red')
@@ -186,7 +183,7 @@ def color_tree_internal(tree: Graph[int, str, int, EdgeData]):
 
 
 
-with open('/home/user/Downloads/dataset_240378_6.txt', mode='r', encoding='utf-8') as f:
+with open('/home/user/Downloads/dataset_240378_7.txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 data = [l.strip() for l in data.strip().split('\n')]
 text1 = data[0] + '#'
@@ -195,6 +192,6 @@ tree = construct_suffix_tree(text1 + text2)
 color_tree_leaves(tree, len(text1), len(text2))
 color_tree_internal(tree)
 # print(f'{to_dot(tree)}')
-print(f'{longest_repeat(tree, {"#", "$"})}')
+print(f'{shortest_non_repeat(tree, "red", {"#", "$"})}')
 
 
