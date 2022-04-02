@@ -18736,6 +18736,93 @@ PracticalGEODatasetClustering
    As a further optimization, rather than assigning each edge to a substring, assign it the position range of that substring within the larger string (start index and end index / start index and length). There may be more than 1 position range for each edge -- either store all of them or just store one (e.g. the one closest to the beginning of the string).
    ```
 
+ * `{bm} pre-order traversal/(pre[-\s]?order traversal)/i` - A form of depth-first traversal for binary trees where, starting from the root node, ...
+
+   1. visit current node.
+   2. recursively visit current node's left subtree.
+   3. recursively visit current node's right subtree.
+
+   ```{svgbob}
+        F
+       / \
+      /   \
+     B     G
+    / \     \
+   A   D     I
+      / \   /
+     C   E H
+   
+   "pre-order traversal: F, B, A, D, C, E, G, I, H"
+   ```
+
+   ```{note}
+   Pre-order traversal is sometimes referred to as NLR (node-left-right).
+
+   For reverse pre-order traversal, swap steps 2 and 3: NRL (node-right-left).
+   ```
+
+   ```{note}
+   This is a form of topological order traversal because the parent node is traversed before its children.
+   ```
+ 
+   The term pre-order traversal also applies to non-binary trees (variable number of children per node): If the children have a specific order, pre-order traversal recursively visits each from first (left-most) to last (right-most).
+
+ * `{bm} post-order traversal/(post[-\s]?order traversal)/i` - A form of depth-first traversal for binary trees where, starting from the root node, ...
+
+   1. recursively visit current node's left subtree.
+   2. recursively visit current node's right subtree.
+   3. visit current node.
+
+   ```{svgbob}
+        F
+       / \
+      /   \
+     B     G
+    / \     \
+   A   D     I
+      / \   /
+     C   E H
+   
+   "post-order traversal: A, C, E, D, B, H, I, G, F"
+   ```
+
+   ```{note}
+   Post-order traversal is sometimes referred to as LRN (left-right-node).
+
+   For reverse post-order traversal, swap steps 1 and 2: RLN (right-left-node).
+   ```
+ 
+   The term post-order traversal also applies to non-binary trees (variable number of children per node): If the children have a specific order, post-order traversal recursively visits each from last (right-most) to first (left-most).
+
+ * `{bm} in-order traversal/(in[-\s]?order traversal)/i` - A form of depth-first traversal for binary trees where, starting from the root node, ...
+
+   1. recursively visit current node's left subtree.
+   2. visit current node.
+   3. recursively visit current node's right subtree.
+
+   ```{svgbob}
+        F
+       / \
+      /   \
+     B     G
+    / \     \
+   A   D     I
+      / \   /
+     C   E H
+   
+   "in-order traversal: A, B, C, D, E, F, G, H, I"
+   ```
+
+   ```{note}
+   In-order is sometimes referred to as LNR (left-node-right).
+
+   For reverse in-order traversal, swap steps 1 and 3: RNL (right-node-left).
+   ```
+
+   ```{note}
+   It's unclear if there's an analog for this for non-binary trees (variable number of children per node). Maybe if the children have a specific order, it recursively visits the first half (left children), then visits the parent node, then recursively visits the last half (right children). But, how would this work if there were an odd number of children? The middle child wouldn't be in the left-half or right-half.
+   ```
+
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
 

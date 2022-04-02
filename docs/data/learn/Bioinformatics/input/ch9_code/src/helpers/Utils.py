@@ -28,13 +28,13 @@ def contains_all_sorted(sorted_this: S, sorted_other: S) -> bool:
     return True
 
 
-def rotate_right(l: S) -> Generator[S]:
-    for i in range(0, len(l)):
+def rotate_left(l: S) -> Generator[S]:
+    for i in range(1, len(l)):
         yield l[i:] + l[:i]
 
 
-def rotate_left(l: S) -> Generator[S]:
-    for i in range(len(l), -1, -1):
+def rotate_right(l: S) -> Generator[S]:
+    for i in range(len(l) - 1, -1, -1):
         yield l[i:] + l[:i]
 
 
