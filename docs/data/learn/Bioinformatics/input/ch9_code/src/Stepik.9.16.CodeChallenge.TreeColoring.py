@@ -18,7 +18,7 @@ def to_dot(g: DirectedGraph.Graph) -> str:
     ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
     for n in sorted(g.get_nodes()):
         data = g.get_node_data(n)
-        ret += f'{n} [label="{n}\\n{data}"]\n'
+        ret += f'{n} [style=filled fillcolor={data}]\n'
     for e in sorted(g.get_edges()):
         n1, n2, data = g.get_edge(e)
         ret += f'{n1} -> {n2}\n'
@@ -47,7 +47,7 @@ def color_tree(tree: DirectedGraph.Graph):
             tree.update_node_data(n, 'purple')
 
 
-with open('/home/user/Downloads/dataset_240389_6(7).txt', mode='r', encoding='utf-8') as f:
+with open('/home/user/Downloads/dataset_240389_6(8).txt', mode='r', encoding='utf-8') as f:
     data = f.read()
 lines = [l.strip() for l in data.strip().split('\n')]
 lines_split_point = lines.index('-')
