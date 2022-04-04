@@ -3898,7 +3898,7 @@ MyClass myClass{}
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The book says that these are / are related to "type functions". I can't find much information on this or how to create new "type functions".</p>
+<p>The book says that these are related to "type functions". I can't find much information on this or how to create new "type functions".</p>
 </div>
 <p>Use the <code>requires</code> keyword immediately after the <a href="#BM_(template)%2Fi">template</a> to target a set of <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s to a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;
@@ -3907,7 +3907,7 @@ MyClass myClass{}
     <span class="hljs-keyword">return</span> (var1 + var2) * var2;
 }
 </code></pre>
-<p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a> may also be directly embedded into the <a href="#BM_(template)%2Fi">template</a> itself.</p>
+<p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a>s may also be directly embedded into the <a href="#BM_(template)%2Fi">template</a> itself.</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;
     <span class="hljs-keyword">requires</span> std::is_default_constructible&lt;T1&gt;::value   <span class="hljs-comment">// same as above, but "MyConcept&lt;T1, T2, T1&gt;" has been embedded</span>
             &amp;&amp; std::is_default_constructible&lt;T2&gt;::<span class="hljs-function">value
@@ -3932,7 +3932,18 @@ MyClass myClass{}
 <span class="hljs-comment">// usage of concept</span>
 <span class="hljs-keyword">template</span> &lt;SingleTypeConcept X&gt;  <span class="hljs-comment">// this line is updated -- "typename T" replaced with "SingleTypeConcept T"</span>
 <span class="hljs-function">X <span class="hljs-title">add_and_multiply</span><span class="hljs-params">(X &amp;var1, X &amp;var2)</span> </span>{
-    <span class="hljs-keyword">return</span> (var1 + var2) * var2;
+    X x { var1 + var <span class="hljs-number">2</span>};
+    <span class="hljs-keyword">return</span> x * var2;
+}
+</code></pre>
+<p>For function <a href="#BM_(template)%2Fi">template</a>s specifically, rather than parameterizing using <code>template</code>, a common shorthand is to use <code>auto</code> for the return type / parameter types being <a href="#BM_(template)%2Fi">template</a>d. The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> automatically infers the correct types based on usage. Each <code>auto</code> parameter / return type can have a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> applied to it by placing that <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>'s name just before <code>auto</code>. For example, the usage of <code>SingleTypeConcept</code> in the example above can be rewritten as follows.</p>
+<pre class="hljs"><code><span class="hljs-comment">// usage of concept</span>
+<span class="hljs-function">SingleTypeConcept <span class="hljs-keyword">auto</span> <span class="hljs-title">add_and_multiply</span><span class="hljs-params">(
+    SingleTypeConcept <span class="hljs-keyword">auto</span> &amp;var1,
+    SingleTypeConcept <span class="hljs-keyword">auto</span> &amp;var2
+)</span> </span>{
+    <span class="hljs-keyword">auto</span> x { var1 + var <span class="hljs-number">2</span>};
+    <span class="hljs-keyword">return</span> x * var2;
 }
 </code></pre>
 <a name="H1_Variadic"></a><h3>Variadic</h3>
@@ -6288,6 +6299,13 @@ s1.<span class="hljs-built_in">clear</span>();
 <li>if initializing to a list of key-value pairs, each element of the initializer list must be <code>std::pair&lt;K,V&gt;</code> (<code>K</code> is key type, <code>V</code> is value type).</li>
 </ol>
 <pre class="hljs"><code><span class="hljs-comment">// prime</span>
+std::map&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s0 {
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined</span>
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">2</span>, <span class="hljs-number">-100.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">4</span>, <span class="hljs-number">123.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">5</span>, <span class="hljs-number">4.0f</span> }
+};
 std::map&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s1 {
     { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
     { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined</span>
@@ -6334,13 +6352,18 @@ std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</
 </ul>
 <pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)</span>
 s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">insert</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">try_emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">try_emplace</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 </code></pre>
 <p>To replace a value for an already existing key, <code>insert_or_assign()</code> either copies or moves into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>), replacing it if it already exists.</p>
 <pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)</span>
 s1.<span class="hljs-built_in">insert_or_assign</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">insert_or_assign</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 </code></pre>
 <p>To delete an element at some specific <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position, use either <code>extract()</code> or <code>erase()</code>. The difference is that <code>extract()</code> will return the key-value while <code>erase()</code> won't.</p>
 <pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
@@ -6391,6 +6414,13 @@ l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment
 </div>
 <p>To create a <code>std::multimap</code>, the same <code>std::map</code> <a href="#BM_(constructor)%2Fi">constructor</a>s apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.</p>
 <pre class="hljs"><code><span class="hljs-comment">// prime</span>
+std::unordered_multimap&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s0 {
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> this is the 2nd instance of the key 1, both key-value pairs are kept</span>
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">2</span>, <span class="hljs-number">-100.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">4</span>, <span class="hljs-number">123.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">5</span>, <span class="hljs-number">4.0f</span> }
+};
 std::unordered_multimap&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s1 {
     { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
     { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> this is the 2nd instance of the key 1, both key-value pairs are kept</span>
@@ -6429,8 +6459,11 @@ std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</
 <span class="hljs-keyword">auto</span> it2 { s1.<span class="hljs-built_in">upper_bound</span>(<span class="hljs-number">4</span>) }; <span class="hljs-comment">// get iterator to elem just after 4 (could be s1.end() if no such elem)</span>
 <span class="hljs-comment">// add</span>
 s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">insert</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});  <span class="hljs-comment">// iterator should be near to where the value is</span>
 <span class="hljs-comment">// remove</span>
 <span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
 <span class="hljs-type">int</span> res { s1.<span class="hljs-built_in">extract</span>(it1) };  <span class="hljs-comment">// WARNING: it1 invalid after this point</span>
@@ -6462,10 +6495,23 @@ s1.<span class="hljs-built_in">clear</span>();
 <a name="H_Unordered%20Associative"></a><h3>Unordered Associative</h3>
 <p><a name="BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative)_TOPIC%2F"></a><strong></strong></p>
 <p>Unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers organize <a href="#BM_(object%7Cinstance)%2Fi">object</a>s by key and potentially a value. Keys are stored in an unordered fashion. The underlying data structure used by unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers is a hash table.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Unsure if the spec defines if they should be implemented as red-black trees, but from what I've read that's how they're implemented.</p>
-</div>
+<p>By default, unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers attempt to hash keys by calling <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s of <code>std::hash&lt;T&gt;</code>. Several pre-existing <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s are provided by the C++ standard library (e.g. <code>int</code> ,<code>long</code>, <code>std::string</code>, etc..), but custom types need their own specialization to be written by the user.</p>
+<p><code>std::hash&lt;T&gt;</code> implementations must be exposed as a <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> that takes in the type in question and returns a <code>std::size_t</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">std</span>::hash&lt;MyType&gt; {
+    <span class="hljs-function">std::<span class="hljs-type">size_t</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(S <span class="hljs-keyword">const</span>&amp; s)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">noexcept</span> </span>{
+        std::<span class="hljs-type">size_t</span> h1 { std::hash&lt;std::string&gt;{} (s.student_name) };
+        std::<span class="hljs-type">size_t</span> h2 { std::hash&lt;<span class="hljs-type">int</span>&gt;{} (s.student_age) };
+        <span class="hljs-keyword">return</span> h1 ^ h2; <span class="hljs-comment">// see boost::hash_combine</span>
+    }
+};
+</code></pre>
+<p>A common point of confusion is what you have to do to use <code>std::hash</code> with a <a href="#BM_(reference)%2Fi">reference</a> type. Note that the <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function call operator</a> in the example above is taking a <a href="#BM_(reference)%2Fi">reference</a>, meaning you always use the non-<a href="#BM_(reference)%2Fi">reference</a> type as the type argument when invoking.</p>
+<pre class="hljs"><code><span class="hljs-type">int</span> x { <span class="hljs-number">55</span> };
+<span class="hljs-type">int</span> &amp; xRef { x };
+std::<span class="hljs-type">size_t</span> hash1 { std::hash&lt;<span class="hljs-type">int</span>&gt;{} (x) };
+std::<span class="hljs-type">size_t</span> hash2 { std::hash&lt;<span class="hljs-type">int</span>&gt;{} (xRef) };
+</code></pre>
 <p>The subsections below detail the various unordered <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> containers that are provided by the C++ standard library.</p>
 <a name="H1_Set"></a><h4>Set</h4>
 <p><a name="BM_(Library%20Functions%5C%2FContainers%2FUnordered%20Associative%2FSet)_TOPIC%2F"></a><strong></strong></p>
@@ -6478,6 +6524,10 @@ s1.<span class="hljs-built_in">clear</span>();
 </div>
 <p><code>std::unordered_set</code> is a container that's similar to <code>std::set</code>. It holds on to unique elements but does so <em>unordered</em> (whereas <code>std::set</code> has some sort order). It's implemented as a hash table, so rather than having to specify a comparator, you're required to specify a hash function.</p>
 <p>Several pre-existing hash functions are provided by the C++ standard library via <code>std::hash&lt;T&gt;</code> (<code>T</code> being the type in question). If the user doesn't supply a hash function directly, the default is to use <code>std::hash&lt;T&gt;</code> with the element type substituted in (compilation will fail if no <code>std::hash&lt;T&gt;</code> implementation for that element type exists). For example, <code>std::hash&lt;int&gt;</code> exists for integers and gets automatically plugged in when the element type of the container is <code>int</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Details on providing a custom <code>std::hash&lt;T&gt;</code> implementation are in the parent section.</p>
+</div>
 <p>In addition to a hash function, a <code>std::unordered_set</code> may have a custom equivalence function. By default, <code>std::equal_to&lt;T&gt;</code> is used if none is supplied by the user, which uses the equality operator (==).</p>
 <p>To create a <code>std::unordered_set</code> primed with a sequence of values known as <a href="#BM_(compile-time)%2Fi">compile-time</a>, use typical <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a>. Since only unique values are allowed, duplicates will be ignored.</p>
 <pre class="hljs"><code>std::unordered_set&lt;<span class="hljs-type">int</span>&gt; s1 { <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> };
@@ -6584,6 +6634,11 @@ l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment
 </ul>
 </div>
 <p><code>std::unordered_multiset</code> is a container that, like a <code>std::unordered_set</code>, holds on to unordered elements. Like <code>std::unordered_set</code>, it requires a hashing function and an equivalence function (same defaults are used if not supplied). Unlike <code>std::unordered_set</code>, it can hold on to multiple <a href="#BM_(object%7Cinstance)%2Fi">instance</a>s of the same element (elements aren't unique).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Details on providing a custom <code>std::hash&lt;T&gt;</code> implementation are in the parent section.</p>
+<p>Details on providing a custom hasher implementation specifically for the container are in the unordered set section.</p>
+</div>
 <p>To create a <code>std::unordered_multiset</code>, the same <code>std::unordered_set</code> <a href="#BM_(constructor)%2Fi">constructor</a>s apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.</p>
 <pre class="hljs"><code><span class="hljs-comment">// prime</span>
 std::unordered_multiset&lt;<span class="hljs-type">int</span>&gt; s1 { <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> };  <span class="hljs-comment">// DUPLICATED RETAINED</span>
@@ -6644,12 +6699,24 @@ s1.<span class="hljs-built_in">clear</span>();
 </ul>
 </div>
 <p><code>std::unordered_map</code> is a container similar to <code>std::unordered_set</code>, with the major difference being that each element in a <code>std::unordered_map</code> has a secondary value associated with it: key to value. Only the key is used for uniqueness and lookup. The value just tags along.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Details on providing a custom <code>std::hash&lt;T&gt;</code> implementation are in the parent section.</p>
+<p>Details on providing a custom hasher implementation specifically for the container are in the unordered set section.</p>
+</div>
 <p>To create a <code>std::unordered_map</code>, the same <code>std::unordered_set</code> <a href="#BM_(constructor)%2Fi">constructor</a>s apply. The only major differences are that ...</p>
 <ol>
 <li>the type of the value needs to be specified as the second <a href="#BM_(template%20parameter)%2Fi">template parameter</a>.</li>
 <li>if initializing to a list of key-value pairs, each element of the initializer list must be <code>std::pair&lt;K,V&gt;</code> (<code>K</code> is key type, <code>V</code> is value type).</li>
 </ol>
 <pre class="hljs"><code><span class="hljs-comment">// prime</span>
+std::unordered_map&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s0 {
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined</span>
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">2</span>, <span class="hljs-number">-100.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">4</span>, <span class="hljs-number">123.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">5</span>, <span class="hljs-number">4.0f</span> }
+};
 std::unordered_map&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s1 {
     { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
     { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined</span>
@@ -6691,13 +6758,18 @@ std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</
 </ul>
 <pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)</span>
 s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">insert</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">try_emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">try_emplace</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 </code></pre>
 <p>To replace a value for an already existing key, <code>insert_or_assign()</code> either copies or moves into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>), replacing it if it already exists.</p>
 <pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)</span>
 s1.<span class="hljs-built_in">insert_or_assign</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">insert_or_assign</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 </code></pre>
 <p>To delete an element at some specific <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> position, use either <code>extract()</code> or <code>erase()</code>. The difference is that <code>extract()</code> will return the key-value while <code>erase()</code> won't.</p>
 <pre class="hljs"><code><span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
@@ -6742,8 +6814,20 @@ l1.<span class="hljs-built_in">erase</span>(it3, it4); <span class="hljs-comment
 </ul>
 </div>
 <p><code>std::unordered_multimap</code> is a container that's a combination of <code>std::unordered_multiset</code> and <code>std::unordered_map</code>. That is, it's a <code>std::unordered_map</code> but it allows for many key-value pairs with the same key (keys aren't unique). Similar to <code>std::unordered_multiset</code>, <code>std::unordered_multimap</code> requires a hashing function and an equivalence function (same defaults are used if not supplied).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Details on providing a custom <code>std::hash&lt;T&gt;</code> implementation are in the parent section.</p>
+<p>Details on providing a custom hasher implementation specifically for the container are in the unordered set section.</p>
+</div>
 <p>To create a <code>std::multimap</code>, the same <code>std::map</code> <a href="#BM_(constructor)%2Fi">constructor</a>s apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.</p>
 <pre class="hljs"><code><span class="hljs-comment">// prime</span>
+std::unordered_multimap&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s0 {
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> this is the 2nd instance of the key 1, both key-value pairs are kept</span>
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">2</span>, <span class="hljs-number">-100.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">4</span>, <span class="hljs-number">123.0f</span> },
+    std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; { <span class="hljs-number">5</span>, <span class="hljs-number">4.0f</span> }
+};
 std::unordered_multimap&lt;<span class="hljs-type">int</span>. <span class="hljs-type">float</span>&gt; s1 {
     { <span class="hljs-number">1</span>, <span class="hljs-number">99.0f</span> },
     { <span class="hljs-number">1</span>, <span class="hljs-number">-99.0f</span> },  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> this is the 2nd instance of the key 1, both key-value pairs are kept</span>
@@ -6778,8 +6862,11 @@ std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</
 <span class="hljs-type">bool</span> is_two_instances { s1.<span class="hljs-built_in">count</span>(<span class="hljs-number">1</span>) == <span class="hljs-number">2</span> };
 <span class="hljs-comment">// add</span>
 s1.<span class="hljs-built_in">insert</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">insert</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace</span>(<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);
+s1.<span class="hljs-built_in">emplace</span>(std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});
 s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>);  <span class="hljs-comment">// iterator should be near to where the value is</span>
+s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in">begin</span>(), std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; {<span class="hljs-number">6</span>, <span class="hljs-number">122.0f</span>});  <span class="hljs-comment">// iterator should be near to where the value is</span>
 <span class="hljs-comment">// remove</span>
 <span class="hljs-keyword">auto</span> it1 { s1.<span class="hljs-built_in">begin</span>() };
 <span class="hljs-type">int</span> res { s1.<span class="hljs-built_in">extract</span>(it1) };  <span class="hljs-comment">// WARNING: it1 invalid after this point</span>

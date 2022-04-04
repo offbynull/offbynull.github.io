@@ -3579,7 +3579,7 @@ Each item in the list has the syntax `{ EXPRESSION } -> RESULT`, where the resul
  * `std::convertible_to<std::size_t>` means that the expression should return a type that can implicitly convert to `std::size_t` (e.g. a `short` can implicitly convert to an `int` without requiring any kind of casting).
 
 ```{note}
-The book says that these are / are related to "type functions". I can't find much information on this or how to create new "type functions".
+The book says that these are related to "type functions". I can't find much information on this or how to create new "type functions".
 ```
 
 Use the `requires` keyword immediately after the template to target a set of template parameters to a concept_TEMPLATE.
@@ -3592,7 +3592,7 @@ T1 add_and_multiply(T1 &var1, T2 &var2) {
 }
 ```
 
-Concept_TEMPLATE may also be directly embedded into the template itself. 
+Concept_TEMPLATEs may also be directly embedded into the template itself. 
 
 ```c++
 template <typename T1, typename T2>
@@ -3622,7 +3622,21 @@ concept SingleTypeConcept = requires(T a, T b) {
 // usage of concept
 template <SingleTypeConcept X>  // this line is updated -- "typename T" replaced with "SingleTypeConcept T"
 X add_and_multiply(X &var1, X &var2) {
-    return (var1 + var2) * var2;
+    X x { var1 + var 2};
+    return x * var2;
+}
+```
+
+For function templates specifically, rather than parameterizing using `template`, a common shorthand is to use `auto` for the return type / parameter types being templated. The compiler automatically infers the correct types based on usage. Each `auto` parameter / return type can have a concept_TEMPLATE applied to it by placing that concept_TEMPLATE's name just before `auto`. For example, the usage of `SingleTypeConcept` in the example above can be rewritten as follows.
+
+```c++
+// usage of concept
+SingleTypeConcept auto add_and_multiply(
+    SingleTypeConcept auto &var1,
+    SingleTypeConcept auto &var2
+) {
+    auto x { var1 + var 2};
+    return x * var2;
 }
 ```
 
@@ -6364,6 +6378,13 @@ To create a `std::map`, the same `std::set` constructors apply. The only major d
 
 ```c++
 // prime
+std::map<int. float> s0 {
+    std::pair<int, float> { 1, 99.0f },
+    std::pair<int, float> { 1, -99.0f },  // WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined
+    std::pair<int, float> { 2, -100.0f },
+    std::pair<int, float> { 4, 123.0f },
+    std::pair<int, float> { 5, 4.0f }
+};
 std::map<int. float> s1 {
     { 1, 99.0f },
     { 1, -99.0f },  // WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined
@@ -6421,9 +6442,13 @@ To add a key-value pair (not _replace_ an existing value), the following functio
 ```c++
 // NOTE: Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)
 s1.insert(6, 122.0f);
+s1.insert(std::pair<int, float> {6, 122.0f});
 s1.emplace(6, 122.0f);
+s1.emplace(std::pair<int, float> {6, 122.0f});
 s1.try_emplace(6, 122.0f);
+s1.try_emplace(std::pair<int, float> {6, 122.0f});
 s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
+s1.emplace_hint(s1.begin(), std::pair<int, float> {6, 122.0f});
 ```
 
 To replace a value for an already existing key, `insert_or_assign()` either copies or moves into the container (depending on if the reference passed in is an rvalue reference), replacing it if it already exists.
@@ -6431,6 +6456,7 @@ To replace a value for an already existing key, `insert_or_assign()` either copi
 ```c++
 // NOTE: returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)
 s1.insert_or_assign(6, 122.0f);
+s1.insert_or_assign(std::pair<int, float> {6, 122.0f});
 ```
 
 To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the key-value while `erase()` won't.
@@ -6496,6 +6522,13 @@ To create a `std::multimap`, the same `std::map` constructors apply. The only ma
 
 ```c++
 // prime
+std::unordered_multimap<int. float> s0 {
+    std::pair<int, float> { 1, 99.0f },
+    std::pair<int, float> { 1, -99.0f },  // NOTE: this is the 2nd instance of the key 1, both key-value pairs are kept
+    std::pair<int, float> { 2, -100.0f },
+    std::pair<int, float> { 4, 123.0f },
+    std::pair<int, float> { 5, 4.0f }
+};
 std::unordered_multimap<int. float> s1 {
     { 1, 99.0f },
     { 1, -99.0f },  // NOTE: this is the 2nd instance of the key 1, both key-value pairs are kept
@@ -6536,8 +6569,11 @@ auto it1 { s1.lower_bound(4) }; // get iterator to elem 4 if 4 exists, otherwise
 auto it2 { s1.upper_bound(4) }; // get iterator to elem just after 4 (could be s1.end() if no such elem)
 // add
 s1.insert(6, 122.0f);
+s1.insert(std::pair<int, float> {6, 122.0f});
 s1.emplace(6, 122.0f);
+s1.emplace(std::pair<int, float> {6, 122.0f});
 s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
+s1.emplace_hint(s1.begin(), std::pair<int, float> {6, 122.0f});  // iterator should be near to where the value is
 // remove
 auto it1 { s1.begin() };
 int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
@@ -6572,8 +6608,28 @@ There's also ..
 
 Unordered associative containers organize objects by key and potentially a value. Keys are stored in an unordered fashion. The underlying data structure used by unordered associative containers is a hash table.
 
-```{note}
-Unsure if the spec defines if they should be implemented as red-black trees, but from what I've read that's how they're implemented.
+By default, unordered associative containers attempt to hash keys by calling template specializations of `std::hash<T>`. Several pre-existing template specializations are provided by the C++ standard library (e.g. `int` ,`long`, `std::string`, etc..), but custom types need their own specialization to be written by the user.
+
+`std::hash<T>` implementations must be exposed as a functor that takes in the type in question and returns a `std::size_t`.
+
+```c++
+template<>
+struct std::hash<MyType> {
+    std::size_t operator()(S const& s) const noexcept {
+        std::size_t h1 { std::hash<std::string>{} (s.student_name) };
+        std::size_t h2 { std::hash<int>{} (s.student_age) };
+        return h1 ^ h2; // see boost::hash_combine
+    }
+};
+```
+
+A common point of confusion is what you have to do to use `std::hash` with a reference type. Note that the function call operator in the example above is taking a reference, meaning you always use the non-reference type as the type argument when invoking.
+
+```c++
+int x { 55 };
+int & xRef { x };
+std::size_t hash1 { std::hash<int>{} (x) };
+std::size_t hash2 { std::hash<int>{} (xRef) };
 ```
 
 The subsections below detail the various unordered associative containers that are provided by the C++ standard library.
@@ -6590,6 +6646,10 @@ Library Functions/Allocators_TOPIC
 `std::unordered_set` is a container that's similar to `std::set`. It holds on to unique elements but does so _unordered_ (whereas `std::set` has some sort order). It's implemented as a hash table, so rather than having to specify a comparator, you're required to specify a hash function.
 
 Several pre-existing hash functions are provided by the C++ standard library via `std::hash<T>` (`T` being the type in question). If the user doesn't supply a hash function directly, the default is to use `std::hash<T>` with the element type substituted in (compilation will fail if no `std::hash<T>` implementation for that element type exists). For example, `std::hash<int>` exists for integers and gets automatically plugged in when the element type of the container is `int`.
+
+````{note}
+Details on providing a custom `std::hash<T>` implementation are in the parent section.
+````
 
 In addition to a hash function, a `std::unordered_set` may have a custom equivalence function. By default, `std::equal_to<T>` is used if none is supplied by the user, which uses the equality operator (==).
 
@@ -6728,6 +6788,12 @@ Library Functions/Containers/Unordered Associative/Set_TOPIC
 
 `std::unordered_multiset` is a container that, like a `std::unordered_set`, holds on to unordered elements. Like `std::unordered_set`, it requires a hashing function and an equivalence function (same defaults are used if not supplied). Unlike `std::unordered_set`, it can hold on to multiple instances of the same element (elements aren't unique). 
 
+````{note}
+Details on providing a custom `std::hash<T>` implementation are in the parent section.
+
+Details on providing a custom hasher implementation specifically for the container are in the unordered set section.
+````
+
 To create a `std::unordered_multiset`, the same `std::unordered_set` constructors apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.
 
 ```c++
@@ -6794,6 +6860,12 @@ Library Functions/Containers/Unordered Associative/Set_TOPIC
 
 `std::unordered_map` is a container similar to `std::unordered_set`, with the major difference being that each element in a `std::unordered_map` has a secondary value associated with it: key to value. Only the key is used for uniqueness and lookup. The value just tags along.
 
+````{note}
+Details on providing a custom `std::hash<T>` implementation are in the parent section.
+
+Details on providing a custom hasher implementation specifically for the container are in the unordered set section.
+````
+
 To create a `std::unordered_map`, the same `std::unordered_set` constructors apply. The only major differences are that ...
 
  1. the type of the value needs to be specified as the second template parameter.
@@ -6801,6 +6873,13 @@ To create a `std::unordered_map`, the same `std::unordered_set` constructors app
 
 ```c++
 // prime
+std::unordered_map<int. float> s0 {
+    std::pair<int, float> { 1, 99.0f },
+    std::pair<int, float> { 1, -99.0f },  // WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined
+    std::pair<int, float> { 2, -100.0f },
+    std::pair<int, float> { 4, 123.0f },
+    std::pair<int, float> { 5, 4.0f }
+};
 std::unordered_map<int. float> s1 {
     { 1, 99.0f },
     { 1, -99.0f },  // WARNING: this is the 2nd instance of the key 1, which value is inserted for the key is undefined
@@ -6849,9 +6928,13 @@ To add a key-value pair (not _replace_ an existing value), the following functio
 ```c++
 // NOTE: Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)
 s1.insert(6, 122.0f);
+s1.insert(std::pair<int, float> {6, 122.0f});
 s1.emplace(6, 122.0f);
+s1.emplace(std::pair<int, float> {6, 122.0f});
 s1.try_emplace(6, 122.0f);
+s1.try_emplace(std::pair<int, float> {6, 122.0f});
 s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
+s1.emplace_hint(s1.begin(), std::pair<int, float> {6, 122.0f});
 ```
 
 To replace a value for an already existing key, `insert_or_assign()` either copies or moves into the container (depending on if the reference passed in is an rvalue reference), replacing it if it already exists.
@@ -6859,6 +6942,7 @@ To replace a value for an already existing key, `insert_or_assign()` either copi
 ```c++
 // NOTE: returns a bool (true for insertion, false for assignment) + an iterator to the key-value pair (existing one if not added)
 s1.insert_or_assign(6, 122.0f);
+s1.insert_or_assign(std::pair<int, float> {6, 122.0f});
 ```
 
 To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the key-value while `erase()` won't.
@@ -6916,10 +7000,23 @@ Library Functions/Containers/Unordered Associative/Map_TOPIC
 
 `std::unordered_multimap` is a container that's a combination of `std::unordered_multiset` and `std::unordered_map`. That is, it's a `std::unordered_map` but it allows for many key-value pairs with the same key (keys aren't unique). Similar to `std::unordered_multiset`, `std::unordered_multimap` requires a hashing function and an equivalence function (same defaults are used if not supplied).
 
+````{note}
+Details on providing a custom `std::hash<T>` implementation are in the parent section.
+
+Details on providing a custom hasher implementation specifically for the container are in the unordered set section.
+````
+
 To create a `std::multimap`, the same `std::map` constructors apply. The only major difference is that, if you're initializing the values, any duplicate values are kept.
 
 ```c++
 // prime
+std::unordered_multimap<int. float> s0 {
+    std::pair<int, float> { 1, 99.0f },
+    std::pair<int, float> { 1, -99.0f },  // NOTE: this is the 2nd instance of the key 1, both key-value pairs are kept
+    std::pair<int, float> { 2, -100.0f },
+    std::pair<int, float> { 4, 123.0f },
+    std::pair<int, float> { 5, 4.0f }
+};
 std::unordered_multimap<int. float> s1 {
     { 1, 99.0f },
     { 1, -99.0f },  // NOTE: this is the 2nd instance of the key 1, both key-value pairs are kept
@@ -6956,8 +7053,11 @@ std::pair<int, float> found_pair { *it };
 bool is_two_instances { s1.count(1) == 2 };
 // add
 s1.insert(6, 122.0f);
+s1.insert(std::pair<int, float> {6, 122.0f});
 s1.emplace(6, 122.0f);
+s1.emplace(std::pair<int, float> {6, 122.0f});
 s1.emplace_hint(s1.begin(), 6, 122.0f);  // iterator should be near to where the value is
+s1.emplace_hint(s1.begin(), std::pair<int, float> {6, 122.0f});  // iterator should be near to where the value is
 // remove
 auto it1 { s1.begin() };
 int res { s1.extract(it1) };  // WARNING: it1 invalid after this point
