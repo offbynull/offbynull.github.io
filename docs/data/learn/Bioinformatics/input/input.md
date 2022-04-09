@@ -15109,7 +15109,7 @@ PracticalGEODatasetClustering
    A gene's upstream region is the 600 to 1000 nucleotides preceding the start of the gene.
    ```
 
- * `{bm} complementary DNA (cDNA)/(complementary DNA)/i` `{bm} /(cDNA)/` - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.
+ * `{bm} complementary DNA (cDNA)/(complementary DNA)/i` `{bm} /(\bcDNA\b)/` - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.
 
    ```{svgbob}
    3' . . . U <- U <- U <- G <- C <- U <- U <- U <- U <- G <- . . . 5'   mRNA  
@@ -16998,13 +16998,13 @@ PracticalGEODatasetClustering
 
  * `{bm} translocation` - Changing location. For example, part of a chromosome may transfer to another chromosome (genome rearrangement).
 
- * `{bm} severe acute respiratory syndrome` `{bm} /(SARS)/` - A deadly coronavirus that emerged from China around early 2003. The virus transmits itself through droplets that enter the air when someone with the disease coughs.
+ * `{bm} severe acute respiratory syndrome` `{bm} /(\bSARS\b)/` - A deadly coronavirus that emerged from China around early 2003. The virus transmits itself through droplets that enter the air when someone with the disease coughs.
 
- * `{bm} coronavirus` `{bm} /(COVID|CoV)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).
+ * `{bm} coronavirus` `{bm} /(\bCOVID|CoV\b)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).
  
    The common cold, SARS, and COVID-19 are examples of coronaviruses.
 
- * `{bm} human immunodeficiency virus` `{bm} /(HIV|AIDS)/` - A virus that over time causes acquired immunodeficiency syndrome (AIDS).
+ * `{bm} human immunodeficiency virus` `{bm} /(\bHIV|AIDS\b)/` - A virus that over time causes acquired immunodeficiency syndrome (AIDS).
 
  * `{bm} immunodeficiency/(immunodeficiency|immunocompromisation|immunocompromised)/i` - A state in which the immune system's ability to fight infectious disease and cancer is compromised or entirely absent.
 
@@ -18469,7 +18469,7 @@ PracticalGEODatasetClustering
             *---*
    ``` 
 
- * `{bm} cluster affinity search technique` `{bm} /(CAST)/` - A heuristic algorithm that corrects the corrupted cliques in a similarity graph.
+ * `{bm} cluster affinity search technique` `{bm} /(\bCAST\b)/` - A heuristic algorithm that corrects the corrupted cliques in a similarity graph.
  
     ```{svgbob}
    "CORRUPTED CLIQUES"            "CLIQUES"
@@ -18615,7 +18615,7 @@ PracticalGEODatasetClustering
 
  * `{bm} Ohdo syndrome` - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a single nucleotide polymorphism resulting in a truncated protein (see codons).
 
- * `{bm} single nucleotide polymorphism` `{bm} /(SNP)/` - A specific position in a DNA sequence that's known to vary between a set of nucleotides (e.g. it's usually A but there's a 10% chance it could be T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...
+ * `{bm} single nucleotide polymorphism` `{bm} /(\bSNP\b)/` - A specific position in a DNA sequence that's known to vary between a set of nucleotides (e.g. it's usually A but there's a 10% chance it could be T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...
 
     * less than 1%, it's considered a point mutation.
     * at least 1%, it's considered a single nucleotide polymorphism.
@@ -18635,7 +18635,7 @@ PracticalGEODatasetClustering
 
  * `{bm} major histocompatibility complex` - A region of DNA containing genes linked to the immune system. The genes in this region are highly diverse, to the point that it's unlikely for two individuals to have the genes in the exact same form.
  
- * `{bm} trie` - A rooted tree representing a set of seqeunces as branching options. Each edge represents an element in the sequence.
+ * `{bm} trie` - A rooted tree representing contiguous regions shared between of set of sequences. Branches represent deviations.
 
    ```{svgbob}
    * "Trie for apples, applejack, berry, and beechnut"
@@ -18657,14 +18657,14 @@ PracticalGEODatasetClustering
    To support sequences with overlapping sequences, a trie typically either includes a ...
 
     * a flag on each node to indicate if its the end of a sequence.
-    * a special "end-of-sequence" to disambguate the end of a sequence.
+    * a special "end-of-sequence" to disambiguate the end of a sequence.
 
    ```{svgbob}
    * "Trie for apple and apples"
-                         s   END 
+                         s   ¶ 
                        .-->*-->*
                        |
-     a   p   p   l   e | END
+     a   p   p   l   e | ¶
    *-->*-->*-->*-->*-->*-->*
    ```
 
@@ -18673,41 +18673,41 @@ PracticalGEODatasetClustering
    ```{svgbob}
    * "Suffix trie for banana"
 
-     b   a   n   a   n   a   END 
+     b   a   n   a   n   a   ¶ 
    .-->*-->*-->*-->*-->*-->*-->*
-   |             n   a   END
+   |             n   a   ¶
    |           .-->*-->*-->*
-   |     n   a | END
+   |     n   a | ¶
    |   .-->*-->*-->*
-   | a | END
+   | a | ¶
    .-->*-->*
-   | END
+   | ¶
    *-->*
-   | n   a   END
+   | n   a   ¶
    '-->*-->*-->*
-           | n   a   END
+           | n   a   ¶
            '-->*-->*-->*
    ```
 
-   Suffix trees are used to efficiently determine if a string contains a substring. The string is converted to a suffix trie, then the trie is searched from the root node to see if a specific substring exists.
+   Suffix tries are used to efficiently determine if a string contains a substring. The string is converted to a suffix trie, then the trie is searched from the root node to see if a specific substring exists.
 
    ```{svgbob}
    * "Search for nan in banana"
      "(path for nan denoted by unfilled nodes)"
 
-     b   a   n   a   n   a   END 
+     b   a   n   a   n   a   ¶ 
    .-->*-->*-->*-->*-->*-->*-->*
-   |             n   a   END
+   |             n   a   ¶
    |           .-->*-->*-->*
-   |     n   a | END
+   |     n   a | ¶
    |   .-->*-->*-->*
-   | a | END
+   | a | ¶
    .-->*-->*
-   | END
+   | ¶
    o-->*
-   | n   a   END
+   | n   a   ¶
    '-->o-->o-->*
-           | n   a   END
+           | n   a   ¶
            '-->o-->*-->*
    ```
 
@@ -18716,25 +18716,144 @@ PracticalGEODatasetClustering
    ```{svgbob}
       "SUFFIX TRIE FOR banana"                         "SUFFIX TREE FOR banana"
 
-     b   a   n   a   n   a   END                            bananaEND 
+     b   a   n   a   n   a   ¶                              banana¶ 
    .-->*-->*-->*-->*-->*-->*-->*                   .-------------------------->*
-   |             n   a   END                       |                naEND     
+   |             n   a   ¶                         |                na¶     
    |           .-->*-->*-->*                       |           .---------->*    
-   |     n   a | END                               |       na  | END            
+   |     n   a | ¶                                 |       na  | ¶            
    |   .-->*-->*-->*                               |   .------>*-->*            
-   | a | END                                       | a | END                    
+   | a | ¶                                         | a | ¶                    
    .-->*-->*                                       .-->*-->*                    
-   | END                                           | END                        
+   | ¶                                             | ¶                        
    *-->*                                           *-->*                        
-   | n   a   END                                   |   na    END                
+   | n   a   ¶                                     |   na    ¶                
    '-->*-->*-->*                                   '------>*-->*                
-           | n   a   END                                   |   naEND        
+           | n   a   ¶                                     |   na¶        
            '-->*-->*-->*                                   '---------->*        
    ```
 
    ```{note}
    As a further optimization, rather than assigning each edge to a substring, assign it the position range of that substring within the larger string (start index and end index / start index and length). There may be more than 1 position range for each edge -- either store all of them or just store one (e.g. the one closest to the beginning of the string).
    ```
+
+ * `{bm} suffix array` - A memory-efficient representation of a suffix tree as an array of pointers.
+ 
+   The suffixes of a sequence are sorted lexicographically, where each suffix includes the same end marker that's included in the suffix tree. The end marker comes first in the lexicographical sort order. The example below is the suffix array for the word banana.
+
+   | Index | Pointer | Suffix  |
+   |-------|---------|---------|
+   | 0     | 6       | ¶       |
+   | 1     | 5       | a¶      |
+   | 2     | 3       | ana¶    |
+   | 3     | 1       | anana¶  |
+   | 4     | 0       | banana¶ |
+   | 5     | 4       | na¶     |
+   | 6     | 2       | nana¶   |
+
+   The common prefix between two neighbouring suffixes represents a shared branch point in the suffix tree.
+
+   ```{svgbob}
+   "SUFFIX ARRAY FOR banana"                       "SUFFIX TREE FOR banana"
+                    
+       0   ¶                                             banana¶   
+                                                .-------------------------->*
+       1   a ¶                                  |                na¶       
+           |                                    |           .---------->*    
+       2   a n a ¶                              |       na  | ¶              
+           | | |                                |   .------>*-->*            
+       3   a n a n a ¶                          | a | ¶                      
+                                                .-->*-->*                    
+       4   b a n a n a ¶                        | ¶                          
+                                                *-->*                        
+       5   n a ¶                                |   na    ¶                  
+           | |                                  '------>*-->*                
+       6   n a n a ¶                                    |   na¶          
+                                                        '---------->*        
+   ```
+
+   Sliding a window of size two down the suffix array, the changes in common prefix from one pair of suffixes to the next defines the suffix tree structure. If a pair's common prefix ...
+
+    * has the same length vs the previous pair, it means the branch point is the same as the previous pair's branch point.
+    * increases in length vs the previous pair, it means the branch point extends from the previous pair's branch point.
+    * decreases in length vs the previous pair, it means the branch point reverts to that of the last pair with that length.
+  
+   In the example above, the common prefix length between index ...
+
+    * (0, 1) is 0, meaning it branches from the root node.
+    * (1, 2) is 1 ("a"), meaning the branch point extends from the last branch point (root node) with an edge representing the "a".
+    * (2, 3) is 3 ("ana"), meaning the branch point extends from the last branch point ("a") with an edge representing "na".
+    * (3, 4) is 0, meaning it branches from the root node.
+    * (4, 5) is 0, meaning it branches from the root node.
+    * (5, 6) is 2 ("na"), meaning the branch point extends from the last branch point (root node) with an edge representing "na".
+
+   ```{note}
+   The entire point of the suffix array is that it's just an array of pointers to the suffix in the source sequence. Since the pointers are sorted (sorted by the suffixes they point to), you can quickly find if a substring exists just by doing a binary search on the suffix array (if a substring exists, it must be a prefix of one of the suffixes).
+   ```
+
+ * `{bm} Burrows-Wheeler transform/(burrows[-\s]wheeler transform|first[-\s]last property)/i` `{bm} /(\bBWT\b)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to suffix arrays).
+ 
+   The example below is the burrows-wheeler transform of banana.
+   
+   1. Cyclic rotations of banana.
+
+      |   |   |   |   |   |   |   |
+      |---|---|---|---|---|---|---|
+      | b | a | n | a | n | a | ¶ |
+      | a | n | a | n | a | ¶ | b |
+      | n | a | n | a | ¶ | b | a |
+      | a | n | a | ¶ | b | a | n |
+      | n | a | ¶ | b | a | n | a |
+      | a | ¶ | b | a | n | a | n |
+      | ¶ | b | a | n | a | n | a |
+     
+   2. Sort the rotations.
+
+      |   |   |   |   |   |   |   |
+      |---|---|---|---|---|---|---|
+      | ¶ | b | a | n | a | n | a |
+      | a | ¶ | b | a | n | a | n |
+      | a | n | a | ¶ | b | a | n |
+      | a | n | a | n | a | ¶ | b |
+      | b | a | n | a | n | a | ¶ |
+      | n | a | ¶ | b | a | n | a |
+      | n | a | n | a | ¶ | b | a |
+     
+    BWT matrices have a special property called the first-last property: For each symbol in the sequence, the order in which instances of that symbol appear in the first column matches that of the last column. To understand the first-last property, augment the elements in the example above to include symbol instance counts. The sequence banana becomes [b<sub>1</sub>, a<sub>1</sub>, n<sub>1</sub>, a<sub>2</sub>, n<sub>2</sub>, a<sub>3</sub>, ¶<sub>1</sub>]. For each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.
+
+    * Symbol a instances are ordered as [`{h}blue a<sub>3</sub>`, `{h}blue a<sub>2</sub>`, `{h}blue a<sub>1</sub>`] in both the first and last column.
+    * Symbol n instances are ordered as [`{h}tan  n<sub>2</sub>`, `{h}tan  n<sub>1</sub>`] in both the first and last column.
+
+   |                         |               |               |               |               |               |                         |
+   |-------------------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
+   |          ¶<sub>1</sub>  | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}blue a<sub>3</sub>` |
+   | `{h}blue a<sub>3</sub>` | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | `{h}tan  n<sub>2</sub>` |
+   | `{h}blue a<sub>2</sub>` | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | `{h}tan  n<sub>1</sub>` |
+   | `{h}blue a<sub>1</sub>` | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> |          b<sub>1</sub>  |
+   |          b<sub>1</sub>  | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> |          ¶<sub>1</sub>  |
+   | `{h}tan  n<sub>2</sub>` | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}blue a<sub>2</sub>` |
+   | `{h}tan  n<sub>1</sub>` | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}blue a<sub>1</sub>` |
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+
+   TODO: CONTINUE DISCUSSION HERE
+  
+    ```{note}
+    If storing, you only need to store the last column because the first column can be reconstructed just be sorting the last column.
+    ```
 
  * `{bm} pre-order traversal/(pre[-\s]?order traversal)/i` - A form of depth-first traversal for binary trees where, starting from the root node, ...
 
@@ -18865,7 +18984,11 @@ PracticalGEODatasetClustering
 
 `{bm-error} Did you mean hierarchiCal? The spell checker messes it up sometimes./(hierarchial)/i`
 
-`{bm-error} Did you mean oftentimes (no space))?/(often times)/i`
+`{bm-error} Did you mean oftentimes (no space)?/(often times)/i`
+
+`{bm-error} Did you mean burrows-wheeler transform (missing an s)?/(burrow[-\s]wheeler transform)/i`
+
+`{bm-error} Did you mean lexicographical (lexICographical)/(lexographical)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`
