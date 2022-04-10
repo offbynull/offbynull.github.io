@@ -184,6 +184,13 @@
 <li><a href="#H_Soft%20Hierarchical%20Clustering">Soft Hierarchical Clustering</a></li>
 <li><a href="#H_Similarity%20Graph%20Clustering">Similarity Graph Clustering</a></li>
 </ul>
+<li><a href="#H_Single%20Nucleotide%20Polymorphism">Single Nucleotide Polymorphism</a></li>
+<ul>
+<li><a href="#H_Trie">Trie</a></li>
+<li><a href="#H_Suffix%20Tree">Suffix Tree</a></li>
+<li><a href="#H_Suffix%20Array">Suffix Array</a></li>
+<li><a href="#H_Burrows-Wheeler%20Transform">Burrows-Wheeler Transform</a></li>
+</ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
 <ul>
@@ -18273,7 +18280,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><img src="dot_93333820e9e0ff2e0ee3dd120e55777f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>If the resulting <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> isn't a <a href="#BM_(clique%20graph)%2Fi">clique graph</a> but is close to being one (<a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s), a heuristic algorithm called <a href="#BM_(cluster%20affinity%20search%20technique)%2Fi">cluster affinity search technique</a> (<a href="#BM_(%5CbCAST%5Cb)%2F">CAST</a>) can correct it. At its core, the algorithm attempts to re-create each <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a> in its corrected form by iteratively finding the ...</p>
+<p>If the resulting <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> isn't a <a href="#BM_(clique%20graph)%2Fi">clique graph</a> but is close to being one (<a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s), a heuristic algorithm called <a href="#BM_(cluster%20affinity%20search%20technique)%2Fi">cluster affinity search technique</a> (<a href="#BM_(CAST)%2F">CAST</a>) can correct it. At its core, the algorithm attempts to re-create each <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a> in its corrected form by iteratively finding the ...</p>
 <ol>
 <li>closest node not in the <a href="#BM_(clique)%2Fi">clique</a>/<a href="#BM_(cluster)%2Fi">cluster</a> and including it <em>if it exceeds the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> threshold</em>.</li>
 <li>farthest node within the <a href="#BM_(clique)%2Fi">clique</a>/<a href="#BM_(cluster)%2Fi">cluster</a> and removing it <em>if it doesn't exceed the <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a> threshold</em>.</li>
@@ -18437,6 +18444,36 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><img src="dot_93333820e9e0ff2e0ee3dd120e55777f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
+<a name="H_Single%20Nucleotide%20Polymorphism"></a><h2>Single Nucleotide Polymorphism</h2>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FDNA%20Assembly)_TOPIC%2F">Algorithms/DNA Assembly</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> (<a href="#BM_(SNP)%2F">SNP</a>) is a variation at a specific location of a DNA <a href="#BM_(sequence)%2Fi">sequence</a> -- it's one choice out of multiple possible nucleotides choices at that position (e.g. G out of C, G, and T). Across a population, if a specific change at that position occurs frequently enough, it's considered a <a href="#BM_(SNP)%2F">SNP</a> rather than a mutation. Specifically, if the frequency of the change occurring is ...</p>
+<ul>
+<li>less than 1%, it's considered a <a href="#BM_(point%20mutation)%2Fi">point mutation</a>.</li>
+<li>at least 1%, it's considered a <a href="#BM_(SNP)%2F">SNP</a>.</li>
+</ul>
+<p><img src="svgbob_ef3cfd8fc98f0b52101026f244c728f8a8ebe01c.svg" alt="Kroki diagram output"></p>
+<p>Studies commonly attempt to associate <a href="#BM_(SNP)%2F">SNP</a>s with diseases. By comparing <a href="#BM_(SNP)%2F">SNP</a>s between a diseased population vs non-diseased population, scientists are able to discover which <a href="#BM_(SNP)%2F">SNP</a>s are responsible for a disease / increase the risk of a specific disease occurring. For example, a study might find that the population of heart attack victims had a location with a  higher likelihood of G vs C.</p>
+<p><img src="svgbob_1b1f54a8eeffbdaa51000830fc701f1db84b0df0.svg" alt="Kroki diagram output"></p>
+<p>The <a href="#BM_(SNP)%2F">SNP</a>s an individual organism has are identified through a process called <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapping</a>. <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">Read mapping</a> is the process of aligning a set of smaller DNA <a href="#BM_(sequence)%2Fi">sequence</a>s to a larger DNA <a href="#BM_(sequence)%2Fi">sequence</a>. In the context of <a href="#BM_(SNP)%2F">SNP</a>s, those smaller <a href="#BM_(sequence)%2Fi">sequence</a>s are the individual organism's <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> DNA segments (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>_SEQs, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s) while the larger <a href="#BM_(sequence)%2Fi">sequence</a> is an idealized <a href="#BM_(genome)%2Fi">genome</a> for that organism called a <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> (e.g. idealized <a href="#BM_(genome)%2Fi">genome</a> for species, race, etc..).</p>
+<p>The form of <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapping</a> used for <a href="#BM_(SNP)%2F">SNP</a> identification mainly focuses on identifying replacements at individual positions, not <a href="#BM_(indel)%2Fi">indel</a>s. As such, it doesn't make sense to use traditional <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<p>TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>s. instead, if you know how many replacements you can tolerate, it's easy to search using exact <a href="#BM_(substring)%2Fi">substring</a>s (describe how you can do this). then mention that this chapter focuses on algorithms for exact <a href="#BM_(substring)%2Fi">substring</a> matches and tweaks them to work for <a href="#BM_(SNP)%2F">SNP</a> identification.</p>
+<a name="H_Trie"></a><h3>Trie</h3>
+<a name="H_Suffix%20Tree"></a><h3>Suffix Tree</h3>
+<a name="H_Suffix%20Array"></a><h3>Suffix Array</h3>
+<a name="H_Burrows-Wheeler%20Transform"></a><h3>Burrows-Wheeler Transform</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
 <p><a name="BM_(Stories%5C%2FBacterial%20Genome%20Replication)_TOPIC%2F"></a><strong></strong></p>
@@ -19035,10 +19072,10 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>Evolutionary history is often displayed as a <a href="#BM_(tree)%2Fi">tree</a> called a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>, where leaf nodes represent known entities and internal nodes represent inferred ancestor entities. Depending on the <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> algorithm used, the <a href="#BM_(tree)%2Fi">tree</a> may be either a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> or an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a>. The difference is that a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> infers parent-child relationships of ancestors while an <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> does not.</p>
 <p><img src="svgbob_afb68d67568f9c3c2ef2342f2ef9f6b05b17fc74.svg" alt="Kroki diagram output"></p>
 <p>In the example above, the <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> (left diagram) shows ancestors B and C as branching off (evolving) from their common ancestor A. The <a href="#BM_(un-rooted%20tree%7Cunrooted%20tree)%2Fi">unrooted tree</a> (right diagram) shows ancestors B and C but doesn't provide infer which branched off the other. It could be that ancestor B ultimately descended from C or vice versa.</p>
-<p><a href="#BM_(%5CbSARS%5Cb)%2F">SARS</a>-<a href="#BM_(%5CbCOVID%7CCoV%5Cb)%2F">CoV</a>-2 is the virus that causes <a href="#BM_(%5CbCOVID%7CCoV%5Cb)%2F">COVID</a>-19. The example below measures <a href="#BM_(%5CbSARS%5Cb)%2F">SARS</a>-<a href="#BM_(%5CbCOVID%7CCoV%5Cb)%2F">CoV</a>-2 spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s collected from different patients to produce its evolutionary history. The metric used to measure how diverged two <a href="#BM_(sequence)%2Fi">sequence</a>s are from each other is <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> using a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 scoring matrix. Once divergences (distances) are calculated, the <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> algorithm is used to generate a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>.</p>
+<p><a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 is the virus that causes <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19. The example below measures <a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s collected from different patients to produce its evolutionary history. The metric used to measure how diverged two <a href="#BM_(sequence)%2Fi">sequence</a>s are from each other is <a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">global alignment</a> using a <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 scoring matrix. Once divergences (distances) are calculated, the <a href="#BM_(neighbour%20joining%20phylogeny)%2Fi">neighbour joining phylogeny</a> algorithm is used to generate a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 was chosen because <a href="#BM_(%5CbSARS%5Cb)%2F">SARS</a>-<a href="#BM_(%5CbCOVID%7CCoV%5Cb)%2F">CoV</a>-2 is a relatively new virus (~2 years). I don't know if it was a good choice because I've been told viruses mutate more rapidly, so maybe <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 would have been a better choice.</p>
+<p><a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 was chosen because <a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 is a relatively new virus (~2 years). I don't know if it was a good choice because I've been told viruses mutate more rapidly, so maybe <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62 would have been a better choice.</p>
 <p>The original NCBI dataset had 30k to 40k unique spike <a href="#BM_(sequence)%2Fi">sequence</a>s. I couldn't justify sticking all of that into the git repo (too large) so I whittled it down to a random sample of 1000.</p>
 <p>From that 1000, only a small sample are selected to run the code. The problem is that <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s are computationally expensive and Python is slow. Doing a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> between two spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s on my VM takes a long time (~4 seconds per alignment), so for the full 1000 <a href="#BM_(sequence)%2Fi">sequence</a>s the total running time would end up being ~4 years (if I calculated it correctly - single core).</p>
 </div>
@@ -19091,7 +19128,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -6
 <p>The example above infers phenotypic features for the common ancestor of leopard and tiger. If a feature is present and the same in both, it's safe to assume that it was present in their common ancestor as well (e.g. 4 legs). Otherwise, there's still some smaller chance that the feature was present, possibly with some variability in how it manifested (e.g. type of coat pattern).</p>
 <p>With the advent of <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> technology, the practice of using phenotypic features for <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a> was superseded by <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> data. When <a href="#BM_(sequence)%2Fi">sequence</a>s are used, the features are the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves, meaning that the <a href="#BM_(sequence)%2Fi">sequence</a> of the common ancestor is what gets inferred.</p>
 <p><img src="svgbob_250f42ea364b8fe4b11cb8bd97fb264f2049daf9.svg" alt="Kroki diagram output"></p>
-<p>The example below infers the spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s for the ancestors of <a href="#BM_(%5CbSARS%5Cb)%2F">SARS</a>-<a href="#BM_(%5CbCOVID%7CCoV%5Cb)%2F">CoV</a>-2 variants. First, a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is generated using <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 as the <a href="#BM_(distance%20metric)%2Fi">distance metric</a>. Then, the <a href="#BM_(sequence)%2Fi">sequence</a>s are all aligned together using <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 (multiple alignment, not pairwise alignment as was used for the <a href="#BM_(distance%20metric)%2Fi">distance metric</a>). The <a href="#BM_(sequence)%2Fi">sequence</a>s of ancestors are inferred using those aligned <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p>The example below infers the spike protein <a href="#BM_(sequence)%2Fi">sequence</a>s for the ancestors of <a href="#BM_(SARS)%2F">SARS</a>-<a href="#BM_(COVID%7CCoV)%2F">CoV</a>-2 variants. First, a <a href="#BM_(phylogenetic%20tree%7Cphylogeny%20tree%7Cphylogenies%7Cevolutionary%20tree)%2Fi">phylogenetic tree</a> is generated using <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 as the <a href="#BM_(distance%20metric)%2Fi">distance metric</a>. Then, the <a href="#BM_(sequence)%2Fi">sequence</a>s are all aligned together using <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>80 (multiple alignment, not pairwise alignment as was used for the <a href="#BM_(distance%20metric)%2Fi">distance metric</a>). The <a href="#BM_(sequence)%2Fi">sequence</a>s of ancestors are inferred using those aligned <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This is badly cobbled together code. It's taking the code from the previous section's example and embedding/duct-taping even more pieces from the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> module just to get a running example. In a perfect world I would just import the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> module, but that module lives in a separate container. This is the best I can do.</p>
@@ -19659,7 +19696,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </div>
 </li>
 <li>
-<p><a name="BM_(complementary%20DNA)%2Fi"></a><strong>complementary DNA (cDNA)</strong> <a name="BM_(%5CbcDNA%5Cb)%2F"></a><strong></strong> - A single strand of DNA generated from mRNA. The enzyme reverse <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">transcript</a>ase scans over the mRNA and creates the complementing single DNA strand.</p>
+<p><a name="BM_(complementary%20DNA)%2Fi"></a><strong>complementary DNA (cDNA)</strong> <a name="BM_(cDNA)%2F"></a><strong></strong> - A single strand of DNA generated from mRNA. The enzyme reverse <a href="#BM_(RNA%20transcript%7Ctranscript)%2Fi">transcript</a>ase scans over the mRNA and creates the complementing single DNA strand.</p>
 <p><img src="svgbob_97c5d076bf0a1cd98b75bbb88b72fc29c3b1b93d.svg" alt="Kroki diagram output"></p>
 <p>The mRNA portion breaks off, leaving the <a href="#BM_(single%20stranded%20DNA%7Csingle-stranded%20DNA)%2Fi">single-stranded DNA</a>.</p>
 <p><img src="svgbob_97e71090d31bdaa40278b0e705aef4e3555be8e3.svg" alt="Kroki diagram output"></p>
@@ -19671,11 +19708,11 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <li>diseased and healthy versions of the same organism.</li>
 <li>etc..</li>
 </ul>
-<p>Both mRNA samples are converted to <a href="#BM_(%5CbcDNA%5Cb)%2F">cDNA</a> and are given fluorescent dyes. The control sample gets dyed green while the experimental sample gets dyed red.</p>
+<p>Both mRNA samples are converted to <a href="#BM_(cDNA)%2F">cDNA</a> and are given fluorescent dyes. The control sample gets dyed green while the experimental sample gets dyed red.</p>
 <p><img src="svgbob_6ce607591d81d0fd6c7507408e97fb8146e83baf.svg" alt="Kroki diagram output"></p>
-<p>A sheet is broken up into multiple regions, where each region has the <a href="#BM_(%5CbcDNA%5Cb)%2F">cDNA</a> for one specific <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> from the control sample printed.</p>
+<p>A sheet is broken up into multiple regions, where each region has the <a href="#BM_(cDNA)%2F">cDNA</a> for one specific <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> from the control sample printed.</p>
 <p><img src="svgbob_421210658cf3b4d0040b4815e879948ebfd7ccc5.svg" alt="Kroki diagram output"></p>
-<p>The idea is that once the experimental <a href="#BM_(%5CbcDNA%5Cb)%2F">cDNA</a> is introduced to that region, it should bind to the control <a href="#BM_(%5CbcDNA%5Cb)%2F">cDNA</a> that's been printed to form <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. The color emitted in a region should correspond to the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> that region represents. For example, if a region on the sheet is fully yellow, it means that the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is roughly equal (red mixed with green is yellow).</p>
+<p>The idea is that once the experimental <a href="#BM_(cDNA)%2F">cDNA</a> is introduced to that region, it should bind to the control <a href="#BM_(cDNA)%2F">cDNA</a> that's been printed to form <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. The color emitted in a region should correspond to the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> that region represents. For example, if a region on the sheet is fully yellow, it means that the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is roughly equal (red mixed with green is yellow).</p>
 </li>
 <li>
 <p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that <a href="#BM_(trie)%2Fi">trie</a>s to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
@@ -21694,14 +21731,14 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p><a name="BM_(translocation)%2Fi"></a><strong>translocation</strong> - Changing location. For example, part of a chromosome may transfer to another chromosome (<a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>).</p>
 </li>
 <li>
-<p><a name="BM_(severe%20acute%20respiratory%20syndrome)%2Fi"></a><strong>severe acute respiratory syndrome</strong> <a name="BM_(%5CbSARS%5Cb)%2F"></a><strong></strong> - A deadly <a href="#BM_(coronavirus)%2Fi">coronavirus</a> that emerged from China around early 2003. The virus transmits itself through droplets that enter the air when someone with the disease coughs.</p>
+<p><a name="BM_(severe%20acute%20respiratory%20syndrome)%2Fi"></a><strong>severe acute respiratory syndrome</strong> <a name="BM_(SARS)%2F"></a><strong></strong> - A deadly <a href="#BM_(coronavirus)%2Fi">coronavirus</a> that emerged from China around early 2003. The virus transmits itself through droplets that enter the air when someone with the disease coughs.</p>
 </li>
 <li>
-<p><a name="BM_(coronavirus)%2Fi"></a><strong>coronavirus</strong> <a name="BM_(%5CbCOVID%7CCoV%5Cb)%2F"></a><strong></strong> - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).</p>
-<p>The common cold, <a href="#BM_(%5CbSARS%5Cb)%2F">SARS</a>, and <a href="#BM_(%5CbCOVID%7CCoV%5Cb)%2F">COVID</a>-19 are examples of <a href="#BM_(coronavirus)%2Fi">coronavirus</a>es.</p>
+<p><a name="BM_(coronavirus)%2Fi"></a><strong>coronavirus</strong> <a name="BM_(COVID%7CCoV)%2F"></a><strong></strong> - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).</p>
+<p>The common cold, <a href="#BM_(SARS)%2F">SARS</a>, and <a href="#BM_(COVID%7CCoV)%2F">COVID</a>-19 are examples of <a href="#BM_(coronavirus)%2Fi">coronavirus</a>es.</p>
 </li>
 <li>
-<p><a name="BM_(human%20immunodeficiency%20virus)%2Fi"></a><strong>human immunodeficiency virus</strong> <a name="BM_(%5CbHIV%7CAIDS%5Cb)%2F"></a><strong></strong> - A virus that over time causes acquired <a href="#BM_(immunodeficiency%7Cimmunocompromisation%7Cimmunocompromised)%2Fi">immunodeficiency</a> syndrome (<a href="#BM_(%5CbHIV%7CAIDS%5Cb)%2F">AIDS</a>).</p>
+<p><a name="BM_(human%20immunodeficiency%20virus)%2Fi"></a><strong>human immunodeficiency virus</strong> <a name="BM_(HIV%7CAIDS)%2F"></a><strong></strong> - A virus that over time causes acquired <a href="#BM_(immunodeficiency%7Cimmunocompromisation%7Cimmunocompromised)%2Fi">immunodeficiency</a> syndrome (<a href="#BM_(HIV%7CAIDS)%2F">AIDS</a>).</p>
 </li>
 <li>
 <p><a name="BM_(immunodeficiency%7Cimmunocompromisation%7Cimmunocompromised)%2Fi"></a><strong>immunodeficiency</strong> - A state in which the immune system's ability to fight infectious disease and cancer is compromised or entirely absent.</p>
@@ -21712,7 +21749,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </li>
 <li>
 <p><a name="BM_(RNA%20virus)%2Fi"></a><strong>RNA virus</strong> - A virus with a RNA <a href="#BM_(genome)%2Fi">genome</a>. RNA replication has a higher rate than DNA replication, meaning that <a href="#BM_(RNA%20virus)%2Fi">RNA virus</a>es mutate faster than <a href="#BM_(DNA%20virus)%2Fi">DNA virus</a>es.</p>
-<p><a href="#BM_(coronavirus)%2Fi">Coronavirus</a>es, <a href="#BM_(%5CbHIV%7CAIDS%5Cb)%2F">HIV</a>, and influenza are examples of <a href="#BM_(RNA%20virus)%2Fi">RNA virus</a>es.</p>
+<p><a href="#BM_(coronavirus)%2Fi">Coronavirus</a>es, <a href="#BM_(HIV%7CAIDS)%2F">HIV</a>, and influenza are examples of <a href="#BM_(RNA%20virus)%2Fi">RNA virus</a>es.</p>
 </li>
 <li>
 <p><a name="BM_(phylogeny%7Cphylogenetic)%2Fi"></a><strong>phylogeny</strong> - The concept of inferring the evolutionary history among some set of species (shared ancestry) by inspecting properties of those species (e.g. relatedness of phenotypic or genotypic characteristics).</p>
@@ -23289,7 +23326,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_146037c85efe776db75ed0bb94cf76542654c3df.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(cluster%20affinity%20search%20technique)%2Fi"></a><strong>cluster affinity search technique</strong> <a name="BM_(%5CbCAST%5Cb)%2F"></a><strong></strong> - A heuristic algorithm that corrects the <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s in a <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>.</p>
+<p><a name="BM_(cluster%20affinity%20search%20technique)%2Fi"></a><strong>cluster affinity search technique</strong> <a name="BM_(CAST)%2F"></a><strong></strong> - A heuristic algorithm that corrects the <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a>s in a <a href="#BM_(similarity%20graph)%2Fi">similarity graph</a>.</p>
 <p><img src="svgbob_5519c35ef5dcc12c07a7fd7ea6dadc034d343056.svg" alt="Kroki diagram output"></p>
 <p>The algorithm attempts to re-create each <a href="#BM_(corrupted%20clique)%2Fi">corrupted clique</a> in its corrected form by iteratively finding the ...</p>
 <ol>
@@ -23392,14 +23429,14 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(Ohdo%20syndrome)%2Fi"></a><strong>Ohdo syndrome</strong> - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> resulting in a truncated protein (see <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s).</p>
 </li>
 <li>
-<p><a name="BM_(single%20nucleotide%20polymorphism)%2Fi"></a><strong>single nucleotide polymorphism</strong> <a name="BM_(%5CbSNP%5Cb)%2F"></a><strong></strong> - A specific position in a DNA <a href="#BM_(sequence)%2Fi">sequence</a> that's known to vary between a set of nucleotides (e.g. it's usually A but there's a 10% chance it could be T). While a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...</p>
+<p><a name="BM_(single%20nucleotide%20polymorphism)%2Fi"></a><strong>single nucleotide polymorphism</strong> <a name="BM_(SNP)%2F"></a><strong></strong> - A nucleotide variation at specific location in a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. position 15 has a <a href="#BM_(SNP)%2F">SNP</a> where it's A vs a <a href="#BM_(SNP)%2F">SNP</a> where it's T). While a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...</p>
 <ul>
 <li>less than 1%, it's considered a <a href="#BM_(point%20mutation)%2Fi">point mutation</a>.</li>
 <li>at least 1%, it's considered a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>.</li>
 </ul>
 </li>
 <li>
-<p><a name="BM_(read%20mapping%7Cread%20mapped)%2Fi"></a><strong>read mapping</strong> - The alignment of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s, etc..) to some larger <a href="#BM_(sequence)%2Fi">sequence</a> of DNA (e.g. <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>).</p>
+<p><a name="BM_(read%20mapping%7Cread%20mapped)%2Fi"></a><strong>read mapping</strong> - The alignment of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s, etc..) to some larger DNA <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>).</p>
 </li>
 <li>
 <p><a name="BM_(reference%20genome%7Creference%20human%20genome)%2Fi"></a><strong>reference genome</strong> - A <a href="#BM_(genome)%2Fi">genome</a> <a href="#BM_(assembly%7Cassemble)%2Fi">assemble</a>d from multiple organisms of the same species, represented as the idealized <a href="#BM_(genome)%2Fi">genome</a> for that species. <a href="#BM_(sequencing%7Csequenced)%2Fi">Sequenced</a> DNA <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s / <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s of an organism are often <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapped</a> against the <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> for that organism's species, such that ...</p>
@@ -23512,11 +23549,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi"></a><strong>Burrows-Wheeler transform</strong> <a name="BM_(%5CbBWT%5Cb)%2F"></a><strong></strong> - A matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. The <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s).</p>
-<p>The example below is the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">burrows-wheeler transform</a> of banana.</p>
+<p><a name="BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi"></a><strong>Burrows-Wheeler transform</strong> <a name="BM_(BWT)%2F"></a><strong></strong> - A matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. The <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s).</p>
+<p>The example below is the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">burrows-wheeler transform</a> of "banana".</p>
 <ol>
 <li>
-<p>Cyclic rotations of banana.</p>
+<p>Cyclic rotations.</p>
 <table>
 <thead>
 <tr>
@@ -23540,37 +23577,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <td>¶</td>
 </tr>
 <tr>
-<td>a</td>
-<td>n</td>
-<td>a</td>
-<td>n</td>
-<td>a</td>
-<td>¶</td>
-<td>b</td>
-</tr>
-<tr>
-<td>n</td>
-<td>a</td>
-<td>n</td>
-<td>a</td>
-<td>¶</td>
-<td>b</td>
-<td>a</td>
-</tr>
-<tr>
-<td>a</td>
-<td>n</td>
-<td>a</td>
 <td>¶</td>
 <td>b</td>
 <td>a</td>
 <td>n</td>
-</tr>
-<tr>
-<td>n</td>
-<td>a</td>
-<td>¶</td>
-<td>b</td>
 <td>a</td>
 <td>n</td>
 <td>a</td>
@@ -23585,19 +23595,46 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <td>n</td>
 </tr>
 <tr>
+<td>n</td>
+<td>a</td>
 <td>¶</td>
 <td>b</td>
 <td>a</td>
 <td>n</td>
 <td>a</td>
+</tr>
+<tr>
+<td>a</td>
 <td>n</td>
 <td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
 </tr>
 </tbody>
 </table>
 </li>
 <li>
-<p>Sort the rotations.</p>
+<p>Lexicogrpahically sort the cyclic rotations.</p>
 <table>
 <thead>
 <tr>
@@ -23678,10 +23715,25 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </table>
 </li>
 </ol>
-<p><a href="#BM_(%5CbBWT%5Cb)%2F">BWT</a> matrices have a special property called the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>: For each symbol in the <a href="#BM_(sequence)%2Fi">sequence</a>, the order in which instances of that symbol appear in the first column matches that of the last column. To understand the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>, augment the elements in the example above to include symbol instance counts. The <a href="#BM_(sequence)%2Fi">sequence</a> banana becomes [b<sub>1</sub>, a<sub>1</sub>, n<sub>1</sub>, a<sub>2</sub>, n<sub>2</sub>, a<sub>3</sub>, ¶<sub>1</sub>]. For each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.</p>
+<p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>: For each symbol in the <a href="#BM_(sequence)%2Fi">sequence</a>, the order in which instances of that symbol appear in the first column matches that of the last column. Continuing with the above example, adding symbol instance counts to the banana becomes [
+b<sub>1</sub>,
+a<sub>1</sub>,
+n<sub>1</sub>,
+a<sub>2</sub>,
+n<sub>2</sub>,
+a<sub>3</sub>,
+¶<sub>1</sub>
+]. For each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.</p>
 <ul>
-<li>Symbol a instances are ordered as [<span style="background-color: blue; color: white; padding: 3px">a<sub>3</sub></span>, <span style="background-color: blue; color: white; padding: 3px">a<sub>2</sub></span>, <span style="background-color: blue; color: white; padding: 3px">a<sub>1</sub></span>] in both the first and last column.</li>
-<li>Symbol n instances are ordered as [<span style="background-color: tan; color: black; padding: 3px">n<sub>2</sub></span>, <span style="background-color: tan; color: black; padding: 3px">n<sub>1</sub></span>] in both the first and last column.</li>
+<li>Symbol a instances are ordered as [
+<span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span>,
+<span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span>,
+<span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span>
+] in both the first and last column.</li>
+<li>Symbol n instances are ordered as [
+<span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span>,
+<span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span>
+] in both the first and last column.</li>
 </ul>
 <table>
 <thead>
@@ -23703,28 +23755,28 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <td>n<sub>1</sub></td>
 <td>a<sub>2</sub></td>
 <td>n<sub>2</sub></td>
-<td><span style="background-color: blue; color: white; padding: 3px">a<sub>3</sub></span></td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
 </tr>
 <tr>
-<td><span style="background-color: blue; color: white; padding: 3px">a<sub>3</sub></span></td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
 <td>¶<sub>1</sub></td>
 <td>b<sub>1</sub></td>
 <td>a<sub>1</sub></td>
 <td>n<sub>1</sub></td>
 <td>a<sub>2</sub></td>
-<td><span style="background-color: tan; color: black; padding: 3px">n<sub>2</sub></span></td>
+<td><span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span></td>
 </tr>
 <tr>
-<td><span style="background-color: blue; color: white; padding: 3px">a<sub>2</sub></span></td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
 <td>n<sub>2</sub></td>
 <td>a<sub>3</sub></td>
 <td>¶<sub>1</sub></td>
 <td>b<sub>1</sub></td>
 <td>a<sub>1</sub></td>
-<td><span style="background-color: tan; color: black; padding: 3px">n<sub>1</sub></span></td>
+<td><span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span></td>
 </tr>
 <tr>
-<td><span style="background-color: blue; color: white; padding: 3px">a<sub>1</sub></span></td>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
 <td>n<sub>1</sub></td>
 <td>a<sub>2</sub></td>
 <td>n<sub>2</sub></td>
@@ -23742,34 +23794,194 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <td>¶<sub>1</sub></td>
 </tr>
 <tr>
-<td><span style="background-color: tan; color: black; padding: 3px">n<sub>2</sub></span></td>
+<td><span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span></td>
 <td>a<sub>3</sub></td>
 <td>¶<sub>1</sub></td>
 <td>b<sub>1</sub></td>
 <td>a<sub>1</sub></td>
 <td>n<sub>1</sub></td>
-<td><span style="background-color: blue; color: white; padding: 3px">a<sub>2</sub></span></td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
 </tr>
 <tr>
-<td><span style="background-color: tan; color: black; padding: 3px">n<sub>1</sub></span></td>
+<td><span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span></td>
 <td>a<sub>2</sub></td>
 <td>n<sub>2</sub></td>
 <td>a<sub>3</sub></td>
 <td>¶<sub>1</sub></td>
 <td>b<sub>1</sub></td>
-<td><span style="background-color: blue; color: white; padding: 3px">a<sub>1</sub></span></td>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
 </tr>
 </tbody>
 </table>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
-<p>TODO: CONTINUE DISCUSSION HERE</p>
+<p>The <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with "a" shows that, the second column is also lexicographically sorted in the isolated matrix.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+</tr>
+<tr>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+</tr>
+<tr>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+</tr>
+</tbody>
+</table>
+<p>In otherwords, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+</tr>
+<tr>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+</tr>
+<tr>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+</tr>
+</tbody>
+</table>
+<p>After the cyclic rotations above, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+</tr>
+<tr>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+</tr>
+<tr>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+</tr>
+<tr>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+</tr>
+<tr>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+</tr>
+<tr>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+</tr>
+<tr>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+</tr>
+</tbody>
+</table>
+<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by walking between those columns. The row containing the end marker in the last column has the <a href="#BM_(sequence)%2Fi">sequence</a>'s first element in its first column.</p>
+<p><img src="svgbob_a426a11d5be88f8cd35f0f8dd45880bc333e1a27.svg" alt="Kroki diagram output"></p>
+<p>Likewise, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many instances of some <a href="#BM_(substring)%2Fi">substring</a> exists in th original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><img src="svgbob_350cb485d1908ecfc7ee5dea40ddef929b32c317.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If storing, you only need to store the last column because the first column can be reconstructed just be sorting the last column.</p>

@@ -1,1 +1,0 @@
-<span style="background-color: blue; color: white; padding: 3px">a<sub>1</sub></span>

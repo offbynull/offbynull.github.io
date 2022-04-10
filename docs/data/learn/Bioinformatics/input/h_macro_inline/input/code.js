@@ -163,7 +163,7 @@ nameToRgb.set('whitesmoke', '#f5f5f5');
 nameToRgb.set('yellowgreen', '#9acd32');
 nameToRgb.set('rebeccapurple', '#663399');
 const toRgb = (c) => {
-    if (c.length == 7 && c.startsWith('#')) {
+    if ((c.length == 7 || c.length == 4) && c.startsWith('#')) {
         return c;
     }
     const ret = nameToRgb.get(c);

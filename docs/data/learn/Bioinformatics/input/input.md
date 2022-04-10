@@ -13572,6 +13572,63 @@ clustering.SimilarityGraph_CAST main_cast
 }
 ```
 
+## Single Nucleotide Polymorphism
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism)_TOPIC/`
+
+```{prereq}
+Algorithms/DNA Assembly_TOPIC
+```
+
+A single nucleotide polymorphism (SNP) is a variation at a specific location of a DNA sequence -- it's one choice out of multiple possible nucleotides choices at that position (e.g. G out of C, G, and T). Across a population, if a specific change at that position occurs frequently enough, it's considered a SNP rather than a mutation. Specifically, if the frequency of the change occurring is ...
+
+ * less than 1%, it's considered a point mutation.
+ * at least 1%, it's considered a SNP.
+
+```{svgbob}
+... - A - C - T - G - T - G - C -.     .- A - T - T - A - G - ...
+                                 +- A -+ "(80% frequency -- SNP)"
+                                 +- T -+ "(5% frequency -- SNP)"
+                                 +- C -+ "(4.5% frequency -- SNP)"
+                                 '- G -' "(0.5% frequency -- point mutation)"
+```
+
+Studies commonly attempt to associate SNPs with diseases. By comparing SNPs between a diseased population vs non-diseased population, scientists are able to discover which SNPs are responsible for a disease / increase the risk of a specific disease occurring. For example, a study might find that the population of heart attack victims had a location with a  higher likelihood of G vs C.
+
+```{svgbob}
+... - A - A - A - G - T - A -.     .- A - G - G - A - A - ...
+                             +- G -+ "(80% in heart attack population / 20% in healthy population)"
+                             '- C -' "(20% in heart attack population / 80% in healthy population)"
+```
+
+The SNPs an individual organism has are identified through a process called read mapping. Read mapping is the process of aligning a set of smaller DNA sequences to a larger DNA sequence. In the context of SNPs, those smaller sequences are the individual organism's sequenced DNA segments (e.g. read_SEQs, read-pair_SEQs, contigs) while the larger sequence is an idealized genome for that organism called a reference genome (e.g. idealized genome for species, race, etc..).
+
+The form of read mapping used for SNP identification mainly focuses on identifying replacements at individual positions, not indels. As such, it doesn't make sense to use traditional alignment graphs.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+### Trie
+
+### Suffix Tree
+
+### Suffix Array
+
+### Burrows-Wheeler Transform
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -15109,7 +15166,7 @@ PracticalGEODatasetClustering
    A gene's upstream region is the 600 to 1000 nucleotides preceding the start of the gene.
    ```
 
- * `{bm} complementary DNA (cDNA)/(complementary DNA)/i` `{bm} /(\bcDNA\b)/` - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.
+ * `{bm} complementary DNA (cDNA)/(complementary DNA)/i` `{bm} /(cDNA)/` - A single strand of DNA generated from mRNA. The enzyme reverse transcriptase scans over the mRNA and creates the complementing single DNA strand.
 
    ```{svgbob}
    3' . . . U <- U <- U <- G <- C <- U <- U <- U <- U <- G <- . . . 5'   mRNA  
@@ -16998,13 +17055,13 @@ PracticalGEODatasetClustering
 
  * `{bm} translocation` - Changing location. For example, part of a chromosome may transfer to another chromosome (genome rearrangement).
 
- * `{bm} severe acute respiratory syndrome` `{bm} /(\bSARS\b)/` - A deadly coronavirus that emerged from China around early 2003. The virus transmits itself through droplets that enter the air when someone with the disease coughs.
+ * `{bm} severe acute respiratory syndrome` `{bm} /(SARS)/` - A deadly coronavirus that emerged from China around early 2003. The virus transmits itself through droplets that enter the air when someone with the disease coughs.
 
- * `{bm} coronavirus` `{bm} /(\bCOVID|CoV\b)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).
+ * `{bm} coronavirus` `{bm} /(COVID|CoV)/` - A family of viruses that attack the respiratory tracts of mammals and birds. The name comes from the fact that the outer spikes of the virus resemble the corona of the sun (crown of the sun / outermost part of the sun's atmosphere protruding out).
  
    The common cold, SARS, and COVID-19 are examples of coronaviruses.
 
- * `{bm} human immunodeficiency virus` `{bm} /(\bHIV|AIDS\b)/` - A virus that over time causes acquired immunodeficiency syndrome (AIDS).
+ * `{bm} human immunodeficiency virus` `{bm} /(HIV|AIDS)/` - A virus that over time causes acquired immunodeficiency syndrome (AIDS).
 
  * `{bm} immunodeficiency/(immunodeficiency|immunocompromisation|immunocompromised)/i` - A state in which the immune system's ability to fight infectious disease and cancer is compromised or entirely absent.
 
@@ -18469,7 +18526,7 @@ PracticalGEODatasetClustering
             *---*
    ``` 
 
- * `{bm} cluster affinity search technique` `{bm} /(\bCAST\b)/` - A heuristic algorithm that corrects the corrupted cliques in a similarity graph.
+ * `{bm} cluster affinity search technique` `{bm} /(CAST)/` - A heuristic algorithm that corrects the corrupted cliques in a similarity graph.
  
     ```{svgbob}
    "CORRUPTED CLIQUES"            "CLIQUES"
@@ -18615,12 +18672,12 @@ PracticalGEODatasetClustering
 
  * `{bm} Ohdo syndrome` - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a single nucleotide polymorphism resulting in a truncated protein (see codons).
 
- * `{bm} single nucleotide polymorphism` `{bm} /(\bSNP\b)/` - A specific position in a DNA sequence that's known to vary between a set of nucleotides (e.g. it's usually A but there's a 10% chance it could be T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...
+ * `{bm} single nucleotide polymorphism` `{bm} /(SNP)/` - A nucleotide variation at specific location in a DNA sequence (e.g. position 15 has a SNP where it's A vs a SNP where it's T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...
 
     * less than 1%, it's considered a point mutation.
     * at least 1%, it's considered a single nucleotide polymorphism.
 
- * `{bm} read mapping/(read mapping|read mapped)/i` - The alignment of DNA sequences (e.g. read_SEQs, contigs, etc..) to some larger sequence of DNA (e.g. reference genome).
+ * `{bm} read mapping/(read mapping|read mapped)/i` - The alignment of DNA sequences (e.g. read_SEQs, contigs, etc..) to some larger DNA sequence (e.g. reference genome).
 
  * `{bm} reference genome/(reference genome|reference human genome)/i` - A genome assembled from multiple organisms of the same species, represented as the idealized genome for that species. Sequenced DNA fragment_SEQs / contigs of an organism are often read mapped against the reference genome for that organism's species, such that ...
 
@@ -18790,23 +18847,23 @@ PracticalGEODatasetClustering
    The entire point of the suffix array is that it's just an array of pointers to the suffix in the source sequence. Since the pointers are sorted (sorted by the suffixes they point to), you can quickly find if a substring exists just by doing a binary search on the suffix array (if a substring exists, it must be a prefix of one of the suffixes).
    ```
 
- * `{bm} Burrows-Wheeler transform/(burrows[-\s]wheeler transform|first[-\s]last property)/i` `{bm} /(\bBWT\b)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to suffix arrays).
+ * `{bm} Burrows-Wheeler transform/(burrows[-\s]wheeler transform|first[-\s]last property)/i` `{bm} /(BWT)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to suffix arrays).
  
-   The example below is the burrows-wheeler transform of banana.
+   The example below is the burrows-wheeler transform of "banana".
    
-   1. Cyclic rotations of banana.
+   1. Cyclic rotations.
 
       |   |   |   |   |   |   |   |
       |---|---|---|---|---|---|---|
       | b | a | n | a | n | a | ¶ |
-      | a | n | a | n | a | ¶ | b |
-      | n | a | n | a | ¶ | b | a |
-      | a | n | a | ¶ | b | a | n |
-      | n | a | ¶ | b | a | n | a |
-      | a | ¶ | b | a | n | a | n |
       | ¶ | b | a | n | a | n | a |
+      | a | ¶ | b | a | n | a | n |
+      | n | a | ¶ | b | a | n | a |
+      | a | n | a | ¶ | b | a | n |
+      | n | a | n | a | ¶ | b | a |
+      | a | n | a | n | a | ¶ | b |
      
-   2. Sort the rotations.
+   2. Lexicogrpahically sort the cyclic rotations.
 
       |   |   |   |   |   |   |   |
       |---|---|---|---|---|---|---|
@@ -18818,42 +18875,101 @@ PracticalGEODatasetClustering
       | n | a | ¶ | b | a | n | a |
       | n | a | n | a | ¶ | b | a |
      
-    BWT matrices have a special property called the first-last property: For each symbol in the sequence, the order in which instances of that symbol appear in the first column matches that of the last column. To understand the first-last property, augment the elements in the example above to include symbol instance counts. The sequence banana becomes [b<sub>1</sub>, a<sub>1</sub>, n<sub>1</sub>, a<sub>2</sub>, n<sub>2</sub>, a<sub>3</sub>, ¶<sub>1</sub>]. For each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.
+    BWT matrices have a special property called the first-last property: For each symbol in the sequence, the order in which instances of that symbol appear in the first column matches that of the last column. Continuing with the above example, adding symbol instance counts to the banana becomes [
+    b<sub>1</sub>,
+    a<sub>1</sub>,
+    n<sub>1</sub>,
+    a<sub>2</sub>,
+    n<sub>2</sub>,
+    a<sub>3</sub>,
+    ¶<sub>1</sub>
+    ]. For each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.
 
-    * Symbol a instances are ordered as [`{h}blue a<sub>3</sub>`, `{h}blue a<sub>2</sub>`, `{h}blue a<sub>1</sub>`] in both the first and last column.
-    * Symbol n instances are ordered as [`{h}tan  n<sub>2</sub>`, `{h}tan  n<sub>1</sub>`] in both the first and last column.
+    * Symbol a instances are ordered as [
+      `{h}#f00 a<sub>3</sub>`,
+      `{h}#b00 a<sub>2</sub>`,
+      `{h}#800 a<sub>1</sub>`
+      ] in both the first and last column.
+    * Symbol n instances are ordered as [
+      `{h}#00f n<sub>2</sub>`,
+      `{h}#00b n<sub>1</sub>`
+      ] in both the first and last column.
 
    |                         |               |               |               |               |               |                         |
    |-------------------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
-   |          ¶<sub>1</sub>  | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}blue a<sub>3</sub>` |
-   | `{h}blue a<sub>3</sub>` | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | `{h}tan  n<sub>2</sub>` |
-   | `{h}blue a<sub>2</sub>` | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | `{h}tan  n<sub>1</sub>` |
-   | `{h}blue a<sub>1</sub>` | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> |          b<sub>1</sub>  |
+   |          ¶<sub>1</sub>  | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}#f00 a<sub>3</sub>` |
+   | `{h}#f00 a<sub>3</sub>` | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | `{h}#00f n<sub>2</sub>` |
+   | `{h}#b00 a<sub>2</sub>` | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | `{h}#00b n<sub>1</sub>` |
+   | `{h}#800 a<sub>1</sub>` | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> |          b<sub>1</sub>  |
    |          b<sub>1</sub>  | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> |          ¶<sub>1</sub>  |
-   | `{h}tan  n<sub>2</sub>` | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}blue a<sub>2</sub>` |
-   | `{h}tan  n<sub>1</sub>` | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}blue a<sub>1</sub>` |
+   | `{h}#00f n<sub>2</sub>` | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
+   | `{h}#00b n<sub>1</sub>` | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
 
-   TODO: CONTINUE DISCUSSION HERE
+   The first-last property comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with "a" shows that, the second column is also lexicographically sorted in the isolated matrix.
 
-   TODO: CONTINUE DISCUSSION HERE
+   |                         |               |               |               |               |               |               |
+   |-------------------------|---------------|---------------|---------------|---------------|---------------|---------------|
+   | `{h}#f00 a<sub>3</sub>` | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> |
+   | `{h}#b00 a<sub>2</sub>` | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> |
+   | `{h}#800 a<sub>1</sub>` | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> |
 
-   TODO: CONTINUE DISCUSSION HERE
+   In otherwords, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.
 
-   TODO: CONTINUE DISCUSSION HERE
+   |               |               |               |               |               |               |                         |
+   |---------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
+   | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}#f00 a<sub>3</sub>` |
+   | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
+   | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
 
-   TODO: CONTINUE DISCUSSION HERE
+   After the cyclic rotations above, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.
 
-   TODO: CONTINUE DISCUSSION HERE
+   |               |               |               |               |               |               |                         |
+   |---------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
+   | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}#f00 a<sub>3</sub>` |
+   | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> |          n<sub>2</sub>  |
+   | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> |          n<sub>1</sub>  |
+   | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> |          b<sub>1</sub>  |
+   | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> |          ¶<sub>1</sub>  |
+   | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
+   | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
 
-   TODO: CONTINUE DISCUSSION HERE
-
-   TODO: CONTINUE DISCUSSION HERE
-
-   TODO: CONTINUE DISCUSSION HERE
+   Given just the first and last column of a BWT matrix, the original sequence can be pulled out by walking between those columns. The row containing the end marker in the last column has the sequence's first element in its first column.
   
-    ```{note}
-    If storing, you only need to store the last column because the first column can be reconstructed just be sorting the last column.
-    ```
+   ```{svgbob}
+               b                          ban                       banan
+   .------------------------.  .------------------------.  .------------------------.
+   |  ¶1,a3         ¶1,a3   |  |  ¶1,a3         ¶1,a3   |  |  ¶1,a3         ¶1,a3   |      ¶1,a3 <-.
+   |  a3,n2         a3,n2   |  |  a3,n2         a3,n2   |  |  a3,n2      .- a3,n2 <-'      a3,n2   |
+   |  a2,n1         a2,n1   |  |  a2,n1      .- a2,n1 <-'  |  a2,n1      |  a2,n1          a2,n1   |
+   |  a1,b1      .- a1,b1 <-'  |  a1,b1      |  a1,b1      |  a1,b1      |  a1,b1          a1,b1   |
+   '- b1,¶1      |  b1,¶1      |  b1,¶1      |  b1,¶1      |  b1,¶1      |  b1,¶1          b1,¶1   |
+      n2,a2      |  n2,a2      |  n2,a2      |  n2,a2      '- n2,a2 <-.  |  n2,a2          n2,a2   |
+      n1,a1      |  n1,a1      '- n1,a1 <-.  |  n1,a1         n1,a1   |  |  n1,a1          n1,a1   |
+                 '------------------------'  '------------------------'  '-------------------------'
+                             ba                        bana                        banana
+   ```
+
+   Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many instances of some substring exists in th original sequence.
+
+   ```{svgbob}
+   "* search for substring nana"
+
+            "2 x na"                 "1 x nana"
+   .------------------------.  .---------------->*
+   |  ¶1,a3         ¶1,a3 <-+  |  ¶1,a3    
+   +- a3,n2         a3,n2   |  '- a3,n2 <-.
+   '- a2,n1         a2,n1   |     a2,n1   |
+      a1,b1         a1,b1   |     a1,b1   |
+      b1,¶1         b1,¶1   |     b1,¶1   |
+      n2,a2      .- n2,a2 <-'     n2,a2   |
+      n1,a1      |  n1,a1         n1,a1   |
+                 '------------------------'
+                         "1 x nan"         
+   ```
+
+   ```{note}
+   If storing, you only need to store the last column because the first column can be reconstructed just be sorting the last column.
+   ```
 
  * `{bm} pre-order traversal/(pre[-\s]?order traversal)/i` - A form of depth-first traversal for binary trees where, starting from the root node, ...
 
