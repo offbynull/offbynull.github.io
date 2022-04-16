@@ -13578,9 +13578,11 @@ clustering.SimilarityGraph_CAST main_cast
 
 ```{prereq}
 Algorithms/DNA Assembly_TOPIC
+Algorithms/Sequence Alignment_TOPIC
+Algorithms/Synteny_TOPIC
 ```
 
-A single nucleotide polymorphism (SNP) is a variation at a specific location of a DNA sequence -- it's one choice out of multiple possible nucleotides choices at that position (e.g. G out of C, G, and T). Across a population, if a specific change at that position occurs frequently enough, it's considered a SNP rather than a mutation. Specifically, if the frequency of the change occurring is ...
+A single nucleotide polymorphism (SNP) is a variation at a specific location of a DNA sequence -- it's one choice out of multiple possible nucleotides choices at that position (e.g. G out of {C, G, T}). Across a population, if a specific change at that position occurs frequently enough, it's considered a SNP rather than a mutation. Specifically, if the frequency of the change occurring is ...
 
  * less than 1%, it's considered a point mutation.
  * at least 1%, it's considered a SNP.
@@ -13593,7 +13595,7 @@ A single nucleotide polymorphism (SNP) is a variation at a specific location of 
                                  '- G -' "(0.5% frequency -- point mutation)"
 ```
 
-Studies commonly attempt to associate SNPs with diseases. By comparing SNPs between a diseased population vs non-diseased population, scientists are able to discover which SNPs are responsible for a disease / increase the risk of a specific disease occurring. For example, a study might find that the population of heart attack victims had a location with a  higher likelihood of G vs C.
+Studies commonly attempt to associate SNPs with diseases. By comparing SNPs between a diseased population vs non-diseased population, scientists are able to discover which SNPs are responsible for a disease / increase the risk of a disease occurring. For example, a study might find that the population of heart attack victims had a location with a higher likelihood of G vs C.
 
 ```{svgbob}
 ... - A - A - A - G - T - A -.     .- A - G - G - A - A - ...
@@ -13601,33 +13603,229 @@ Studies commonly attempt to associate SNPs with diseases. By comparing SNPs betw
                              '- C -' "(20% in heart attack population / 80% in healthy population)"
 ```
 
-The SNPs an individual organism has are identified through a process called read mapping. Read mapping is the process of aligning a set of smaller DNA sequences to a larger DNA sequence. In the context of SNPs, those smaller sequences are the individual organism's sequenced DNA segments (e.g. read_SEQs, read-pair_SEQs, contigs) while the larger sequence is an idealized genome for that organism called a reference genome (e.g. idealized genome for species, race, etc..).
+The SNPs an individual organism has are identified through a process called read mapping. Read mapping attempts to align the individual organism's sequenced DNA segments (e.g. read_SEQs, read-pairs, contigs) to an idealized genome for the population that organism belongs to (e.g. species, race, etc..), called a reference genome. The result of the alignment should have few indels and but a fair amount of mismatches, where those mismatches identify that organism's SNPs.
 
-The form of read mapping used for SNP identification mainly focuses on identifying replacements at individual positions, not indels. As such, it doesn't make sense to use traditional alignment graphs.
+```{note}
+Where might indels come from? The Pevzner book mentions that ...
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+1. even across individuals within the same population, some parts of a genome may be highly variable (e.g. major histocompatibility complex, a region of human DNA linked to the immune system), meaning indels for those areas may be natural.
+2. even across individuals within the same population, genome rearrangements may be normal, meaning that large indel regions may show up when an individual is aligned against its reference genome (reference genome captures just a single genome rearrangement variation -- efforts are being made to work around this, see pan-genome).
+3. a reference genome may be incomplete due the limitations of sequencing technology (e.g. multiple large contigs instead of the whole genome), meaning that a correct mapping may not exist for a specific part of the individual organism's sequenced DNA, meaning it ends up mapping to the wrong part of the reference genome and producing indels.
+```
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+Since read mapping for SNP identification focuses on identifying mismatches and not indels, traditional sequence alignment algorithms aren't required. More efficient substring matching algorithms can be used instead. Specifically, if you have a sequence that you're trying to map and you know it can tolerate d mismatches at most, any substring matching algorithm will work. For example, finding GCCGTTTT with at most 1 mismatch simply requires dividing GCCGTTTT into two halves and searching for each half in the larger reference genome. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st half (GCCG) or the 2nd half (TTTT), not both.
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+```{svgbob}
+* "GCCGTTTT with 1 mismatch divides to [GCCG, TTTT]"
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+  G C C G                               T T T T
+  | | | |                               | | | |
+A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A 
+ '-------'                             '-------'
+```
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+Found regions within the reference genome are extended to cover all of GCCGTTT and then tested in full. If the hamming distance is within the replacement tolerance, it's considered a match.
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+```{svgbob}
+"* 1st found has hamming dist of 3 (exceeds tolerance)"
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+  G C C G T T T T
+  | | | |   |    
+A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A
+ '---------------'
 
-TODO: CONTINUE THE PARAGRAPH ABOVE... talk about how since only replacements are needed, it doesn't make sense to use full alignment graphs. instead, if you know how many replacements you can tolerate, it's easy to search using exact substrings (describe how you can do this). then mention that this chapter focuses on algorithms for exact substring matches and tweaks them to work for SNP identification.
+
+"* 2nd found has hamming dist of 1 (within tolerance)"
+
+                                G C C G T T T T
+                                | |   | | | | |
+A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A 
+                               '---------------'
+```
+
+The logic described above is generalized as follows: If a sequence can tolerate d mismatches, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.
+
+These blocks are called seeds, and the act of finding seeds and testing the hamming distance of the extended region is called seed extension.
+
+```{svgbob}
+* "ACGTT separated into 3 seeds. It's impossible for 2"
+  "mismatches to be spread across 3 seeds. Dots represent"
+  "mismatches. Exact matching seeds wrapped in brackets."
+
+( A C )    ( G )      ● ● 
+( A C )      ●        T ● 
+  A ●        G        T ● 
+  ● C      ( G )      T ● 
+( A C )      ●        ● T 
+  A ●      ( G )      ● T 
+  ● C      ( G )      ● T 
+  A ●        ●      ( T T )
+  ● C        ●      ( T T )
+  ● ●      ( G )    ( T T )
+```
+
+```python
+def to_seeds(seq: str, mismatches: int):
+  seed_cnt = mismatches + 1
+  len_per_seed = ceil(len(seq) / seed_cnt)
+  ret = []
+  for i in range(0, len(seq), len_per_seed):
+    ret.append(seq[i:i+len_per_seed])
+  return ret
+```
+
+The subsections below are mainly algorithms to efficiently search for exact substrings. The technique described above can be used to extend those algorithms to tolerate a certain number of mismatches.
+
+```{note}
+The Pevzner uses the formula `{kt} \lfloor \frac{n}{d+1} \rfloor` for determining the number of nucleotides per seed, where n is the sequence length and d is the number of mismatches. It's the same as the code above but it takes the floor rather than the ceiling. For example, ACGTT with 2 mismatches would break down to `{kt} \frac{5}{3}` = 1.667 nucleotides per seed, which rounds down to 1, which ends up being the seeds [A, C, GTT]. That seems like a not optimal breakup -- smaller seeds may end up with more frequent hits during search?
+
+Maybe this has to do with the BLAST discussion that comes immediately after (section 9.14).
+```
 
 ### Trie
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie)_TOPIC/`
+
+**WHAT**: A trie is a rooted tree that representing contiguous regions shared between of set of sequences. Branches represent deviations in those sequences. For example, the trie for apples, applejack, berry, and beechnut is as follows ...
+
+```{svgbob}
+                      j   a   c   k   ¶  
+                    .-->*-->*-->*-->*-->*
+                    |
+  a   p   p   l   e | s   ¶  
+.-->*-->*-->*-->*-->*-->*-->*
+|                   
+*                   
+| b   e   r   r   y   ¶  
+'-->*-->*-->*-->*-->*-->*
+        |
+        | e   c   h   n   u   t   ¶  
+        '-->*-->*-->*-->*-->*-->*-->*
+```
+
+Each sequence making up a trie contains a special end marker (¶ in the diagram above) which help disambiguate scenarios where one sequence is a prefix of the other. For example, without the end marker, the trie for apple and apples would only capture the plural form. The non-plural form would get engulfed entirely by the plural (apple is a prefix of apples).
+
+```{svgbob}
+* "Trie for apple and apples (with end marker)"
+
+                      s   ¶  
+                    .-->*-->*
+                    |
+  a   p   p   l   e | ¶
+*-->*-->*-->*-->*-->*-->*
+
+
+* "Trie for apple and apples (without end marker)"
+
+  a   p   p   l   e   s
+*-->*-->*-->*-->*-->*-->*
+```
+
+**WHY**: Given a sequence to search for, the straight-forward approach to test if that sequence is a substring of some larger sequence is to scan over that larger sequence and test each position to see if it starts with that smaller sequence.
+
+```{svgbob}
+* "Searching for rating"
+
+"contains rating? no."
+| "contains rating? no."
+| | "contains rating? no."
+| | | "contains rating? no."
+| | | | "contains rating? YES."
+| | | | |
+v v v v v 
+T h e   r a t i n g   o f   t h e   m o v i e   w a s   v e r y   g o o d .
+```
+
+When there's a set of n sequences to search for, this happens n times (once per sequence).
+
+Tries are a more efficient way to search for a set of n sequences. Rather than scanning over the larger sequence n times, a trie combines those n smaller sequences together such that the scanning only happens once. At each position of the larger sequence, the trie is walked to see if that position starts with any of the smaller sequences that make up the tire. If the walk ends at a leaf node, it contains the sequence represented at that leaf node.
+
+```{svgbob}
+* "Searching for rating, ration, or rattle. The highlighted scan position"
+  "matches the trie walk below (hollow nodes are the nodes walked)"
+
+
+   "scan position"
+        |
+        v
+T h e   r a t i n g   o f   t h e   m o v i e   w a s   v e r y   g o o d .
+
+
+                  n   g   ¶  
+                .-->o-->o-->*
+                |
+  r   a   t   i | o   n   ¶  
+o-->o-->o-->o-->o-->*-->*-->*
+            |
+            | t   t   l   e   ¶  
+            '-->*-->*-->*-->*-->*
+```
+
+This is more efficient than searching individually because, in a trie, shared prefixes across the n sequence are collapsed. The element comparisons for those shared prefixes only happens once.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+TODO: The wording here is really bad. Rewrite it and continue.
+
+#### Standard Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Standard Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+#### Aho-Corasick Algorithm
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm_TOPIC
+```
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Aho-Corasick Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+TODO: add a terminology section for this
+
+TODO: add a terminology section for this
+
+TODO: add a terminology section for this
+
+TODO: add a terminology section for this
+
+TODO: add a terminology section for this
 
 ### Suffix Tree
 
 ### Suffix Array
 
 ### Burrows-Wheeler Transform
+
+### BLAST
+
+Covered in section 9.14
 
 # Stories
 
@@ -18711,17 +18909,24 @@ PracticalGEODatasetClustering
            '-->*-->*-->*-->*-->*-->*
    ```
 
-   To support sequences with overlapping sequences, a trie typically either includes a ...
+   To disambiguate scenarios where one sequence is a prefix of the other, a trie typically either includes a ...
 
     * a flag on each node to indicate if its the end of a sequence.
     * a special "end-of-sequence" to disambiguate the end of a sequence.
 
    ```{svgbob}
-   * "Trie for apple and apples"
-                         s   ¶ 
+   * "Trie for apple and apples (with end marker)"
+
+                         s   ¶  
                        .-->*-->*
                        |
      a   p   p   l   e | ¶
+   *-->*-->*-->*-->*-->*-->*
+   
+   
+   * "Trie for apple and apples (without end marker)"
+   
+     a   p   p   l   e   s
    *-->*-->*-->*-->*-->*-->*
    ```
 
