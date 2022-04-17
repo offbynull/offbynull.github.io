@@ -13686,27 +13686,23 @@ Maybe this has to do with the BLAST discussion that comes immediately after (sec
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie)_TOPIC/`
 
-**WHAT**: A trie is a rooted tree that representing contiguous regions shared between of set of sequences. Branches represent deviations in those sequences. For example, the trie for apples, applejack, berry, and beechnut is as follows ...
+**WHAT**: A trie is a rooted tree that holds a set of sequences. Shared prefixes between those sequences are collapsed into a single path while the non-shared remainders split out as deviating paths. For example, the trie for [apples, applejack, apply] is as follows ...
 
 ```{svgbob}
                       j   a   c   k   ¶  
                     .-->*-->*-->*-->*-->*
                     |
   a   p   p   l   e | s   ¶  
-.-->*-->*-->*-->*-->*-->*-->*
-|                   
-*                   
-| b   e   r   r   y   ¶  
-'-->*-->*-->*-->*-->*-->*
-        |
-        | e   c   h   n   u   t   ¶  
-        '-->*-->*-->*-->*-->*-->*-->*
+*-->*-->*-->*-->*-->*-->*-->*
+                |
+                | y   ¶
+                '-->*-->*
 ```
 
-Each sequence making up a trie contains a special end marker (¶ in the diagram above) which help disambiguate scenarios where one sequence is a prefix of the other. For example, without the end marker, the trie for apple and apples would only capture the plural form. The non-plural form would get engulfed entirely by the plural (apple is a prefix of apples).
+Each sequence making up a trie contains a special end marker (¶ in the diagram above) which help disambiguate cases where one sequence is _entirely_ a prefix of another. For example, without the end marker, the trie for apple and apples would only capture the plural form. The non-plural form would get engulfed entirely by the plural (apple is a prefix of apples).
 
 ```{svgbob}
-* "Trie for apple and apples (with end marker)"
+* "Trie for [apple, apples] with end marker"
 
                       s   ¶  
                     .-->*-->*
@@ -13715,22 +13711,22 @@ Each sequence making up a trie contains a special end marker (¶ in the diagram 
 *-->*-->*-->*-->*-->*-->*
 
 
-* "Trie for apple and apples (without end marker)"
+* "Trie for [apple, apples] without end marker"
 
   a   p   p   l   e   s
 *-->*-->*-->*-->*-->*-->*
 ```
 
-**WHY**: Given a sequence to search for, the straight-forward approach to test if that sequence is a substring of some larger sequence is to scan over that larger sequence and test each position to see if it starts with that smaller sequence.
+**WHY**: Given a single sequence to search for, the straight-forward approach to finding it in some larger sequence is to scan over that larger sequence and test each position to see if it starts with that smaller sequence.
 
 ```{svgbob}
 * "Searching for rating"
 
-"contains rating? no."
-| "contains rating? no."
-| | "contains rating? no."
-| | | "contains rating? no."
-| | | | "contains rating? YES."
+"starts with rating? no."
+| "starts with rating? no."
+| | "starts with rating? no."
+| | | "starts with rating? no."
+| | | | "starts with rating? YES."
 | | | | |
 v v v v v 
 T h e   r a t i n g   o f   t h e   m o v i e   w a s   v e r y   g o o d .
@@ -13738,7 +13734,7 @@ T h e   r a t i n g   o f   t h e   m o v i e   w a s   v e r y   g o o d .
 
 When there's a set of n sequences to search for, this happens n times (once per sequence).
 
-Tries are a more efficient way to search for a set of n sequences. Rather than scanning over the larger sequence n times, a trie combines those n smaller sequences together such that the scanning only happens once. At each position of the larger sequence, the trie is walked to see if that position starts with any of the smaller sequences that make up the tire. If the walk ends at a leaf node, it contains the sequence represented at that leaf node.
+Tries are a more efficient way to search for a set of n sequences. Rather than scanning over the larger sequence n times, a trie combines those n sequences together such that the scanning only happens once. At each position of the larger sequence, the trie is walked to see if the starting elements at that position match any of the sequences in the trie. This is more efficient than searching for each of the n sequences individually because, in a trie, shared prefixes across the n sequence are collapsed. The element comparisons for those shared prefixes only happens once.
 
 ```{svgbob}
 * "Searching for rating, ration, or rattle. The highlighted scan position"
@@ -13761,41 +13757,131 @@ o-->o-->o-->o-->o-->*-->*-->*
             '-->*-->*-->*-->*-->*
 ```
 
-This is more efficient than searching individually because, in a trie, shared prefixes across the n sequence are collapsed. The element comparisons for those shared prefixes only happens once.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
-TODO: The wording here is really bad. Rewrite it and continue.
-
 #### Standard Algorithm
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Standard Algorithm)_TOPIC/`
 
 **ALGORITHM**:
+
+An empty trie contains a single root node and nothing else (no other nodes or edges). Adding a sequence to a trie requires walking the trie with that sequence's elements until reaching an element missing from the trie -- a node that doesn't have an outgoing edge with that element. At that node, a new branch should be created and the remaining elements of the sequence should extend from it.
+
+```{output}
+ch9_code/src/sequence_search/Trie_Basic.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.Trie_Basic main_build
+{
+  trie_sequences: [apple¶, applet¶, appeal¶],
+  end_marker: ¶
+}
+```
+
+Testing if a trie contains a sequence requires walking the trie with that sequence's elements until reaching the end-of-sequence marker.
+
+```{output}
+ch9_code/src/sequence_search/Trie_Basic.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.Trie_Basic main_test
+{
+  trie_sequences: [apple¶, applet¶, appeal¶],
+  test_sequence: "How do you feel about apples?",
+  end_marker: ¶
+}
+```
+
+#### Edge Collapse Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Edge Collapse Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+A common optimization for tries is to build them such that trains of non-forking nodes (nodes with indegree of 1 and outdegree of 1) are represented as a single edge.
+
+```{svgbob}
+          "Normal trie"                                          "Collapsed trie"
+          
+
+                  n   g   ¶                                                 ng¶  
+                .-->*-->*-->*                                          .---------->*
+                |                                                      |
+  r   a   t   i | o   n   ¶                                 rat      i |    on¶  
+*-->*-->*-->*-->*-->*-->*-->*                          *---------->*-->*---------->*
+            |                                                      |
+            | t   t   l   e   ¶                                    |       ttle¶  
+            '-->*-->*-->*-->*-->*                                  '------------------>*
+```
+
+At a high-level, the algorithm for building an edge collapsed trie is more-or-less the same as building a standard trie. Add sequences to the trie one at a time, forking where deviations occur. However, in this case forking happens by breaking an existing edge in two.
+
+```{svgbob}
+* "Add ration"
+
+          ration¶  
+*-------------------------->*
+
+
+* "Add rating"
+
+                     ng¶  
+                .---------->*
+                |
+     rati       |    on¶  
+*-------------->*---------->*
+
+
+* "Add rattle"
+                     ng¶  
+                .---------->*
+                |
+     rat      i |    on¶  
+*---------->*-->*---------->*
+            |
+            |       ttle¶  
+            '------------------>*
+```
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
+
+TODO: FINISH THE CODE AND PLUG IT IN
 
 #### Aho-Corasick Algorithm
 
@@ -18890,32 +18976,28 @@ PracticalGEODatasetClustering
 
  * `{bm} major histocompatibility complex` - A region of DNA containing genes linked to the immune system. The genes in this region are highly diverse, to the point that it's unlikely for two individuals to have the genes in the exact same form.
  
- * `{bm} trie` - A rooted tree representing contiguous regions shared between of set of sequences. Branches represent deviations.
+ * `{bm} trie` - A rooted tree that holds a set of sequences. Shared prefixes between those sequences are collapsed into a single path while the non-shared remainders split out as deviating paths.
 
    ```{svgbob}
-   * "Trie for apples, applejack, berry, and beechnut"
+   * "Trie for [banal, banned, banana]"
 
-                         j   a   c   k
-                       .-->*-->*-->*-->*
-                       |
-     a   p   p   l   e | s
-   .-->*-->*-->*-->*-->*-->*
-   |                   
-   *                   
-   | b   e   r   r   y  
-   '-->*-->*-->*-->*-->*
-           |
-           | e   c   h   n   u   t  
-           '-->*-->*-->*-->*-->*-->*
+                 n   e   d
+               .-->*-->*-->*
+               |
+     b   a   n | a   l 
+   *-->*-->*-->*-->*-->*
+                   |
+                   | n   a
+                   '-->*-->*
    ```
 
    To disambiguate scenarios where one sequence is a prefix of the other, a trie typically either includes a ...
 
     * a flag on each node to indicate if its the end of a sequence.
-    * a special "end-of-sequence" to disambiguate the end of a sequence.
+    * a special "end-of-sequence" at the end of each sequence.
 
    ```{svgbob}
-   * "Trie for apple and apples (with end marker)"
+   * "Trie for [apple, apples] (with end marker)"
 
                          s   ¶  
                        .-->*-->*
@@ -18924,10 +19006,14 @@ PracticalGEODatasetClustering
    *-->*-->*-->*-->*-->*-->*
    
    
-   * "Trie for apple and apples (without end marker)"
+   * "Trie for [apple, apples] (without end marker)"
    
      a   p   p   l   e   s
    *-->*-->*-->*-->*-->*-->*
+   ```
+
+   ```{note}
+   End of sequence marker is preferred mechanism.
    ```
 
  * `{bm} suffix trie` - A trie of all suffixes within a sequence.

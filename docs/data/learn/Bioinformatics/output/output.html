@@ -189,6 +189,7 @@
 <li><a href="#H_Trie">Trie</a></li>
 <ul>
 <li><a href="#H_Standard%20Algorithm">Standard Algorithm</a></li>
+<li><a href="#H_Edge%20Collapse%20Algorithm">Edge Collapse Algorithm</a></li>
 <li><a href="#H_Aho-Corasick%20Algorithm">Aho-Corasick Algorithm</a></li>
 </ul>
 <li><a href="#H_Suffix%20Tree">Suffix Tree</a></li>
@@ -18500,33 +18501,150 @@ THHHTHHHTH = 7 / 10 = 0.7
 </div>
 <a name="H_Trie"></a><h3>Trie</h3>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>WHAT</strong>: A <a href="#BM_(trie)%2Fi">trie</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> that representing contiguous regions shared between of set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Branches represent deviations in those <a href="#BM_(sequence)%2Fi">sequence</a>s. For example, the <a href="#BM_(trie)%2Fi">trie</a> for apples, applejack, berry, and beechnut is as follows ...</p>
-<p><img src="svgbob_c9ec57fce477f3d7a4a087b1d4173ced40ff6f37.svg" alt="Kroki diagram output"></p>
-<p>Each <a href="#BM_(sequence)%2Fi">sequence</a> making up a <a href="#BM_(trie)%2Fi">trie</a> contains a special end marker (¶ in the diagram above) which help disambiguate scenarios where one <a href="#BM_(sequence)%2Fi">sequence</a> is a prefix of the other. For example, without the end marker, the <a href="#BM_(trie)%2Fi">trie</a> for apple and apples would only capture the plural form. The non-plural form would get engulfed entirely by the plural (apple is a prefix of apples).</p>
-<p><img src="svgbob_2e9ed92388d26bfd6570db1ca507c9a439a5dbdd.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>: Given a <a href="#BM_(sequence)%2Fi">sequence</a> to search for, the straight-forward approach to test if that <a href="#BM_(sequence)%2Fi">sequence</a> is a <a href="#BM_(substring)%2Fi">substring</a> of some larger <a href="#BM_(sequence)%2Fi">sequence</a> is to scan over that larger <a href="#BM_(sequence)%2Fi">sequence</a> and test each position to see if it starts with that smaller <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<p><img src="svgbob_6e83bc5459d139714d7fdf9bb5cfe95f99c9cc35.svg" alt="Kroki diagram output"></p>
+<p><strong>WHAT</strong>: A <a href="#BM_(trie)%2Fi">trie</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> that holds a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Shared prefixes between those <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed into a single path while the non-shared remainders split out as deviating paths. For example, the <a href="#BM_(trie)%2Fi">trie</a> for [apples, applejack, apply] is as follows ...</p>
+<p><img src="svgbob_545555f7e431c288604a9941d8d8fb599b61bc9e.svg" alt="Kroki diagram output"></p>
+<p>Each <a href="#BM_(sequence)%2Fi">sequence</a> making up a <a href="#BM_(trie)%2Fi">trie</a> contains a special end marker (¶ in the diagram above) which help disambiguate cases where one <a href="#BM_(sequence)%2Fi">sequence</a> is <em>entirely</em> a prefix of another. For example, without the end marker, the <a href="#BM_(trie)%2Fi">trie</a> for apple and apples would only capture the plural form. The non-plural form would get engulfed entirely by the plural (apple is a prefix of apples).</p>
+<p><img src="svgbob_dbcc79f95963ce096089711c1c3ae847c1f9bdde.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: Given a single <a href="#BM_(sequence)%2Fi">sequence</a> to search for, the straight-forward approach to finding it in some larger <a href="#BM_(sequence)%2Fi">sequence</a> is to scan over that larger <a href="#BM_(sequence)%2Fi">sequence</a> and test each position to see if it starts with that smaller <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><img src="svgbob_38b189b6be6c46170e743ada861047d8a6b090ad.svg" alt="Kroki diagram output"></p>
 <p>When there's a set of n <a href="#BM_(sequence)%2Fi">sequence</a>s to search for, this happens n times (once per <a href="#BM_(sequence)%2Fi">sequence</a>).</p>
-<p><a href="#BM_(trie)%2Fi">Trie</a>s are a more efficient way to search for a set of n <a href="#BM_(sequence)%2Fi">sequence</a>s. Rather than scanning over the larger <a href="#BM_(sequence)%2Fi">sequence</a> n times, a <a href="#BM_(trie)%2Fi">trie</a> combines those n smaller <a href="#BM_(sequence)%2Fi">sequence</a>s together such that the scanning only happens once. At each position of the larger <a href="#BM_(sequence)%2Fi">sequence</a>, the <a href="#BM_(trie)%2Fi">trie</a> is walked to see if that position starts with any of the smaller <a href="#BM_(sequence)%2Fi">sequence</a>s that make up the tire. If the walk ends at a leaf node, it contains the <a href="#BM_(sequence)%2Fi">sequence</a> represented at that leaf node.</p>
+<p><a href="#BM_(trie)%2Fi">Trie</a>s are a more efficient way to search for a set of n <a href="#BM_(sequence)%2Fi">sequence</a>s. Rather than scanning over the larger <a href="#BM_(sequence)%2Fi">sequence</a> n times, a <a href="#BM_(trie)%2Fi">trie</a> combines those n <a href="#BM_(sequence)%2Fi">sequence</a>s together such that the scanning only happens once. At each position of the larger <a href="#BM_(sequence)%2Fi">sequence</a>, the <a href="#BM_(trie)%2Fi">trie</a> is walked to see if the starting elements at that position match any of the <a href="#BM_(sequence)%2Fi">sequence</a>s in the <a href="#BM_(trie)%2Fi">trie</a>. This is more efficient than searching for each of the n <a href="#BM_(sequence)%2Fi">sequence</a>s individually because, in a <a href="#BM_(trie)%2Fi">trie</a>, shared prefixes across the n <a href="#BM_(sequence)%2Fi">sequence</a> are collapsed. The element comparisons for those shared prefixes only happens once.</p>
 <p><img src="svgbob_458d20b8238e2d38526fb3560b4e0be6891444e0.svg" alt="Kroki diagram output"></p>
-<p>This is more efficient than searching individually because, in a <a href="#BM_(trie)%2Fi">trie</a>, shared prefixes across the n <a href="#BM_(sequence)%2Fi">sequence</a> are collapsed. The element comparisons for those shared prefixes only happens once.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
-<p>TODO: The wording here is really bad. Rewrite it and continue.</p>
 <a name="H_Standard%20Algorithm"></a><h4>Standard Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FStandard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
+<p>An empty <a href="#BM_(trie)%2Fi">trie</a> contains a single root node and nothing else (no other nodes or edges). Adding a <a href="#BM_(sequence)%2Fi">sequence</a> to a <a href="#BM_(trie)%2Fi">trie</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching an element missing from the <a href="#BM_(trie)%2Fi">trie</a> -- a node that doesn't have an outgoing edge with that element. At that node, a new branch should be created and the remaining elements of the <a href="#BM_(sequence)%2Fi">sequence</a> should extend from it.</p>
+<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 35 to 76):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_trie</span>(<span class="hljs-params">
+        seqs: <span class="hljs-built_in">set</span>[<span class="hljs-built_in">str</span>],
+        end_marker: <span class="hljs-built_in">str</span>,
+        nid_gen: StringIdGenerator = StringIdGenerator(<span class="hljs-params"><span class="hljs-string">'N'</span></span>),
+        eid_gen: StringIdGenerator = StringIdGenerator(<span class="hljs-params"><span class="hljs-string">'E'</span></span>)
+</span>) -&gt; Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>]:
+    <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> seqs:
+        <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+        <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    trie = Graph()
+    root_nid = nid_gen.next_id()
+    trie.insert_node(root_nid)  <span class="hljs-comment"># Insert root node</span>
+    <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> seqs:
+        add_to_trie(trie, root_nid, seq, nid_gen, eid_gen)
+    <span class="hljs-keyword">return</span> trie
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add_to_trie</span>(<span class="hljs-params">
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>],
+        root_nid: <span class="hljs-built_in">str</span>,
+        seq: <span class="hljs-built_in">str</span>,
+        nid_gen: StringIdGenerator,
+        eid_gen: StringIdGenerator</span>):
+    nid = root_nid
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> seq:
+        <span class="hljs-comment"># Find edge for ch</span>
+        found_nid = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">for</span> _, _, to_nid, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
+            <span class="hljs-keyword">if</span> ch == edge_ch:
+                found_nid = to_nid
+                <span class="hljs-keyword">break</span>
+        <span class="hljs-comment"># If found, use that edge's end node as the start of the next iteration</span>
+        <span class="hljs-keyword">if</span> found_nid <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            nid = found_nid
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-comment"># Otherwise, add the missing edge for ch</span>
+        next_nid = nid_gen.next_id()
+        next_eid = eid_gen.next_id()
+        trie.insert_node(next_nid)
+        trie.insert_edge(next_eid, nid, next_nid, ch)
+        nid = next_nid
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building trie using the following settings...</p>
+<pre><code>{
+  trie_sequences: [apple¶, applet¶, appeal¶],
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following trie was produced ...</p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
+<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 107 to 134):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
+        data: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>,
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>],
+        root_nid: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">str</span>] | <span class="hljs-literal">None</span>:
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> data, <span class="hljs-string">f'<span class="hljs-subst">{data}</span> should not have end marker'</span>
+    <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data)):
+        nid = root_nid
+        end_idx = start_idx
+        <span class="hljs-keyword">for</span> idx, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(data[start_idx:]):
+            <span class="hljs-comment"># Find edge for ch</span>
+            found_nid = <span class="hljs-literal">None</span>
+            <span class="hljs-keyword">for</span> _, _, to_nid, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
+                <span class="hljs-keyword">if</span> edge_ch == ch:
+                    found_nid = to_nid
+                    end_idx = start_idx + idx
+                    <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># If found not found, bail</span>
+            <span class="hljs-keyword">if</span> found_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># Otherwise, keep going from the edge's end node</span>
+            nid = found_nid
+        <span class="hljs-comment"># End marker reached? Return with index of match and the match itself</span>
+        end_marker_found = <span class="hljs-built_in">any</span>(<span class="hljs-literal">True</span> <span class="hljs-keyword">for</span> _, _, _, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid) <span class="hljs-keyword">if</span> edge_ch == end_marker)
+        <span class="hljs-keyword">if</span> end_marker_found:
+            <span class="hljs-keyword">return</span> start_idx, data[start_idx:end_idx+<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building and searching trie using the following settings...</p>
+<pre><code>{
+  trie_sequences: [apple¶, applet¶, appeal¶],
+  test_sequence: "How do you feel about apples?",
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following trie was produced ...</p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+<p>Searching <em>How do you feel about apples?</em> with the trie revealed the following was found: (22, 'apple')</p>
+</div>
+<p></p>
+<a name="H_Edge%20Collapse%20Algorithm"></a><h4>Edge Collapse Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FEdge%20Collapse%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FStandard%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>A common optimization for <a href="#BM_(trie)%2Fi">trie</a>s is to build them such that trains of non-forking nodes (nodes with <a href="#BM_(indegree)%2Fi">indegree</a> of 1 and <a href="#BM_(outdegree)%2Fi">outdegree</a> of 1) are represented as a single edge.</p>
+<p><img src="svgbob_bf5b40884091e4aa0c497c8604644d9ca21ed8cc.svg" alt="Kroki diagram output"></p>
+<p>At a high-level, the algorithm for building an edge collapsed <a href="#BM_(trie)%2Fi">trie</a> is more-or-less the same as building a standard <a href="#BM_(trie)%2Fi">trie</a>. Add <a href="#BM_(sequence)%2Fi">sequence</a>s to the <a href="#BM_(trie)%2Fi">trie</a> one at a time, forking where deviations occur. However, in this case forking happens by breaking an existing edge in two.</p>
+<p><img src="svgbob_f45bd77532fff09be923a6a0233e002b060a0bce.svg" alt="Kroki diagram output"></p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
+<p>TODO: FINISH THE CODE AND PLUG IT IN</p>
 <a name="H_Aho-Corasick%20Algorithm"></a><h4>Aho-Corasick Algorithm</h4>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -23526,14 +23644,18 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(major%20histocompatibility%20complex)%2Fi"></a><strong>major histocompatibility complex</strong> - A region of DNA containing <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> linked to the immune system. The <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in this region are highly diverse, to the point that it's unlikely for two individuals to have the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in the exact same form.</p>
 </li>
 <li>
-<p><a name="BM_(trie)%2Fi"></a><strong>trie</strong> - A <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> representing contiguous regions shared between of set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Branches represent deviations.</p>
-<p><img src="svgbob_d192c978b33e3c035b90ce6ae21984b61659f005.svg" alt="Kroki diagram output"></p>
+<p><a name="BM_(trie)%2Fi"></a><strong>trie</strong> - A <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> that holds a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Shared prefixes between those <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed into a single path while the non-shared remainders split out as deviating paths.</p>
+<p><img src="svgbob_d4f456be496fad0e8f8044a5feab39445a23dbc8.svg" alt="Kroki diagram output"></p>
 <p>To disambiguate scenarios where one <a href="#BM_(sequence)%2Fi">sequence</a> is a prefix of the other, a <a href="#BM_(trie)%2Fi">trie</a> typically either includes a ...</p>
 <ul>
 <li>a flag on each node to indicate if its the end of a <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
-<li>a special "end-of-<a href="#BM_(sequence)%2Fi">sequence</a>" to disambiguate the end of a <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
+<li>a special "end-of-<a href="#BM_(sequence)%2Fi">sequence</a>" at the end of each <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
 </ul>
-<p><img src="svgbob_2e9ed92388d26bfd6570db1ca507c9a439a5dbdd.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_a0c667cd5b0e6bcccc82e6d79e603b8ab132125f.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>End of <a href="#BM_(sequence)%2Fi">sequence</a> marker is preferred mechanism.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(suffix%20trie)%2Fi"></a><strong>suffix trie</strong> - A <a href="#BM_(trie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
