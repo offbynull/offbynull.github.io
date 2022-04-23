@@ -31,71 +31,78 @@ def to_dot(g: Graph) -> str:
 
 
 
-# MARKDOWN_BUILD
 def to_trie(
         seqs: set[str],
         end_marker: str,
         nid_gen: StringIdGenerator = StringIdGenerator('N'),
         eid_gen: StringIdGenerator = StringIdGenerator('E')
 ) -> Graph[str, None, str, str]:
-    for seq in seqs:
-        assert end_marker == seq[-1], f'{seq} missing end marker'
-        assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     trie = Graph()
     root_nid = nid_gen.next_id()
     trie.insert_node(root_nid)  # Insert root node
     for seq in seqs:
-        add_to_trie(trie, root_nid, seq, nid_gen, eid_gen)
+        add_to_trie(trie, root_nid, seq, end_marker, nid_gen, eid_gen)
     return trie
 
 
+# MARKDOWN_BUILD
 def add_to_trie(
         trie: Graph[str, None, str, str],
         root_nid: str,
         seq: str,
+        end_marker: str,
         nid_gen: StringIdGenerator,
-        eid_gen: StringIdGenerator):
+        eid_gen: StringIdGenerator
+):
+    assert end_marker == seq[-1], f'{seq} missing end marker'
+    assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     nid = root_nid
     while seq:
-        found_nid, found_prefix = find_prefix_from_node(trie, nid, seq)
-        if found_nid is not None:
-            nid = found_nid
-            seq = seq[len(found_prefix):]
-            continue
-        # Otherwise, add the missing edge for ch
-        next_nid = nid_gen.next_id()
-        next_eid = eid_gen.next_id()
-        trie.insert_node(next_nid)
-        trie.insert_edge(next_eid, nid, next_nid, seq)
-        nid = next_nid
+        # Find an edge with a prefix that extends from the current node
+        found = None
+        for eid, _, to_nid, edge_str in trie.get_outputs_full(nid):
+            n = common_prefix_len(seq, edge_str)
+            if n > 0:
+                found = (to_nid, eid, edge_str, n)
+                break
+        # If not found, add remainder of seq as an edge for current node and return
+        if found is None:
+            next_nid = nid_gen.next_id()
+            next_eid = eid_gen.next_id()
+            trie.insert_node(next_nid)
+            trie.insert_edge(next_eid, nid, next_nid, seq)
+            return
+        found_nid, found_eid, found_edge_str, found_common_prefix_len = found
+        # If the common prefix len is < the found edge string, break and extend from that edge, then return.
+        if found_common_prefix_len < len(found_edge_str):
+            break_nid = nid_gen.next_id()
+            break_pre_eid = eid_gen.next_id()
+            break_post_eid = eid_gen.next_id()
+            trie.insert_node_between_edge(
+                break_nid, None,
+                found_eid,
+                break_pre_eid, found_edge_str[:found_common_prefix_len],
+                break_post_eid, found_edge_str[found_common_prefix_len:]
+            )
+            next_nid = nid_gen.next_id()
+            next_eid = eid_gen.next_id()
+            trie.insert_node(next_nid)
+            trie.insert_edge(next_eid, break_nid, next_nid, seq[found_common_prefix_len:])
+            return
+        # Otherwise, common prefix len is == the found edge string, so walk into that edge.
+        nid = found_nid
+        seq = seq[found_common_prefix_len:]
 
 
-def find_prefix_from_node(
-        trie: Graph[str, None, str, str],
-        nid: str,
-        val: str
-):
-    for _, _, to_nid, edge_str in trie.get_outputs_full(nid):
-        if val.startswith(edge_str):
-            return to_nid, edge_str
-    return None, None
-
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
-TODO: THE CODE ABOVE IS WRONG. FIX IT AND PLUG IT INTO MARKDOWN
+def common_prefix_len(s1: str, s2: str):
+    l = min(len(s1), len(s2))
+    count = 0
+    for i in range(l):
+        if s1[i] == s2[i]:
+            count += 1
+        else:
+            break
+    return count
 # MARKDOWN_BUILD
 
 
@@ -136,24 +143,22 @@ def find_sequence(
     assert end_marker not in data, f'{data} should not have end marker'
     for start_idx in range(len(data)):
         nid = root_nid
-        end_idx = start_idx
-        for idx, ch in enumerate(data[start_idx:]):
-            # Find edge for ch
-            found_nid = None
-            for _, _, to_nid, edge_ch in trie.get_outputs_full(nid):
-                if edge_ch == ch:
-                    found_nid = to_nid
-                    end_idx = start_idx + idx
+        idx = start_idx
+        while nid is not None:
+            next_nid = None
+            end_marker_reached = False
+            for eid, _, to_nid, edge_str in trie.get_outputs_full(nid):
+                if edge_str.endswith(end_marker):
+                    end_marker_reached = True
+                    edge_str = edge_str[:-1]
+                edge_str_len = len(edge_str)
+                if data[idx:idx + edge_str_len] == edge_str:
+                    idx += edge_str_len
+                    next_nid = to_nid
                     break
-            # If found not found, bail
-            if found_nid is None:
-                break
-            # Otherwise, keep going from the edge's end node
-            nid = found_nid
-        # End marker reached? Return with index of match and the match itself
-        end_marker_found = any(True for _, _, _, edge_ch in trie.get_outputs_full(nid) if edge_ch == end_marker)
-        if end_marker_found:
-            return start_idx, data[start_idx:end_idx+1]
+            if end_marker_reached:
+                return idx, data[start_idx:idx]
+            nid = next_nid
     return None
 # MARKDOWN_TEST
 

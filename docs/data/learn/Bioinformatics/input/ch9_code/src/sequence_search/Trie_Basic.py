@@ -31,30 +31,31 @@ def to_dot(g: Graph) -> str:
 
 
 
-# MARKDOWN_BUILD
 def to_trie(
         seqs: set[str],
         end_marker: str,
         nid_gen: StringIdGenerator = StringIdGenerator('N'),
         eid_gen: StringIdGenerator = StringIdGenerator('E')
 ) -> Graph[str, None, str, str]:
-    for seq in seqs:
-        assert end_marker == seq[-1], f'{seq} missing end marker'
-        assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     trie = Graph()
     root_nid = nid_gen.next_id()
     trie.insert_node(root_nid)  # Insert root node
     for seq in seqs:
-        add_to_trie(trie, root_nid, seq, nid_gen, eid_gen)
+        add_to_trie(trie, root_nid, seq, end_marker, nid_gen, eid_gen)
     return trie
 
 
+# MARKDOWN_BUILD
 def add_to_trie(
         trie: Graph[str, None, str, str],
         root_nid: str,
         seq: str,
+        end_marker: str,
         nid_gen: StringIdGenerator,
-        eid_gen: StringIdGenerator):
+        eid_gen: StringIdGenerator
+):
+    assert end_marker == seq[-1], f'{seq} missing end marker'
+    assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     nid = root_nid
     for ch in seq:
         # Find edge for ch

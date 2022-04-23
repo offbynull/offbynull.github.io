@@ -13717,11 +13717,9 @@ Each sequence making up a trie contains a special end marker (¶ in the diagram 
 *-->*-->*-->*-->*-->*-->*
 ```
 
-**WHY**: Given a single sequence to search for, the straight-forward approach to finding it in some larger sequence is to scan over that larger sequence and test each position to see if it starts with that smaller sequence.
+**WHY**: Imagine trying to find the sequence "rating" in the larger sequence "The rating of the movie was good". The straightforward approach is to scan over that larger sequence and test each position to see if it starts with "rating".
 
 ```{svgbob}
-* "Searching for rating"
-
 "starts with rating? no."
 | "starts with rating? no."
 | | "starts with rating? no."
@@ -13729,22 +13727,22 @@ Each sequence making up a trie contains a special end marker (¶ in the diagram 
 | | | | "starts with rating? YES."
 | | | | |
 v v v v v 
-T h e   r a t i n g   o f   t h e   m o v i e   w a s   v e r y   g o o d .
+T h e   r a t i n g   o f   t h e   m o v i e   w a s   g o o d
 ```
 
-When there's a set of n sequences to search for, this happens n times (once per sequence).
+When there's a set of sequences S = {rating, ration, rattle} to search for, the straightforward approach requires that the larger sequence be scanned over multiple times (3 times, once per sequence in S).
 
-Tries are a more efficient way to search for a set of n sequences. Rather than scanning over the larger sequence n times, a trie combines those n sequences together such that the scanning only happens once. At each position of the larger sequence, the trie is walked to see if the starting elements at that position match any of the sequences in the trie. This is more efficient than searching for each of the n sequences individually because, in a trie, shared prefixes across the n sequence are collapsed. The element comparisons for those shared prefixes only happens once.
+Tries are a more efficient way to search for a set of sequences. Rather than scanning over the larger sequence 3 times, a trie combines the sequences in S together such that the larger sequence is only scanned over once. At each position of the larger sequence, the starting elements at that position are tested against the all sequences in S by walking the trie. This is more efficient than searching for each sequence in S individually because, in a trie, shared prefixes across S's sequences are collapsed. The element comparisons for those shared prefixes only happens once.
 
 ```{svgbob}
-* "Searching for rating, ration, or rattle. The highlighted scan position"
+* "Searching for {rating, ration, rattle}. The highlighted scan position"
   "matches the trie walk below (hollow nodes are the nodes walked)"
 
 
    "scan position"
         |
         v
-T h e   r a t i n g   o f   t h e   m o v i e   w a s   v e r y   g o o d .
+T h e   r a t i n g   o f   t h e   m o v i e   w a s   g o o d .
 
 
                   n   g   ¶  
@@ -13763,7 +13761,7 @@ o-->o-->o-->o-->o-->*-->*-->*
 
 **ALGORITHM**:
 
-An empty trie contains a single root node and nothing else (no other nodes or edges). Adding a sequence to a trie requires walking the trie with that sequence's elements until reaching an element missing from the trie -- a node that doesn't have an outgoing edge with that element. At that node, a new branch should be created and the remaining elements of the sequence should extend from it.
+An empty trie contains a single root node and nothing else (no other nodes or edges). Adding a sequence to a trie requires walking the trie with that sequence's elements until reaching an element missing from the trie (a node that doesn't have an outgoing edge with that element). At that node, a new branch should be created and the remaining elements of the sequence should extend from it.
 
 ```{output}
 ch9_code/src/sequence_search/Trie_Basic.py
@@ -13796,9 +13794,9 @@ sequence_search.Trie_Basic main_test
 }
 ```
 
-#### Edge Collapse Algorithm
+#### Edge Merged Algorithm
 
-`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Edge Collapse Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Edge Merged Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm_TOPIC
@@ -13806,11 +13804,11 @@ Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm_TOPIC
 
 **ALGORITHM**:
 
-A common optimization for tries is to build them such that trains of non-forking nodes (nodes with indegree of 1 and outdegree of 1) are represented as a single edge.
+This algorithm is a common optimization that builds tries such that trains of non-forking nodes (nodes with indegree of 1 and outdegree of 1) are represented as a single edge.
 
 ```{svgbob}
-          "Normal trie"                                          "Collapsed trie"
-          
+          "Normal trie"                                          "Edge merged trie"
+
 
                   n   g   ¶                                                 ng¶  
                 .-->*-->*-->*                                          .---------->*
@@ -13822,7 +13820,7 @@ A common optimization for tries is to build them such that trains of non-forking
             '-->*-->*-->*-->*-->*                                  '------------------>*
 ```
 
-At a high-level, the algorithm for building an edge collapsed trie is more-or-less the same as building a standard trie. Add sequences to the trie one at a time, forking where deviations occur. However, in this case forking happens by breaking an existing edge in two.
+At a high-level, the algorithm for building an edge merged trie is more-or-less the same as building a standard trie. Add sequences to the trie one at a time, forking where deviations occur. However, in this case forking happens by breaking an existing edge in two.
 
 ```{svgbob}
 * "Add ration"
@@ -13851,37 +13849,40 @@ At a high-level, the algorithm for building an edge collapsed trie is more-or-le
             '------------------>*
 ```
 
-TODO: FINISH THE CODE AND PLUG IT IN
+```{output}
+ch9_code/src/sequence_search/Trie_EdgeMerged.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
 
-TODO: FINISH THE CODE AND PLUG IT IN
+```{ch9}
+sequence_search.Trie_EdgeMerged main_build
+{
+  trie_sequences: [apple¶, applet¶, appeal¶],
+  end_marker: ¶
+}
+```
 
-TODO: FINISH THE CODE AND PLUG IT IN
+Testing if a trie contains a sequence requires walking the trie with that sequence's elements until reaching the end-of-sequence marker.
 
-TODO: FINISH THE CODE AND PLUG IT IN
+```{output}
+ch9_code/src/sequence_search/Trie_EdgeMerged.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
 
-TODO: FINISH THE CODE AND PLUG IT IN
+```{ch9}
+sequence_search.Trie_EdgeMerged main_test
+{
+  trie_sequences: [apple¶, applet¶, appeal¶],
+  test_sequence: "How do you feel about apples?",
+  end_marker: ¶
+}
+```
 
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
-
-TODO: FINISH THE CODE AND PLUG IT IN
+```{note}
+A further somewhat related optimization: Rather than making copies of the string to assign to edges, make string views that reference the original sequences. Python apparently doesn't have a string view class and when you slice a string it copies internally, making it inefficient.
+```
 
 #### Aho-Corasick Algorithm
 
@@ -13893,15 +13894,106 @@ Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm_TOPIC
 
 **ALGORITHM**:
 
-TODO: add a terminology section for this
+Searching a sequence using a standard trie may lead to duplicate work being performed. For example, the following trie is for sequences {aratron, aratron, ration}.
 
-TODO: add a terminology section for this
+```{svgbob}
+                      i   u   m   ¶  
+                    .-->*-->*-->*-->*
+                    |                
+  a   r   a   t   r | o   n   ¶      
+.-->*-->*-->*-->*-->*-->*-->*-->*    
+|                                    
+*                                    
+| r   a   t   i   o   n   ¶          
+'-->*-->*-->*-->*-->*-->*-->*        
+```
 
-TODO: add a terminology section for this
+Searching the sequence "aratios" requires scanning over that sequence and testing the trie at each position. At scan position ...
 
-TODO: add a terminology section for this
+ * 0, the trie walks until "arat" before failing.
+ * 1, the trie walks until "ratio" before failing.
+ * 2, the trie walks until "a" before failing.
+ * ...
 
-TODO: add a terminology section for this
+```{svgbob}
+                                                 i   u   m   ¶  
+                                               .-->*-->*-->*-->*
+"scan position 0"                              |                
+|                            a   r   a   t   r | o   n   ¶      
+v                          .-->o-->o-->o-->o-->*-->*-->*-->*    
+a r a t i o s              |                                    
+                           o                                    
+                           | r   a   t   i   o   n   ¶          
+                           '-->*-->*-->*-->*-->*-->*-->*        
+
+
+                                                 i   u   m   ¶  
+                                               .-->*-->*-->*-->*
+  "scan position 1"                            |                
+  |                          a   r   a   t   r | o   n   ¶      
+  v                        .-->*-->*-->*-->-->*-->*-->*-->*    
+a r a t i o s              |                                    
+                           o                                    
+                           | r   a   t   i   o   n   ¶          
+                           '-->o-->o-->o-->o-->o-->*-->*        
+
+
+                                                 i   u   m   ¶  
+                                               .-->*-->*-->*-->*
+    "scan position 2"                          |                
+    |                        a   r   a   t   r | o   n   ¶      
+    v                      .-->o-->*-->*-->*-->*-->*-->*-->*    
+a r a t i o s              |                                    
+                           o                                    
+                           | r   a   t   i   o   n   ¶          
+                           '-->*-->*-->*-->*-->*-->*-->*        
+```
+
+Looking at scan position 0, the trie walked all the way to "arat". That means ...
+
+ * scan position 0 must start with "arat".
+ * scan position 1 must start with "rat" ("rat" = "arat" with first element trimmed off).
+ * scan position 2 must start with "at" ("at" = "arat" with first 2 elements trimmed off).
+ * scan position 3 must start with "t" ("t" = "arat" with first 3 elements trimmed off).
+
+Look at scan position 1, the trie walked all the way to "ratio". However, just from scan position 0's trie walk, it's already know that scan position 1's trie walk would have made it to at least "rat". Accordingly, instead of scanning position 1 from scratch, it's possible to hop past the initial "rat" in "ratio".
+
+This algorithm is an optimization that builds tries with special edges to handle the scenario described above. For example, the trie below is the same as the example trie above except that it contains a special edge pointing from "arat" to "rat". If a scan walks the trie to "arat", the next scan position must contain "rat". Since the prefix "rat" exists in the trie, a special edge connects "arat" to "rat" such that the scan for the next position can directly jump ahead in the trie walk past "rat".
+
+```{svgbob}
+                .- - - - - - - - - - - - - - -.
+                :                             :
+                :     i   u   m   ¶           :
+                :   .-->*-->*-->*-->*         :
+                :   |                         :
+  a   r   a   t : r | o   n   ¶               :
+.-->*-->*-->*-->*-->*-->*-->*-->*             :
+|                                             :
+*                                             :
+| r   a   t   i   o   n   ¶                   :
+'-->*-->*-->*-->*-->*-->*-->*                 :
+            ^                                 :
+            :                                 :
+            '- - - - - - - - - - - - - - - - -'
+```
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+
+TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
 
 ### Suffix Tree
 

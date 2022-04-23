@@ -1,29 +1,16 @@
-`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 35 to 76):`{bm-enable-all}`
+`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 49 to 77):`{bm-enable-all}`
 
 ```python
-def to_trie(
-        seqs: set[str],
-        end_marker: str,
-        nid_gen: StringIdGenerator = StringIdGenerator('N'),
-        eid_gen: StringIdGenerator = StringIdGenerator('E')
-) -> Graph[str, None, str, str]:
-    for seq in seqs:
-        assert end_marker == seq[-1], f'{seq} missing end marker'
-        assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
-    trie = Graph()
-    root_nid = nid_gen.next_id()
-    trie.insert_node(root_nid)  # Insert root node
-    for seq in seqs:
-        add_to_trie(trie, root_nid, seq, nid_gen, eid_gen)
-    return trie
-
-
 def add_to_trie(
         trie: Graph[str, None, str, str],
         root_nid: str,
         seq: str,
+        end_marker: str,
         nid_gen: StringIdGenerator,
-        eid_gen: StringIdGenerator):
+        eid_gen: StringIdGenerator
+):
+    assert end_marker == seq[-1], f'{seq} missing end marker'
+    assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     nid = root_nid
     for ch in seq:
         # Find edge for ch
