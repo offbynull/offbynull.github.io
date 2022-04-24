@@ -13894,7 +13894,7 @@ Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm_TOPIC
 
 **ALGORITHM**:
 
-Searching a sequence using a standard trie may lead to duplicate work being performed. For example, the following trie is for sequences {aratron, aratron, ration}.
+Searching a sequence using a standard trie may lead to duplicate work being performed. For example, the following trie is for sequences {aratrium, aratron, ration}.
 
 ```{svgbob}
                       i   u   m   ¶  
@@ -13908,7 +13908,7 @@ Searching a sequence using a standard trie may lead to duplicate work being perf
 '-->*-->*-->*-->*-->*-->*-->*        
 ```
 
-Searching the sequence "aratios" requires scanning over that sequence and testing the trie at each position. At scan position ...
+Searching the sequence "aratios" requires scanning over that sequence and walking the trie at each scan position. At scan position ...
 
  * 0, the trie walks until "arat" before failing.
  * 1, the trie walks until "ratio" before failing.
@@ -13949,14 +13949,14 @@ a r a t i o s              |
                            '-->*-->*-->*-->*-->*-->*-->*        
 ```
 
-Looking at scan position 0, the trie walked all the way to "arat". That means ...
+At scan position 0, the trie walked all the way to "arat". That means ...
 
  * scan position 0 must start with "arat".
- * scan position 1 must start with "rat" ("rat" = "arat" with first element trimmed off).
- * scan position 2 must start with "at" ("at" = "arat" with first 2 elements trimmed off).
- * scan position 3 must start with "t" ("t" = "arat" with first 3 elements trimmed off).
+ * scan position 1 must start with "rat" -- "rat" is "arat" with first element trimmed off.
+ * scan position 2 must start with "at" -- "at" is "arat" with first 2 elements trimmed off.
+ * scan position 3 must start with "t" -- "t" is "arat" with first 3 elements trimmed off.
 
-Look at scan position 1, the trie walked all the way to "ratio". However, just from scan position 0's trie walk, it's already know that scan position 1's trie walk would have made it to at least "rat". Accordingly, instead of scanning position 1 from scratch, it's possible to hop past the initial "rat" in "ratio".
+At scan position 1, the trie walked all the way to "ratio". However, just from scan position 0's trie walk, it's already know that scan position 1's trie walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the trie from the node just past "rat" rather than walking it from the root node .
 
 This algorithm is an optimization that builds tries with special edges to handle the scenario described above. For example, the trie below is the same as the example trie above except that it contains a special edge pointing from "arat" to "rat". If a scan walks the trie to "arat", the next scan position must contain "rat". Since the prefix "rat" exists in the trie, a special edge connects "arat" to "rat" such that the scan for the next position can directly jump ahead in the trie walk past "rat".
 
@@ -13977,23 +13977,94 @@ This algorithm is an optimization that builds tries with special edges to handle
             '- - - - - - - - - - - - - - - - -'
 ```
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+```{output}
+ch9_code/src/sequence_search/Trie_AhoCorasick.py
+python
+# MARKDOWN_ADD_HOPS\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD_HOPS\s*[\n$]
+```
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+```{ch9}
+sequence_search.Trie_AhoCorasick main_build
+{
+  trie_sequences: [aratrium¶, aratron¶, ration¶],
+  end_marker: ¶
+}
+```
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+Testing if a trie contains a sequence is essentially the same as before, except that on failures the special edges may be used to hop ahead.
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+```{output}
+ch9_code/src/sequence_search/Trie_AhoCorasick.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+```{ch9}
+sequence_search.Trie_AhoCorasick main_test
+{
+  trie_sequences: [aratrium¶, aratron¶, ration¶],
+  test_sequence: There were multiple narrations in the play,
+  end_marker: ¶
+}
+```
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+TODO: ADD Aho-Corasick TERMINOLOGY
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+TODO: ADD Aho-Corasick TERMINOLOGY
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+TODO: ADD Aho-Corasick TERMINOLOGY
 
-TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
+
+TODO: ADD Aho-Corasick TERMINOLOGY
 
 ### Suffix Tree
 

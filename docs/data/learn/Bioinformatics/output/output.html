@@ -18745,9 +18745,9 @@ THHHTHHHTH = 7 / 10 = 0.7
 </div>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FAho-Corasick%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>Searching a <a href="#BM_(sequence)%2Fi">sequence</a> using a standard <a href="#BM_(trie)%2Fi">trie</a> may lead to duplicate work being performed. For example, the following <a href="#BM_(trie)%2Fi">trie</a> is for <a href="#BM_(sequence)%2Fi">sequence</a>s {aratron, aratron, ration}.</p>
+<p>Searching a <a href="#BM_(sequence)%2Fi">sequence</a> using a standard <a href="#BM_(trie)%2Fi">trie</a> may lead to duplicate work being performed. For example, the following <a href="#BM_(trie)%2Fi">trie</a> is for <a href="#BM_(sequence)%2Fi">sequence</a>s {aratrium, aratron, ration}.</p>
 <p><img src="svgbob_82481e24c4e85a5963452984fe7f0a6f6d8bbf23.svg" alt="Kroki diagram output"></p>
-<p>Searching the <a href="#BM_(sequence)%2Fi">sequence</a> "aratios" requires scanning over that <a href="#BM_(sequence)%2Fi">sequence</a> and testing the <a href="#BM_(trie)%2Fi">trie</a> at each position. At scan position ...</p>
+<p>Searching the <a href="#BM_(sequence)%2Fi">sequence</a> "aratios" requires scanning over that <a href="#BM_(sequence)%2Fi">sequence</a> and walking the <a href="#BM_(trie)%2Fi">trie</a> at each scan position. At scan position ...</p>
 <ul>
 <li>0, the <a href="#BM_(trie)%2Fi">trie</a> walks until "arat" before failing.</li>
 <li>1, the <a href="#BM_(trie)%2Fi">trie</a> walks until "ratio" before failing.</li>
@@ -18755,25 +18755,170 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li>...</li>
 </ul>
 <p><img src="svgbob_e4a249cf109c4728bf2e4a2043b90ebe4bae40d9.svg" alt="Kroki diagram output"></p>
-<p>Looking at scan position 0, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "arat". That means ...</p>
+<p>At scan position 0, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "arat". That means ...</p>
 <ul>
 <li>scan position 0 must start with "arat".</li>
-<li>scan position 1 must start with "rat" ("rat" = "arat" with first element trimmed off).</li>
-<li>scan position 2 must start with "at" ("at" = "arat" with first 2 elements trimmed off).</li>
-<li>scan position 3 must start with "t" ("t" = "arat" with first 3 elements trimmed off).</li>
+<li>scan position 1 must start with "rat" -- "rat" is "arat" with first element trimmed off.</li>
+<li>scan position 2 must start with "at" -- "at" is "arat" with first 2 elements trimmed off.</li>
+<li>scan position 3 must start with "t" -- "t" is "arat" with first 3 elements trimmed off.</li>
 </ul>
-<p>Look at scan position 1, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "ratio". However, just from scan position 0's <a href="#BM_(trie)%2Fi">trie</a> walk, it's already know that scan position 1's <a href="#BM_(trie)%2Fi">trie</a> walk would have made it to at least "rat". Accordingly, instead of scanning position 1 from scratch, it's possible to hop past the initial "rat" in "ratio".</p>
+<p>At scan position 1, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "ratio". However, just from scan position 0's <a href="#BM_(trie)%2Fi">trie</a> walk, it's already know that scan position 1's <a href="#BM_(trie)%2Fi">trie</a> walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the <a href="#BM_(trie)%2Fi">trie</a> from the node just past "rat" rather than walking it from the root node .</p>
 <p>This algorithm is an optimization that builds <a href="#BM_(trie)%2Fi">trie</a>s with special edges to handle the scenario described above. For example, the <a href="#BM_(trie)%2Fi">trie</a> below is the same as the example <a href="#BM_(trie)%2Fi">trie</a> above except that it contains a special edge pointing from "arat" to "rat". If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat", the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can directly jump ahead in the <a href="#BM_(trie)%2Fi">trie</a> walk past "rat".</p>
 <p><img src="svgbob_74a7eff58b40e8cb001ccb562e0408a4519278ec.svg" alt="Kroki diagram output"></p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
-<p>TODO: WRITE ALGORITHM (just chop off prefixes and search to find special edges) AND ADD TERMINOLOGY SECTION</p>
+<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 35 to 88):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">add_hop_edges</span>(<span class="hljs-params">
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span>],
+        root_nid: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>,
+        hop_eid_gen: StringIdGenerator = StringIdGenerator(<span class="hljs-params"><span class="hljs-string">'E_HOP'</span></span>)
+</span>):
+    seqs = trie_to_sequences(trie, root_nid, end_marker)
+    <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> seqs:
+        to_nid, cnt = trie_find_prefix(trie, root_nid, seq[<span class="hljs-number">1</span>:])
+        <span class="hljs-keyword">if</span> to_nid == root_nid:
+            <span class="hljs-keyword">continue</span>
+        from_nid, _ = trie_find_prefix(trie, root_nid, seq[:cnt+<span class="hljs-number">1</span>])
+        hop_already_exists = trie.has_outputs(from_nid, <span class="hljs-keyword">lambda</span> _, __, n_to, ___: n_to == to_nid)
+        <span class="hljs-keyword">if</span> hop_already_exists:
+            <span class="hljs-keyword">continue</span>
+        hop_eid = hop_eid_gen.next_id()
+        trie.insert_edge(hop_eid, from_nid, to_nid)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">trie_find_prefix</span>(<span class="hljs-params">
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span>],
+        root_nid: <span class="hljs-built_in">str</span>,
+        value: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]:
+    nid = root_nid
+    idx = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        next_nid = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">for</span> _, _, to_nid, ed <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
+            <span class="hljs-keyword">if</span> ed == value[idx]:
+                idx += <span class="hljs-number">1</span>
+                next_nid = to_nid
+                <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">if</span> next_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> nid, idx
+        <span class="hljs-keyword">if</span> idx == <span class="hljs-built_in">len</span>(value):
+            <span class="hljs-keyword">return</span> next_nid, idx
+        nid = next_nid
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">trie_to_sequences</span>(<span class="hljs-params">
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span>],
+        nid: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>,
+        current_val: <span class="hljs-built_in">str</span> = <span class="hljs-string">''</span>
+</span>) -&gt; <span class="hljs-built_in">set</span>[<span class="hljs-built_in">str</span>]:
+    ret = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> _, _, to_nid, ed <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
+        <span class="hljs-keyword">if</span> ed == end_marker:
+            ret.add(current_val)
+            <span class="hljs-keyword">continue</span>
+        next_val = current_val + ed
+        ret = ret | trie_to_sequences(trie, to_nid, end_marker, next_val)
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building trie using the following settings...</p>
+<pre><code>{
+  trie_sequences: [aratrium¶, aratron¶, ration¶],
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following trie was produced ...</p>
+<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> is essentially the same as before, except that on failures the special edges may be used to hop ahead.</p>
+<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 130 to 167):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
+        data: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>,
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>],
+        root_nid: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">str</span>] | <span class="hljs-literal">None</span>:
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> data, <span class="hljs-string">f'<span class="hljs-subst">{data}</span> should not have end marker'</span>
+    nid = root_nid
+    skip_offset = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data)):
+        end_marker_found = <span class="hljs-literal">False</span>
+        end_idx = start_idx
+        <span class="hljs-keyword">for</span> offset, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(data[start_idx + skip_offset:]):
+            offset = offset + skip_offset
+            <span class="hljs-comment"># Find edge for ch</span>
+            found_nid = <span class="hljs-literal">None</span>
+            end_marker_found = <span class="hljs-built_in">any</span>(<span class="hljs-literal">True</span> <span class="hljs-keyword">for</span> _, _, _, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid) <span class="hljs-keyword">if</span> edge_ch == end_marker)
+            <span class="hljs-keyword">for</span> _, _, to_nid, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
+                <span class="hljs-keyword">if</span> edge_ch == ch:
+                    found_nid = to_nid
+                    end_idx = start_idx + offset
+                    <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># If found not found, use fast-forward edge if it exists or start from root if it doesn't</span>
+            <span class="hljs-keyword">if</span> found_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                hop_edge = trie.get_output_full(nid, <span class="hljs-keyword">lambda</span> _, __, ___, edge_ch: edge_ch <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>)
+                <span class="hljs-keyword">if</span> hop_edge <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                    nid = root_nid
+                    skip_offset = <span class="hljs-number">0</span>
+                <span class="hljs-keyword">else</span>:
+                    _, _, nid, _ = hop_edge
+                    skip_offset = offset - <span class="hljs-number">1</span>
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># Otherwise, keep going from the edge's end node</span>
+            nid = found_nid
+        <span class="hljs-comment"># End marker reached? Return with index of match and the match itself</span>
+        <span class="hljs-keyword">if</span> end_marker_found:
+            <span class="hljs-keyword">return</span> start_idx, data[start_idx:end_idx+<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building and searching trie using the following settings...</p>
+<pre><code>{
+  trie_sequences: [aratrium¶, aratron¶, ration¶],
+  test_sequence: There were multiple narrations in the play,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following trie was produced ...</p>
+<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
+<p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: (23, 'ration')</p>
+</div>
+<p></p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
+<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
 <a name="H_Suffix%20Tree"></a><h3>Suffix Tree</h3>
 <a name="H_Suffix%20Array"></a><h3>Suffix Array</h3>
 <a name="H_Burrows-Wheeler%20Transform"></a><h3>Burrows-Wheeler Transform</h3>
