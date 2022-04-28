@@ -1081,16 +1081,24 @@ The main difference between pointer types and reference types is that a referenc
 y = 15;        // y implicitly dereferenced to w and set to 15
 ```
 
-As shown in the example above, assignment to a reference type is assignment on the underlying object being referenced. As such, having the reference type point to a different object isn't possible (reseating).
-
-```{note}
-One way to think of this is that it's implicitly `const` -- the compiler won't let you explicitly set a reference to be `const`.
-```
+As shown in the example above, assignment to a reference type is assignment on the underlying object being referenced. As such, having the reference type point to a different object isn't possible (referred to as reseating).
 
 Similarly, it's not possible to have a reference to a reference.
 
 ```c++
 int &&z { y }; // this isn't a thing -- fail
+```
+
+```{note}
+The way to think of references is documented [here](https://stackoverflow.com/a/1164267). Don't consider a reference as an object the same way a pointer is an object. In the compiler's eyes, a reference doesn't store anything like a pointer does (stores a memory address). It's just a "reference" to an object -- the object itself has storage, but the reference to that object doesn't.
+
+In that sense, it's impossible to have ...
+
+* a `const` reference like you have a `const` pointer or an array of references.
+* an array of references
+* etc...
+
+... the same way that you can have with a pointer.
 ```
 
 ### Rvalue References
@@ -1761,50 +1769,6 @@ When function overloads are involved, the candidate with the arguments matching 
 The exact rules here seem hard to definitively pin down. If you have two overloads of a function, one accepting int16 and int64, it'll fail when you try to call it with int8 claiming that it's too ambiguous. The best thing to do is to just ask the compiler to either warn on implicit conversion (`-Wconversion`) flag or on narrowing implicit conversion (`-Wnarrowing` / `-Wno-narrowing`). These flags may not be included under `-Wall`.
 ```
 
-### Type Deduction
-
-`{bm} /(Core Language\/Functions\/Type Deduction)_TOPIC/`
-
-```{prereq}
-Core Language/Templates_TOPIC: Just enough to know how to define and use one.
-Core Language/Variables/Type Deduction_TOPIC
-```
-
-Similar to variable declarations, the `auto` keyword is also usable to deduce a function's parameter and return types based on usage.
-
-```c++
-auto add(auto x) {
-    return x + 5;
-}
-```
-
-The use of `auto` is essentially short-hand for a function template. In the example above, each unique set of types used when invoking `add()` is a template instantiation.
-
-```c++
-test(5);     // uses  int add(int x)
-test(6);     // uses  int add(int x)
-test(5ULL);  // uses  unsigned long long add(unsigned long long x)
-```
-
-When using `auto` for a return type, you can optionally add a `->` immediately after the parameter list followed by a type expression that defines what expression should generate the returning type.
-
-```c++
-// return type should be whatever type the result of x + 5LL is, which is long long
-auto add(auto x) -> decltype(x+5LL) {
-    return x + 5;
-}
-```
-
-```{note}
-Why is the above useful? Using `auto` on functions is discouraged because function definitions act as documentation. The exception is with templates, where the types depend in potentially complex ways on template parameters.
-
-By adding the type expression in, you're re-introducing a form of documentation.
-```
-
-```{note}
-Try running functions with auto through [here](https://cppinsights.io) to get a feel for how this transforms to function templates.
-```
-
 ### Main Function
 
 `{bm} /(Core Language\/Functions\/Main Function)_TOPIC/`
@@ -2406,6 +2370,10 @@ Each item in the comma separated list is called a member initializer.
 How is this better than default member initialization, where initialization is done directly after the field declaration? According to [this](https://stackoverflow.com/a/48098997), it's more-or-less the same?
 ```
 
+```{seealso}
+Core Language/Classes/Deleted Implementations_TOPIC
+```
+
 ### Destruction
 
 `{bm} /(Core Language\/Classes\/Destruction)_TOPIC/`
@@ -2453,6 +2421,7 @@ Core Language/Classes/Inheritance_TOPIC
 Core Language/Classes/This Pointer_TOPIC
 Core Language/Classes/Construction_TOPIC
 Core Language/Classes/Operator Overloading_TOPIC
+Core Language/Classes/Deleted Implementations_TOPIC
 ```
 
 There are two built-in mechanisms for copying in C++: the copy constructor and copy assignment.
@@ -2542,6 +2511,7 @@ Core Language/Classes/This Pointer_TOPIC
 Core Language/Classes/Construction_TOPIC
 Core Language/Classes/Operator Overloading_TOPIC
 Core Language/Classes/Copying_TOPIC
+Core Language/Classes/Deleted Implementations_TOPIC
 Core Language/Variables/Rvalue References_TOPIC
 ```
 
@@ -2608,6 +2578,56 @@ class MyStruct {
 }
 ```
 ````
+
+### Default Implementations
+
+`{bm} /(Core Language\/Classes\/Default Implementations)_TOPIC/`
+
+```{prereq}
+Core Language/Classes/Construction_TOPIC
+```
+
+The compiler may automatically generate default implementations for some member functions (e.g. default constructor), called special member functions. However, under certain conditions, it may choose to omit generating them. If the compiler chooses to not generate a default implementation where one was expected, it's possible to force the compiler to generate that function by explicitly declaring it but replacing the function body `= default`.
+
+```c++
+struct MyClass {
+    MyStruct() = default;        // forcefully generate default constructor
+}
+```
+
+```{note}
+Reasons why a compiler may decide to skip generating a function: it doesn't think it's needed, it doesn't think the behavior will be correct, ...?
+```
+
+### Deleted Implementations
+
+`{bm} /(Core Language\/Classes\/Deleted Implementations)_TOPIC/`
+
+```{prereq}
+Core Language/Classes/Construction_TOPIC
+```
+
+The compiler may automatically generate default implementations for some member functions (e.g. default constructor), called special member functions. There are two ways to turn off these automatically generated member functions. The first way is to declare the function but make it privately scoped so that nothing outside can access it.
+
+```c++
+struct MyClass {
+    ...
+private:
+    MyStruct() { };             // default constructor is private
+}
+```
+
+The second way is to explicitly declare the function but mark it as deleted by appending `= delete` in place of the function body.
+
+```c++
+struct MyClass {
+    MyStruct() = delete;        // default constructor is forcefully deleted
+}
+```
+
+```{note}
+The 2nd way is the more "modern" way to do it.
+```
 
 ### Inheritance
 
@@ -3132,86 +3152,51 @@ Unlike normal functions, functors cannot be assigned to function pointers. See s
 
 ```{prereq}
 Core Language/Classes/Functors_TOPIC
+Core Language/Classes/Constant_TOPIC
+Core Language/Constant Expressions_TOPIC
+Core Language/Templates/Auto Syntax_TOPIC
 ```
 
-Lambdas are unnamed functors (not functions) that are expressed in a succinct form. Lambdas in C++ work similarly to lambdas in other high-level languages. They allow for capturing objects from the outer scope and pulling them into the body, where they can be used for whatever processing the functor's body performs.
+Lambdas are unnamed functors (not functions) that are expressed in a succinct form. Lambdas in C++ work similarly to lambdas in other high-level languages. They capture copies of / references to objects from the outer scope such that they can be used for whatever processing the functor performs.
+
+For example, consider the following functor.
 
 ```c++
-// as a function
-struct MyFunctor {
+// define
+constexpr struct MyFunctor {
     MyFunctor(int x) {
         this->x = x;
     };
-    int operator()(int y) const { return -y + x; }
+
+    constexpr int operator()(int a) const {
+        return a + x;
+    }
 private:
-    int x {5};
+    int x;
 };
 
-MyFunction f1{}
+// instantiate
+MyFunction f1{ 5 };
+
+// invoke
 f1(42);
+```
 
-// as a lambda
-int x {5};
-auto f2 = [=] (int y) { return -y + x; };
+The functor above can be written much more succinctly as a lambda.
 
+```c++
+// define and instantiate
+auto f2 { [x=5] (int a) -> int { return a + x; } };
+
+// invoke
 f2(42);
 ```
 
-The general syntax of a lambda is as follows: `[captures] (parameters) modifiers -> return-type { body }`.
+```{note}
+Be aware that, by default, the function-call operator in the lambda version is `const` and will automatically be made into a `constexpr` if it satisfies all the requirements of `constexpr`. This is discussed more in the subsections below.
+```
 
- * **capture** (required) - Objects to pull in from outer scopes.
-
-   ```c++
-   int x {5};
-   int y {6};
-   auto f1 = [] (int z) -> int { return z / 2; };           // no capture
-   auto f2 = [x, y] (int z) -> int { return x + y + z; };   // explicitly copy x and y from outer scope
-   auto f3 = [&x, &y] (int z) -> int { return x + y + z; }; // explicitly reference x and y from outer scope
-   auto f4 = [=] (int z) -> int { return x + y + z; };      // automatically copy x and y from outer scope
-   auto f5 = [&] (int z) -> int { return x + y + z; };      // automatically reference x and y from outer scope
-   int t {1};
-   auto f6 = [&, y] () -> int { return x + y + t; };        // automatically reference x and t but force y to be a copy
-   ```
-
-   Capture lists are essentially the functor's constructor. When the capture was pulled in ...
-
-   * because it was explicitly stated, it's called a named capture.
-   * automatically, it's called a default capture.
-
-   ```{note}
-   The book recommends against default captures.
-   ```
-
-   Named captures can also be initializer expressions by adding an equal sign after the name of the capture.
-
-   ```c++
-   int x {5};
-   int y {6};
-   auto f1 = [modified_x=x/2, y] (int z) -> int { return x + y + z; };
-   ```
-
-   If used within an enclosing class, the `this` pointer can be captured.
-
-   ```c++
-   auto f1 = [*this] (int z) -> int { return z / 2; };  // capture a COPY OF *this and pass it in as a pointer
-   auto f1 = [this] (int z) -> int { return z / 2; };   // capture this as pointer
-   ```
-
-   ```{note}
-   It's mentioned that prior to C++20, automatic copy capturing (`[=]`) would pull in `this`. That feature has been deprecated.
-   ```
-
- * **parameters** (optional) - Parameter list of functor.
-
-   ```c++
-   auto f1 = [] (int x, int y) -> int { return x + y; };
-   auto f2 = [] (int x, int y = 99) -> int { return x + y; };  // default args
-   auto f3 = [] (auto x, auto y) { return x + y; };            // generic params (compiler deduces types based on usage)
-   ```
-
-   ```{seealso}
-   Core Language/Templates/Type Deduction_TOPIC (`decltype` may be used with `auto` parameter types)
-   ```
+The general syntax of a lambda is as follows: `[capture-list] (parameter-list) modifiers -> return-type { body }`. The subsections below detail this general syntax.
 
  * **modifiers** (optional) - Function modifiers.
 
@@ -3238,6 +3223,139 @@ If the compiler decides that a lambda can be turned into a constant expression, 
 ```{note}
 In many cases, you need to return a lambda from a function. The easiest way to do this is to set the function's return type to `auto` and return the lambda as if it were any other variable.
 ```
+
+#### Capture List
+
+`{bm} /(Core Language\/Classes\/Lambdas\/Capture List)_TOPIC/`
+
+```{prereq}
+Core Language/Classes/Moving_TOPIC
+```
+
+`[capture-list]` is a _required_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines and sets member variables inside the functor. It's a comma separated list where each element is a list is a variable to capture as a member variable. 
+
+There are 3 different ways to capture member variables.
+
+ * **Copy** a variable from the outer scope.
+    
+   To create a copy of an individual variable into the functor, put the variable's name in the capture list.
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly copy x and y from outer scope
+   auto f { [x, y] (int z) -> int { return x + y + z; } };
+   ```
+
+   One way to avoid listing out individual variable names is to put `=` as the first element of the capture list. When `=` is present, missing member variables will automatically get copied as member variables.
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly copy x and implicitly copy y from outer scope
+   auto f { [=, x] (int z) -> int { return x + y + z; } };
+   ```
+
+   If used within an enclosing class, the `this` pointer can be captured.
+
+   ```c++
+   auto f { [this] (int z) -> int { return z + this->x; } };   // capture this as a pointer
+   auto f { [*this] (int z) -> int { return z + this->x; } };  // capture a COPY OF *this and pass it in as a pointer
+   ```
+
+   ```{note}
+   It's mentioned that prior to C++20, automatic copy capturing (`[=]`) would pull in `this`. That feature has been deprecated.
+   ```
+
+ * **Reference** a variable from the outer scope.
+
+   To create reference to an individual variable into the functor, put the variable's name in the capture list preceded by an ampersand (&).
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly reference x and y from outer scope
+   auto f { [&x, &y] (int z) -> int { return x + y + z; } };
+   ```
+
+   One way to avoid listing out individual variable names is to put `&` as the first element of the capture list. When `&` is present, missing member variables will automatically get referenced as member variables.
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly reference x and implicitly reference y from outer scope
+   auto f { [&, &x] (int z) -> int { return x + y + z; } };
+   ```
+
+ * **Initialize** a variable using an expression.
+
+   When a variable name is followed by `=` and an expression, the expression is evaluated and captured.
+
+   ```c++
+   int x {5};
+   int y {6};
+   auto f { [mod_x=x/2, mod_y=y/2] (int z) -> int { return mod_x + mod_y + z; } };
+   ```
+
+   This is especially useful for capturing an object by moving it (as opposed to copying it or referencing it).
+
+   ```c++
+   auto f { [o=std::move(my_obj)] (int z) -> int { return o.do_something(z); } };
+   ```
+
+#### Parameter List
+
+`{bm} /(Core Language\/Classes\/Lambdas\/Parameter List)_TOPIC/`
+
+`(parameter-list)` is a _required_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines the parameter list of the functor's function-call operator.
+
+```c++
+auto f1 { [] (int x, int y) -> int { return x + y; } };
+auto f2 { [] (int x, int y = 99) -> int { return x + y; } };  // default args
+auto f3 { [] (auto x, auto y) -> int { return static_cast<int>(x + y); } };  // templated params (compiler deduces types based on usage)
+```
+
+Lambda parameter lists are defined similarly to standard function parameter lists. It's common for a lambda's parameter list to use template parameters via `auto` as is done in `f3` of the example above. The reason for using `auto` is that the lambda can still work even if you don't know / can't predict the exact types of the arguments passed in (e.g. you know the arguments will be integral types, but you don't know exactly which exact integral types).
+
+```{note}
+`auto` is a placeholder for a template parameter, and as such type deduction rules come into play. If you aren't careful, you'll end up with strange or incorrect behaviour. For example, in certain cases the compiler may decide to create a local copy for an argument that gets passed in where you may be expecting a reference.
+```
+
+```{seealso}
+Core Language/Templates/Type Deduction_TOPIC
+```
+
+#### Return Types
+
+AUTO BY DEFAULT
+
+full me in
+
+full me in
+
+full me in
+
+full me in
+
+#### Modifiers
+
+full me in
+
+full me in
+
+full me in
+
+full me in
+
+#### Templates
+
+full me in
+
+full me in
+
+full me in
+
+full me in
 
 ### Friends
 
@@ -3486,16 +3604,202 @@ Normally, C++ code is split into two files: a header file that contains declarat
 
 Templates work differently from Java generics in that the C++ compiler generates a new code for each unique set of substitutions it sees used (template instantiation). Doing so produces more code than if there was only one copy, but also ensures any performance optimizations unique to that specific set of substitutions. Also, because each usage of a template may result in newly generated code, that usage typically needs access to both the declaration and definition. The simplest way to handle this is to put the entirety of the template (both definition and declaration) into a header, which gets included into the same file as the usage.
 
-### Type Deduction
+### Universal References
 
-`{bm} /(Core Language\/Templates\/Type Deduction)_TOPIC/`
+`{bm} /(Core Language\/Templates\/Universal References)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Concepts_TOPIC
+Core Language/Variables/References_TOPIC
+Core Language/Variables/Rvalue References_TOPIC
+Core Language/Classes/Moving_TOPIC
+```
+
+Universal references allow for collapsing together multiple function overloads where the only differences between overloads are the same parameters being overloaded as both lvalue references and rvalue references. In the following non-templated code, the only difference between the overloads is that one takes a lvalue reference and the other takes a rvalue reference (and moves it).
+
+```c++
+void test(int & x) {
+    if (x % 2 == 0) {
+        vector.push_back(x);            // calls push_back(int &x)
+    }
+}
+
+void test(int && x) {
+    if (x % 2 == 0) {
+        vector.push_back(std::move(x)); // calls push_back(int &&x)
+    }
+}
+
+int main() {
+    int val {5};
+    test(5);    // calls test(int && x)
+    test(val);  // calls test(int & x)
+    return 0;
+}
+```
+
+By templating the code above and forcing the compiler to deduce the parameter type through usage, the compiler can expand out the function overloads on its own.
+
+```c++
+template<typename T>
+void test(T && x) {
+    if (x % 2 == 0) {
+        vector.push_back(std::forward<T>(x)); // forward to push_back(int &x) OR push_back(int &&x) based on the reference type
+    }
+}
+
+int main() {
+    int val {5};
+    test(5);    // calls test(int && x)
+    test(val);  // calls test(int & x)
+    return 0;
+}
+```
+
+In the example above, the parameter `x` is a universal reference. A universal reference has two ampersands (&&) as if it were a rvalue reference, but since the top-level type is a template parameter (`T` in this case) it's considered a universal reference. `std::forward<T>()` is used to maintain the rvalue-ness / lvalue-ness of the argument as it's passed forward into other functions.
+
+```{note}
+Not using `std::forward<T>()` will force the argument to get moved forward as a lvalue reference. You must use `std::forward<T>()` to maintain the type of reference.
+```
+
+For a parameter to be a universal reference, it must follow the pattern `NAME &&` where `NAME` is the template parameter.
+
+ * Adding a `const`, `volatile`, or modifying it in any other way will make it go back to becoming a rvalue reference rather a universal reference.
+ * Nesting `NAME` as an argument of another type will make it get interpreted as a rvalue reference rather than a universal reference.
+
+```c++
+template<typename T>
+void test(const T&& param) { ... }      // BAD: && means rvalue reference (because of const)
+
+template<typename T>
+void test(MyClass<T> && param) { ... }  // BAD: && means rvalue reference (because it's wrapped in a concrete type)
+
+template<typename T>
+void test(T&& param) { ... }            // OK: “&&” means universal reference
+```
+
+More examples of universal references in different contexts:
+
+```c++
+// CONTEXT: Multiple universal references of different types.
+template<typename T, typename U>
+void test(T && x, U && y) {
+    if (x % 2 == 0) {
+        vector.push_back(std::forward<U>(y));
+    }
+}
+
+// CONTEXT: Universal reference of a member function where the class itself is templated.
+template<typename UNRELATED_PARAM>
+struct MyClass {
+    ...
+    template<typename T, typename U>
+    void test(T && x, U && y) {
+        if (x % 2 == 0) {
+            vector.push_back(std::forward<U>(y));
+        }
+    }
+    ...
+}
+```
+
+```{note}
+The reason why universal references work is that the compiler is deducing the correct type for the template parameter based on how its used. If it gets passed a lvalue reference, it'll invoke the lvalue version. If it gets passed a rvalue reference, it'll invoke the rvalue version.
+
+Internally, the compiler uses a technique called "reference collapsing" to get this to work, which temporarily / internally allows certain unallowable C++ constructs (references to references are disallowed). See [here](https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers) for more information.
+```
+
+````{note}
+Concept_TEMPLATEs can be used to ensure that the underlying type of a universal reference is correct. In the example above, it's expected that the underlying type is `int`.
+
+```c++
+// VERSION 1: Accept only int, int &, or int &&
+template<typename T>
+  requires std::same_as<T, int> || std::same_as<T, int &> || std::same_as<T, int &&>
+void test(T && x) {
+    ...
+}
+
+// VERSION 2: Must be the same as int once you strip the reference and const/volatile off
+template<typename T>
+  requires std::is_same_v<std::remove_cv_t<std::remove_reference_t<T>>, int>
+void test(T && x) {
+    ...
+}
+```
+````
+
+### Auto Syntax
+
+`{bm} /(Core Language\/Templates\/Auto Syntax)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Universal References_TOPIC
+```
+
+`auto` may be used as shorthand for template parameters. If a parameter has a type of `auto`, that `auto` assumes the place of a unique template parameter (e.g. `T`).
+
+```c++
+void func(auto p);          // template<T> void func(T p);
+void func(auto & p);        // template<T> void func(T & p);
+void func(auto * p);        // template<T> void func(T * p);
+void func(const auto & p);  // template<T> void func(const T & p);
+void func(const auto * p);  // template<T> void func(const T * p);
+void func(auto && p);       // template<T> void func(T && p);
+```
+
+Likewise, if a return type has a type of `auto` it assumes the place of a unique template parameter.
+
+```c++
+auto func(int p);          // template<T> T func(int p);
+```
+
+`auto` is typically also used for variable declarations. One important aspect of `auto` for variable declarations to be aware of: Braced initialization / braced-plus-equals initialization produces an `std::initializer_list<T>` rather than just `T`.
+
+```c++
+int x = 5;     // x is int of 5
+int x (5);     // x is int of 5
+int x {5};     // x is int of 5
+int x = {5};   // x is int of 5
+
+// ... vs ...
+
+auto x = 5;    // x is int of 5
+auto x (5);    // x is int of 5
+auto x {5};    // x is std::initializer_list<int>
+auto x = {5};  // x is std::initializer_list<int>
+```
+
+````{note}
+This seems to mesh with how certain classes work. For example, to create a `std::vector<int>`, you can pass in an `std::initializer_list<int>` via its constructor to prime it with a set of values. That `std::initializer_list<int>` is typically created using the curly brace syntax.
+
+```c++
+std::vector<int> v ( {1, 2, 3, 4, 5} );
+```
+
+**However**, when you use `auto` as the return type of a function OR `auto` for parameters in a lambda, the curly-brace to `std::initializer<T>` conversion discussed below doesn't happen. The compiler will fail to deduce the type if you use supply a list in curly braces.
+````
+
+```{note}
+Later sections discuss template deduction and `decltype(auto)`, both of which are important to know about when using template parameters. `decltype(auto)` can be used for variable declarations as well.
+```
+
+```{seealso}
+Core Language/Templates/Type Cloning_TOPIC (`decltype(...)` usage)
+Core Language/Templates/Type Deduction_TOPIC
+Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`decltype(auto)` usage)
+```
+
+### Type Cloning
+
+`{bm} /(Core Language\/Templates\/Type Cloning)_TOPIC/`
 
 ```{prereq}
 Core Language/Classes/Functors_TOPIC
 Core Language/Classes/Lambdas_TOPIC
 ```
 
-To automatically derive the type of something to be passed in as a template parameter, use `decltype()`. This is useful in scenarios where it's difficult or impossible to determine the exact type for a template parameter. Function-like objects (e.g. functions, functors, template parameters) is one such scenario.
+To automatically derive the type of a variable something to be passed in as a template parameter, use `decltype()`. This is useful in scenarios where it's difficult or impossible to determine the exact type for a template parameter (e.g. functions, functors, template parameters).
 
 ```c++
 // declare
@@ -3523,37 +3827,382 @@ MyClass myClass{}
 perform<decltype(myClass.numVar + 1L)>(my_lambda}; // N set to whatever type "myClass.numVar + 1L" evaluates to
 ```
 
-### Concepts
 
-`{bm} /(Core Language\/Templates\/Concepts)_TOPIC/`
-
-In certain cases, a set of types substituted in for a template won't produce working code.
+````{note}
+The book mentions that, if you're going to use `decltype()`, don't wrap the expression in brackets. The reason is that `decltype()`, for whatever reason, will end up interpreting it different than what it is.
 
 ```c++
-// declare
-template <typename X, typename Y, typename Z>
-X perform(Y &var1, Z &var2) {
-    return var1 + var2;
+int x { 5 };
+
+decltype(x)    // will be an int
+decltype((x))  // will be an int &
+```
+````
+
+### Type Deduction
+
+`{bm} /(Core Language\/Templates\/Type Deduction)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Universal References_TOPIC
+Core Language/Templates/Auto Syntax_TOPIC
+```
+
+C++ templates allow for template parameters to be deduced based on usage.
+
+```c++
+template<typename T>
+bool test(T x) {
+    return x % 2 == 0;
+}
+
+test(5);     // equivalent to test<int>(5)
+test(5ULL);  // equivalent to test<unsigned long long>(5ULL)
+```
+
+The following subsections detail type deduction rules for templates as well as edge cases and workarounds.
+
+#### Deduction Rules
+
+`{bm} /(Core Language\/Templates\/Type Deduction\/Deduction Rules)_TOPIC/`
+
+```c++
+template<typename T>
+bool test(T p) {
+    return p % 2 == 0;
 }
 ```
 
-In the example above, `X perform(Y &var1, Z &var2) { ... }` needs `Y` and `Z` to be types that support the plus operator (+) on each other (e.g. `int` and `short`). Setting them to types that don't support the plus operator typically causes cryptic compilation error, especially if the user is only making use of the template and isn't familiar with its innards.
-
-To mitigate these problems, concept_TEMPLATEs may be provided within a template: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), to determine if the substituted types on some template have the properties needed to be used within it. Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by a named expression that returns a `bool`.
+What the type `T` gets deduced to depends on what `p` is specified as and what type gets passed into `p` as an argument. 
 
 ```c++
-template <typename T1, typename T2, typename TR>
-concept MyConcept = std::is_default_constructible<T1>::value
-        && std::is_default_constructible<T2>::value
-        && requires(T1 a, T2 b) {
-            { a + b } -> std::same_as<TR>;
-            { a * b } -> std::same_as<TR>;
-            { std::hash<T1>{}(a) } -> std::convertible_to<std::size_t>;
-            { std::hash<T2>{}(a) } -> std::convertible_to<std::size_t>;
-        };
+int a { 5 };
+const int * aPtr { &a };
+
+
+// Scenario #1: p is just "T" by itself
+template<typename T>
+bool test1(T p) {
+    return *p % 2 == 0;
+}
+test1(aPtr);
+
+// Scenario #2: p is "T *"
+template<typename T>
+bool test2(T * p) {
+    return *p % 2 == 0;
+}
+test2(aPtr);
+
+// Scenario #2: p is "const T *"
+template<typename T>
+bool test3(const T * p) {
+    return *p % 2 == 0;
+}
+test3(aPtr);
 ```
 
-The concept_TEMPLATE above checks a combination of three types: `T1`, `T2`, and `TR`. The first two checks are done through functionality provided by the type_traits header. In the example above, `std::is_default_constructible` provides a compile-time check to ensure the types `T1` and `T2` both have a default initializer (e.g. default constructor). Examples of other checks baked provided by the type_traits header (and concept_NORMs header):
+The idea with C++'s type deduction is that it tries to do the right thing through pattern matching. In the example above, `T` was deduced to be the correct type in each of the scenarios.
+
+ * In scenario 1, `T=const int *`.
+ * In scenario 2, `T=const int`.
+ * In scenario 3, `T=int`.
+
+Pattern matching attempts to deduce template parameter `T` based on...
+
+ * how `T` is used for function parameter `p`,
+ * what expression `e` is passed as the argument to `p`.
+
+```c++
+template<T>
+void func(??? p) { // ??? can be T, T&, const T, const T&, ...
+    ...
+}
+
+func(e); // Given the expression e, func()'s parameter p, what will T be?
+```
+
+For value types, pointer types, lvalue reference types, and rvalue reference types, the rules are as follows:
+
+ * When `e` and `p` are both values, `const` / `volatile` will never transfer over to `T` because a copy of `e` is being passed in.
+ * When `e` and `p` are both pointers, `const` / `volatile` will transfer over to `T` if not already set on `p`.
+ * When `e` and `p` are both references, `const` / `volatile` will transfer over to `T` if not already set on `p`.
+ * When `e` is a value but `p` is a reference, `e` gets passed into the function as a reference (`const` / `volatile` are maintained on `e`'s reference, see rule where both `e` and `p` are references).
+ * When `e` is a reference but `p` is a value, `e` gets passed into the function as a copy of the value it references (`const` / `volatile` are removed from `e`'s copy, see rule where both `e` and `p` are values).
+
+|              | p=T         | p=const T | p=T&        | p=const T& | p=T*        | p=const T* |
+|--------------|-------------|-----------|-------------|------------|-------------|------------|
+| e=int        | T=int       | T=int     | T=int       | T=int      |             |            |
+| e=const int  | T=int       | T=int     | T=const int | T=int      |             |            |
+| e=int&       | T=int       | T=int     | T=int       | T=int      |             |            |
+| e=const int& | T=int       | T=int     | T=const int | T=int      |             |            |
+| e=int*       |             |           |             |            | T=int       | T=int      |
+| e=const int* |             |           |             |            | T=const int | T=int      |
+
+```{note}
+* `volatile` not included in above matrix to keep things simple. It behaves just like `const`.
+* rvalue references not included in the matrix to keep things simple. It behaves just like lvalue references.
+```
+
+```{note}
+The rules above work for return types exactly the same way that they do for parameter types: `e` ends up being the expression being returned by the function and `p` is the function's return type.
+```
+
+For universal references, the rules are more complicated. `p` gets reinterpreted based on whether `e` is a lvalue reference or rvalue reference:
+
+ * When `e` is a lvalue reference, both `p` and `T` will be interpreted as lvalue reference to the core type.
+ * When `e` is a rvalue reference, `p` is interpreted as an rvalue reference and `T` is the reference-less version of `p`.
+
+|                | p=T&&                                      |
+|----------------|--------------------------------------------|
+| e=int&         | T=int& (p interpreted as int&)             |
+| e=const int&   | T=const int& (p interpreted as const int&) |
+| e=int&&        | T=int (p interpreted as int&&)             |
+| e=const int&&  | T=const i (p interpreted as const int&&)   |
+
+```{note}
+What the above is saying is that, if e ends up being an rvalue reference, it uses the basic rules explained just previous to this universal references explainer. Recall that parameters that are universal references borrow the rvalue reference syntax of double ampersand (&&) -- double ampersands are universal references if the type is used in a parameter and left as-is (no `const`/`volatile`/etc..).
+
+The types for `T` and `p` look invalid in lvalue cases but there's some special logic going on under the hood in terms of "reference collapsing" and doing things internally that would be explicitly illegal to do in code. For example, normally, if `p=int&` then `T=int`. But that isn't the case with universal references: `p=int&` (interpreted) but then `T=int&` as well.
+```
+
+````{note}
+A quick-and-dirty way to determine what a type is deduced is to use `typeid()` in combination with querying type traits.
+
+```c++
+template<typename T>
+void test(T p) {  // T or T& or const T or const T& or ...
+    using P = decltype(p);
+    using T_ref_removed = std::remove_reference<T>::type;
+    using P_ref_removed = std::remove_reference<P>::type;
+    using T_ref_and_cv_removed = std::remove_cv<T_ref_removed>::type;
+    using P_ref_and_cv_removed = std::remove_cv<P_ref_removed>::type;
+    // is_const/is_volatile must have ref removed for test to work: https://en.cppreference.com/w/cpp/types/is_const
+    std::cout
+        << "p: "
+        << (std::is_const<P_ref_removed>::value ? "[const]" : "")
+        << (std::is_volatile<P_ref_removed>::value ? "[volatile]" : "")
+        << (std::is_lvalue_reference<P>::value ? "[&]" : "")
+        << (std::is_rvalue_reference<P>::value ? "[&&]" : "")
+        << typeid(P_ref_and_cv_removed).name()
+        << "  /  "
+        << "T:"
+        << (std::is_const<T_ref_removed>::value ? "[const]" : "")
+        << (std::is_volatile<T_ref_removed>::value ? "[volatile]" : "")
+        << (std::is_lvalue_reference<T>::value ? "[&]" : "")
+        << (std::is_rvalue_reference<T>::value ? "[&&]" : "")
+        << typeid(T_ref_and_cv_removed).name()
+        << std::endl;
+}
+```
+
+`typeid()` by itself has a couple of issue:
+
+ 1. In certain cases, it won't output specifics of the type (see https://stackoverflow.com/q/37412265). I've tried to work around this by using type traits in the code above.
+ 
+ 2. The mains are mangled in G++ and clang (MSVC produces full type names). To de-mangle, you can use a command-line tool (that comes with most Linux g++/clang setups) called "c++-filt". For example, if `typeid().name()` outputs "PKi", ...
+
+    ```
+    user@localhost$ c++filt -t Pki
+    int const*
+    ```
+````
+
+```{note}
+The book mentions a couple of niche cases to do with decaying of types.
+
+ 1. When `e` is a raw array (e.g. `e=int[13]`) and `p` is a reference type (e.g. `p=T&`, `p=const T&`, `p=T&&`, ...), `p` doesn't decay to a pointer (it doesn't become `p=int* &`). Instead, an actual reference to the array (including its size) gets passed in, meaning that it's possible to get the array's size via `sizeof()`. This isn't possible if it decayed to a pointer.
+   
+    The book recommends using `std::array` instead of relying on this.
+
+ 2. When `e` is a function and `p` is a reference type, `p` doesn't decay to a function pointer. It ends up being a reference to the actual function.
+
+    The book mentions that, in practice, the non-decaying of functions rarely makes a difference to the code.
+```
+
+Type deduction for `auto` works almost exactly the same as template parameter type deduction. If a parameter type has `auto`, that `auto` assumes the place of a unique template parameter (e.g. `T`). What `auto` gets deduced to follows the same rules -- it takes into account the expression passed in as the argument for the parameter and how the parameter is specified (e.g. if it's `const`, a reference, a pointer, etc..).
+
+```c++
+void func(auto p);          // template<T> void func(T p);
+void func(auto & p);        // template<T> void func(T & p);
+void func(auto * p);        // template<T> void func(T * p);
+void func(const auto & p);  // template<T> void func(const T & p);
+void func(const auto * p);  // template<T> void func(const T * p);
+void func(auto && p);       // template<T> void func(T && p);
+auto func(int p);           // template<T> T func(int p);
+```
+
+This extends to variable declarations that use `auto`. The rules are essentially the same:
+
+ * `auto` assumes the role of the template parameter
+ * The full type assumes the role of the parameter (e.g. if it's `const`, a reference, a pointer, etc..).
+ * The initializing expression assumes the role of the argument being passed into the parameter.
+
+```c++
+const auto p = 5;
+// Imagine p is a parameter in a function and 5 is the argument being passed into it:
+//
+// template<T>
+// void func(const T p) {
+//     ...
+// }
+// func(5);
+```
+
+The rules are the same even for variables typed as `auto &&`. When a variable type is `auto &&`, it's _interpreted as a universal reference rather than a rvalue reference_. It only becomes a rvalue reference if it's set to a rvalue reference. Otherwise, it's a lvalue reference.
+
+```c++
+int x { 22 };
+
+auto && p1 = 52;  // p1 is rvalue reference
+auto && p2 = x;   // p2 is lvalue reference
+```
+
+#### Type Cloning Deduction
+
+`{bm} /(Core Language\/Templates\/Type Deduction\/Type Cloning Deduction)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Type Deduction/Deduction Rules_TOPIC
+Core Language/Templates/Type Cloning_TOPIC
+```
+
+In certain cases, a variable declaration / return statement needs to replicate the exact type of whatever expression is being assigned to it. This is possible with `decltype(auto)`.
+
+```c++
+// funcA()'s return type is the exact same as f_ptr()'s return type.
+template<typename F>
+decltype(auto) funcA(F * f_ptr, int index) {
+    return f_ptr(index);
+}
+
+// x's type is the exact same as f()'s return type.
+decltype(auto) x = f(a1, a2, a3, a4);
+```
+
+This is needed because, with normal type deduction rules, the deduction of `T` changes based on how the overall type is specified (e.g. (e.g. `T`, `const T`, `T&`, `T*`, etc..) and the type of the expression that gets assigned to it.
+
+```{note}
+See previous section for a refresher on type deduction rules.
+```
+
+```c++
+template<typename F, typename T>
+T funcA(F * f_ptr, int index) {
+    return f_ptr(index);
+}
+
+// What does T get deduced as here? Impossible to know because the signature of "f_ptr()" isn't known beforehand. But,
+// if "f_ptr(index)" returns a reference, type deduction rules say that T will end up stripping off the reference. So,
+// for example, if "f_ptr(index)" returns "MyObject &", this function will end up returning a COPY of that object
+// rather than the reference itself.
+```
+
+* If `f_ptr()` returns a copy and your return type is `T`, everything is okay.
+
+  ```c++
+  template<typename T, typename F>
+  T test(F * f_ptr, int index) {
+      return f_ptr(index); // f_ptr() returns a COPY and you return a COPY
+  }
+  ```
+
+* If `f_ptr()` returns a reference and your return type is `T&`, everything is okay.
+
+  ```c++
+  template<typename T, typename F>
+  T& test(F * f_ptr, int index) {
+      return f_ptr(index); // f_ptr() returns a REFERENCE and you return a REFERENCE
+  }
+  ```
+
+* If `f_ptr()` returns a reference but your return type is `T`, it's **inefficient code**. 
+
+  ```c++
+  template<typename T, typename F>
+  T& test(F * f_ptr, int index) {
+      return f_ptr(index); // f_ptr() returns a REFERENCE and you return a COPY of that reference -- it would have been fine
+                           // to return just the reference itself
+  }
+  ```
+
+* If `f_ptr()` returns a copy but your return type is `T&`, it's **faulty code**. 
+
+  ```c++
+  template<typename T, typename F>
+  T& test(F * f_ptr, int index) {
+      return f_ptr(index); // f_ptr() returns a COPY and you return a REFERENCE to that local copy -- copy is destroyed once
+                           // this function exits meaning that the reference will be pointing to junk.
+  }
+  ```
+
+If you don't know whether `f_ptr()` will return a reference or a copy (you just want to mirror back whatever its return type is), use `decltype(auto)`.
+
+```c++
+template<typename T, typename F>
+decltype(auto) test(F * f_ptr, int index) {
+    return f_ptr(index); // returns the exact type of f_ptr()
+}
+```
+
+````{note}
+The book mentions that, if you're going to use `decltype(auto)`, don't wrap the expression in brackets. The reason is that `decltype()`, for whatever reason, will end up interpreting it different than what it is.
+
+```c++ 
+// Example from the book
+decltype(auto) f1() {
+  int x = 0;
+  return x;        // decltype(x) is int, so f1 returns int
+}
+
+decltype(auto) f2() {
+  int x = 0;
+  return (x);      // decltype((x)) is int&, so f2 returns int&
+}
+```
+````
+
+````{note}
+The book mentions that, before `decltype(auto)`, you needed to use the trailing return type syntax to get similar behaviour when the return type depended on the parameter types.
+
+```c++
+template<typename T>
+auto f1(T x) -> decltype(x + 5) {
+    return x + 5;
+}
+```
+
+You can't do something similar with the original return type syntax because the compiler doesn't know what's in the parameter list -- it hasn't parsed that part yet.
+
+```c++
+template<typename T>
+decltype(x + 5) f1(T x) { // THIS WON'T WORK: x used in decltype() before it's encountered in parameter list
+    return x + 5;
+}
+```
+````
+
+### Type Traits
+
+`{bm} /(Core Language\/Templates\/Type Traits)_TOPIC/`
+
+The C++ standard library includes a set of templated classes that detects the traits of a type at compile-time. This is useful in cases where template parameters need to be restricted.
+
+```c++
+template<typename T>
+T test(T t) {
+    static_assert(std::is_integral<T>::value, "Must be integral");
+    return t + 1;
+}
+
+test(4);     // OK
+test(4ULL);  // OK
+test(4.09);  // FAIL -- 4.09 is a floating point number, not an integral number
+```
+
+The `value` field is `true` / `false` depending on if the type passes the check. A shortcut in later versions of C++ is to append `_v` to the name of the class performing the check rather than explicitly querying the `value` field (e.g. `std::is_integral<T>::value` vs `std::is_integral_v<T>`).
+
+List of useful checks:
 
  * `std::is_signed` - ensures a type is signed.
  * `std::is_unsigned` - ensures a type is unsigned.
@@ -3567,46 +4216,143 @@ The concept_TEMPLATE above checks a combination of three types: `T1`, `T2`, and 
  * `std::is_nothrow_move_constructible` - ensures type has a move constructor that never throws an exception (`noexcept`).
  * `std::is_move_assignable` - ensures type has move assignment.
 
-The remaining checks are done through a `requires` clause, which lists out the required set of expressions the substituted types must support and the resulting type of each of those expressions. The example above lists that types `T1` and `T2` are ...
+```{seealso}
+Core Language/Variables/Aliasing_TOPIC (refresher)
+```
 
- 1. addable, returning an object of type `TR`.
- 1. multiply-able, returning an object of type `TR`.
- 1. hashable (when passed into `std::hash()`, returns an object that's convertible to `size_t`).
+Type traits may also be manipulated at compile-time via a set of templated classes.
 
-Each item in the list has the syntax `{ EXPRESSION } -> RESULT`, where the result is wrapped with functionality from the concept_NORMs header. This functionality describes how the result of the expression should behave. In the example above, ...
+```c++
+template<typename T>
+auto test(T t) {
+    using R = std::make_unsigned<T>::type;  // R is same type as T but unsigned (if it already isn't)
+    R x { t + 1 };
+    return x;
+}
+```
 
- * `std::same_as<TR>` means that the expression should return the exact type as specified by `TR`.
- * `std::convertible_to<std::size_t>` means that the expression should return a type that can implicitly convert to `std::size_t` (e.g. a `short` can implicitly convert to an `int` without requiring any kind of casting).
+The `type` field contains the name type. A shortcut in later versions of C++ is to append `_t` to the name of the class doing the manipulation rather than explicitly querying the `type` field (e.g. `std::make_unsigned<T>::type` vs `std::make_unsigned_t<T>`).
+
+List of useful conversions:
+
+ * `std::remove_cv` - remove `const` and / or `volatile`.
+ * `std::remove_const` - remove `const`.
+ * `std::remove_volatile` - remove `volatile`.
+ * `std::remove_pointer` - make into non-pointer type (removes a `*` from the type).
+ * `std::remove_reference` - make into non-reference type.
+ * `std::add_cv` - add `const` and / or `volatile`.
+ * `std::add_const` - add `const`.
+ * `std::add_volatile` - add `volatile`.
+ * `std::add_pointer` - make into pointer type (adds a `*` to the type).
+ * `std::add_lvalue_reference` - make into a lvalue reference type.
+ * `std::add_rvalue_reference` - make into a rvalue reference type.
+ * `std::make_signed` - make into an equivalent version of the same type that's signed.
+ * `std::make_unsigned` - make into an equivalent version of the same type that's unsigned.
 
 ```{note}
-The book says that these are related to "type functions". I can't find much information on this or how to create new "type functions".
+Are constant expressions used to write these checks and transformations? Maybe.
 ```
 
-Use the `requires` keyword immediately after the template to target a set of template parameters to a concept_TEMPLATE.
+```{seealso}
+Core Language/Constant Expressions_TOPIC
+```
+
+### Concepts
+
+`{bm} /(Core Language\/Templates\/Concepts)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Type Traits_TOPIC
+Core Language/Templates/Auto Syntax_TOPIC
+```
+
+In certain cases, a set of types substituted in for a template parameters won't produce working code.
 
 ```c++
-template <typename T1, typename T2>
-    requires MyConcept<T1, T2, T1>  // refers to the concept defined in the example above
-T1 add_and_multiply(T1 &var1, T2 &var2) {
-    return (var1 + var2) * var2;
+// declare
+template <typename X, typename Y, typename Z>
+X perform(Y& var1, Z& var2) {
+    return var1 + var2;
 }
 ```
 
-Concept_TEMPLATEs may also be directly embedded into the template itself. 
+In the example above, `Y` and `Z` need to be types that support the plus operator (+) on each other (e.g. `int` and `short`) and the result must be of type `X` (or convertible to `X`). If types substituted for `X`, `Y`, and `Z` don't satisfy those conditions, the compiler gives back cryptic compilation errors.
+
+Concept_TEMPLATEs may be used within a template to produce more straightforward compilation errors for bad type substitutions: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), that ensures a set of substituted types support specific type traits (e.g. supports plus operator, has a specific member function, has a copy constructor, etc..). The compiler gives back easier to understand compilation errors when the predicate fails.
+
+Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by its name and a compile-time evaluated expression that returns a `bool`. For example, the concept_TEMPLATE below uses the type traits library to ensure that `T` is both has a default constructor and a copy constructor.
 
 ```c++
-template <typename T1, typename T2>
-    requires std::is_default_constructible<T1>::value   // same as above, but "MyConcept<T1, T2, T1>" has been embedded
-            && std::is_default_constructible<T2>::value
-            && requires(T1 a, T2 b) {
-                { a + b } -> std::same_as<T1>;
-                { a * b } -> std::same_as<T!>;
-                { std::hash<T1>{}(a) } -> std::convertible_to<std::size_t>;
-                { std::hash<T2>{}(a) } -> std::convertible_to<std::size_t>;
-            };
-T1 add_and_multiply(T1 &var1, T2 &var2) {
-    return (var1 + var2) * var2;
+template <typename T>
+concept DefaultAndCopy = std::is_default_constructible<T>::value && std::is_copy_constructible<T>::value;
+```
+
+A concept_TEMPLATE's expression can invoke other concept_TEMPLATEs. For example, the concept_TEMPLATE below makes use of the example concept_TEMPLATE above and includes an additional type traits check to ensure that `T` also has a move constructor.
+
+```c++
+template <typename T>
+concept DefaultAndCopyAndMove = DefaultAndCopy<T> && std::is_move_constructible<T>::value;
+```
+
+The C++ standard library includes a set of commonly used concept_TEMPLATEs. These concept_TEMPLATEs perform checks similar to the checks provided by the type traits library.
+
+```c++
+// equiv to DefaultAndCopyAndMove but written using the concepts library.
+template <typename T>
+concept DefaultAndCopyAndMove = std::default_initializable<T> && std::copy_constructible<T> && std::move_constructible<T>;
+```
+
+In cases where neither the type traits library nor the concept_TEMPLATEs library has the check you need, a special `requires` clause can be used to directly specify exactly what a type needs to support. This `requires` clause has a parameter list (exactly as if it were a function), and within its body is a list of expressions that _must_ be supported by the types.
+
+```c++
+template <typename T1, typename T2, typename TR>
+concept MyConcept =
+        requires(const T1* t1, const T2& t2) {
+            { (*t1) + t2 } -> std::same_as<TR>;
+            { (*t1) * t2 } -> std::same_as<TR>;
+            { std::hash<T1>{}(*t1) } -> std::convertible_to<std::size_t>;
+            { std::hash<T2>{}(t2)  } -> std::convertible_to<std::size_t>;
+        }
+        && std::is_default_constructible<T1>::value
+        && std::is_default_constructible<T2>::value;
+```
+
+The `requires` clause in the example above pretends as if it's a function taking a pointer to a `const` (`T1`) and a lvalue reference to a `const` (`T2`).
+
+ * When `T1` is dereferenced and either added / multiplied to `T2`, it must produce a type of `TR`.
+ * When `T1` is dereferenced and passed to `std::hash`, it must produce a type that's convertible to `size_t`.
+ * When `T2` is passed to `std::hash`, it must produce a type that's convertible to `size_t`.
+
+```{note}
+Note the syntax. Each statement in the body of `requires` is an expression that must result in a type that passes its concept_TEMPLATE check.
+```
+
+To apply a concept_TEMPLATE to a template, add a `requires` just before the body of the template with a concept_TEMPLATE expression. The concept_TEMPLATE expression is the exact same as the expressions used to define concept_TEMPLATEs: It's evaluated at compile-time, can reference type traits, can reference other concept_TEMPLATEs, can have a special parameter list `requires` clause, and must return a `bool`.
+
+```c++
+// templated function perform() using the concept "MyConcept" declared above.
+template <typename T1, typename T2, typename TR>
+    requires MyConcept<T1, T2, TR>
+TR perform(T1 t1, T2 t2) { /* ... implementation ... */ }
+
+
+// templated function perform() embedding the rules for that same concept.
+template <typename T1, typename T2, typename TR>
+    requires requires(const T1* t1, const T2& t2) {
+        { (*t1) + t2 } -> std::same_as<TR>;
+        { (*t1) * t2 } -> std::same_as<TR>;
+        { std::hash<T1>{}(*t1) } -> std::convertible_to<std::size_t>;
+        { std::hash<T2>{}(t2)  } -> std::convertible_to<std::size_t>;
+    }
+    && std::is_default_constructible<T1>::value
+    && std::is_default_constructible<T2>::value;
+TR perform(T1 t1, T2 t2) {
+    /* ... implementation ... */
 }
+```
+
+```{note}
+The `requires requires` above is valid. The first `requires` is saying that this template is performing checks, and the second `requires` is the special parameter list `requires` clause that lists out what operations `T1`, `T2`, and `TR` must support.
 ```
 
 If a concept_TEMPLATE only checks a single type, it's possible to use it just by substituting its name in place of the `typename` / `class` for the template parameter that requires it (as opposed to using `requires` shown above).
@@ -3638,6 +4384,32 @@ SingleTypeConcept auto add_and_multiply(
     auto x { var1 + var 2};
     return x * var2;
 }
+```
+
+````{note}
+Be careful when making use of concept_TEMPLATEs like this. When `const auto` is involved, it'll break compilation. 
+
+```c++
+std::integral const auto f() {
+    return 0;
+}
+```
+
+The above function won't compile because there's something before the `const`. When a `const` is the left-most thing, it can't have anything further left of it. You need to move the `const` after `auto` (`const auto` is the exact same as `auto const`, having `const` as left-most thing is just a syntactical convenience thing).
+
+```c++
+std::integral auto const f() {
+    return 0;
+}
+```
+````
+
+```{note}
+Does this work with `declspec(auto)` as well?
+```
+
+```{sealso}
+Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`declspec(auto)` description)
 ```
 
 ### Variadic
@@ -4171,6 +4943,8 @@ constexpr unsigned int fibonacci(unsigned int n) {
 
 int x {fibonacci(7)}; // at compile-time, fibonacci(7) is executed and its return value substituted into the initializer
 ```
+
+Constant expression functions can be used as normal functions as long as the arguments being passed into them aren't known at compile-time. If the arguments are known at compile-time, the function gets invoked during compilation.
 
 ````{note}
 An alternate version of constant expression functions, called immediate functions, have the restriction that they must produce a compile-time constant. An immediate function requires prefixing `consteval` to a function instead of `constexpr`.
@@ -5410,6 +6184,10 @@ std::pair<int, EmptyClass> p {5, EmptyClass{} };
 boost::compressed_pair<int, EmptyClass> cp {5, EmptyClass{} };  // this one consumes less memory
 ```
 
+```{note}
+There's a helper function called `std::make_tuple()` / `std::make_pair()` which makes tuples / pairs but has problems when the type is a reference. Be aware of that if you decide to use it. See [here](https://stackoverflow.com/a/7867662).
+```
+
 ### Any
 
 `{bm} /(Library Functions\/Utility Wrappers\/Any)_TOPIC/`
@@ -5511,8 +6289,8 @@ struct PrintNum {
 };
 
 
-std::function<void(int)> f1 = print_num;
-std::function<void(int)> f2 = PrintNum;
+std::function<void(int)> f1 { print_num };
+std::function<void(int)> f2 { PrintNum };
 ```
 
 ```{seealso}
@@ -5528,6 +6306,108 @@ void call_func_with_42(std::function<void(int)> func) {
     func(42);
 }
 ```
+
+### Reference Wrapper
+
+`{bm} /(Library Functions\/Utility Wrappers\/Reference Wrapper)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers
+```
+
+```{seealso}
+Core Language/Variables/Rvalue References_TOPIC (refresher)
+```
+
+A reference wrapper is a wrapper that holds a reference to an object. This is important because, in C++, you can't have a reference to a reference like you can have a pointer to a pointer. References, from a usage perspective, are treated as if they're the direct object themselves.
+
+```c++
+int ** x { ... };                                             // OK:  x is a pointer to a pointer to a n integer
+int && y { ... };                                             // BAD: y is an rvalue reference, NOT a reference to a reference
+std::reference_wrapper<std::reference_wrapper<int>> z{ ... }; // OK:  z is a reference wrapper to a reference wrapper
+```
+
+To create a `std::reference_wrapper`, use `std::ref()`. To access the value referenced to by a reference wrapper, use `get()`.
+
+```c++
+const int a { 5 };
+const std::reference_wrapper<const int> aWrapped{ std::ref(a) };
+const int b { aWrapped.get() };
+const int c { aWrapped }; // This can also work because std::reference_wrapper provides implicit conversion
+```
+
+`std::reference_wrapper`s are especially useful for containers. Normally, containers won't allow you to store references. The only options are to store either full objects or pointers to objects.
+
+```c++
+std::vector<int> vec2 {};   // OK: stores ints
+std::vector<int *> vec2 {}; // OK: stores int pointers
+std::vector<int &> vec3 {}; // BAD: not allowed
+```
+
+While storing pointers seems like a good alternative to storing references, certain container types may not work as expected with pointers. For example, unordered associative containers like `std::unordered_set` will use the default pointer template specializations for `std::hash` and `std::equal_to`, meaning that the container determines equality by inspecting the pointer rather than the object it points to.
+
+```c++
+int a {0}; int b {1}; int c {1}; int d {1}; int e {1};
+
+// The following outputs 1 0
+std::unordered_set<int> vec2 { a, b, c, d, e };
+for (auto e : vec2) {
+    std::cout << e << ' ';
+}
+std::cout << std::endl;
+
+// The following outputs 1 1 1 1 0
+std::unordered_set<int *> vec1 { &a, &b, &c, &d, &e };
+for (auto e : vec1) {
+    std::cout << *e << ' ';
+}
+std::cout << std::endl;
+```
+
+Using `std::reference_wrapper` allows for the template specializations of the object itself to be used. The only caveat is that the template specializations need to be declared directly in the container type.
+
+```c++
+// The following outputs 1 0
+std::unordered_set<
+    std::reference_wrapper<int>, // type to store
+    std::hash<int>,              // std::hash specialization to use
+    std::equal_to<int>           // std::equal_to specialization to use
+> vec3 { a, b, c };
+for (auto e : vec3) {
+    std::cout << e.get() << ' ';
+}
+std::cout << std::endl;
+
+// HOW CAN THE ABOVE WORK if the stored type is std::reference_wrapper<int> but hash/equal_to accept only int? Recall that
+// std::reference_wrapper<int> can implicitly convert to its underlying type. For example, the following is equivalent ...
+
+int & x { (*vec3.begin()).get() };
+int & y {  *vec3.begin() };  // references same object as X
+
+// As such, when std::hash<int> / std::equal_to<int> to get invoked, they get passed in a std::reference_wrapper<int> which
+// implicitly converts to int.
+```
+
+Common pattern for different container types:
+
+ * `std::vector<std::reference_type<T>>`
+ * `std::unordered_set<std::reference_type<K>, std::hash<K>, std::equal_to<K>>`
+ * `std::unordered_map<std::reference_type<K>, V, std::hash<K>, std::equal_to<K>>`
+ * `std::ordered_set<std::reference_type<K>, std::less_than<K>>`
+ * `std::ordered_map<std::reference_type<K>, V, std::less_than<K>>`
+
+````{note}
+Another option is to go ahead and use pointers, but rather than specifying `std::hash<K>` / `std::equal_to<K>` / `std::less_than<K>` in the template parameters, create custom functor that access data on the object being pointed to.
+
+```c++
+struct custom_less_functo {
+    constexpr bool operator()(const MyObject* & lhs, const MyObject* & rhs) const {
+        return lhs->val1 < rhs->val1 || lhs->val2 < rhs->val2;
+    }
+}
+std::ordered_set<MyObject*, custom_less_functor_for> s { ... }
+```
+````
 
 ## Containers
 
@@ -5703,6 +6583,10 @@ There's also ..
 ```{prereq}
 Library Functions/Containers/Sequential/Array_TOPIC
 Library Functions/Allocators_TOPIC
+```
+
+```{note}
+WARNING: The book is saying that there is no hard requirement for a container to return copies vs references. Most of the time a container returns references, but in special cases it may return a copy of some object. For example, `vector<bool>` has a template specialization that returns a proxy object rather than a direct reference (`std::vector<bool>::reference`).
 ```
 
 `std::vector` is a container that holds on to its elements sequentially and contiguously in memory (array), but it can dynamically size itself (e.g. expand the internal array if not enough room is available to add a new element). It has most of the same functions as `std::array`, in addition to some others.
@@ -9617,11 +10501,13 @@ std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception 
    int operator()(int y) const { return -y + x; }
    ```
 
- * `{bm} lambda` - Shorthand notation for an unnamed functor.
+ * `{bm} lambda` - Shorthand expression for an unnamed functor.
 
    ```c++
    auto f = [] (int z) -> int { return -z; };
    ```
+
+ * `{bm} closure` - An object / instance of a lambda.
 
  * `{bm} named capture` - Pulling in objects from the outer scope into a lambda by explicitly listing their names in the capture clause, adding `&` before each name if wanting to pull it in by reference rather than by copy.
 
@@ -9712,6 +10598,33 @@ std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception 
  * `{bm} namespace` - C++'s mechanism of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python.
 
  * `{bm} unnamed namespace` - A special namespace that limits the visibility of the code to the containing translation unit, meaning that code can't be referenced at all outside of the translation unit.
+
+ * `{bm} universal reference` - A function template that automatically creates overloads based on whether the argument passed in for a parameter is a lvalue reference or a rvalue reference.
+
+   ```c++
+   // TEMPLATE where the parameter x is a universal reference
+   template<typename T>
+   void test(T && x) {
+       if (x % 2 == 0) {
+           vector.push_back(std::forward<T>(x));  // forward based on the reference type
+       }
+   }
+
+   
+   // When the type is an it, the above template expands to the following two overloads ...
+   void test(int & x) {
+       if (x % 2 == 0) {
+           vector.push_back(x);            // calls push_back(int &x) / push_back(int x)
+       }
+   }  
+   void test(int && x) {
+       if (x % 2 == 0) {
+           vector.push_back(std::move(x)); // calls push_back(int &&x)
+       }
+   }
+   ```
+
+* `{bm} special member function` - A member function which, if invoked but not explicitly implemented, the compiler will automatically generate a default implementation for. Each of the following is considered a special member function: default constructor, copy constructor, move constructor, copy assignment operator, move assignment operator, and destructor.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
