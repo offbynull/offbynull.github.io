@@ -38,7 +38,6 @@
 <li><a href="#H_Aliasing">Aliasing</a></li>
 <li><a href="#H_Constant">Constant</a></li>
 <li><a href="#H_Volatile">Volatile</a></li>
-<li><a href="#H_Type%20Deduction">Type Deduction</a></li>
 <li><a href="#H_Common%20Attributes">Common Attributes</a></li>
 <li><a href="#H_Implicit%20Conversion">Implicit Conversion</a></li>
 <li><a href="#H_Explicit%20Conversion">Explicit Conversion</a></li>
@@ -88,19 +87,19 @@
 <ul>
 <li><a href="#H_Capture%20List">Capture List</a></li>
 <li><a href="#H_Parameter%20List">Parameter List</a></li>
-<li><a href="#H_Return%20Types">Return Types</a></li>
+<li><a href="#H_Return%20Type">Return Type</a></li>
 <li><a href="#H_Modifiers">Modifiers</a></li>
-<li><a href="#H_Templates">Templates</a></li>
+<li><a href="#H_Template%20Parameters">Template Parameters</a></li>
 </ul>
 <li><a href="#H_Friends">Friends</a></li>
 <li><a href="#H_User-defined%20Literals">User-defined Literals</a></li>
 </ul>
-<li><a href="#H1_Templates">Templates</a></li>
+<li><a href="#H_Templates">Templates</a></li>
 <ul>
 <li><a href="#H_Universal%20References">Universal References</a></li>
 <li><a href="#H_Auto%20Syntax">Auto Syntax</a></li>
 <li><a href="#H_Type%20Cloning">Type Cloning</a></li>
-<li><a href="#H1_Type%20Deduction">Type Deduction</a></li>
+<li><a href="#H_Type%20Deduction">Type Deduction</a></li>
 <ul>
 <li><a href="#H_Deduction%20Rules">Deduction Rules</a></li>
 <li><a href="#H_Type%20Cloning%20Deduction">Type Cloning Deduction</a></li>
@@ -1948,34 +1947,6 @@ inst.x = <span class="hljs-number">5</span>;  <span class="hljs-comment">// comp
 }
 </code></pre>
 <p>Using <code>volatile</code> is important when working with embedded devices, where platform-specific memory locations often need to be accessed in a specific order / at specific intervals in seemingly useless ways (e.g. kicking a watchdog by writing 0 to a memory location but never reading that memory location).</p>
-<a name="H_Type%20Deduction"></a><h3>Type Deduction</h3>
-<p><a name="BM_(Core%20Language%5C%2FVariables%2FType%20Deduction)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FCore%20Types)_TOPIC%2F">Core Language/Variables/Core Types</a></li>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FArrays)_TOPIC%2F">Core Language/Variables/Arrays</a></li>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FPointers)_TOPIC%2F">Core Language/Variables/Pointers</a></li>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FReferences)_TOPIC%2F">Core Language/Variables/References</a></li>
-</ul>
-</div>
-<p>The keyword <code>auto</code> may be used during a variable declaration to deduce the resulting type of that variable from whatever it's being initialized with.</p>
-<pre class="hljs"><code><span class="hljs-keyword">auto</span> a { <span class="hljs-number">1</span> };  <span class="hljs-comment">// int</span>
-<span class="hljs-keyword">auto</span> b { <span class="hljs-number">1L</span> }; <span class="hljs-comment">// long</span>
-<span class="hljs-keyword">auto</span> c { &amp;a }; <span class="hljs-comment">// int *</span>
-<span class="hljs-keyword">auto</span> d { *c }; <span class="hljs-comment">// int</span>
-<span class="hljs-keyword">auto</span> &amp;e { a }; <span class="hljs-comment">// int &amp;  &lt;-- THIS IS A SPECIAL CASE. YOU ALWAYS NEED TO USE auto&amp; FOR REFERENCES</span>
-</code></pre>
-<p>Note that the last variable in the example above explicitly the ampersand (&amp;) to declare e as a <a href="#BM_(reference)%2Fi">reference</a> type. This is required because <a href="#BM_(reference)%2Fi">reference</a> initialization works the same way as normal initialization (<code>auto</code> can't disambiguate).</p>
-<p>In addition to <code>auto</code>, it's possible to copy the type from ...</p>
-<ul>
-<li>some existing entity (e.g. en existing variable)</li>
-<li>the result of an expression (e.g. <code>(x + 13L) / 2</code>)</li>
-</ul>
-<p>... using <code>decltype()</code> . This is useful in scenarios where it's difficult or impossible to determine the exact type (e.g. <a href="#BM_(function%20pointer)%2Fi">function pointer</a>s).</p>
-<pre class="hljs"><code><span class="hljs-type">int</span> x{};
-<span class="hljs-keyword">decltype</span>((x + <span class="hljs-number">13L</span>) / <span class="hljs-number">2</span>) myNum{}; <span class="hljs-comment">// myNum type is whatever type "(x + 13L) / 2" evaluates to</span>
-</code></pre>
 <a name="H_Common%20Attributes"></a><h3>Common Attributes</h3>
 <p><a name="BM_(Core%20Language%5C%2FVariables%2FCommon%20Attributes)_TOPIC%2F"></a><strong></strong></p>
 <p>If a variable has been deprecated, adding a <code>[[deprecated]]</code> <a href="#BM_(attribute)%2Fi">attribute</a> will allow the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to generate a warning if it sees it being used.</p>
@@ -3542,34 +3513,10 @@ MyFunction f1{ <span class="hljs-number">5</span> };
 <span class="hljs-comment">// invoke</span>
 <span class="hljs-built_in">f2</span>(<span class="hljs-number">42</span>);
 </code></pre>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Be aware that, by default, the <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function-call operator</a> in the <a href="#BM_(lambda)%2Fi">lambda</a> version is <code>const</code> and will automatically be made into a <code>constexpr</code> if it satisfies all the requirements of <code>constexpr</code>. This is discussed more in the subsections below.</p>
-</div>
 <p>The general syntax of a <a href="#BM_(lambda)%2Fi">lambda</a> is as follows: <code>[capture-list] (parameter-list) modifiers -&gt; return-type { body }</code>. The subsections below detail this general syntax.</p>
-<ul>
-<li>
-<p><strong><a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s</strong> (optional) - Function <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s.</p>
-<pre class="hljs"><code><span class="hljs-keyword">auto</span> f1 = [] (<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) <span class="hljs-keyword">constexpr</span> -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> x + y; };  <span class="hljs-comment">// constant expression</span>
-</code></pre>
-</li>
-<li>
-<p><strong>return-type</strong> (optional) - Return type.</p>
-<pre class="hljs"><code><span class="hljs-keyword">auto</span> f1 = [] (<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) { <span class="hljs-keyword">return</span> x + y; };                    <span class="hljs-comment">// deduced by compiler if not set</span>
-<span class="hljs-keyword">auto</span> f2 = [] (<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> x + y; };
-<span class="hljs-keyword">auto</span> f3 = [] (<span class="hljs-type">int</span> x, <span class="hljs-keyword">auto</span> y) -&gt; <span class="hljs-keyword">decltype</span>(x+y) { <span class="hljs-keyword">return</span> x + y; };  <span class="hljs-comment">// generic param + decltype (compiler sets return type to resulting type of x + y)</span>
-</code></pre>
-</li>
-<li>
-<p><strong>body</strong> (required) - Function body.</p>
-<pre class="hljs"><code><span class="hljs-keyword">auto</span> f1 = [] (<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) { <span class="hljs-keyword">return</span> x + y; };
-</code></pre>
-</li>
-</ul>
-<p>If the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> decides that a <a href="#BM_(lambda)%2Fi">lambda</a> can be turned into a <a href="#BM_(constant%20expression)%2Fi">constant expression</a>, it will automatically do so. Alternatively, you can force a <a href="#BM_(lambda)%2Fi">lambda</a> to be a <a href="#BM_(constant%20expression)%2Fi">constant expression</a> by adding <code>constexpr</code> as one of the <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>In many cases, you need to return a <a href="#BM_(lambda)%2Fi">lambda</a> from a function. The easiest way to do this is to set the function's return type to <code>auto</code> and return the <a href="#BM_(lambda)%2Fi">lambda</a> as if it were any other variable.</p>
+<p>Be aware that, by default, the <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function-call operator</a> in the <a href="#BM_(lambda)%2Fi">lambda</a> version is <code>const</code> and will automatically be made into a <code>constexpr</code> if it satisfies all the requirements of <code>constexpr</code>. This is discussed more in the <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s subsections.</p>
 </div>
 <a name="H_Capture%20List"></a><h4>Capture List</h4>
 <p><a name="BM_(Core%20Language%5C%2FClasses%2FLambdas%2FCapture%20List)_TOPIC%2F"></a><strong></strong></p>
@@ -3650,22 +3597,88 @@ MyFunction f1{ <span class="hljs-number">5</span> };
 <li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction)_TOPIC%2F">Core Language/Templates/Type Deduction</a></li>
 </ul>
 </div>
-<a name="H_Return%20Types"></a><h4>Return Types</h4>
-<p>AUTO BY DEFAULT</p>
-<p>full me in</p>
-<p>full me in</p>
-<p>full me in</p>
-<p>full me in</p>
+<a name="H_Return%20Type"></a><h4>Return Type</h4>
+<p><a name="BM_(Core%20Language%5C%2FClasses%2FLambdas%2FReturn%20Type)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FArrays)_TOPIC%2F">Core Language/Variables/Arrays</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FPointers)_TOPIC%2F">Core Language/Variables/Pointers</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction)_TOPIC%2F">Core Language/Templates/Type Deduction</a></li>
+</ul>
+</div>
+<p><code>return-type</code> is an <em>optional</em> part of <code>[capture-list] (parameter-list) modifiers -&gt; return-type { body }</code> that defines the return type of the <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>'s <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function-call operator</a>. The syntax of using an arrow and defining the type after the parameter list is called the trailing return syntax.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> f1 { [] (<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b) -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> a+b; } };
+<span class="hljs-keyword">auto</span> f2 { [] (MyObject* v) -&gt; <span class="hljs-keyword">const</span> MyObject&amp; { <span class="hljs-keyword">return</span> v[<span class="hljs-number">5</span>]; } };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction%2FType%20Cloning%20Deduction)_TOPIC%2F">Core Language/Templates/Type Deduction/Type Cloning Deduction</a> (different use-case for trailing return type syntax)</li>
+</ul>
+</div>
+<p>When a <a href="#BM_(lambda)%2Fi">lambda</a> doesn't provide a return type, the return type is implicitly <code>auto</code>. The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> uses standard <a href="#BM_(template%20parameter)%2Fi">template parameter</a> type deduction rules to determine what the return type should be.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> f3 { [] (<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b) { <span class="hljs-keyword">return</span> a+b; } };  <span class="hljs-comment">// return deduced to int</span>
+<span class="hljs-keyword">auto</span> f4 { [] (MyObject* v) { <span class="hljs-keyword">return</span> v[<span class="hljs-number">5</span>]; } };  <span class="hljs-comment">// return deduced to MyObject</span>
+</code></pre>
+<p>In <code>f4</code>, even though <code>v[5]</code> returns a <code>const MyObject &amp;</code>, type deduction rules evaluate it to <code>const MyObject</code> (not a <a href="#BM_(reference)%2Fi">reference</a>). That means <code>f4</code> returns a copy of the <a href="#BM_(object%7Cinstance)%2Fi">object</a> at <code>v[5]</code> rather than a <a href="#BM_(reference)%2Fi">reference</a> to the real thing. Type deduction rules such as the one here may end up causing subtle bugs if you aren't careful.</p>
+<p>Another option is to explicitly return <code>decltype(auto)</code>, which copies the exact type being returned.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> f5 { [] (MyObject* v) -&gt; <span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) { <span class="hljs-keyword">return</span> v[<span class="hljs-number">5</span>]; } };  <span class="hljs-comment">// return deduced to const MyObject&amp;</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>When unsure, it's best to explicitly declare the return type or use <code>decltype(auto)</code>.</p>
+</div>
 <a name="H_Modifiers"></a><h4>Modifiers</h4>
-<p>full me in</p>
-<p>full me in</p>
-<p>full me in</p>
-<p>full me in</p>
-<a name="H_Templates"></a><h4>Templates</h4>
-<p>full me in</p>
-<p>full me in</p>
-<p>full me in</p>
-<p>full me in</p>
+<p><a name="BM_(Core%20Language%5C%2FClasses%2FLambdas%2FModifiers)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FArrays)_TOPIC%2F">Core Language/Variables/Arrays</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FPointers)_TOPIC%2F">Core Language/Variables/Pointers</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction)_TOPIC%2F">Core Language/Templates/Type Deduction</a></li>
+</ul>
+</div>
+<p><code>modifiers</code> is an <em>optional</em> part of <code>[capture-list] (parameter-list) modifiers -&gt; return-type { body }</code> that lists the <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s of the <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>'s <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function-call operator</a>. Except for the following special cases, <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s work the same way that they do for normal functions.</p>
+<ul>
+<li>
+<p>The <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function-call operator</a> is set to be a <code>constexpr</code> function if it meets the requirements of being a <a href="#BM_(constant%20expression)%2Fi">constant expression</a>. You can force it to be a <a href="#BM_(constant%20expression)%2Fi">constant expression</a> by adding <code>constexpr</code> as one of the <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> f1 { [] (<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) <span class="hljs-keyword">constexpr</span> -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> x + y; } };  <span class="hljs-comment">// force as constant expression</span>
+</code></pre>
+</li>
+<li>
+<p>The <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function-call operator</a> is set to be a <code>const</code> function. You can force this off by adding <code>mutable</code> as one of the <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> f2 { [] (<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) <span class="hljs-keyword">mutable</span> -&gt; <span class="hljs-type">int</span> { <span class="hljs-keyword">return</span> x + y; } };    <span class="hljs-comment">// make non-const</span>
+</code></pre>
+</li>
+</ul>
+<a name="H_Template%20Parameters"></a><h4>Template Parameters</h4>
+<p><a name="BM_(Core%20Language%5C%2FClasses%2FLambdas%2FTemplate%20Parameters)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates)_TOPIC%2F">Core Language/Templates</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(lambda)%2Fi">lambda</a> may have <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s added by injecting <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s in angle brackets between <code>[capture-list]</code> and <code>(parameter-list)</code> of the <a href="#BM_(lambda)%2Fi">lambda</a> declaration <code>[capture-list] (parameter-list) modifiers -&gt; return-type { body }</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> f1 { [] &lt;<span class="hljs-keyword">typename</span> T&gt;(T x, T y) -&gt; T { <span class="hljs-keyword">return</span> x + y; } };
+</code></pre>
+<p>This is useful in cases where you need to be more explicit with the types of parameters / return types (<code>auto</code> is too loose). The most obvious case is with containers, where you likely want the underlying container type listed.</p>
+<pre class="hljs"><code><span class="hljs-comment">// f2 and f3 will do the same thing when passed a std::vector, but f3 is much more explicit.</span>
+<span class="hljs-keyword">auto</span> f2 { [] (<span class="hljs-keyword">auto</span>&amp; v) -&gt; <span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span>&amp; { <span class="hljs-keyword">return</span> v[<span class="hljs-number">7</span>]; } };
+<span class="hljs-keyword">auto</span> f3 { [] &lt;<span class="hljs-keyword">typename</span> T&gt;(std::vector&lt;T&gt;&amp; v) -&gt; <span class="hljs-keyword">const</span> T&amp; { <span class="hljs-keyword">return</span> v[<span class="hljs-number">7</span>]; } };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a>s may be used both with <code>auto</code> and with explicit <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s (e.g. <code>T</code>). See the section on <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s to see how to they're applied in both cases.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FConcepts)_TOPIC%2F">Core Language/Templates/Concepts</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F">Library Functions/Containers</a></li>
+</ul>
+</div>
 <a name="H_Friends"></a><h3>Friends</h3>
 <p><a name="BM_(Core%20Language%5C%2FClasses%2FFriends)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -3843,7 +3856,7 @@ Distance d { <span class="hljs-number">1.2</span>_km + <span class="hljs-number"
 <li><a href="#BM_(Library%20Functions%5C%2FTime%2FDurations)_TOPIC%2F">Library Functions/Time/Durations</a></li>
 </ul>
 </div>
-<a name="H1_Templates"></a><h2>Templates</h2>
+<a name="H_Templates"></a><h2>Templates</h2>
 <p><a name="BM_(Core%20Language%5C%2FTemplates)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -4121,7 +4134,7 @@ MyClass myClass{}
 <span class="hljs-keyword">decltype</span>((x))  <span class="hljs-comment">// will be an int &amp;</span>
 </code></pre>
 </div>
-<a name="H1_Type%20Deduction"></a><h3>Type Deduction</h3>
+<a name="H_Type%20Deduction"></a><h3>Type Deduction</h3>
 <p><a name="BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -7778,7 +7791,7 @@ std::queue&lt;<span class="hljs-type">int</span>&gt; q4 {};  <span class="hljs-c
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(Core%20Language%5C%2FVariables%2FRvalue%20References)_TOPIC%2F">Core Language/Variables/Rvalue References</a> (refresher on <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s)</li>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FType%20Deduction)_TOPIC%2F">Core Language/Variables/Type Deduction</a> (refresher on decltype)</li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Cloning)_TOPIC%2F">Core Language/Templates/Type Cloning</a> (refresher on decltype)</li>
 </ul>
 </div>
 <p>To add an item, use <code>push()</code>. Internally, this invokes the wrapped container's <code>push_back()</code> function.</p>
@@ -7824,7 +7837,7 @@ std::queue&lt;<span class="hljs-type">int</span>&gt; q4 {};  <span class="hljs-c
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(Core%20Language%5C%2FVariables%2FRvalue%20References)_TOPIC%2F">Core Language/Variables/Rvalue References</a> (refresher on <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s)</li>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FType%20Deduction)_TOPIC%2F">Core Language/Variables/Type Deduction</a> (refresher on decltype)</li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Cloning)_TOPIC%2F">Core Language/Templates/Type Cloning</a> (refresher on decltype)</li>
 </ul>
 </div>
 <p>To add an item, use <code>push()</code>. Internally, this invokes the wrapped container's <code>push_back()</code> function.</p>
@@ -7867,7 +7880,7 @@ std::priority_queue&lt;<span class="hljs-type">int</span>&gt; q4 {};  <span clas
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(Core%20Language%5C%2FVariables%2FRvalue%20References)_TOPIC%2F">Core Language/Variables/Rvalue References</a> (refresher on <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>s)</li>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FType%20Deduction)_TOPIC%2F">Core Language/Variables/Type Deduction</a> (refresher on decltype)</li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Cloning)_TOPIC%2F">Core Language/Templates/Type Cloning</a> (refresher on decltype)</li>
 </ul>
 </div>
 <p>In the above examples the default comparator of <code>std::less</code> is used, which uses the less than operator (&lt;) to compare two <a href="#BM_(object%7Cinstance)%2Fi">object</a>s for priority. To define a custom comparator, pass in that comparator's type as the 3rd <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument and pass it into the <a href="#BM_(constructor)%2Fi">constructor</a>.</p>

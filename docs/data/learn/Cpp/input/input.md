@@ -1325,41 +1325,6 @@ int f(int a) {
 
 Using `volatile` is important when working with embedded devices, where platform-specific memory locations often need to be accessed in a specific order / at specific intervals in seemingly useless ways (e.g. kicking a watchdog by writing 0 to a memory location but never reading that memory location).
 
-### Type Deduction
-
-`{bm} /(Core Language\/Variables\/Type Deduction)_TOPIC/`
-
-```{prereq}
-Core Language/Variables/Core Types_TOPIC
-Core Language/Variables/Arrays_TOPIC
-Core Language/Variables/Pointers_TOPIC
-Core Language/Variables/References_TOPIC
-```
-
-The keyword `auto` may be used during a variable declaration to deduce the resulting type of that variable from whatever it's being initialized with.
-
-```c++
-auto a { 1 };  // int
-auto b { 1L }; // long
-auto c { &a }; // int *
-auto d { *c }; // int
-auto &e { a }; // int &  <-- THIS IS A SPECIAL CASE. YOU ALWAYS NEED TO USE auto& FOR REFERENCES
-```
-
-Note that the last variable in the example above explicitly the ampersand (&) to declare e as a reference type. This is required because reference initialization works the same way as normal initialization (`auto` can't disambiguate).
-
-In addition to `auto`, it's possible to copy the type from ...
-
- * some existing entity (e.g. en existing variable)
- * the result of an expression (e.g. `(x + 13L) / 2`)
-
-... using `decltype()` . This is useful in scenarios where it's difficult or impossible to determine the exact type (e.g. function pointers).
-
-```c++
-int x{};
-decltype((x + 13L) / 2) myNum{}; // myNum type is whatever type "(x + 13L) / 2" evaluates to
-```
-
 ### Common Attributes
 
 `{bm} /(Core Language\/Variables\/Common Attributes)_TOPIC/`
@@ -3192,36 +3157,10 @@ auto f2 { [x=5] (int a) -> int { return a + x; } };
 f2(42);
 ```
 
-```{note}
-Be aware that, by default, the function-call operator in the lambda version is `const` and will automatically be made into a `constexpr` if it satisfies all the requirements of `constexpr`. This is discussed more in the subsections below.
-```
-
 The general syntax of a lambda is as follows: `[capture-list] (parameter-list) modifiers -> return-type { body }`. The subsections below detail this general syntax.
 
- * **modifiers** (optional) - Function modifiers.
-
-   ```c++
-   auto f1 = [] (int x, int y) constexpr -> int { return x + y; };  // constant expression
-   ```
- 
- * **return-type** (optional) - Return type.
-
-   ```c++
-   auto f1 = [] (int x, int y) { return x + y; };                    // deduced by compiler if not set
-   auto f2 = [] (int x, int y) -> int { return x + y; };
-   auto f3 = [] (int x, auto y) -> decltype(x+y) { return x + y; };  // generic param + decltype (compiler sets return type to resulting type of x + y)
-   ```
-
- * **body** (required) - Function body.
-
-   ```c++
-   auto f1 = [] (int x, int y) { return x + y; };
-   ```
-
-If the compiler decides that a lambda can be turned into a constant expression, it will automatically do so. Alternatively, you can force a lambda to be a constant expression by adding `constexpr` as one of the modifiers.
-
 ```{note}
-In many cases, you need to return a lambda from a function. The easiest way to do this is to set the function's return type to `auto` and return the lambda as if it were any other variable.
+Be aware that, by default, the function-call operator in the lambda version is `const` and will automatically be made into a `constexpr` if it satisfies all the requirements of `constexpr`. This is discussed more in the modifiers subsections.
 ```
 
 #### Capture List
@@ -3325,37 +3264,100 @@ Lambda parameter lists are defined similarly to standard function parameter list
 Core Language/Templates/Type Deduction_TOPIC
 ```
 
-#### Return Types
+#### Return Type
 
-AUTO BY DEFAULT
+`{bm} /(Core Language\/Classes\/Lambdas\/Return Type)_TOPIC/`
 
-full me in
+```{prereq}
+Core Language/Variables/Arrays_TOPIC
+Core Language/Variables/Pointers_TOPIC
+Core Language/Templates/Type Deduction_TOPIC
+```
 
-full me in
+`return-type` is an _optional_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines the return type of the functor's function-call operator. The syntax of using an arrow and defining the type after the parameter list is called the trailing return syntax.
 
-full me in
+```c++
+auto f1 { [] (int a, int b) -> int { return a+b; } };
+auto f2 { [] (MyObject* v) -> const MyObject& { return v[5]; } };
+```
 
-full me in
+```{seealso}
+Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (different use-case for trailing return type syntax)
+```
+
+When a lambda doesn't provide a return type, the return type is implicitly `auto`. The compiler uses standard template parameter type deduction rules to determine what the return type should be.
+
+```c++
+auto f3 { [] (int a, int b) { return a+b; } };  // return deduced to int
+auto f4 { [] (MyObject* v) { return v[5]; } };  // return deduced to MyObject
+```
+
+In `f4`, even though `v[5]` returns a `const MyObject &`, type deduction rules evaluate it to `const MyObject` (not a reference). That means `f4` returns a copy of the object at `v[5]` rather than a reference to the real thing. Type deduction rules such as the one here may end up causing subtle bugs if you aren't careful.
+
+Another option is to explicitly return `decltype(auto)`, which copies the exact type being returned.
+
+```c++
+auto f5 { [] (MyObject* v) -> decltype(auto) { return v[5]; } };  // return deduced to const MyObject&
+```
+
+```{note}
+When unsure, it's best to explicitly declare the return type or use `decltype(auto)`. 
+```
 
 #### Modifiers
 
-full me in
+`{bm} /(Core Language\/Classes\/Lambdas\/Modifiers)_TOPIC/`
 
-full me in
+```{prereq}
+Core Language/Variables/Arrays_TOPIC
+Core Language/Variables/Pointers_TOPIC
+Core Language/Templates/Type Deduction_TOPIC
+```
 
-full me in
+`modifiers` is an _optional_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that lists the modifiers of the functor's function-call operator. Except for the following special cases, modifiers work the same way that they do for normal functions.
 
-full me in
+ * The function-call operator is set to be a `constexpr` function if it meets the requirements of being a constant expression. You can force it to be a constant expression by adding `constexpr` as one of the modifiers.
 
-#### Templates
+   ```c++
+   auto f1 { [] (int x, int y) constexpr -> int { return x + y; } };  // force as constant expression
+   ```
+ 
+ * The function-call operator is set to be a `const` function. You can force this off by adding `mutable` as one of the modifiers.
 
-full me in
+   ```c++
+   auto f2 { [] (int x, int y) mutable -> int { return x + y; } };    // make non-const
+   ```
 
-full me in
+#### Template Parameters
 
-full me in
+`{bm} /(Core Language\/Classes\/Lambdas\/Template Parameters)_TOPIC/`
 
-full me in
+```{prereq}
+Core Language/Templates_TOPIC
+```
+
+A lambda may have template parameters added by injecting template parameters in angle brackets between `[capture-list]` and `(parameter-list)` of the lambda declaration `[capture-list] (parameter-list) modifiers -> return-type { body }`.
+
+```c++
+auto f1 { [] <typename T>(T x, T y) -> T { return x + y; } };
+```
+
+This is useful in cases where you need to be more explicit with the types of parameters / return types (`auto` is too loose). The most obvious case is with containers, where you likely want the underlying container type listed.
+
+```c++
+// f2 and f3 will do the same thing when passed a std::vector, but f3 is much more explicit.
+auto f2 { [] (auto& v) -> const auto& { return v[7]; } };
+auto f3 { [] <typename T>(std::vector<T>& v) -> const T& { return v[7]; } };
+```
+
+```{note}
+Concept_TEMPLATEs may be used both with `auto` and with explicit template parameters (e.g. `T`). See the section on concept_TEMPLATEs to see how to they're applied in both cases.
+```
+
+```{seealso}
+Core Language/Templates/Concepts_TOPIC
+Library Functions/Containers_TOPIC
+```
 
 ### Friends
 
@@ -8011,7 +8013,7 @@ std::queue<int> q4 {};  // equivalent to using std::deque<int> as the backing ty
 
 ```{seealso}
 Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
-Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
+Core Language/Templates/Type Cloning_TOPIC (refresher on decltype)
 ```
 
 To add an item, use `push()`. Internally, this invokes the wrapped container's `push_back()` function.
@@ -8072,7 +8074,7 @@ std::queue<int> q4 {};  // equivalent to using std::deque<int> as the backing ty
 
 ```{seealso}
 Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
-Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
+Core Language/Templates/Type Cloning_TOPIC (refresher on decltype)
 ```
 
 To add an item, use `push()`. Internally, this invokes the wrapped container's `push_back()` function.
@@ -8131,7 +8133,7 @@ std::priority_queue<int> q4 {};  // equivalent to using std::vector<int> as the 
 
 ```{seealso}
 Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
-Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
+Core Language/Templates/Type Cloning_TOPIC (refresher on decltype)
 ```
 
 In the above examples the default comparator of `std::less` is used, which uses the less than operator (<) to compare two objects for priority. To define a custom comparator, pass in that comparator's type as the 3rd template parameter argument and pass it into the constructor.

@@ -3,7 +3,7 @@
 <strong>🔍SEE ALSO🔍</strong>
 
  * Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
- * Core Language/Variables/Type Deduction_TOPIC (refresher on decltype)
+ * Core Language/Templates/Type Cloning_TOPIC (refresher on decltype)
 
 </div>
 
