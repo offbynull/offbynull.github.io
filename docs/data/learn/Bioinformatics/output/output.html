@@ -18737,13 +18737,13 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>A further somewhat related optimization: Rather than making copies of the string to assign to edges, make string views that reference the original <a href="#BM_(sequence)%2Fi">sequence</a>s. Python apparently doesn't have a string view class and when you slice a string it copies internally, making it inefficient.</p>
 </div>
 <a name="H_Aho-Corasick%20Algorithm"></a><h4>Aho-Corasick Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FAho-Corasick%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FStandard%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm</a></li>
 </ul>
 </div>
-<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FAho-Corasick%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Searching a <a href="#BM_(sequence)%2Fi">sequence</a> using a standard <a href="#BM_(trie)%2Fi">trie</a> may lead to duplicate work being performed. For example, the following <a href="#BM_(trie)%2Fi">trie</a> is for <a href="#BM_(sequence)%2Fi">sequence</a>s {aratrium, aratron, ration}.</p>
 <p><img src="svgbob_82481e24c4e85a5963452984fe7f0a6f6d8bbf23.svg" alt="Kroki diagram output"></p>
@@ -18754,7 +18754,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li>2, the <a href="#BM_(trie)%2Fi">trie</a> walks until "a" before failing.</li>
 <li>...</li>
 </ul>
-<p><img src="svgbob_e4a249cf109c4728bf2e4a2043b90ebe4bae40d9.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_e87cef365223dd483ecd08947af17cba90357a70.svg" alt="Kroki diagram output"></p>
 <p>At scan position 0, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "arat". That means ...</p>
 <ul>
 <li>scan position 0 must start with "arat".</li>
@@ -18762,9 +18762,9 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li>scan position 2 must start with "at" -- "at" is "arat" with first 2 elements trimmed off.</li>
 <li>scan position 3 must start with "t" -- "t" is "arat" with first 3 elements trimmed off.</li>
 </ul>
-<p>At scan position 1, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "ratio". However, just from scan position 0's <a href="#BM_(trie)%2Fi">trie</a> walk, it's already know that scan position 1's <a href="#BM_(trie)%2Fi">trie</a> walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the <a href="#BM_(trie)%2Fi">trie</a> from the node just past "rat" rather than walking it from the root node .</p>
-<p>This algorithm is an optimization that builds <a href="#BM_(trie)%2Fi">trie</a>s with special edges to handle the scenario described above. For example, the <a href="#BM_(trie)%2Fi">trie</a> below is the same as the example <a href="#BM_(trie)%2Fi">trie</a> above except that it contains a special edge pointing from "arat" to "rat". If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat", the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can directly jump ahead in the <a href="#BM_(trie)%2Fi">trie</a> walk past "rat".</p>
-<p><img src="svgbob_74a7eff58b40e8cb001ccb562e0408a4519278ec.svg" alt="Kroki diagram output"></p>
+<p>At scan position 1, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "ratio". However, just from scan position 0's <a href="#BM_(trie)%2Fi">trie</a> walk, it's already known that scan position 1's <a href="#BM_(trie)%2Fi">trie</a> walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the <a href="#BM_(trie)%2Fi">trie</a> from the node just past "rat" rather than walking it from the root node .</p>
+<p>This algorithm is an optimization that builds a <a href="#BM_(trie)%2Fi">trie</a> with special edges to handle the scenario described above. For example, the <a href="#BM_(trie)%2Fi">trie</a> below is the same as the example <a href="#BM_(trie)%2Fi">trie</a> above except that it contains a special edge pointing from "arat" to "rat".</p>
+<p><img src="svgbob_d6e202f055e470240a3f70bee8cb98c573f8141b.svg" alt="Kroki diagram output"></p>
 <p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 35 to 88):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">add_hop_edges</span>(<span class="hljs-params">
         trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span>],
@@ -18834,6 +18834,8 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
+<p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(trie)%2Fi">trie</a> walk.</p>
+<p><img src="svgbob_7e1f15b8e314f2e2483763b06ae7b0c23ae5aa1d.svg" alt="Kroki diagram output"></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> is essentially the same as before, except that on failures the special edges may be used to hop ahead.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 130 to 167):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
@@ -18890,36 +18892,31 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: (23, 'ration')</p>
 </div>
 <p></p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
-<p>TODO: ADD Aho-Corasick TERMINOLOGY</p>
 <a name="H_Suffix%20Tree"></a><h3>Suffix Tree</h3>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Tree)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FEdge%20Merged%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Trie/Edge Merged Algorithm</a></li>
+</ul>
+</div>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
+<p>BUILD
+<a href="#BM_(sequence)%2Fi">sequence</a>: abracadabracadaver¶
+end_marker: ¶</p>
+<p>FIND_PREFIX
+prefix: nana
+<a href="#BM_(sequence)%2Fi">sequence</a>: banana¶
+end_marker: ¶</p>
 <a name="H_Suffix%20Array"></a><h3>Suffix Array</h3>
 <a name="H_Burrows-Wheeler%20Transform"></a><h3>Burrows-Wheeler Transform</h3>
 <a name="H_BLAST"></a><h3>BLAST</h3>
@@ -23916,6 +23913,13 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>End of <a href="#BM_(sequence)%2Fi">sequence</a> marker is preferred mechanism.</p>
 </div>
+</li>
+<li>
+<p><a name="BM_(Aho%5B%5Cs-%5D%3FCorasick%7CAho%5B%5Cs-%5D%3FCorasick%20trie)%2Fi"></a><strong>Aho-Corasick trie</strong> - A <a href="#BM_(trie)%2Fi">trie</a> with special hop edges that eliminates redundant scanning during searches.</p>
+<p>Given a <a href="#BM_(trie)%2Fi">trie</a> containing <a href="#BM_(sequence)%2Fi">sequence</a> prefixes P1 and P2, a special hop edge (P1, P2) is added if P2 is equal to P1 but with its first element chopped off (<code>P2 = P1[1:]</code>). In the example below, a special hop edge connects "arat" to "rat".</p>
+<p><img src="svgbob_d6e202f055e470240a3f70bee8cb98c573f8141b.svg" alt="Kroki diagram output"></p>
+<p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat", the next scan <em>must</em> contain "rat". As such, a special edge connects "arat" to "rat" such that the next scan can start directly past "rat".</p>
+<p><img src="svgbob_83da5124b5f21260416ff061e8154726d6f8d6e7.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(suffix%20trie)%2Fi"></a><strong>suffix trie</strong> - A <a href="#BM_(trie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>

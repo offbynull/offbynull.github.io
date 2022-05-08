@@ -13886,11 +13886,11 @@ A further somewhat related optimization: Rather than making copies of the string
 
 #### Aho-Corasick Algorithm
 
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Aho-Corasick Algorithm)_TOPIC/`
+
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Trie/Standard Algorithm_TOPIC
 ```
-
-`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Aho-Corasick Algorithm)_TOPIC/`
 
 **ALGORITHM**:
 
@@ -13916,6 +13916,9 @@ Searching the sequence "aratios" requires scanning over that sequence and walkin
  * ...
 
 ```{svgbob}
+* "Hollow nodes are the nodes walked"
+
+
                                                  i   u   m   ¶  
                                                .-->*-->*-->*-->*
 "scan position 0"                              |                
@@ -13956,25 +13959,25 @@ At scan position 0, the trie walked all the way to "arat". That means ...
  * scan position 2 must start with "at" -- "at" is "arat" with first 2 elements trimmed off.
  * scan position 3 must start with "t" -- "t" is "arat" with first 3 elements trimmed off.
 
-At scan position 1, the trie walked all the way to "ratio". However, just from scan position 0's trie walk, it's already know that scan position 1's trie walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the trie from the node just past "rat" rather than walking it from the root node .
+At scan position 1, the trie walked all the way to "ratio". However, just from scan position 0's trie walk, it's already known that scan position 1's trie walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the trie from the node just past "rat" rather than walking it from the root node .
 
-This algorithm is an optimization that builds tries with special edges to handle the scenario described above. For example, the trie below is the same as the example trie above except that it contains a special edge pointing from "arat" to "rat". If a scan walks the trie to "arat", the next scan position must contain "rat". Since the prefix "rat" exists in the trie, a special edge connects "arat" to "rat" such that the scan for the next position can directly jump ahead in the trie walk past "rat".
+This algorithm is an optimization that builds a trie with special edges to handle the scenario described above. For example, the trie below is the same as the example trie above except that it contains a special edge pointing from "arat" to "rat".
 
 ```{svgbob}
-                .- - - - - - - - - - - - - - -.
-                :                             :
-                :     i   u   m   ¶           :
-                :   .-->*-->*-->*-->*         :
-                :   |                         :
-  a   r   a   t : r | o   n   ¶               :
-.-->*-->*-->*-->*-->*-->*-->*-->*             :
-|                                             :
-*                                             :
-| r   a   t   i   o   n   ¶                   :
-'-->*-->*-->*-->*-->*-->*-->*                 :
-            ^                                 :
-            :                                 :
-            '- - - - - - - - - - - - - - - - -'
+                .- - - - - - - - - - - -.
+                :                       :
+                :     i   u   m   ¶     :
+                :   .-->*-->*-->*-->*   :
+                :   |                   :
+  a   r   a   t : r | o   n   ¶         : "hop from arat"
+.-->*-->*-->*-->*-->*-->*-->*-->*       : "to rat"
+|                                       :
+*                                       :
+| r   a   t   i   o   n   ¶             :
+'-->*-->*-->*-->*-->*-->*-->*           :
+            ^                           :
+            :                           :
+            '- - - - - - - - - - - - - -'
 ```
 
 ```{output}
@@ -13989,6 +13992,26 @@ sequence_search.Trie_AhoCorasick main_build
   trie_sequences: [aratrium¶, aratron¶, ration¶],
   end_marker: ¶
 }
+```
+
+If a scan walks the trie to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the trie, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the trie walk.
+
+```{svgbob}
+* "scan position 0 starts at index 0 and stops at index 3"
+
+0     3
+|     |
+v     v
+a r a t i o n s
+
+
+* "scan position 1 hops ahead to start at index 4"
+  "(instead of index 1) and stops at index 7"
+
+      4     7
+      |     |
+      v     v
+a r a t i o n s
 ```
 
 Testing if a trie contains a sequence is essentially the same as before, except that on failures the special edges may be used to hop ahead.
@@ -14008,65 +14031,46 @@ sequence_search.Trie_AhoCorasick main_test
 }
 ```
 
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
-TODO: ADD Aho-Corasick TERMINOLOGY
-
 ### Suffix Tree
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Suffix Tree)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Trie/Edge Merged Algorithm_TOPIC
+```
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+
+
+
+BUILD
+sequence: abracadabracadaver¶
+end_marker: ¶
+
+FIND_PREFIX
+prefix: nana
+sequence: banana¶
+end_marker: ¶
+
+
 
 ### Suffix Array
 
@@ -19177,6 +19181,47 @@ PracticalGEODatasetClustering
 
    ```{note}
    End of sequence marker is preferred mechanism.
+   ```
+
+ * `{bm} Aho-Corasick trie/(Aho[\s-]?Corasick|Aho[\s-]?Corasick trie)/i` - A trie with special hop edges that eliminates redundant scanning during searches.
+
+   Given a trie containing sequence prefixes P1 and P2, a special hop edge (P1, P2) is added if P2 is equal to P1 but with its first element chopped off (`P2 = P1[1:]`). In the example below, a special hop edge connects "arat" to "rat". 
+
+   ```{svgbob}
+                   .- - - - - - - - - - - -.
+                   :                       :
+                   :     i   u   m   ¶     :
+                   :   .-->*-->*-->*-->*   :
+                   :   |                   :
+     a   r   a   t : r | o   n   ¶         : "hop from arat"
+   .-->*-->*-->*-->*-->*-->*-->*-->*       : "to rat"
+   |                                       :
+   *                                       :
+   | r   a   t   i   o   n   ¶             :
+   '-->*-->*-->*-->*-->*-->*-->*           :
+               ^                           :
+               :                           :
+               '- - - - - - - - - - - - - -'
+   ```
+   
+   If a scan walks the trie to "arat", the next scan _must_ contain "rat". As such, a special edge connects "arat" to "rat" such that the next scan can start directly past "rat".
+
+   ```{svgbob}
+   * "1st scan starts at index 0 and stops at index 3"
+
+   0     3
+   |     |
+   v     v
+   a r a t i o n s
+
+
+   * "2nd scan hops ahead to start at index 4"
+     "(instead of index 1) and stops at index 7"
+
+         4     7
+         |     |
+         v     v
+   a r a t i o n s
    ```
 
  * `{bm} suffix trie` - A trie of all suffixes within a sequence.
