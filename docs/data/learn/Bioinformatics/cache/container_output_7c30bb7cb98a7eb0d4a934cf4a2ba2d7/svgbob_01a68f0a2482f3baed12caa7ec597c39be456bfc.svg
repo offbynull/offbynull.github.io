@@ -76,7 +76,9 @@ tspan.head{
 </style>
 <rect class="backdrop" height="256" width="616" x="0" y="0"/>
 <g>
-<line marker-end="url(#circle)" x1="4" x2="4" y1="60" y2="184"/>
+<line x1="4" x2="4" y1="60" y2="152"/>
+<line marker-end="url(#circle)" x1="4" x2="4" y1="152" y2="184"/>
+<line marker-end="url(#triangle)" x1="4" x2="28" y1="152" y2="152"/>
 <line marker-start="url(#circle)" x1="4" x2="4" y1="184" y2="212"/>
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="4" x2="28" y1="184" y2="184"/>
 <path d="M 4 212 A 4 4 0 0 0 8 216"/>
@@ -84,9 +86,6 @@ tspan.head{
 </g>
 <g>
 <line marker-end="url(#triangle)" x1="8" x2="28" y1="56" y2="56"/>
-</g>
-<g>
-<line marker-end="url(#triangle)" x1="8" x2="28" y1="152" y2="152"/>
 </g>
 <g>
 <line marker-end="url(#triangle)" x1="8" x2="28" y1="216" y2="216"/>
@@ -188,7 +187,9 @@ tspan.head{
 <line marker-start="url(#circle)" x1="228" x2="224" y1="56" y2="56"/>
 </g>
 <g>
-<line marker-end="url(#circle)" x1="388" x2="388" y1="60" y2="184"/>
+<line x1="388" x2="388" y1="60" y2="152"/>
+<line marker-end="url(#circle)" x1="388" x2="388" y1="152" y2="184"/>
+<line marker-end="url(#triangle)" x1="388" x2="412" y1="152" y2="152"/>
 <line marker-start="url(#circle)" x1="388" x2="388" y1="184" y2="212"/>
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="388" x2="412" y1="184" y2="184"/>
 <path d="M 388 212 A 4 4 0 0 0 392 216"/>
@@ -196,9 +197,6 @@ tspan.head{
 </g>
 <g>
 <line marker-end="url(#triangle)" x1="392" x2="604" y1="56" y2="56"/>
-</g>
-<g>
-<line marker-end="url(#triangle)" x1="392" x2="412" y1="152" y2="152"/>
 </g>
 <g>
 <line marker-end="url(#triangle)" x1="392" x2="444" y1="216" y2="216"/>

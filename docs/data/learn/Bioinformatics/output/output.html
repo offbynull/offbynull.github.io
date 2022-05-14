@@ -18754,7 +18754,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li>2, the <a href="#BM_(trie)%2Fi">trie</a> walks until "a" before failing.</li>
 <li>...</li>
 </ul>
-<p><img src="svgbob_e87cef365223dd483ecd08947af17cba90357a70.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_3723f3282d5bcd56669b76e728b457685143f2c8.svg" alt="Kroki diagram output"></p>
 <p>At scan position 0, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "arat". That means ...</p>
 <ul>
 <li>scan position 0 must start with "arat".</li>
@@ -18900,23 +18900,200 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FEdge%20Merged%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Trie/Edge Merged Algorithm</a></li>
 </ul>
 </div>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common <a href="#BM_(substring)%2Fi">substring</a> and other stuff mentioned in the book.</p>
-<p>BUILD
-<a href="#BM_(sequence)%2Fi">sequence</a>: abracadabracadaver¶
-end_marker: ¶</p>
-<p>FIND_PREFIX
-prefix: nana
-<a href="#BM_(sequence)%2Fi">sequence</a>: banana¶
-end_marker: ¶</p>
+<p><strong>WHAT</strong>: A <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> is an edge merged <a href="#BM_(trie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><img src="svgbob_08896fa6e5d8d294ef06ba82e3a688cb5c1fe80f.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: The most common use-case for a <a href="#BM_(trie)%2Fi">trie</a> is to combine a set of <a href="#BM_(sequence)%2Fi">sequence</a>s S so that those <a href="#BM_(sequence)%2Fi">sequence</a> can be efficiently searched for within some larger <a href="#BM_(sequence)%2Fi">sequence</a> L. A <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> flips that idea around: Rather than creating a <a href="#BM_(trie)%2Fi">trie</a> from all <a href="#BM_(sequence)%2Fi">sequence</a>s in S, create a <a href="#BM_(trie)%2Fi">trie</a> of all suffixes in the larger <a href="#BM_(sequence)%2Fi">sequence</a> L. That way, each individual <a href="#BM_(sequence)%2Fi">sequence</a> in S can be quickly looked up in the <a href="#BM_(trie)%2Fi">trie</a> to see to test if it's contained in L.</p>
+<p><img src="svgbob_c719d5ec77d7c6994e1f183f3cae730e8ac6f1d2.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(suffix%20tree)%2Fi">Suffix tree</a>s are useful when there are too many <a href="#BM_(sequence)%2Fi">sequence</a>s in S to form a <a href="#BM_(trie)%2Fi">trie</a> in memory.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a <a href="#BM_(trie)%2Fi">trie</a> in memory)? Yes, but in this case the edges would just be pointers back to L rather than full copies of L's suffixes.</p>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>The <a href="#BM_(trie)%2Fi">trie</a> building algorithm is the same as it is for edge merged <a href="#BM_(trie)%2Fi">trie</a>s but updated to ...</p>
+<ul>
+<li>use string views to reduce memory usage.</li>
+<li>track multiple occurrences of an edge's <a href="#BM_(substring)%2Fi">substring</a> value.</li>
+</ul>
+<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 85 to 164):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_suffix_tree</span>(<span class="hljs-params">
+        seq: StringView,
+        end_marker: <span class="hljs-built_in">str</span>,
+        nid_gen: StringIdGenerator = StringIdGenerator(<span class="hljs-params"><span class="hljs-string">'N'</span></span>),
+        eid_gen: StringIdGenerator = StringIdGenerator(<span class="hljs-params"><span class="hljs-string">'E'</span></span>)
+</span>) -&gt; Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[StringView]]:
+    tree = Graph()
+    root_nid = nid_gen.next_id()
+    tree.insert_node(root_nid)  <span class="hljs-comment"># Insert root node</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(seq) &gt; <span class="hljs-number">0</span>:
+        add_suffix_to_tree(tree, root_nid, seq, end_marker, nid_gen, eid_gen)
+        seq = seq[<span class="hljs-number">1</span>:]
+    <span class="hljs-keyword">return</span> tree
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add_suffix_to_tree</span>(<span class="hljs-params">
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[StringView]],
+        root_nid: <span class="hljs-built_in">str</span>,
+        seq: StringView,
+        end_marker: <span class="hljs-built_in">str</span>,
+        nid_gen: StringIdGenerator,
+        eid_gen: StringIdGenerator
+</span>):
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    nid = root_nid
+    <span class="hljs-keyword">while</span> seq:
+        <span class="hljs-comment"># Find an edge with a prefix that extends from the current node</span>
+        found = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">for</span> eid, _, to_nid, edge_strs <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
+            edge_str = edge_strs[<span class="hljs-number">0</span>]  <span class="hljs-comment"># any will work -- list is diff occurrences of same str</span>
+            n = common_prefix_len(seq, edge_str)
+            <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">0</span>:
+                found = (to_nid, eid, edge_strs, n)
+                <span class="hljs-keyword">break</span>
+        <span class="hljs-comment"># If not found, add remainder of seq as an edge for current node and return</span>
+        <span class="hljs-keyword">if</span> found <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            next_nid = nid_gen.next_id()
+            next_eid = eid_gen.next_id()
+            trie.insert_node(next_nid)
+            trie.insert_edge(next_eid, nid, next_nid, [seq])
+            <span class="hljs-keyword">return</span>
+        found_nid, found_eid, found_edge_strs, found_common_prefix_len = found
+        found_edge_str_len = <span class="hljs-built_in">len</span>(found_edge_strs[<span class="hljs-number">0</span>])  <span class="hljs-comment"># any will work -- list is diff occurrences of same str</span>
+        current_str_instance = seq[:found_common_prefix_len]
+        <span class="hljs-comment"># If the common prefix len is &lt; the found edge string, break and extend from that edge, then return.</span>
+        <span class="hljs-keyword">if</span> found_common_prefix_len &lt; found_edge_str_len:
+            break_nid = nid_gen.next_id()
+            break_pre_eid = eid_gen.next_id()
+            break_pre_strs = <span class="hljs-built_in">list</span>(s[:found_common_prefix_len] <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> found_edge_strs)
+            break_pre_strs.append(current_str_instance)
+            break_post_eid = eid_gen.next_id()
+            break_post_strs = <span class="hljs-built_in">list</span>(s[found_common_prefix_len:] <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> found_edge_strs)
+            trie.insert_node_between_edge(
+                break_nid, <span class="hljs-literal">None</span>,
+                found_eid,
+                break_pre_eid, break_pre_strs,
+                break_post_eid, break_post_strs
+            )
+            next_nid = nid_gen.next_id()
+            next_eid = eid_gen.next_id()
+            trie.insert_node(next_nid)
+            remainder_str_instance = seq[found_common_prefix_len:]
+            trie.insert_edge(next_eid, break_nid, next_nid, [remainder_str_instance])
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-comment"># Otherwise, common prefix len is == the found edge string, so walk into that edge.</span>
+        found_edge_strs.append(current_str_instance)
+        nid = found_nid
+        seq = seq[found_common_prefix_len:]
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">common_prefix_len</span>(<span class="hljs-params">s1: StringView, s2: StringView</span>):
+    l = <span class="hljs-built_in">min</span>(<span class="hljs-built_in">len</span>(s1), <span class="hljs-built_in">len</span>(s2))
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(l):
+        <span class="hljs-keyword">if</span> s1[i] == s2[i]:
+            count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> count
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building suffix tree using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following suffix tree was produced ...</p>
+<p><img src="dot_5dd7b1c8f69787d71ec7a44299fca9e0.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<p>Likewise, the walking of the <a href="#BM_(trie)%2Fi">trie</a> has been modified to support string views and report as long as the entire search <a href="#BM_(sequence)%2Fi">sequence</a> was consumed (doesn't have to reach a leaf node).</p>
+<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 199 to 229):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_prefix</span>(<span class="hljs-params">
+        prefix: StringView,
+        end_marker: <span class="hljs-built_in">str</span>,
+        suffix_tree: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[StringView]],
+        root_nid: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> prefix, <span class="hljs-string">f'<span class="hljs-subst">{prefix}</span> should not have end marker'</span>
+    nid = root_nid
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        next_nid = <span class="hljs-literal">None</span>
+        next_prefix_skip_count = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> eid, _, to_nid, edge_strs <span class="hljs-keyword">in</span> suffix_tree.get_outputs_full(nid):
+            edge_str = edge_strs[<span class="hljs-number">0</span>]  <span class="hljs-comment"># any will work -- list is diff occurrences of same str</span>
+            <span class="hljs-comment"># Strip off end marker (if present)</span>
+            <span class="hljs-keyword">if</span> edge_str[-<span class="hljs-number">1</span>] == end_marker:
+                edge_str = edge_str[:-<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(edge_str) == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-comment"># Walk forward as much of the prefix as can be walked</span>
+            found_common_prefix_len = common_prefix_len(prefix, edge_str)
+            <span class="hljs-keyword">if</span> found_common_prefix_len &gt; next_prefix_skip_count:
+                next_prefix_skip_count = found_common_prefix_len
+                <span class="hljs-keyword">if</span> found_common_prefix_len == <span class="hljs-built_in">len</span>(edge_str):
+                    next_nid = to_nid
+        prefix = prefix[next_prefix_skip_count:]
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(prefix) == <span class="hljs-number">0</span>:  <span class="hljs-comment"># Has the prefix been fully consumed? If so, prefix is found.</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> next_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># Otherwise, if there isn't a next node we can hop to, the prefix doesn't exist.</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        nid = next_nid
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building and searching suffix tree using the following settings...</p>
+<pre><code>{
+  prefix: an,
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following suffix tree was produced ...</p>
+<p><img src="dot_5dd7b1c8f69787d71ec7a44299fca9e0.svg" alt="Dot diagram"></p>
+<p>Was <em>an</em> found in <em>banana¶</em>: True</p>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book goes on to discuss other common tasks that a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> can help with:</p>
+<ul>
+<li>
+<p>Finding the longest repeating <a href="#BM_(substring)%2Fi">substring</a> within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p>This is just a search down the <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> (starting at root) with the condition that an edge has &gt; 1 occurrence. In the example execution above, the longest repeating <a href="#BM_(substring)%2Fi">substring</a> in "banana" is "ana": The edge "a" has 3 occurrences, which leads to edge "na" which has 2 occurrences, which leads to no more edges with occurrences of &gt; 1.</p>
+</li>
+<li>
+<p>Finding the longest shared <a href="#BM_(substring)%2Fi">substring</a> between two <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p>The obvious way to do this is to generate a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> for each <a href="#BM_(sequence)%2Fi">sequence</a> and cross-check. However, the Pevzner book recommends another way: Concatenate the two strings together, both with an end marker but different ones (e.g. first one uses § while the other one uses ¶). Then, each leaf node gets a color (state) depending on the starting position of the suffix: blue if its <a href="#BM_(limb)%2Fi">limb</a> starts within <a href="#BM_(sequence)%2Fi">sequence</a> 1 / red if its <a href="#BM_(limb)%2Fi">limb</a> starts within <a href="#BM_(sequence)%2Fi">sequence</a> 2. For internal nodes, the color is set to purple if that node has children with different colors, otherwise its color remains consistent with the color of its children.</p>
+<p><img src="svgbob_f07a3a970f979f88b6e7557efaf531eb95fd3b28.svg" alt="Kroki diagram output"></p>
+<p>Search down the <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> (starting at root) with the condition that an edge has purples at both ends. The longest shared <a href="#BM_(sequence)%2Fi">sequence</a> between "bad" and "fade" is "ad".</p>
+<p>The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has and where those occurrences occur. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating <a href="#BM_(substring)%2Fi">substring</a>" problem except that there's an extra check on the node to ensure that occurrences are happening in both <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+</li>
+<li>
+<p>Finding the shortest non-shared <a href="#BM_(substring)%2Fi">substring</a> between two <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p>This is a play on the longest shared <a href="#BM_(substring)%2Fi">substring</a> problem described above. The <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> is built the same way and searched the same way, but how the <a href="#BM_(tree)%2Fi">tree</a> searched is different.</p>
+<p><img src="svgbob_f07a3a970f979f88b6e7557efaf531eb95fd3b28.svg" alt="Kroki diagram output"></p>
+<p>Search down the <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> (starting at the root) until a non-purple node is encountered. Capture the <a href="#BM_(sequence)%2Fi">sequence</a> up to the node <em>before</em> the non-purple node + the first element of the edge to the non-purple node (skip capturing if that element is an end marker). Of all the strings captured, the shortest one is the shortest non-shared <a href="#BM_(substring)%2Fi">substring</a>. The shortest non-shared <a href="#BM_(substring)%2Fi">substring</a> between "bad" and fade" is either "e", "b", or "f" (all are valid choices).</p>
+<p>The simplest way to think about this is that the shortest non-shared <a href="#BM_(substring)%2Fi">substring</a> must be 1 appended element past one of the shared <a href="#BM_(substring)%2Fi">substring</a>s (it can't be less -- if "abc" is shared then so is "ab"). You know for certain that, after appending that element, the <a href="#BM_(substring)%2Fi">substring</a> is unique because the destination node is non-purple (blue means the <a href="#BM_(substring)%2Fi">substring</a> is in <a href="#BM_(sequence)%2Fi">sequence</a> 1 / red in <a href="#BM_(sequence)%2Fi">sequence</a> 2). In this case, directly coming from the root node is considered a shared <a href="#BM_(substring)%2Fi">substring</a> of "" (empty string):</p>
+<ul>
+<li>d[e¶] ⟵ first char of non-shared edge is e, captured "de"</li>
+<li>d[§fade¶] ⟵ first char of non-shared edge is end marker (§), skip</li>
+<li>[¶] ⟵ first char of non-shared edge is end marker (¶), skip</li>
+<li>[e¶] ⟵ first char of non-shared edge is e, captured "e"</li>
+<li>[§fade¶] ⟵ first char of non-shared edge is end marker (§), skip</li>
+<li>[fade¶] ⟵ first char of non-shared edge is f, captured "f"</li>
+<li>ad[e¶] ⟵ first char of non-shared edge is e, captured "e"</li>
+<li>ad[§fade¶] ⟵ first char of non-shared edge is end marker (§), skip</li>
+<li>[bad§fade¶] ⟵ first char of non-shared edge is b, captured "b"</li>
+</ul>
+<p>Of the captured strings ["e", "de", "f", "e", "b"], the shortest length is 1 -- any captured string of length 1 can be considered the shortest non-shared string.</p>
+</li>
+</ul>
+</div>
 <a name="H_Suffix%20Array"></a><h3>Suffix Array</h3>
 <a name="H_Burrows-Wheeler%20Transform"></a><h3>Burrows-Wheeler Transform</h3>
 <a name="H_BLAST"></a><h3>BLAST</h3>
@@ -23923,17 +24100,13 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </li>
 <li>
 <p><a name="BM_(suffix%20trie)%2Fi"></a><strong>suffix trie</strong> - A <a href="#BM_(trie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<p><img src="svgbob_b7377e718fc6511fd13a03c55987d1f25adca93c.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_4edf521317c9080cb159655b0b96f9b8eb4ec93c.svg" alt="Kroki diagram output"></p>
 <p><a href="#BM_(suffix%20trie)%2Fi">Suffix trie</a>s are used to efficiently determine if a string contains a <a href="#BM_(substring)%2Fi">substring</a>. The string is converted to a <a href="#BM_(suffix%20trie)%2Fi">suffix trie</a>, then the <a href="#BM_(trie)%2Fi">trie</a> is searched from the root node to see if a specific <a href="#BM_(substring)%2Fi">substring</a> exists.</p>
-<p><img src="svgbob_2fc195b22ce5cb1ea33b1679f7927273a5b88599.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_e98da221de14299799efa96f49772a00dff3993f.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(suffix%20tree)%2Fi"></a><strong>suffix tree</strong> - A <a href="#BM_(suffix%20trie)%2Fi">suffix trie</a> where paths of nodes with <a href="#BM_(indegree)%2Fi">indegree</a> and <a href="#BM_(outdegree)%2Fi">outdegree</a> of 1 are combined into a single edge. The elements at the edges being combined are concatenated together.</p>
-<p><img src="svgbob_4187e7278342718bf38eb24ffbc79b3b0894e4b5.svg" alt="Kroki diagram output"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>As a further optimization, rather than assigning each edge to a <a href="#BM_(substring)%2Fi">substring</a>, assign it the position range of that <a href="#BM_(substring)%2Fi">substring</a> within the larger string (start index and end index / start index and length). There may be more than 1 position range for each edge -- either store all of them or just store one (e.g. the one closest to the beginning of the string).</p>
-</div>
+<p><img src="svgbob_01a68f0a2482f3baed12caa7ec597c39be456bfc.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(suffix%20array)%2Fi"></a><strong>suffix array</strong> - A memory-efficient representation of a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> as an array of pointers.</p>

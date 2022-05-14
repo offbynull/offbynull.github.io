@@ -175,8 +175,13 @@ tspan.head{
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="348" x2="372" y1="536" y2="536"/>
 </g>
 <g>
+<line marker-end="url(#circle)" x1="372" x2="372" y1="252" y2="296"/>
 <line marker-start="url(#circle)" x1="372" x2="368" y1="296" y2="296"/>
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="372" x2="396" y1="296" y2="296"/>
+<path d="M 376 248 A 4 4 0 0 0 372 252"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="376" x2="396" y1="248" y2="248"/>
 </g>
 <g>
 <line marker-end="url(#circle)" x1="380" x2="380" y1="76" y2="120"/>
@@ -187,10 +192,6 @@ tspan.head{
 <g>
 <line marker-start="url(#circle)" x1="380" x2="376" y1="184" y2="184"/>
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="380" x2="404" y1="184" y2="184"/>
-</g>
-<g>
-<line x1="380" x2="380" y1="252" y2="288"/>
-<path d="M 384 248 A 4 4 0 0 0 380 252"/>
 </g>
 <g>
 <line marker-end="url(#circle)" x1="380" x2="380" y1="428" y2="472"/>
@@ -206,10 +207,11 @@ tspan.head{
 <line marker-end="url(#triangle)" x1="384" x2="404" y1="72" y2="72"/>
 </g>
 <g>
-<line marker-end="url(#triangle)" x1="384" x2="404" y1="248" y2="248"/>
+<line marker-end="url(#triangle)" x1="384" x2="404" y1="424" y2="424"/>
 </g>
 <g>
-<line marker-end="url(#triangle)" x1="384" x2="404" y1="424" y2="424"/>
+<line marker-start="url(#circle)" x1="404" x2="400" y1="248" y2="248"/>
+<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="404" x2="428" y1="248" y2="248"/>
 </g>
 <g>
 <line marker-start="url(#circle)" x1="404" x2="400" y1="296" y2="296"/>
@@ -228,10 +230,6 @@ tspan.head{
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="412" x2="436" y1="184" y2="184"/>
 </g>
 <g>
-<line marker-start="url(#circle)" x1="412" x2="408" y1="248" y2="248"/>
-<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="412" x2="436" y1="248" y2="248"/>
-</g>
-<g>
 <line marker-start="url(#circle)" x1="412" x2="408" y1="360" y2="360"/>
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="412" x2="436" y1="360" y2="360"/>
 </g>
@@ -246,6 +244,10 @@ tspan.head{
 <g>
 <line marker-start="url(#circle)" x1="412" x2="408" y1="536" y2="536"/>
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="412" x2="436" y1="536" y2="536"/>
+</g>
+<g>
+<line marker-start="url(#circle)" x1="436" x2="432" y1="248" y2="248"/>
+<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="436" x2="460" y1="248" y2="248"/>
 </g>
 <g>
 <line marker-start="url(#circle)" x1="436" x2="432" y1="296" y2="296"/>
@@ -263,10 +265,6 @@ tspan.head{
 <line marker-start="url(#circle)" x1="444" x2="440" y1="184" y2="184"/>
 </g>
 <g>
-<line marker-start="url(#circle)" x1="444" x2="440" y1="248" y2="248"/>
-<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="444" x2="468" y1="248" y2="248"/>
-</g>
-<g>
 <line marker-start="url(#circle)" x1="444" x2="440" y1="360" y2="360"/>
 </g>
 <g>
@@ -281,6 +279,10 @@ tspan.head{
 <line marker-start="url(#circle)" x1="444" x2="440" y1="536" y2="536"/>
 </g>
 <g>
+<line marker-start="url(#circle)" x1="468" x2="464" y1="248" y2="248"/>
+<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="468" x2="492" y1="248" y2="248"/>
+</g>
+<g>
 <line marker-start="url(#circle)" x1="468" x2="464" y1="296" y2="296"/>
 </g>
 <g>
@@ -291,10 +293,6 @@ tspan.head{
 <line marker-start="url(#circle)" x1="476" x2="472" y1="120" y2="120"/>
 </g>
 <g>
-<line marker-start="url(#circle)" x1="476" x2="472" y1="248" y2="248"/>
-<line marker-end="url(#triangle)" marker-start="url(#circle)" x1="476" x2="500" y1="248" y2="248"/>
-</g>
-<g>
 <line marker-start="url(#circle)" x1="476" x2="472" y1="424" y2="424"/>
 <line marker-end="url(#triangle)" marker-start="url(#circle)" x1="476" x2="500" y1="424" y2="424"/>
 </g>
@@ -302,10 +300,10 @@ tspan.head{
 <line marker-start="url(#circle)" x1="476" x2="472" y1="472" y2="472"/>
 </g>
 <g>
-<line marker-start="url(#circle)" x1="508" x2="504" y1="72" y2="72"/>
+<line marker-start="url(#circle)" x1="500" x2="496" y1="248" y2="248"/>
 </g>
 <g>
-<line marker-start="url(#circle)" x1="508" x2="504" y1="248" y2="248"/>
+<line marker-start="url(#circle)" x1="508" x2="504" y1="72" y2="72"/>
 </g>
 <g>
 <line marker-start="url(#circle)" x1="508" x2="504" y1="424" y2="424"/>
@@ -561,6 +559,11 @@ i
 </text>
 </g>
 <g>
+<text x="353" y="284">
+r
+</text>
+</g>
+<g>
 <text x="361" y="108">
 r
 </text>
@@ -568,11 +571,6 @@ r
 <g>
 <text x="361" y="172">
 o
-</text>
-</g>
-<g>
-<text x="361" y="284">
-r
 </text>
 </g>
 <g>
@@ -591,6 +589,16 @@ o
 </text>
 </g>
 <g>
+<text x="385" y="236">
+i
+</text>
+</g>
+<g>
+<text x="385" y="284">
+o
+</text>
+</g>
+<g>
 <text x="393" y="60">
 i
 </text>
@@ -603,16 +611,6 @@ o
 <g>
 <text x="393" y="172">
 n
-</text>
-</g>
-<g>
-<text x="393" y="236">
-i
-</text>
-</g>
-<g>
-<text x="393" y="284">
-o
 </text>
 </g>
 <g>
@@ -636,6 +634,16 @@ n
 </text>
 </g>
 <g>
+<text x="417" y="236">
+u
+</text>
+</g>
+<g>
+<text x="417" y="284">
+n
+</text>
+</g>
+<g>
 <text x="425" y="60">
 u
 </text>
@@ -648,16 +656,6 @@ n
 <g>
 <text x="425" y="172">
 ¶
-</text>
-</g>
-<g>
-<text x="425" y="236">
-u
-</text>
-</g>
-<g>
-<text x="425" y="284">
-n
 </text>
 </g>
 <g>
@@ -681,22 +679,22 @@ n
 </text>
 </g>
 <g>
+<text x="449" y="236">
+m
+</text>
+</g>
+<g>
+<text x="449" y="284">
+¶
+</text>
+</g>
+<g>
 <text x="457" y="60">
 m
 </text>
 </g>
 <g>
 <text x="457" y="108">
-¶
-</text>
-</g>
-<g>
-<text x="457" y="236">
-m
-</text>
-</g>
-<g>
-<text x="457" y="284">
 ¶
 </text>
 </g>
@@ -711,12 +709,12 @@ m
 </text>
 </g>
 <g>
-<text x="489" y="60">
+<text x="481" y="236">
 ¶
 </text>
 </g>
 <g>
-<text x="489" y="236">
+<text x="489" y="60">
 ¶
 </text>
 </g>

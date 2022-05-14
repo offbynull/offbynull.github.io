@@ -13930,10 +13930,10 @@ a r a t i o s              |
                            '-->*-->*-->*-->*-->*-->*-->*        
 
 
-                                                 i   u   m   ¶  
-                                               .-->*-->*-->*-->*
-  "scan position 1"                            |                
-  |                          a   r   a   t   r | o   n   ¶      
+                                                i   u   m   ¶  
+                                              .-->*-->*-->*-->*
+  "scan position 1"                           |                
+  |                          a   r   a   t  r | o   n   ¶      
   v                        .-->*-->*-->*-->-->*-->*-->*-->*    
 a r a t i o s              |                                    
                            o                                    
@@ -14039,38 +14039,175 @@ sequence_search.Trie_AhoCorasick main_test
 Algorithms/Single Nucleotide Polymorphism/Trie/Edge Merged Algorithm_TOPIC
 ```
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+**WHAT**: A suffix tree is an edge merged trie of all suffixes within a sequence.
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+```{svgbob}
+    "SUFFIX TREE FOR banana"
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+         banana¶ 
+.-------------------------->*
+|                na¶     
+|           .---------->*    
+|       na  | ¶            
+|   .------>*-->*            
+| a | ¶                    
++-->*-->*                    
+| ¶                        
+*-->*                        
+|   na    ¶                
+'------>*-->*                
+        |   na¶        
+        '---------->*        
+```
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+**WHY**: The most common use-case for a trie is to combine a set of sequences S so that those sequence can be efficiently searched for within some larger sequence L. A suffix tree flips that idea around: Rather than creating a trie from all sequences in S, create a trie of all suffixes in the larger sequence L. That way, each individual sequence in S can be quickly looked up in the trie to see to test if it's contained in L.
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+```{svgbob}
+* "Searching for ana in banana. The highlighted scan position matches"
+  "the trie walk below (hollow nodes are the nodes walked)"
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+         banana¶ 
+.-------------------------->*
+|                na¶     
+|           .---------->*    
+|       na  | ¶            
+|   .------>o-->*            
+| a | ¶                    
++-->o-->*                    
+| ¶                        
+o-->*                        
+|   na    ¶                
+'------>*-->*                
+        |   na¶        
+        '---------->*        
+```
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+Suffix trees are useful when there are too many sequences in S to form a trie in memory.
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+```{note}
+Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a trie in memory)? Yes, but in this case the edges would just be pointers back to L rather than full copies of L's suffixes.
+```
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+**ALGORITHM**:
 
-TODO: FILL ME IN. Code is complete, use below to test. The code is exactly the same as edge merged, but has been updated to use StringView for efficiency. Add in section about finding longest common substring and other stuff mentioned in the book.
+The trie building algorithm is the same as it is for edge merged tries but updated to ...
+
+ * use string views to reduce memory usage.
+ * track multiple occurrences of an edge's substring value.
+
+```{output}
+ch9_code/src/sequence_search/SuffixTree.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.SuffixTree main_build
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+Likewise, the walking of the trie has been modified to support string views and report as long as the entire search sequence was consumed (doesn't have to reach a leaf node).
+
+```{output}
+ch9_code/src/sequence_search/SuffixTree.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.SuffixTree main_test
+{
+  prefix: an,
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+````{note}
+The Pevzner book goes on to discuss other common tasks that a suffix tree can help with:
+
+ * Finding the longest repeating substring within a sequence.
+
+   This is just a search down the suffix tree (starting at root) with the condition that an edge has > 1 occurrence. In the example execution above, the longest repeating substring in "banana" is "ana": The edge "a" has 3 occurrences, which leads to edge "na" which has 2 occurrences, which leads to no more edges with occurrences of > 1.
+
+ * Finding the longest shared substring between two sequences.
+
+   The obvious way to do this is to generate a suffix tree for each sequence and cross-check. However, the Pevzner book recommends another way: Concatenate the two strings together, both with an end marker but different ones (e.g. first one uses § while the other one uses ¶). Then, each leaf node gets a color (state) depending on the starting position of the suffix: blue if its limb starts within sequence 1 / red if its limb starts within sequence 2. For internal nodes, the color is set to purple if that node has children with different colors, otherwise its color remains consistent with the color of its children.
 
 
+   ```{svgbob}
+   * "Colored suffix tree for bad§fade¶"
 
-BUILD
-sequence: abracadabracadaver¶
-end_marker: ¶
+        ¶
+      .---r
+      | e¶
+      +----r
+      | fade¶
+      +-------r
+      | §fade¶
+      +--------b
+      |     e¶
+   p--+   .----r
+      | d | §fade¶
+      +---p--------b
+      |      e¶
+      |    .----r
+      | ad | §fade¶
+      +----p--------b
+      | bad§fade¶
+      '-----------b
+   ```
 
-FIND_PREFIX
-prefix: nana
-sequence: banana¶
-end_marker: ¶
+   Search down the suffix tree (starting at root) with the condition that an edge has purples at both ends. The longest shared sequence between "bad" and "fade" is "ad".
 
+   The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has and where those occurrences occur. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating substring" problem except that there's an extra check on the node to ensure that occurrences are happening in both sequences.
 
+ * Finding the shortest non-shared substring between two sequences.
+
+   This is a play on the longest shared substring problem described above. The suffix tree is built the same way and searched the same way, but how the tree searched is different. 
+
+   ```{svgbob}
+   * "Colored suffix tree for bad§fade¶"
+
+        ¶
+      .---r
+      | e¶
+      +----r
+      | fade¶
+      +-------r
+      | §fade¶
+      +--------b
+      |     e¶
+   p--+   .----r
+      | d | §fade¶
+      +---p--------b
+      |      e¶
+      |    .----r
+      | ad | §fade¶
+      +----p--------b
+      | bad§fade¶
+      '-----------b
+   ```
+
+   Search down the suffix tree (starting at the root) until a non-purple node is encountered. Capture the sequence up to the node _before_ the non-purple node + the first element of the edge to the non-purple node (skip capturing if that element is an end marker). Of all the strings captured, the shortest one is the shortest non-shared substring. The shortest non-shared substring between "bad" and fade" is either "e", "b", or "f" (all are valid choices).
+
+   The simplest way to think about this is that the shortest non-shared substring must be 1 appended element past one of the shared substrings (it can't be less -- if "abc" is shared then so is "ab"). You know for certain that, after appending that element, the substring is unique because the destination node is non-purple (blue means the substring is in sequence 1 / red in sequence 2). In this case, directly coming from the root node is considered a shared substring of "" (empty string):
+
+   * d[e¶] ⟵ first char of non-shared edge is e, captured "de"
+   * d[§fade¶] ⟵ first char of non-shared edge is end marker (§), skip
+   * [¶] ⟵ first char of non-shared edge is end marker (¶), skip 
+   * [e¶] ⟵ first char of non-shared edge is e, captured "e"
+   * [§fade¶] ⟵ first char of non-shared edge is end marker (§), skip 
+   * [fade¶] ⟵ first char of non-shared edge is f, captured "f"
+   * ad[e¶] ⟵ first char of non-shared edge is e, captured "e"
+   * ad[§fade¶] ⟵ first char of non-shared edge is end marker (§), skip
+   * [bad§fade¶] ⟵ first char of non-shared edge is b, captured "b"
+
+   Of the captured strings ["e", "de", "f", "e", "b"], the shortest length is 1 -- any captured string of length 1 can be considered the shortest non-shared string.
+````
 
 ### Suffix Array
 
@@ -19236,7 +19373,7 @@ PracticalGEODatasetClustering
    |     n   a | ¶
    |   .-->*-->*-->*
    | a | ¶
-   .-->*-->*
+   +-->*-->*
    | ¶
    *-->*
    | n   a   ¶
@@ -19258,7 +19395,7 @@ PracticalGEODatasetClustering
    |     n   a | ¶
    |   .-->*-->*-->*
    | a | ¶
-   .-->*-->*
+   +-->*-->*
    | ¶
    o-->*
    | n   a   ¶
@@ -19279,17 +19416,13 @@ PracticalGEODatasetClustering
    |     n   a | ¶                                 |       na  | ¶            
    |   .-->*-->*-->*                               |   .------>*-->*            
    | a | ¶                                         | a | ¶                    
-   .-->*-->*                                       .-->*-->*                    
+   +-->*-->*                                       +-->*-->*                    
    | ¶                                             | ¶                        
    *-->*                                           *-->*                        
    | n   a   ¶                                     |   na    ¶                
    '-->*-->*-->*                                   '------>*-->*                
            | n   a   ¶                                     |   na¶        
            '-->*-->*-->*                                   '---------->*        
-   ```
-
-   ```{note}
-   As a further optimization, rather than assigning each edge to a substring, assign it the position range of that substring within the larger string (start index and end index / start index and length). There may be more than 1 position range for each edge -- either store all of them or just store one (e.g. the one closest to the beginning of the string).
    ```
 
  * `{bm} suffix array` - A memory-efficient representation of a suffix tree as an array of pointers.
