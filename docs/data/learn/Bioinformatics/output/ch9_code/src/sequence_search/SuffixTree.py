@@ -6,6 +6,7 @@ import yaml
 
 from graph.DirectedGraph import Graph
 from graph.GraphHelpers import StringIdGenerator
+from sequence_search.SearchUtils import StringView
 
 
 def to_dot(g: Graph[str, None, str, list[StringView]]) -> str:
@@ -24,60 +25,6 @@ def to_dot(g: Graph[str, None, str, list[StringView]]) -> str:
     ret += '}'
     return ret
 
-
-
-
-class StringView:
-    __slots__ = ('start', 'stop', 'data')
-
-    def __init__(self, start: int, stop: int, data: str):
-        self.start = start
-        self.stop = stop
-        self.data = data
-
-    def __len__(self):
-        return self.stop - self.start
-
-    def __getitem__(self, item):
-        if isinstance(item, slice):
-            if item.step is not None and item.step > 1:
-                raise ValueError('Only step size of 1 allowed')
-            # start
-            if item.start is None:
-                new_start = self.start
-            elif item.start < 0:
-                new_start = self.stop + item.start
-            else:
-                new_start = self.start + item.start
-            # stop
-            if item.stop is None:
-                new_stop = self.stop
-            elif item.stop < 0:
-                new_stop = self.stop + item.stop
-            else:
-                new_stop = self.start + item.stop
-            # oob check
-            if new_start < self.start or new_start > self.stop\
-                    or new_stop < self.start or new_stop > self.stop:
-                raise ValueError('Out of bounds')
-            # return
-            return StringView(new_start, new_stop, self.data)
-        elif isinstance(item, int):
-            if item < 0:
-                return self.data[self.stop + item]
-            else:
-                return self.data[self.start + item]
-        else:
-            raise ValueError('Only slicing allowed')
-
-    def __contains__(self, key):
-        return any(ch == key for i, ch in enumerate(self.data) if self.start <= i < self.stop)
-
-    def __str__(self):
-        return self.data[self.start:self.stop]
-
-    def __repr__(self):
-        return str(self)
 
 
 
@@ -180,7 +127,7 @@ def main_build():
         print('```')
         print()
         tree = to_suffix_tree(
-            StringView(0, len(seq), seq),
+            StringView.wrap(seq),
             end_marker
         )
         print()
@@ -245,7 +192,7 @@ def main_test():
         print('```')
         print()
         tree = to_suffix_tree(
-            StringView(0, len(seq), seq),
+            StringView.wrap(seq),
             end_marker
         )
         print()
@@ -256,7 +203,7 @@ def main_test():
         print('```')
         print()
         found = has_prefix(
-            StringView(0, len(prefix), prefix),
+            StringView.wrap(prefix),
             end_marker,
             tree,
             tree.get_root_node()

@@ -1,4 +1,4 @@
-`{bm-disable-all}`[ch9_code/src/sequence_search/SuffixTree.py](ch9_code/src/sequence_search/SuffixTree.py) (lines 199 to 229):`{bm-enable-all}`
+`{bm-disable-all}`[ch9_code/src/sequence_search/SuffixTree.py](ch9_code/src/sequence_search/SuffixTree.py) (lines 146 to 176):`{bm-enable-all}`
 
 ```python
 def has_prefix(

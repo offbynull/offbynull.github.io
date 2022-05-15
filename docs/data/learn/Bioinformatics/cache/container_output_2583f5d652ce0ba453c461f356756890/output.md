@@ -1,4 +1,4 @@
-`{bm-disable-all}`[ch9_code/src/sequence_search/SuffixTree.py](ch9_code/src/sequence_search/SuffixTree.py) (lines 85 to 164):`{bm-enable-all}`
+`{bm-disable-all}`[ch9_code/src/sequence_search/SuffixTree.py](ch9_code/src/sequence_search/SuffixTree.py) (lines 32 to 111):`{bm-enable-all}`
 
 ```python
 def to_suffix_tree(

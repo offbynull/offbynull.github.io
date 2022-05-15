@@ -1,8 +1,8 @@
-`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 108 to 135):`{bm-enable-all}`
+`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 110 to 137):`{bm-enable-all}`
 
 ```python
 def find_sequence(
-        data: str,
+        data: str | StringView,
         end_marker: str,
         trie: Graph[str, None, str, str],
         root_nid: str

@@ -18485,13 +18485,37 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>The logic described above is generalized as follows: If a <a href="#BM_(sequence)%2Fi">sequence</a> can tolerate d mismatches, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.</p>
 <p>These blocks are called seeds, and the act of finding seeds and testing the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the extended region is called seed extension.</p>
 <p><img src="svgbob_27be0ab62d6a6964135cfc8727e10d7ede8f2e5f.svg" alt="Kroki diagram output"></p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_seeds</span>(<span class="hljs-params">seq: <span class="hljs-built_in">str</span>, mismatches: <span class="hljs-built_in">int</span></span>):
-  seed_cnt = mismatches + <span class="hljs-number">1</span>
-  len_per_seed = ceil(<span class="hljs-built_in">len</span>(seq) / seed_cnt)
-  ret = []
-  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(seq), len_per_seed):
-    ret.append(seq[i:i+len_per_seed])
-  <span class="hljs-keyword">return</span> ret
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_seeds</span>(<span class="hljs-params">
+        seq: S,
+        mismatches: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[S]:
+    seed_cnt = mismatches + <span class="hljs-number">1</span>
+    len_per_seed = ceil(<span class="hljs-built_in">len</span>(seq) / seed_cnt)
+    ret = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(seq), len_per_seed):
+        ret.append(seq[i:i+len_per_seed])
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">seed_extension</span>(<span class="hljs-params">
+        test_sequence: S,
+        found_seq_idx: <span class="hljs-built_in">int</span>,
+        found_seed_idx: <span class="hljs-built_in">int</span>,
+        seeds: <span class="hljs-built_in">list</span>[S]
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>] | <span class="hljs-literal">None</span>:
+    prefix_len = <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">len</span>(seeds[i]) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, found_seed_idx))
+    start_idx = found_seq_idx - prefix_len
+    <span class="hljs-keyword">if</span> start_idx &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># report out-of-bounds</span>
+    seq_idx = start_idx
+    dist = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seeds:
+        block = test_sequence[seq_idx:seq_idx + <span class="hljs-built_in">len</span>(seed)]
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(block) &lt; <span class="hljs-built_in">len</span>(seed):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># report out-of-bounds</span>
+        dist += hamming_distance(seed, block)
+        seq_idx += <span class="hljs-built_in">len</span>(seed)
+    <span class="hljs-keyword">return</span> start_idx, dist
 </code></pre>
 <p>The subsections below are mainly algorithms to efficiently search for exact <a href="#BM_(substring)%2Fi">substring</a>s. The technique described above can be used to extend those algorithms to tolerate a certain number of mismatches.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -18514,7 +18538,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FStandard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>An empty <a href="#BM_(trie)%2Fi">trie</a> contains a single root node and nothing else (no other nodes or edges). Adding a <a href="#BM_(sequence)%2Fi">sequence</a> to a <a href="#BM_(trie)%2Fi">trie</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching an element missing from the <a href="#BM_(trie)%2Fi">trie</a> (a node that doesn't have an outgoing edge with that element). At that node, a new branch should be created and the remaining elements of the <a href="#BM_(sequence)%2Fi">sequence</a> should extend from it.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 49 to 77):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 51 to 79):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">add_to_trie</span>(<span class="hljs-params">
         trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>],
         root_nid: <span class="hljs-built_in">str</span>,
@@ -18558,9 +18582,9 @@ THHHTHHHTH = 7 / 10 = 0.7
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 108 to 135):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 110 to 137):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
-        data: <span class="hljs-built_in">str</span>,
+        data: <span class="hljs-built_in">str</span> | StringView,
         end_marker: <span class="hljs-built_in">str</span>,
         trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>],
         root_nid: <span class="hljs-built_in">str</span>
@@ -18888,7 +18912,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
+<p><img src="dot_13d2d8bcf728199d96b10fc01e6f9637.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: (23, 'ration')</p>
 </div>
 <p></p>
@@ -18907,7 +18931,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><a href="#BM_(suffix%20tree)%2Fi">Suffix tree</a>s are useful when there are too many <a href="#BM_(sequence)%2Fi">sequence</a>s in S to form a <a href="#BM_(trie)%2Fi">trie</a> in memory.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a <a href="#BM_(trie)%2Fi">trie</a> in memory)? Yes, but in this case the edges would just be pointers back to L rather than full copies of L's suffixes.</p>
+<p>Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a <a href="#BM_(trie)%2Fi">trie</a> in memory)? Yes, but in this case the edges would just be pointers / string views back to L rather than full copies of L's suffixes.</p>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The <a href="#BM_(trie)%2Fi">trie</a> building algorithm is the same as it is for edge merged <a href="#BM_(trie)%2Fi">trie</a>s but updated to ...</p>
@@ -18915,7 +18939,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li>use string views to reduce memory usage.</li>
 <li>track multiple occurrences of an edge's <a href="#BM_(substring)%2Fi">substring</a> value.</li>
 </ul>
-<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 85 to 164):</p>
+<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 32 to 111):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_suffix_tree</span>(<span class="hljs-params">
         seq: StringView,
         end_marker: <span class="hljs-built_in">str</span>,
@@ -19010,8 +19034,8 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><img src="dot_5dd7b1c8f69787d71ec7a44299fca9e0.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Likewise, the walking of the <a href="#BM_(trie)%2Fi">trie</a> has been modified to support string views and report as long as the entire search <a href="#BM_(sequence)%2Fi">sequence</a> was consumed (doesn't have to reach a leaf node).</p>
-<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 199 to 229):</p>
+<p>Likewise, walking of the <a href="#BM_(trie)%2Fi">trie</a> has been modified to support string views and reports success as long as the entire search <a href="#BM_(sequence)%2Fi">sequence</a> gets consumed (the walk doesn't have to reach a leaf node).</p>
+<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 146 to 176):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_prefix</span>(<span class="hljs-params">
         prefix: StringView,
         end_marker: <span class="hljs-built_in">str</span>,
@@ -19071,7 +19095,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>The obvious way to do this is to generate a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> for each <a href="#BM_(sequence)%2Fi">sequence</a> and cross-check. However, the Pevzner book recommends another way: Concatenate the two strings together, both with an end marker but different ones (e.g. first one uses § while the other one uses ¶). Then, each leaf node gets a color (state) depending on the starting position of the suffix: blue if its <a href="#BM_(limb)%2Fi">limb</a> starts within <a href="#BM_(sequence)%2Fi">sequence</a> 1 / red if its <a href="#BM_(limb)%2Fi">limb</a> starts within <a href="#BM_(sequence)%2Fi">sequence</a> 2. For internal nodes, the color is set to purple if that node has children with different colors, otherwise its color remains consistent with the color of its children.</p>
 <p><img src="svgbob_f07a3a970f979f88b6e7557efaf531eb95fd3b28.svg" alt="Kroki diagram output"></p>
 <p>Search down the <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> (starting at root) with the condition that an edge has purples at both ends. The longest shared <a href="#BM_(sequence)%2Fi">sequence</a> between "bad" and "fade" is "ad".</p>
-<p>The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has and where those occurrences occur. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating <a href="#BM_(substring)%2Fi">substring</a>" problem except that there's an extra check on the node to ensure that occurrences are happening in both <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
+<p>The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has <em>and where those occurrences occur</em>. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating <a href="#BM_(substring)%2Fi">substring</a>" problem except that there's an extra check on the node to ensure that occurrences are happening in both <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
 </li>
 <li>
 <p>Finding the shortest non-shared <a href="#BM_(substring)%2Fi">substring</a> between two <a href="#BM_(sequence)%2Fi">sequence</a>s.</p>
@@ -19095,6 +19119,146 @@ THHHTHHHTH = 7 / 10 = 0.7
 </ul>
 </div>
 <a name="H_Suffix%20Array"></a><h3>Suffix Array</h3>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Tree)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Tree</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: A <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is a representation of a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> as a sorted list of suffixes.</p>
+<p><img src="svgbob_d2db8e44d7ed6d2091b321ef58748ffdf765e8d0.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: A <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is a memory-efficient representation of a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a>. Information about nodes and edges are derived directly from the array / list rather than being pulled from a <a href="#BM_(tree)%2Fi">tree</a> data structure.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>As with the <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> algorithm, array elements are commonly implemented as string views to the <a href="#BM_(sequence)%2Fi">sequence</a> rather than full copies of of the <a href="#BM_(sequence)%2Fi">sequence</a>'s suffixes.</p>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>To build a <a href="#BM_(suffix%20array)%2Fi">suffix array</a>, the suffixes of a <a href="#BM_(sequence)%2Fi">sequence</a> are sorted lexicographically (end marker included). The end marker comes first in the lexicographical sort order.</p>
+<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 14 to 48):</p>
+<pre class="hljs"><code><span class="hljs-keyword">from</span> sequence_search.SearchUtils <span class="hljs-keyword">import</span> StringView
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: StringView, b: StringView</span>):
+    end_marker = a.data[-<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">for</span> a_ch, b_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b):
+        <span class="hljs-keyword">if</span> a_ch == end_marker <span class="hljs-keyword">and</span> b_ch == end_marker:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> a_ch == end_marker:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> b_ch == end_marker:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &lt; b_ch:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &gt; b_ch:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) &lt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(a) &gt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_suffix_array</span>(<span class="hljs-params">
+        seq: StringView,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>):
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    ret = []
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(seq) &gt; <span class="hljs-number">0</span>:
+        ret.append(seq)
+        seq = seq[<span class="hljs-number">1</span>:]
+    ret = <span class="hljs-built_in">sorted</span>(ret, key=functools.cmp_to_key(cmp))
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building suffix array using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following suffix array was produced ...</p>
+<pre><code>¶
+a¶
+ana¶
+anana¶
+banana¶
+na¶
+nana¶
+</code></pre>
+</div>
+<p></p>
+<p>The common prefix between two <a href="#BM_(neighbour)%2Fi">neighbour</a>ing suffixes represents a shared branch point in the <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a>.</p>
+<p><img src="svgbob_93d1bd730db352639ee2ad88edf15bb4f20033a5.svg" alt="Kroki diagram output"></p>
+<p>Sliding a window of size two down the <a href="#BM_(suffix%20array)%2Fi">suffix array</a>, the changes in common prefix from one pair of suffixes to the next defines the <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> structure. If a pair's common prefix ...</p>
+<ul>
+<li>has the same length vs the previous pair, it means the branch point is the same as the previous pair's branch point.</li>
+<li>increases in length vs the previous pair, it means the branch point extends from the previous pair's branch point.</li>
+<li>decreases in length vs the previous pair, it means the branch point reverts to that of the last pair with that length.</li>
+</ul>
+<p>In the example above, the common prefix length between index ...</p>
+<ul>
+<li>(0, 1) is 0, meaning it branches from the root node.</li>
+<li>(1, 2) is 1 ("a"), meaning the branch point extends from the last branch point (root node) with an edge representing the "a".</li>
+<li>(2, 3) is 3 ("ana"), meaning the branch point extends from the last branch point ("a") with an edge representing "na".</li>
+<li>(3, 4) is 0, meaning it branches from the root node.</li>
+<li>(4, 5) is 0, meaning it branches from the root node.</li>
+<li>(5, 6) is 2 ("na"), meaning the branch point extends from the last branch point (root node) with an edge representing "na".</li>
+</ul>
+<p>In terms of testing to see if a <a href="#BM_(suffix%20array)%2Fi">suffix array</a> contains a specific <a href="#BM_(substring)%2Fi">substring</a>, a <a href="#BM_(tree)%2Fi">tree</a> walk isn't required (e.g. walking from parent to child). Instead, since the array is sorted, a binary search can quickly find if the <a href="#BM_(substring)%2Fi">substring</a> exists.</p>
+<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 96 to 117):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_prefix</span>(<span class="hljs-params">
+        prefix: StringView,
+        end_marker: <span class="hljs-built_in">str</span>,
+        suffix_array: <span class="hljs-built_in">list</span>[StringView]
+</span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> prefix, <span class="hljs-string">f'<span class="hljs-subst">{prefix}</span> should not have end marker'</span>
+    start = <span class="hljs-number">0</span>
+    end = <span class="hljs-built_in">len</span>(suffix_array)
+    <span class="hljs-keyword">while</span> start != end:
+        mid = (end - start) // <span class="hljs-number">2</span>
+        mid_suffix = suffix_array[mid]
+        comparison = cmp(prefix, mid_suffix)
+        <span class="hljs-keyword">if</span> common_prefix_len(prefix, mid_suffix) == <span class="hljs-built_in">len</span>(prefix):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">elif</span> comparison &lt; <span class="hljs-number">0</span>:
+            end = mid
+        <span class="hljs-keyword">elif</span> comparison &gt; <span class="hljs-number">0</span>:
+            start = mid
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'This should never happen'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building suffix array using the following settings...</p>
+<pre><code>{
+  prefix: an,
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following suffix array was produced ...</p>
+<pre><code>¶
+a¶
+ana¶
+anana¶
+banana¶
+na¶
+nana¶
+</code></pre>
+<p>Was <em>an</em> found in <em>banana¶</em>: True</p>
+</div>
+<p></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Other uses such as longest repeating <a href="#BM_(substring)%2Fi">substring</a>, longest shared <a href="#BM_(substring)%2Fi">substring</a>, shortest non-shared <a href="#BM_(substring)%2Fi">substring</a>, etc.. need to actually walk the <a href="#BM_(tree)%2Fi">tree</a>.</p>
+</div>
 <a name="H_Burrows-Wheeler%20Transform"></a><h3>Burrows-Wheeler Transform</h3>
 <a name="H_BLAST"></a><h3>BLAST</h3>
 <p>Covered in section 9.14</p>
@@ -24107,6 +24271,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p><a name="BM_(suffix%20tree)%2Fi"></a><strong>suffix tree</strong> - A <a href="#BM_(suffix%20trie)%2Fi">suffix trie</a> where paths of nodes with <a href="#BM_(indegree)%2Fi">indegree</a> and <a href="#BM_(outdegree)%2Fi">outdegree</a> of 1 are combined into a single edge. The elements at the edges being combined are concatenated together.</p>
 <p><img src="svgbob_01a68f0a2482f3baed12caa7ec597c39be456bfc.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Implementations typically represent edge strings as pointers / string views back to the original string.</p>
+</div>
 </li>
 <li>
 <p><a name="BM_(suffix%20array)%2Fi"></a><strong>suffix array</strong> - A memory-efficient representation of a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> as an array of pointers.</p>

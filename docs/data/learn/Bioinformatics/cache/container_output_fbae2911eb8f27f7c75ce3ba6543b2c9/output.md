@@ -38,7 +38,7 @@ The Pevzner book goes on to discuss other common tasks that a suffix tree can he
 
    Search down the suffix tree (starting at root) with the condition that an edge has purples at both ends. The longest shared sequence between "bad" and "fade" is "ad".
 
-   The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has and where those occurrences occur. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating substring" problem except that there's an extra check on the node to ensure that occurrences are happening in both sequences.
+   The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has _and where those occurrences occur_. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating substring" problem except that there's an extra check on the node to ensure that occurrences are happening in both sequences.
 
  * Finding the shortest non-shared substring between two sequences.
 

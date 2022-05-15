@@ -13664,14 +13664,11 @@ These blocks are called seeds, and the act of finding seeds and testing the hamm
   ● ●      ( G )    ( T T )
 ```
 
-```python
-def to_seeds(seq: str, mismatches: int):
-  seed_cnt = mismatches + 1
-  len_per_seed = ceil(len(seq) / seed_cnt)
-  ret = []
-  for i in range(0, len(seq), len_per_seed):
-    ret.append(seq[i:i+len_per_seed])
-  return ret
+```{output}
+ch9_code/src/sequence_search/SearchUtils.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+no_preamble
 ```
 
 The subsections below are mainly algorithms to efficiently search for exact substrings. The technique described above can be used to extend those algorithms to tolerate a certain number of mismatches.
@@ -14085,7 +14082,7 @@ o-->*
 Suffix trees are useful when there are too many sequences in S to form a trie in memory.
 
 ```{note}
-Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a trie in memory)? Yes, but in this case the edges would just be pointers back to L rather than full copies of L's suffixes.
+Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a trie in memory)? Yes, but in this case the edges would just be pointers / string views back to L rather than full copies of L's suffixes.
 ```
 
 **ALGORITHM**:
@@ -14109,7 +14106,7 @@ sequence_search.SuffixTree main_build
 }
 ```
 
-Likewise, the walking of the trie has been modified to support string views and report as long as the entire search sequence was consumed (doesn't have to reach a leaf node).
+Likewise, walking of the trie has been modified to support string views and reports success as long as the entire search sequence gets consumed (the walk doesn't have to reach a leaf node).
 
 ```{output}
 ch9_code/src/sequence_search/SuffixTree.py
@@ -14163,7 +14160,7 @@ The Pevzner book goes on to discuss other common tasks that a suffix tree can he
 
    Search down the suffix tree (starting at root) with the condition that an edge has purples at both ends. The longest shared sequence between "bad" and "fade" is "ad".
 
-   The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has and where those occurrences occur. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating substring" problem except that there's an extra check on the node to ensure that occurrences are happening in both sequences.
+   The coloring concept makes it difficult to understand what's happening here. The code for this section tracks how many occurrences an edge has _and where those occurrences occur_. Use that to set a flag on the node: {first, second, both}. Then this becomes the "longest repeating substring" problem except that there's an extra check on the node to ensure that occurrences are happening in both sequences.
 
  * Finding the shortest non-shared substring between two sequences.
 
@@ -14210,6 +14207,114 @@ The Pevzner book goes on to discuss other common tasks that a suffix tree can he
 ````
 
 ### Suffix Array
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Suffix Array)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Suffix Tree_TOPIC
+```
+
+**WHAT**: A suffix array is a representation of a suffix tree as a sorted list of suffixes.
+
+```{svgbob}
+"SUFFIX ARRAY FOR banana"                       "SUFFIX TREE FOR banana"
+                 
+    0   ¶                                             banana¶   
+                                             .-------------------------->*
+    1   a ¶                                  |                na¶       
+        |                                    |           .---------->*    
+    2   a n a ¶                              |       na  | ¶              
+        | | |                                |   .------>*-->*            
+    3   a n a n a ¶                          | a | ¶                      
+                                             .-->*-->*                    
+    4   b a n a n a ¶                        | ¶                          
+                                             *-->*                        
+    5   n a ¶                                |   na    ¶                  
+        | |                                  '------>*-->*                
+    6   n a n a ¶                                    |   na¶          
+                                                     '---------->*        
+```
+
+**WHY**: A suffix array is a memory-efficient representation of a suffix tree. Information about nodes and edges are derived directly from the array / list rather than being pulled from a tree data structure.
+
+```{note}
+As with the suffix tree algorithm, array elements are commonly implemented as string views to the sequence rather than full copies of of the sequence's suffixes.
+```
+
+**ALGORITHM**:
+
+To build a suffix array, the suffixes of a sequence are sorted lexicographically (end marker included). The end marker comes first in the lexicographical sort order.
+
+```{output}
+ch9_code/src/sequence_search/SuffixArray.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.SuffixArray main_build
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+The common prefix between two neighbouring suffixes represents a shared branch point in the suffix tree.
+
+```{svgbob}
+"SUFFIX ARRAY FOR banana"                       "SUFFIX TREE FOR banana"
+                    
+    0   ¶                                             banana¶   
+                                             .-------------------------->*
+    1   a ¶                                  |                na¶       
+        |                                    |           .---------->*    
+    2   a n a ¶                              |       na  | ¶              
+        | | |                                |   .------>*-->*            
+    3   a n a n a ¶                          | a | ¶                      
+                                             .-->*-->*                    
+    4   b a n a n a ¶                        | ¶                          
+                                             *-->*                        
+    5   n a ¶                                |   na    ¶                  
+        | |                                  '------>*-->*                
+    6   n a n a ¶                                    |   na¶          
+                                                     '---------->*        
+```
+
+Sliding a window of size two down the suffix array, the changes in common prefix from one pair of suffixes to the next defines the suffix tree structure. If a pair's common prefix ...
+
+ * has the same length vs the previous pair, it means the branch point is the same as the previous pair's branch point.
+ * increases in length vs the previous pair, it means the branch point extends from the previous pair's branch point.
+ * decreases in length vs the previous pair, it means the branch point reverts to that of the last pair with that length.
+  
+In the example above, the common prefix length between index ...
+
+ * (0, 1) is 0, meaning it branches from the root node.
+ * (1, 2) is 1 ("a"), meaning the branch point extends from the last branch point (root node) with an edge representing the "a".
+ * (2, 3) is 3 ("ana"), meaning the branch point extends from the last branch point ("a") with an edge representing "na".
+ * (3, 4) is 0, meaning it branches from the root node.
+ * (4, 5) is 0, meaning it branches from the root node.
+ * (5, 6) is 2 ("na"), meaning the branch point extends from the last branch point (root node) with an edge representing "na".
+
+In terms of testing to see if a suffix array contains a specific substring, a tree walk isn't required (e.g. walking from parent to child). Instead, since the array is sorted, a binary search can quickly find if the substring exists.
+
+```{output}
+ch9_code/src/sequence_search/SuffixArray.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.SuffixArray main_test
+{
+  prefix: an,
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+```{note}
+Other uses such as longest repeating substring, longest shared substring, shortest non-shared substring, etc.. need to actually walk the tree.
+```
 
 ### Burrows-Wheeler Transform
 
@@ -19423,6 +19528,10 @@ PracticalGEODatasetClustering
    '-->*-->*-->*                                   '------>*-->*                
            | n   a   ¶                                     |   na¶        
            '-->*-->*-->*                                   '---------->*        
+   ```
+
+   ```{note}
+   Implementations typically represent edge strings as pointers / string views back to the original string.
    ```
 
  * `{bm} suffix array` - A memory-efficient representation of a suffix tree as an array of pointers.

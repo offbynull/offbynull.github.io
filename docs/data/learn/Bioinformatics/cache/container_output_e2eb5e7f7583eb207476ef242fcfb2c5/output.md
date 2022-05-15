@@ -60,8 +60,8 @@ N6 -> N7 [label="u"]
 N7 -> N8 [label="m"]
 N8 -> N9 [label="¶"]
 N5 -> N10 [label="o"]
-N4 -> N15 [color=red, style=dashed]
 N14 -> N1 [color=red, style=dashed]
+N4 -> N15 [color=red, style=dashed]
 }
 ```
 
