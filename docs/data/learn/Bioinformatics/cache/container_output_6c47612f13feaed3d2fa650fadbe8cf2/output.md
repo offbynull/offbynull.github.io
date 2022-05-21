@@ -36,7 +36,7 @@ N4 -> N5 [label="eal¶"]
 ```
 
 
-Searching *How do you feel about apples?* with the trie revealed the following was found: (27, 'apple')
+Searching *How do you feel about apples?* with the trie revealed the following was found: (22, 'apple')
 </div>
 
 `{bm-enable-all}`

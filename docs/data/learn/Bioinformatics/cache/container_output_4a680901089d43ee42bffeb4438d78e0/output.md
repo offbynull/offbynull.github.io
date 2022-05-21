@@ -7,7 +7,8 @@ def to_seeds(
     len_per_seed = ceil(len(seq) / seed_cnt)
     ret = []
     for i in range(0, len(seq), len_per_seed):
-        ret.append(seq[i:i+len_per_seed])
+        capture_len = min(len(seq) - i, len_per_seed)
+        ret.append(seq[i:i+capture_len])
     return ret
 
 

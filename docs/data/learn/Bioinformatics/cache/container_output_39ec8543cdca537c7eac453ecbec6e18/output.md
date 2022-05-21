@@ -1,10 +1,24 @@
-`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_EdgeMerged.py](ch9_code/src/sequence_search/Trie_EdgeMerged.py) (lines 49 to 105):`{bm-enable-all}`
+`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_EdgeMerged.py](ch9_code/src/sequence_search/Trie_EdgeMerged.py) (lines 39 to 109):`{bm-enable-all}`
 
 ```python
+def to_trie(
+        seqs: set[S],
+        end_marker: str,
+        nid_gen: StringIdGenerator = StringIdGenerator('N'),
+        eid_gen: StringIdGenerator = StringIdGenerator('E')
+) -> Graph[str, None, str, S]:
+    trie = Graph()
+    root_nid = nid_gen.next_id()
+    trie.insert_node(root_nid)  # Insert root node
+    for seq in seqs:
+        add_to_trie(trie, root_nid, seq, end_marker, nid_gen, eid_gen)
+    return trie
+
+
 def add_to_trie(
-        trie: Graph[str, None, str, str],
+        trie: Graph[str, None, str, S],
         root_nid: str,
-        seq: str,
+        seq: S,
         end_marker: str,
         nid_gen: StringIdGenerator,
         eid_gen: StringIdGenerator
@@ -49,7 +63,7 @@ def add_to_trie(
         seq = seq[found_common_prefix_len:]
 
 
-def common_prefix_len(s1: str, s2: str):
+def common_prefix_len(s1: S, s2: S):
     l = min(len(s1), len(s2))
     count = 0
     for i in range(l):

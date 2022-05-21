@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from sys import stdin
+from typing import TypeVar
 
 import yaml
 
 from graph.DirectedGraph import Graph
 from graph.GraphHelpers import StringIdGenerator
+from sequence_search.SearchUtils import StringView, to_seeds, seed_extension
 
 
 def to_dot(g: Graph) -> str:
@@ -29,14 +32,16 @@ def to_dot(g: Graph) -> str:
 
 
 
+S = TypeVar('S', StringView, str)
 
 
+# MARKDOWN_BUILD
 def to_trie(
-        seqs: set[str],
+        seqs: set[S],
         end_marker: str,
         nid_gen: StringIdGenerator = StringIdGenerator('N'),
         eid_gen: StringIdGenerator = StringIdGenerator('E')
-) -> Graph[str, None, str, str]:
+) -> Graph[str, None, str, S]:
     trie = Graph()
     root_nid = nid_gen.next_id()
     trie.insert_node(root_nid)  # Insert root node
@@ -45,11 +50,10 @@ def to_trie(
     return trie
 
 
-# MARKDOWN_BUILD
 def add_to_trie(
-        trie: Graph[str, None, str, str],
+        trie: Graph[str, None, str, S],
         root_nid: str,
-        seq: str,
+        seq: S,
         end_marker: str,
         nid_gen: StringIdGenerator,
         eid_gen: StringIdGenerator
@@ -94,7 +98,7 @@ def add_to_trie(
         seq = seq[found_common_prefix_len:]
 
 
-def common_prefix_len(s1: str, s2: str):
+def common_prefix_len(s1: S, s2: S):
     l = min(len(s1), len(s2))
     count = 0
     for i in range(l):
@@ -135,9 +139,9 @@ def main_build():
 
 # MARKDOWN_TEST
 def find_sequence(
-        data: str,
+        data: S,
         end_marker: str,
-        trie: Graph[str, None, str, str],
+        trie: Graph[str, None, str, S],
         root_nid: str
 ) -> tuple[int, str] | None:
     assert end_marker not in data, f'{data} should not have end marker'
@@ -146,18 +150,40 @@ def find_sequence(
         idx = start_idx
         while nid is not None:
             next_nid = None
-            end_marker_reached = False
+            found_end_marker = False
+            found_edge_str = None
+            found_edge_str_len = -1
             for eid, _, to_nid, edge_str in trie.get_outputs_full(nid):
-                if edge_str.endswith(end_marker):
-                    end_marker_reached = True
+                end_marker_present = edge_str[-1] == end_marker
+                if end_marker_present:
                     edge_str = edge_str[:-1]
                 edge_str_len = len(edge_str)
-                if data[idx:idx + edge_str_len] == edge_str:
-                    idx += edge_str_len
+                # The condition (edge_str_len > found_edge_str_len) ensures that if there are multiple edges but one of
+                # them is just an edge with an end marker, that "end marker" edge is only taken if there isn't an edge
+                # with some characters in it already. Imagine the following tree...
+                #
+                #   $
+                # .---->*
+                # | an    n$
+                # *---->*----->*
+                #       |  $
+                #       '----->*
+                #
+                # If you use that trie to search the string "annoys", it would first go down the "an" edge and then have
+                # the option of going down "n$" or "$". Without the condition (edge_str_len > found_edge_str_len), if
+                # the graph returned edge "n$" and then "$", you would only match up to "[an]noys" instead of "[ann]oys"
+                if data[idx:idx + edge_str_len] == edge_str and edge_str_len > found_edge_str_len:
                     next_nid = to_nid
-                    break
-            if end_marker_reached:
-                return idx, data[start_idx:idx]
+                    if end_marker_present:
+                        found_end_marker = True
+                    found_edge_str = edge_str
+                    found_edge_str_len = edge_str_len
+            idx += found_edge_str_len
+            # The condition (start_idx != idx) ensures that something other than empty string was captured. This is
+            # needed because root extends an edge with just the edge marker which we don't want to match on (the edge
+            # marker isn't included, which is why it's checking for empty string)
+            if found_end_marker and start_idx != idx:
+                return start_idx, data[start_idx:idx]
             nid = next_nid
     return None
 # MARKDOWN_TEST
@@ -194,5 +220,98 @@ def main_test():
         print("`{bm-enable-all}`", end="\n\n")
 
 
+# MARKDOWN_MISMATCH
+def mismatch_search(
+        test_seq: S,
+        search_seqs: set[S],
+        max_mismatch: int,
+        end_marker: str
+) -> tuple[
+    Graph[str, None, str, S],
+    list[tuple[int, S, S, int]]
+]:
+    # Generate seeds from search_seqs
+    seed_to_seqs = defaultdict(set)
+    seq_to_seeds = {}
+    for seq in search_seqs:
+        assert end_marker == seq[-1], f'{seq} missing end marker'
+        seq_no_marker = seq[:-1]
+        seeds = to_seeds(seq_no_marker, max_mismatch)
+        seq_to_seeds[seq_no_marker] = seeds
+        for seed in seeds:
+            seed_to_seqs[seed].add(seq_no_marker)
+    # Turn seeds into trie
+    trie = to_trie(
+        set(seed + end_marker for seed in seed_to_seqs),
+        end_marker
+    )
+    # Scan for seeds
+    found_list = []
+    test_seq_offset = 0
+    while len(test_seq) > 0:
+        # Search for seeds
+        found = find_sequence(
+            test_seq,
+            end_marker,
+            trie,
+            trie.get_root_node()
+        )
+        if found is None:
+            break
+        found_idx, found_seed = found
+        # Get all seqs that have this seed. The seed may appear more than once in a seq, so
+        # perform "seed extension" for each occurrence.
+        mapped_search_seqs = seed_to_seqs[found_seed]
+        for search_seq in mapped_search_seqs:
+            search_seq_seeds = seq_to_seeds[search_seq]
+            for i, seed in enumerate(search_seq_seeds):
+                if seed != found_seed:
+                    continue
+                se_res = seed_extension(test_seq, found_idx, i, search_seq_seeds)
+                if se_res is None:
+                    continue
+                test_seq_idx, dist = se_res
+                if dist <= max_mismatch:
+                    found_value = test_seq[found_idx:found_idx + len(search_seq)]
+                    found_list.append((test_seq_offset + found_idx, search_seq, found_value, dist))
+        test_seq = test_seq[found_idx + 1:]
+        test_seq_offset += found_idx + 1
+    return trie, found_list
+# MARKDOWN_MISMATCH
+
+
+def main_mismatch():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        trie_seqs = set(data['trie_sequences'])
+        test_seq = data['test_sequence']
+        end_marker = data['end_marker']
+        max_mismatch = data['max_mismatch']
+        print(f'Building and searching trie using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        trie, found_list = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        print()
+        print(f'The following trie was produced ...')
+        print()
+        print('```{dot}')
+        print(f'{to_dot(trie)}')
+        print('```')
+        print()
+        print(f'Searching `{test_seq}` with the trie revealed the following was found:')
+        print()
+        for found_idx, actual, found, dist in found_list:
+            print(f' * Matched `{found}` against `{actual}` with distance of {dist} at index {found_idx}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    main_test()
+    main_mismatch()

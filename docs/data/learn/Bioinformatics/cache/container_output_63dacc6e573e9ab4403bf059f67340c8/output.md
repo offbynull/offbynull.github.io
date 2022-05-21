@@ -50,7 +50,7 @@ N9 -> N10 [label="a"]
 ```
 
 
-Searching *How do you feel about apples?* with the trie revealed the following was found: (22, 'apple')
+Searching `How do you feel about apples?` with the trie revealed the following was found: (22, 'apple')
 </div>
 
 `{bm-enable-all}`

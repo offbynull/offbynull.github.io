@@ -13791,6 +13791,24 @@ sequence_search.Trie_Basic main_test
 }
 ```
 
+Extending a trie to support mismatches requires building the trie with seeds of the sequences rather than the sequences themselves. Any found seeds have seed extension applied to see if the full region's hamming distance is within the mismatch limit.
+
+```{output}
+ch9_code/src/sequence_search/Trie_Basic.py
+python
+# MARKDOWN_MISMATCH\s*\n([\s\S]+)\n\s*# MARKDOWN_MISMATCH\s*[\n$]
+```
+
+```{ch9}
+sequence_search.Trie_Basic main_mismatch
+{
+  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  test_sequence: 'banana ankle baxana orange banxxa vehicle',
+  end_marker: ¶,
+  max_mismatch: 2
+}
+```
+
 #### Edge Merged Algorithm
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Trie\/Edge Merged Algorithm)_TOPIC/`
@@ -13877,8 +13895,22 @@ sequence_search.Trie_EdgeMerged main_test
 }
 ```
 
-```{note}
-A further somewhat related optimization: Rather than making copies of the string to assign to edges, make string views that reference the original sequences. Python apparently doesn't have a string view class and when you slice a string it copies internally, making it inefficient.
+Extending a trie to support mismatches requires building the trie with seeds of the sequences rather than the sequences themselves. Any found seeds have seed extension applied to see if the full region's hamming distance is within the mismatch limit.
+
+```{output}
+ch9_code/src/sequence_search/Trie_EdgeMerged.py
+python
+# MARKDOWN_MISMATCH\s*\n([\s\S]+)\n\s*# MARKDOWN_MISMATCH\s*[\n$]
+```
+
+```{ch9}
+sequence_search.Trie_EdgeMerged main_mismatch
+{
+  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  test_sequence: 'banana ankle baxana orange banxxa vehicle',
+  end_marker: ¶,
+  max_mismatch: 2
+}
 ```
 
 #### Aho-Corasick Algorithm

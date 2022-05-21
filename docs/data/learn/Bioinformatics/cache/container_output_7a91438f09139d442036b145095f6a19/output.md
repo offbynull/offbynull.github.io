@@ -1,10 +1,24 @@
-`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 51 to 79):`{bm-enable-all}`
+`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 38 to 80):`{bm-enable-all}`
 
 ```python
+def to_trie(
+        seqs: set[S],
+        end_marker: str,
+        nid_gen: StringIdGenerator = StringIdGenerator('N'),
+        eid_gen: StringIdGenerator = StringIdGenerator('E')
+) -> Graph[str, None, str, str]:
+    trie = Graph()
+    root_nid = nid_gen.next_id()
+    trie.insert_node(root_nid)  # Insert root node
+    for seq in seqs:
+        add_to_trie(trie, root_nid, seq, end_marker, nid_gen, eid_gen)
+    return trie
+
+
 def add_to_trie(
         trie: Graph[str, None, str, str],
         root_nid: str,
-        seq: str,
+        seq: S,
         end_marker: str,
         nid_gen: StringIdGenerator,
         eid_gen: StringIdGenerator

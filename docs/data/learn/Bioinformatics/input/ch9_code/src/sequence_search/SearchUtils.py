@@ -11,6 +11,22 @@ class StringView:
     def wrap(data: str) -> StringView:
         return StringView(0, len(data), data)
 
+    def startswith(self, prefix: str | StringView):
+        if len(self) < len(prefix):
+            return False
+        for i in range(len(prefix)):
+            if self[i] != prefix[i]:
+                return False
+        return True
+
+    def endswith(self, suffix: str | StringView):
+        if len(self) < len(suffix):
+            return False
+        for i in range(len(suffix)):
+            if self[len(self) - i - 1] != suffix[i]:
+                return False
+        return True
+
     def __init__(self, start: int, stop: int, data: str):
         self.start = start
         self.stop = stop
@@ -38,9 +54,10 @@ class StringView:
             else:
                 new_stop = self.start + item.stop
             # oob check
-            if new_start < self.start or new_start > self.stop\
-                    or new_stop < self.start or new_stop > self.stop:
-                raise ValueError('Out of bounds')
+            if new_start < self.start:
+                new_start = self.start
+            if new_stop > self.stop:
+                new_stop = self.stop
             # return
             return StringView(new_start, new_stop, self.data)
         elif isinstance(item, int):
@@ -75,6 +92,12 @@ class StringView:
                 return False
         return True
 
+    def __hash__(self):
+        ret = 0
+        for x in enumerate(self):
+            ret = hash(x)
+        return ret
+
     def __lt__(self, other: StringView | str):
         for ch1, ch2 in zip(self, other):
             if ch1 < ch2:
@@ -82,6 +105,9 @@ class StringView:
         if len(self) < len(other):
             return True
         return False
+
+    def __add__(self, other: StringView | str):
+        return StringView.wrap(str(self) + str(other))
 
 
 S = TypeVar('S', StringView, str)
@@ -104,7 +130,8 @@ def to_seeds(
     len_per_seed = ceil(len(seq) / seed_cnt)
     ret = []
     for i in range(0, len(seq), len_per_seed):
-        ret.append(seq[i:i+len_per_seed])
+        capture_len = min(len(seq) - i, len_per_seed)
+        ret.append(seq[i:i+capture_len])
     return ret
 
 

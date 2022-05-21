@@ -1,12 +1,12 @@
-`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 110 to 137):`{bm-enable-all}`
+`{bm-disable-all}`[ch9_code/src/sequence_search/Trie_Basic.py](ch9_code/src/sequence_search/Trie_Basic.py) (lines 111 to 138):`{bm-enable-all}`
 
 ```python
 def find_sequence(
-        data: str | StringView,
+        data: S,
         end_marker: str,
         trie: Graph[str, None, str, str],
         root_nid: str
-) -> tuple[int, str] | None:
+) -> tuple[int, S] | None:
     assert end_marker not in data, f'{data} should not have end marker'
     for start_idx in range(len(data)):
         nid = root_nid
