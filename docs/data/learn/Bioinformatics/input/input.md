@@ -14060,6 +14060,24 @@ sequence_search.Trie_AhoCorasick main_test
 }
 ```
 
+Extending a trie to support mismatches requires building the trie with seeds of the sequences rather than the sequences themselves. Any found seeds have seed extension applied to see if the full region's hamming distance is within the mismatch limit.
+
+```{output}
+ch9_code/src/sequence_search/Trie_AhoCorasick.py
+python
+# MARKDOWN_MISMATCH\s*\n([\s\S]+)\n\s*# MARKDOWN_MISMATCH\s*[\n$]
+```
+
+```{ch9}
+sequence_search.Trie_AhoCorasick main_mismatch
+{
+  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  test_sequence: 'banana ankle baxana orange banxxa vehicle',
+  end_marker: ¶,
+  max_mismatch: 2
+}
+```
+
 ### Suffix Tree
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Suffix Tree)_TOPIC/`
@@ -14119,10 +14137,7 @@ Wouldn't memory also be a problem for any non-trivial L (too many suffixes to fo
 
 **ALGORITHM**:
 
-The trie building algorithm is the same as it is for edge merged tries but updated to ...
-
- * use string views to reduce memory usage.
- * track multiple occurrences of an edge's substring value.
+The trie building algorithm is the same as it is for edge merged tries but updated to track multiple occurrences of an edge's value.
 
 ```{output}
 ch9_code/src/sequence_search/SuffixTree.py
@@ -14152,6 +14167,24 @@ sequence_search.SuffixTree main_test
   prefix: an,
   sequence: banana¶,
   end_marker: ¶
+}
+```
+
+Extending a suffix tree to support mismatches requires scanning it for seeds of the sequences rather than the sequences themselves. Any found seeds have seed extension applied to see if the full region's hamming distance is within the mismatch limit.
+
+```{output}
+ch9_code/src/sequence_search/SuffixTree.py
+python
+# MARKDOWN_MISMATCH\s*\n([\s\S]+)\n\s*# MARKDOWN_MISMATCH\s*[\n$]
+```
+
+```{ch9}
+sequence_search.SuffixTree main_mismatch
+{
+  trie_sequences: ['anana', 'banana', 'ankle'],
+  test_sequence: 'banana ankle baxana orange banxxa vehicle¶',
+  end_marker: ¶,
+  max_mismatch: 2
 }
 ```
 
@@ -14344,8 +14377,26 @@ sequence_search.SuffixArray main_test
 }
 ```
 
+Extending a suffix array to support mismatches requires scanning it for seeds of the sequences rather than the sequences themselves. Any found seeds have seed extension applied to see if the full region's hamming distance is within the mismatch limit.
+
+```{output}
+ch9_code/src/sequence_search/SuffixArray.py
+python
+# MARKDOWN_MISMATCH\s*\n([\s\S]+)\n\s*# MARKDOWN_MISMATCH\s*[\n$]
+```
+
+```{ch9}
+sequence_search.SuffixArray main_mismatch
+{
+  trie_sequences: ['anana', 'banana', 'ankle'],
+  test_sequence: 'banana ankle baxana orange banxxa vehicle¶',
+  end_marker: ¶,
+  max_mismatch: 2
+}
+```
+
 ```{note}
-Other uses such as longest repeating substring, longest shared substring, shortest non-shared substring, etc.. need to actually walk the tree.
+Other uses such as longest repeating substring, longest shared substring, shortest non-shared substring, etc.. that are applicable to suffix trees don't look like they're applicable to suffix arrays. I think you need to actually walk the tree for stuff like that.
 ```
 
 ### Burrows-Wheeler Transform

@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from sys import stdin
 
 import yaml
 
 from graph.DirectedGraph import Graph
 from graph.GraphHelpers import StringIdGenerator
-from sequence_search.SearchUtils import StringView
+from sequence_search.SearchUtils import StringView, to_seeds, seed_extension
 
 
 def to_dot(g: Graph[str, None, str, list[StringView]]) -> str:
@@ -31,7 +32,7 @@ def to_dot(g: Graph[str, None, str, list[StringView]]) -> str:
 # MARKDOWN_BUILD
 def to_suffix_tree(
         seq: StringView,
-        end_marker: str,
+        end_marker: StringView,
         nid_gen: StringIdGenerator = StringIdGenerator('N'),
         eid_gen: StringIdGenerator = StringIdGenerator('E')
 ) -> Graph[str, None, str, list[StringView]]:
@@ -48,7 +49,7 @@ def add_suffix_to_tree(
         trie: Graph[str, None, str, list[StringView]],
         root_nid: str,
         seq: StringView,
-        end_marker: str,
+        end_marker: StringView,
         nid_gen: StringIdGenerator,
         eid_gen: StringIdGenerator
 ):
@@ -143,15 +144,17 @@ def main_build():
 
 
 # MARKDOWN_TEST
-def has_prefix(
+def find_prefix(
         prefix: StringView,
-        end_marker: str,
+        end_marker: StringView,
         suffix_tree: Graph[str, None, str, list[StringView]],
         root_nid: str
-) -> bool:
+) -> list[int]:
     assert end_marker not in prefix, f'{prefix} should not have end marker'
+    orig_prefix = prefix
     nid = root_nid
     while True:
+        last_edge_strs = None
         next_nid = None
         next_prefix_skip_count = 0
         for eid, _, to_nid, edge_strs in suffix_tree.get_outputs_full(nid):
@@ -167,11 +170,13 @@ def has_prefix(
                 next_prefix_skip_count = found_common_prefix_len
                 if found_common_prefix_len == len(edge_str):
                     next_nid = to_nid
+                last_edge_strs = edge_strs
         prefix = prefix[next_prefix_skip_count:]
         if len(prefix) == 0:  # Has the prefix been fully consumed? If so, prefix is found.
-            return True
+            break_idx = next_prefix_skip_count  # The point on the edge's string where the prefix ends
+            return [(sv.start + break_idx) - len(orig_prefix) for sv in last_edge_strs]
         if next_nid is None:  # Otherwise, if there isn't a next node we can hop to, the prefix doesn't exist.
-            return False
+            return []
         nid = next_nid
 # MARKDOWN_TEST
 
@@ -202,18 +207,100 @@ def main_test():
         print(f'{to_dot(tree)}')
         print('```')
         print()
-        found = has_prefix(
+        found = find_prefix(
             StringView.wrap(prefix),
             end_marker,
             tree,
             tree.get_root_node()
         )
         print()
-        print(f'Was *{prefix}* found in *{seq}*: {found}')
+        print(f'*{prefix}* found in *{seq}* at indices {found}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+# MARKDOWN_MISMATCH
+def mismatch_search(
+        test_seq: StringView,
+        search_seqs: set[StringView],
+        max_mismatch: int,
+        end_marker: StringView
+) -> tuple[
+    Graph[str, None, str, list[StringView]],
+    set[tuple[int, StringView, StringView, int]]
+]:
+    # Turn test sequence into suffix tree
+    trie = to_suffix_tree(test_seq, end_marker)
+    # Generate seeds from search_seqs
+    seed_to_seqs = defaultdict(set)
+    seq_to_seeds = {}
+    for seq in search_seqs:
+        assert end_marker not in seq, f'{seq} should not contain end marker'
+        seeds = to_seeds(seq, max_mismatch)
+        seq_to_seeds[seq] = seeds
+        for seed in seeds:
+            seed_to_seqs[seed].add(seq)
+    # Scan for seeds
+    found_set = set()
+    for seed, mapped_search_seqs in seed_to_seqs.items():
+        found_idxes = find_prefix(
+            seed,
+            end_marker,
+            trie,
+            trie.get_root_node()
+        )
+        for found_idx in found_idxes:
+            for search_seq in mapped_search_seqs:
+                search_seq_seeds = seq_to_seeds[search_seq]
+                for i, search_seq_seed in enumerate(search_seq_seeds):
+                    if seed != search_seq_seed:
+                        continue
+                    se_res = seed_extension(test_seq, found_idx, i, search_seq_seeds)
+                    if se_res is None:
+                        continue
+                    test_seq_idx, dist = se_res
+                    if dist <= max_mismatch:
+                        found_value = test_seq[test_seq_idx:test_seq_idx + len(search_seq)]
+                        found = test_seq_idx, search_seq, found_value, dist
+                        found_set.add(found)
+                        break
+    return trie, found_set
+# MARKDOWN_MISMATCH
+
+
+def main_mismatch():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
+        test_seq = StringView.wrap(data['test_sequence'])
+        end_marker = StringView.wrap(data['end_marker'])
+        max_mismatch = data['max_mismatch']
+        print(f'Building and searching trie using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        print()
+        print(f'The following trie was produced ...')
+        print()
+        print('```{dot}')
+        print(f'{to_dot(trie)}')
+        print('```')
+        print()
+        print(f'Searching `{test_seq}` with the trie revealed the following was found:')
+        print()
+        for found_idx, actual, found, dist in sorted(found_set):
+            print(f' * Matched `{found}` against `{actual}` with distance of {dist} at index {found_idx}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
 
 
 if __name__ == '__main__':
-    main_test()
+    main_mismatch()

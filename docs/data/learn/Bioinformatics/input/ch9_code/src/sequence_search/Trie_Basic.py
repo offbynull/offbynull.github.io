@@ -31,16 +31,13 @@ def to_dot(g: Graph) -> str:
 
 
 
-S = TypeVar('S', StringView, str)
-
-
 # MARKDOWN_BUILD
 def to_trie(
-        seqs: set[S],
-        end_marker: str,
+        seqs: set[StringView],
+        end_marker: StringView,
         nid_gen: StringIdGenerator = StringIdGenerator('N'),
         eid_gen: StringIdGenerator = StringIdGenerator('E')
-) -> Graph[str, None, str, str]:
+) -> Graph[str, None, str, StringView]:
     trie = Graph()
     root_nid = nid_gen.next_id()
     trie.insert_node(root_nid)  # Insert root node
@@ -50,9 +47,9 @@ def to_trie(
 
 
 def add_to_trie(
-        trie: Graph[str, None, str, str],
+        trie: Graph[str, None, str, StringView],
         root_nid: str,
-        seq: S,
+        seq: StringView,
         end_marker: str,
         nid_gen: StringIdGenerator,
         eid_gen: StringIdGenerator
@@ -86,8 +83,8 @@ def main_build():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        trie_seqs = data['trie_sequences']
-        end_marker = data['end_marker']
+        trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
+        end_marker = StringView.wrap(data['end_marker'])
         print(f'Building trie using the following settings...')
         print()
         print('```')
@@ -109,11 +106,11 @@ def main_build():
 
 # MARKDOWN_TEST
 def find_sequence(
-        data: S,
-        end_marker: str,
-        trie: Graph[str, None, str, str],
+        data: StringView,
+        end_marker: StringView,
+        trie: Graph[str, None, str, StringView],
         root_nid: str
-) -> tuple[int, S] | None:
+) -> tuple[int, StringView] | None:
     assert end_marker not in data, f'{data} should not have end marker'
     for start_idx in range(len(data)):
         nid = root_nid
@@ -145,9 +142,9 @@ def main_test():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        trie_seqs = data['trie_sequences']
-        test_seq = data['test_sequence']
-        end_marker = data['end_marker']
+        trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
+        test_seq = StringView.wrap(data['test_sequence'])
+        end_marker = StringView.wrap(data['end_marker'])
         print(f'Building and searching trie using the following settings...')
         print()
         print('```')
@@ -173,13 +170,13 @@ def main_test():
 
 # MARKDOWN_MISMATCH
 def mismatch_search(
-        test_seq: S,
-        search_seqs: set[S],
+        test_seq: StringView,
+        search_seqs: set[StringView],
         max_mismatch: int,
-        end_marker: str
+        end_marker: StringView
 ) -> tuple[
-    Graph[str, None, str, str],
-    list[tuple[int, S, S, int]]
+    Graph[str, None, str, StringView],
+    set[tuple[int, StringView, StringView, int]]
 ]:
     # Generate seeds from search_seqs
     seed_to_seqs = defaultdict(set)
@@ -197,12 +194,12 @@ def mismatch_search(
         end_marker
     )
     # Scan for seeds
-    found_list = []
-    test_seq_offset = 0
-    while len(test_seq) > 0:
-        # Search for seeds
+    found_set = set()
+    offset = 0
+    while offset < len(test_seq):
+        # Search for seeds FROM offset (trim off the part of test_seq before offset)
         found = find_sequence(
-            test_seq,
+            test_seq[offset:],
             end_marker,
             trie,
             trie.get_root_node()
@@ -210,6 +207,7 @@ def mismatch_search(
         if found is None:
             break
         found_idx, found_seed = found
+        found_idx += offset  # Add the offset back into the found_idx
         # Get all seqs that have this seed. The seed may appear more than once in a seq, so
         # perform "seed extension" for each occurrence.
         mapped_search_seqs = seed_to_seqs[found_seed]
@@ -223,13 +221,13 @@ def mismatch_search(
                     continue
                 test_seq_idx, dist = se_res
                 if dist <= max_mismatch:
-                    found_value = test_seq[found_idx:found_idx + len(search_seq)]
-                    found_list.append((test_seq_offset + found_idx, search_seq, found_value, dist))
-        test_seq = test_seq[found_idx + 1:]
-        test_seq_offset += found_idx + 1
-    return trie, found_list
+                    found_value = test_seq[test_seq_idx:test_seq_idx + len(search_seq)]
+                    found = test_seq_idx, search_seq, found_value, dist
+                    found_set.add(found)
+                    break
+        offset = found_idx + 1
+    return trie, found_set
 # MARKDOWN_MISMATCH
-
 
 def main_mismatch():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
@@ -237,9 +235,9 @@ def main_mismatch():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        trie_seqs = set(data['trie_sequences'])
-        test_seq = data['test_sequence']
-        end_marker = data['end_marker']
+        trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
+        test_seq = StringView.wrap(data['test_sequence'])
+        end_marker = StringView.wrap(data['end_marker'])
         max_mismatch = data['max_mismatch']
         print(f'Building and searching trie using the following settings...')
         print()
@@ -247,7 +245,7 @@ def main_mismatch():
         print(data_raw)
         print('```')
         print()
-        trie, found_list = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
         print()
         print(f'The following trie was produced ...')
         print()
@@ -257,7 +255,7 @@ def main_mismatch():
         print()
         print(f'Searching `{test_seq}` with the trie revealed the following was found:')
         print()
-        for found_idx, actual, found, dist in found_list:
+        for found_idx, actual, found, dist in sorted(found_set):
             print(f' * Matched `{found}` against `{actual}` with distance of {dist} at index {found_idx}')
     finally:
         print("</div>", end="\n\n")
