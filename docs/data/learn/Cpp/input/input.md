@@ -9855,6 +9855,67 @@ To handle IO errors, the standard stream mechanisms are available: `exceptions()
 std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
 ```
 
+## Ranges
+
+`{bm} /(Library Functions\/Ranges)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers_TOPIC
+```
+
+The C++ standard library provides an functionality similar to Java streams, called ranges. Like Java streams, ranges enable functional programming in that a range can be fed into a chain of higher-level operations that manipulate the stream of elements within, lazily if possible.
+
+```c++
+// The code below prints the numbers 2 and 4. The Java streams equivalent is provided on the right-hand side.
+//
+//           C++                                           vs                 JAVA
+std::vector<int> vector{ 0, 1, 2 };                             // var v = ArrayList<Integer>();
+                                                                // v.add(0);
+                                                                // v.add(1);
+                                                                // v.add(2);
+                                                                //
+auto range {                                                    // var range =
+    vector                                                      //          v.stream()
+    | std::views::transform([](int x) { return x * 2; })        //         .map(e -> e * 2)
+    | std::views::filter([](int x) { return x != 0; }           //         .filter(e -> e != 0);
+};                                                              //
+for (int e : range) {                                           // range.forEach(e -> { System.out.println(e); } );
+    std::cout << e << std::endl;                                //
+}                                                               //
+```
+
+As shown in the example above, ranges work similarly to Java streams. Operations are chained together using the pipe operator (|), where those operations are applied from left-to-right. 
+
+```{note}
+However, unlike Java streams, the current implementation of ranges (C++20) are missing some major functionality:
+
+* type-erasures (e.g. `std::vector<int> {0, 1, 2} | std::views::transform([](int x) { return x * 2; })` and `std::vector<int> {0, 1, 2} | std::views::filter([](int x) { return x != 0; })` don't have the same type)
+* parallel algorithms (e.g. transform using multiple cores)
+* actions (e.g. missing things like `forEach()` in Java streams)
+```
+
+Any object that has a particular set of type traits is a range. Those type traits map closely to iterator type traits: A range has a `begin()` function, an `end()` function, and usage patterns similar to that of the type of iterator it maps to:
+
+ * input range has usage patterns similar to input iterator.
+ * output range has usage patterns similar to output iterator.
+ * forward range has usage patterns similar to forward iterator.
+ * bidirectional range has usage patterns similar to bidirectional iterator.
+ * random access range has usage patterns similar to random access iterator.
+
+One of the most glaring differences between iterators and ranges is that a range's `end()` function doesn't necessarily have to return the same type as its `begin()` function. It can instead return a sentinel type that marks the end of the range. If range does return the same type for both `begin()` and `end()`, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.
+
+
+Similar to how each container is a specific iterator type, each container is a specific range type. For example `std::unordered_set` is an input range. 
+
+TODO: continue here
+TODO: continue here
+TODO: continue here
+TODO: continue here
+TODO: continue here
+TODO: continue here
+TODO: continue here
+
+
 # Terminology
 
  * `{bm} preprocessor/(preprocessor|translation unit)/i` - A tool that takes in a C++ source file and performs basic manipulation on it to produce what's called a translation unit.
