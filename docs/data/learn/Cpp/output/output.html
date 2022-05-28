@@ -230,6 +230,13 @@
 <li><a href="#H_File">File</a></li>
 <li><a href="#H_Global">Global</a></li>
 </ul>
+<li><a href="#H_Ranges">Ranges</a></li>
+<ul>
+<li><a href="#H1_Concepts">Concepts</a></li>
+<li><a href="#H_Owning%20Views">Owning Views</a></li>
+<li><a href="#H_Custom%20Views">Custom Views</a></li>
+<li><a href="#H_Type-erasure">Type-erasure</a></li>
+</ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -9657,6 +9664,262 @@ std::cin &gt;&gt; x &gt;&gt; y;
 <p>To handle IO errors, the standard stream mechanisms are available: <code>exceptions()</code> to throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s or explicitly check flags (e.g. invoke <code>good()</code>).</p>
 <pre class="hljs"><code>std::cin.<span class="hljs-built_in">exceptions</span>(std::istream::badbit | std::istream::failbit); <span class="hljs-comment">// exception if bad/fail, but not good/eof</span>
 </code></pre>
+<a name="H_Ranges"></a><h2>Ranges</h2>
+<p><a name="BM_(Library%20Functions%5C%2FRanges)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F">Library Functions/Containers</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FUtility%20Wrappers%2FTuple)_TOPIC%2F">Library Functions/Utility Wrappers/Tuple</a></li>
+</ul>
+</div>
+<p>The C++ standard library provides an functionality similar to Java streams, called ranges. Like Java streams, ranges enable functional programming in that a range can be fed into a chain of higher-level operations that manipulate the stream of elements within, lazily if possible.</p>
+<pre class="hljs"><code><span class="hljs-comment">// The code below prints the numbers 2 and 4. The Java streams equivalent is provided on the right-hand side.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//           C++                                           vs                 JAVA</span>
+std::vector&lt;<span class="hljs-type">int</span>&gt; v{ <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> };                                  <span class="hljs-comment">// var v = ArrayList&lt;Integer&gt;();</span>
+                                                                <span class="hljs-comment">// v.add(0);</span>
+                                                                <span class="hljs-comment">// v.add(1);</span>
+                                                                <span class="hljs-comment">// v.add(2);</span>
+                                                                <span class="hljs-comment">//</span>
+<span class="hljs-keyword">auto</span> range {                                                    <span class="hljs-comment">// var range =</span>
+    v                                                           <span class="hljs-comment">//          v.stream()</span>
+    | std::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-type">int</span> x) { <span class="hljs-keyword">return</span> x * <span class="hljs-number">2</span>; })        <span class="hljs-comment">//         .map(e -&gt; e * 2)</span>
+    | std::views::<span class="hljs-built_in">filter</span>([](<span class="hljs-type">int</span> x) { <span class="hljs-keyword">return</span> x != <span class="hljs-number">0</span>; }           <span class="hljs-comment">//         .filter(e -&gt; e != 0);</span>
+};                                                              <span class="hljs-comment">//</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> e : range) {                                           <span class="hljs-comment">// range.forEach(e -&gt; { System.out.println(e); } );</span>
+    std::cout &lt;&lt; e &lt;&lt; std::endl;                                <span class="hljs-comment">//</span>
+}                                                               <span class="hljs-comment">//</span>
+</code></pre>
+<p>As shown in the example above, ranges work similarly to Java streams. Operations are chained together using the pipe operator (|), where those operations are applied from left-to-right.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><strong>WARNING</strong>: Once <code>v</code> above gets destroyed (e.g. goes out of scope), <code>range</code> becomes invalid. <code>v</code> is <em><a href="#BM_(reference)%2Fi">reference</a>d</em> by <code>range</code>, it isn't <em>copied</em> / <em>moved</em> into <code>range</code>. See the subsection on owning views to workaround this problem.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Unlike Java streams, the current implementation of ranges (C++20) are missing some major functionality:</p>
+<ul>
+<li>type-erasures (e.g. <code>std::vector&lt;int&gt; {0, 1, 2} | std::views::transform([](int x) { return x * 2; })</code> and <code>std::vector&lt;int&gt; {0, 1, 2} | std::views::filter([](int x) { return x != 0; })</code> don't have the same type)</li>
+<li>parallel algorithms (e.g. transform using multiple cores)</li>
+<li>actions (e.g. missing things like <code>forEach()</code> in Java streams)</li>
+</ul>
+</div>
+<p>Any <a href="#BM_(object%7Cinstance)%2Fi">object</a> that has a particular set of type traits is a range. Those type traits map closely to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> type traits: A range has a <code>begin()</code> function, an <code>end()</code> function, and usage patterns similar to that of the type of <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> it maps to:</p>
+<ul>
+<li>input range has usage patterns similar to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">input iterator</a>.</li>
+<li>output range has usage patterns similar to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">output iterator</a>.</li>
+<li>forward range has usage patterns similar to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">forward iterator</a>.</li>
+<li>bidirectional range has usage patterns similar to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">bidirectional iterator</a>.</li>
+<li>random access range has usage patterns similar to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">random access iterator</a>.</li>
+<li>contiguous range has usage patterns similar to contiguous <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>.</li>
+</ul>
+<p>One major difference between <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s and ranges is that a range's <code>end()</code> function doesn't necessarily have to return the same type as its <code>begin()</code> function. It can instead return a sentinel type that marks the end of the range. If a range does return the same type for both <code>begin()</code> and <code>end()</code>, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.</p>
+<table>
+<thead>
+<tr>
+<th>container</th>
+<th>range type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::unordered_set</code></td>
+<td>input range</td>
+</tr>
+<tr>
+<td><code>std::unordered_map</code></td>
+<td>input range</td>
+</tr>
+<tr>
+<td><code>std::unordered_multiset</code></td>
+<td>input range</td>
+</tr>
+<tr>
+<td><code>std::unordered_multimap</code></td>
+<td>input range</td>
+</tr>
+<tr>
+<td><code>std::forward_list</code></td>
+<td>input range</td>
+</tr>
+<tr>
+<td><code>std::set</code></td>
+<td>output range</td>
+</tr>
+<tr>
+<td><code>std::map</code></td>
+<td>output range</td>
+</tr>
+<tr>
+<td><code>std::multiset</code></td>
+<td>output range</td>
+</tr>
+<tr>
+<td><code>std::multimap</code></td>
+<td>output range</td>
+</tr>
+<tr>
+<td><code>std::list</code></td>
+<td>output range</td>
+</tr>
+<tr>
+<td><code>std::deque</code></td>
+<td>bidirectional range</td>
+</tr>
+<tr>
+<td><code>std::array</code></td>
+<td>contiguous range</td>
+</tr>
+<tr>
+<td><code>std::vector</code></td>
+<td>contiguous range</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>std::string</code> and other types of string variants, while not containers, are contiguous ranges.</p>
+</div>
+<p>When an operation such as transformation or filtering is applied on a range, it's applied through a view. A view is a special type of range that typically doesn't own any data and typically isn't mutable / is state-less. As such, a view typically has constant-time copy, move, and assignment.</p>
+<table>
+<thead>
+<tr>
+<th>view</th>
+<th>example</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::views::filter</code></td>
+<td><code>v | std::views::filter([](int x) { return x != 0; }</code></td>
+<td>keep elements that pass predicate</td>
+</tr>
+<tr>
+<td><code>std::views::transform</code></td>
+<td><code>v | std::views::transform([](int x) { return x * 2; }</code></td>
+<td>modify elements</td>
+</tr>
+<tr>
+<td><code>std::views::take</code></td>
+<td><code>v | std::views::take(5)</code></td>
+<td>keep first n elements</td>
+</tr>
+<tr>
+<td><code>std::views::take_while</code></td>
+<td><code>v | std::views::take_while([](int x) { return x != 0; }</code></td>
+<td>keep elements until predicate fails</td>
+</tr>
+<tr>
+<td><code>std::views::drop</code></td>
+<td><code>v | std::views::drop(5)</code></td>
+<td>skip first n elements</td>
+</tr>
+<tr>
+<td><code>std::views::drop_while</code></td>
+<td><code>v | std::views::drop_while([](int x) { return x == 0; }</code></td>
+<td>skip elements until predicate fails</td>
+</tr>
+<tr>
+<td><code>std::views::join</code></td>
+<td><code>v | std::views::join</code></td>
+<td>flatten a range of ranges (2D) into a range (1D)</td>
+</tr>
+<tr>
+<td><code>std::views::join_with</code></td>
+<td><code>v | std::views::join_with(-1)</code></td>
+<td>flatten a range of ranges (2D) into a range (1D) with delimiters in between</td>
+</tr>
+<tr>
+<td><code>std::views::split</code></td>
+<td><code>v | std::views::split(-1)</code></td>
+<td>split a range into a range of ranges using a delimiter</td>
+</tr>
+<tr>
+<td><code>std::views::lazy_split</code></td>
+<td><code>v | std::views::lazy_split(-1)</code></td>
+<td>split a range into a range of ranges using a delimiter (lazily)</td>
+</tr>
+<tr>
+<td><code>std::views::counted</code></td>
+<td><code>std::views::counted(v.begin(), 5)</code></td>
+<td>keep a sub-range of a range</td>
+</tr>
+<tr>
+<td><code>std::views::common</code></td>
+<td><code>std::views::common(v)</code></td>
+<td>convert to a common view (<code>being()</code> and <code>end()</code> have same type)</td>
+</tr>
+<tr>
+<td><code>std::views::reverse</code></td>
+<td><code>v | std::views::reverse</code></td>
+<td>reverse a view</td>
+</tr>
+<tr>
+<td><code>std::views::elements</code></td>
+<td><code>v | std::views::elements&lt;1&gt;</code></td>
+<td>transform tuples to their nth item</td>
+</tr>
+<tr>
+<td><code>std::views::keys</code></td>
+<td><code>v | std::views::keys</code></td>
+<td>transform pairs to their 1st item</td>
+</tr>
+<tr>
+<td><code>std::views::values</code></td>
+<td><code>v | std::views::values</code></td>
+<td>transform pairs to their 2nd item</td>
+</tr>
+<tr>
+<td><code>std::views::zip</code></td>
+<td><code>std::views::zip(v1, v2, v3)</code></td>
+<td>zip multiple ranges together (similar to Python's <code>zip()</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>In addition to performing operations on another range's elements, a view may originate elements itself.</p>
+<table>
+<thead>
+<tr>
+<th>view</th>
+<th>example</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::views::empty</code></td>
+<td><code>std::views::empty&lt;int&gt;</code></td>
+<td>empty range of some type</td>
+</tr>
+<tr>
+<td><code>std::views::single</code></td>
+<td><code>std::views::single&lt;int&gt; { 5 }</code></td>
+<td>range of a single element</td>
+</tr>
+<tr>
+<td><code>std::views::iota</code></td>
+<td><code>std::views::iota(1, 5)</code></td>
+<td>range of incrementing values (bounded)</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The tables above aren't exhaustive.</p>
+</div>
+<p>TODO: CONTINUE WITH SUBSECTIONS</p>
+<p>TODO: CONTINUE WITH SUBSECTIONS</p>
+<p>TODO: CONTINUE WITH SUBSECTIONS</p>
+<p>TODO: CONTINUE WITH SUBSECTIONS</p>
+<p>TODO: CONTINUE WITH SUBSECTIONS</p>
+<p>TODO: CONTINUE WITH SUBSECTIONS</p>
+<p>TODO: CONTINUE WITH SUBSECTIONS</p>
+<a name="H1_Concepts"></a><h3>Concepts</h3>
+<a name="H_Owning%20Views"></a><h3>Owning Views</h3>
+<a name="H_Custom%20Views"></a><h3>Custom Views</h3>
+<a name="H_Type-erasure"></a><h3>Type-erasure</h3>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>

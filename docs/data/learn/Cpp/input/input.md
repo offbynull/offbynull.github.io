@@ -9861,6 +9861,7 @@ std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception 
 
 ```{prereq}
 Library Functions/Containers_TOPIC
+Library Functions/Utility Wrappers/Tuple_TOPIC
 ```
 
 The C++ standard library provides an functionality similar to Java streams, called ranges. Like Java streams, ranges enable functional programming in that a range can be fed into a chain of higher-level operations that manipulate the stream of elements within, lazily if possible.
@@ -9869,13 +9870,13 @@ The C++ standard library provides an functionality similar to Java streams, call
 // The code below prints the numbers 2 and 4. The Java streams equivalent is provided on the right-hand side.
 //
 //           C++                                           vs                 JAVA
-std::vector<int> vector{ 0, 1, 2 };                             // var v = ArrayList<Integer>();
+std::vector<int> v{ 0, 1, 2 };                                  // var v = ArrayList<Integer>();
                                                                 // v.add(0);
                                                                 // v.add(1);
                                                                 // v.add(2);
                                                                 //
 auto range {                                                    // var range =
-    vector                                                      //          v.stream()
+    v                                                           //          v.stream()
     | std::views::transform([](int x) { return x * 2; })        //         .map(e -> e * 2)
     | std::views::filter([](int x) { return x != 0; }           //         .filter(e -> e != 0);
 };                                                              //
@@ -9887,7 +9888,11 @@ for (int e : range) {                                           // range.forEach
 As shown in the example above, ranges work similarly to Java streams. Operations are chained together using the pipe operator (|), where those operations are applied from left-to-right. 
 
 ```{note}
-However, unlike Java streams, the current implementation of ranges (C++20) are missing some major functionality:
+**WARNING**: Once `v` above gets destroyed (e.g. goes out of scope), `range` becomes invalid. `v` is _referenced_ by `range`, it isn't _copied_ / _moved_ into `range`. See the subsection on owning views to workaround this problem.
+```
+
+```{note}
+Unlike Java streams, the current implementation of ranges (C++20) are missing some major functionality:
 
 * type-erasures (e.g. `std::vector<int> {0, 1, 2} | std::views::transform([](int x) { return x * 2; })` and `std::vector<int> {0, 1, 2} | std::views::filter([](int x) { return x != 0; })` don't have the same type)
 * parallel algorithms (e.g. transform using multiple cores)
@@ -9901,19 +9906,85 @@ Any object that has a particular set of type traits is a range. Those type trait
  * forward range has usage patterns similar to forward iterator.
  * bidirectional range has usage patterns similar to bidirectional iterator.
  * random access range has usage patterns similar to random access iterator.
+ * contiguous range has usage patterns similar to contiguous iterator.
 
-One of the most glaring differences between iterators and ranges is that a range's `end()` function doesn't necessarily have to return the same type as its `begin()` function. It can instead return a sentinel type that marks the end of the range. If range does return the same type for both `begin()` and `end()`, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.
+One major difference between iterators and ranges is that a range's `end()` function doesn't necessarily have to return the same type as its `begin()` function. It can instead return a sentinel type that marks the end of the range. If a range does return the same type for both `begin()` and `end()`, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.
 
+| container                 | range type          |
+|---------------------------|---------------------|
+| `std::unordered_set`      | input range         |
+| `std::unordered_map`      | input range         |
+| `std::unordered_multiset` | input range         |
+| `std::unordered_multimap` | input range         |
+| `std::forward_list`       | input range         |
+| `std::set`                | output range        |
+| `std::map`                | output range        |
+| `std::multiset`           | output range        |
+| `std::multimap`           | output range        |
+| `std::list`               | output range        |
+| `std::deque`              | bidirectional range |
+| `std::array`              | contiguous range    |
+| `std::vector`             | contiguous range    |
 
-Similar to how each container is a specific iterator type, each container is a specific range type. For example `std::unordered_set` is an input range. 
+```{note}
+`std::string` and other types of string variants, while not containers, are contiguous ranges.
+```
 
-TODO: continue here
-TODO: continue here
-TODO: continue here
-TODO: continue here
-TODO: continue here
-TODO: continue here
-TODO: continue here
+When an operation such as transformation or filtering is applied on a range, it's applied through a view. A view is a special type of range that typically doesn't own any data and typically isn't mutable / is state-less. As such, a view typically has constant-time copy, move, and assignment.
+
+| view                     | example                                                    | description                                                                 |
+|--------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------|
+| `std::views::filter`     | `v \| std::views::filter([](int x) { return x != 0; }`     | keep elements that pass predicate                                           |
+| `std::views::transform`  | `v \| std::views::transform([](int x) { return x * 2; }`   | modify elements                                                             |
+| `std::views::take`       | `v \| std::views::take(5)`                                 | keep first n elements                                                       |
+| `std::views::take_while` | `v \| std::views::take_while([](int x) { return x != 0; }` | keep elements until predicate fails                                         |
+| `std::views::drop`       | `v \| std::views::drop(5)`                                 | skip first n elements                                                       |
+| `std::views::drop_while` | `v \| std::views::drop_while([](int x) { return x == 0; }` | skip elements until predicate fails                                         |
+| `std::views::join`       | `v \| std::views::join`                                    | flatten a range of ranges (2D) into a range (1D)                            |
+| `std::views::join_with`  | `v \| std::views::join_with(-1)`                           | flatten a range of ranges (2D) into a range (1D) with delimiters in between |
+| `std::views::split`      | `v \| std::views::split(-1)`                               | split a range into a range of ranges using a delimiter                      |
+| `std::views::lazy_split` | `v \| std::views::lazy_split(-1)`                          | split a range into a range of ranges using a delimiter (lazily)             |
+| `std::views::counted`    | `std::views::counted(v.begin(), 5)`                        | keep a sub-range of a range                                                 |
+| `std::views::common`     | `std::views::common(v)`                                    | convert to a common view (`being()` and `end()` have same type)             |
+| `std::views::reverse`    | `v \| std::views::reverse`                                 | reverse a view                                                              |
+| `std::views::elements`   | `v \| std::views::elements<1>`                             | transform tuples to their nth item                                          |
+| `std::views::keys`       | `v \| std::views::keys`                                    | transform pairs to their 1st item                                           |
+| `std::views::values`     | `v \| std::views::values`                                  | transform pairs to their 2nd item                                           |
+| `std::views::zip`        | `std::views::zip(v1, v2, v3)`                              | zip multiple ranges together (similar to Python's `zip()`)                  |
+
+In addition to performing operations on another range's elements, a view may originate elements itself.
+
+| view                  | example                              | description                            |
+|-----------------------|--------------------------------------|----------------------------------------|
+| `std::views::empty`   | `std::views::empty<int>`             | empty range of some type               |
+| `std::views::single`  | `std::views::single<int> { 5 }`      | range of a single element              |
+| `std::views::iota`    | `std::views::iota(1, 5)`             | range of incrementing values (bounded) |
+
+```{note}
+The tables above aren't exhaustive.
+```
+
+TODO: CONTINUE WITH SUBSECTIONS
+
+TODO: CONTINUE WITH SUBSECTIONS
+
+TODO: CONTINUE WITH SUBSECTIONS
+
+TODO: CONTINUE WITH SUBSECTIONS
+
+TODO: CONTINUE WITH SUBSECTIONS
+
+TODO: CONTINUE WITH SUBSECTIONS
+
+TODO: CONTINUE WITH SUBSECTIONS
+
+### Concepts
+
+### Owning Views
+
+### Custom Views
+
+### Type-erasure
 
 
 # Terminology
