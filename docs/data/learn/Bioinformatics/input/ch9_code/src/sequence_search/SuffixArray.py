@@ -1,22 +1,16 @@
 from __future__ import annotations
 
 import functools
-from bisect import bisect_left, bisect_right
 from collections import defaultdict
 from sys import stdin
 
 import yaml
 
-from graph.DirectedGraph import Graph
-from graph.GraphHelpers import StringIdGenerator
-
-
-# MARKDOWN_BUILD
 from sequence_search.SearchUtils import StringView, to_seeds, seed_extension
 
 
-def cmp(a: StringView, b: StringView):
-    end_marker = a.data[-1]
+# MARKDOWN_BUILD
+def cmp(a: StringView, b: StringView, end_marker: StringView):
     for a_ch, b_ch in zip(a, b):
         if a_ch == end_marker and b_ch == end_marker:
             continue
@@ -45,7 +39,7 @@ def to_suffix_array(
     while len(seq) > 0:
         ret.append(seq)
         seq = seq[1:]
-    ret = sorted(ret, key=functools.cmp_to_key(cmp))
+    ret = sorted(ret, key=functools.cmp_to_key(lambda a, b: cmp(a, b, end_marker)))
     return ret
 # MARKDOWN_BUILD
 
@@ -101,19 +95,19 @@ def find_prefix(
     assert end_marker not in prefix, f'{prefix} should not have end marker'
     # Binary search
     start = 0
-    end = len(suffix_array)
+    end = len(suffix_array) - 1
     found = None
-    while start != end:
+    while start <= end:
         mid = start + ((end - start) // 2)
         mid_suffix = suffix_array[mid]
-        comparison = cmp(prefix, mid_suffix)
+        comparison = cmp(prefix, mid_suffix, end_marker)
         if common_prefix_len(prefix, mid_suffix) == len(prefix):
             found = mid
             break
         elif comparison < 0:
-            end = mid
+            end = mid - 1
         elif comparison > 0:
-            start = mid
+            start = mid + 1
         else:
             raise ValueError('This should never happen')
     # If not found, return
@@ -129,7 +123,7 @@ def find_prefix(
     # Walk forward to see how many after start with prefix
     end = found + 1
     while end < len(suffix_array):
-        end_suffix = suffix_array[start]
+        end_suffix = suffix_array[end]
         if common_prefix_len(prefix, end_suffix) != len(prefix):
             break
         end += 1
@@ -186,6 +180,9 @@ def mismatch_search(
     list[StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    # Add end marker to test sequence
+    assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
+    test_seq = test_seq + end_marker
     # Turn test sequence into suffix tree
     array = to_suffix_array(test_seq, end_marker)
     # Generate seeds from search_seqs

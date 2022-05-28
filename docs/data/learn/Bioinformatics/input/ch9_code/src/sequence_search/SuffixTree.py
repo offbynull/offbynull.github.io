@@ -230,6 +230,9 @@ def mismatch_search(
     Graph[str, None, str, list[StringView]],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    # Add end marker to test sequence
+    assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
+    test_seq = test_seq + end_marker
     # Turn test sequence into suffix tree
     trie = to_suffix_tree(test_seq, end_marker)
     # Generate seeds from search_seqs

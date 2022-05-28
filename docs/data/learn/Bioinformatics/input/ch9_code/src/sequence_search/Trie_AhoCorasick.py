@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections import defaultdict
 from sys import stdin
-from typing import TypeVar
 
 import yaml
 
@@ -32,6 +31,22 @@ def to_dot(g: Graph) -> str:
 
 
 # MARKDOWN_ADD_HOPS
+def to_trie(
+        seqs: set[StringView],
+        end_marker: StringView,
+        nid_gen: StringIdGenerator = StringIdGenerator('N'),
+        eid_gen: StringIdGenerator = StringIdGenerator('E')
+) -> Graph[str, None, str, StringView | None]:
+    trie = Trie_Basic.to_trie(
+        seqs,
+        end_marker,
+        nid_gen,
+        eid_gen
+    )
+    add_hop_edges(trie, trie.get_root_node(), end_marker)
+    return trie
+
+
 def add_hop_edges(
         trie: Graph[str, None, str, StringView | None],
         root_nid: str,
@@ -113,8 +128,7 @@ def main_build():
         print(data_raw)
         print('```')
         print()
-        trie = Trie_Basic.to_trie(trie_seqs, end_marker)
-        add_hop_edges(trie, trie.get_root_node(), end_marker)
+        trie = to_trie(trie_seqs, end_marker)
         print()
         print(f'The following trie was produced ...')
         print()
@@ -133,39 +147,59 @@ def find_sequence(
         end_marker: StringView,
         trie: Graph[str, None, str, StringView],
         root_nid: str
-) -> tuple[int, str] | None:
+) -> list[tuple[int, StringView]]:
     assert end_marker not in data, f'{data} should not have end marker'
-    nid = root_nid
-    skip_offset = 0
-    for start_idx in range(len(data)):
-        end_marker_found = False
+    ret = []
+    start_idx = 0
+    hop_nid = None
+    hop_offset = 0
+    while start_idx < len(data):
+        nid = root_nid if hop_nid is None else hop_nid
         end_idx = start_idx
-        for offset, ch in enumerate(data[start_idx + skip_offset:]):
-            offset = offset + skip_offset
+        hop_nid = None
+        for idx, ch in enumerate(data[start_idx:]):
             # Find edge for ch
-            found_nid = None
-            end_marker_found = any(True for _, _, _, edge_ch in trie.get_outputs_full(nid) if edge_ch == end_marker)
+            next_nid = None
             for _, _, to_nid, edge_ch in trie.get_outputs_full(nid):
                 if edge_ch == ch:
-                    found_nid = to_nid
-                    end_idx = start_idx + offset
+                    next_nid = to_nid
+                    end_idx = start_idx + idx
                     break
-            # If found not found, use fast-forward edge if it exists or start from root if it doesn't
-            if found_nid is None:
-                hop_edge = trie.get_output_full(nid, lambda _, __, ___, edge_ch: edge_ch is None)
-                if hop_edge is None:
-                    nid = root_nid
-                    skip_offset = 0
+            # If not found, bail (hopping forward if a hop edge is present)
+            if next_nid is None:
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                THIS WORKS BUT NEEDS SIMPLIFICATION
+                found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(nid))
+                if not found_end_marker:
+                    hop_nid = next(
+                        (to_nid for _, _, to_nid, edge_ch in trie.get_outputs_full(nid) if edge_ch is None),
+                        None
+                    )
+                    if hop_nid is not None:
+                        hop_offset = (end_idx - start_idx) - 1
+                        print(f'{hop_offset=}')
+                    else:
+                        hop_offset = 0
                 else:
-                    _, _, nid, _ = hop_edge
-                    skip_offset = offset - 1
+                    hop_nid = None
+                    hop_offset = 0
                 break
-            # Otherwise, keep going from the edge's end node
-            nid = found_nid
-        # End marker reached? Return with index of match and the match itself
-        if end_marker_found:
-            return start_idx, data[start_idx:end_idx+1]
-    return None
+            # If found dst node points to end marker, store it
+            found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(next_nid))
+            if found_end_marker:
+                found_idx = start_idx - hop_offset
+                found_str = data[found_idx:end_idx + 1]
+                ret.append((found_idx, found_str))
+            # If found BUT end marker not present, keep going from the edge's end node
+            nid = next_nid
+        start_idx += 1 + hop_offset
+    return ret
 # MARKDOWN_TEST
 
 
@@ -184,8 +218,7 @@ def main_test():
         print(data_raw)
         print('```')
         print()
-        trie = Trie_Basic.to_trie(trie_seqs, end_marker)
-        add_hop_edges(trie, trie.get_root_node(), end_marker)
+        trie = to_trie(trie_seqs, end_marker)
         print()
         print(f'The following trie was produced ...')
         print()
@@ -211,37 +244,31 @@ def mismatch_search(
     Graph[str, None, str, StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
     # Generate seeds from search_seqs
     seed_to_seqs = defaultdict(set)
     seq_to_seeds = {}
     for seq in search_seqs:
-        assert end_marker == seq[-1], f'{seq} missing end marker'
-        seq_no_marker = seq[:-1]
-        seeds = to_seeds(seq_no_marker, max_mismatch)
-        seq_to_seeds[seq_no_marker] = seeds
+        assert end_marker not in seq[-1], f'{seq} should not contain end marker'
+        seeds = to_seeds(seq, max_mismatch)
+        seq_to_seeds[seq] = seeds
         for seed in seeds:
-            seed_to_seqs[seed].add(seq_no_marker)
+            seed_to_seqs[seed].add(seq)
     # Turn seeds into trie
-    trie = Trie_Basic.to_trie(
+    trie = to_trie(
         set(seed + end_marker for seed in seed_to_seqs),
         end_marker
     )
-    add_hop_edges(trie, trie.get_root_node(), end_marker)
     # Scan for seeds
     found_set = set()
-    offset = 0
-    while offset < len(test_seq):
-        # Search for seeds FROM offset (trim off the part of test_seq before offset)
-        found = find_sequence(
-            test_seq[offset:],
-            end_marker,
-            trie,
-            trie.get_root_node()
-        )
-        if found is None:
-            break
+    found_seeds = find_sequence(
+        test_seq,
+        end_marker,
+        trie,
+        trie.get_root_node()
+    )
+    for found in found_seeds:
         found_idx, found_seed = found
-        found_idx += offset  # Add the offset back into the found_idx
         # Get all seqs that have this seed. The seed may appear more than once in a seq, so
         # perform "seed extension" for each occurrence.
         mapped_search_seqs = seed_to_seqs[found_seed]
@@ -259,7 +286,6 @@ def mismatch_search(
                     found = test_seq_idx, search_seq, found_value, dist
                     found_set.add(found)
                     break
-        offset = found_idx + 1
     return trie, found_set
 # MARKDOWN_MISMATCH
 
@@ -298,4 +324,4 @@ def main_mismatch():
 
 
 if __name__ == '__main__':
-    main_mismatch()
+    main_test()

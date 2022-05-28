@@ -227,16 +227,27 @@ def mismatch_search(
     Graph[str, None, str, StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    FIX ME
+    assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
     # Generate seeds from search_seqs
     seed_to_seqs = defaultdict(set)
     seq_to_seeds = {}
     for seq in search_seqs:
-        assert end_marker == seq[-1], f'{seq} missing end marker'
-        seq_no_marker = seq[:-1]
-        seeds = to_seeds(seq_no_marker, max_mismatch)
-        seq_to_seeds[seq_no_marker] = seeds
+        assert end_marker not in seq[-1], f'{seq} should not contain end marker'
+        seeds = to_seeds(seq, max_mismatch)
+        seq_to_seeds[seq] = seeds
         for seed in seeds:
-            seed_to_seqs[seed].add(seq_no_marker)
+            seed_to_seqs[seed].add(seq)
     # Turn seeds into trie
     trie = to_trie(
         set(seed + end_marker for seed in seed_to_seqs),

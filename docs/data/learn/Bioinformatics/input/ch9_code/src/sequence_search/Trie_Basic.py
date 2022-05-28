@@ -110,29 +110,32 @@ def find_sequence(
         end_marker: StringView,
         trie: Graph[str, None, str, StringView],
         root_nid: str
-) -> tuple[int, StringView] | None:
+) -> list[tuple[int, StringView]]:
     assert end_marker not in data, f'{data} should not have end marker'
+    ret = []
     for start_idx in range(len(data)):
         nid = root_nid
         end_idx = start_idx
         for idx, ch in enumerate(data[start_idx:]):
             # Find edge for ch
-            found_nid = None
+            next_nid = None
             for _, _, to_nid, edge_ch in trie.get_outputs_full(nid):
                 if edge_ch == ch:
-                    found_nid = to_nid
+                    next_nid = to_nid
                     end_idx = start_idx + idx
                     break
-            # If found not found, bail
-            if found_nid is None:
+            # If not found, bail
+            if next_nid is None:
                 break
-            # Otherwise, keep going from the edge's end node
-            nid = found_nid
-        # End marker reached? Return with index of match and the match itself
-        end_marker_found = any(True for _, _, _, edge_ch in trie.get_outputs_full(nid) if edge_ch == end_marker)
-        if end_marker_found:
-            return start_idx, data[start_idx:end_idx+1]
-    return None
+            # If found dst node points to end marker, store it
+            found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(next_nid))
+            if found_end_marker:
+                found_idx = start_idx
+                found_str = data[start_idx:end_idx + 1]
+                ret.append((found_idx, found_str))
+            # If found BUT end marker not present, keep going from the edge's end node
+            nid = next_nid
+    return ret
 # MARKDOWN_TEST
 
 
@@ -178,16 +181,16 @@ def mismatch_search(
     Graph[str, None, str, StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
     # Generate seeds from search_seqs
     seed_to_seqs = defaultdict(set)
     seq_to_seeds = {}
     for seq in search_seqs:
-        assert end_marker == seq[-1], f'{seq} missing end marker'
-        seq_no_marker = seq[:-1]
-        seeds = to_seeds(seq_no_marker, max_mismatch)
-        seq_to_seeds[seq_no_marker] = seeds
+        assert end_marker not in seq[-1], f'{seq} should not contain end marker'
+        seeds = to_seeds(seq, max_mismatch)
+        seq_to_seeds[seq] = seeds
         for seed in seeds:
-            seed_to_seqs[seed].add(seq_no_marker)
+            seed_to_seqs[seed].add(seq)
     # Turn seeds into trie
     trie = to_trie(
         set(seed + end_marker for seed in seed_to_seqs),
@@ -195,19 +198,14 @@ def mismatch_search(
     )
     # Scan for seeds
     found_set = set()
-    offset = 0
-    while offset < len(test_seq):
-        # Search for seeds FROM offset (trim off the part of test_seq before offset)
-        found = find_sequence(
-            test_seq[offset:],
-            end_marker,
-            trie,
-            trie.get_root_node()
-        )
-        if found is None:
-            break
+    found_seeds = find_sequence(
+        test_seq,
+        end_marker,
+        trie,
+        trie.get_root_node()
+    )
+    for found in found_seeds:
         found_idx, found_seed = found
-        found_idx += offset  # Add the offset back into the found_idx
         # Get all seqs that have this seed. The seed may appear more than once in a seq, so
         # perform "seed extension" for each occurrence.
         mapped_search_seqs = seed_to_seqs[found_seed]
@@ -225,7 +223,6 @@ def mismatch_search(
                     found = test_seq_idx, search_seq, found_value, dist
                     found_set.add(found)
                     break
-        offset = found_idx + 1
     return trie, found_set
 # MARKDOWN_MISMATCH
 

@@ -13802,7 +13802,7 @@ python
 ```{ch9}
 sequence_search.Trie_Basic main_mismatch
 {
-  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
   max_mismatch: 2
@@ -13906,7 +13906,7 @@ python
 ```{ch9}
 sequence_search.Trie_EdgeMerged main_mismatch
 {
-  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
   max_mismatch: 2
@@ -14071,7 +14071,7 @@ python
 ```{ch9}
 sequence_search.Trie_AhoCorasick main_mismatch
 {
-  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
   max_mismatch: 2
@@ -14182,7 +14182,7 @@ python
 sequence_search.SuffixTree main_mismatch
 {
   trie_sequences: ['anana', 'banana', 'ankle'],
-  test_sequence: 'banana ankle baxana orange banxxa vehicle¶',
+  test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
   max_mismatch: 2
 }
@@ -14389,7 +14389,7 @@ python
 sequence_search.SuffixArray main_mismatch
 {
   trie_sequences: ['anana', 'banana', 'ankle'],
-  test_sequence: 'banana ankle baxana orange banxxa vehicle¶',
+  test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
   max_mismatch: 2
 }
@@ -14400,6 +14400,12 @@ Other uses such as longest repeating substring, longest shared substring, shorte
 ```
 
 ### Burrows-Wheeler Transform
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Suffix Tree_TOPIC
+```
 
 TODO: CONTINUE HERE
 
