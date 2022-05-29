@@ -110,31 +110,34 @@ def find_sequence(
         end_marker: StringView,
         trie: Graph[str, None, str, StringView],
         root_nid: str
-) -> list[tuple[int, StringView]]:
+) -> set[tuple[int, StringView]]:
     assert end_marker not in data, f'{data} should not have end marker'
-    ret = []
-    for start_idx in range(len(data)):
+    ret = set()
+    next_idx = 0
+    while next_idx < len(data):
         nid = root_nid
-        end_idx = start_idx
-        for idx, ch in enumerate(data[start_idx:]):
+        end_idx = next_idx
+        while end_idx < len(data):
+            ch = data[end_idx]
             # Find edge for ch
-            next_nid = None
+            dst_nid = None
             for _, _, to_nid, edge_ch in trie.get_outputs_full(nid):
                 if edge_ch == ch:
-                    next_nid = to_nid
-                    end_idx = start_idx + idx
+                    dst_nid = to_nid
                     break
             # If not found, bail
-            if next_nid is None:
+            if dst_nid is None:
                 break
             # If found dst node points to end marker, store it
-            found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(next_nid))
+            found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(dst_nid))
             if found_end_marker:
-                found_idx = start_idx
-                found_str = data[start_idx:end_idx + 1]
-                ret.append((found_idx, found_str))
-            # If found BUT end marker not present, keep going from the edge's end node
-            nid = next_nid
+                found_idx = next_idx
+                found_str = data[next_idx:end_idx + 1]
+                ret.add((found_idx, found_str))
+            # Move forward
+            nid = dst_nid
+            end_idx += 1
+        next_idx += 1
     return ret
 # MARKDOWN_TEST
 
@@ -176,17 +179,23 @@ def mismatch_search(
         test_seq: StringView,
         search_seqs: set[StringView],
         max_mismatch: int,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 ) -> tuple[
     Graph[str, None, str, StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    # Add padding to test sequence
     assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
+    assert pad_marker not in test_seq, f'{test_seq} should not contain pad marker'
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding
     # Generate seeds from search_seqs
     seed_to_seqs = defaultdict(set)
     seq_to_seeds = {}
     for seq in search_seqs:
         assert end_marker not in seq[-1], f'{seq} should not contain end marker'
+        assert pad_marker not in seq, f'{seq} should not contain pad marker'
         seeds = to_seeds(seq, max_mismatch)
         seq_to_seeds[seq] = seeds
         for seed in seeds:
@@ -220,7 +229,8 @@ def mismatch_search(
                 test_seq_idx, dist = se_res
                 if dist <= max_mismatch:
                     found_value = test_seq[test_seq_idx:test_seq_idx + len(search_seq)]
-                    found = test_seq_idx, search_seq, found_value, dist
+                    test_seq_idx_unpadded = test_seq_idx - len(padding)
+                    found = test_seq_idx_unpadded, search_seq, found_value, dist
                     found_set.add(found)
                     break
     return trie, found_set
@@ -235,6 +245,7 @@ def main_mismatch():
         trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
         test_seq = StringView.wrap(data['test_sequence'])
         end_marker = StringView.wrap(data['end_marker'])
+        pad_marker = StringView.wrap(data['pad_marker'])
         max_mismatch = data['max_mismatch']
         print(f'Building and searching trie using the following settings...')
         print()
@@ -242,7 +253,7 @@ def main_mismatch():
         print(data_raw)
         print('```')
         print()
-        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker, pad_marker)
         print()
         print(f'The following trie was produced ...')
         print()

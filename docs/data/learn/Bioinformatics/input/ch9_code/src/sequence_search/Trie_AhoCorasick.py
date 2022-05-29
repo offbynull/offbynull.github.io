@@ -147,59 +147,60 @@ def find_sequence(
         end_marker: StringView,
         trie: Graph[str, None, str, StringView],
         root_nid: str
-) -> list[tuple[int, StringView]]:
+) -> set[tuple[int, StringView]]:
     assert end_marker not in data, f'{data} should not have end marker'
-    ret = []
-    start_idx = 0
+    ret = set()
+    next_idx = 0
     hop_nid = None
-    hop_offset = 0
-    while start_idx < len(data):
+    hop_offset = None
+    while next_idx < len(data):
         nid = root_nid if hop_nid is None else hop_nid
-        end_idx = start_idx
-        hop_nid = None
-        for idx, ch in enumerate(data[start_idx:]):
+        end_idx = next_idx + (0 if hop_offset is None else hop_offset)
+        # If, on the last iteration, we followed a hop edge (hop_offset is not None), end_idx will be > next_idx.
+        # Following a hop edge means that we've "fast-forwarded" movement in the trie. If the "fast-forwarded" position
+        # we're starting at has an edge pointing to an end-marker, immediately put it into the return set.
+        if next_idx != end_idx:
+            pull_substring_if_end_marker_found(data, end_marker, trie, nid, next_idx, end_idx, ret)
+        hop_offset = None
+        while end_idx < len(data):
+            ch = data[end_idx]
             # Find edge for ch
-            next_nid = None
+            dst_nid = None
             for _, _, to_nid, edge_ch in trie.get_outputs_full(nid):
                 if edge_ch == ch:
-                    next_nid = to_nid
-                    end_idx = start_idx + idx
+                    dst_nid = to_nid
                     break
-            # If not found, bail (hopping forward if a hop edge is present)
-            if next_nid is None:
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                THIS WORKS BUT NEEDS SIMPLIFICATION
-                found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(nid))
-                if not found_end_marker:
-                    hop_nid = next(
-                        (to_nid for _, _, to_nid, edge_ch in trie.get_outputs_full(nid) if edge_ch is None),
-                        None
-                    )
-                    if hop_nid is not None:
-                        hop_offset = (end_idx - start_idx) - 1
-                        print(f'{hop_offset=}')
-                    else:
-                        hop_offset = 0
-                else:
-                    hop_nid = None
-                    hop_offset = 0
+            # If not found, bail (hopping forward by setting hop_offset / next_nid if a hop edge is present)
+            if dst_nid is None:
+                hop_nid = next(
+                    (to_nid for _, _, to_nid, edge_ch in trie.get_outputs_full(nid) if edge_ch is None),
+                    None
+                )
+                if hop_nid is not None:
+                    hop_offset = end_idx - next_idx - 1
                 break
-            # If found dst node points to end marker, store it
-            found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(next_nid))
-            if found_end_marker:
-                found_idx = start_idx - hop_offset
-                found_str = data[found_idx:end_idx + 1]
-                ret.append((found_idx, found_str))
-            # If found BUT end marker not present, keep going from the edge's end node
-            nid = next_nid
-        start_idx += 1 + hop_offset
+            # Move forward, and, if there's an edge pointing to an end-marker, put it in the return set.
+            nid = dst_nid
+            end_idx += 1
+            pull_substring_if_end_marker_found(data, end_marker, trie, nid, next_idx, end_idx, ret)
+        next_idx = next_idx + (1 if hop_offset is None else hop_offset)
     return ret
+
+
+def pull_substring_if_end_marker_found(
+        data: StringView,
+        end_marker: StringView,
+        trie: Graph[str, None, str, StringView],
+        nid: str,
+        next_idx: int,
+        end_idx: int,
+        container: set[tuple[int, StringView]]
+):
+    found_end_marker = any(edge_ch == end_marker for _, _, _, edge_ch in trie.get_outputs_full(nid))
+    if found_end_marker:
+        found_idx = next_idx
+        found_str = data[found_idx:end_idx]
+        container.add((found_idx, found_str))
 # MARKDOWN_TEST
 
 
@@ -239,17 +240,23 @@ def mismatch_search(
         test_seq: StringView,
         search_seqs: set[StringView],
         max_mismatch: int,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 ) -> tuple[
     Graph[str, None, str, StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    # Add padding to test sequence
     assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
+    assert pad_marker not in test_seq, f'{test_seq} should not contain pad marker'
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding
     # Generate seeds from search_seqs
     seed_to_seqs = defaultdict(set)
     seq_to_seeds = {}
     for seq in search_seqs:
         assert end_marker not in seq[-1], f'{seq} should not contain end marker'
+        assert pad_marker not in seq, f'{seq} should not contain pad marker'
         seeds = to_seeds(seq, max_mismatch)
         seq_to_seeds[seq] = seeds
         for seed in seeds:
@@ -283,7 +290,8 @@ def mismatch_search(
                 test_seq_idx, dist = se_res
                 if dist <= max_mismatch:
                     found_value = test_seq[test_seq_idx:test_seq_idx + len(search_seq)]
-                    found = test_seq_idx, search_seq, found_value, dist
+                    test_seq_idx_unpadded = test_seq_idx - len(padding)
+                    found = test_seq_idx_unpadded, search_seq, found_value, dist
                     found_set.add(found)
                     break
     return trie, found_set
@@ -296,9 +304,10 @@ def main_mismatch():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        trie_seqs = set(data['trie_sequences'])
-        test_seq = data['test_sequence']
-        end_marker = data['end_marker']
+        trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
+        test_seq = StringView.wrap(data['test_sequence'])
+        end_marker = StringView.wrap(data['end_marker'])
+        pad_marker = StringView.wrap(data['pad_marker'])
         max_mismatch = data['max_mismatch']
         print(f'Building and searching trie using the following settings...')
         print()
@@ -306,7 +315,7 @@ def main_mismatch():
         print(data_raw)
         print('```')
         print()
-        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker, pad_marker)
         print()
         print(f'The following trie was produced ...')
         print()

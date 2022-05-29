@@ -140,49 +140,60 @@ def find_sequence(
         end_marker: StringView,
         trie: Graph[str, None, str, StringView],
         root_nid: str
-) -> tuple[int, StringView] | None:
+) -> set[tuple[int, StringView]]:
     assert end_marker not in data, f'{data} should not have end marker'
-    for start_idx in range(len(data)):
+    ret = set()
+    next_idx = 0
+    while next_idx < len(data):
         nid = root_nid
-        idx = start_idx
+        idx = next_idx
         while nid is not None:
             next_nid = None
-            found_end_marker = False
-            found_edge_str = None
             found_edge_str_len = -1
+            # If an edge matches, there's a special case that needs to be handled where the edge just contains the
+            # end marker. For example, consider the following edge merged trie (end marker is $) ...
+            #
+            #                o$
+            #             .----->*
+            #   an     n  |  $
+            # *---->*----->*---->*
+            #       |  $
+            #       '----->*
+            #
+            # If you use this trie to search the string "annoys", it would first go down the "an" and then have the
+            # option of going down "n" or "$"...
+            #
+            #  * For edge "n", there's an "n" after the "an" in "annoy", meaning this path should be chosen to
+            #    continue the search.
+            #  * For edge "$", the "$" by itself means that all the preceding text was something being looked for,
+            #    meaning that "an" gets added to the return set as a found item.
+            #
+            # Ultimately, the trie above should match "[an]noys", "[ann]oys", and "[anno]ys".
+            found_end_marker_only_edge = any(edge_str == end_marker for _, _, _, edge_str in trie.get_outputs_full(nid))
+            if found_end_marker_only_edge:
+                found_idx = next_idx
+                found_str = data[next_idx:idx]
+                ret.add((found_idx, found_str))
             for eid, _, to_nid, edge_str in trie.get_outputs_full(nid):
-                end_marker_present = edge_str[-1] == end_marker
-                if end_marker_present:
+                found_edge_str_end_marker = edge_str[-1] == end_marker
+                if found_edge_str_end_marker:
                     edge_str = edge_str[:-1]
+                    if len(edge_str) == 0:
+                        continue  # This edge had just the edge marker by itself -- skip as it was already handled above
                 edge_str_len = len(edge_str)
-                # The condition (edge_str_len > found_edge_str_len) ensures that if there are multiple edges but one of
-                # them is just an edge with an end marker, that "end marker" edge is only taken if there isn't an edge
-                # with some characters in it already. Imagine the following tree...
-                #
-                #   $
-                # .---->*
-                # | an    n$
-                # *---->*----->*
-                #       |  $
-                #       '----->*
-                #
-                # If you use that trie to search the string "annoys", it would first go down the "an" edge and then have
-                # the option of going down "n$" or "$". Without the condition (edge_str_len > found_edge_str_len), if
-                # the graph returned edge "n$" and then "$", you would only match up to "[an]noys" instead of "[ann]oys"
-                if data[idx:idx + edge_str_len] == edge_str and edge_str_len > found_edge_str_len:
+                end_idx = idx + edge_str_len
+                if edge_str == data[idx:end_idx]:
                     next_nid = to_nid
-                    if end_marker_present:
-                        found_end_marker = True
-                    found_edge_str = edge_str
                     found_edge_str_len = edge_str_len
+                    if found_edge_str_end_marker:
+                        found_idx = next_idx
+                        found_str = data[next_idx:end_idx]
+                        ret.add((found_idx, found_str))
+                    break
             idx += found_edge_str_len
-            # The condition (start_idx != idx) ensures that something other than empty string was captured. This is
-            # needed because root extends an edge with just the edge marker which we don't want to match on (the edge
-            # marker isn't included, which is why it's checking for empty string)
-            if found_end_marker and start_idx != idx:
-                return start_idx, data[start_idx:idx]
             nid = next_nid
-    return None
+        next_idx += 1
+    return ret
 # MARKDOWN_TEST
 
 
@@ -222,28 +233,23 @@ def mismatch_search(
         test_seq: StringView,
         search_seqs: set[StringView],
         max_mismatch: int,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 ) -> tuple[
     Graph[str, None, str, StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
-    FIX ME
+    # Add padding to test sequence
     assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
+    assert pad_marker not in test_seq, f'{test_seq} should not contain pad marker'
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding
     # Generate seeds from search_seqs
     seed_to_seqs = defaultdict(set)
     seq_to_seeds = {}
     for seq in search_seqs:
         assert end_marker not in seq[-1], f'{seq} should not contain end marker'
+        assert pad_marker not in seq, f'{seq} should not contain pad marker'
         seeds = to_seeds(seq, max_mismatch)
         seq_to_seeds[seq] = seeds
         for seed in seeds:
@@ -255,19 +261,14 @@ def mismatch_search(
     )
     # Scan for seeds
     found_set = set()
-    offset = 0
-    while offset < len(test_seq):
-        # Search for seeds FROM offset (trim off the part of test_seq before offset)
-        found = find_sequence(
-            test_seq[offset:],
-            end_marker,
-            trie,
-            trie.get_root_node()
-        )
-        if found is None:
-            break
+    found_seeds = find_sequence(
+        test_seq,
+        end_marker,
+        trie,
+        trie.get_root_node()
+    )
+    for found in found_seeds:
         found_idx, found_seed = found
-        found_idx += offset  # Add the offset back into the found_idx
         # Get all seqs that have this seed. The seed may appear more than once in a seq, so
         # perform "seed extension" for each occurrence.
         mapped_search_seqs = seed_to_seqs[found_seed]
@@ -282,10 +283,10 @@ def mismatch_search(
                 test_seq_idx, dist = se_res
                 if dist <= max_mismatch:
                     found_value = test_seq[test_seq_idx:test_seq_idx + len(search_seq)]
-                    found = test_seq_idx, search_seq, found_value, dist
+                    test_seq_idx_unpadded = test_seq_idx - len(padding)
+                    found = test_seq_idx_unpadded, search_seq, found_value, dist
                     found_set.add(found)
                     break
-        offset = found_idx + 1
     return trie, found_set
 # MARKDOWN_MISMATCH
 
@@ -299,6 +300,7 @@ def main_mismatch():
         trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
         test_seq = StringView.wrap(data['test_sequence'])
         end_marker = StringView.wrap(data['end_marker'])
+        pad_marker = StringView.wrap(data['pad_marker'])
         max_mismatch = data['max_mismatch']
         print(f'Building and searching trie using the following settings...')
         print()
@@ -306,7 +308,7 @@ def main_mismatch():
         print(data_raw)
         print('```')
         print()
-        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker, pad_marker)
         print()
         print(f'The following trie was produced ...')
         print()

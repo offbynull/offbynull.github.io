@@ -121,6 +121,9 @@ class StringView:
     def __add__(self, other: StringView | str):
         return StringView.wrap(str(self) + str(other))
 
+    def __mul__(self, other: int):
+        return StringView.wrap(str(self) * other)
+
 
 # MARKDOWN
 S = TypeVar('S', StringView, str)

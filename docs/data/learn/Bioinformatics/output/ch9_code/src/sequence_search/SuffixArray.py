@@ -1,22 +1,16 @@
 from __future__ import annotations
 
 import functools
-from bisect import bisect_left, bisect_right
 from collections import defaultdict
 from sys import stdin
 
 import yaml
 
-from graph.DirectedGraph import Graph
-from graph.GraphHelpers import StringIdGenerator
-
-
-# MARKDOWN_BUILD
 from sequence_search.SearchUtils import StringView, to_seeds, seed_extension
 
 
-def cmp(a: StringView, b: StringView):
-    end_marker = a.data[-1]
+# MARKDOWN_BUILD
+def cmp(a: StringView, b: StringView, end_marker: StringView):
     for a_ch, b_ch in zip(a, b):
         if a_ch == end_marker and b_ch == end_marker:
             continue
@@ -45,7 +39,7 @@ def to_suffix_array(
     while len(seq) > 0:
         ret.append(seq)
         seq = seq[1:]
-    ret = sorted(ret, key=functools.cmp_to_key(cmp))
+    ret = sorted(ret, key=functools.cmp_to_key(lambda a, b: cmp(a, b, end_marker)))
     return ret
 # MARKDOWN_BUILD
 
@@ -101,19 +95,19 @@ def find_prefix(
     assert end_marker not in prefix, f'{prefix} should not have end marker'
     # Binary search
     start = 0
-    end = len(suffix_array)
+    end = len(suffix_array) - 1
     found = None
-    while start != end:
+    while start <= end:
         mid = start + ((end - start) // 2)
         mid_suffix = suffix_array[mid]
-        comparison = cmp(prefix, mid_suffix)
+        comparison = cmp(prefix, mid_suffix, end_marker)
         if common_prefix_len(prefix, mid_suffix) == len(prefix):
             found = mid
             break
         elif comparison < 0:
-            end = mid
+            end = mid - 1
         elif comparison > 0:
-            start = mid
+            start = mid + 1
         else:
             raise ValueError('This should never happen')
     # If not found, return
@@ -129,7 +123,7 @@ def find_prefix(
     # Walk forward to see how many after start with prefix
     end = found + 1
     while end < len(suffix_array):
-        end_suffix = suffix_array[start]
+        end_suffix = suffix_array[end]
         if common_prefix_len(prefix, end_suffix) != len(prefix):
             break
         end += 1
@@ -181,11 +175,17 @@ def mismatch_search(
         test_seq: StringView,
         search_seqs: set[StringView],
         max_mismatch: int,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 ) -> tuple[
     list[StringView],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    # Add end marker and padding to test sequence
+    assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
+    assert pad_marker not in test_seq, f'{test_seq} should not contain pad marker'
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding + end_marker
     # Turn test sequence into suffix tree
     array = to_suffix_array(test_seq, end_marker)
     # Generate seeds from search_seqs
@@ -193,6 +193,7 @@ def mismatch_search(
     seq_to_seeds = {}
     for seq in search_seqs:
         assert end_marker not in seq, f'{seq} should not contain end marker'
+        assert pad_marker not in seq, f'{seq} should not contain pad marker'
         seeds = to_seeds(seq, max_mismatch)
         seq_to_seeds[seq] = seeds
         for seed in seeds:
@@ -217,7 +218,8 @@ def mismatch_search(
                     test_seq_idx, dist = se_res
                     if dist <= max_mismatch:
                         found_value = test_seq[test_seq_idx:test_seq_idx + len(search_seq)]
-                        found = test_seq_idx, search_seq, found_value, dist
+                        test_seq_idx_unpadded = test_seq_idx - len(padding)
+                        found = test_seq_idx_unpadded, search_seq, found_value, dist
                         found_set.add(found)
                         break
     return array, found_set
@@ -233,6 +235,7 @@ def main_mismatch():
         trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
         test_seq = StringView.wrap(data['test_sequence'])
         end_marker = StringView.wrap(data['end_marker'])
+        pad_marker = StringView.wrap(data['pad_marker'])
         max_mismatch = data['max_mismatch']
         print(f'Building and searching trie using the following settings...')
         print()
@@ -240,7 +243,7 @@ def main_mismatch():
         print(data_raw)
         print('```')
         print()
-        array, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        array, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker, pad_marker)
         print()
         print(f'The following suffix array was produced ...')
         print()

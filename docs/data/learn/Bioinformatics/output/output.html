@@ -18524,6 +18524,14 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>The subsections below are mainly algorithms to efficiently search for exact <a href="#BM_(substring)%2Fi">substring</a>s. The technique described above can be used to extend those algorithms to tolerate a certain number of mismatches.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>When searching with mismatches, the string being searched may have to be padded. For example, searching GCCGTTT for GGCC with a mismatch tolerance of 1 should match the beginning.</p>
+<pre><code>-GCCGTTT-
+GGCC
+</code></pre>
+<p>Pad each end by the mismatch tolerance count with some character you don't expect to encounter (dashes used in the example above).</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The Pevzner uses the formula <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⌊</mo><mfrac><mi>n</mi><mrow><mi>d</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="false">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor \frac{n}{d+1} \rfloor</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.153331em;vertical-align:-0.403331em;"></span><span class="mopen">⌊</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌋</span></span></span></span> for determining the number of nucleotides per seed, where n is the <a href="#BM_(sequence)%2Fi">sequence</a> length and d is the number of mismatches. It's the same as the code above but it takes the floor rather than the ceiling. For example, ACGTT with 2 mismatches would break down to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>5</mn><mn>3</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{5}{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span> = 1.667 nucleotides per seed, which rounds down to 1, which ends up being the seeds [A, C, GTT]. That seems like a not optimal breakup -- smaller seeds may end up with more frequent hits during search?</p>
 <p>Maybe this has to do with the BLAST discussion that comes immediately after (section 9.14).</p>
 </div>
@@ -18596,39 +18604,45 @@ THHHTHHHTH = 7 / 10 = 0.7
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_0b6cc891a84d7c1b1673facbdf9c95ed.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 108 to 135):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 108 to 141):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
         data: StringView,
         end_marker: StringView,
         trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView],
         root_nid: <span class="hljs-built_in">str</span>
-</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView] | <span class="hljs-literal">None</span>:
+</span>) -&gt; <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView]]:
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> data, <span class="hljs-string">f'<span class="hljs-subst">{data}</span> should not have end marker'</span>
-    <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data)):
+    ret = <span class="hljs-built_in">set</span>()
+    next_idx = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> next_idx &lt; <span class="hljs-built_in">len</span>(data):
         nid = root_nid
-        end_idx = start_idx
-        <span class="hljs-keyword">for</span> idx, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(data[start_idx:]):
+        end_idx = next_idx
+        <span class="hljs-keyword">while</span> end_idx &lt; <span class="hljs-built_in">len</span>(data):
+            ch = data[end_idx]
             <span class="hljs-comment"># Find edge for ch</span>
-            found_nid = <span class="hljs-literal">None</span>
+            dst_nid = <span class="hljs-literal">None</span>
             <span class="hljs-keyword">for</span> _, _, to_nid, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
                 <span class="hljs-keyword">if</span> edge_ch == ch:
-                    found_nid = to_nid
-                    end_idx = start_idx + idx
+                    dst_nid = to_nid
                     <span class="hljs-keyword">break</span>
-            <span class="hljs-comment"># If found not found, bail</span>
-            <span class="hljs-keyword">if</span> found_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-comment"># If not found, bail</span>
+            <span class="hljs-keyword">if</span> dst_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
                 <span class="hljs-keyword">break</span>
-            <span class="hljs-comment"># Otherwise, keep going from the edge's end node</span>
-            nid = found_nid
-        <span class="hljs-comment"># End marker reached? Return with index of match and the match itself</span>
-        end_marker_found = <span class="hljs-built_in">any</span>(<span class="hljs-literal">True</span> <span class="hljs-keyword">for</span> _, _, _, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid) <span class="hljs-keyword">if</span> edge_ch == end_marker)
-        <span class="hljs-keyword">if</span> end_marker_found:
-            <span class="hljs-keyword">return</span> start_idx, data[start_idx:end_idx+<span class="hljs-number">1</span>]
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+            <span class="hljs-comment"># If found dst node points to end marker, store it</span>
+            found_end_marker = <span class="hljs-built_in">any</span>(edge_ch == end_marker <span class="hljs-keyword">for</span> _, _, _, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(dst_nid))
+            <span class="hljs-keyword">if</span> found_end_marker:
+                found_idx = next_idx
+                found_str = data[next_idx:end_idx + <span class="hljs-number">1</span>]
+                ret.add((found_idx, found_str))
+            <span class="hljs-comment"># Move forward</span>
+            nid = dst_nid
+            end_idx += <span class="hljs-number">1</span>
+        next_idx += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> ret
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -18641,31 +18655,37 @@ THHHTHHHTH = 7 / 10 = 0.7
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_ffe79cef5efa29b2b8ef3b9bfa5a8aed.svg" alt="Dot diagram"></p>
-<p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: (22, apple)</p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+<p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
 <p>Extending a <a href="#BM_(trie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(trie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 172 to 230):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 178 to 237):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
         search_seqs: <span class="hljs-built_in">set</span>[StringView],
         max_mismatch: <span class="hljs-built_in">int</span>,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[
     Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView],
     <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView, StringView, <span class="hljs-built_in">int</span>]]
 ]:
+    <span class="hljs-comment"># Add padding to test sequence</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain end marker'</span>
+    <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain pad marker'</span>
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding
     <span class="hljs-comment"># Generate seeds from search_seqs</span>
     seed_to_seqs = defaultdict(<span class="hljs-built_in">set</span>)
     seq_to_seeds = {}
     <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> search_seqs:
-        <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
-        seq_no_marker = seq[:-<span class="hljs-number">1</span>]
-        seeds = to_seeds(seq_no_marker, max_mismatch)
-        seq_to_seeds[seq_no_marker] = seeds
+        <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain end marker'</span>
+        <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq, <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain pad marker'</span>
+        seeds = to_seeds(seq, max_mismatch)
+        seq_to_seeds[seq] = seeds
         <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seeds:
-            seed_to_seqs[seed].add(seq_no_marker)
+            seed_to_seqs[seed].add(seq)
     <span class="hljs-comment"># Turn seeds into trie</span>
     trie = to_trie(
         <span class="hljs-built_in">set</span>(seed + end_marker <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seed_to_seqs),
@@ -18673,19 +18693,14 @@ THHHTHHHTH = 7 / 10 = 0.7
     )
     <span class="hljs-comment"># Scan for seeds</span>
     found_set = <span class="hljs-built_in">set</span>()
-    offset = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">while</span> offset &lt; <span class="hljs-built_in">len</span>(test_seq):
-        <span class="hljs-comment"># Search for seeds FROM offset (trim off the part of test_seq before offset)</span>
-        found = find_sequence(
-            test_seq[offset:],
-            end_marker,
-            trie,
-            trie.get_root_node()
-        )
-        <span class="hljs-keyword">if</span> found <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
-            <span class="hljs-keyword">break</span>
+    found_seeds = find_sequence(
+        test_seq,
+        end_marker,
+        trie,
+        trie.get_root_node()
+    )
+    <span class="hljs-keyword">for</span> found <span class="hljs-keyword">in</span> found_seeds:
         found_idx, found_seed = found
-        found_idx += offset  <span class="hljs-comment"># Add the offset back into the found_idx</span>
         <span class="hljs-comment"># Get all seqs that have this seed. The seed may appear more than once in a seq, so</span>
         <span class="hljs-comment"># perform "seed extension" for each occurrence.</span>
         mapped_search_seqs = seed_to_seqs[found_seed]
@@ -18700,27 +18715,29 @@ THHHTHHHTH = 7 / 10 = 0.7
                 test_seq_idx, dist = se_res
                 <span class="hljs-keyword">if</span> dist &lt;= max_mismatch:
                     found_value = test_seq[test_seq_idx:test_seq_idx + <span class="hljs-built_in">len</span>(search_seq)]
-                    found = test_seq_idx, search_seq, found_value, dist
+                    test_seq_idx_unpadded = test_seq_idx - <span class="hljs-built_in">len</span>(padding)
+                    found = test_seq_idx_unpadded, search_seq, found_value, dist
                     found_set.add(found)
                     <span class="hljs-keyword">break</span>
-        offset = found_idx + <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> trie, found_set
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Building and searching trie using the following settings...</p>
 <pre><code>{
-  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_de90e7f2e161af27dc2f9b4192e2f1b2.svg" alt="Dot diagram"></p>
+<p><img src="dot_7548577a14de4ee9fae874cba09c8257.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
+<li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
 <li>Matched <code>nana a</code> against <code>banana</code> with distance of 2 at index 2</li>
@@ -18835,55 +18852,66 @@ THHHTHHHTH = 7 / 10 = 0.7
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 138 to 185):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 138 to 196):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
         data: StringView,
         end_marker: StringView,
         trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView],
         root_nid: <span class="hljs-built_in">str</span>
-</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView] | <span class="hljs-literal">None</span>:
+</span>) -&gt; <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView]]:
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> data, <span class="hljs-string">f'<span class="hljs-subst">{data}</span> should not have end marker'</span>
-    <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data)):
+    ret = <span class="hljs-built_in">set</span>()
+    next_idx = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> next_idx &lt; <span class="hljs-built_in">len</span>(data):
         nid = root_nid
-        idx = start_idx
+        idx = next_idx
         <span class="hljs-keyword">while</span> nid <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
             next_nid = <span class="hljs-literal">None</span>
-            found_end_marker = <span class="hljs-literal">False</span>
-            found_edge_str = <span class="hljs-literal">None</span>
             found_edge_str_len = -<span class="hljs-number">1</span>
+            <span class="hljs-comment"># If an edge matches, there's a special case that needs to be handled where the edge just contains the</span>
+            <span class="hljs-comment"># end marker. For example, consider the following edge merged trie (end marker is $) ...</span>
+            <span class="hljs-comment">#</span>
+            <span class="hljs-comment">#                o$</span>
+            <span class="hljs-comment">#             .-----&gt;*</span>
+            <span class="hljs-comment">#   an     n  |  $</span>
+            <span class="hljs-comment"># *----&gt;*-----&gt;*----&gt;*</span>
+            <span class="hljs-comment">#       |  $</span>
+            <span class="hljs-comment">#       '-----&gt;*</span>
+            <span class="hljs-comment">#</span>
+            <span class="hljs-comment"># If you use this trie to search the string "annoys", it would first go down the "an" and then have the</span>
+            <span class="hljs-comment"># option of going down "n" or "$"...</span>
+            <span class="hljs-comment">#</span>
+            <span class="hljs-comment">#  * For edge "n", there's an "n" after the "an" in "annoy", meaning this path should be chosen to</span>
+            <span class="hljs-comment">#    continue the search.</span>
+            <span class="hljs-comment">#  * For edge "$", the "$" by itself means that all the preceding text was something being looked for,</span>
+            <span class="hljs-comment">#    meaning that "an" gets added to the return set as a found item.</span>
+            <span class="hljs-comment">#</span>
+            <span class="hljs-comment"># Ultimately, the trie above should match "[an]noys", "[ann]oys", and "[anno]ys".</span>
+            found_end_marker_only_edge = <span class="hljs-built_in">any</span>(edge_str == end_marker <span class="hljs-keyword">for</span> _, _, _, edge_str <span class="hljs-keyword">in</span> trie.get_outputs_full(nid))
+            <span class="hljs-keyword">if</span> found_end_marker_only_edge:
+                found_idx = next_idx
+                found_str = data[next_idx:idx]
+                ret.add((found_idx, found_str))
             <span class="hljs-keyword">for</span> eid, _, to_nid, edge_str <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
-                end_marker_present = edge_str[-<span class="hljs-number">1</span>] == end_marker
-                <span class="hljs-keyword">if</span> end_marker_present:
+                found_edge_str_end_marker = edge_str[-<span class="hljs-number">1</span>] == end_marker
+                <span class="hljs-keyword">if</span> found_edge_str_end_marker:
                     edge_str = edge_str[:-<span class="hljs-number">1</span>]
+                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(edge_str) == <span class="hljs-number">0</span>:
+                        <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># This edge had just the edge marker by itself -- skip as it was already handled above</span>
                 edge_str_len = <span class="hljs-built_in">len</span>(edge_str)
-                <span class="hljs-comment"># The condition (edge_str_len &gt; found_edge_str_len) ensures that if there are multiple edges but one of</span>
-                <span class="hljs-comment"># them is just an edge with an end marker, that "end marker" edge is only taken if there isn't an edge</span>
-                <span class="hljs-comment"># with some characters in it already. Imagine the following tree...</span>
-                <span class="hljs-comment">#</span>
-                <span class="hljs-comment">#   $</span>
-                <span class="hljs-comment"># .----&gt;*</span>
-                <span class="hljs-comment"># | an    n$</span>
-                <span class="hljs-comment"># *----&gt;*-----&gt;*</span>
-                <span class="hljs-comment">#       |  $</span>
-                <span class="hljs-comment">#       '-----&gt;*</span>
-                <span class="hljs-comment">#</span>
-                <span class="hljs-comment"># If you use that trie to search the string "annoys", it would first go down the "an" edge and then have</span>
-                <span class="hljs-comment"># the option of going down "n$" or "$". Without the condition (edge_str_len &gt; found_edge_str_len), if</span>
-                <span class="hljs-comment"># the graph returned edge "n$" and then "$", you would only match up to "[an]noys" instead of "[ann]oys"</span>
-                <span class="hljs-keyword">if</span> data[idx:idx + edge_str_len] == edge_str <span class="hljs-keyword">and</span> edge_str_len &gt; found_edge_str_len:
+                end_idx = idx + edge_str_len
+                <span class="hljs-keyword">if</span> edge_str == data[idx:end_idx]:
                     next_nid = to_nid
-                    <span class="hljs-keyword">if</span> end_marker_present:
-                        found_end_marker = <span class="hljs-literal">True</span>
-                    found_edge_str = edge_str
                     found_edge_str_len = edge_str_len
+                    <span class="hljs-keyword">if</span> found_edge_str_end_marker:
+                        found_idx = next_idx
+                        found_str = data[next_idx:end_idx]
+                        ret.add((found_idx, found_str))
+                    <span class="hljs-keyword">break</span>
             idx += found_edge_str_len
-            <span class="hljs-comment"># The condition (start_idx != idx) ensures that something other than empty string was captured. This is</span>
-            <span class="hljs-comment"># needed because root extends an edge with just the edge marker which we don't want to match on (the edge</span>
-            <span class="hljs-comment"># marker isn't included, which is why it's checking for empty string)</span>
-            <span class="hljs-keyword">if</span> found_end_marker <span class="hljs-keyword">and</span> start_idx != idx:
-                <span class="hljs-keyword">return</span> start_idx, data[start_idx:idx]
             nid = next_nid
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        next_idx += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> ret
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -18897,30 +18925,36 @@ THHHTHHHTH = 7 / 10 = 0.7
 </code></pre>
 <p>The following trie was produced ...</p>
 <p><img src="dot_ee42d677cbea34a3879517f1dc525445.svg" alt="Dot diagram"></p>
-<p>Searching <em>How do you feel about apples?</em> with the trie revealed the following was found: (22, 'apple')</p>
+<p>Searching <em>How do you feel about apples?</em> with the trie revealed the following was found: {(22, 'apple')}</p>
 </div>
 <p></p>
 <p>Extending a <a href="#BM_(trie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(trie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 221 to 279):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 232 to 291):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
         search_seqs: <span class="hljs-built_in">set</span>[StringView],
         max_mismatch: <span class="hljs-built_in">int</span>,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[
     Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView],
     <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView, StringView, <span class="hljs-built_in">int</span>]]
 ]:
+    <span class="hljs-comment"># Add padding to test sequence</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain end marker'</span>
+    <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain pad marker'</span>
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding
     <span class="hljs-comment"># Generate seeds from search_seqs</span>
     seed_to_seqs = defaultdict(<span class="hljs-built_in">set</span>)
     seq_to_seeds = {}
     <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> search_seqs:
-        <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
-        seq_no_marker = seq[:-<span class="hljs-number">1</span>]
-        seeds = to_seeds(seq_no_marker, max_mismatch)
-        seq_to_seeds[seq_no_marker] = seeds
+        <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain end marker'</span>
+        <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq, <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain pad marker'</span>
+        seeds = to_seeds(seq, max_mismatch)
+        seq_to_seeds[seq] = seeds
         <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seeds:
-            seed_to_seqs[seed].add(seq_no_marker)
+            seed_to_seqs[seed].add(seq)
     <span class="hljs-comment"># Turn seeds into trie</span>
     trie = to_trie(
         <span class="hljs-built_in">set</span>(seed + end_marker <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seed_to_seqs),
@@ -18928,19 +18962,14 @@ THHHTHHHTH = 7 / 10 = 0.7
     )
     <span class="hljs-comment"># Scan for seeds</span>
     found_set = <span class="hljs-built_in">set</span>()
-    offset = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">while</span> offset &lt; <span class="hljs-built_in">len</span>(test_seq):
-        <span class="hljs-comment"># Search for seeds FROM offset (trim off the part of test_seq before offset)</span>
-        found = find_sequence(
-            test_seq[offset:],
-            end_marker,
-            trie,
-            trie.get_root_node()
-        )
-        <span class="hljs-keyword">if</span> found <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
-            <span class="hljs-keyword">break</span>
+    found_seeds = find_sequence(
+        test_seq,
+        end_marker,
+        trie,
+        trie.get_root_node()
+    )
+    <span class="hljs-keyword">for</span> found <span class="hljs-keyword">in</span> found_seeds:
         found_idx, found_seed = found
-        found_idx += offset  <span class="hljs-comment"># Add the offset back into the found_idx</span>
         <span class="hljs-comment"># Get all seqs that have this seed. The seed may appear more than once in a seq, so</span>
         <span class="hljs-comment"># perform "seed extension" for each occurrence.</span>
         mapped_search_seqs = seed_to_seqs[found_seed]
@@ -18955,27 +18984,29 @@ THHHTHHHTH = 7 / 10 = 0.7
                 test_seq_idx, dist = se_res
                 <span class="hljs-keyword">if</span> dist &lt;= max_mismatch:
                     found_value = test_seq[test_seq_idx:test_seq_idx + <span class="hljs-built_in">len</span>(search_seq)]
-                    found = test_seq_idx, search_seq, found_value, dist
+                    test_seq_idx_unpadded = test_seq_idx - <span class="hljs-built_in">len</span>(padding)
+                    found = test_seq_idx_unpadded, search_seq, found_value, dist
                     found_set.add(found)
                     <span class="hljs-keyword">break</span>
-        offset = found_idx + <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> trie, found_set
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Building and searching trie using the following settings...</p>
 <pre><code>{
-  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_082a14bfc6c800da082e34c52eff0a17.svg" alt="Dot diagram"></p>
+<p><img src="dot_5ece8c925c4b3e1618cc65da15f1d991.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
+<li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
 <li>Matched <code>nana a</code> against <code>banana</code> with distance of 2 at index 2</li>
@@ -19019,8 +19050,24 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>At scan position 1, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "ratio". However, just from scan position 0's <a href="#BM_(trie)%2Fi">trie</a> walk, it's already known that scan position 1's <a href="#BM_(trie)%2Fi">trie</a> walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the <a href="#BM_(trie)%2Fi">trie</a> from the node just past "rat" rather than walking it from the root node .</p>
 <p>This algorithm is an optimization that builds a <a href="#BM_(trie)%2Fi">trie</a> with special edges to handle the scenario described above. For example, the <a href="#BM_(trie)%2Fi">trie</a> below is the same as the example <a href="#BM_(trie)%2Fi">trie</a> above except that it contains a special edge pointing from "arat" to "rat".</p>
 <p><img src="svgbob_d6e202f055e470240a3f70bee8cb98c573f8141b.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 35 to 99):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">add_hop_edges</span>(<span class="hljs-params">
+<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 34 to 114):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_trie</span>(<span class="hljs-params">
+        seqs: <span class="hljs-built_in">set</span>[StringView],
+        end_marker: StringView,
+        nid_gen: StringIdGenerator = StringIdGenerator(<span class="hljs-params"><span class="hljs-string">'N'</span></span>),
+        eid_gen: StringIdGenerator = StringIdGenerator(<span class="hljs-params"><span class="hljs-string">'E'</span></span>)
+</span>) -&gt; Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView | <span class="hljs-literal">None</span>]:
+    trie = Trie_Basic.to_trie(
+        seqs,
+        end_marker,
+        nid_gen,
+        eid_gen
+    )
+    add_hop_edges(trie, trie.get_root_node(), end_marker)
+    <span class="hljs-keyword">return</span> trie
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add_hop_edges</span>(<span class="hljs-params">
         trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView | <span class="hljs-literal">None</span>],
         root_nid: <span class="hljs-built_in">str</span>,
         end_marker: StringView,
@@ -19095,51 +19142,72 @@ THHHTHHHTH = 7 / 10 = 0.7
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_7e4adf05e1e6b2f4907e5d5dd1f4bb04.svg" alt="Dot diagram"></p>
+<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(trie)%2Fi">trie</a> walk.</p>
 <p><img src="svgbob_7e1f15b8e314f2e2483763b06ae7b0c23ae5aa1d.svg" alt="Kroki diagram output"></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> is essentially the same as before, except that on failures the special edges may be used to hop ahead.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 131 to 168):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 145 to 204):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
         data: StringView,
         end_marker: StringView,
         trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView],
         root_nid: <span class="hljs-built_in">str</span>
-</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">str</span>] | <span class="hljs-literal">None</span>:
+</span>) -&gt; <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView]]:
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> data, <span class="hljs-string">f'<span class="hljs-subst">{data}</span> should not have end marker'</span>
-    nid = root_nid
-    skip_offset = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">for</span> start_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data)):
-        end_marker_found = <span class="hljs-literal">False</span>
-        end_idx = start_idx
-        <span class="hljs-keyword">for</span> offset, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(data[start_idx + skip_offset:]):
-            offset = offset + skip_offset
+    ret = <span class="hljs-built_in">set</span>()
+    next_idx = <span class="hljs-number">0</span>
+    hop_nid = <span class="hljs-literal">None</span>
+    hop_offset = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">while</span> next_idx &lt; <span class="hljs-built_in">len</span>(data):
+        nid = root_nid <span class="hljs-keyword">if</span> hop_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> hop_nid
+        end_idx = next_idx + (<span class="hljs-number">0</span> <span class="hljs-keyword">if</span> hop_offset <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> hop_offset)
+        <span class="hljs-comment"># If, on the last iteration, we followed a hop edge (hop_offset is not None), end_idx will be &gt; next_idx.</span>
+        <span class="hljs-comment"># Following a hop edge means that we've "fast-forwarded" movement in the trie. If the "fast-forwarded" position</span>
+        <span class="hljs-comment"># we're starting at has an edge pointing to an end-marker, immediately put it into the return set.</span>
+        <span class="hljs-keyword">if</span> next_idx != end_idx:
+            pull_substring_if_end_marker_found(data, end_marker, trie, nid, next_idx, end_idx, ret)
+        hop_offset = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">while</span> end_idx &lt; <span class="hljs-built_in">len</span>(data):
+            ch = data[end_idx]
             <span class="hljs-comment"># Find edge for ch</span>
-            found_nid = <span class="hljs-literal">None</span>
-            end_marker_found = <span class="hljs-built_in">any</span>(<span class="hljs-literal">True</span> <span class="hljs-keyword">for</span> _, _, _, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid) <span class="hljs-keyword">if</span> edge_ch == end_marker)
+            dst_nid = <span class="hljs-literal">None</span>
             <span class="hljs-keyword">for</span> _, _, to_nid, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid):
                 <span class="hljs-keyword">if</span> edge_ch == ch:
-                    found_nid = to_nid
-                    end_idx = start_idx + offset
+                    dst_nid = to_nid
                     <span class="hljs-keyword">break</span>
-            <span class="hljs-comment"># If found not found, use fast-forward edge if it exists or start from root if it doesn't</span>
-            <span class="hljs-keyword">if</span> found_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
-                hop_edge = trie.get_output_full(nid, <span class="hljs-keyword">lambda</span> _, __, ___, edge_ch: edge_ch <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>)
-                <span class="hljs-keyword">if</span> hop_edge <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
-                    nid = root_nid
-                    skip_offset = <span class="hljs-number">0</span>
-                <span class="hljs-keyword">else</span>:
-                    _, _, nid, _ = hop_edge
-                    skip_offset = offset - <span class="hljs-number">1</span>
+            <span class="hljs-comment"># If not found, bail (hopping forward by setting hop_offset / next_nid if a hop edge is present)</span>
+            <span class="hljs-keyword">if</span> dst_nid <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                hop_nid = <span class="hljs-built_in">next</span>(
+                    (to_nid <span class="hljs-keyword">for</span> _, _, to_nid, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid) <span class="hljs-keyword">if</span> edge_ch <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>),
+                    <span class="hljs-literal">None</span>
+                )
+                <span class="hljs-keyword">if</span> hop_nid <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                    hop_offset = end_idx - next_idx - <span class="hljs-number">1</span>
                 <span class="hljs-keyword">break</span>
-            <span class="hljs-comment"># Otherwise, keep going from the edge's end node</span>
-            nid = found_nid
-        <span class="hljs-comment"># End marker reached? Return with index of match and the match itself</span>
-        <span class="hljs-keyword">if</span> end_marker_found:
-            <span class="hljs-keyword">return</span> start_idx, data[start_idx:end_idx+<span class="hljs-number">1</span>]
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+            <span class="hljs-comment"># Move forward, and, if there's an edge pointing to an end-marker, put it in the return set.</span>
+            nid = dst_nid
+            end_idx += <span class="hljs-number">1</span>
+            pull_substring_if_end_marker_found(data, end_marker, trie, nid, next_idx, end_idx, ret)
+        next_idx = next_idx + (<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> hop_offset <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> hop_offset)
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">pull_substring_if_end_marker_found</span>(<span class="hljs-params">
+        data: StringView,
+        end_marker: StringView,
+        trie: Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView],
+        nid: <span class="hljs-built_in">str</span>,
+        next_idx: <span class="hljs-built_in">int</span>,
+        end_idx: <span class="hljs-built_in">int</span>,
+        container: <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView]]
+</span>):
+    found_end_marker = <span class="hljs-built_in">any</span>(edge_ch == end_marker <span class="hljs-keyword">for</span> _, _, _, edge_ch <span class="hljs-keyword">in</span> trie.get_outputs_full(nid))
+    <span class="hljs-keyword">if</span> found_end_marker:
+        found_idx = next_idx
+        found_str = data[found_idx:end_idx]
+        container.add((found_idx, found_str))
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -19152,52 +19220,52 @@ THHHTHHHTH = 7 / 10 = 0.7
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
-<p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: (23, ration)</p>
+<p><img src="dot_e8aaff6d28d4bbf4ce30f9248c9c8316.svg" alt="Dot diagram"></p>
+<p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
 <p>Extending a <a href="#BM_(trie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(trie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
-<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 205 to 264):</p>
+<p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 239 to 298):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
         search_seqs: <span class="hljs-built_in">set</span>[StringView],
         max_mismatch: <span class="hljs-built_in">int</span>,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[
     Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, StringView],
     <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView, StringView, <span class="hljs-built_in">int</span>]]
 ]:
+    <span class="hljs-comment"># Add padding to test sequence</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain end marker'</span>
+    <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain pad marker'</span>
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding
     <span class="hljs-comment"># Generate seeds from search_seqs</span>
     seed_to_seqs = defaultdict(<span class="hljs-built_in">set</span>)
     seq_to_seeds = {}
     <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> search_seqs:
-        <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
-        seq_no_marker = seq[:-<span class="hljs-number">1</span>]
-        seeds = to_seeds(seq_no_marker, max_mismatch)
-        seq_to_seeds[seq_no_marker] = seeds
+        <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain end marker'</span>
+        <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq, <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain pad marker'</span>
+        seeds = to_seeds(seq, max_mismatch)
+        seq_to_seeds[seq] = seeds
         <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seeds:
-            seed_to_seqs[seed].add(seq_no_marker)
+            seed_to_seqs[seed].add(seq)
     <span class="hljs-comment"># Turn seeds into trie</span>
-    trie = Trie_Basic.to_trie(
+    trie = to_trie(
         <span class="hljs-built_in">set</span>(seed + end_marker <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seed_to_seqs),
         end_marker
     )
-    add_hop_edges(trie, trie.get_root_node(), end_marker)
     <span class="hljs-comment"># Scan for seeds</span>
     found_set = <span class="hljs-built_in">set</span>()
-    offset = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">while</span> offset &lt; <span class="hljs-built_in">len</span>(test_seq):
-        <span class="hljs-comment"># Search for seeds FROM offset (trim off the part of test_seq before offset)</span>
-        found = find_sequence(
-            test_seq[offset:],
-            end_marker,
-            trie,
-            trie.get_root_node()
-        )
-        <span class="hljs-keyword">if</span> found <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
-            <span class="hljs-keyword">break</span>
+    found_seeds = find_sequence(
+        test_seq,
+        end_marker,
+        trie,
+        trie.get_root_node()
+    )
+    <span class="hljs-keyword">for</span> found <span class="hljs-keyword">in</span> found_seeds:
         found_idx, found_seed = found
-        found_idx += offset  <span class="hljs-comment"># Add the offset back into the found_idx</span>
         <span class="hljs-comment"># Get all seqs that have this seed. The seed may appear more than once in a seq, so</span>
         <span class="hljs-comment"># perform "seed extension" for each occurrence.</span>
         mapped_search_seqs = seed_to_seqs[found_seed]
@@ -19212,27 +19280,29 @@ THHHTHHHTH = 7 / 10 = 0.7
                 test_seq_idx, dist = se_res
                 <span class="hljs-keyword">if</span> dist &lt;= max_mismatch:
                     found_value = test_seq[test_seq_idx:test_seq_idx + <span class="hljs-built_in">len</span>(search_seq)]
-                    found = test_seq_idx, search_seq, found_value, dist
+                    test_seq_idx_unpadded = test_seq_idx - <span class="hljs-built_in">len</span>(padding)
+                    found = test_seq_idx_unpadded, search_seq, found_value, dist
                     found_set.add(found)
                     <span class="hljs-keyword">break</span>
-        offset = found_idx + <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> trie, found_set
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Building and searching trie using the following settings...</p>
 <pre><code>{
-  trie_sequences: ['anana¶', 'banana¶', 'ankle¶'],
+  trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_89eb9b796007f60f943dd2d585f89f25.svg" alt="Dot diagram"></p>
+<p><img src="dot_43e57eb7d331ebc0f0713003db6ad13f.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
+<li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
 <li>Matched <code>nana a</code> against <code>banana</code> with distance of 2 at index 2</li>
@@ -19414,16 +19484,22 @@ THHHTHHHTH = 7 / 10 = 0.7
 </div>
 <p></p>
 <p>Extending a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> to support mismatches requires scanning it for seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
-<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 224 to 269):</p>
+<p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 224 to 278):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
         search_seqs: <span class="hljs-built_in">set</span>[StringView],
         max_mismatch: <span class="hljs-built_in">int</span>,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[
     Graph[<span class="hljs-built_in">str</span>, <span class="hljs-literal">None</span>, <span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[StringView]],
     <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView, StringView, <span class="hljs-built_in">int</span>]]
 ]:
+    <span class="hljs-comment"># Add end marker and padding to test sequence</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain end marker'</span>
+    <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain pad marker'</span>
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding + end_marker
     <span class="hljs-comment"># Turn test sequence into suffix tree</span>
     trie = to_suffix_tree(test_seq, end_marker)
     <span class="hljs-comment"># Generate seeds from search_seqs</span>
@@ -19431,6 +19507,8 @@ THHHTHHHTH = 7 / 10 = 0.7
     seq_to_seeds = {}
     <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> search_seqs:
         <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq, <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain end marker'</span>
+        <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq, <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain pad marker'</span>
+        seq = seq
         seeds = to_seeds(seq, max_mismatch)
         seq_to_seeds[seq] = seeds
         <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seeds:
@@ -19456,7 +19534,8 @@ THHHTHHHTH = 7 / 10 = 0.7
                     test_seq_idx, dist = se_res
                     <span class="hljs-keyword">if</span> dist &lt;= max_mismatch:
                         found_value = test_seq[test_seq_idx:test_seq_idx + <span class="hljs-built_in">len</span>(search_seq)]
-                        found = test_seq_idx, search_seq, found_value, dist
+                        test_seq_idx_unpadded = test_seq_idx - <span class="hljs-built_in">len</span>(padding)
+                        found = test_seq_idx_unpadded, search_seq, found_value, dist
                         found_set.add(found)
                         <span class="hljs-keyword">break</span>
     <span class="hljs-keyword">return</span> trie, found_set
@@ -19466,16 +19545,18 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p>Building and searching trie using the following settings...</p>
 <pre><code>{
   trie_sequences: ['anana', 'banana', 'ankle'],
-  test_sequence: 'banana ankle baxana orange banxxa vehicle¶',
+  test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_c8dc65930ff5340e6d5c5db4ca824812.svg" alt="Dot diagram"></p>
-<p>Searching <code>banana ankle baxana orange banxxa vehicle¶</code> with the trie revealed the following was found:</p>
+<p><img src="dot_a9ae0fa4352c9e4597b25577fe4b56d0.svg" alt="Dot diagram"></p>
+<p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
+<li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
 <li>Matched <code>nana a</code> against <code>banana</code> with distance of 2 at index 2</li>
@@ -19543,12 +19624,8 @@ THHHTHHHTH = 7 / 10 = 0.7
 </div>
 <p><strong>ALGORITHM</strong>:</p>
 <p>To build a <a href="#BM_(suffix%20array)%2Fi">suffix array</a>, the suffixes of a <a href="#BM_(sequence)%2Fi">sequence</a> are sorted lexicographically (end marker included). The end marker comes first in the lexicographical sort order.</p>
-<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 15 to 49):</p>
-<pre class="hljs"><code><span class="hljs-keyword">from</span> sequence_search.SearchUtils <span class="hljs-keyword">import</span> StringView, to_seeds, seed_extension
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: StringView, b: StringView</span>):
-    end_marker = a.data[-<span class="hljs-number">1</span>]
+<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 13 to 43):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: StringView, b: StringView, end_marker: StringView</span>):
     <span class="hljs-keyword">for</span> a_ch, b_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b):
         <span class="hljs-keyword">if</span> a_ch == end_marker <span class="hljs-keyword">and</span> b_ch == end_marker:
             <span class="hljs-keyword">continue</span>
@@ -19577,7 +19654,7 @@ THHHTHHHTH = 7 / 10 = 0.7
     <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(seq) &gt; <span class="hljs-number">0</span>:
         ret.append(seq)
         seq = seq[<span class="hljs-number">1</span>:]
-    ret = <span class="hljs-built_in">sorted</span>(ret, key=functools.cmp_to_key(cmp))
+    ret = <span class="hljs-built_in">sorted</span>(ret, key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a, b, end_marker)))
     <span class="hljs-keyword">return</span> ret
 </code></pre>
 <div style="border:1px solid black;">
@@ -19618,7 +19695,7 @@ nana¶
 <li>(5, 6) is 2 ("na"), meaning the branch point extends from the last branch point (root node) with an edge representing "na".</li>
 </ul>
 <p>In terms of testing to see if a <a href="#BM_(suffix%20array)%2Fi">suffix array</a> contains a specific <a href="#BM_(substring)%2Fi">substring</a>, a <a href="#BM_(tree)%2Fi">tree</a> walk isn't required (e.g. walking from parent to child). Instead, since the array is sorted, a binary search can quickly find if the <a href="#BM_(substring)%2Fi">substring</a> exists.</p>
-<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 96 to 137):</p>
+<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 90 to 131):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_prefix</span>(<span class="hljs-params">
         prefix: StringView,
         end_marker: StringView,
@@ -19627,19 +19704,19 @@ nana¶
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> prefix, <span class="hljs-string">f'<span class="hljs-subst">{prefix}</span> should not have end marker'</span>
     <span class="hljs-comment"># Binary search</span>
     start = <span class="hljs-number">0</span>
-    end = <span class="hljs-built_in">len</span>(suffix_array)
+    end = <span class="hljs-built_in">len</span>(suffix_array) - <span class="hljs-number">1</span>
     found = <span class="hljs-literal">None</span>
-    <span class="hljs-keyword">while</span> start != end:
+    <span class="hljs-keyword">while</span> start &lt;= end:
         mid = start + ((end - start) // <span class="hljs-number">2</span>)
         mid_suffix = suffix_array[mid]
-        comparison = cmp(prefix, mid_suffix)
+        comparison = cmp(prefix, mid_suffix, end_marker)
         <span class="hljs-keyword">if</span> common_prefix_len(prefix, mid_suffix) == <span class="hljs-built_in">len</span>(prefix):
             found = mid
             <span class="hljs-keyword">break</span>
         <span class="hljs-keyword">elif</span> comparison &lt; <span class="hljs-number">0</span>:
-            end = mid
+            end = mid - <span class="hljs-number">1</span>
         <span class="hljs-keyword">elif</span> comparison &gt; <span class="hljs-number">0</span>:
-            start = mid
+            start = mid + <span class="hljs-number">1</span>
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'This should never happen'</span>)
     <span class="hljs-comment"># If not found, return</span>
@@ -19655,7 +19732,7 @@ nana¶
     <span class="hljs-comment"># Walk forward to see how many after start with prefix</span>
     end = found + <span class="hljs-number">1</span>
     <span class="hljs-keyword">while</span> end &lt; <span class="hljs-built_in">len</span>(suffix_array):
-        end_suffix = suffix_array[start]
+        end_suffix = suffix_array[end]
         <span class="hljs-keyword">if</span> common_prefix_len(prefix, end_suffix) != <span class="hljs-built_in">len</span>(prefix):
             <span class="hljs-keyword">break</span>
         end += <span class="hljs-number">1</span>
@@ -19684,16 +19761,22 @@ nana¶
 </div>
 <p></p>
 <p>Extending a <a href="#BM_(suffix%20array)%2Fi">suffix array</a> to support mismatches requires scanning it for seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
-<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 180 to 224):</p>
+<p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 174 to 226):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
         search_seqs: <span class="hljs-built_in">set</span>[StringView],
         max_mismatch: <span class="hljs-built_in">int</span>,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[
     <span class="hljs-built_in">list</span>[StringView],
     <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, StringView, StringView, <span class="hljs-built_in">int</span>]]
 ]:
+    <span class="hljs-comment"># Add end marker and padding to test sequence</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain end marker'</span>
+    <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> test_seq, <span class="hljs-string">f'<span class="hljs-subst">{test_seq}</span> should not contain pad marker'</span>
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding + end_marker
     <span class="hljs-comment"># Turn test sequence into suffix tree</span>
     array = to_suffix_array(test_seq, end_marker)
     <span class="hljs-comment"># Generate seeds from search_seqs</span>
@@ -19701,6 +19784,7 @@ nana¶
     seq_to_seeds = {}
     <span class="hljs-keyword">for</span> seq <span class="hljs-keyword">in</span> search_seqs:
         <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq, <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain end marker'</span>
+        <span class="hljs-keyword">assert</span> pad_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq, <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> should not contain pad marker'</span>
         seeds = to_seeds(seq, max_mismatch)
         seq_to_seeds[seq] = seeds
         <span class="hljs-keyword">for</span> seed <span class="hljs-keyword">in</span> seeds:
@@ -19725,7 +19809,8 @@ nana¶
                     test_seq_idx, dist = se_res
                     <span class="hljs-keyword">if</span> dist &lt;= max_mismatch:
                         found_value = test_seq[test_seq_idx:test_seq_idx + <span class="hljs-built_in">len</span>(search_seq)]
-                        found = test_seq_idx, search_seq, found_value, dist
+                        test_seq_idx_unpadded = test_seq_idx - <span class="hljs-built_in">len</span>(padding)
+                        found = test_seq_idx_unpadded, search_seq, found_value, dist
                         found_set.add(found)
                         <span class="hljs-keyword">break</span>
     <span class="hljs-keyword">return</span> array, found_set
@@ -19735,62 +19820,69 @@ nana¶
 <p>Building and searching trie using the following settings...</p>
 <pre><code>{
   trie_sequences: ['anana', 'banana', 'ankle'],
-  test_sequence: 'banana ankle baxana orange banxxa vehicle¶',
+  test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 
 </code></pre>
 <p>The following suffix array was produced ...</p>
 <pre><code>¶
- ankle baxana orange banxxa vehicle¶
- banxxa vehicle¶
- baxana orange banxxa vehicle¶
- orange banxxa vehicle¶
- vehicle¶
-a ankle baxana orange banxxa vehicle¶
-a orange banxxa vehicle¶
-a vehicle¶
-ana ankle baxana orange banxxa vehicle¶
-ana orange banxxa vehicle¶
-anana ankle baxana orange banxxa vehicle¶
-ange banxxa vehicle¶
-ankle baxana orange banxxa vehicle¶
-anxxa vehicle¶
-axana orange banxxa vehicle¶
-banana ankle baxana orange banxxa vehicle¶
-banxxa vehicle¶
-baxana orange banxxa vehicle¶
-cle¶
-e¶
-e banxxa vehicle¶
-e baxana orange banxxa vehicle¶
-ehicle¶
-ge banxxa vehicle¶
-hicle¶
-icle¶
-kle baxana orange banxxa vehicle¶
-le¶
-le baxana orange banxxa vehicle¶
-na ankle baxana orange banxxa vehicle¶
-na orange banxxa vehicle¶
-nana ankle baxana orange banxxa vehicle¶
-nge banxxa vehicle¶
-nkle baxana orange banxxa vehicle¶
-nxxa vehicle¶
-orange banxxa vehicle¶
-range banxxa vehicle¶
-vehicle¶
-xa vehicle¶
-xana orange banxxa vehicle¶
-xxa vehicle¶
+ ankle baxana orange banxxa vehicle__¶
+ banxxa vehicle__¶
+ baxana orange banxxa vehicle__¶
+ orange banxxa vehicle__¶
+ vehicle__¶
+_¶
+__¶
+__banana ankle baxana orange banxxa vehicle__¶
+_banana ankle baxana orange banxxa vehicle__¶
+a ankle baxana orange banxxa vehicle__¶
+a orange banxxa vehicle__¶
+a vehicle__¶
+ana ankle baxana orange banxxa vehicle__¶
+ana orange banxxa vehicle__¶
+anana ankle baxana orange banxxa vehicle__¶
+ange banxxa vehicle__¶
+ankle baxana orange banxxa vehicle__¶
+anxxa vehicle__¶
+axana orange banxxa vehicle__¶
+banana ankle baxana orange banxxa vehicle__¶
+banxxa vehicle__¶
+baxana orange banxxa vehicle__¶
+cle__¶
+e banxxa vehicle__¶
+e baxana orange banxxa vehicle__¶
+e__¶
+ehicle__¶
+ge banxxa vehicle__¶
+hicle__¶
+icle__¶
+kle baxana orange banxxa vehicle__¶
+le baxana orange banxxa vehicle__¶
+le__¶
+na ankle baxana orange banxxa vehicle__¶
+na orange banxxa vehicle__¶
+nana ankle baxana orange banxxa vehicle__¶
+nge banxxa vehicle__¶
+nkle baxana orange banxxa vehicle__¶
+nxxa vehicle__¶
+orange banxxa vehicle__¶
+range banxxa vehicle__¶
+vehicle__¶
+xa vehicle__¶
+xana orange banxxa vehicle__¶
+xxa vehicle__¶
 </code></pre>
-<p>Searching <code>banana ankle baxana orange banxxa vehicle¶</code> with the trie revealed the following was found:</p>
+<p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
+<li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
 <li>Matched <code>nana a</code> against <code>banana</code> with distance of 2 at index 2</li>
 <li>Matched <code>ana a</code> against <code>anana</code> with distance of 1 at index 3</li>
+<li>Matched <code>a ank</code> against <code>anana</code> with distance of 2 at index 5</li>
 <li>Matched <code>ankle</code> against <code>ankle</code> with distance of 0 at index 7</li>
 <li>Matched <code>baxana</code> against <code>banana</code> with distance of 1 at index 13</li>
 <li>Matched <code>axana</code> against <code>anana</code> with distance of 1 at index 14</li>
@@ -19805,6 +19897,33 @@ xxa vehicle¶
 <p>Other uses such as longest repeating <a href="#BM_(substring)%2Fi">substring</a>, longest shared <a href="#BM_(substring)%2Fi">substring</a>, shortest non-shared <a href="#BM_(substring)%2Fi">substring</a>, etc.. that are applicable to <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a>s don't look like they're applicable to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s. I think you need to actually walk the <a href="#BM_(tree)%2Fi">tree</a> for stuff like that.</p>
 </div>
 <a name="H_Burrows-Wheeler%20Transform"></a><h3>Burrows-Wheeler Transform</h3>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Tree)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Tree</a></li>
+</ul>
+</div>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
+<p>TODO: CONTINUE HERE</p>
 <a name="H_BLAST"></a><h3>BLAST</h3>
 <p>Covered in section 9.14</p>
 <a name="H_Stories"></a><h1>Stories</h1>

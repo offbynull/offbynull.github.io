@@ -225,11 +225,17 @@ def mismatch_search(
         test_seq: StringView,
         search_seqs: set[StringView],
         max_mismatch: int,
-        end_marker: StringView
+        end_marker: StringView,
+        pad_marker: StringView
 ) -> tuple[
     Graph[str, None, str, list[StringView]],
     set[tuple[int, StringView, StringView, int]]
 ]:
+    # Add end marker and padding to test sequence
+    assert end_marker not in test_seq, f'{test_seq} should not contain end marker'
+    assert pad_marker not in test_seq, f'{test_seq} should not contain pad marker'
+    padding = pad_marker * max_mismatch
+    test_seq = padding + test_seq + padding + end_marker
     # Turn test sequence into suffix tree
     trie = to_suffix_tree(test_seq, end_marker)
     # Generate seeds from search_seqs
@@ -237,6 +243,8 @@ def mismatch_search(
     seq_to_seeds = {}
     for seq in search_seqs:
         assert end_marker not in seq, f'{seq} should not contain end marker'
+        assert pad_marker not in seq, f'{seq} should not contain pad marker'
+        seq = seq
         seeds = to_seeds(seq, max_mismatch)
         seq_to_seeds[seq] = seeds
         for seed in seeds:
@@ -262,7 +270,8 @@ def mismatch_search(
                     test_seq_idx, dist = se_res
                     if dist <= max_mismatch:
                         found_value = test_seq[test_seq_idx:test_seq_idx + len(search_seq)]
-                        found = test_seq_idx, search_seq, found_value, dist
+                        test_seq_idx_unpadded = test_seq_idx - len(padding)
+                        found = test_seq_idx_unpadded, search_seq, found_value, dist
                         found_set.add(found)
                         break
     return trie, found_set
@@ -278,6 +287,7 @@ def main_mismatch():
         trie_seqs = set(StringView.wrap(s) for s in data['trie_sequences'])
         test_seq = StringView.wrap(data['test_sequence'])
         end_marker = StringView.wrap(data['end_marker'])
+        pad_marker = StringView.wrap(data['pad_marker'])
         max_mismatch = data['max_mismatch']
         print(f'Building and searching trie using the following settings...')
         print()
@@ -285,7 +295,7 @@ def main_mismatch():
         print(data_raw)
         print('```')
         print()
-        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker)
+        trie, found_set = mismatch_search(test_seq, trie_seqs, max_mismatch, end_marker, pad_marker)
         print()
         print(f'The following trie was produced ...')
         print()

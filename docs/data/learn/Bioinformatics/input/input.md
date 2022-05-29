@@ -13673,6 +13673,17 @@ no_preamble
 
 The subsections below are mainly algorithms to efficiently search for exact substrings. The technique described above can be used to extend those algorithms to tolerate a certain number of mismatches.
 
+````{note}
+When searching with mismatches, the string being searched may have to be padded. For example, searching GCCGTTT for GGCC with a mismatch tolerance of 1 should match the beginning.
+
+```
+-GCCGTTT-
+GGCC
+```
+
+Pad each end by the mismatch tolerance count with some character you don't expect to encounter (dashes used in the example above).
+````
+
 ```{note}
 The Pevzner uses the formula `{kt} \lfloor \frac{n}{d+1} \rfloor` for determining the number of nucleotides per seed, where n is the sequence length and d is the number of mismatches. It's the same as the code above but it takes the floor rather than the ceiling. For example, ACGTT with 2 mismatches would break down to `{kt} \frac{5}{3}` = 1.667 nucleotides per seed, which rounds down to 1, which ends up being the seeds [A, C, GTT]. That seems like a not optimal breakup -- smaller seeds may end up with more frequent hits during search?
 
@@ -13805,6 +13816,7 @@ sequence_search.Trie_Basic main_mismatch
   trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 ```
@@ -13909,6 +13921,7 @@ sequence_search.Trie_EdgeMerged main_mismatch
   trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 ```
@@ -14074,6 +14087,7 @@ sequence_search.Trie_AhoCorasick main_mismatch
   trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 ```
@@ -14184,6 +14198,7 @@ sequence_search.SuffixTree main_mismatch
   trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 ```
@@ -14391,6 +14406,7 @@ sequence_search.SuffixArray main_mismatch
   trie_sequences: ['anana', 'banana', 'ankle'],
   test_sequence: 'banana ankle baxana orange banxxa vehicle',
   end_marker: ¶,
+  pad_marker: _,
   max_mismatch: 2
 }
 ```
