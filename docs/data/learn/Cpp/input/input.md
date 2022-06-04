@@ -9980,6 +9980,31 @@ TODO: CONTINUE WITH SUBSECTIONS
 
 ### Concepts
 
+At it's core, a range must satisfy the concept `std::ranges::range`, which only asks that the type have an implementation for the functions `std::ranges::begin(R)` and `std::ranges::end(R)`. Optionally, it may also have an implementation for `std::ranges::size(R)`, which should return the size of the range.
+
+```{note}
+If an implementation exists for `std::ranges::size(R)`, it satisfies the concept `std::ranges::sized_range`.
+```
+
+The following templates provide access to the types used by a range.
+
+ * `std::ranges::iterator_t<R>` - iterator type of range `R`
+ * `std::ranges::sentinel_t<R>` - sentinel type of range `R` (type returned by `std::ranges::end(R)`, which may be different from the type returned by `std::ranges::begin(R)`)
+ * `std::ranges::size_t<R>` - type of range `R`'s size type (type returned by `std::ranges::size(R)`, if implemented)
+ * `std::ranges::difference_t<R>` - type returned by differencing two iterator types of range `R` (resolves to `std::iter_difference_t<std::ranges::iterator)t<R>>`)
+ * `std::ranges::range_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` (type returned by `*(std::ranges::begin(R)`)
+ * `std::ranges::range_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` by as an r-value reference (type returned by `std::move(*(std::ranges::begin(R))`)
+ * `std::ranges::range_value_t<R>` - type returned by _dereferencing an iterator_ of range `R` but with the reference, `const`, and `volatile` (e.g. if `std::ranges::range_reference_t<R>` is `const int&`, `std::ranges::range_value_t<R>` is `int`)
+
+The following concepts detail the features supported by the type of iterator that a range returns. These concepts loosely map to the concepts for iterators.
+
+* `std::ranges::input_range` maps to `std::input_iterator`
+* `std::ranges::output_range` maps to `std::output_iterator`
+* `std::ranges::forward_range` maps to `std::forward_iterator` 
+* `std::ranges::bidirectional_range` maps to `std::bidirectional_iterator`
+* `std::ranges::random_access_range` maps to `std::random_access_iterator`
+* `std::ranges::contiguous_range` maps to `std::contiguous_iterator`
+
 ### Owning Views
 
 ### Custom Views
