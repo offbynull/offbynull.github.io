@@ -864,8 +864,8 @@ Be careful when using the `sizeof` operator on an array. If the type is the orig
 ```c++
 int x[3];
 int *y {x};  // equiv to setting to &(x[0]);
-cout << sizeof x;  // should be the size of 3 ints
-cout << sizeof y;  // should be the size of a pointer
+std::cout << sizeof x;  // should be the size of 3 ints
+std::cout << sizeof y;  // should be the size of a pointer
 ```
 
 Similarly, range-based for loops won't work if the type has decayed to a pointer type because the array size of that pointer isn't known at compile-time.
@@ -874,13 +874,13 @@ Similarly, range-based for loops won't work if the type has decayed to a pointer
 int x[3] = {1,2,3};
 int *y {x};
 for (int i {0}; i < 3; i++) { // OK
-   cout << y[i] << endl;
+   std::cout << y[i] << std::endl;
 }
 for (int v : x) { // OK
-   cout << v << endl;
+   std::cout << v << std::endl;
 }
 for (int v : y) { // ERROR
-   cout << v << endl;
+   std::cout << v << std::endl;
 }
 ```
 
@@ -9878,7 +9878,7 @@ std::vector<int> v{ 0, 1, 2 };                                  // var v = Array
 auto range {                                                    // var range =
     v                                                           //          v.stream()
     | std::views::transform([](int x) { return x * 2; })        //         .map(e -> e * 2)
-    | std::views::filter([](int x) { return x != 0; }           //         .filter(e -> e != 0);
+    | std::views::filter([](int x) { return x != 0; })          //         .filter(e -> e != 0);
 };                                                              //
 for (int e : range) {                                           // range.forEach(e -> { System.out.println(e); } );
     std::cout << e << std::endl;                                //
@@ -9964,27 +9964,15 @@ In addition to performing operations on another range's elements, a view may ori
 The tables above aren't exhaustive.
 ```
 
-TODO: CONTINUE WITH SUBSECTIONS
-
-TODO: CONTINUE WITH SUBSECTIONS
-
-TODO: CONTINUE WITH SUBSECTIONS
-
-TODO: CONTINUE WITH SUBSECTIONS
-
-TODO: CONTINUE WITH SUBSECTIONS
-
-TODO: CONTINUE WITH SUBSECTIONS
-
-TODO: CONTINUE WITH SUBSECTIONS
-
 ### Concepts
 
-At it's core, a range must satisfy the concept `std::ranges::range`, which only asks that the type have an implementation for the functions `std::ranges::begin(R)` and `std::ranges::end(R)`. Optionally, it may also have an implementation for `std::ranges::size(R)`, which should return the size of the range.
+`{bm} /(Library Functions\/Ranges\/Concepts)_TOPIC/`
 
-```{note}
-If an implementation exists for `std::ranges::size(R)`, it satisfies the concept `std::ranges::sized_range`.
-```
+At it's core, a range must satisfy the concept_TEMPLATE `std::ranges::range`, which only asks that the type have an implementation for the functions `std::ranges::begin(R)` and `std::ranges::end(R)`. There are two concept_TEMPLATE specializations:
+
+ * `std::ranges::sized_range`: A range type that has an implementation for `std::ranges::size(R)`, which returns the number of elements within the range. 
+ * `std::ranges::borrowed_range`: A range type that provides a template specialization for `std::ranges::enable_borrowed_range<R>`, which signals that the range type guarantees that the iterators it returns aren't bound to the lifetime of the range. Borrowed ranges are commonly generate elements on-the-fly.
+ * `std::ranges::view`: A range type with constant-time copy/move/assignment operations and provides a template specialization for `std::enable_view<R>`, which signals that the range type is a view. Views are commonly used to transform elements from another range or generate elements on the fly.
 
 The following templates provide access to the types used by a range.
 
@@ -9993,23 +9981,77 @@ The following templates provide access to the types used by a range.
  * `std::ranges::size_t<R>` - type of range `R`'s size type (type returned by `std::ranges::size(R)`, if implemented)
  * `std::ranges::difference_t<R>` - type returned by differencing two iterator types of range `R` (resolves to `std::iter_difference_t<std::ranges::iterator)t<R>>`)
  * `std::ranges::range_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` (type returned by `*(std::ranges::begin(R)`)
- * `std::ranges::range_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` by as an r-value reference (type returned by `std::move(*(std::ranges::begin(R))`)
+ * `std::ranges::range_rvalue_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` but as an r-value reference (type returned by `std::move(*(std::ranges::begin(R))`)
  * `std::ranges::range_value_t<R>` - type returned by _dereferencing an iterator_ of range `R` but with the reference, `const`, and `volatile` (e.g. if `std::ranges::range_reference_t<R>` is `const int&`, `std::ranges::range_value_t<R>` is `int`)
 
-The following concepts detail the features supported by the type of iterator that a range returns. These concepts loosely map to the concepts for iterators.
+```c++
+void print_range(std::ranges::range auto &&range) {
+    using ELEM_REF = std::ranges::range_reference_t<decltype(range)>;
+    for (ELEM_REF v : range) {
+        std::cout << v << std::endl;
+    }
+}
+```
 
-* `std::ranges::input_range` maps to `std::input_iterator`
-* `std::ranges::output_range` maps to `std::output_iterator`
-* `std::ranges::forward_range` maps to `std::forward_iterator` 
-* `std::ranges::bidirectional_range` maps to `std::bidirectional_iterator`
-* `std::ranges::random_access_range` maps to `std::random_access_iterator`
-* `std::ranges::contiguous_range` maps to `std::contiguous_iterator`
+The following concept_TEMPLATE detail the features supported by a range's iterator type. These concept_TEMPLATE loosely map to the concept_TEMPLATE for iterators.
+
+ * `std::ranges::input_range` maps to `std::input_iterator`
+ * `std::ranges::output_range` maps to `std::output_iterator`
+ * `std::ranges::forward_range` maps to `std::forward_iterator` 
+ * `std::ranges::bidirectional_range` maps to `std::bidirectional_iterator`
+ * `std::ranges::random_access_range` maps to `std::random_access_iterator`
+ * `std::ranges::contiguous_range` maps to `std::contiguous_iterator`
+
+```c++
+void print_range(std::ranges::random_access_range auto &&range) {
+    auto it { std::ranges::begin(range) };
+    std::cout << it[3] << std::endl;
+    std::cout << it[1] << std::endl;
+    std::cout << it[2] << std::endl;
+}
+```
 
 ### Owning Views
 
+`{bm} /(Library Functions\/Ranges\/Owning Views)_TOPIC/`
+
+An owning view moves the range it's operating on into itself rather than reference that range. Doing this avoids the problem of a view referencing a destroyed range, which usually happens when a function returns a view but the range that view is referencing goes out of scope.
+
+```c++
+// This function is faulty because the returned view REFERENCES vec but
+// vec gets destroyed when the function exits. The view references a
+// destroyed object.
+auto faulty_code() {
+    std::vector<int> vec{ 1, 2, 3 };
+    return vec
+        | std::views::transform([](int i) { return i * 2; })
+        | std::views::filter([](int i) { return i != 0; });
+}
+```
+
+To create an owning view, use `std::move()` on the original range.
+
+```c++
+// By using std::move() on the range, the view becomes an owning view.
+auto good_code() {
+    std::vector<int> vec{ 1, 2, 3 };
+    return std::move(vec)
+        | std::views::transform([](int i) { return i * 2; })
+        | std::views::filter([](int i) { return i != 0; });
+}
+```
+
+```{note}
+This started to be supported in version 12 of g++.
+```
+
 ### Custom Views
 
+`{bm} /(Library Functions\/Ranges\/Custom Views)_TOPIC/`
+
 ### Type-erasure
+
+`{bm} /(Library Functions\/Ranges\/Type-erasure)_TOPIC/`
 
 
 # Terminology

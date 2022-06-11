@@ -1580,20 +1580,20 @@ hello world
 <p>Be careful when using the <code>sizeof</code> operator on an array. If the type is the original array type, <code>sizeof</code> will return the number of bytes taken up by the elements of that array (known at <a href="#BM_(compile-time)%2Fi">compile-time</a>). However, if the type has decayed to a <a href="#BM_(pointer)%2Fi">pointer</a> type, <code>sizeof</code> will return the number of bytes to hold on to a <a href="#BM_(pointer)%2Fi">pointer</a>.</p>
 <pre class="hljs"><code><span class="hljs-type">int</span> x[<span class="hljs-number">3</span>];
 <span class="hljs-type">int</span> *y {x};  <span class="hljs-comment">// equiv to setting to &amp;(x[0]);</span>
-cout &lt;&lt; <span class="hljs-keyword">sizeof</span> x;  <span class="hljs-comment">// should be the size of 3 ints</span>
-cout &lt;&lt; <span class="hljs-keyword">sizeof</span> y;  <span class="hljs-comment">// should be the size of a pointer</span>
+std::cout &lt;&lt; <span class="hljs-keyword">sizeof</span> x;  <span class="hljs-comment">// should be the size of 3 ints</span>
+std::cout &lt;&lt; <span class="hljs-keyword">sizeof</span> y;  <span class="hljs-comment">// should be the size of a pointer</span>
 </code></pre>
 <p>Similarly, range-based for loops won't work if the type has decayed to a <a href="#BM_(pointer)%2Fi">pointer</a> type because the array size of that <a href="#BM_(pointer)%2Fi">pointer</a> isn't known at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</p>
 <pre class="hljs"><code><span class="hljs-type">int</span> x[<span class="hljs-number">3</span>] = {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>};
 <span class="hljs-type">int</span> *y {x};
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i {<span class="hljs-number">0</span>}; i &lt; <span class="hljs-number">3</span>; i++) { <span class="hljs-comment">// OK</span>
-   cout &lt;&lt; y[i] &lt;&lt; endl;
+   std::cout &lt;&lt; y[i] &lt;&lt; std::endl;
 }
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : x) { <span class="hljs-comment">// OK</span>
-   cout &lt;&lt; v &lt;&lt; endl;
+   std::cout &lt;&lt; v &lt;&lt; std::endl;
 }
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : y) { <span class="hljs-comment">// ERROR</span>
-   cout &lt;&lt; v &lt;&lt; endl;
+   std::cout &lt;&lt; v &lt;&lt; std::endl;
 }
 </code></pre>
 <p>You may be tempted to use <code>sizeof(array) / sizeof(type)</code> to determine the number of elements within an array. It's a better idea to use <code>std::size(array)</code> instead (found in the <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> header) because it should have logic to workaround and platform-specific behaviours that might cause inconsistent results / unexpected behaviour (speculation).</p>
@@ -9685,7 +9685,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; v{ <span class="hljs-numbe
 <span class="hljs-keyword">auto</span> range {                                                    <span class="hljs-comment">// var range =</span>
     v                                                           <span class="hljs-comment">//          v.stream()</span>
     | std::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-type">int</span> x) { <span class="hljs-keyword">return</span> x * <span class="hljs-number">2</span>; })        <span class="hljs-comment">//         .map(e -&gt; e * 2)</span>
-    | std::views::<span class="hljs-built_in">filter</span>([](<span class="hljs-type">int</span> x) { <span class="hljs-keyword">return</span> x != <span class="hljs-number">0</span>; }           <span class="hljs-comment">//         .filter(e -&gt; e != 0);</span>
+    | std::views::<span class="hljs-built_in">filter</span>([](<span class="hljs-type">int</span> x) { <span class="hljs-keyword">return</span> x != <span class="hljs-number">0</span>; })          <span class="hljs-comment">//         .filter(e -&gt; e != 0);</span>
 };                                                              <span class="hljs-comment">//</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> e : range) {                                           <span class="hljs-comment">// range.forEach(e -&gt; { System.out.println(e); } );</span>
     std::cout &lt;&lt; e &lt;&lt; std::endl;                                <span class="hljs-comment">//</span>
@@ -9909,17 +9909,77 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; v{ <span class="hljs-numbe
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The tables above aren't exhaustive.</p>
 </div>
-<p>TODO: CONTINUE WITH SUBSECTIONS</p>
-<p>TODO: CONTINUE WITH SUBSECTIONS</p>
-<p>TODO: CONTINUE WITH SUBSECTIONS</p>
-<p>TODO: CONTINUE WITH SUBSECTIONS</p>
-<p>TODO: CONTINUE WITH SUBSECTIONS</p>
-<p>TODO: CONTINUE WITH SUBSECTIONS</p>
-<p>TODO: CONTINUE WITH SUBSECTIONS</p>
 <a name="H1_Concepts"></a><h3>Concepts</h3>
+<p><a name="BM_(Library%20Functions%5C%2FRanges%2FConcepts)_TOPIC%2F"></a><strong></strong></p>
+<p>At it's core, a range must satisfy the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> <code>std::ranges::range</code>, which only asks that the type have an implementation for the functions <code>std::ranges::begin(R)</code> and <code>std::ranges::end(R)</code>. There are two <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> specializations:</p>
+<ul>
+<li><code>std::ranges::sized_range</code>: A range type that has an implementation for <code>std::ranges::size(R)</code>, which returns the number of elements within the range.</li>
+<li><code>std::ranges::borrowed_range</code>: A range type that provides a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> for <code>std::ranges::enable_borrowed_range&lt;R&gt;</code>, which signals that the range type guarantees that the <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s it returns aren't bound to the <a href="#BM_(lifetime)%2Fi">lifetime</a> of the range. Borrowed ranges are commonly generate elements on-the-fly.</li>
+<li><code>std::ranges::view</code>: A range type with constant-time copy/move/assignment operations and provides a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> for <code>std::enable_view&lt;R&gt;</code>, which signals that the range type is a view. Views are commonly used to transform elements from another range or generate elements on the fly.</li>
+</ul>
+<p>The following <a href="#BM_(template)%2Fi">template</a>s provide access to the types used by a range.</p>
+<ul>
+<li><code>std::ranges::iterator_t&lt;R&gt;</code> - <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> type of range <code>R</code></li>
+<li><code>std::ranges::sentinel_t&lt;R&gt;</code> - sentinel type of range <code>R</code> (type returned by <code>std::ranges::end(R)</code>, which may be different from the type returned by <code>std::ranges::begin(R)</code>)</li>
+<li><code>std::ranges::size_t&lt;R&gt;</code> - type of range <code>R</code>'s size type (type returned by <code>std::ranges::size(R)</code>, if implemented)</li>
+<li><code>std::ranges::difference_t&lt;R&gt;</code> - type returned by differencing two <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> types of range <code>R</code> (resolves to <code>std::iter_difference_t&lt;std::ranges::iterator)t&lt;R&gt;&gt;</code>)</li>
+<li><code>std::ranges::range_reference_t&lt;R&gt;</code> - type returned by <em><a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a></em> of range <code>R</code> (type returned by <code>*(std::ranges::begin(R)</code>)</li>
+<li><code>std::ranges::range_rvalue_reference_t&lt;R&gt;</code> - type returned by <em><a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a></em> of range <code>R</code> but as an <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">r-value</a> <a href="#BM_(reference)%2Fi">reference</a> (type returned by <code>std::move(*(std::ranges::begin(R))</code>)</li>
+<li><code>std::ranges::range_value_t&lt;R&gt;</code> - type returned by <em><a href="#BM_(dereference%7Cdereferencing)%2Fi">dereferencing</a> an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a></em> of range <code>R</code> but with the <a href="#BM_(reference)%2Fi">reference</a>, <code>const</code>, and <code>volatile</code> (e.g. if <code>std::ranges::range_reference_t&lt;R&gt;</code> is <code>const int&amp;</code>, <code>std::ranges::range_value_t&lt;R&gt;</code> is <code>int</code>)</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print_range</span><span class="hljs-params">(std::ranges::range <span class="hljs-keyword">auto</span> &amp;&amp;range)</span> </span>{
+    <span class="hljs-keyword">using</span> ELEM_REF = std::ranges::<span class="hljs-type">range_reference_t</span>&lt;<span class="hljs-keyword">decltype</span>(range)&gt;;
+    <span class="hljs-keyword">for</span> (ELEM_REF v : range) {
+        std::cout &lt;&lt; v &lt;&lt; std::endl;
+    }
+}
+</code></pre>
+<p>The following <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> detail the features supported by a range's <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> type. These <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> loosely map to the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> for <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s.</p>
+<ul>
+<li><code>std::ranges::input_range</code> maps to <code>std::input_iterator</code></li>
+<li><code>std::ranges::output_range</code> maps to <code>std::output_iterator</code></li>
+<li><code>std::ranges::forward_range</code> maps to <code>std::forward_iterator</code></li>
+<li><code>std::ranges::bidirectional_range</code> maps to <code>std::bidirectional_iterator</code></li>
+<li><code>std::ranges::random_access_range</code> maps to <code>std::random_access_iterator</code></li>
+<li><code>std::ranges::contiguous_range</code> maps to <code>std::contiguous_iterator</code></li>
+</ul>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print_range</span><span class="hljs-params">(std::ranges::random_access_range <span class="hljs-keyword">auto</span> &amp;&amp;range)</span> </span>{
+    <span class="hljs-keyword">auto</span> it { std::ranges::<span class="hljs-built_in">begin</span>(range) };
+    std::cout &lt;&lt; it[<span class="hljs-number">3</span>] &lt;&lt; std::endl;
+    std::cout &lt;&lt; it[<span class="hljs-number">1</span>] &lt;&lt; std::endl;
+    std::cout &lt;&lt; it[<span class="hljs-number">2</span>] &lt;&lt; std::endl;
+}
+</code></pre>
 <a name="H_Owning%20Views"></a><h3>Owning Views</h3>
+<p><a name="BM_(Library%20Functions%5C%2FRanges%2FOwning%20Views)_TOPIC%2F"></a><strong></strong></p>
+<p>An owning view moves the range it's operating on into itself rather than <a href="#BM_(reference)%2Fi">reference</a> that range. Doing this avoids the problem of a view referencing a destroyed range, which usually happens when a function returns a view but the range that view is referencing goes out of scope.</p>
+<pre class="hljs"><code><span class="hljs-comment">// This function is faulty because the returned view REFERENCES vec but</span>
+<span class="hljs-comment">// vec gets destroyed when the function exits. The view references a</span>
+<span class="hljs-comment">// destroyed object.</span>
+<span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">faulty_code</span><span class="hljs-params">()</span> </span>{
+    std::vector&lt;<span class="hljs-type">int</span>&gt; vec{ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> };
+    <span class="hljs-keyword">return</span> vec
+        | std::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-type">int</span> i) { <span class="hljs-keyword">return</span> i * <span class="hljs-number">2</span>; })
+        | std::views::<span class="hljs-built_in">filter</span>([](<span class="hljs-type">int</span> i) { <span class="hljs-keyword">return</span> i != <span class="hljs-number">0</span>; });
+}
+</code></pre>
+<p>To create an owning view, use <code>std::move()</code> on the original range.</p>
+<pre class="hljs"><code><span class="hljs-comment">// By using std::move() on the range, the view becomes an owning view.</span>
+<span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">good_code</span><span class="hljs-params">()</span> </span>{
+    std::vector&lt;<span class="hljs-type">int</span>&gt; vec{ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> };
+    <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">move</span>(vec)
+        | std::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-type">int</span> i) { <span class="hljs-keyword">return</span> i * <span class="hljs-number">2</span>; })
+        | std::views::<span class="hljs-built_in">filter</span>([](<span class="hljs-type">int</span> i) { <span class="hljs-keyword">return</span> i != <span class="hljs-number">0</span>; });
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This started to be supported in version 12 of g++.</p>
+</div>
 <a name="H_Custom%20Views"></a><h3>Custom Views</h3>
+<p><a name="BM_(Library%20Functions%5C%2FRanges%2FCustom%20Views)_TOPIC%2F"></a><strong></strong></p>
 <a name="H_Type-erasure"></a><h3>Type-erasure</h3>
+<p><a name="BM_(Library%20Functions%5C%2FRanges%2FType-erasure)_TOPIC%2F"></a><strong></strong></p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
