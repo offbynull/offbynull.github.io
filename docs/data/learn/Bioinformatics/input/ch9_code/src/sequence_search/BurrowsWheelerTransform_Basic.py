@@ -109,3 +109,4 @@ res = to_bwt(
 for e in res:
     print(f'{e}')
 print(f'{find(res, "ana")}')
+# print(f'{find(res, "fna")}')

@@ -26,7 +26,7 @@ def cmp(a: str, b: str, end_marker: str):
 
 
 class BWTRecord:
-    __slots__ = ['first_ch', 'first_ch_idx', 'last_ch', 'last_ch_idx', 'last_to_first_idx', 'counts']
+    __slots__ = ['first_ch', 'first_ch_idx', 'last_ch', 'last_ch_idx', 'last_to_first_idx']
 
     def __init__(self, first_ch: str, first_ch_idx: int, last_ch: str, last_ch_idx: int):
         self.first_ch = first_ch
@@ -45,7 +45,7 @@ class BWTRecord:
 def to_bwt(
         seq: str,
         end_marker: str
-) -> list[tuple[BWTRecord, Counter[str]]]:
+) -> list[BWTRecord]:
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     rotations_with_counts = zip(
@@ -58,7 +58,6 @@ def to_bwt(
     )
     first_ch_counter = Counter()
     last_ch_counter = Counter()
-    counter = Counter()
     ret = []
     for i, (s, idx) in enumerate(rotations_with_counts_sorted):
         first_ch = s[0]
@@ -68,15 +67,37 @@ def to_bwt(
         last_ch_counter[last_ch] += 1
         last_ch_idx = last_ch_counter[last_ch]
         record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
-        counter[last_ch] += 1
-        ret.append((record, counter.copy()))
-    for i, (record_a, _) in enumerate(ret):
+        ret.append(record)
+    for i, record_a in enumerate(ret):
         last = record_a.last_ch, record_a.last_ch_idx
-        for j, (record_b, _) in enumerate(ret):
+        for j, record_b in enumerate(ret):
             first = record_b.first_ch, record_b.first_ch_idx
             if last == first:
                 record_a.last_to_first_idx = j
                 break
+    return ret
+
+
+def to_counts(
+        bwt_array: list[BWTRecord]
+) -> list[Counter[str]]:
+    ret = [Counter()]
+    for record in bwt_array:
+        ch = record.last_ch
+        counter = ret[-1].copy()
+        counter[ch] += 1
+        ret.append(counter)
+    return ret
+
+
+def to_first_col_index(
+        bwt_array: list[BWTRecord]
+) -> dict[str, int]:
+    ret = {}
+    for i, record in enumerate(bwt_array):
+        ch = record.first_ch
+        if ch not in ret:
+            ret[ch] = i
     return ret
 # MARKDOWN_BUILD
 
@@ -107,30 +128,30 @@ def to_bwt(
 # MARKDOWN_TEST
 def find(
         bwt_array: list[BWTRecord],
+        bwt_counters: list[Counter],
+        bwt_first_ch_index: dict[str, int],
         test: str
 ) -> int:
     top = 0
     bottom = len(bwt_array) - 1
     for ch in reversed(test):
-        new_top = len(bwt_array)
-        new_bottom = -1
-        for i in range(top, bottom + 1):
-            record = bwt_array[i]
-            if ch == record.last_ch:
-                new_top = min(new_top, record.last_to_first_idx)
-                new_bottom = max(new_bottom, record.last_to_first_idx)
-        if new_bottom == -1 or new_top == len(bwt_array):  # technically only need to check one of these conditions
+        ch_top = bwt_counters[top][ch] + 1
+        ch_bottom = bwt_counters[bottom + 1][ch]
+        if ch_bottom < ch_top not in bwt_counters:
             return 0
-        top = new_top
-        bottom = new_bottom
+        top = bwt_first_ch_index[ch] + ch_top - 1
+        bottom = bwt_first_ch_index[ch] + ch_bottom - 1
     return (bottom - top) + 1
 # MARKDOWN_TEST
 
 
-res = to_bwt(
+bwt_array = to_bwt(
     'panamabananas$',
     '$'
 )
-for e in res:
+bwt_counters = to_counts(bwt_array)
+bwt_first_ch_index = to_first_col_index(bwt_array)
+for e in bwt_array:
     print(f'{e}')
-print(f'{find(res, "ana")}')
+print(f'{find(bwt_array, bwt_counters, bwt_first_ch_index, "ana")}')
+print(f'{find(bwt_array, bwt_counters, bwt_first_ch_index, "bna")}')
