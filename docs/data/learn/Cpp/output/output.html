@@ -234,8 +234,8 @@
 <ul>
 <li><a href="#H1_Concepts">Concepts</a></li>
 <li><a href="#H_Owning%20Views">Owning Views</a></li>
-<li><a href="#H_Custom%20Views">Custom Views</a></li>
 <li><a href="#H_Type-erasure">Type-erasure</a></li>
+<li><a href="#H_Custom%20Views">Custom Views</a></li>
 </ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
@@ -4629,7 +4629,7 @@ T <span class="hljs-title">test</span><span class="hljs-params">(T t)</span> </s
 <p>In cases where neither the type traits library nor the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s library has the check you need, a special <code>requires</code> clause can be used to directly specify exactly what a type needs to support. This <code>requires</code> clause has a parameter list (exactly as if it were a function), and within its body is a list of expressions that <em>must</em> be supported by the types.</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2, <span class="hljs-keyword">typename</span> TR&gt;
 <span class="hljs-keyword">concept</span> MyConcept =
-        <span class="hljs-built_in">requires</span>(<span class="hljs-keyword">const</span> T1* t1, <span class="hljs-keyword">const</span> T2&amp; t2) {
+        <span class="hljs-built_in">requires</span>(<span class="hljs-keyword">const</span> T1* t1, <span class="hljs-keyword">const</span> T2&amp; t2) { <span class="hljs-comment">// param list may also contain non-template types like int, float, ...</span>
             { (*t1) + t2 } -&gt; std::same_as&lt;TR&gt;;
             { (*t1) * t2 } -&gt; std::same_as&lt;TR&gt;;
             { std::hash&lt;T1&gt;{}(*t1) } -&gt; std::convertible_to&lt;std::<span class="hljs-type">size_t</span>&gt;;
@@ -9705,7 +9705,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; v{ <span class="hljs-numbe
 <li>actions (e.g. missing things like <code>forEach()</code> in Java streams)</li>
 </ul>
 </div>
-<p>Any <a href="#BM_(object%7Cinstance)%2Fi">object</a> that has a particular set of type traits is a range. Those type traits map closely to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> type traits: A range has a <code>begin()</code> function, an <code>end()</code> function, and usage patterns similar to that of the type of <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> it maps to:</p>
+<p>Any <a href="#BM_(object%7Cinstance)%2Fi">object</a> that has a particular set of type traits is a range. Those type traits map closely to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> type traits: A range must have implementation for <code>std::begin(R)</code> and <code>std::end(R)</code> functions, and usage patterns similar to that of the type of <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> it maps to:</p>
 <ul>
 <li>input range has usage patterns similar to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">input iterator</a>.</li>
 <li>output range has usage patterns similar to <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">output iterator</a>.</li>
@@ -9976,10 +9976,181 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; v{ <span class="hljs-numbe
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This started to be supported in version 12 of g++.</p>
 </div>
-<a name="H_Custom%20Views"></a><h3>Custom Views</h3>
-<p><a name="BM_(Library%20Functions%5C%2FRanges%2FCustom%20Views)_TOPIC%2F"></a><strong></strong></p>
 <a name="H_Type-erasure"></a><h3>Type-erasure</h3>
 <p><a name="BM_(Library%20Functions%5C%2FRanges%2FType-erasure)_TOPIC%2F"></a><strong></strong></p>
+<p>A range's type depends on the type of the underlying container or generator (e.g. <code>std::ordered_set</code>), element type of the range (e.g. <code>int</code>), and the list of view manipulations applied to that range. Each change ends up changing the underlying type of the range.</p>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; vec{ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> };
+
+<span class="hljs-comment">// THE CODE BELOW PRINTS "same!"</span>
+<span class="hljs-comment">// ----------------------------</span>
+<span class="hljs-comment">// decltype(v1) == decltype(v2) because both use the same underlying container type, element type,</span>
+<span class="hljs-comment">// and have the exact same list of views applied WITH the exact same functor object.</span>
+<span class="hljs-keyword">auto</span> functor { [](<span class="hljs-type">int</span> i) { <span class="hljs-keyword">return</span> i * <span class="hljs-number">2</span>; } };
+<span class="hljs-keyword">auto</span> v1 { vec | std::views::<span class="hljs-built_in">transform</span>(functor) };
+<span class="hljs-keyword">auto</span> v2 { vec | std::views::<span class="hljs-built_in">transform</span>(functor) };
+<span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">constexpr</span> <span class="hljs-params">(std::is_same_v&lt;<span class="hljs-keyword">decltype</span>(v1), <span class="hljs-keyword">decltype</span>(v2)&gt;)</span> </span>{
+    std::cout &lt;&lt; <span class="hljs-string">"same!"</span>;
+} <span class="hljs-keyword">else</span> {
+    std::cout &lt;&lt; <span class="hljs-string">"NOT same!"</span>;
+}
+
+<span class="hljs-comment">// THE CODE BELOW PRINTS "NOT same!"</span>
+<span class="hljs-comment">// ---------------------------------</span>
+<span class="hljs-comment">// decltype(v1) != decltype(v2) because although the two types use the same underlying container</span>
+<span class="hljs-comment">// type, element type, and have the exact same list of views applied, those views are DIFFERENT the</span>
+<span class="hljs-comment">// functor classes each are unique -- they're technically two different classes, each with its own</span>
+<span class="hljs-comment">//  unique type. Those unique types are included in the types of v3 and v4 somewhere in a depth of</span>
+<span class="hljs-comment">//  template parameter chains.</span>
+<span class="hljs-keyword">auto</span> v3 { vec | std::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-type">int</span> i) { <span class="hljs-keyword">return</span> i * <span class="hljs-number">2</span>; }) };
+<span class="hljs-keyword">auto</span> v4 { vec | std::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-type">int</span> i) { <span class="hljs-keyword">return</span> i * <span class="hljs-number">2</span>; }) };
+<span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">constexpr</span> <span class="hljs-params">(std::is_same_v&lt;<span class="hljs-keyword">decltype</span>(v3), <span class="hljs-keyword">decltype</span>(v4)&gt;)</span> </span>{
+    std::cout &lt;&lt; <span class="hljs-string">"same!"</span>;
+} <span class="hljs-keyword">else</span> {
+    std::cout &lt;&lt; <span class="hljs-string">"NOT same!"</span>;
+}
+</code></pre>
+<p>The lack of type erasures sometimes causes problems when doing certain types of view manipulations. For example, combining together two ranges with the same element type (flattening) via <code>std::views::join</code> isn't possible unless the types of those ranges are exactly the same.</p>
+<pre class="hljs"><code>std::ranges::empty_view&lt;<span class="hljs-type">int</span>&gt; y{};
+std::ranges::single_view&lt;<span class="hljs-type">int</span>&gt; x{<span class="hljs-number">5</span>};
+std::vector combined{ x , y };  <span class="hljs-comment">// x and y of different types, vector's type parameter can't be deduced</span>
+<span class="hljs-keyword">auto</span> joined { std::ranges::<span class="hljs-built_in">join_view</span>(combined) };
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> x : joined) {
+    std::cout &lt;&lt; x &lt;&lt; std::endl;
+}
+</code></pre>
+<p>To mitigate this, a third-party library called ranges-v3 provides <code>ranges::any_view&lt;T&gt;</code>. <code>ranges::any_view&lt;T&gt;</code> essentially "erases" the type of a range by wrapping it and unifying it to a specific type. The downside of this wrapping is that it has a performance impact as abstracting away the type information involves extra <a href="#BM_(runtime)%2Fi">runtime</a> code.</p>
+<pre class="hljs"><code>std::ranges::empty_view&lt;<span class="hljs-type">int</span>&gt; y{};
+std::ranges::single_view&lt;<span class="hljs-type">int</span>&gt; x{<span class="hljs-number">5</span>};
+std::vector&lt;ranges::any_view&lt;<span class="hljs-type">int</span>&gt;&gt; combined{
+    ranges::any_view&lt;<span class="hljs-type">int</span>&gt; { x },
+    ranges::any_view&lt;<span class="hljs-type">int</span>&gt; { y }
+};
+<span class="hljs-keyword">auto</span> joined { std::ranges::<span class="hljs-built_in">join_view</span>(combined) };
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> x : joined) {
+    std::cout &lt;&lt; x &lt;&lt; std::endl;
+}
+</code></pre>
+<p>One important thing about <code>ranges::any_view&lt;T&gt;</code> is that it takes an optional second <a href="#BM_(template%20parameter)%2Fi">template parameter</a> which defines the capabilities of the range its wrapping. By default, it's set to <code>category::input</code> which supports capabilities of an input range, but it also supports ...</p>
+<ul>
+<li><code>category::input</code> - satisfies <code>std::ranges::input_range</code> <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a></li>
+<li><code>category::forward</code> - satisfies <code>std::ranges::forward_range</code> <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a></li>
+<li><code>category::bidirectional</code> - satisfies <code>std::ranges::bidirectional_range</code> <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a></li>
+<li><code>category::random_access</code> - satisfies <code>std::ranges::random_access_range</code> <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a></li>
+<li><code>category::sized</code> - satisfies <code>std::ranges::sized_ranges</code> <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a></li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also <code>category::none</code> and <code>category::mask</code>, not exactly sure what these are for.</p>
+</div>
+<pre class="hljs"><code>std::ranges::empty_view&lt;<span class="hljs-type">int</span>&gt; y{};
+std::ranges::single_view&lt;<span class="hljs-type">int</span>&gt; x{<span class="hljs-number">5</span>};
+std::vector&lt;ranges::any_view&lt;<span class="hljs-type">int</span>, ranges::category::input&gt;&gt; combined{
+    ranges::any_view&lt;<span class="hljs-type">int</span>, ranges::category::input&gt; { x },
+    ranges::any_view&lt;<span class="hljs-type">int</span>, ranges::category::input&gt; { y }
+};
+<span class="hljs-keyword">auto</span> joined { std::ranges::<span class="hljs-built_in">join_view</span>(combined) };
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> x : joined) {
+    std::cout &lt;&lt; x &lt;&lt; std::endl;
+}
+</code></pre>
+<p>Alternatively, in certain cases <code>std::span&lt;T&gt;</code> also abstracts away type information.</p>
+<pre class="hljs"><code>std::ranges::empty_view&lt;<span class="hljs-type">int</span>&gt; y{};
+std::ranges::single_view&lt;<span class="hljs-type">int</span>&gt; x{<span class="hljs-number">5</span>};
+std::vector&lt;std::span&lt;<span class="hljs-type">int</span>&gt;&gt; combined{
+    std::span&lt;<span class="hljs-type">int</span>&gt; { x },
+    std::span&lt;<span class="hljs-type">int</span>&gt; { y }
+};
+<span class="hljs-keyword">auto</span> joined { std::ranges::<span class="hljs-built_in">join_view</span>(combined) };
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> x : joined) {
+    std::cout &lt;&lt; x &lt;&lt; std::endl;
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>C++20 / C++23 has nothing in the standard library for this except for <code>std::span&lt;T&gt;</code>, and AFAIK type erasure isn't what it was intended for. You should use ranges-v3. Future versions of C++ might provide something.</p>
+</div>
+<a name="H_Custom%20Views"></a><h3>Custom Views</h3>
+<p><a name="BM_(Library%20Functions%5C%2FRanges%2FCustom%20Views)_TOPIC%2F"></a><strong></strong></p>
+<p>To write a custom view, create a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that inherits from <code>std::ranges::view_interface</code> with a <code>begin()</code> function, and an <code>end()</code> function, and either a default <a href="#BM_(constructor)%2Fi">constructor</a> (if generating values) and / or a <a href="#BM_(constructor)%2Fi">constructor</a> that takes in a range (if manipulating values).</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">FakeGeneratingView</span> : <span class="hljs-keyword">public</span> std::ranges::view_interface&lt;FakeGeneratingView&gt; {
+    <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{ <span class="hljs-keyword">return</span> &amp;(values[<span class="hljs-number">0</span>]); }
+    <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">end</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{ <span class="hljs-keyword">return</span> &amp;(values[<span class="hljs-number">3</span>]); }
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-type">int</span>[<span class="hljs-number">3</span>] values = { <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> };
+};
+
+
+<span class="hljs-comment">// USE THE VIEW</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> x : FakeGeneratingView{}) {
+    std::cout &lt;&lt; x &lt;&lt; std::endl;
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The above example <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is feeding itself as a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> to <code>std::ranges::view_interface</code>. This is a common C++ idiom referred to as the curiously recurring <a href="#BM_(template)%2Fi">template</a> pattern (CRTP) which allows for feeding the derived <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> back into a <a href="#BM_(template)%2Fi">template</a>d base <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>. Something to do with <a href="#BM_(compile-time)%2Fi">compile-time</a> polymorphism.</p>
+</div>
+<p>The following example is another custom view but this time it takes in an another range and manipulates its values and it supports the pipe operator.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;std::ranges::input_range R&gt; 
+    <span class="hljs-keyword">requires</span> std::ranges::view&lt;R&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">AddFiveView</span> : <span class="hljs-keyword">public</span> std::ranges::view_interface&lt;AddFiveView&lt;R&gt;&gt; {
+    <span class="hljs-built_in">AddFiveView</span>() = <span class="hljs-keyword">delete</span>;
+    <span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-title">AddFiveView</span><span class="hljs-params">(R&amp;&amp; r)</span>:
+        i(std::forward&lt;R&gt;(r)),
+        _begin(std::begin(i.range)),
+        _end(std::end(i.range)) {</span>}
+    <span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{ <span class="hljs-keyword">return</span> _begin; }
+    <span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> <span class="hljs-title">end</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{ <span class="hljs-keyword">return</span> _end; }
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">F</span> : <span class="hljs-keyword">decltype</span>([](<span class="hljs-keyword">auto</span> x) { <span class="hljs-keyword">return</span> x + <span class="hljs-number">5</span>; }) {};
+    <span class="hljs-keyword">using</span> R_RES = std::ranges::transform_view&lt;R, F&gt;;
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Internal</span> {
+        <span class="hljs-built_in">Internal</span>(R&amp;&amp; r) : <span class="hljs-built_in">range</span>(std::forward&lt;R&gt;(r) | std::views::<span class="hljs-built_in">transform</span>(<span class="hljs-built_in">F</span>())) {}
+        R_RES range;
+    };
+    Internal i;  <span class="hljs-comment">// what do I put as the template arg???</span>
+    std::ranges::<span class="hljs-type">iterator_t</span>&lt;R_RES&gt; _begin;
+    std::ranges::<span class="hljs-type">iterator_t</span>&lt;R_RES&gt; _end; 
+};
+
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">AddFiveViewAdaptorClosure</span> {
+    <span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-title">AddFiveViewAdaptorClosure</span><span class="hljs-params">()</span> </span>{}
+
+    <span class="hljs-keyword">template</span> &lt;std::ranges::viewable_range R&gt;
+    <span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(R&amp;&amp; r)</span> <span class="hljs-keyword">const</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">AddFiveView</span>&lt;R&gt;(std::forward&lt;R&gt;(r));
+    }
+} ;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">AddFiveViewAdaptor</span> {
+    <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;std::ranges::viewable_range R&gt;
+    <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> <span class="hljs-title">operator</span> <span class="hljs-params">()</span> <span class="hljs-params">(R &amp;&amp; r)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">AddFiveView</span>(std::forward&lt;R&gt;(r)) ;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> <span class="hljs-title">operator</span> <span class="hljs-params">()</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">AddFiveViewAdaptorClosure</span>();
+    }   
+};
+
+<span class="hljs-keyword">template</span> &lt;std::ranges::viewable_range R&gt;
+<span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">auto</span> <span class="hljs-keyword">operator</span> | (R&amp;&amp; r, AddFiveViewAdaptorClosure <span class="hljs-keyword">const</span> &amp; a) {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">a</span>(std::forward&lt;R&gt;(r)) ;
+}
+
+<span class="hljs-keyword">namespace</span> CustomViews {
+    AddFiveViewAdaptorClosure AddFiveView;
+}
+
+
+
+<span class="hljs-comment">// USE THE VIEW VIA THE PIPE OPERATOR</span>
+<span class="hljs-comment">//   Note the use of std::views::all -- this is required for some reason (maybe it normalizes some missing pieces)</span>
+std::vector&lt;<span class="hljs-type">int</span>&gt; v{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>};
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> x : v | std::views::all | CustomViews::AddFiveView) {
+    std::cout &lt;&lt; x &lt;&lt; std::endl;
+}
+</code></pre>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>

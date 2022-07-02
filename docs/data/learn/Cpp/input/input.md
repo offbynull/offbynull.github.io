@@ -4309,7 +4309,7 @@ In cases where neither the type traits library nor the concept_TEMPLATEs library
 ```c++
 template <typename T1, typename T2, typename TR>
 concept MyConcept =
-        requires(const T1* t1, const T2& t2) {
+        requires(const T1* t1, const T2& t2) { // param list may also contain non-template types like int, float, ...
             { (*t1) + t2 } -> std::same_as<TR>;
             { (*t1) * t2 } -> std::same_as<TR>;
             { std::hash<T1>{}(*t1) } -> std::convertible_to<std::size_t>;
@@ -9899,7 +9899,7 @@ Unlike Java streams, the current implementation of ranges (C++20) are missing so
 * actions (e.g. missing things like `forEach()` in Java streams)
 ```
 
-Any object that has a particular set of type traits is a range. Those type traits map closely to iterator type traits: A range has a `begin()` function, an `end()` function, and usage patterns similar to that of the type of iterator it maps to:
+Any object that has a particular set of type traits is a range. Those type traits map closely to iterator type traits: A range must have implementation for `std::begin(R)` and `std::end(R)` functions, and usage patterns similar to that of the type of iterator it maps to:
 
  * input range has usage patterns similar to input iterator.
  * output range has usage patterns similar to output iterator.
@@ -10045,13 +10045,204 @@ auto good_code() {
 This started to be supported in version 12 of g++.
 ```
 
+### Type-erasure
+
+`{bm} /(Library Functions\/Ranges\/Type-erasure)_TOPIC/`
+
+A range's type depends on the type of the underlying container or generator (e.g. `std::ordered_set`), element type of the range (e.g. `int`), and the list of view manipulations applied to that range. Each change ends up changing the underlying type of the range.
+
+```c++
+std::vector<int> vec{ 1, 2, 3 };
+
+// THE CODE BELOW PRINTS "same!"
+// ----------------------------
+// decltype(v1) == decltype(v2) because both use the same underlying container type, element type,
+// and have the exact same list of views applied WITH the exact same functor object.
+auto functor { [](int i) { return i * 2; } };
+auto v1 { vec | std::views::transform(functor) };
+auto v2 { vec | std::views::transform(functor) };
+if constexpr (std::is_same_v<decltype(v1), decltype(v2)>) {
+    std::cout << "same!";
+} else {
+    std::cout << "NOT same!";
+}
+
+// THE CODE BELOW PRINTS "NOT same!"
+// ---------------------------------
+// decltype(v1) != decltype(v2) because although the two types use the same underlying container
+// type, element type, and have the exact same list of views applied, those views are DIFFERENT the
+// functor classes each are unique -- they're technically two different classes, each with its own
+//  unique type. Those unique types are included in the types of v3 and v4 somewhere in a depth of
+//  template parameter chains.
+auto v3 { vec | std::views::transform([](int i) { return i * 2; }) };
+auto v4 { vec | std::views::transform([](int i) { return i * 2; }) };
+if constexpr (std::is_same_v<decltype(v3), decltype(v4)>) {
+    std::cout << "same!";
+} else {
+    std::cout << "NOT same!";
+}
+```
+
+The lack of type erasures sometimes causes problems when doing certain types of view manipulations. For example, combining together two ranges with the same element type (flattening) via `std::views::join` isn't possible unless the types of those ranges are exactly the same.
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector combined{ x , y };  // x and y of different types, vector's type parameter can't be deduced
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+To mitigate this, a third-party library called ranges-v3 provides `ranges::any_view<T>`. `ranges::any_view<T>` essentially "erases" the type of a range by wrapping it and unifying it to a specific type. The downside of this wrapping is that it has a performance impact as abstracting away the type information involves extra runtime code.
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector<ranges::any_view<int>> combined{
+    ranges::any_view<int> { x },
+    ranges::any_view<int> { y }
+};
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+One important thing about `ranges::any_view<T>` is that it takes an optional second template parameter which defines the capabilities of the range its wrapping. By default, it's set to `category::input` which supports capabilities of an input range, but it also supports ...
+
+* `category::input` - satisfies `std::ranges::input_range` concept_TEMPLATE
+* `category::forward` - satisfies `std::ranges::forward_range` concept_TEMPLATE
+* `category::bidirectional` - satisfies `std::ranges::bidirectional_range` concept_TEMPLATE
+* `category::random_access` - satisfies `std::ranges::random_access_range` concept_TEMPLATE
+* `category::sized` - satisfies `std::ranges::sized_ranges` concept_TEMPLATE
+
+```{note}
+There's also `category::none` and `category::mask`, not exactly sure what these are for.
+```
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector<ranges::any_view<int, ranges::category::input>> combined{
+    ranges::any_view<int, ranges::category::input> { x },
+    ranges::any_view<int, ranges::category::input> { y }
+};
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+Alternatively, in certain cases `std::span<T>` also abstracts away type information.
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector<std::span<int>> combined{
+    std::span<int> { x },
+    std::span<int> { y }
+};
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+```{note}
+C++20 / C++23 has nothing in the standard library for this except for `std::span<T>`, and AFAIK type erasure isn't what it was intended for. You should use ranges-v3. Future versions of C++ might provide something.
+```
+
 ### Custom Views
 
 `{bm} /(Library Functions\/Ranges\/Custom Views)_TOPIC/`
 
-### Type-erasure
+To write a custom view, create a class that inherits from `std::ranges::view_interface` with a `begin()` function, and an `end()` function, and either a default constructor (if generating values) and / or a constructor that takes in a range (if manipulating values).
 
-`{bm} /(Library Functions\/Ranges\/Type-erasure)_TOPIC/`
+```c++
+struct FakeGeneratingView : public std::ranges::view_interface<FakeGeneratingView> {
+    auto begin() const { return &(values[0]); }
+    auto end() const { return &(values[3]); }
+private:
+    int[3] values = { 0, 1, 2 };
+};
+
+
+// USE THE VIEW
+for (auto x : FakeGeneratingView{}) {
+    std::cout << x << std::endl;
+}
+```
+
+```{note}
+The above example class is feeding itself as a template parameter to `std::ranges::view_interface`. This is a common C++ idiom referred to as the curiously recurring template pattern (CRTP) which allows for feeding the derived class back into a templated base class. Something to do with compile-time polymorphism.
+```
+
+The following example is another custom view but this time it takes in an another range and manipulates its values and it supports the pipe operator.
+
+```c++
+template<std::ranges::input_range R> 
+    requires std::ranges::view<R>
+struct AddFiveView : public std::ranges::view_interface<AddFiveView<R>> {
+    AddFiveView() = delete;
+    constexpr AddFiveView(R&& r):
+        i(std::forward<R>(r)),
+        _begin(std::begin(i.range)),
+        _end(std::end(i.range)) {}
+    constexpr auto begin() const { return _begin; }
+    constexpr auto end() const { return _end; }
+private:
+    struct F : decltype([](auto x) { return x + 5; }) {};
+    using R_RES = std::ranges::transform_view<R, F>;
+    struct Internal {
+        Internal(R&& r) : range(std::forward<R>(r) | std::views::transform(F())) {}
+        R_RES range;
+    };
+    Internal i;  // what do I put as the template arg???
+    std::ranges::iterator_t<R_RES> _begin;
+    std::ranges::iterator_t<R_RES> _end; 
+};
+
+
+struct AddFiveViewAdaptorClosure {
+    constexpr AddFiveViewAdaptorClosure() {}
+
+    template <std::ranges::viewable_range R>
+    constexpr auto operator()(R&& r) const {
+        return AddFiveView<R>(std::forward<R>(r));
+    }
+} ;
+
+struct AddFiveViewAdaptor {
+    template<std::ranges::viewable_range R>
+    constexpr auto operator () (R && r) {
+        return AddFiveView(std::forward<R>(r)) ;
+    }
+
+    constexpr auto operator () () {
+        return AddFiveViewAdaptorClosure();
+    }   
+};
+
+template <std::ranges::viewable_range R>
+constexpr auto operator | (R&& r, AddFiveViewAdaptorClosure const & a) {
+    return a(std::forward<R>(r)) ;
+}
+
+namespace CustomViews {
+    AddFiveViewAdaptorClosure AddFiveView;
+}
+
+
+
+// USE THE VIEW VIA THE PIPE OPERATOR
+//   Note the use of std::views::all -- this is required for some reason (maybe it normalizes some missing pieces)
+std::vector<int> v{0,1,3};
+for (auto x : v | std::views::all | CustomViews::AddFiveView) {
+    std::cout << x << std::endl;
+}
+```
 
 
 # Terminology
