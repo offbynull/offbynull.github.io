@@ -26,6 +26,14 @@
 <li><a href="#H_Secrets">Secrets</a></li>
 </ul>
 <li><a href="#H_Nodes">Nodes</a></li>
+<li><a href="#H1_Volumes">Volumes</a></li>
+<ul>
+<li><a href="#H_Capacity">Capacity</a></li>
+<li><a href="#H_Access%20Modes">Access Modes</a></li>
+<li><a href="#H_Reclaim%20Policy">Reclaim Policy</a></li>
+<li><a href="#H_Types">Types</a></li>
+<li><a href="#H_Storage%20Classes">Storage Classes</a></li>
+</ul>
 <li><a href="#H_Services">Services</a></li>
 <ul>
 <li><a href="#H_Routing">Routing</a></li>
@@ -393,30 +401,33 @@ kubectl delete -f obj.yaml
 </ul>
 <a name="H_Volumes"></a><h3>Volumes</h3>
 <p><a name="BM_(Resources%5C%2FPods%2FVolumes)_TOPIC%2F"></a><strong></strong></p>
-<p>Volumes are controlled via the <code>spec.volumes[]</code> and <code>spec.containers[].volumneMounts</code> manifest paths ...</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FVolumes)_TOPIC%2Fi">Resources/Volumes</a></li>
+</ul>
+</div>
+<p>Volumes are controlled through <code>spec.volumes[]</code> and <code>spec.containers[].volumneMounts</code> ...</p>
 <pre class="hljs"><code><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">containers:</span>
     <span class="hljs-bullet">-</span> <span class="hljs-string">...</span>
       <span class="hljs-attr">volumeMounts:</span>
-        <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">"/data"</span>
-          <span class="hljs-attr">name:</span> <span class="hljs-string">"m_data"</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/data</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">my-data</span>
       <span class="hljs-string">...</span>
   <span class="hljs-attr">volumes:</span>
-    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">"my_data"</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-data</span>
       <span class="hljs-attr">hostPath:</span>
         <span class="hljs-attr">path:</span> <span class="hljs-string">"/var/lib/my_data"</span>
 </code></pre>
-<p><code>spec.volumes[]</code> defines a list of volumes, and those volumes can then go on to be mounted on the individual <a href="#BM_(container)%2Fi">container</a>s that make up the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> using <code>spec.containers[].volumneMounts</code>. In the example above, a volume is mounted on the <a href="#BM_(container)%2Fi">container</a> that points to a directory on the host machine. If other <a href="#BM_(container)%2Fi">container</a>s in that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> had that volume mounted, the directory on the host machine would be shared across all of them.</p>
-<p>Multiple types of volumes exist. The volume type of ...</p>
-<ul>
-<li><code>hostPath</code> is a directory directly on the host machine running the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (shared dir across <a href="#BM_(container)%2Fi">container</a>s in a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>).</li>
-<li><code>emptyDir</code> is a directory directly on the host machine running the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (unshared temp dir per <a href="#BM_(container)%2Fi">container</a>s in a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, guaranteed to be empty).</li>
-<li><code>nfs</code> is backed by NFS.</li>
-<li><code>cephfs</code> is backed by CephFS.</li>
-<li><code>awsElasticBlockStorage</code> is backed by AWS.</li>
-<li><code>azureDisk</code> is backed by Azure.</li>
-</ul>
-<p>Others exist as well. Volume types are added / removed as <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> updates between versions.</p>
+<p><code>spec.volumes[]</code> defines a list of volumes, and those volumes can then go on to be mounted on the individual <a href="#BM_(container)%2Fi">container</a>s that make up the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> through <code>spec.containers[].volumneMounts</code>. Each entry in <code>spec.volumes[]</code> can either directly refer to a volume type and its parameters or it can refer to a <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>.</p>
+<p>In the example above, a volume type is used directly within the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (<code>hostPath</code>). This is discouraged because it binds the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to a specific volume type and parameters, thereby making the volume and the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> tightly coupled. The better way to use volumes within the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is to use <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>s and <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>s. Assuming that you have a <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> already created, it can be referenced in <code>spec.volumes[]</code> by using the <code>persistentVolumeClaim</code> as the volume type.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">volumes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-data</span>
+      <span class="hljs-attr">persistentVolumeClaim:</span>
+        <span class="hljs-attr">claimName:</span> <span class="hljs-string">my-data-pv-claim</span>
+</code></pre>
 <a name="H_Image%20Pull%20Policy"></a><h3>Image Pull Policy</h3>
 <p><a name="BM_(Resource%5C%2FPods%2FImage%20Pull%20Policy)_TOPIC%2F"></a><strong></strong></p>
 <p><a href="#BM_(image)%2Fi">Image</a> pull policy is the policy <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses for downloading a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s <a href="#BM_(image)%2Fi">image</a>s. It's controlled via the <code>spec.containers[].imagePullPolicy</code> manifest paths ...</p>
@@ -560,6 +571,239 @@ kubectl delete -f obj.yaml
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> has a leader-follower architecture, meaning that of the <a href="#BM_(node)%2Fi">node</a>s a small subset is chosen to lead / manage the others. The leaders are referred to as <a href="#BM_(master%20node)%2Fi">master node</a>s while the followers are referred to as <a href="#BM_(worker%20node)%2Fi">worker node</a>s.</p>
 <p><img src="svgbob_90abf3344c1d253481a3a392500782cca41f92fd.svg" alt="Kroki diagram output"></p>
 <p>A <a href="#BM_(master%20node)%2Fi">master node</a> can still run <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> just like the <a href="#BM_(worker%20node)%2Fi">worker node</a>s, but some of its <a href="#BM_(resource)%2Fi">resource</a>s will be tied up for the purpose of managing <a href="#BM_(worker%20node)%2Fi">worker node</a>s.</p>
+<a name="H1_Volumes"></a><h2>Volumes</h2>
+<p><a name="BM_(Resources%5C%2FVolumes)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Volumes are disks where data can be persisted across <a href="#BM_(container)%2Fi">container</a> restarts. Normally, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> resets a <a href="#BM_(container)%2Fi">container</a>'s filesystem each time that <a href="#BM_(container)%2Fi">container</a> restarts (e.g. after a crash or a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> getting moved to a different <a href="#BM_(node)%2Fi">node</a>). While that works for some types of applications, other application types such as database servers need to retain state across restarts.</p>
+<p>Volumes in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> are broken down into "<a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>s" and "<a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>s". A ...</p>
+<ul>
+<li><a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> is the volume itself.</li>
+<li><a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> is the assignment of a volume.</li>
+</ul>
+<p>The idea is that a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> itself is just a floating block of disk space. Only when its claimed does it have an assignment. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> can then latch on to those assignments.</p>
+<p><img src="svgbob_245492e803e908f1ed349aac70d29be295b2b5a1.svg" alt="Kroki diagram output"></p>
+<p>In the example above, there are 4 volumes in total but only 3 of those volumes are claimed. podA latches on to claim1 and claim2 while podB latches on to claim3 and claim2 (both <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can access the volume claimed in claim2).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="#BM_(persistent%20volume)%2Fi">Persistent volume</a>s themselves aren't are cluster-level <a href="#BM_(resource)%2Fi">resource</a>s while <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>s are <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(resource)%2Fi">resource</a>s. All volumes are available for claims regardless of the <a href="#BM_(namespace)%2Fi">namespace</a> that claim is in. Maybe you can limit which volumes can be claimed by using <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(label%20selector)%2Fi">label selector</a>s?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Part of the reasoning for doing it like this is decoupling: volumes are independent from <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> and a volume can be have shared access across <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
+<p>Another reasons is that a developer should only be responsible for claiming a volume while the cluster administrator should be responsible for setting up those volumes and dealing with backend details like the specifics of the volume type and how large each volume is. As a developer, you only have to make a "claim" while the administrator is responsible for ensuring those <a href="#BM_(resource)%2Fi">resource</a>s exist.</p>
+</div>
+<p>Example <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> manifest:</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolume</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">test-vol</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">capacity:</span>
+    <span class="hljs-attr">storage:</span> <span class="hljs-string">10Gi</span>
+  <span class="hljs-attr">accessModes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">ReadOnlyMany</span>
+  <span class="hljs-attr">persistentVolumeReclaimPolicy:</span> <span class="hljs-string">Recycle</span>  <span class="hljs-comment"># once a claim on this volume is given up, delete the files on disk</span>
+  <span class="hljs-attr">awsElasticBlockStore:</span>
+    <span class="hljs-attr">volumeID:</span> <span class="hljs-string">volume-id</span>
+    <span class="hljs-attr">fsType:</span> <span class="hljs-string">ext4</span>
+</code></pre>
+<p>Example <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> manifest:</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">test-vol-claim</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span>  <span class="hljs-comment"># volume must have at least this much space</span>
+  <span class="hljs-attr">accessModes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>  <span class="hljs-comment"># volume must have this access mode</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">""</span>  <span class="hljs-comment"># MUST BE EMPTY STRING to claim test-vol described above (if set, uses dynamic provisioning)</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Why must <code>spec.storageClassName</code> be an empty string instead of being removed entirely? Being removed entirely would cause <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to use a default storage class name (if one exists), which is not what you want. Storage classes are described in the next few paragraphs below.</p>
+</div>
+<p>There are two types of volume provisioning available:</p>
+<ul>
+<li>static provisioning - a claim is assigned a pre-created <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>.</li>
+<li>dynamic provisioning - a claim triggers a new <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> to get created and is assigned to it.</li>
+</ul>
+<p>Dynamic provisioning only requires that you make a <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> with a specific <code>spec.storageClassName</code>. The administrator is responsible for ensuring a provisioner exists for that storage class and it automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">standard</span>
+<span class="hljs-attr">provisioner:</span> <span class="hljs-string">kubernetes.io/aws-ebs</span>
+<span class="hljs-attr">parameters:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">gp2</span>
+</code></pre>
+<a name="H_Capacity"></a><h3>Capacity</h3>
+<p><a name="BM_(Resources%5C%2FVolumes%2FCapacity)_TOPIC%2Fi"></a><strong></strong></p>
+<p>The capacity of a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> is set through <code>spec.capacity.storage</code>.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">capacity:</span>
+    <span class="hljs-attr">storage:</span> <span class="hljs-string">10Gi</span>
+</code></pre>
+<p>A <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> can then be set to require a specific amount of capacity via <code>spec.resources.request.storage</code>. Specifically, <code>requests</code> defines the minimum required capacity and <code>limits</code> defines the maximum required capacity.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span>  <span class="hljs-comment"># volume must have at least this much space</span>
+    <span class="hljs-attr">limits:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">5Gi</span>  <span class="hljs-comment"># volume can't have more than this much space</span>
+</code></pre>
+<a name="H_Access%20Modes"></a><h3>Access Modes</h3>
+<p><a name="BM_(Resources%5C%2FVolumes%2FAccess%20Modes)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> can support multiple access modes:</p>
+<ul>
+<li><code>ReadWriteOnce</code> - volume is mountable by a single <a href="#BM_(node)%2Fi">node</a> in read-write mode.</li>
+<li><code>ReadWriteOncePod</code> - volume is mountable by a single <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> in read-write mode.</li>
+<li><code>ReadWriteMany</code> - volume is mountable by many <a href="#BM_(node)%2Fi">node</a>s in read-write mode.</li>
+<li><code>ReadOnlyMany</code> - volume is mountable by many <a href="#BM_(node)%2Fi">node</a>s in read-only mode.</li>
+</ul>
+<p>The available access modes of a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> is set through <code>spec.accessModes</code>.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">ReadOnlyMany</span>
+</code></pre>
+<p>A <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> can then be set to target on or more access modes.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>  <span class="hljs-comment"># volume must have this access mode</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A claim takes a list of access modes, so is it that a claim needs to get a volume with all access modes present or just one of the access modes present?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Not all <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> types support all access modes. Types are discussed further below.</p>
+</div>
+<a name="H_Reclaim%20Policy"></a><h3>Reclaim Policy</h3>
+<p><a name="BM_(Resources%5C%2FVolumes%2FReclaim%20Policy)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>, once released, may or may not make the <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>able again depending on what <code>spec.persistentVolumeReclaimPolicy</code> was set to.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">persistentVolumeReclaimPolicy:</span> <span class="hljs-string">Recycle</span> 
+</code></pre>
+<p>The options available are ...</p>
+<ul>
+<li><code>Retain</code> - keep all existing data on the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> and prevent a new <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> from claiming it again.</li>
+<li><code>Recycle</code> - delete all existing data on the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> and allow a new <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> to claim it again.</li>
+<li><code>Delete</code> - delete the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> object itself.</li>
+</ul>
+<p>If the data on disk is critical to operations, the option to choose will likely be <code>Retain</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>For retain specifically, once the existing <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> is released, the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> itself goes into "Released" status. If it were available reclamation, it would go into "Available" status. The book mentions that there is no way to "recycle" a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> that's in "Released" status without destroying and recreating it.</p>
+<p>According to the k8s docs, this is the way it is so that users have a chance to manually pull out data considered precious before it gets destroyed.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Not all <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> types support all reclaim policies. Types are discussed further below.</p>
+</div>
+<a name="H_Types"></a><h3>Types</h3>
+<p><a name="BM_(Resources%5C%2FVolumes%2FTypes)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> needs to come from somewhere, either via a cloud provider or using some internally networked (or even local) disks. There are many volume types: AWS elastic block storage, Azure file, Azure Disk, GCE persistent disk, etc.. Each type has its own set of restrictions such as what access modes it supports or the types of <a href="#BM_(node)%2Fi">node</a>s it can be mounted.</p>
+<p>The configuration for each type is unique and goes directly under <code>spec</code>. The following are sample configurations for popular types...</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The documentation says that a lot of these types are deprecated and being moved over to something called CSI (<a href="#BM_(container)%2Fi">container</a> storage interface), so these examples may need to be updated in the future</p>
+</div>
+<pre class="hljs"><code><span class="hljs-comment"># Amazon Elastic Block Storage</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">awsElasticBlockStore:</span>
+    <span class="hljs-attr">volumeID:</span> <span class="hljs-string">volume-id</span>  <span class="hljs-comment"># a volume with this ID must already exist in AWS</span>
+    <span class="hljs-attr">fsType:</span> <span class="hljs-string">ext4</span>
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># Google Compute Engine Persistent Disk</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">gcePersistentDisk:</span>
+    <span class="hljs-attr">pdName:</span> <span class="hljs-string">test-vol</span>  <span class="hljs-comment"># a disk with this name must already exist in GCE</span>
+    <span class="hljs-attr">fsType:</span> <span class="hljs-string">ext4</span>
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># Azure Disk</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">azureDisk:</span>
+    <span class="hljs-comment"># a volume with this name and URI must already exist in Azure</span>
+    <span class="hljs-attr">diskName:</span> <span class="hljs-string">test.vhd</span>
+    <span class="hljs-attr">diskURI:</span> <span class="hljs-string">https://someaccount.blob.microsoft.net/vhds/test.vhd</span>
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># Host path</span>
+<span class="hljs-comment">#   -- this is a path on the node that the pod gets scheduled on, useful</span>
+<span class="hljs-comment">#      for debugging purposes.</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">hostPath:</span>
+    <span class="hljs-attr">path:</span> <span class="hljs-string">/data</span>
+</code></pre>
+<a name="H_Storage%20Classes"></a><h3>Storage Classes</h3>
+<p><a name="BM_(Resources%5C%2FVolumes%2FStorage%20Classes)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FVolumes%2FReclaim%20Policy)_TOPIC%2Fi">Resources/Volumes/Reclaim Policy</a></li>
+<li><a href="#BM_(Resources%5C%2FVolumes%2FTypes)_TOPIC%2Fi">Resources/Volumes/Types</a></li>
+</ul>
+</div>
+<p>Defining a storage class allows for dynamic provisioning of <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>s per <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">standard</span>
+<span class="hljs-attr">provisioner:</span> <span class="hljs-string">kubernetes.io/aws-ebs</span>
+<span class="hljs-attr">parameters:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">gp2</span>
+<span class="hljs-attr">reclaimPolicy:</span> <span class="hljs-string">Retain</span>
+<span class="hljs-attr">allowVolumeExpansion:</span> <span class="hljs-literal">true</span>
+</code></pre>
+<p><code>provisioner</code> and <code>parameters</code> define how <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>s are to be created and are unique to each volume type. In the example above, the storage class is named <code>standard</code> and it provisions new <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>s on AWS. Any <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> with <code>spec.storageClassName</code> set to <code>standard</code> will call out to this AWS elastic store provisioner to create a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> of type <code>awsElasticBlockStore</code> which gets assigned to it.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">test-vol-claim</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">standard</span>  <span class="hljs-comment"># use the storage class described above for this claim</span>
+</code></pre>
+<p>If <code>allowVolumeExpansion</code> is set to <code>true</code>, the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> can be resized by editing the <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> object. Only some volume types support volume expansion. The example above will work because AWS elastic block store volume types do support volume expansion.</p>
+<p><code>reclaimPolicy</code> maps to a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>'s <code>spec.persistentVolumeReclaimPolicy</code>, except that <code>Recycle</code> isn't one of the allowed options: only <code>Delete</code> and <code>Retain</code> are allowed.If unset, the reclaim policy of a dynamically provisioned <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> is <code>Delete</code>. The example above overrides the reclaim policy to <code>Retain</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Since these <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>s are being dynamically provisioned, it doesn't make sense to have <code>Recycle</code>. You can just <code>Delete</code> and if a new claim comes in it'll automatically provision a new volume. It's essentially the same thing as <code>Recycle</code>.</p>
+</div>
+<p>If a <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> leaves <code>spec.storageClassName</code> unset, the <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> will use whatever storage class <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> has set as its default. Recall that leaving <code>spec.storageClassName</code> unset is <em>not</em> the same as leaving it as an empty string. To leave unset means to keep it out of the declaration entirely. If <code>spec.storageClassName</code> is ...</p>
+<ul>
+<li>set to an empty string, it tells <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to find any <em>existing</em> <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> for the <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>.</li>
+<li>set to a non-empty string, it tells <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to use that storage class to dynamically provision a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> for the <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>.</li>
+<li>unset, it tells <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to use the default storage class to dynamically provision a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> for the <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>.</li>
+</ul>
+<p>Most <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> installations have a default storage class available, identified by the storage class having the <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a> <code>storageclass.kubernetes.io/is-default-class=true</code>.</p>
+<pre><code># kubectl get sc
+# Note how the name identifies it as the default.
+NAME                          PROVISIONER            RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirstConsumer   false                  6s
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># kubectl get sc microk8s-hostpath -o yaml</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">annotations:</span>
+    <span class="hljs-attr">kubectl.kubernetes.io/last-applied-configuration:</span> <span class="hljs-string">|
+      {"apiVersion":"storage.k8s.io/v1","kind":"StorageClass","metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"},"name":"microk8s-hostpath"},"provisioner":"microk8s.io/hostpath","volumeBindingMode":"WaitForFirstConsumer"}
+</span>    <span class="hljs-attr">storageclass.kubernetes.io/is-default-class:</span> <span class="hljs-string">"true"</span>
+  <span class="hljs-attr">creationTimestamp:</span> <span class="hljs-string">"2022-07-22T19:41:28Z"</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">microk8s-hostpath</span>
+  <span class="hljs-attr">resourceVersion:</span> <span class="hljs-string">"2775"</span>
+  <span class="hljs-attr">uid:</span> <span class="hljs-string">1df92cbc-6e2f-4726-a487-a81b1fcd8d2b</span>
+<span class="hljs-attr">provisioner:</span> <span class="hljs-string">microk8s.io/hostpath</span>
+<span class="hljs-attr">reclaimPolicy:</span> <span class="hljs-string">Delete</span>
+<span class="hljs-attr">volumeBindingMode:</span> <span class="hljs-string">WaitForFirstConsumer</span>
+</code></pre>
 <a name="H_Services"></a><h2>Services</h2>
 <p><a name="BM_(Resources%5C%2FServices)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1209,7 +1453,7 @@ kubectl delete -f obj.yaml
 <p><a name="BM_(cluster%20autoscaler)%2Fi"></a><strong>cluster autoscaler</strong> - A component that automatically scales the number of <a href="#BM_(node)%2Fi">node</a>s in a cluster based on need.</p>
 </li>
 <li>
-<p><a name="BM_(deployment)%2Fi"></a><strong>deployment</strong> - A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> that groups together all objects required for some application (e.g. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, <a href="#BM_(service)%2Fi">service</a>s, ...).</p>
+<p><a name="BM_(deployment)%2Fi"></a><strong>deployment</strong> - A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> that is similar to a <a href="#BM_(replica%20set)%2Fi">replica set</a> but provides extra functionality for gracefully updating <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to a new version and rolling them back to previous versions.</p>
 </li>
 <li>
 <p><a name="BM_(daemon%20set)%2Fi"></a><strong>daemon set</strong> <a name="BM_(DaemonSet)%2F"></a><strong></strong> - A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> that ensures a set of <a href="#BM_(node)%2Fi">node</a>s always have an instance of some <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> running.</p>
@@ -1222,6 +1466,12 @@ kubectl delete -f obj.yaml
 </li>
 <li>
 <p><a name="BM_(millicpu%7Cmillicore)%2Fi"></a><strong>millicpu</strong> - A <a href="#BM_(millicpu%7Cmillicore)%2Fi">millicpu</a> is 0.001 CPU cores (e.g. 1000 <a href="#BM_(millicpu%7Cmillicore)%2Fi">millicpu</a> = 1 core).</p>
+</li>
+<li>
+<p><a name="BM_(persistent%20volume)%2Fi"></a><strong>persistent volume</strong> - A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> that represents non-ephemeral disk space.</p>
+</li>
+<li>
+<p><a name="BM_(persistent%20volume%20claim)%2Fi"></a><strong>persistent volume claim</strong> - A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> that claims a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>, essentially acting as a marker that the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> is claimed and ready to use by <a href="#BM_(container)%2Fi">container</a>s within the cluster.</p>
 </li>
 </ul>
 <p></p>

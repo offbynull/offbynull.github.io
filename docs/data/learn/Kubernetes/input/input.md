@@ -422,34 +422,37 @@ In the example above, each of the probes check a HTTP server within the pod at p
 
 `{bm} /(Resources\/Pods\/Volumes)_TOPIC/`
 
-Volumes are controlled via the `spec.volumes[]` and `spec.containers[].volumneMounts` manifest paths ...
+```{prereq}
+Resources/Volumes_TOPIC
+```
+
+Volumes are controlled through `spec.volumes[]` and `spec.containers[].volumneMounts` ...
 
 ```yaml
 spec:
   containers:
     - ...
       volumeMounts:
-        - mountPath: "/data"
-          name: "m_data"
+        - mountPath: /data
+          name: my-data
       ...
   volumes:
-    - name: "my_data"
+    - name: my-data
       hostPath:
         path: "/var/lib/my_data"
 ```
 
-`spec.volumes[]` defines a list of volumes, and those volumes can then go on to be mounted on the individual containers that make up the pod using `spec.containers[].volumneMounts`. In the example above, a volume is mounted on the container that points to a directory on the host machine. If other containers in that pod had that volume mounted, the directory on the host machine would be shared across all of them.
+`spec.volumes[]` defines a list of volumes, and those volumes can then go on to be mounted on the individual containers that make up the pod through `spec.containers[].volumneMounts`. Each entry in `spec.volumes[]` can either directly refer to a volume type and its parameters or it can refer to a persistent volume claim.
 
-Multiple types of volumes exist. The volume type of ...
+In the example above, a volume type is used directly within the pod (`hostPath`). This is discouraged because it binds the pod to a specific volume type and parameters, thereby making the volume and the pod tightly coupled. The better way to use volumes within the pod is to use persistent volumes and persistent volume claims. Assuming that you have a persistent volume claim already created, it can be referenced in `spec.volumes[]` by using the `persistentVolumeClaim` as the volume type.
 
- * `hostPath` is a directory directly on the host machine running the pod (shared dir across containers in a pod).
- * `emptyDir` is a directory directly on the host machine running the pod (unshared temp dir per containers in a pod, guaranteed to be empty).
- * `nfs` is backed by NFS.
- * `cephfs` is backed by CephFS.
- * `awsElasticBlockStorage` is backed by AWS.
- * `azureDisk` is backed by Azure.
-
-Others exist as well. Volume types are added / removed as Kubernetes updates between versions.
+```yaml
+spec:
+  volumes:
+    - name: my-data
+      persistentVolumeClaim:
+        claimName: my-data-pv-claim
+```
 
 ### Image Pull Policy
 
@@ -653,6 +656,319 @@ Kubernetes has a leader-follower architecture, meaning that of the nodes a small
 ```
 
 A master node can still run pods just like the worker nodes, but some of its resources will be tied up for the purpose of managing worker nodes.
+
+## Volumes
+
+`{bm} /(Resources\/Volumes)_TOPIC/i`
+
+Volumes are disks where data can be persisted across container restarts. Normally, Kubernetes resets a container's filesystem each time that container restarts (e.g. after a crash or a pod getting moved to a different node). While that works for some types of applications, other application types such as database servers need to retain state across restarts.
+
+Volumes in Kubernetes are broken down into "persistent volumes" and "persistent volume claims". A ...
+
+* persistent volume is the volume itself.
+* persistent volume claim is the assignment of a volume.
+
+The idea is that a persistent volume itself is just a floating block of disk space. Only when its claimed does it have an assignment. Pods can then latch on to those assignments.
+
+```{svgbob}
+ .------.      .------.     .------.     .------. 
+ | vol1 |      | vol2 |     | vol3 |     | vol4 | 
+ '---+--'      '---+--'     '------'     '---+--' 
+     |             |                         |     
+     v             v                         v     
+.--------.    .--------.                .--------.
+| claim1 |    | claim2 |                | claim3 |
+'--------'    '--------'                '--------'
+    ^             ^ ^                        ^
+    |             | |                        |
+    |             | '----------------.       |
+    |             |                  |       |
+.---+-------------+----.         .---+-------+---.
+|         podA         |         |      podB     |
+'----------------------'         '---------------'
+```
+
+In the example above, there are 4 volumes in total but only 3 of those volumes are claimed. podA latches on to claim1 and claim2 while podB latches on to claim3 and claim2 (both pods can access the volume claimed in claim2).
+
+```{note}
+Persistent volumes themselves aren't are cluster-level resources while persistent volume claims are namespace-level resources. All volumes are available for claims regardless of the namespace that claim is in. Maybe you can limit which volumes can be claimed by using labels / label selectors?
+```
+
+```{note}
+Part of the reasoning for doing it like this is decoupling: volumes are independent from pods and a volume can be have shared access across pods.
+
+Another reasons is that a developer should only be responsible for claiming a volume while the cluster administrator should be responsible for setting up those volumes and dealing with backend details like the specifics of the volume type and how large each volume is. As a developer, you only have to make a "claim" while the administrator is responsible for ensuring those resources exist.
+```
+
+Example persistent volume manifest:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-vol
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Recycle  # once a claim on this volume is given up, delete the files on disk
+  awsElasticBlockStore:
+    volumeID: volume-id
+    fsType: ext4
+```
+
+Example persistent volume claim manifest:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-vol-claim
+spec:
+  resources:
+    requests:
+      storage: 1Gi  # volume must have at least this much space
+  accessModes:
+  - ReadWriteOnce  # volume must have this access mode
+  storageClassName: ""  # MUST BE EMPTY STRING to claim test-vol described above (if set, uses dynamic provisioning)
+```
+
+```{note}
+Why must `spec.storageClassName` be an empty string instead of being removed entirely? Being removed entirely would cause Kubernetes to use a default storage class name (if one exists), which is not what you want. Storage classes are described in the next few paragraphs below.
+```
+
+There are two types of volume provisioning available:
+
+* static provisioning - a claim is assigned a pre-created persistent volume.
+* dynamic provisioning - a claim triggers a new persistent volume to get created and is assigned to it.
+
+Dynamic provisioning only requires that you make a persistent volume claim with a specific `spec.storageClassName`. The administrator is responsible for ensuring a provisioner exists for that storage class and it automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: standard
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+```
+
+### Capacity
+
+`{bm} /(Resources\/Volumes\/Capacity)_TOPIC/i`
+
+The capacity of a persistent volume is set through `spec.capacity.storage`.
+
+```yaml
+spec:
+  capacity:
+    storage: 10Gi
+```
+
+A persistent volume claim can then be set to require a specific amount of capacity via `spec.resources.request.storage`. Specifically, `requests` defines the minimum required capacity and `limits` defines the maximum required capacity.
+
+```yaml
+spec:
+  resources:
+    requests:
+      storage: 1Gi  # volume must have at least this much space
+    limits:
+      storage: 5Gi  # volume can't have more than this much space
+```
+
+### Access Modes
+
+`{bm} /(Resources\/Volumes\/Access Modes)_TOPIC/i`
+
+A persistent volume can support multiple access modes:
+
+* `ReadWriteOnce` - volume is mountable by a single node in read-write mode.
+* `ReadWriteOncePod` - volume is mountable by a single pod in read-write mode.
+* `ReadWriteMany` - volume is mountable by many nodes in read-write mode.
+* `ReadOnlyMany` - volume is mountable by many nodes in read-only mode.
+
+The available access modes of a persistent volume is set through `spec.accessModes`.
+
+```yaml
+spec:
+  accessModes:
+  - ReadWriteOnce
+  - ReadOnlyMany
+```
+
+A persistent volume claim can then be set to target on or more access modes.
+
+```yaml
+spec:
+  accessModes:
+  - ReadWriteOnce  # volume must have this access mode
+```
+
+```{note}
+A claim takes a list of access modes, so is it that a claim needs to get a volume with all access modes present or just one of the access modes present?
+```
+
+```{note}
+Not all persistent volume types support all access modes. Types are discussed further below.
+```
+
+### Reclaim Policy
+
+`{bm} /(Resources\/Volumes\/Reclaim Policy)_TOPIC/i`
+
+A persistent volume claim, once released, may or may not make the persistent volume claimable again depending on what `spec.persistentVolumeReclaimPolicy` was set to.
+
+```yaml
+spec:
+  persistentVolumeReclaimPolicy: Recycle 
+```
+
+The options available are ...
+
+* `Retain` - keep all existing data on the persistent volume and prevent a new persistent volume claim from claiming it again.
+* `Recycle` - delete all existing data on the persistent volume and allow a new persistent volume claim to claim it again.
+* `Delete` - delete the persistent volume object itself.
+
+If the data on disk is critical to operations, the option to choose will likely be `Retain`.
+
+```{note}
+For retain specifically, once the existing persistent volume claim is released, the persistent volume itself goes into "Released" status. If it were available reclamation, it would go into "Available" status. The book mentions that there is no way to "recycle" a persistent volume that's in "Released" status without destroying and recreating it.
+
+According to the k8s docs, this is the way it is so that users have a chance to manually pull out data considered precious before it gets destroyed.
+```
+
+```{note}
+Not all persistent volume types support all reclaim policies. Types are discussed further below.
+```
+
+### Types
+
+`{bm} /(Resources\/Volumes\/Types)_TOPIC/i`
+
+A persistent volume needs to come from somewhere, either via a cloud provider or using some internally networked (or even local) disks. There are many volume types: AWS elastic block storage, Azure file, Azure Disk, GCE persistent disk, etc.. Each type has its own set of restrictions such as what access modes it supports or the types of nodes it can be mounted.
+
+The configuration for each type is unique and goes directly under `spec`. The following are sample configurations for popular types...
+
+```{note}
+The documentation says that a lot of these types are deprecated and being moved over to something called CSI (container storage interface), so these examples may need to be updated in the future
+```
+
+```yaml
+# Amazon Elastic Block Storage
+spec:
+  awsElasticBlockStore:
+    volumeID: volume-id  # a volume with this ID must already exist in AWS
+    fsType: ext4
+```
+
+```yaml
+# Google Compute Engine Persistent Disk
+spec:
+  gcePersistentDisk:
+    pdName: test-vol  # a disk with this name must already exist in GCE
+    fsType: ext4
+```
+
+```yaml
+# Azure Disk
+spec:
+  azureDisk:
+    # a volume with this name and URI must already exist in Azure
+    diskName: test.vhd
+    diskURI: https://someaccount.blob.microsoft.net/vhds/test.vhd
+```
+
+```yaml
+# Host path
+#   -- this is a path on the node that the pod gets scheduled on, useful
+#      for debugging purposes.
+spec:
+  hostPath:
+    path: /data
+```
+
+### Storage Classes
+
+`{bm} /(Resources\/Volumes\/Storage Classes)_TOPIC/i`
+
+```{prereq}
+Resources/Volumes/Reclaim Policy_TOPIC
+Resources/Volumes/Types_TOPIC
+```
+
+Defining a storage class allows for dynamic provisioning of persistent volumes per persistent volume claim.
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: standard
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+```
+
+`provisioner` and `parameters` define how persistent volumes are to be created and are unique to each volume type. In the example above, the storage class is named `standard` and it provisions new persistent volumes on AWS. Any persistent volume claim with `spec.storageClassName` set to `standard` will call out to this AWS elastic store provisioner to create a persistent volume of type `awsElasticBlockStore` which gets assigned to it.
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-vol-claim
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard  # use the storage class described above for this claim
+```
+
+If `allowVolumeExpansion` is set to `true`, the persistent volume can be resized by editing the persistent volume claim object. Only some volume types support volume expansion. The example above will work because AWS elastic block store volume types do support volume expansion.
+
+`reclaimPolicy` maps to a persistent volume's `spec.persistentVolumeReclaimPolicy`, except that `Recycle` isn't one of the allowed options: only `Delete` and `Retain` are allowed.If unset, the reclaim policy of a dynamically provisioned persistent volume is `Delete`. The example above overrides the reclaim policy to `Retain`.
+
+```{note}
+Since these persistent volumes are being dynamically provisioned, it doesn't make sense to have `Recycle`. You can just `Delete` and if a new claim comes in it'll automatically provision a new volume. It's essentially the same thing as `Recycle`.
+```
+
+If a persistent volume claim leaves `spec.storageClassName` unset, the persistent volume claim will use whatever storage class Kubernetes has set as its default. Recall that leaving `spec.storageClassName` unset is *not* the same as leaving it as an empty string. To leave unset means to keep it out of the declaration entirely. If `spec.storageClassName` is ...
+
+* set to an empty string, it tells Kubernetes to find any _existing_ persistent volume for the persistent volume claim.
+* set to a non-empty string, it tells Kubernetes to use that storage class to dynamically provision a persistent volume for the persistent volume claim.
+* unset, it tells Kubernetes to use the default storage class to dynamically provision a persistent volume for the persistent volume claim.
+
+Most Kubernetes installations have a default storage class available, identified by the storage class having the annotation `storageclass.kubernetes.io/is-default-class=true`.
+
+```
+# kubectl get sc
+# Note how the name identifies it as the default.
+NAME                          PROVISIONER            RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirstConsumer   false                  6s
+```
+
+```yaml
+# kubectl get sc microk8s-hostpath -o yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"storage.k8s.io/v1","kind":"StorageClass","metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"},"name":"microk8s-hostpath"},"provisioner":"microk8s.io/hostpath","volumeBindingMode":"WaitForFirstConsumer"}
+    storageclass.kubernetes.io/is-default-class: "true"
+  creationTimestamp: "2022-07-22T19:41:28Z"
+  name: microk8s-hostpath
+  resourceVersion: "2775"
+  uid: 1df92cbc-6e2f-4726-a487-a81b1fcd8d2b
+provisioner: microk8s.io/hostpath
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+```
 
 ## Services
 
@@ -1388,7 +1704,7 @@ When referencing objects, the ...
 
  * `{bm} cluster autoscaler` - A component that automatically scales the number of nodes in a cluster based on need.
 
- * `{bm} deployment` - A Kubernetes resource that groups together all objects required for some application (e.g. pods, services, ...).
+ * `{bm} deployment` - A Kubernetes resource that is similar to a replica set but provides extra functionality for gracefully updating pods to a new version and rolling them back to previous versions.
 
  * `{bm} daemon set` `{bm} /(DaemonSet)/` - A Kubernetes resource that ensures a set of nodes always have an instance of some pod running.
 
@@ -1397,6 +1713,10 @@ When referencing objects, the ...
  * `{bm} ConfigMap` - A Kubernetes resource for configuring the applications running in a pod.
 
  * `{bm} millicpu/(millicpu|millicore)/i` - A millicpu is 0.001 CPU cores (e.g. 1000 millicpu = 1 core).
+
+ * `{bm} persistent volume` - A Kubernetes resource that represents non-ephemeral disk space.
+
+ * `{bm} persistent volume claim` - A Kubernetes resource that claims a persistent volume, essentially acting as a marker that the persistent volume is claimed and ready to use by containers within the cluster.
 
 `{bm-error} Did you mean endpoints?/(endpoint)/i`
 
